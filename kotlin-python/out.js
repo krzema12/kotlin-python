@@ -1,6 +1,6 @@
 def (_, Kotlin) :
   'use strict'
-  var println = Kotlin.kotlin.io.println_s8jyv4$
+   println = Kotlin.kotlin.io.println_s8jyv4$
   def pythonTest() :
     println('Hello world')
   }
