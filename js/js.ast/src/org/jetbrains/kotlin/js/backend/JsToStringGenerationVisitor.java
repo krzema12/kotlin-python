@@ -917,7 +917,6 @@ public class JsToStringGenerationVisitor extends JsVisitor {
             newlineOpt();
         }
 
-        p.print('}');
         popSourceInfo();
     }
 
@@ -1262,7 +1261,6 @@ public class JsToStringGenerationVisitor extends JsVisitor {
             if (closingBracketLocation != null) {
                 pushSourceInfo(closingBracketLocation);
             }
-            p.print('}');
             if (closingBracketLocation != null) {
                 popSourceInfo();
             }
