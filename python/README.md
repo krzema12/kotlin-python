@@ -4,7 +4,7 @@ The goal is to have Kotlin-Python interop, starting with being able to compile K
 
 See discussion at https://discuss.kotlinlang.org/t/idea-python-backend/19852
 
-## progress
+## Progress
 
 - [ ] Kotlin-Python interop
   - [ ] compile Kotlin to Python
