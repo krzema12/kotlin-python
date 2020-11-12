@@ -1,0 +1,17 @@
+-- ASDL's 4 builtin types are:
+-- identifier, int, string, constant
+
+module SimpleModule
+{
+    mod = Module(stmt* body)
+
+    stmt = FunctionDef(identifier name,
+                       string? type_comment)
+          attributes (int lineno, int col_offset)
+
+    expr = NamedExpr(expr target, expr value)
+         -- some comment not aligned to the start of the line
+         | Constant(constant value, string? kind)
+
+    expr_context = Load | Store | Del
+}
