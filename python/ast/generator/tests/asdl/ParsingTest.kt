@@ -105,6 +105,40 @@ class ParsingTest {
                         AsdlConstructor("Store"),
                         AsdlConstructor("Del"),
                     )
+                ),
+                AsdlTypeDefinition(
+                    name = "comprehension",
+                    constructors = listOf(
+                        AsdlConstructor(
+                            name = null,
+                            attributes = listOf(
+                                AsdlAttribute(
+                                    name = "target",
+                                    type = AsdlTypeReference("expr"),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                AsdlTypeDefinition(
+                    name = "arg",
+                    constructors = listOf(
+                        AsdlConstructor(
+                            name = null,
+                            attributes = listOf(
+                                AsdlAttribute(
+                                    name = "arg",
+                                    type = identifier,
+                                ),
+                            ),
+                        ),
+                    ),
+                    attributes = listOf(
+                        AsdlAttribute(
+                            name = "lineno",
+                            type = int,
+                        ),
+                    ),
                 )
             ),
         )

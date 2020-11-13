@@ -19,7 +19,7 @@ data class AsdlTypeDefinition(
 )
 
 data class AsdlConstructor(
-    val name: String,
+    val name: String?,
     val attributes: List<AsdlAttribute> = emptyList(),
 )
 

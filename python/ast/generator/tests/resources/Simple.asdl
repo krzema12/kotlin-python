@@ -14,4 +14,9 @@ module SimpleModule
          | Constant(constant value, string? kind)
 
     expr_context = Load | Store | Del
+
+    comprehension = (expr target)
+
+    arg = (identifier arg)
+           attributes (int lineno)
 }

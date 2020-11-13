@@ -77,7 +77,9 @@ private fun String.parseConstructors(): List<AsdlConstructor> {
 
 private fun String.parseSingleConstructor(): AsdlConstructor {
     val nameAndOptionalAttributes = split("(", ")")
-    val name = nameAndOptionalAttributes[0]
+    val name = with(nameAndOptionalAttributes[0]) {
+        if (this == "") null else this
+    }
     val attributes = if (nameAndOptionalAttributes.size > 1)
         nameAndOptionalAttributes[1]
     else
