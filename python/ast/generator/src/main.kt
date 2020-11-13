@@ -12,7 +12,7 @@ fun main() {
     val python39AsdlAsText = {}.javaClass.getResource("/Python39.asdl").readText()
     val python39Asdl = parseAsdl(python39AsdlAsText)
 
-    val targetDirectory = Paths.get("python/ast/src")
+    val targetDirectory = Paths.get("python/ast/src/generated")
     targetDirectory.toFile().deleteRecursively()
     python39Asdl.generateKotlinFromAsdl()
         .forEach {

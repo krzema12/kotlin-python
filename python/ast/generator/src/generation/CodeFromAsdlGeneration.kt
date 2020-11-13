@@ -13,7 +13,7 @@ fun AsdlModule.generateKotlinFromAsdl(): List<SourceFile> {
 
 fun getBuiltInTypesFile(moduleName: String): SourceFile {
     return SourceFile(
-        name = "generated/$moduleName/builtIns.kt",
+        name = "$moduleName/builtIns.kt",
         content = """
             package generated.$moduleName
 
@@ -28,7 +28,7 @@ fun getBuiltInTypesFile(moduleName: String): SourceFile {
 }
 
 private fun AsdlTypeDefinition.toKotlinSourceFile(moduleName: String): SourceFile {
-    val fileName = "generated/$moduleName/$name.kt"
+    val fileName = "$moduleName/$name.kt"
     val content = """
         package generated.$moduleName
 
