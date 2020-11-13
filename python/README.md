@@ -15,7 +15,8 @@ See discussion at https://discuss.kotlinlang.org/t/idea-python-backend/19852
         - [x] try to represent an example Python program, and fix any issues found
       - [x] convert [Python's grammar in ASDL](https://github.com/python/cpython/blob/master/Parser/Python.asdl) into AST entities
     - [ ] translate Kotlin IR to Python AST
-      - ...
+      - [ ] translate IR items present in the simple Python AST example (assignment, list, for loop, function invocation...)
+      - [ ] translate all IR items
     - [ ] generate Python code from Python AST
       - [x] AST items used in the simple example (unblocking end-to-end PoC)
       - [ ] all Python AST items
