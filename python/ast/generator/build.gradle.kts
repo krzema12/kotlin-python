@@ -12,7 +12,10 @@ dependencies {
 }
 
 sourceSets {
-    "main" { projectDefault() }
+    "main" {
+        projectDefault()
+        resources.srcDir("src/resources")
+    }
     "test" {
         projectDefault()
         resources.srcDir("tests/resources")
