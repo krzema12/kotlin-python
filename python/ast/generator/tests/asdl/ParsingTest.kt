@@ -5,12 +5,13 @@
 
 package asdl
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class ParsingTest {
 
     @Test
-    fun successfulParsing() {
+    fun correctParsingOfSimpleAsdl() {
         // given
         val simpleAsdl = ParsingTest::class.java.getResource("/Simple.asdl").readText()
 
@@ -98,7 +99,7 @@ class ParsingTest {
                     )
                 ),
                 AsdlTypeDefinition(
-                    name = "expr_constant",
+                    name = "expr_context",
                     constructors = listOf(
                         AsdlConstructor("Load"),
                         AsdlConstructor("Store"),
@@ -107,7 +108,19 @@ class ParsingTest {
                 )
             ),
         )
-        // TODO compare expected and parsed once implemented
+        assertEquals(expectedAsdl, parsedAsdl)
+    }
+
+    @Test
+    fun parsingOfExamplePythonAsdlDoesNotFail() {
+        // given
+        val simpleAsdl = ParsingTest::class.java.getResource("/Python39.asdl").readText()
+
+        // when
+        val parsedAsdl = parseAsdl(simpleAsdl)
+
+        // then
+        assertEquals("Python", parsedAsdl.name)
     }
 
 }
