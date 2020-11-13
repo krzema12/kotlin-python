@@ -5,22 +5,7 @@
 
 package asdl
 
-val identifier = AsdlType(
-    name = "identifier",
-    constructors = emptyList(),
-)
-
-val int = AsdlType(
-    name = "int",
-    constructors = emptyList(),
-)
-
-val string = AsdlType(
-    name = "string",
-    constructors = emptyList(),
-)
-
-val constant = AsdlType(
-    name = "constant",
-    constructors = emptyList(),
-)
+val identifier = AsdlTypeReference("identifier")
+val int = AsdlTypeReference("int")
+val string = AsdlTypeReference("string")
+val constant = AsdlTypeReference("constant")

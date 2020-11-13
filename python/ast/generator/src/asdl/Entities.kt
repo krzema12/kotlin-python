@@ -9,12 +9,12 @@ package asdl
 
 data class AsdlModule(
     val name: String,
-    val types: List<AsdlType>,
+    val types: List<AsdlTypeDefinition>,
 )
 
-data class AsdlType(
+data class AsdlTypeDefinition(
     val name: String,
-    val constructors: List<AsdlConstructor> = emptyList(),
+    val constructors: List<AsdlConstructor>,
     val attributes: List<AsdlAttribute> = emptyList(),
 )
 
@@ -25,8 +25,12 @@ data class AsdlConstructor(
 
 data class AsdlAttribute(
     val name: String,
-    val type: AsdlType,
+    val type: AsdlTypeReference,
     val quantity: AsdlQuantity = AsdlQuantity.Single,
+)
+
+data class AsdlTypeReference(
+    val name: String,
 )
 
 enum class AsdlQuantity {

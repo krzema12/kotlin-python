@@ -21,7 +21,7 @@ class ParsingTest {
         val expectedAsdl = AsdlModule(
             name = "SimpleModule",
             types = listOf(
-                AsdlType(
+                AsdlTypeDefinition(
                     name = "mod",
                     constructors = listOf(
                         AsdlConstructor(
@@ -29,15 +29,14 @@ class ParsingTest {
                             attributes = listOf(
                                 AsdlAttribute(
                                     name = "body",
-                                    // Recursive reference to this type - not sure how to tackle this yet.
-                                    type = AsdlType("stmt"),
+                                    type = AsdlTypeReference("stmt"),
                                     quantity = AsdlQuantity.ZeroOrMore,
                                 ),
                             )
                         )
                     )
                 ),
-                AsdlType(
+                AsdlTypeDefinition(
                     name = "stmt",
                     constructors = listOf(
                         AsdlConstructor(
@@ -66,7 +65,7 @@ class ParsingTest {
                         ),
                     )
                 ),
-                AsdlType(
+                AsdlTypeDefinition(
                     name = "expr",
                     constructors = listOf(
                         AsdlConstructor(
@@ -74,13 +73,11 @@ class ParsingTest {
                             attributes = listOf(
                                 AsdlAttribute(
                                     name = "target",
-                                    // Recursive reference to this type - not sure how to tackle this yet.
-                                    type = AsdlType("expr"),
+                                    type = AsdlTypeReference("expr"),
                                 ),
                                 AsdlAttribute(
                                     name = "value",
-                                    // Recursive reference to this type - not sure how to tackle this yet.
-                                    type = AsdlType("expr"),
+                                    type = AsdlTypeReference("expr"),
                                 ),
                             )
                         ),
@@ -100,7 +97,7 @@ class ParsingTest {
                         )
                     )
                 ),
-                AsdlType(
+                AsdlTypeDefinition(
                     name = "expr_constant",
                     constructors = listOf(
                         AsdlConstructor("Load"),
