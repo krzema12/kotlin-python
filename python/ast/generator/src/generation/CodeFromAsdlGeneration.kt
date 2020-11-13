@@ -5,10 +5,7 @@
 
 package generation
 
-import asdl.AsdlAttribute
-import asdl.AsdlConstructor
-import asdl.AsdlModule
-import asdl.AsdlTypeDefinition
+import asdl.*
 
 fun AsdlModule.generateKotlinFromAsdl(): List<SourceFile> {
     return types.map { it.toKotlinSourceFile(name) } + listOf(getBuiltInTypesFile(name))
@@ -65,6 +62,11 @@ private fun List<AsdlAttribute>.toKotlinClassArguments(open: Boolean = false, ov
     return if (isEmpty())
         return null
     else joinToString(", ") {
-        "${if (open) "open " else if (override) "override " else ""}val ${it.name}: ${it.type.name}"
+        val typeWithAppliedQuantity = when (it.quantity) {
+            AsdlQuantity.Single -> it.type.name
+            AsdlQuantity.Optional -> "${it.type.name}?"
+            AsdlQuantity.ZeroOrMore -> "kotlin.collections.List<${it.type.name}>"
+        }
+        "${if (open) "open " else if (override) "override " else ""}val ${it.name}: $typeWithAppliedQuantity"
     }
 }

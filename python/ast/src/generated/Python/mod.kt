@@ -4,11 +4,11 @@
         sealed class mod()
         
         
-        data class Module(val body: stmt, val type_ignores: type_ignore) 
+        data class Module(val body: kotlin.collections.List<stmt>, val type_ignores: kotlin.collections.List<type_ignore>) 
             : mod() 
         
 
-        data class Interactive(val body: stmt) 
+        data class Interactive(val body: kotlin.collections.List<stmt>) 
             : mod() 
         
 
@@ -16,7 +16,7 @@
             : mod() 
         
 
-        data class FunctionType(val argtypes: expr, val returns: expr) 
+        data class FunctionType(val argtypes: kotlin.collections.List<expr>, val returns: expr) 
             : mod() 
         
     
