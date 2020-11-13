@@ -17,10 +17,10 @@ fun getBuiltInTypesFile(moduleName: String): SourceFile {
         content = """
             package generated.$moduleName
             
-            object identifier 
-            object int
-            object string
-            object constant
+            data class identifier(val name: String)
+            data class int(val value: Int)
+            data class string(val value: String)
+            data class constant(val value: String)
         """,
     )
 }
