@@ -30,7 +30,7 @@ private fun AsdlTypeDefinition.toKotlinSourceFile(moduleName: String): SourceFil
     val content = """
         package generated.$moduleName
         
-        sealed class $name(${attributes.toKotlinClassArguments(open = true) ?: ""})
+        sealed class $name(${attributes.filterOutCodePositionAttributes().toKotlinClassArguments(open = true) ?: ""})
         
         ${constructors.toKotlinSourceFile(this)}
     """
@@ -46,14 +46,15 @@ private fun List<AsdlConstructor>.toKotlinSourceFile(parentSealedClass: AsdlType
 
 private fun AsdlConstructor.toKotlinSourceFile(parentSealedClass: AsdlTypeDefinition): String {
     val constructorName = name ?: "${parentSealedClass.name}Impl"
-    return if ((attributes + parentSealedClass.attributes).isEmpty()) {
+    return if ((attributes + parentSealedClass.attributes).filterOutCodePositionAttributes().isEmpty()) {
         """
             object $constructorName : ${parentSealedClass.name}() 
         """
     } else {
         """
-        data class $constructorName(${listOf(attributes.toKotlinClassArguments(), parentSealedClass.attributes.toKotlinClassArguments(override = true)).filterNotNull().joinToString(", ")}) 
-            : ${parentSealedClass.name}(${parentSealedClass.attributes.joinToString(", ") { it.name }}) 
+        data class $constructorName(${listOf(attributes.filterOutCodePositionAttributes().toKotlinClassArguments(),
+                                             parentSealedClass.attributes.filterOutCodePositionAttributes().toKotlinClassArguments(override = true)).filterNotNull().joinToString(", ")}) 
+            : ${parentSealedClass.name}(${parentSealedClass.attributes.filterOutCodePositionAttributes().joinToString(", ") { it.name }}) 
         """
     }
 }
@@ -70,3 +71,9 @@ private fun List<AsdlAttribute>.toKotlinClassArguments(open: Boolean = false, ov
         "${if (open) "open " else if (override) "override " else ""}val ${it.name}: $typeWithAppliedQuantity"
     }
 }
+
+/**
+ * These attributes are helpful when parsing existing Python code. For generating code, they can be skipped.
+ */
+private fun List<AsdlAttribute>.filterOutCodePositionAttributes() =
+    filterNot { it.name in setOf("lineno", "col_offset", "end_lineno", "end_col_offset") }

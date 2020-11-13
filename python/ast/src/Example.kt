@@ -84,10 +84,6 @@ val examplePythonCodeAst: mod = Module(
                 Name(
                     id = identifier("fruits"),
                     ctx = Store,
-                    lineno = int(0), // irrelevant, TODO make optional or remove
-                    col_offset = int(0), // irrelevant, TODO make optional or remove
-                    end_lineno = null, // irrelevant, TODO make optional or remove
-                    end_col_offset = null, // irrelevant, TODO make optional or remove
                 ),
             ),
             value = List(
@@ -95,56 +91,28 @@ val examplePythonCodeAst: mod = Module(
                     Constant(
                         value = constant("'apple'"),
                         kind = null,
-                        lineno = int(0), // irrelevant, TODO make optional or remove
-                        col_offset = int(0), // irrelevant, TODO make optional or remove
-                        end_lineno = null, // irrelevant, TODO make optional or remove
-                        end_col_offset = null, // irrelevant, TODO make optional or remove
                     ),
                     Constant(
                         value = constant("'banana'"),
                         kind = null,
-                        lineno = int(0), // irrelevant, TODO make optional or remove
-                        col_offset = int(0), // irrelevant, TODO make optional or remove
-                        end_lineno = null, // irrelevant, TODO make optional or remove
-                        end_col_offset = null, // irrelevant, TODO make optional or remove
                     ),
                     Constant(
                         value = constant("'cherry'"),
                         kind = null,
-                        lineno = int(0), // irrelevant, TODO make optional or remove
-                        col_offset = int(0), // irrelevant, TODO make optional or remove
-                        end_lineno = null, // irrelevant, TODO make optional or remove
-                        end_col_offset = null, // irrelevant, TODO make optional or remove
                     ),
                 ),
                 ctx = Load,
-                lineno = int(0), // irrelevant, TODO make optional or remove
-                col_offset = int(0), // irrelevant, TODO make optional or remove
-                end_lineno = null, // irrelevant, TODO make optional or remove
-                end_col_offset = null, // irrelevant, TODO make optional or remove
             ),
             type_comment = null,
-            lineno = int(0), // irrelevant, TODO make optional or remove
-            col_offset = int(0), // irrelevant, TODO make optional or remove
-            end_lineno = null, // irrelevant, TODO make optional or remove
-            end_col_offset = null, // irrelevant, TODO make optional or remove
         ),
         For(
             target = Name(
                 id = identifier("x"),
                 ctx = Store,
-                lineno = int(0), // irrelevant, TODO make optional or remove
-                col_offset = int(0), // irrelevant, TODO make optional or remove
-                end_lineno = null, // irrelevant, TODO make optional or remove
-                end_col_offset = null, // irrelevant, TODO make optional or remove
             ),
             iter = Name(
                 id = identifier("fruits"),
                 ctx = Load,
-                lineno = int(0), // irrelevant, TODO make optional or remove
-                col_offset = int(0), // irrelevant, TODO make optional or remove
-                end_lineno = null, // irrelevant, TODO make optional or remove
-                end_col_offset = null, // irrelevant, TODO make optional or remove
             ),
             body = listOf(
                 Expr(
@@ -152,39 +120,19 @@ val examplePythonCodeAst: mod = Module(
                         func = Name(
                             id = identifier("print"),
                             ctx = Load,
-                            lineno = int(0), // irrelevant, TODO make optional or remove
-                            col_offset = int(0), // irrelevant, TODO make optional or remove
-                            end_lineno = null, // irrelevant, TODO make optional or remove
-                            end_col_offset = null, // irrelevant, TODO make optional or remove
                         ),
                         args = listOf(
                             Name(
                                 id = identifier("x"),
                                 ctx = Load,
-                                lineno = int(0), // irrelevant, TODO make optional or remove
-                                col_offset = int(0), // irrelevant, TODO make optional or remove
-                                end_lineno = null, // irrelevant, TODO make optional or remove
-                                end_col_offset = null, // irrelevant, TODO make optional or remove
                             ),
                         ),
                         keywords = emptyList(),
-                        lineno = int(0), // irrelevant, TODO make optional or remove
-                        col_offset = int(0), // irrelevant, TODO make optional or remove
-                        end_lineno = null, // irrelevant, TODO make optional or remove
-                        end_col_offset = null, // irrelevant, TODO make optional or remove
                     ),
-                    lineno = int(0), // irrelevant, TODO make optional or remove
-                    col_offset = int(0), // irrelevant, TODO make optional or remove
-                    end_lineno = null, // irrelevant, TODO make optional or remove
-                    end_col_offset = null, // irrelevant, TODO make optional or remove
                 ),
             ),
             orelse = emptyList(),
             type_comment = null,
-            lineno = int(0), // irrelevant, TODO make optional or remove
-            col_offset = int(0), // irrelevant, TODO make optional or remove
-            end_lineno = null, // irrelevant, TODO make optional or remove
-            end_col_offset = null, // irrelevant, TODO make optional or remove
         ),
     ),
     type_ignores = emptyList(),
