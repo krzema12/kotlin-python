@@ -1,5 +1,6 @@
 import generated.Python.*
 import generated.Python.List
+import topython.toPython
 
 /*
  * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
@@ -53,9 +54,9 @@ val examplePythonCodeAst: mod = Module(
             targets = listOf(Name(id = identifier("fruits"), ctx = Store)),
             value = List(
                 elts = listOf(
-                    Constant(value = constant("'apple'"), kind = null),
-                    Constant(value = constant("'banana'"), kind = null),
-                    Constant(value = constant("'cherry'"), kind = null),
+                    Constant(value = constant("\"apple\""), kind = null),
+                    Constant(value = constant("\"banana\""), kind = null),
+                    Constant(value = constant("\"cherry\""), kind = null),
                 ),
                 ctx = Load,
             ),
@@ -77,3 +78,12 @@ val examplePythonCodeAst: mod = Module(
     ),
     type_ignores = emptyList(),
 )
+
+fun main() {
+    println(examplePythonCodeAst.toPython())
+    // Produces:
+    //
+    // fruits = ["apple", "banana", "cherry"]
+    // for x in fruits:
+    //     print(x)
+}
