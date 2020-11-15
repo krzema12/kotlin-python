@@ -26,14 +26,12 @@ object ModuleWrapperTranslation {
             moduleId: String, function: JsExpression, importedModules: List<JsImportedModule>,
             program: JsProgram, kind: ModuleKind
     ): List<JsStatement> {
-        return listOf(function.makeStmt())
-        // For now the below thing is just making things complicated - disabling for now.
-        /*return when (kind) {
+        return when (kind) {
             ModuleKind.AMD -> wrapAmd(function, importedModules, program)
             ModuleKind.COMMON_JS -> wrapCommonJs(function, importedModules, program)
             ModuleKind.UMD -> wrapUmd(moduleId, function, importedModules, program)
             ModuleKind.PLAIN -> wrapPlain(moduleId, function, importedModules, program)
-        }*/
+        }
     }
 
     private fun wrapUmd(

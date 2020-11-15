@@ -32,7 +32,7 @@ public class JsToStringGenerationVisitor extends JsVisitor {
     private static final char[] CHARS_FALSE = "false".toCharArray();
     private static final char[] CHARS_FINALLY = "finally".toCharArray();
     private static final char[] CHARS_FOR = "for".toCharArray();
-    private static final char[] CHARS_FUNCTION = "def".toCharArray();
+    private static final char[] CHARS_FUNCTION = "function".toCharArray();
     private static final char[] CHARS_IF = "if".toCharArray();
     private static final char[] CHARS_IN = "in".toCharArray();
     private static final char[] CHARS_NEW = "new".toCharArray();
@@ -43,7 +43,7 @@ public class JsToStringGenerationVisitor extends JsVisitor {
     private static final char[] CHARS_THROW = "throw".toCharArray();
     private static final char[] CHARS_TRUE = "true".toCharArray();
     private static final char[] CHARS_TRY = "try".toCharArray();
-    private static final char[] CHARS_VAR = "".toCharArray();
+    private static final char[] CHARS_VAR = "var".toCharArray();
     private static final char[] CHARS_WHILE = "while".toCharArray();
     private static final char[] HEX_DIGITS = {
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
@@ -917,6 +917,7 @@ public class JsToStringGenerationVisitor extends JsVisitor {
             newlineOpt();
         }
 
+        p.print('}');
         popSourceInfo();
     }
 
@@ -1249,6 +1250,12 @@ public class JsToStringGenerationVisitor extends JsVisitor {
                     }
                 }
                 else {
+                    if (lastStatement) {
+                        p.printOpt(';');
+                    }
+                    else {
+                        semi();
+                    }
                     newlineOpt();
                 }
             }
@@ -1261,6 +1268,7 @@ public class JsToStringGenerationVisitor extends JsVisitor {
             if (closingBracketLocation != null) {
                 pushSourceInfo(closingBracketLocation);
             }
+            p.print('}');
             if (closingBracketLocation != null) {
                 popSourceInfo();
             }
@@ -1280,11 +1288,12 @@ public class JsToStringGenerationVisitor extends JsVisitor {
 
     private void blockClose() {
         p.indentOut();
+        p.print('}');
         newlineOpt();
     }
 
     private void blockOpen() {
-        p.print(':');
+        p.print('{');
         p.indentIn();
         newlineOpt();
     }

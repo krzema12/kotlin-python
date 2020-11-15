@@ -266,7 +266,7 @@ class Merger(
 
         val statements = rootBlock.getStatements()
 
-        //statements.add(0, JsStringLiteral("use strict").makeStmt())
+        statements.add(0, JsStringLiteral("use strict").makeStmt())
         if (!isBuiltinModule(fragments)) {
             defineModule(program, statements, moduleId)
         }
