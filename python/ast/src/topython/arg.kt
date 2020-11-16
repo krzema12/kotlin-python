@@ -5,8 +5,14 @@
 
 package topython
 
-fun String.indent() =
-    lines().joinToString("\n") { it.indentOneLine() }
+import generated.Python.arg
+import generated.Python.argImpl
 
-fun String.indentOneLine() =
-    "    $this"
+fun arg.toPython(): String {
+    return when (this) {
+        is argImpl -> toPython()
+    }
+}
+
+fun argImpl.toPython() =
+    arg.name

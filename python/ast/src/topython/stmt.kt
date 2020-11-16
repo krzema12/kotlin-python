@@ -10,7 +10,7 @@ import generated.Python.*
 fun stmt.toPython(): String {
     return when (this) {
         is Assign -> toPython()
-        is FunctionDef -> TODO()
+        is FunctionDef -> toPython()
         is AsyncFunctionDef -> TODO()
         is ClassDef -> TODO()
         is Return -> TODO()
@@ -41,7 +41,13 @@ fun Assign.toPython() =
     "${if (targets.size == 1) targets[0].toPython() else targets.joinToString(separator = ", ", prefix = "[", postfix = "]")} = ${value.toPython()}"
 
 fun For.toPython() =
-    "for ${target.toPython()} in ${iter.toPython()}:\n${body.joinToString("\n") { it.toPython() }.lines().joinToString("\n") { it.indent() }}"
+    "for ${target.toPython()} in ${iter.toPython()}:\n${body.toPython().indent()}"
 
 fun Expr.toPython() =
     value.toPython()
+
+fun FunctionDef.toPython() =
+    "def ${name.name}(${args.toPython()}):\n${body.toPython().indent()}"
+
+fun List<stmt>.toPython() =
+    joinToString("\n") { it.toPython() }

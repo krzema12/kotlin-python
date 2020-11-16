@@ -262,6 +262,7 @@ extra["compilerModules"] = arrayOf(
     ":js:js.frontend",
     ":js:js.translator",
     ":js:js.dce",
+    ":python:ast",
     ":native:frontend.native",
     ":native:kotlin-native-utils",
     ":compiler",
