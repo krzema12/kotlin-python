@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.ir.backend.js.transformers.irToPy
 import generated.Python.*
 import org.jetbrains.kotlin.ir.backend.js.utils.JsGenerationContext
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
+import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.expressions.*
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
@@ -24,6 +25,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
         return when (expression) {
             is IrConst<*> -> visitConst(expression, data)
             is IrGetValue -> visitGetValue(expression, data)
+            is IrCall -> visitCall(expression, data)
             else -> Name(id = identifier("visitExpression-other $expression"), ctx = Load)
         }
     }
@@ -71,8 +73,8 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
         println(expression.symbol.owner)
 
         return when (val owner = expression.symbol.owner) {
-            is IrValueParameter -> Name(id = identifier(if (owner.name.isSpecial) "(special)" else owner.name.identifier), ctx = Load)
-            else -> Name(id = identifier("visitGetValue_other"), ctx = Load)
+            is IrValueParameter, is IrVariable -> Name(id = identifier(if (owner.name.isSpecial) "(special)" else owner.name.identifier), ctx = Load)
+            else -> Name(id = identifier("visitGetValue_other $owner"), ctx = Load)
         }
     }
 
@@ -118,7 +120,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
         }
 
         return Call(
-            func = Name(id = identifier(expression.symbol.owner.name.identifier), ctx = Load),
+            func = Name(id = identifier(if (expression.symbol.owner.name.isSpecial) "(special)" else expression.symbol.owner.name.identifier), ctx = Load),
             args = arguments,
             keywords = emptyList(),
         )

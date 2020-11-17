@@ -60,8 +60,9 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     }
 
     override fun visitReturn(expression: IrReturn, context: JsGenerationContext): List<stmt> {
-        // TODO
-        return listOf(Expr(value = Name(id = identifier("visitReturn"), ctx = Load)))
+        return listOf(Return(
+            value = IrElementToPyExpressionTransformer().visitExpression(expression.value, context),
+        ))
     }
 
     override fun visitThrow(expression: IrThrow, context: JsGenerationContext): List<stmt> {
@@ -113,7 +114,11 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitWhileLoop(loop: IrWhileLoop, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(Expr(value = Name(id = identifier("visitWhileLoop"), ctx = Load)))
+        return listOf(While(
+            test = IrElementToPyExpressionTransformer().visitExpression(loop.condition, context),
+            body = emptyList(),
+            orelse = emptyList(),
+        ))
     }
 
     override fun visitDoWhileLoop(loop: IrDoWhileLoop, context: JsGenerationContext): List<stmt> {

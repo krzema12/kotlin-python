@@ -13,13 +13,13 @@ fun stmt.toPython(): String {
         is FunctionDef -> toPython()
         is AsyncFunctionDef -> TODO()
         is ClassDef -> TODO()
-        is Return -> TODO()
+        is Return -> toPython()
         is Delete -> TODO()
         is AugAssign -> TODO()
         is AnnAssign -> TODO()
         is For -> toPython()
         is AsyncFor -> TODO()
-        is While -> TODO()
+        is While -> toPython()
         is If -> TODO()
         is With -> TODO()
         is AsyncWith -> TODO()
@@ -47,7 +47,13 @@ fun Expr.toPython() =
     value.toPython()
 
 fun FunctionDef.toPython() =
-    "def ${name.name}(${args.toPython()}):\n${body.toPython().indent()}"
+    "def ${name.name}(${args.toPython()}):\n${body.toPython().indent()}\n"
 
 fun List<stmt>.toPython() =
     joinToString("\n") { it.toPython() }
+
+fun Return.toPython() =
+    value?.let { "return ${it.toPython()}" } ?: "return"
+
+fun While.toPython() =
+    "while ${test.toPython()}:\n${body.toPython().indent()}\n"
