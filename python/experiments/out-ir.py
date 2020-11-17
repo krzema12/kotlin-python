@@ -4,7 +4,9 @@ def fold(initial, operation):
     inductionVariable = 0
     last = jsArrayLength(indexedObject)
     while jsLt(inductionVariable, last):
-        
+        element = jsArrayGet(indexedObject, inductionVariable)
+        inductionVariable = jsBitOr(jsPlus(inductionVariable, 1), 0)
+        accumulator = invoke(accumulator, element)
     
     return accumulator
 
@@ -102,7 +104,11 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
     inductionVariable = 0
     last = jsArrayLength(indexedObject)
     while jsLt(inductionVariable, last):
-        
+        element = jsArrayGet(indexedObject, inductionVariable)
+        inductionVariable = jsBitOr(jsPlus(inductionVariable, 1), 0)
+        count = jsBitOr(jsPlus(count, 1), 0)
+        visitWhen
+        visitWhen
     
     visitWhen
     append(postfix)
@@ -124,7 +130,8 @@ def all(predicate):
     visitWhen
     tmp0_iterator = iterator()
     while hasNext():
-        
+        element = next()
+        visitWhen
     
     return visitConst-other
 
@@ -146,7 +153,10 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
     count = 0
     tmp0_iterator = iterator()
     while hasNext():
-        
+        element = next()
+        count = jsBitOr(jsPlus(count, 1), 0)
+        visitWhen
+        visitWhen
     
     visitWhen
     append(postfix)
@@ -166,14 +176,18 @@ def indexOfFirst(predicate):
     index = 0
     tmp0_iterator = iterator()
     while hasNext():
-        
+        item = next()
+        visitWhen
+        tmp1 = index
+        index = jsBitOr(jsPlus(tmp1, 1), 0)
+        Unit_getInstance()
     
     return -1
 
 def indexOfLast(predicate):
     iterator = listIterator((special)())
     while hasPrevious():
-        
+        visitWhen
     
     return -1
 
@@ -183,7 +197,8 @@ def any(predicate):
     visitWhen
     tmp0_iterator = iterator()
     while hasNext():
-        
+        element = next()
+        visitWhen
     
     return visitConst-other
 
@@ -383,7 +398,7 @@ def filterInPlace(predicate, predicateResultToRemove):
     result = visitConst-other
     tmp0_with_0 = iterator()
     while hasNext():
-        
+        visitWhen
     
     return result
 
@@ -495,7 +510,9 @@ def readResolve($this):
     inductionVariable = 0
     last = jsArrayLength(indexedObject)
     while jsLt(inductionVariable, last):
-        
+        element_3 = jsArrayGet(indexedObject, inductionVariable)
+        inductionVariable = jsBitOr(jsPlus(inductionVariable, 1), 0)
+        accumulator_1 = plus(element_3)
     
     return accumulator_1
 
@@ -509,7 +526,14 @@ def size($this):
     cur = $this
     size = 2
     while visitConst-other:
-        
+        tmp = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1603d1fb
+        tmp0_elvis_lhs = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@2d3f6e6
+        tmp
+        visitWhen
+        cur = tmp
+        tmp1 = size
+        size = jsBitOr(jsPlus(tmp1, 1), 0)
+        Unit_getInstance()
     
 
 def contains($this, element):
@@ -518,7 +542,9 @@ def contains($this, element):
 def containsAll($this, context):
     cur = context
     while visitConst-other:
-        
+        visitWhen
+        next = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@685a8158
+        visitWhen
     
 
 def writeReplace($this):
@@ -2427,7 +2453,7 @@ def copyToArrayImpl(collection):
     array = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@485b21ec
     iterator = iterator()
     while hasNext():
-        
+        visitExpression
     
     return array
 
@@ -2436,7 +2462,10 @@ def copyToArrayImpl(collection, array):
     iterator = iterator()
     index = 0
     while hasNext():
-        
+        tmp0 = index
+        index = jsBitOr(jsPlus(tmp0, 1), 0)
+        tmp1_unsafeCast_0 = next()
+        jsArraySet(array, tmp0, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@481c2454)
     
     visitWhen
     return array
@@ -2893,7 +2922,9 @@ def concatToString():
     inductionVariable = 0
     last = jsArrayLength(indexedObject)
     while jsLt(inductionVariable, last):
-        
+        char = jsArrayGet(indexedObject, inductionVariable)
+        inductionVariable = jsBitOr(jsPlus(inductionVariable, 1), 0)
+        result = jsPlus(result, char)
     
     return result
 
@@ -3013,7 +3044,9 @@ def arrayWithFun(size, init):
     result_1 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@2d5bfc3a
     i_2 = 0
     while jsNot(jsEqeqeq(i_2, jsArrayLength(result_1))):
-        
+        jsArraySet(result_1, i_2, invoke(i_2))
+        i_2 = jsBitOr(jsPlus(i_2, 1), 0)
+        Unit_getInstance()
     
     return result_1
 
@@ -3021,7 +3054,9 @@ def fillArrayFun(array, init):
     result = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@22249b41
     i = 0
     while jsNot(jsEqeqeq(i, jsArrayLength(result))):
-        
+        jsArraySet(result, i, invoke(i))
+        i = jsBitOr(jsPlus(i, 1), 0)
+        Unit_getInstance()
     
     return result
 
@@ -3376,17 +3411,17 @@ def add(other):
     c32 = 0
     c16 = 0
     c00 = 0
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
+    c00 = jsBitOr(jsPlus(c00, jsBitOr(jsPlus(a00, b00), 0)), 0)
+    c16 = jsBitOr(jsPlus(c16, jsBitShiftRU(c00, 16)), 0)
+    c00 = jsBitAnd(c00, 65535)
+    c16 = jsBitOr(jsPlus(c16, jsBitOr(jsPlus(a16, b16), 0)), 0)
+    c32 = jsBitOr(jsPlus(c32, jsBitShiftRU(c16, 16)), 0)
+    c16 = jsBitAnd(c16, 65535)
+    c32 = jsBitOr(jsPlus(c32, jsBitOr(jsPlus(a32, b32), 0)), 0)
+    c48 = jsBitOr(jsPlus(c48, jsBitShiftRU(c32, 16)), 0)
+    c32 = jsBitAnd(c32, 65535)
+    c48 = jsBitOr(jsPlus(c48, jsBitOr(jsPlus(a48, b48), 0)), 0)
+    c48 = jsBitAnd(c48, 65535)
     return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@4a244aa3
 
 def subtract(other):
@@ -3409,26 +3444,26 @@ def multiply(other):
     c32 = 0
     c16 = 0
     c00 = 0
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
-    visitSetValue
+    c00 = jsBitOr(jsPlus(c00, imul(a00, b00)), 0)
+    c16 = jsBitOr(jsPlus(c16, jsBitShiftRU(c00, 16)), 0)
+    c00 = jsBitAnd(c00, 65535)
+    c16 = jsBitOr(jsPlus(c16, imul(a16, b00)), 0)
+    c32 = jsBitOr(jsPlus(c32, jsBitShiftRU(c16, 16)), 0)
+    c16 = jsBitAnd(c16, 65535)
+    c16 = jsBitOr(jsPlus(c16, imul(a00, b16)), 0)
+    c32 = jsBitOr(jsPlus(c32, jsBitShiftRU(c16, 16)), 0)
+    c16 = jsBitAnd(c16, 65535)
+    c32 = jsBitOr(jsPlus(c32, imul(a32, b00)), 0)
+    c48 = jsBitOr(jsPlus(c48, jsBitShiftRU(c32, 16)), 0)
+    c32 = jsBitAnd(c32, 65535)
+    c32 = jsBitOr(jsPlus(c32, imul(a16, b16)), 0)
+    c48 = jsBitOr(jsPlus(c48, jsBitShiftRU(c32, 16)), 0)
+    c32 = jsBitAnd(c32, 65535)
+    c32 = jsBitOr(jsPlus(c32, imul(a00, b32)), 0)
+    c48 = jsBitOr(jsPlus(c48, jsBitShiftRU(c32, 16)), 0)
+    c32 = jsBitAnd(c32, 65535)
+    c48 = jsBitOr(jsPlus(c48, jsBitOr(jsPlus(jsBitOr(jsPlus(jsBitOr(jsPlus(imul(a48, b00), imul(a32, b16)), 0), imul(a16, b32)), 0), imul(a00, b48)), 0)), 0)
+    c48 = jsBitAnd(c48, 65535)
     return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@bcecdd
 
 def divide(other):
@@ -3438,7 +3473,20 @@ def divide(other):
     res = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@4d7ddc1b
     rem = (special)
     while greaterThanOrEqual(other):
+        approxDouble = jsDiv(toNumber(), toNumber())
+        approx2 = max(visitConst-other, floor(approxDouble))
+        log2 = ceil(jsDiv(log(approx2), (special)()))
+        delta = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@63f410d0
+        approxRes = fromNumber(approx2)
+        approxRem = multiply(other)
+        while visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@2d6e48c6:
+            approx2 = jsMinus(approx2, delta)
+            approxRes = fromNumber(approx2)
+            approxRem = multiply(other)
         
+        visitWhen
+        res = add(approxRes)
+        rem = subtract(approxRem)
     
     return res
 
@@ -3474,7 +3522,12 @@ def toStringImpl(radix):
     rem = (special)
     result = ''
     while visitConst-other:
-        
+        remDiv = div(radixToPower)
+        intval = toInt()
+        tmp1_unsafeCast_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@29701f1f
+        digits = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@430c9347
+        rem = remDiv
+        visitWhen
     
 
 def fromInt(value):
@@ -3542,7 +3595,7 @@ def primitiveArrayConcat(args):
     tmp1_unsafeCast_0 = js('new a.constructor(size_local)')
     result = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@9e03c6e
     visitWhen
-    visitSetValue
+    size_local = 0
     inductionVariable = 0
     last = jsBitOr(jsMinus(jsArrayLength(args), 1), 0)
     visitWhen

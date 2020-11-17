@@ -26,12 +26,16 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitBlock(expression: IrBlock, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(Expr(value = Name(id = identifier("visitBlock"), ctx = Load)))
+        return expression.statements.flatMap {
+            it.accept(this, context)
+        }
     }
 
     override fun visitComposite(expression: IrComposite, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(Expr(value = Name(id = identifier("visitComposite"), ctx = Load)))
+        return expression.statements.flatMap {
+            it.accept(this, context)
+        }
     }
 
     override fun visitExpression(expression: IrExpression, context: JsGenerationContext): List<stmt> {
@@ -55,8 +59,13 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     }
 
     override fun visitSetValue(expression: IrSetValue, context: JsGenerationContext): List<stmt> {
-        // TODO
-        return listOf(Expr(value = Name(id = identifier("visitSetValue"), ctx = Load)))
+        return listOf(
+            Assign(
+                targets = listOf(Name(id = identifier(expression.symbol.owner.name.identifier), ctx = Store)),
+                value = IrElementToPyExpressionTransformer().visitExpression(expression.value, context),
+                type_comment = null,
+            )
+        )
     }
 
     override fun visitReturn(expression: IrReturn, context: JsGenerationContext): List<stmt> {
@@ -116,7 +125,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         // TODO
         return listOf(While(
             test = IrElementToPyExpressionTransformer().visitExpression(loop.condition, context),
-            body = emptyList(),
+            body = loop.body?.accept(this, context) ?: emptyList(),
             orelse = emptyList(),
         ))
     }

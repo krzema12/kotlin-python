@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.ir.backend.js.transformers.irToPy
 
 import generated.Python.*
+import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.backend.js.utils.JsGenerationContext
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.declarations.IrVariable
@@ -26,6 +27,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
             is IrConst<*> -> visitConst(expression, data)
             is IrGetValue -> visitGetValue(expression, data)
             is IrCall -> visitCall(expression, data)
+            is IrComposite -> visitComposite(expression, data)
             else -> Name(id = identifier("visitExpression-other $expression"), ctx = Load)
         }
     }
@@ -90,7 +92,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
 
     override fun visitSetValue(expression: IrSetValue, context: JsGenerationContext): expr {
         // TODO
-        return Name(id = identifier("visitSetValue"), ctx = Load)
+        return Name(id = identifier("visitSetValue-inToPyExpressionTransformer $expression"), ctx = Load)
     }
 
     override fun visitDelegatingConstructorCall(expression: IrDelegatingConstructorCall, context: JsGenerationContext): expr {
@@ -144,5 +146,10 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
     override fun visitDynamicOperatorExpression(expression: IrDynamicOperatorExpression, data: JsGenerationContext): expr {
         // TODO
         return Name(id = identifier("visitVararg"), ctx = Load)
+    }
+
+    override fun visitComposite(expression: IrComposite, data: JsGenerationContext): expr {
+        // TODO
+        return Name(id = identifier("visitComposite-inToPyExpressionTransformer $expression"), ctx = Load)
     }
 }
