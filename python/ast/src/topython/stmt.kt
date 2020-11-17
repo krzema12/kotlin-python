@@ -12,7 +12,7 @@ fun stmt.toPython(): String {
         is Assign -> toPython()
         is FunctionDef -> toPython()
         is AsyncFunctionDef -> TODO()
-        is ClassDef -> TODO()
+        is ClassDef -> toPython()
         is Return -> toPython()
         is Delete -> TODO()
         is AugAssign -> TODO()
@@ -20,7 +20,7 @@ fun stmt.toPython(): String {
         is For -> toPython()
         is AsyncFor -> TODO()
         is While -> toPython()
-        is If -> TODO()
+        is If -> toPython()
         is With -> TODO()
         is AsyncWith -> TODO()
         is Raise -> TODO()
@@ -57,3 +57,9 @@ fun Return.toPython() =
 
 fun While.toPython() =
     "while ${test.toPython()}:\n${body.toPython().indent()}\n"
+
+fun If.toPython() =
+    "if ${test.toPython()}:\n${body.toPython().indent()}\n${if (orelse.isNotEmpty()) "else:\n${orelse.toPython().indent()}\n" else ""}"
+
+fun ClassDef.toPython() =
+    "class ${name.name}:\n${"pass".indent()}\n"

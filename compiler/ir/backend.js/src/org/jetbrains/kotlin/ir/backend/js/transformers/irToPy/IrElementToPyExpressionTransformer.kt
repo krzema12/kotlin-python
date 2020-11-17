@@ -28,6 +28,8 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
             is IrGetValue -> visitGetValue(expression, data)
             is IrCall -> visitCall(expression, data)
             is IrComposite -> visitComposite(expression, data)
+            is IrSetValue -> visitSetValue(expression, data)
+            is IrWhen -> visitWhen(expression, data)
             else -> Name(id = identifier("visitExpression-other $expression"), ctx = Load)
         }
     }
@@ -75,7 +77,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
         println(expression.symbol.owner)
 
         return when (val owner = expression.symbol.owner) {
-            is IrValueParameter, is IrVariable -> Name(id = identifier(if (owner.name.isSpecial) "(special)" else owner.name.identifier), ctx = Load)
+            is IrValueParameter, is IrVariable -> Name(id = identifier(owner.name.asString()), ctx = Load)
             else -> Name(id = identifier("visitGetValue_other $owner"), ctx = Load)
         }
     }
@@ -130,7 +132,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
 
     override fun visitWhen(expression: IrWhen, context: JsGenerationContext): expr {
         // TODO
-        return Name(id = identifier("visitWhen"), ctx = Load)
+        return Name(id = identifier("visitWhen-inToByExpressionTransformer $expression"), ctx = Load)
     }
 
     override fun visitTypeOperator(expression: IrTypeOperatorCall, data: JsGenerationContext): expr {
