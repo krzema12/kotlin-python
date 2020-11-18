@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.ir.backend.js.transformers.irToPy
 import generated.Python.*
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.backend.js.utils.JsGenerationContext
+import org.jetbrains.kotlin.ir.backend.js.utils.asString
 import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.declarations.IrVariable
@@ -33,6 +34,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
             is IrSetValue -> visitSetValue(expression, data)
             is IrWhen -> visitWhen(expression, data)
             is IrConstructorCall -> visitConstructorCall(expression, data)
+            is IrTypeOperatorCall -> visitTypeOperator(expression, data)
             else -> Name(id = identifier("visitExpression-other $expression"), ctx = Load)
         }
     }
@@ -153,7 +155,14 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
 
     override fun visitTypeOperator(expression: IrTypeOperatorCall, data: JsGenerationContext): expr {
         // TODO
-        return Name(id = identifier("visitTypeOperator $expression"), ctx = Load)
+        return when (expression.operator) {
+            IrTypeOperator.REINTERPRET_CAST -> Call(
+                func = Name(id = identifier(expression.typeOperand.asString()), ctx = Load),
+                args = listOf(visitExpression(expression.argument, data)),
+                keywords = emptyList(),
+            )
+            else -> Name(id = identifier("visitTypeOperator ${expression.operator}"), ctx = Load)
+        }
     }
 
     override fun visitDynamicMemberExpression(expression: IrDynamicMemberExpression, data: JsGenerationContext): expr {

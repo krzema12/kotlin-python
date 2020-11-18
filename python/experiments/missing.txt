@@ -1,4 +1,3 @@
-    214 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@
     198 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@
     158 visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@
     111 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@
@@ -8,8 +7,8 @@
      46 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@
      45 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrRawFunctionReferenceImpl@
      39 visitSetValue-inToPyExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrSetValueImpl@
+     39 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@
      31 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrFunctionExpressionImpl@
-     27 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@
      19 visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@
      16 visitThrow org.jetbrains.kotlin.ir.expressions.impl.IrThrowImpl@
      16 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl@

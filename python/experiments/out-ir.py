@@ -56,7 +56,7 @@ def joinToString$default(separator, prefix, postfix, limit, truncated, transform
     if jsNot(jsEqeqeq(jsBitAnd($mask0, 32), 0)):
         visitSetValue-inToPyExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrSetValueImpl@719a208f
     
-    return joinToString(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@3f67d229, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@49ce2726, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1dece75a, limit, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@129b75c, transform)
+    return joinToString(kotlin.CharSequence(separator), kotlin.CharSequence(prefix), kotlin.CharSequence(postfix), limit, kotlin.CharSequence(truncated), transform)
 
 def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
     append(prefix)
@@ -108,7 +108,7 @@ def joinTo$default(buffer, separator, prefix, postfix, limit, truncated, transfo
     if jsNot(jsEqeqeq(jsBitAnd($mask0, 64), 0)):
         visitSetValue-inToPyExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrSetValueImpl@37630101
     
-    return joinTo(buffer, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@49ffcd07, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4512085c, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@49e11ca7, limit, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@10063448, transform)
+    return joinTo(buffer, kotlin.CharSequence(separator), kotlin.CharSequence(prefix), kotlin.CharSequence(postfix), limit, kotlin.CharSequence(truncated), transform)
 
 def contains(element):
     return jsGtEq(indexOf(element), 0)
@@ -269,7 +269,7 @@ def joinToString$default(separator, prefix, postfix, limit, truncated, transform
     if jsNot(jsEqeqeq(jsBitAnd($mask0, 32), 0)):
         visitSetValue-inToPyExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrSetValueImpl@18a6451f
     
-    return joinToString(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@8742b32, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@5aa345a5, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1a343d3e, limit, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@29e3c7fe, transform)
+    return joinToString(kotlin.CharSequence(separator), kotlin.CharSequence(prefix), kotlin.CharSequence(postfix), limit, kotlin.CharSequence(truncated), transform)
 
 def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
     append(prefix)
@@ -318,7 +318,7 @@ def joinTo$default(buffer, separator, prefix, postfix, limit, truncated, transfo
     if jsNot(jsEqeqeq(jsBitAnd($mask0, 64), 0)):
         visitSetValue-inToPyExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrSetValueImpl@26505df2
     
-    return joinTo(buffer, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@65450878, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1a9d873b, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@76600c90, limit, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@7746ae18, transform)
+    return joinTo(buffer, kotlin.CharSequence(separator), kotlin.CharSequence(prefix), kotlin.CharSequence(postfix), limit, kotlin.CharSequence(truncated), transform)
 
 def downTo(to):
     return fromClosedRange(<this>, to, -1)
@@ -327,7 +327,7 @@ def until(to):
     if jsLtEq(to, MIN_VALUE):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@68f264bf
     
-    return numberRangeToNumber(<this>, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@58e48d9)
+    return numberRangeToNumber(<this>, kotlin.Int(jsBitOr(jsMinus(to, 1), 0)))
 
 def reversed():
     return fromClosedRange(last, first, jsBitOr(jsUnaryMinus(step), 0))
@@ -876,28 +876,28 @@ def CoroutineSingletons_RESUMED_getInstance():
     return CoroutineSingletons_RESUMED_instance
 
 def and(other):
-    return toByte(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4d574ec7, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@39cdbc4e))
+    return toByte(jsBitAnd(kotlin.Int(<this>), kotlin.Int(other)))
 
 def or(other):
-    return toByte(jsBitOr(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@23673954, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@28391cc6))
+    return toByte(jsBitOr(kotlin.Int(<this>), kotlin.Int(other)))
 
 def xor(other):
-    return toByte(jsBitXor(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@2a6ca8d0, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@353a829f))
+    return toByte(jsBitXor(kotlin.Int(<this>), kotlin.Int(other)))
 
 def inv():
-    return toByte(jsBitNot(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@59e285e))
+    return toByte(jsBitNot(kotlin.Int(<this>)))
 
 def and(other):
-    return toShort(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1772cc68, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@23ebd596))
+    return toShort(jsBitAnd(kotlin.Int(<this>), kotlin.Int(other)))
 
 def or(other):
-    return toShort(jsBitOr(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4260de0d, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@6e5b7446))
+    return toShort(jsBitOr(kotlin.Int(<this>), kotlin.Int(other)))
 
 def xor(other):
-    return toShort(jsBitXor(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@7effdd04, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@2e259c54))
+    return toShort(jsBitXor(kotlin.Int(<this>), kotlin.Int(other)))
 
 def inv():
-    return toShort(jsBitNot(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@12680685))
+    return toShort(jsBitNot(kotlin.Int(<this>)))
 
 class ExperimentalTypeInference:
     pass
@@ -1217,19 +1217,19 @@ def Companion_getInstance():
     return Companion_instance
 
 def UByte__compareTo-impl(this, other):
-    tmp = jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@3703bc7e, 255)
-    return compareTo(tmp, jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@469dfbf7, 255))
+    tmp = jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255)
+    return compareTo(tmp, jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
 
 def UByte__compareTo-impl(this, other):
     tmp = unboxIntrinsic(this)
     return UByte__compareTo-impl(tmp, visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@1275d11b)
 
 def UByte__compareTo-impl(this, other):
-    tmp = jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@2c107b94, 255)
-    return compareTo(tmp, jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1ca0f80, 65535))
+    tmp = jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255)
+    return compareTo(tmp, jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
 
 def UByte__compareTo-impl(this, other):
-    tmp0_compareTo_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@32c2f3ee, 255))
+    tmp0_compareTo_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
     return uintCompare(<UInt__<get-data>-impl>(tmp0_compareTo_0), <UInt__<get-data>-impl>(other))
 
 def UByte__compareTo-impl(this, other):
@@ -1237,17 +1237,17 @@ def UByte__compareTo-impl(this, other):
     return ulongCompare(<ULong__<get-data>-impl>(tmp0_compareTo_0), <ULong__<get-data>-impl>(other))
 
 def UByte__plus-impl(this, other):
-    tmp0_plus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@769580de, 255))
-    tmp1_plus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@51baea92, 255))
+    tmp0_plus_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
+    tmp1_plus_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
     return <init>(jsBitOr(jsPlus(<UInt__<get-data>-impl>(tmp0_plus_0), <UInt__<get-data>-impl>(tmp1_plus_0)), 0))
 
 def UByte__plus-impl(this, other):
-    tmp0_plus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@3b887e2b, 255))
-    tmp1_plus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@57e21ffb, 65535))
+    tmp0_plus_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
+    tmp1_plus_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
     return <init>(jsBitOr(jsPlus(<UInt__<get-data>-impl>(tmp0_plus_0), <UInt__<get-data>-impl>(tmp1_plus_0)), 0))
 
 def UByte__plus-impl(this, other):
-    tmp0_plus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@774d1f78, 255))
+    tmp0_plus_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
     return <init>(jsBitOr(jsPlus(<UInt__<get-data>-impl>(tmp0_plus_0), <UInt__<get-data>-impl>(other)), 0))
 
 def UByte__plus-impl(this, other):
@@ -1255,17 +1255,17 @@ def UByte__plus-impl(this, other):
     return <init>(plus(<ULong__<get-data>-impl>(other)))
 
 def UByte__minus-impl(this, other):
-    tmp0_minus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@6cee59d6, 255))
-    tmp1_minus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@63ed8e2a, 255))
+    tmp0_minus_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
+    tmp1_minus_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
     return <init>(jsBitOr(jsMinus(<UInt__<get-data>-impl>(tmp0_minus_0), <UInt__<get-data>-impl>(tmp1_minus_0)), 0))
 
 def UByte__minus-impl(this, other):
-    tmp0_minus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1f652362, 255))
-    tmp1_minus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@c5aa143, 65535))
+    tmp0_minus_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
+    tmp1_minus_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
     return <init>(jsBitOr(jsMinus(<UInt__<get-data>-impl>(tmp0_minus_0), <UInt__<get-data>-impl>(tmp1_minus_0)), 0))
 
 def UByte__minus-impl(this, other):
-    tmp0_minus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@8f08b5, 255))
+    tmp0_minus_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
     return <init>(jsBitOr(jsMinus(<UInt__<get-data>-impl>(tmp0_minus_0), <UInt__<get-data>-impl>(other)), 0))
 
 def UByte__minus-impl(this, other):
@@ -1273,17 +1273,17 @@ def UByte__minus-impl(this, other):
     return <init>(minus(<ULong__<get-data>-impl>(other)))
 
 def UByte__times-impl(this, other):
-    tmp0_times_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@23bc053c, 255))
-    tmp1_times_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4155a965, 255))
+    tmp0_times_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
+    tmp1_times_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
     return <init>(imul(<UInt__<get-data>-impl>(tmp0_times_0), <UInt__<get-data>-impl>(tmp1_times_0)))
 
 def UByte__times-impl(this, other):
-    tmp0_times_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@53b96881, 255))
-    tmp1_times_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@75380a14, 65535))
+    tmp0_times_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
+    tmp1_times_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
     return <init>(imul(<UInt__<get-data>-impl>(tmp0_times_0), <UInt__<get-data>-impl>(tmp1_times_0)))
 
 def UByte__times-impl(this, other):
-    tmp0_times_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@7ce069de, 255))
+    tmp0_times_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
     return <init>(imul(<UInt__<get-data>-impl>(tmp0_times_0), <UInt__<get-data>-impl>(other)))
 
 def UByte__times-impl(this, other):
@@ -1291,17 +1291,17 @@ def UByte__times-impl(this, other):
     return <init>(times(<ULong__<get-data>-impl>(other)))
 
 def UByte__div-impl(this, other):
-    tmp0_div_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@2f539c9b, 255))
-    tmp1_div_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@52a1a375, 255))
+    tmp0_div_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
+    tmp1_div_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
     return uintDivide(tmp0_div_0, tmp1_div_0)
 
 def UByte__div-impl(this, other):
-    tmp0_div_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@31ec9703, 255))
-    tmp1_div_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@762af903, 65535))
+    tmp0_div_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
+    tmp1_div_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
     return uintDivide(tmp0_div_0, tmp1_div_0)
 
 def UByte__div-impl(this, other):
-    tmp0_div_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4b5455c6, 255))
+    tmp0_div_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
     return uintDivide(tmp0_div_0, other)
 
 def UByte__div-impl(this, other):
@@ -1309,17 +1309,17 @@ def UByte__div-impl(this, other):
     return ulongDivide(tmp0_div_0, other)
 
 def UByte__rem-impl(this, other):
-    tmp0_rem_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@2ab0114a, 255))
-    tmp1_rem_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1af03386, 255))
+    tmp0_rem_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
+    tmp1_rem_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
     return uintRemainder(tmp0_rem_0, tmp1_rem_0)
 
 def UByte__rem-impl(this, other):
-    tmp0_rem_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4ba5272e, 255))
-    tmp1_rem_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@11c27ace, 65535))
+    tmp0_rem_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
+    tmp1_rem_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
     return uintRemainder(tmp0_rem_0, tmp1_rem_0)
 
 def UByte__rem-impl(this, other):
-    tmp0_rem_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@a22be4c, 255))
+    tmp0_rem_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
     return uintRemainder(tmp0_rem_0, other)
 
 def UByte__rem-impl(this, other):
@@ -1333,38 +1333,38 @@ def UByte__dec-impl(this):
     return <init>(numberToByte(jsMinus(<UByte__<get-data>-impl>(this), 1)))
 
 def UByte__rangeTo-impl(this, other):
-    tmp = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@7a00446, 255))
-    return <init>(tmp, <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@46e052e5, 255)))
+    tmp = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
+    return <init>(tmp, <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255)))
 
 def UByte__and-impl(this, other):
     tmp0_and_0 = <UByte__<get-data>-impl>(this)
     tmp1_and_0 = <UByte__<get-data>-impl>(other)
-    return <init>(toByte(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@24d18d17, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@6b99e996)))
+    return <init>(toByte(jsBitAnd(kotlin.Int(tmp0_and_0), kotlin.Int(tmp1_and_0))))
 
 def UByte__or-impl(this, other):
     tmp0_or_0 = <UByte__<get-data>-impl>(this)
     tmp1_or_0 = <UByte__<get-data>-impl>(other)
-    return <init>(toByte(jsBitOr(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@5b092600, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4624ad36)))
+    return <init>(toByte(jsBitOr(kotlin.Int(tmp0_or_0), kotlin.Int(tmp1_or_0))))
 
 def UByte__xor-impl(this, other):
     tmp0_xor_0 = <UByte__<get-data>-impl>(this)
     tmp1_xor_0 = <UByte__<get-data>-impl>(other)
-    return <init>(toByte(jsBitXor(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@b3bb18a, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@2063d1c8)))
+    return <init>(toByte(jsBitXor(kotlin.Int(tmp0_xor_0), kotlin.Int(tmp1_xor_0))))
 
 def UByte__inv-impl(this):
     tmp0_inv_0 = <UByte__<get-data>-impl>(this)
-    return <init>(toByte(jsBitNot(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@7e3f7bde)))
+    return <init>(toByte(jsBitNot(kotlin.Int(tmp0_inv_0))))
 
 def UByte__toByte-impl(this):
     return <UByte__<get-data>-impl>(this)
 
 def UByte__toShort-impl(this):
-    tmp0_and_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@720d007b
+    tmp0_and_0 = kotlin.Short(<UByte__<get-data>-impl>(this))
     tmp1_and_0 = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@720a3eff
-    return toShort(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@59957e31, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@71e869c2))
+    return toShort(jsBitAnd(kotlin.Int(tmp0_and_0), kotlin.Int(tmp1_and_0)))
 
 def UByte__toInt-impl(this):
-    return jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@f7269a2, 255)
+    return jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255)
 
 def UByte__toLong-impl(this):
     return and(<init>(255, 0))
@@ -1373,21 +1373,21 @@ def UByte__toUByte-impl(this):
     return this
 
 def UByte__toUShort-impl(this):
-    tmp0_and_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@3b847d31
+    tmp0_and_0 = kotlin.Short(<UByte__<get-data>-impl>(this))
     tmp1_and_0 = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5a934ef9
-    return <init>(toShort(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@33c4dc6c, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@14c35a06)))
+    return <init>(toShort(jsBitAnd(kotlin.Int(tmp0_and_0), kotlin.Int(tmp1_and_0))))
 
 def UByte__toUInt-impl(this):
-    return <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@26f5c508, 255))
+    return <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
 
 def UByte__toULong-impl(this):
     return <init>(and(<init>(255, 0)))
 
 def UByte__toFloat-impl(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@5a524a19
+    return kotlin.Float(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
 
 def UByte__toDouble-impl(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@8d27060
+    return kotlin.Double(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(this)), 255))
 
 def UByte__toString-impl(this):
     return toString()
@@ -1524,11 +1524,11 @@ def Companion_getInstance():
     return Companion_instance
 
 def UInt__compareTo-impl(this, other):
-    tmp0_compareTo_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4c4bff52, 255))
+    tmp0_compareTo_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
     return uintCompare(<UInt__<get-data>-impl>(this), <UInt__<get-data>-impl>(tmp0_compareTo_0))
 
 def UInt__compareTo-impl(this, other):
-    tmp0_compareTo_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@57bc2c06, 65535))
+    tmp0_compareTo_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
     return uintCompare(<UInt__<get-data>-impl>(this), <UInt__<get-data>-impl>(tmp0_compareTo_0))
 
 def UInt__compareTo-impl(this, other):
@@ -1543,11 +1543,11 @@ def UInt__compareTo-impl(this, other):
     return ulongCompare(<ULong__<get-data>-impl>(tmp0_compareTo_0), <ULong__<get-data>-impl>(other))
 
 def UInt__plus-impl(this, other):
-    tmp0_plus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1fb81254, 255))
+    tmp0_plus_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
     return <init>(jsBitOr(jsPlus(<UInt__<get-data>-impl>(this), <UInt__<get-data>-impl>(tmp0_plus_0)), 0))
 
 def UInt__plus-impl(this, other):
-    tmp0_plus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@7a615950, 65535))
+    tmp0_plus_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
     return <init>(jsBitOr(jsPlus(<UInt__<get-data>-impl>(this), <UInt__<get-data>-impl>(tmp0_plus_0)), 0))
 
 def UInt__plus-impl(this, other):
@@ -1558,11 +1558,11 @@ def UInt__plus-impl(this, other):
     return <init>(plus(<ULong__<get-data>-impl>(other)))
 
 def UInt__minus-impl(this, other):
-    tmp0_minus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@2c7c805f, 255))
+    tmp0_minus_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
     return <init>(jsBitOr(jsMinus(<UInt__<get-data>-impl>(this), <UInt__<get-data>-impl>(tmp0_minus_0)), 0))
 
 def UInt__minus-impl(this, other):
-    tmp0_minus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@75a46b, 65535))
+    tmp0_minus_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
     return <init>(jsBitOr(jsMinus(<UInt__<get-data>-impl>(this), <UInt__<get-data>-impl>(tmp0_minus_0)), 0))
 
 def UInt__minus-impl(this, other):
@@ -1573,11 +1573,11 @@ def UInt__minus-impl(this, other):
     return <init>(minus(<ULong__<get-data>-impl>(other)))
 
 def UInt__times-impl(this, other):
-    tmp0_times_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4999462c, 255))
+    tmp0_times_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
     return <init>(imul(<UInt__<get-data>-impl>(this), <UInt__<get-data>-impl>(tmp0_times_0)))
 
 def UInt__times-impl(this, other):
-    tmp0_times_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@656096e1, 65535))
+    tmp0_times_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
     return <init>(imul(<UInt__<get-data>-impl>(this), <UInt__<get-data>-impl>(tmp0_times_0)))
 
 def UInt__times-impl(this, other):
@@ -1588,11 +1588,11 @@ def UInt__times-impl(this, other):
     return <init>(times(<ULong__<get-data>-impl>(other)))
 
 def UInt__div-impl(this, other):
-    tmp0_div_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@65ed7661, 255))
+    tmp0_div_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
     return uintDivide(this, tmp0_div_0)
 
 def UInt__div-impl(this, other):
-    tmp0_div_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@6f4ccc8, 65535))
+    tmp0_div_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
     return uintDivide(this, tmp0_div_0)
 
 def UInt__div-impl(this, other):
@@ -1603,11 +1603,11 @@ def UInt__div-impl(this, other):
     return ulongDivide(tmp0_div_0, other)
 
 def UInt__rem-impl(this, other):
-    tmp0_rem_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@b97bc80, 255))
+    tmp0_rem_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
     return uintRemainder(this, tmp0_rem_0)
 
 def UInt__rem-impl(this, other):
-    tmp0_rem_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@2d532099, 65535))
+    tmp0_rem_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
     return uintRemainder(this, tmp0_rem_0)
 
 def UInt__rem-impl(this, other):
@@ -1671,7 +1671,7 @@ def UInt__toULong-impl(this):
     return <init>(and(<init>(-1, 0)))
 
 def UInt__toFloat-impl(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@69f1887c
+    return kotlin.Float(uintToDouble(<UInt__<get-data>-impl>(this)))
 
 def UInt__toDouble-impl(this):
     return uintToDouble(<UInt__<get-data>-impl>(this))
@@ -1705,16 +1705,16 @@ def toUInt():
     return <init>(<this>)
 
 def toUInt():
-    return <init>(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@2e7011b5)
+    return <init>(kotlin.Int(<this>))
 
 def toUInt():
     return doubleToUInt(<this>)
 
 def toUInt():
-    return doubleToUInt(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@6e68cd0f)
+    return doubleToUInt(kotlin.Double(<this>))
 
 def toUInt():
-    return <init>(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@7ebc78f1)
+    return <init>(kotlin.Int(<this>))
 
 def <get-array>($this):
     return array
@@ -2024,7 +2024,7 @@ def ULong__toULong-impl(this):
     return this
 
 def ULong__toFloat-impl(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1f85abd9
+    return kotlin.Float(ulongToDouble(<ULong__<get-data>-impl>(this)))
 
 def ULong__toDouble-impl(this):
     return ulongToDouble(<ULong__<get-data>-impl>(this))
@@ -2061,7 +2061,7 @@ def toULong():
     return doubleToULong(<this>)
 
 def toULong():
-    return doubleToULong(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4b787980)
+    return doubleToULong(kotlin.Double(<this>))
 
 def toULong():
     return <init>(toLong(<this>))
@@ -2267,19 +2267,19 @@ def Companion_getInstance():
     return Companion_instance
 
 def UShort__compareTo-impl(this, other):
-    tmp = jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@a7adeb1, 65535)
-    return compareTo(tmp, jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@11a02447, 255))
+    tmp = jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535)
+    return compareTo(tmp, jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
 
 def UShort__compareTo-impl(this, other):
-    tmp = jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@62b81449, 65535)
-    return compareTo(tmp, jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@482f0077, 65535))
+    tmp = jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535)
+    return compareTo(tmp, jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
 
 def UShort__compareTo-impl(this, other):
     tmp = unboxIntrinsic(this)
     return UShort__compareTo-impl(tmp, visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@48d60abd)
 
 def UShort__compareTo-impl(this, other):
-    tmp0_compareTo_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@19b3cf8e, 65535))
+    tmp0_compareTo_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
     return uintCompare(<UInt__<get-data>-impl>(tmp0_compareTo_0), <UInt__<get-data>-impl>(other))
 
 def UShort__compareTo-impl(this, other):
@@ -2287,17 +2287,17 @@ def UShort__compareTo-impl(this, other):
     return ulongCompare(<ULong__<get-data>-impl>(tmp0_compareTo_0), <ULong__<get-data>-impl>(other))
 
 def UShort__plus-impl(this, other):
-    tmp0_plus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@3c1ab0e1, 65535))
-    tmp1_plus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4467fbd8, 255))
+    tmp0_plus_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
+    tmp1_plus_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
     return <init>(jsBitOr(jsPlus(<UInt__<get-data>-impl>(tmp0_plus_0), <UInt__<get-data>-impl>(tmp1_plus_0)), 0))
 
 def UShort__plus-impl(this, other):
-    tmp0_plus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@3e4f326e, 65535))
-    tmp1_plus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@7b0ad09a, 65535))
+    tmp0_plus_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
+    tmp1_plus_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
     return <init>(jsBitOr(jsPlus(<UInt__<get-data>-impl>(tmp0_plus_0), <UInt__<get-data>-impl>(tmp1_plus_0)), 0))
 
 def UShort__plus-impl(this, other):
-    tmp0_plus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@ea3a636, 65535))
+    tmp0_plus_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
     return <init>(jsBitOr(jsPlus(<UInt__<get-data>-impl>(tmp0_plus_0), <UInt__<get-data>-impl>(other)), 0))
 
 def UShort__plus-impl(this, other):
@@ -2305,17 +2305,17 @@ def UShort__plus-impl(this, other):
     return <init>(plus(<ULong__<get-data>-impl>(other)))
 
 def UShort__minus-impl(this, other):
-    tmp0_minus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@5eac0402, 65535))
-    tmp1_minus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1c0c23f7, 255))
+    tmp0_minus_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
+    tmp1_minus_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
     return <init>(jsBitOr(jsMinus(<UInt__<get-data>-impl>(tmp0_minus_0), <UInt__<get-data>-impl>(tmp1_minus_0)), 0))
 
 def UShort__minus-impl(this, other):
-    tmp0_minus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4fbac930, 65535))
-    tmp1_minus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@72d3cdb, 65535))
+    tmp0_minus_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
+    tmp1_minus_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
     return <init>(jsBitOr(jsMinus(<UInt__<get-data>-impl>(tmp0_minus_0), <UInt__<get-data>-impl>(tmp1_minus_0)), 0))
 
 def UShort__minus-impl(this, other):
-    tmp0_minus_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4dc68ffe, 65535))
+    tmp0_minus_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
     return <init>(jsBitOr(jsMinus(<UInt__<get-data>-impl>(tmp0_minus_0), <UInt__<get-data>-impl>(other)), 0))
 
 def UShort__minus-impl(this, other):
@@ -2323,17 +2323,17 @@ def UShort__minus-impl(this, other):
     return <init>(minus(<ULong__<get-data>-impl>(other)))
 
 def UShort__times-impl(this, other):
-    tmp0_times_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@3f806c54, 65535))
-    tmp1_times_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@74121a9, 255))
+    tmp0_times_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
+    tmp1_times_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
     return <init>(imul(<UInt__<get-data>-impl>(tmp0_times_0), <UInt__<get-data>-impl>(tmp1_times_0)))
 
 def UShort__times-impl(this, other):
-    tmp0_times_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1267c7b1, 65535))
-    tmp1_times_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4b28e19b, 65535))
+    tmp0_times_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
+    tmp1_times_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
     return <init>(imul(<UInt__<get-data>-impl>(tmp0_times_0), <UInt__<get-data>-impl>(tmp1_times_0)))
 
 def UShort__times-impl(this, other):
-    tmp0_times_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@7da9a300, 65535))
+    tmp0_times_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
     return <init>(imul(<UInt__<get-data>-impl>(tmp0_times_0), <UInt__<get-data>-impl>(other)))
 
 def UShort__times-impl(this, other):
@@ -2341,17 +2341,17 @@ def UShort__times-impl(this, other):
     return <init>(times(<ULong__<get-data>-impl>(other)))
 
 def UShort__div-impl(this, other):
-    tmp0_div_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@59d44c64, 65535))
-    tmp1_div_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@46343f97, 255))
+    tmp0_div_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
+    tmp1_div_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
     return uintDivide(tmp0_div_0, tmp1_div_0)
 
 def UShort__div-impl(this, other):
-    tmp0_div_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4d089dcd, 65535))
-    tmp1_div_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@5d4de6f7, 65535))
+    tmp0_div_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
+    tmp1_div_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
     return uintDivide(tmp0_div_0, tmp1_div_0)
 
 def UShort__div-impl(this, other):
-    tmp0_div_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@459dad43, 65535))
+    tmp0_div_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
     return uintDivide(tmp0_div_0, other)
 
 def UShort__div-impl(this, other):
@@ -2359,17 +2359,17 @@ def UShort__div-impl(this, other):
     return ulongDivide(tmp0_div_0, other)
 
 def UShort__rem-impl(this, other):
-    tmp0_rem_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@204fb56d, 65535))
-    tmp1_rem_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@6b6ec6b2, 255))
+    tmp0_rem_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
+    tmp1_rem_0 = <init>(jsBitAnd(kotlin.Int(<UByte__<get-data>-impl>(other)), 255))
     return uintRemainder(tmp0_rem_0, tmp1_rem_0)
 
 def UShort__rem-impl(this, other):
-    tmp0_rem_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@56fa1846, 65535))
-    tmp1_rem_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@38f381cb, 65535))
+    tmp0_rem_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
+    tmp1_rem_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535))
     return uintRemainder(tmp0_rem_0, tmp1_rem_0)
 
 def UShort__rem-impl(this, other):
-    tmp0_rem_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@69f89cbc, 65535))
+    tmp0_rem_0 = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
     return uintRemainder(tmp0_rem_0, other)
 
 def UShort__rem-impl(this, other):
@@ -2383,27 +2383,27 @@ def UShort__dec-impl(this):
     return <init>(numberToShort(jsMinus(<UShort__<get-data>-impl>(this), 1)))
 
 def UShort__rangeTo-impl(this, other):
-    tmp = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@258c38ce, 65535))
-    return <init>(tmp, <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@5043e5a7, 65535)))
+    tmp = <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
+    return <init>(tmp, <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(other)), 65535)))
 
 def UShort__and-impl(this, other):
     tmp0_and_0 = <UShort__<get-data>-impl>(this)
     tmp1_and_0 = <UShort__<get-data>-impl>(other)
-    return <init>(toShort(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@5fc27e3f, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@18acf886)))
+    return <init>(toShort(jsBitAnd(kotlin.Int(tmp0_and_0), kotlin.Int(tmp1_and_0))))
 
 def UShort__or-impl(this, other):
     tmp0_or_0 = <UShort__<get-data>-impl>(this)
     tmp1_or_0 = <UShort__<get-data>-impl>(other)
-    return <init>(toShort(jsBitOr(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@21c920a2, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@28f63018)))
+    return <init>(toShort(jsBitOr(kotlin.Int(tmp0_or_0), kotlin.Int(tmp1_or_0))))
 
 def UShort__xor-impl(this, other):
     tmp0_xor_0 = <UShort__<get-data>-impl>(this)
     tmp1_xor_0 = <UShort__<get-data>-impl>(other)
-    return <init>(toShort(jsBitXor(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@ab8d6a6, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@643b983a)))
+    return <init>(toShort(jsBitXor(kotlin.Int(tmp0_xor_0), kotlin.Int(tmp1_xor_0))))
 
 def UShort__inv-impl(this):
     tmp0_inv_0 = <UShort__<get-data>-impl>(this)
-    return <init>(toShort(jsBitNot(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@3483bb28)))
+    return <init>(toShort(jsBitNot(kotlin.Int(tmp0_inv_0))))
 
 def UShort__toByte-impl(this):
     return toByte(<UShort__<get-data>-impl>(this))
@@ -2412,7 +2412,7 @@ def UShort__toShort-impl(this):
     return <UShort__<get-data>-impl>(this)
 
 def UShort__toInt-impl(this):
-    return jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@5615f2ac, 65535)
+    return jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535)
 
 def UShort__toLong-impl(this):
     return and(<init>(65535, 0))
@@ -2425,16 +2425,16 @@ def UShort__toUShort-impl(this):
     return this
 
 def UShort__toUInt-impl(this):
-    return <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@210bdb8e, 65535))
+    return <init>(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
 
 def UShort__toULong-impl(this):
     return <init>(and(<init>(65535, 0)))
 
 def UShort__toFloat-impl(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@5c652a4e
+    return kotlin.Float(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
 
 def UShort__toDouble-impl(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@2f193ff4
+    return kotlin.Double(jsBitAnd(kotlin.Int(<UShort__<get-data>-impl>(this)), 65535))
 
 def UShort__toString-impl(this):
     return toString()
@@ -2568,7 +2568,7 @@ def uintRemainder(v1, v2):
     return <init>(toInt())
 
 def uintToDouble(v):
-    return jsPlus(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4856ec9, jsMult(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1085fad8, 2))
+    return jsPlus(kotlin.Double(jsBitAnd(v, MAX_VALUE)), jsMult(kotlin.Double(jsBitShiftL(jsBitShiftRU(v, 31), 30)), 2))
 
 def ulongCompare(v1, v2):
     return compareTo(xor(<init>(0, -2147483648)))
@@ -3216,7 +3216,7 @@ def copyToArray(collection):
     return tmp
 
 def copyToArrayImpl(collection):
-    array = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@3a74b2f1
+    array = kotlin.Array<kotlin.Any?>(js('[]'))
     iterator = iterator()
     while hasNext():
         visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@27ae6f9e
@@ -3233,7 +3233,7 @@ def copyToArrayImpl(collection, array):
         tmp0 = index
         index = jsBitOr(jsPlus(tmp0, 1), 0)
         tmp1_unsafeCast_0 = next()
-        jsArraySet(array, tmp0, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@75ab999f)
+        jsArraySet(array, tmp0, kotlin.Any?(tmp1_unsafeCast_0))
     
     if jsLt(index, jsArrayLength(array)):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@5fe7454c
@@ -3376,7 +3376,7 @@ class BufferedOutputToConsoleLog:
     pass
 
 def String(value):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@66bf08d
+    return kotlin.String(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@6edd2ef4)
 
 class BufferedOutput:
     pass
@@ -3385,7 +3385,7 @@ def println(message):
     println(message)
 
 def output$init$():
-    isNode_2 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@61c3d248
+    isNode_2 = kotlin.Boolean(js('typeof process !== 'undefined' && process.versions && !!process.versions.node'))
     return visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@50a59a0b
 
 def <get-EmptyContinuation>():
@@ -3403,16 +3403,16 @@ def asDynamic():
     return <this>
 
 def unsafeCast():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@19eb658
+    return T(<this>)
 
 def unsafeCast():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@245237eb
+    return T(<this>)
 
 class Serializable:
     pass
 
 def pow(n):
-    return pow(<this>, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@402af74)
+    return pow(<this>, kotlin.Double(n))
 
 def isNaN():
     return jsNot(jsEqeqeq(<this>, <this>))
@@ -3428,12 +3428,12 @@ visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@160
 def INV_2_26$init$():
     tmp0_pow_0 = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5bb00dcc
     tmp1_pow_0 = -26
-    return pow(tmp0_pow_0, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@54c04642)
+    return pow(tmp0_pow_0, kotlin.Double(tmp1_pow_0))
 
 def INV_2_53$init$():
     tmp0_pow_0 = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@55732ae6
     tmp1_pow_0 = -53
-    return pow(tmp0_pow_0, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@6479596)
+    return pow(tmp0_pow_0, kotlin.Double(tmp1_pow_0))
 
 def <get-js>():
     return <get-jClass>()
@@ -3731,7 +3731,7 @@ def functionClasses$init$():
 
 def getKClass(jClass):
     tmp
-    if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@122dc222:
+    if kotlin.Boolean(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@4398d):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@1e06006f
     
     if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@722a2ba2:
@@ -3786,7 +3786,7 @@ def getKClassFromExpression(e):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@4436b8b
     
     tmp1_unsafeCast_0 = tmp
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@7ad0cf01
+    return kotlin.Any?(tmp1_unsafeCast_0)
 
 class Appendable:
     pass
@@ -3848,13 +3848,13 @@ def <get-STRING_CASE_INSENSITIVE_ORDER>():
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@3cc148d
 def nativeLastIndexOf(str, fromIndex):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@60789398
+    return kotlin.Int(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@2c895dff)
 
 def substring(startIndex, endIndex):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@7a3655b4
+    return kotlin.String(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@70224e31)
 
 def substring(startIndex):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@54f10c5c
+    return kotlin.String(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@26fd9642)
 
 def compareTo(other, ignoreCase):
     if ignoreCase:
@@ -3871,10 +3871,10 @@ def compareTo$default(other, ignoreCase, $mask0, $handler):
     return compareTo(other, ignoreCase)
 
 def toUpperCase():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@6b61b3a8
+    return kotlin.String(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@7ef93968)
 
 def toLowerCase():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4ac5dcd8
+    return kotlin.String(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@69dc42f2)
 
 def concatToString():
     result = ''
@@ -3997,7 +3997,7 @@ def byteArrayOf(elements):
     return elements
 
 def arrayOf(elements):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@662c71e5
+    return kotlin.Any?(elements)
 
 def toString():
     tmp0_safe_receiver = <this>
@@ -4053,7 +4053,7 @@ def fillArrayVal(array, initValue):
 
 def arrayWithFun(size, init):
     tmp0_fillArrayFun_0 = Array(size)
-    result_1 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@40c87228
+    result_1 = kotlin.Any?(tmp0_fillArrayFun_0)
     i_2 = 0
     while jsNot(jsEqeqeq(i_2, jsArrayLength(result_1))):
         jsArraySet(result_1, i_2, invoke(i_2))
@@ -4063,7 +4063,7 @@ def arrayWithFun(size, init):
     return result_1
 
 def fillArrayFun(array, init):
-    result = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@210b558d
+    result = kotlin.Any?(array)
     i = 0
     while jsNot(jsEqeqeq(i, jsArrayLength(result))):
         jsArraySet(result, i, invoke(i))
@@ -4104,42 +4104,42 @@ def booleanArray(size):
     tmp1_withType_0 = fillArrayVal(Array(size), visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@319fe034)
     visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@34b2a6f4
     tmp2_unsafeCast_0 = tmp1_withType_0
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1f69063
+    return kotlin.Any?(tmp2_unsafeCast_0)
 
 def charArray(size):
     tmp0_withType_0 = 'CharArray'
     tmp1_withType_0 = fillArrayVal(Array(size), <init>(0))
     visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@263ac7
     tmp2_unsafeCast_0 = tmp1_withType_0
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@42501284
+    return kotlin.Any?(tmp2_unsafeCast_0)
 
 def longArray(size):
     tmp0_withType_0 = 'LongArray'
     tmp1_withType_0 = fillArrayVal(Array(size), <init>(0, 0))
     visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@5138d63a
     tmp2_unsafeCast_0 = tmp1_withType_0
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@dac317c
+    return kotlin.Any?(tmp2_unsafeCast_0)
 
 def booleanArrayOf(arr):
     tmp0_withType_0 = 'BooleanArray'
     tmp1_withType_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@50ca509b
     visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@45af5362
     tmp2_unsafeCast_0 = tmp1_withType_0
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@5e5a6217
+    return kotlin.Any?(tmp2_unsafeCast_0)
 
 def charArrayOf(arr):
     tmp0_withType_0 = 'CharArray'
     tmp1_withType_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@3e6f3ad5
     visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@1e832e79
     tmp2_unsafeCast_0 = tmp1_withType_0
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@a98a875
+    return kotlin.Any?(tmp2_unsafeCast_0)
 
 def longArrayOf(arr):
     tmp0_withType_0 = 'LongArray'
     tmp1_withType_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@597050fa
     visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@26d49375
     tmp2_unsafeCast_0 = tmp1_withType_0
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@31cc510d
+    return kotlin.Any?(tmp2_unsafeCast_0)
 
 class <no name provided>:
     pass
@@ -4194,7 +4194,7 @@ def <get-highIndex>():
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@308bd473
 def getNumberHashCode(obj):
     tmp0_unsafeCast_0 = jsBitwiseOr(obj, 0)
-    if jsEqeqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@26154a00, obj):
+    if jsEqeqeq(kotlin.Any?(tmp0_unsafeCast_0), obj):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@79e2aa2d
     
     if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@505806c8:
@@ -4205,15 +4205,15 @@ def getNumberHashCode(obj):
 
 def bufFloat64$init$():
     tmp0_unsafeCast_0 = <init>(buf)
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@6efd96c7
+    return kotlin.Any?(tmp0_unsafeCast_0)
 
 def bufFloat32$init$():
     tmp0_unsafeCast_0 = <init>(buf)
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@2ae85262
+    return kotlin.Any?(tmp0_unsafeCast_0)
 
 def bufInt32$init$():
     tmp0_unsafeCast_0 = <init>(buf)
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@19d4057
+    return kotlin.Any?(tmp0_unsafeCast_0)
 
 def lowIndex$init$():
     jsArraySet(bufFloat64, 0, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@434fa353)
@@ -4305,17 +4305,17 @@ def compareToDoNotIntrinsicify(a, b):
     return compareTo(b)
 
 def construct(constructorType, resultType, args):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@2bcb8c82
+    return kotlin.Any(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@271ced5f)
 
 def identityHashCode(obj):
     return getObjectHashCode(obj)
 
 def getObjectHashCode(obj):
-    if jsNot(jsIn('kotlinHashCodeValue$', visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@75cbb215)):
+    if jsNot(jsIn('kotlinHashCodeValue$', kotlin.Any(obj))):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@4e38b4ea
     
     tmp0_unsafeCast_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@3f41a1f3
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@220700c1
+    return kotlin.Any?(tmp0_unsafeCast_0)
 
 def <get-OBJECT_HASH_CODE_PROPERTY_NAME>():
     return OBJECT_HASH_CODE_PROPERTY_NAME
@@ -4372,7 +4372,7 @@ def getStringHashCode(str):
     return hash
 
 def anyToString(o):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1475268a
+    return kotlin.String(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@2de526f9)
 
 def equals(obj1, obj2):
     if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@4fbd0d1:
@@ -4420,7 +4420,7 @@ def newThrowable(message, cause):
     visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@7c4c091a
     visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@1fb66050
     visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@634cd45c
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@730fcd33
+    return kotlin.Any?(throwable)
 
 def isUndefined(value):
     return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@562b791b
@@ -4430,17 +4430,17 @@ def extendThrowable(this_, message, cause):
     setPropertiesToThrowableInstance(this_, message, cause)
 
 def setPropertiesToThrowableInstance(this_, message, cause):
-    if jsNot(hasOwnPrototypeProperty(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@79d55957, 'message')):
+    if jsNot(hasOwnPrototypeProperty(kotlin.Any(this_), 'message')):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@4c55d3ce
     
-    if jsNot(hasOwnPrototypeProperty(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@60d4e243, 'cause')):
+    if jsNot(hasOwnPrototypeProperty(kotlin.Any(this_), 'cause')):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@48dbf9d
     
     visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@7e4f42c0
 
 def hasOwnPrototypeProperty(o, name):
     tmp0_unsafeCast_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@7ec53f8f
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1b2b2b6d
+    return kotlin.Any?(tmp0_unsafeCast_0)
 
 def getContinuation():
     visitThrow org.jetbrains.kotlin.ir.expressions.impl.IrThrowImpl@736ded17
@@ -4486,7 +4486,7 @@ def THROW_IAE(msg):
     visitThrow org.jetbrains.kotlin.ir.expressions.impl.IrThrowImpl@f9da676
 
 def emptyArray():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@336e1bcf
+    return kotlin.Array<T>(js('[]'))
 
 def enumValueOfIntrinsic(name):
     visitThrow org.jetbrains.kotlin.ir.expressions.impl.IrThrowImpl@faff2bf
@@ -4714,14 +4714,14 @@ def toStringImpl(radix):
     if isNegative():
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@2c47135c
     
-    radixToPower = fromNumber(pow(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1ba44388, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5e077a32))
+    radixToPower = fromNumber(pow(kotlin.Double(radix), visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5e077a32))
     rem = <this>
     result = ''
     while visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7fb57b7c:
         remDiv = div(radixToPower)
         intval = toInt()
         tmp1_unsafeCast_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@51edc97d
-        digits = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4c18a316
+        digits = kotlin.Any?(tmp1_unsafeCast_0)
         rem = remDiv
         if isZero():
             visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@6c861b25
@@ -4784,8 +4784,8 @@ def <get-TWO_PWR_63_DBL_>():
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@65653da2
 def imul(a_local, b_local):
-    lhs = jsMult(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@303bbd02, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1c55237e)
-    rhs = jsMult(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@37904d56, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@5a2e250b)
+    lhs = jsMult(kotlin.Double(jsBitwiseAnd(a_local, js('0xffff0000'))), kotlin.Double(jsBitwiseAnd(b_local, 65535)))
+    rhs = jsMult(kotlin.Double(jsBitwiseAnd(a_local, 65535)), kotlin.Double(b_local))
     return jsBitwiseOr(jsPlus(lhs, rhs), 0)
 
 def withType(type, array):
@@ -4795,13 +4795,13 @@ def withType(type, array):
 def arrayConcat(args):
     len = jsArrayLength(args)
     tmp0_unsafeCast_0 = js('Array(len)')
-    typed = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1a63f9ea
+    typed = kotlin.Any?(tmp0_unsafeCast_0)
     inductionVariable = 0
     last = jsBitOr(jsMinus(len, 1), 0)
     if jsLtEq(inductionVariable, last):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDoWhileLoopImpl@388f2bca
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@23b9d353
+    return T(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@6fc26fb1)
 
 def primitiveArrayConcat(args):
     size_local = 0
@@ -4812,7 +4812,7 @@ def primitiveArrayConcat(args):
     
     a = jsArrayGet(args, 0)
     tmp1_unsafeCast_0 = js('new a.constructor(size_local)')
-    result = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@17020207
+    result = kotlin.Any?(tmp1_unsafeCast_0)
     if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@3ac09fe2:
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@1a57bb34
     
@@ -4825,19 +4825,19 @@ def primitiveArrayConcat(args):
     if jsLtEq(inductionVariable, last):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDoWhileLoopImpl@f053608
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@40f65d8f
+    return kotlin.Any?(result)
 
 def taggedArrayCopy(array):
     res = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@3f114f13
     visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@5b610c90
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@475193d4
+    return kotlin.Any?(res)
 
 def numberToByte(a):
     return toByte(numberToInt(a))
 
 def toByte(a):
     tmp0_unsafeCast_0 = js('a << 24 >> 24')
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@5c8c1f0d
+    return kotlin.Any?(tmp0_unsafeCast_0)
 
 def numberToInt(a):
     tmp
@@ -4854,14 +4854,14 @@ def doubleToInt(a):
 
 def numberToDouble(a):
     tmp0_unsafeCast_0 = js('+a')
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@63c10f2d
+    return kotlin.Any?(tmp0_unsafeCast_0)
 
 def numberToShort(a):
     return toShort(numberToInt(a))
 
 def toShort(a):
     tmp0_unsafeCast_0 = js('a << 16 >> 16')
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@514753f4
+    return kotlin.Any?(tmp0_unsafeCast_0)
 
 def numberToLong(a):
     tmp
@@ -4877,13 +4877,13 @@ def numberToChar(a):
     return <init>(jsBitAnd(numberToInt(a), 65535))
 
 def toLong(a):
-    return fromInt(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@3e666559)
+    return fromInt(kotlin.Int(a))
 
 def numberRangeToNumber(start, endInclusive):
-    return <init>(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@226ddb69, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@499c0aed)
+    return <init>(kotlin.Int(start), kotlin.Int(endInclusive))
 
 def numberRangeToLong(start, endInclusive):
-    return <init>(numberToLong(start), visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@9201335)
+    return <init>(numberToLong(start), kotlin.Long(endInclusive))
 
 def <get-propertyRefClassMetadataCache>():
     return propertyRefClassMetadataCache
@@ -4897,7 +4897,7 @@ def getPropertyCallableRef(name, paramCount, type, getter, setter):
     visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@7cb81ae
     visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@3d872a12
     tmp0_unsafeCast_0 = getPropertyRefClass(getter, getKPropMetadata(paramCount, setter, type))
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@7c49fbd8
+    return kotlin.Any?(tmp0_unsafeCast_0)
 
 def getPropertyRefClass(obj, metadata):
     visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@50853850
@@ -4917,18 +4917,18 @@ def getLocalDelegateReference(name, type, mutable, lambda):
 def propertyRefClassMetadataCache$init$():
     tmp = js('{ kind: 'class', interfaces: [] }')
     tmp0_arrayOf_0 = arrayLiteral(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl@81ebdb0)
-    tmp = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@1ab37c94
+    tmp = kotlin.Any?(tmp0_arrayOf_0)
     tmp = js('{ kind: 'class', interfaces: [] }')
     tmp1_arrayOf_0 = arrayLiteral(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl@76fee3de)
-    tmp = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@33176d2e
+    tmp = kotlin.Any?(tmp1_arrayOf_0)
     tmp = js('{ kind: 'class', interfaces: [] }')
     tmp2_arrayOf_0 = arrayLiteral(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl@71efa55d)
     tmp3_arrayOf_0 = arrayLiteral(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl@7dcbb6e5)
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@3064af47
+    return kotlin.Any?(tmp3_arrayOf_0)
 
 def isArrayish(o):
     tmp
-    if isJsArray(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@17d30e9d):
+    if isJsArray(kotlin.Any(o)):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@2f6a30d2
     
     if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4690132:
@@ -4938,7 +4938,7 @@ def isArrayish(o):
 
 def isJsArray(obj):
     tmp0_unsafeCast_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@30cf61ca
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@383176e1
+    return kotlin.Any?(tmp0_unsafeCast_0)
 
 def isInterface(obj, iface):
     tmp0_elvis_lhs = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicMemberExpressionImpl@5b5b9038
@@ -4950,7 +4950,7 @@ def isInterface(obj, iface):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@1e7fcf3a
     
     ctor = tmp
-    return isInterfaceImpl(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@6e4667af, iface)
+    return isInterfaceImpl(kotlin.js.Ctor(ctor), iface)
 
 def isInterfaceImpl(ctor, iface):
     if jsEqeqeq(ctor, iface):
@@ -5055,14 +5055,14 @@ def jsGetPrototypeOf(jsClass):
     return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@49342fb7
 
 def asList():
-    return <init>(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@5f795d47)
+    return <init>(kotlin.Any?(<this>))
 
 def plus(elements):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@bbb5f74
+    return kotlin.Array<T>(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@747fc4b6)
 
 def copyOfRange(fromIndex, toIndex):
     checkRangeIndexes(fromIndex, toIndex, jsArrayLength(<this>))
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@2d5edbad
+    return kotlin.Array<T>(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@76b96594)
 
 def minOf(a, b):
     return min(int32ArrayOf(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl@65a288e7))
@@ -5537,23 +5537,23 @@ class UninitializedPropertyAccessException:
 
 def jsIn(lhs_hack, rhs_hack):
     tmp0_unsafeCast_0 = js('lhs_hack in rhs_hack')
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@ad1c474
+    return kotlin.Any?(tmp0_unsafeCast_0)
 
 def jsBitwiseOr(lhs_hack, rhs_hack):
     tmp0_unsafeCast_0 = js('lhs_hack | rhs_hack')
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@dfba755
+    return kotlin.Any?(tmp0_unsafeCast_0)
 
 def jsTypeOf(value_hack):
     tmp0_unsafeCast_0 = js('typeof value_hack')
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@9069115
+    return kotlin.Any?(tmp0_unsafeCast_0)
 
 def jsInstanceOf(obj_hack, jsClass_hack):
     tmp0_unsafeCast_0 = js('obj_hack instanceof jsClass_hack')
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@3f6a96be
+    return kotlin.Any?(tmp0_unsafeCast_0)
 
 def jsBitwiseAnd(lhs_hack, rhs_hack):
     tmp0_unsafeCast_0 = js('lhs_hack & rhs_hack')
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@533167f0
+    return kotlin.Any?(tmp0_unsafeCast_0)
 
 def toString(radix):
     return toStringImpl(checkRadix(radix))

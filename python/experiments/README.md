@@ -13,5 +13,5 @@ dist/kotlinc/bin/kotlinc-js -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xi
 ## Generating stats about missing IR mapping
 
 ```
-less python/experiments/out-ir.py  | grep -Po "visit[^\s]+\s+[^@]+@" | sort | uniq -c | sort -nr > python/experiments/missing.txt
+less python/experiments/out-ir.py  | grep -Po "visit[^\s]+\s+[^@ ]+[@ ]" | sort | uniq -c | sort -nr > python/experiments/missing.txt
 ```
