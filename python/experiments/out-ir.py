@@ -324,13 +324,13 @@ def downTo(to):
     return fromClosedRange(<this>, to, -1)
 
 def until(to):
-    if jsLtEq(to, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@cfc9c4f):
+    if jsLtEq(to, MIN_VALUE):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@68f264bf
     
     return numberRangeToNumber(<this>, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@58e48d9)
 
 def reversed():
-    return fromClosedRange(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@203f929, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@59bcab83, jsBitOr(jsUnaryMinus(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@49bf800f), 0))
+    return fromClosedRange(last, first, jsBitOr(jsUnaryMinus(step), 0))
 
 def getOrElse(index, defaultValue):
     return visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@6670d46e
@@ -388,7 +388,7 @@ def valueOf(value):
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@27ca3040
 def Level_initEntries():
-    if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@543eacd5:
+    if Level_entriesInitialized:
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@435a2e1f
     
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@2b60acb3
@@ -410,11 +410,11 @@ class Level:
 
 def Level_WARNING_getInstance():
     Level_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@750a4fc1
+    return Level_WARNING_instance
 
 def Level_ERROR_getInstance():
     Level_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@c3745ae
+    return Level_ERROR_instance
 
 class Experimental:
     pass
@@ -441,7 +441,7 @@ def valueOf(value):
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@2dbc56fb
 def Level_initEntries():
-    if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@194ff162:
+    if Level_entriesInitialized:
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@3ebda1be
     
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@2cf1c10e
@@ -466,11 +466,11 @@ class Level:
 
 def Level_WARNING_getInstance():
     Level_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2876584f
+    return Level_WARNING_instance
 
 def Level_ERROR_getInstance():
     Level_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@5c447983
+    return Level_ERROR_instance
 
 class RequiresOptIn:
     pass
@@ -489,16 +489,16 @@ def <no name provided>$factory(this$0):
     return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrFunctionExpressionImpl@4977e352
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7c81b1e1
+    return list
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@473dbad
+    return fromIndex
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@35cb8b64
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@59463bab
+    return _size
 
 class SubList:
     pass
@@ -514,10 +514,10 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@7343df40
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@497dc589, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@346c568d):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@346c568d):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1bed8afd
+    return Companion_instance
 
 class AbstractList:
     pass
@@ -529,7 +529,7 @@ def emptyList():
     return EmptyList_getInstance()
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@49f4de0e
+    return serialVersionUID
 
 def readResolve($this):
     return EmptyList_getInstance()
@@ -539,20 +539,20 @@ class EmptyList:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@2028ecf4
 def EmptyList_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@15971523, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@26dcce41):
+    if jsEqeq(EmptyList_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@26dcce41):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@17e9e99
+    return EmptyList_instance
 
 class EmptyIterator:
     pass
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@7bd03562
 def EmptyIterator_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1f583c44, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6e7da5f4):
+    if jsEqeq(EmptyIterator_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6e7da5f4):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@51768401
+    return EmptyIterator_instance
 
 def special():
     return jsBitOr(jsMinus((special)(), 1), 0)
@@ -614,7 +614,7 @@ def valueOf(value):
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@54707af8
 def InvocationKind_initEntries():
-    if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@65e0d9de:
+    if InvocationKind_entriesInitialized:
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@4d6a32d4
     
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@c377641
@@ -631,19 +631,19 @@ class ExperimentalContracts:
 
 def InvocationKind_AT_MOST_ONCE_getInstance():
     InvocationKind_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@32f7b6a2
+    return InvocationKind_AT_MOST_ONCE_instance
 
 def InvocationKind_AT_LEAST_ONCE_getInstance():
     InvocationKind_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@665c8e0f
+    return InvocationKind_AT_LEAST_ONCE_instance
 
 def InvocationKind_EXACTLY_ONCE_getInstance():
     InvocationKind_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@20ea933f
+    return InvocationKind_EXACTLY_ONCE_instance
 
 def InvocationKind_UNKNOWN_getInstance():
     InvocationKind_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@505c675a
+    return InvocationKind_UNKNOWN_instance
 
 class CallsInPlace:
     pass
@@ -688,10 +688,10 @@ class Key:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@9d112d2
 def Key_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1790a1d6, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4f1422f7):
+    if jsEqeq(Key_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4f1422f7):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@16ae647d
+    return Key_instance
 
 class ContinuationInterceptor:
     pass
@@ -713,7 +713,7 @@ def <no name provided>$factory():
     return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrFunctionExpressionImpl@4358e209
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@25c7713e
+    return serialVersionUID
 
 def readResolve($this):
     return EmptyCoroutineContext_getInstance()
@@ -723,26 +723,26 @@ class EmptyCoroutineContext:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@9def6d
 def EmptyCoroutineContext_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@34151e5d, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5e206acb):
+    if jsEqeq(EmptyCoroutineContext_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5e206acb):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@5ed4796f
+    return EmptyCoroutineContext_instance
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@5e86dc1c
+    return serialVersionUID
 
 class Companion:
     pass
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@9ba905b
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@37d4b676, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6801536):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6801536):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@5b133d16
+    return Companion_instance
 
 def readResolve($this):
-    tmp0_fold_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@37601089
+    tmp0_fold_0 = elements
     tmp1_fold_0 = EmptyCoroutineContext_getInstance()
     accumulator_1 = tmp1_fold_0
     indexedObject = tmp0_fold_0
@@ -756,16 +756,16 @@ def readResolve($this):
     return accumulator_1
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3ba34018
+    return left
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3463d70a
+    return element
 
 def size($this):
     cur = $this
     size = 2
     while visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3ed1cff:
-        tmp = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@58f49b5e
+        tmp = left
         tmp0_elvis_lhs = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@1cccf90d
         tmp
         if jsEqeq(tmp0_elvis_lhs, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7efceb57):
@@ -786,10 +786,10 @@ def contains($this, element):
 def containsAll($this, context):
     cur = context
     while visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@60155d7f:
-        if jsNot(contains($this, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@4f9d220b)):
+        if jsNot(contains($this, element)):
             visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@78483404
         
-        next = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3ea5f324
+        next = left
         if jsInstanceOf(next, jsClass()):
             visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@13126d46
         
@@ -822,10 +822,10 @@ class CombinedContext:
     pass
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3519f35
+    return safeCast
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2566428f
+    return topmostKey
 
 class AbstractCoroutineContextKey:
     pass
@@ -852,7 +852,7 @@ def valueOf(value):
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@2fc1b04a
 def CoroutineSingletons_initEntries():
-    if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@36fd028d:
+    if CoroutineSingletons_entriesInitialized:
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@16c574c4
     
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@7dc97564
@@ -865,15 +865,15 @@ class CoroutineSingletons:
 
 def CoroutineSingletons_COROUTINE_SUSPENDED_getInstance():
     CoroutineSingletons_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2d923d2c
+    return CoroutineSingletons_COROUTINE_SUSPENDED_instance
 
 def CoroutineSingletons_UNDECIDED_getInstance():
     CoroutineSingletons_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@15682e7f
+    return CoroutineSingletons_UNDECIDED_instance
 
 def CoroutineSingletons_RESUMED_getInstance():
     CoroutineSingletons_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2587f18d
+    return CoroutineSingletons_RESUMED_instance
 
 def and(other):
     return toByte(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4d574ec7, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@39cdbc4e))
@@ -935,7 +935,7 @@ def valueOf(value):
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@4e572e47
 def RequireKotlinVersionKind_initEntries():
-    if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@691fa716:
+    if RequireKotlinVersionKind_entriesInitialized:
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@4e751350
     
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@3ed50b5f
@@ -963,15 +963,15 @@ class OnlyInputTypes:
 
 def RequireKotlinVersionKind_LANGUAGE_VERSION_getInstance():
     RequireKotlinVersionKind_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1f0630a9
+    return RequireKotlinVersionKind_LANGUAGE_VERSION_instance
 
 def RequireKotlinVersionKind_COMPILER_VERSION_getInstance():
     RequireKotlinVersionKind_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@772739ee
+    return RequireKotlinVersionKind_COMPILER_VERSION_instance
 
 def RequireKotlinVersionKind_API_VERSION_getInstance():
     RequireKotlinVersionKind_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@5f18ed13
+    return RequireKotlinVersionKind_API_VERSION_instance
 
 class KClassifier:
     pass
@@ -984,10 +984,10 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@633f8efd
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@4f401aac, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@14467f3b):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@14467f3b):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@42bd5540
+    return Companion_instance
 
 class KTypeProjection:
     pass
@@ -1003,7 +1003,7 @@ def valueOf(value):
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@26ffe94e
 def KVariance_initEntries():
-    if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@699a53d4:
+    if KVariance_entriesInitialized:
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@1adcd53b
     
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@47c90585
@@ -1016,15 +1016,15 @@ class KVariance:
 
 def KVariance_INVARIANT_getInstance():
     KVariance_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@5162ccc9
+    return KVariance_INVARIANT_instance
 
 def KVariance_IN_getInstance():
     KVariance_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@172249cd
+    return KVariance_IN_instance
 
 def KVariance_OUT_getInstance():
     KVariance_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2142b70d
+    return KVariance_OUT_instance
 
 def appendElement(element, transform):
     if jsNot(jsEqeq(transform, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@50d91a0f)):
@@ -1041,7 +1041,7 @@ def special():
     return jsBitOr(jsMinus(charSequenceLength(<this>), 1), 0)
 
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@34114276
+    return UNDEFINED_RESULT
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@5a941fb4
 def UNDEFINED_RESULT$init$():
@@ -1068,7 +1068,7 @@ def require(value, lazyMessage):
     
 
 def special(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@47bfde21
+    return value
 
 def special(this):
     tmp = (special)(this)
@@ -1115,10 +1115,10 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@4bab64a2
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2c29342a, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4af2f991):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4af2f991):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@78e077f8
+    return Companion_instance
 
 class Failure:
     pass
@@ -1134,7 +1134,7 @@ def Result__equals-impl(this, other):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@2c663246
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@22d2d248
-    if jsNot(equals(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7fba492e, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@17635531)):
+    if jsNot(equals(value, value)):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@396519b
     
     return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7f3a92fd
@@ -1204,17 +1204,17 @@ def run(block):
     return invoke(<this>)
 
 def special(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3ec98000
+    return data
 
 class Companion:
     pass
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@511966dc
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@40fd518f, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1dafe1d2):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1dafe1d2):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3249c81a
+    return Companion_instance
 
 def UByte__compareTo-impl(this, other):
     tmp = jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@3703bc7e, 255)
@@ -1393,7 +1393,7 @@ def UByte__toString-impl(this):
     return toString()
 
 def UByte__hashCode-impl(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@62376bdd
+    return data
 
 def UByte__equals-impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
@@ -1403,7 +1403,7 @@ def UByte__equals-impl(this, other):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@56ec941b
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@18a3095d
-    if jsNot(jsEqeqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7a023e34, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@65fe1f47)):
+    if jsNot(jsEqeqeq(data, data)):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@2165d4ab
     
     return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4d529bc0
@@ -1424,16 +1424,16 @@ def toUByte():
     return <init>(<this>)
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3f78b3b2
+    return array
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@6da50b8f
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1ed8d18c
+    return index
 
 def special(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@e21d73
+    return storage
 
 def special(size):
     tmp = <init>(int8Array(size))
@@ -1492,7 +1492,7 @@ def UByteArray__toString-impl(this):
     return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrStringConcatenationImpl@1c057fc8
 
 def UByteArray__hashCode-impl(this):
-    return hashCode(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@344cf00f)
+    return hashCode(storage)
 
 def UByteArray__equals-impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
@@ -1502,7 +1502,7 @@ def UByteArray__equals-impl(this, other):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@6ba1a7fd
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@3a42b2b6
-    if jsNot(equals(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@4a7c8cb7, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2351255a)):
+    if jsNot(equals(storage, storage)):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@2a4f1bc5
     
     return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4d145177
@@ -1511,17 +1511,17 @@ class UByteArray:
     pass
 
 def special(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@508abc74
+    return data
 
 class Companion:
     pass
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@4c6d1f1f
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@84ab902, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@70ab102c):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@70ab102c):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3501c1de
+    return Companion_instance
 
 def UInt__compareTo-impl(this, other):
     tmp0_compareTo_0 = <init>(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@4c4bff52, 255))
@@ -1680,7 +1680,7 @@ def UInt__toString-impl(this):
     return toString()
 
 def UInt__hashCode-impl(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@35d145fb
+    return data
 
 def UInt__equals-impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
@@ -1690,7 +1690,7 @@ def UInt__equals-impl(this, other):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@6f39e2a6
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@2dd61113
-    if jsNot(jsEqeqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3e574f9c, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@218fc40d)):
+    if jsNot(jsEqeqeq(data, data)):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@26bbbe9e
     
     return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@72ad577b
@@ -1717,16 +1717,16 @@ def toUInt():
     return <init>(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@7ebc78f1)
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1a61a2c4
+    return array
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@257d8340
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@29a1c0b7
+    return index
 
 def special(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@47f8374
+    return storage
 
 def special(size):
     tmp = <init>(int32Array(size))
@@ -1785,7 +1785,7 @@ def UIntArray__toString-impl(this):
     return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrStringConcatenationImpl@5341eab4
 
 def UIntArray__hashCode-impl(this):
-    return hashCode(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@b0e6d4e)
+    return hashCode(storage)
 
 def UIntArray__equals-impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
@@ -1795,7 +1795,7 @@ def UIntArray__equals-impl(this, other):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@697699cb
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@3a7f7201
-    if jsNot(equals(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@91c11b6, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1dfd6023)):
+    if jsNot(equals(storage, storage)):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@3e7da4cb
     
     return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3a2881d6
@@ -1808,10 +1808,10 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@3f81872b
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@4beea618, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@561fdee3):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@561fdee3):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@30661521
+    return Companion_instance
 
 class UIntRange:
     pass
@@ -1821,31 +1821,31 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@641c872d
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@5881d8da, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4cf22d79):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4cf22d79):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@24270e65
+    return Companion_instance
 
 class UIntProgression:
     pass
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@6f4809ae
+    return finalElement
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@7c4a0245
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@6dd1e22
+    return hasNext
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@43a188b6
+    return step
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@7c0514f
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1e7d3d93
+    return next
 
 class UIntProgressionIterator:
     pass
@@ -1863,17 +1863,17 @@ class UShortIterator:
     pass
 
 def special(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@6f627a1a
+    return data
 
 class Companion:
     pass
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@39b88618
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3bbf850b, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@321f3b88):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@321f3b88):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@6b5c4867
+    return Companion_instance
 
 def ULong__compareTo-impl(this, other):
     tmp0_compareTo_0 = <init>(and(<init>(255, 0)))
@@ -2043,7 +2043,7 @@ def ULong__equals-impl(this, other):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@5002aa66
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@17b41d39
-    if jsNot(equals(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@443b9ebb)):
+    if jsNot(equals(data)):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@d98ce13
     
     return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4865434e
@@ -2070,16 +2070,16 @@ def toULong():
     return <init>(toLong(<this>))
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3f0c46e8
+    return array
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@4d437408
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@17d75ecc
+    return index
 
 def special(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@140fa482
+    return storage
 
 def special(size):
     tmp = <init>(longArray(size))
@@ -2138,7 +2138,7 @@ def ULongArray__toString-impl(this):
     return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrStringConcatenationImpl@50bdd956
 
 def ULongArray__hashCode-impl(this):
-    return hashCode(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1174ff02)
+    return hashCode(storage)
 
 def ULongArray__equals-impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
@@ -2148,7 +2148,7 @@ def ULongArray__equals-impl(this, other):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@6414b660
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@62144e81
-    if jsNot(equals(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7e9ea888, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7e4a6afd)):
+    if jsNot(equals(storage, storage)):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@7ab8f93
     
     return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@14c7ab73
@@ -2161,10 +2161,10 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@2f73cc9d
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7ba44d2d, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6614987b):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6614987b):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2421fd62
+    return Companion_instance
 
 class ULongRange:
     pass
@@ -2174,31 +2174,31 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@25af5c7f
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@498ae73c, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@58d5bdb0):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@58d5bdb0):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3e9feb92
+    return Companion_instance
 
 class ULongProgression:
     pass
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@64c9a84b
+    return finalElement
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@6f1c9f54
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@595ebb98
+    return hasNext
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@4404dee7
+    return step
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@372f005a
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@218cf600
+    return next
 
 class ULongProgressionIterator:
     pass
@@ -2254,17 +2254,17 @@ def differenceModulo(a, b, c):
     return tmp
 
 def special(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@4d25943d
+    return data
 
 class Companion:
     pass
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@5938d600
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@79aac496, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5a6e1f51):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5a6e1f51):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1faa627c
+    return Companion_instance
 
 def UShort__compareTo-impl(this, other):
     tmp = jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@a7adeb1, 65535)
@@ -2440,7 +2440,7 @@ def UShort__toString-impl(this):
     return toString()
 
 def UShort__hashCode-impl(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@6bc1c8d0
+    return data
 
 def UShort__equals-impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
@@ -2450,7 +2450,7 @@ def UShort__equals-impl(this, other):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@3810e141
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@65eb16f7
-    if jsNot(jsEqeqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@6c27be1d, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@51a06fd5)):
+    if jsNot(jsEqeqeq(data, data)):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@776b7fa2
     
     return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@2403c1c5
@@ -2468,16 +2468,16 @@ def toUShort():
     return <init>(<this>)
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@50ed196f
+    return array
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@342b545a
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@79eaf64
+    return index
 
 def special(this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@e196238
+    return storage
 
 def special(size):
     tmp = <init>(int16Array(size))
@@ -2536,7 +2536,7 @@ def UShortArray__toString-impl(this):
     return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrStringConcatenationImpl@19ed6130
 
 def UShortArray__hashCode-impl(this):
-    return hashCode(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@75128cf)
+    return hashCode(storage)
 
 def UShortArray__equals-impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
@@ -2546,7 +2546,7 @@ def UShortArray__equals-impl(this, other):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@79832158
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@5ca69552
-    if jsNot(equals(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@24244ea, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@67c61551)):
+    if jsNot(equals(storage, storage)):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@6bbff652
     
     return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@45ea6c24
@@ -2555,7 +2555,7 @@ class UShortArray:
     pass
 
 def uintCompare(v1, v2):
-    return compareTo(jsBitXor(v1, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@57f28893), jsBitXor(v2, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@4e949342))
+    return compareTo(jsBitXor(v1, MIN_VALUE), jsBitXor(v2, MIN_VALUE))
 
 def uintDivide(v1, v2):
     tmp = and(<init>(-1, 0))
@@ -2701,7 +2701,7 @@ def valueOf(value):
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@4718eb01
 def DeprecationLevel_initEntries():
-    if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1f5816bb:
+    if DeprecationLevel_entriesInitialized:
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@1d0e0d0d
     
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@22336af7
@@ -2745,15 +2745,15 @@ class UnsafeVariance:
 
 def DeprecationLevel_WARNING_getInstance():
     DeprecationLevel_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@59c82fb6
+    return DeprecationLevel_WARNING_instance
 
 def DeprecationLevel_ERROR_getInstance():
     DeprecationLevel_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@27af34df
+    return DeprecationLevel_ERROR_instance
 
 def DeprecationLevel_HIDDEN_getInstance():
     DeprecationLevel_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@30dd7cc5
+    return DeprecationLevel_HIDDEN_instance
 
 class ByteIterator:
     pass
@@ -2780,55 +2780,55 @@ class ShortIterator:
     pass
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@20c411ea
+    return finalElement
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@41143491
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@25b4304c
+    return hasNext
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@7516aa4
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@60e50c6
+    return next
 
 class IntProgressionIterator:
     pass
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7220d10c
+    return finalElement
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@321fc4c5
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@60734e93
+    return hasNext
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@5ca3308c
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3c2e5c75
+    return next
 
 class LongProgressionIterator:
     pass
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@235632a6
+    return finalElement
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@5cb20350
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@d7da0ae
+    return hasNext
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@5046ad1c
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@26ee7676
+    return next
 
 class CharProgressionIterator:
     pass
@@ -2838,10 +2838,10 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@2c13db34
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@42b09d68, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@55398902):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@55398902):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1dc0f59d
+    return Companion_instance
 
 class IntProgression:
     pass
@@ -2851,10 +2851,10 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@79bc0ceb
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7c362e56, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@129e23fc):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@129e23fc):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@777898ff
+    return Companion_instance
 
 class LongProgression:
     pass
@@ -2864,10 +2864,10 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@73858ba
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@37cac511, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@68b4e3a1):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@68b4e3a1):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7dbafe9d
+    return Companion_instance
 
 class CharProgression:
     pass
@@ -2880,10 +2880,10 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@4679df4b
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1cf516fa, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5b96272e):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5b96272e):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@5ed59e7f
+    return Companion_instance
 
 class IntRange:
     pass
@@ -2893,10 +2893,10 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@60e4d95
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@75f929a0, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@461b078f):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@461b078f):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3af91e7e
+    return Companion_instance
 
 class LongRange:
     pass
@@ -2906,10 +2906,10 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@5e2975ff
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@68fab818, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3b48e216):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3b48e216):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1fdedffb
+    return Companion_instance
 
 class CharRange:
     pass
@@ -2919,10 +2919,10 @@ class Unit:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@2dac0733
 def Unit_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@be74f53, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6b2f16b9):
+    if jsEqeq(Unit_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6b2f16b9):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2e1e02b8
+    return Unit_instance
 
 class Target:
     pass
@@ -2950,7 +2950,7 @@ def valueOf(value):
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@4ca2c467
 def AnnotationTarget_initEntries():
-    if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2568c451:
+    if AnnotationTarget_entriesInitialized:
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@6d0dd338
     
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@173e347f
@@ -3000,7 +3000,7 @@ def valueOf(value):
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@9febb7c
 def AnnotationRetention_initEntries():
-    if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7fda0e89:
+    if AnnotationRetention_entriesInitialized:
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@70ebf6d8
     
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@74bbaa1b
@@ -3016,75 +3016,75 @@ class Repeatable:
 
 def AnnotationTarget_CLASS_getInstance():
     AnnotationTarget_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@325401b3
+    return AnnotationTarget_CLASS_instance
 
 def AnnotationTarget_ANNOTATION_CLASS_getInstance():
     AnnotationTarget_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@62e3dba0
+    return AnnotationTarget_ANNOTATION_CLASS_instance
 
 def AnnotationTarget_TYPE_PARAMETER_getInstance():
     AnnotationTarget_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2d2c3ab2
+    return AnnotationTarget_TYPE_PARAMETER_instance
 
 def AnnotationTarget_PROPERTY_getInstance():
     AnnotationTarget_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2b05257a
+    return AnnotationTarget_PROPERTY_instance
 
 def AnnotationTarget_FIELD_getInstance():
     AnnotationTarget_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@5c5761f
+    return AnnotationTarget_FIELD_instance
 
 def AnnotationTarget_LOCAL_VARIABLE_getInstance():
     AnnotationTarget_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@316296ae
+    return AnnotationTarget_LOCAL_VARIABLE_instance
 
 def AnnotationTarget_VALUE_PARAMETER_getInstance():
     AnnotationTarget_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@28647ac7
+    return AnnotationTarget_VALUE_PARAMETER_instance
 
 def AnnotationTarget_CONSTRUCTOR_getInstance():
     AnnotationTarget_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@5d3658d1
+    return AnnotationTarget_CONSTRUCTOR_instance
 
 def AnnotationTarget_FUNCTION_getInstance():
     AnnotationTarget_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7eed8467
+    return AnnotationTarget_FUNCTION_instance
 
 def AnnotationTarget_PROPERTY_GETTER_getInstance():
     AnnotationTarget_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@31d635ba
+    return AnnotationTarget_PROPERTY_GETTER_instance
 
 def AnnotationTarget_PROPERTY_SETTER_getInstance():
     AnnotationTarget_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@231a5622
+    return AnnotationTarget_PROPERTY_SETTER_instance
 
 def AnnotationTarget_TYPE_getInstance():
     AnnotationTarget_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@f62fe59
+    return AnnotationTarget_TYPE_instance
 
 def AnnotationTarget_EXPRESSION_getInstance():
     AnnotationTarget_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2e0d2cc4
+    return AnnotationTarget_EXPRESSION_instance
 
 def AnnotationTarget_FILE_getInstance():
     AnnotationTarget_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7f5c7538
+    return AnnotationTarget_FILE_instance
 
 def AnnotationTarget_TYPEALIAS_getInstance():
     AnnotationTarget_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@27b88459
+    return AnnotationTarget_TYPEALIAS_instance
 
 def AnnotationRetention_SOURCE_getInstance():
     AnnotationRetention_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2f4c5b51
+    return AnnotationRetention_SOURCE_instance
 
 def AnnotationRetention_BINARY_getInstance():
     AnnotationRetention_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@56d87044
+    return AnnotationRetention_BINARY_instance
 
 def AnnotationRetention_RUNTIME_getInstance():
     AnnotationRetention_initEntries()
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@525d09b7
+    return AnnotationRetention_RUNTIME_instance
 
 def getProgressionLastElement(start, end, step):
     tmp
@@ -3131,70 +3131,70 @@ class ByteCompanionObject:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@7e30dfa4
 def ByteCompanionObject_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@55e1ac0f, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@46c805be):
+    if jsEqeq(ByteCompanionObject_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@46c805be):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@58721f69
+    return ByteCompanionObject_instance
 
 class ShortCompanionObject:
     pass
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@551e9796
 def ShortCompanionObject_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@4969b90d, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@287213ac):
+    if jsEqeq(ShortCompanionObject_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@287213ac):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@6d30d79b
+    return ShortCompanionObject_instance
 
 class IntCompanionObject:
     pass
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@3b10c5d
 def IntCompanionObject_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3c255b01, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@88d9da0):
+    if jsEqeq(IntCompanionObject_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@88d9da0):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@464cbc59
+    return IntCompanionObject_instance
 
 class FloatCompanionObject:
     pass
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@104305f
 def FloatCompanionObject_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@765ea1ac, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@38cac3f9):
+    if jsEqeq(FloatCompanionObject_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@38cac3f9):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@29fea6c2
+    return FloatCompanionObject_instance
 
 class DoubleCompanionObject:
     pass
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@2e643cad
 def DoubleCompanionObject_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@52e494a2, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@281b0f38):
+    if jsEqeq(DoubleCompanionObject_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@281b0f38):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7545c015
+    return DoubleCompanionObject_instance
 
 class StringCompanionObject:
     pass
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@4e51a9f3
 def StringCompanionObject_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@44798d81, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@605d67f8):
+    if jsEqeq(StringCompanionObject_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@605d67f8):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@65a381ce
+    return StringCompanionObject_instance
 
 class BooleanCompanionObject:
     pass
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@2cbad233
 def BooleanCompanionObject_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@72435def, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@34289e5f):
+    if jsEqeq(BooleanCompanionObject_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@34289e5f):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@663a2b13
+    return BooleanCompanionObject_instance
 
 class Comparator:
     pass
@@ -3258,16 +3258,16 @@ def <no name provided>$factory($elements):
     return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrFunctionExpressionImpl@1eb2d718
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2f2fda15
+    return list
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@74a930
+    return fromIndex
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@3d6aa682
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@15f67a4f
+    return _size
 
 class IteratorImpl:
     pass
@@ -3299,13 +3299,13 @@ def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@221ae367
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@6ae9b2f0
+    return array
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@e0895b3
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@6f45a719
+    return isReadOnly
 
 def ArrayList_init_$Init$($this):
     visitDelegatingCOnstructorCall org.jetbrains.kotlin.ir.expressions.impl.IrDelegatingConstructorCallImpl@18bbcce8
@@ -3353,7 +3353,7 @@ def special(specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@2a6dfbb2
 
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@24a4e9c0
+    return _stableSortingIsSupported
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@165634aa
 class RandomAccess:
@@ -3363,7 +3363,7 @@ def special(specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@2f6fcc70
 
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@4300b54c
+    return output
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@20bc6f4d
 class BaseOutput:
@@ -3389,7 +3389,7 @@ def output$init$():
     return visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@50a59a0b
 
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@4e1ffe54
+    return EmptyContinuation
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@6c07666f
 class <no name provided>_1:
@@ -3418,11 +3418,11 @@ def isNaN():
     return jsNot(jsEqeqeq(<this>, <this>))
 
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@213f2d00
+    return INV_2_26
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@57ab7b32
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@640890bc
+    return INV_2_53
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@1606ecbb
 def INV_2_26$init$():
@@ -3448,10 +3448,10 @@ class KClassImpl:
     pass
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@27815329
+    return givenSimpleName
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@79251dae
+    return isInstanceFunction
 
 class PrimitiveKClassImpl:
     pass
@@ -3461,10 +3461,10 @@ class NothingKClassImpl:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@5e9feddd
 def NothingKClassImpl_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2eac48ea, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1bad6995):
+    if jsEqeq(NothingKClassImpl_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1bad6995):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@b7a9093
+    return NothingKClassImpl_instance
 
 class ErrorKClass:
     pass
@@ -3526,7 +3526,7 @@ def createContravariantKTypeProjection(type):
     return contravariant(type)
 
 def asString($this):
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@5398ece7, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7879e3ac):
+    if jsEqeq(variance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7879e3ac):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@4b288c86
     
     return jsPlus(prefixString(), toString())
@@ -3559,10 +3559,10 @@ class DynamicKType:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@476fb241
 def DynamicKType_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2c6062bd, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6270fadb):
+    if jsEqeq(DynamicKType_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6270fadb):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7acec6db
+    return DynamicKType_instance
 
 def <no name provided>$factory(this$0):
     i = <init>(this$0)
@@ -3572,7 +3572,7 @@ class KTypeParameterImpl:
     pass
 
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@24663d05
+    return functionClasses
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@70a9f4b7
 class <no name provided>:
@@ -3640,10 +3640,10 @@ class PrimitiveClasses:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@467c9ad9
 def PrimitiveClasses_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@4a3cc680, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@79703b86):
+    if jsEqeq(PrimitiveClasses_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@79703b86):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@288aaeaf
+    return PrimitiveClasses_instance
 
 def <no name provided>$factory():
     i = <init>()
@@ -3816,7 +3816,7 @@ def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@6546c39
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2310e8a4
+    return string
 
 def checkReplaceRange($this, startIndex, endIndex, length):
     if visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@22249b41:
@@ -3844,7 +3844,7 @@ def checkRadix(radix):
     return radix
 
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@5e9c6d8a
+    return STRING_CASE_INSENSITIVE_ORDER
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@3cc148d
 def nativeLastIndexOf(str, fromIndex):
@@ -3921,7 +3921,7 @@ def STRING_CASE_INSENSITIVE_ORDER$init$():
     return <init>(tmp)
 
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@474f69d
+    return REPLACEMENT_BYTE_SEQUENCE
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@79927a7c
 def REPLACEMENT_BYTE_SEQUENCE$init$():
@@ -3929,17 +3929,17 @@ def REPLACEMENT_BYTE_SEQUENCE$init$():
     return tmp0_byteArrayOf_0
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3210454
+    return value
 
 class Companion:
     pass
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@d57ba2a
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@571ae6d5, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@48b5a380):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@48b5a380):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1c0293a
+    return Companion_instance
 
 class Char:
     pass
@@ -3985,10 +3985,10 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@1cbfca27
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@34e79514, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@258cb16c):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@258cb16c):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@40fc9cce
+    return Companion_instance
 
 class Enum:
     pass
@@ -4038,10 +4038,10 @@ class DefaultConstructorMarker:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@6fee485b
 def DefaultConstructorMarker_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1db078d9, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@89d4a1a):
+    if jsEqeq(DefaultConstructorMarker_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@89d4a1a):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@138c53c7
+    return DefaultConstructorMarker_instance
 
 def fillArrayVal(array, initValue):
     inductionVariable = 0
@@ -4169,27 +4169,27 @@ class <no name provided>:
     pass
 
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@54543211
+    return buf
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@36dd68f1
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@13623138
+    return bufFloat64
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@45b244c4
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@34ef9879
+    return bufFloat32
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@297840d7
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1e6a74fe
+    return bufInt32
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@fcecc45
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2cde0397
+    return lowIndex
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@77199818
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@1cea4fdf
+    return highIndex
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@308bd473
 def getNumberHashCode(obj):
@@ -4200,23 +4200,23 @@ def getNumberHashCode(obj):
     if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@505806c8:
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@6d237951
     
-    jsArraySet(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@25cb46d8, 0, obj)
-    return jsBitOr(jsPlus(imul(jsArrayGet(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2596ae35, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@358b0b42), 31), jsArrayGet(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@59fbfc5d, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@498c0651)), 0)
+    jsArraySet(bufFloat64, 0, obj)
+    return jsBitOr(jsPlus(imul(jsArrayGet(bufInt32, highIndex), 31), jsArrayGet(bufInt32, lowIndex)), 0)
 
 def bufFloat64$init$():
-    tmp0_unsafeCast_0 = <init>(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@10ebfb4f)
+    tmp0_unsafeCast_0 = <init>(buf)
     return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@6efd96c7
 
 def bufFloat32$init$():
-    tmp0_unsafeCast_0 = <init>(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@56104e84)
+    tmp0_unsafeCast_0 = <init>(buf)
     return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@2ae85262
 
 def bufInt32$init$():
-    tmp0_unsafeCast_0 = <init>(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7cdf5eed)
+    tmp0_unsafeCast_0 = <init>(buf)
     return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@19d4057
 
 def lowIndex$init$():
-    jsArraySet(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@6aa2599f, 0, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@434fa353)
+    jsArraySet(bufFloat64, 0, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@434fa353)
     return visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@68b7a133
 
 class DoNotIntrinsify:
@@ -4318,11 +4318,11 @@ def getObjectHashCode(obj):
     return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@220700c1
 
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@49a6b730
+    return OBJECT_HASH_CODE_PROPERTY_NAME
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@7828111d
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2680474c
+    return POW_2_32
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@33fa6a8b
 def toString(o):
@@ -4499,36 +4499,36 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@1e5066ac
 def Companion_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@48811d85, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@361069db):
+    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@361069db):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@571362c4
+    return Companion_instance
 
 class Long:
     pass
 
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@24537e30
+    return ZERO
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@31fd8e6f
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@6f4327ab
+    return ONE
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@3c833d43
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7a0619a8
+    return NEG_ONE
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@6472dd0c
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@42f2c28d
+    return MAX_VALUE
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@6b3b9a19
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@611f8128
+    return MIN_VALUE
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@5a8a50b8
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@47e7eb7
+    return TWO_PWR_24_
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@374d3128
 def compare(other):
@@ -4540,14 +4540,14 @@ def compare(other):
     return visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@45a935e5
 
 def add(other):
-    a48 = jsBitShiftRU(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2bd733ad, 16)
-    a32 = jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@885620d, 65535)
-    a16 = jsBitShiftRU(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@12cd9e08, 16)
-    a00 = jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@70841eba, 65535)
-    b48 = jsBitShiftRU(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2281ede7, 16)
-    b32 = jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@358bf5fe, 65535)
-    b16 = jsBitShiftRU(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@54eb65bc, 16)
-    b00 = jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@90967b3, 65535)
+    a48 = jsBitShiftRU(high, 16)
+    a32 = jsBitAnd(high, 65535)
+    a16 = jsBitShiftRU(low, 16)
+    a00 = jsBitAnd(low, 65535)
+    b48 = jsBitShiftRU(high, 16)
+    b32 = jsBitAnd(high, 65535)
+    b16 = jsBitShiftRU(low, 16)
+    b00 = jsBitAnd(low, 65535)
     c48 = 0
     c32 = 0
     c16 = 0
@@ -4575,10 +4575,10 @@ def multiply(other):
     if isZero():
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@306cb0a0
     
-    if equalsLong(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@6615cc2e):
+    if equalsLong(MIN_VALUE):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@533053b4
     
-    if equalsLong(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@4ec0f36e):
+    if equalsLong(MIN_VALUE):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@62f11904
     
     if isNegative():
@@ -4590,14 +4590,14 @@ def multiply(other):
     if visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@6a7ba38b:
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@651a3e01
     
-    a48 = jsBitShiftRU(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7f5c74db, 16)
-    a32 = jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@26827f2e, 65535)
-    a16 = jsBitShiftRU(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@34e7832d, 16)
-    a00 = jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@57b2e99, 65535)
-    b48 = jsBitShiftRU(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@2ba83c41, 16)
-    b32 = jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@6d31bae5, 65535)
-    b16 = jsBitShiftRU(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@55f2a26d, 16)
-    b00 = jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@16987824, 65535)
+    a48 = jsBitShiftRU(high, 16)
+    a32 = jsBitAnd(high, 65535)
+    a16 = jsBitShiftRU(low, 16)
+    a00 = jsBitAnd(low, 65535)
+    b48 = jsBitShiftRU(high, 16)
+    b32 = jsBitAnd(high, 65535)
+    b16 = jsBitShiftRU(low, 16)
+    b00 = jsBitAnd(low, 65535)
     c48 = 0
     c32 = 0
     c16 = 0
@@ -4631,10 +4631,10 @@ def divide(other):
     if isZero():
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@2b4b3918
     
-    if equalsLong(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@5e5978e5):
+    if equalsLong(MIN_VALUE):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@71103416
     
-    if equalsLong(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@586b59b4):
+    if equalsLong(MIN_VALUE):
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@2f9bd5ac
     
     if isNegative():
@@ -4643,7 +4643,7 @@ def divide(other):
     if isNegative():
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@56d5a50f
     
-    res = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@422a2263
+    res = ZERO
     rem = <this>
     while greaterThanOrEqual(other):
         approxDouble = jsDiv(toNumber(), toNumber())
@@ -4696,13 +4696,13 @@ def shiftRightUnsigned(numBits):
     
 
 def toNumber():
-    return jsPlus(jsMult(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@344520ce, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@35f15782), getLowBitsUnsigned())
+    return jsPlus(jsMult(high, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@35f15782), getLowBitsUnsigned())
 
 def equalsLong(other):
     return visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@23efa674
 
 def hashCode(l):
-    return jsBitXor(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@54d6c1e6, visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@3c91189)
+    return jsBitXor(low, high)
 
 def toStringImpl(radix):
     if visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@13a09d37:
@@ -4735,13 +4735,13 @@ def fromInt(value):
     return <init>(value, visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@37156bfb)
 
 def isNegative():
-    return jsLt(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@57368c72, 0)
+    return jsLt(high, 0)
 
 def isZero():
     return visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@2330861e
 
 def isOdd():
-    return jsEqeqeq(jsBitAnd(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@384f8455, 1), 1)
+    return jsEqeqeq(jsBitAnd(low, 1), 1)
 
 def negate():
     return unaryMinus()
@@ -4776,11 +4776,11 @@ def getLowBitsUnsigned():
     return visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@1cf51f82
 
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@721fbae2
+    return TWO_PWR_32_DBL_
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@60e72ced
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@4ee6b207
+    return TWO_PWR_63_DBL_
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@65653da2
 def imul(a_local, b_local):
@@ -4886,7 +4886,7 @@ def numberRangeToLong(start, endInclusive):
     return <init>(numberToLong(start), visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@9201335)
 
 def special():
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@5a0379e2
+    return propertyRefClassMetadataCache
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@55bd9d1
 def metadataObject():
@@ -4905,7 +4905,7 @@ def getPropertyRefClass(obj, metadata):
     return obj
 
 def getKPropMetadata(paramCount, setter, type):
-    mdata = jsArrayGet(jsArrayGet(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@7a4a91f8, paramCount), visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@25471835)
+    mdata = jsArrayGet(jsArrayGet(propertyRefClassMetadataCache, paramCount), visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@25471835)
     if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@5cf21908:
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@68b2ce71
     
@@ -5068,19 +5068,19 @@ def minOf(a, b):
     return min(int32ArrayOf(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl@65a288e7))
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@365abbd
+    return resultContinuation
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@25d42dee
+    return _context
 
 def special($this, specialArg):
     visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@73707d4
 
 def special($this):
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@4ef5f92d
+    return intercepted_
 
 def releaseIntercepted($this):
-    intercepted = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@73e5c86e
+    intercepted = intercepted_
     if visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@1e1f808c:
         visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@6a49bf51
     
@@ -5094,10 +5094,10 @@ class CompletedContinuation:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@41e8b043
 def CompletedContinuation_getInstance():
-    if jsEqeq(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@15f6d246, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@51110a39):
+    if jsEqeq(CompletedContinuation_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@51110a39):
         <init>()
     
-    return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@5efdf532
+    return CompletedContinuation_instance
 
 def Exception_init_$Init$($this):
     extendThrowable($this, $undefined(), $undefined())

@@ -1,4 +1,3 @@
-    277 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@
     214 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@
     198 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@
     158 visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@

@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.ir.backend.js.transformers.irToPy
 import generated.Python.*
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.backend.js.utils.JsGenerationContext
+import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.expressions.*
@@ -26,6 +27,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
         return when (expression) {
             is IrConst<*> -> visitConst(expression, data)
             is IrGetValue -> visitGetValue(expression, data)
+            is IrGetField -> visitGetField(expression, data)
             is IrCall -> visitCall(expression, data)
             is IrComposite -> visitComposite(expression, data)
             is IrSetValue -> visitSetValue(expression, data)
@@ -67,7 +69,8 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
 
     override fun visitGetField(expression: IrGetField, context: JsGenerationContext): expr {
         // TODO
-        return Name(id = identifier("visitGetField $expression"), ctx = Load)
+        val field = expression.symbol.owner
+        return Name(id = identifier(field.name.asString()), ctx = Load)
     }
 
     override fun visitGetValue(expression: IrGetValue, context: JsGenerationContext): expr {
