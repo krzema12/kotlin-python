@@ -1,21 +1,21 @@
-    198 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@
-    158 visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@
+    254 visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@
     111 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@
-     86 visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@
+    105 visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@
      70 visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@
+     70 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@
      55 visitDelegatingCOnstructorCall org.jetbrains.kotlin.ir.expressions.impl.IrDelegatingConstructorCallImpl@
-     46 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@
+     47 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@
      45 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrRawFunctionReferenceImpl@
-     39 visitSetValue-inToPyExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrSetValueImpl@
-     39 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@
+     39 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrSetValueImpl@
+     38 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@
      31 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrFunctionExpressionImpl@
-     19 visitExpression org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@
-     16 visitThrow org.jetbrains.kotlin.ir.expressions.impl.IrThrowImpl@
-     16 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl@
-     12 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDoWhileLoopImpl@
-      8 visitComposite-inToPyExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrCompositeImpl@
-      4 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrStringConcatenationImpl@
+     29 visitThrow org.jetbrains.kotlin.ir.expressions.impl.IrThrowImpl@
+     29 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@
+     18 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl@
+     17 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrDoWhileLoopImpl@
+     12 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrCompositeImpl@
+     11 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicMemberExpressionImpl@
+      6 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrStringConcatenationImpl@
       4 visitDoWhileLoop org.jetbrains.kotlin.ir.expressions.impl.IrDoWhileLoopImpl@
-      3 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicMemberExpressionImpl@
-      2 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBreakImpl@
-      1 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrThrowImpl@
+      3 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrBreakImpl@
+      1 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrThrowImpl@

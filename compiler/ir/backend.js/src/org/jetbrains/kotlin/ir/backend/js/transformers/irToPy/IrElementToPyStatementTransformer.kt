@@ -39,8 +39,10 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     }
 
     override fun visitExpression(expression: IrExpression, context: JsGenerationContext): List<stmt> {
-        // TODO
-        return listOf(Expr(value = Name(id = identifier("visitExpression $expression"), ctx = Load)))
+        return when (expression) {
+            is IrBlock -> visitBlock(expression, context)
+            else -> listOf(Expr(value = Name(id = identifier("visitExpression-other--inToPyStatementTransformer $expression"), ctx = Load)))
+        }
     }
 
     override fun visitBreak(jump: IrBreak, context: JsGenerationContext): List<stmt> {
@@ -120,7 +122,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         return expression.branches.map { branch ->
             If(
                 test = IrElementToPyExpressionTransformer().visitExpression(branch.condition, context).first(),
-                body = listOf(Expr(value = IrElementToPyExpressionTransformer().visitExpression(branch.result, context).first())),
+                body = IrElementToPyStatementTransformer().visitExpression(branch.result, context),
                 orelse = emptyList(), // TODO
             )
         }

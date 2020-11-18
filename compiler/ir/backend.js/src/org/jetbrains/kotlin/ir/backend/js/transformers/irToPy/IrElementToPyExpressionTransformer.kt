@@ -35,9 +35,15 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
             is IrWhen -> visitWhen(expression, data)
             is IrConstructorCall -> visitConstructorCall(expression, data)
             is IrTypeOperatorCall -> visitTypeOperator(expression, data)
+//            is IrBlock -> visitBlock(expression, data)
             else -> listOf(Name(id = identifier("visitExpression-other $expression"), ctx = Load))
         }
     }
+
+//    override fun visitBlock(expression: IrBlock, data: JsGenerationContext): List<expr> {
+//        // TODO
+//        return listOf(Name(id = identifier("visitBlock $expression"), ctx = Load))
+//    }
 
     override fun visitExpressionBody(body: IrExpressionBody, context: JsGenerationContext): List<expr> {
         // TODO
