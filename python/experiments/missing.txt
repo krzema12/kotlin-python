@@ -1,0 +1,10 @@
+   1153 visitExpression
+    157 visitConst
+    111 visitField
+     84 visitWhen
+     70 visitSetField
+     55 visitDelegatingCOnstructorCall
+     39 visitSetValue
+     16 visitThrow
+      8 visitComposite
+      4 visitDoWhileLoop
