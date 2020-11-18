@@ -65,6 +65,18 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
                 value = constant(value = "${kind.valueOf(expression)}"),
                 kind = null,
             )
+            is IrConstKind.Double -> Constant(
+                value = constant(value = "${kind.valueOf(expression)}"),
+                kind = null,
+            )
+            is IrConstKind.Boolean -> Constant(
+                value = constant(value = "${kind.valueOf(expression)}".capitalize()),
+                kind = null,
+            )
+            is IrConstKind.Null -> Constant(
+                value = constant(value = "None"),
+                kind = null,
+            )
             // TODO other types
             else -> Name(id = identifier("visitConst-other $kind"), ctx = Load)
         })

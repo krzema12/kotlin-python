@@ -1,10 +1,8 @@
-    152 visitConst-other Boolean:
     111 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@
     105 visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@
      70 visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@
      70 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@
      55 visitDelegatingCOnstructorCall org.jetbrains.kotlin.ir.expressions.impl.IrDelegatingConstructorCallImpl@
-     51 visitConst-other Null)
      47 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@
      45 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrRawFunctionReferenceImpl@
      39 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrSetValueImpl@
@@ -16,11 +14,7 @@
      17 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrDoWhileLoopImpl@
      12 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrCompositeImpl@
      11 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicMemberExpressionImpl@
-      8 visitConst-other Double)
       6 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrStringConcatenationImpl@
       4 visitDoWhileLoop org.jetbrains.kotlin.ir.expressions.impl.IrDoWhileLoopImpl@
-      4 visitConst-other Boolean)
       3 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrBreakImpl@
       1 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrThrowImpl@
-      1 visitConst-other Null, 
-      1 visitConst-other Double, 
