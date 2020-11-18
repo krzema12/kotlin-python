@@ -14,14 +14,14 @@ fun translateFunction(declaration: IrFunction, context: JsGenerationContext): Fu
     val body = declaration.body?.accept(IrElementToPyStatementTransformer(), context) ?: listOf(Pass)
     val args = declaration.valueParameters.map { valueParameter ->
         argImpl(
-            arg = identifier(if (valueParameter.name.isSpecial) "specialArg" else valueParameter.name.identifier),
+            arg = identifier(valueParameter.name.asString()),
             annotation = null,
             type_comment = null,
         )
     }
 
     return FunctionDef(
-        name = identifier(if (declaration.name.isSpecial) "special" else declaration.name.identifier),
+        name = identifier(declaration.name.asString()),
         args = argumentsImpl(
             posonlyargs = emptyList(),
             args = args,

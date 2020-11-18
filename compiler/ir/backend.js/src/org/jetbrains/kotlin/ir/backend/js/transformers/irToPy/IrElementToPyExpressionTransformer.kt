@@ -140,7 +140,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
         }
 
         return Call(
-            func = Name(id = identifier(if (expression.symbol.owner.name.isSpecial) "(special)" else expression.symbol.owner.name.identifier), ctx = Load),
+            func = Name(id = identifier(expression.symbol.owner.name.asString()), ctx = Load),
             args = arguments,
             keywords = emptyList(),
         )
