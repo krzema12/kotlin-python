@@ -14,7 +14,7 @@ import topython.toPython
 //   print(x)
 //
 // Python generates such AST:
-// >>> print(ast.dump(ast.parse('fruits = ["apple", "banana", "cherry"]\nfor x in fruits:\n    print(x)')))
+// >>> import ast; print(ast.dump(ast.parse('fruits = ["apple", "banana", "cherry"]\nfor x in fruits:\n    print(x)')))
 // Module(
 //   body=[
 //     Assign(

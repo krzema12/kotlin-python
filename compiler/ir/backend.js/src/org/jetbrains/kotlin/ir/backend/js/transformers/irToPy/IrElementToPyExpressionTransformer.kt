@@ -30,6 +30,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
             is IrComposite -> visitComposite(expression, data)
             is IrSetValue -> visitSetValue(expression, data)
             is IrWhen -> visitWhen(expression, data)
+            is IrConstructorCall -> visitConstructorCall(expression, data)
             else -> Name(id = identifier("visitExpression-other $expression"), ctx = Load)
         }
     }
@@ -103,8 +104,20 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
     }
 
     override fun visitConstructorCall(expression: IrConstructorCall, context: JsGenerationContext): expr {
-        // TODO
-        return Name(id = identifier("visitConstructorCall $expression"), ctx = Load)
+        val noOfArguments = expression.valueArgumentsCount
+
+        val arguments = (0 until noOfArguments).mapNotNull { argIndex ->
+            val valueArgument: IrExpression? = expression.getValueArgument(argIndex)
+            valueArgument?.let {
+                IrElementToPyExpressionTransformer().visitExpression(it, context)
+            }
+        }
+
+        return Call(
+            func = Name(id = identifier(expression.symbol.owner.name.asString()), ctx = Load),
+            args = arguments,
+            keywords = emptyList(),
+        )
     }
 
     override fun visitCall(expression: IrCall, context: JsGenerationContext): expr {

@@ -1,10 +1,9 @@
-    353 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@
-    274 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@
+    277 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl@
+    214 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@
     198 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrBlockImpl@
-    157 visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@
-    122 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl@
+    158 visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@
     111 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@
-     84 visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@
+     86 visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@
      70 visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@
      55 visitDelegatingCOnstructorCall org.jetbrains.kotlin.ir.expressions.impl.IrDelegatingConstructorCallImpl@
      46 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@
