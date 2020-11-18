@@ -42,6 +42,6 @@ fun translateCall(
     expression: IrCall,
     context: JsGenerationContext,
     transformer: IrElementToPyExpressionTransformer
-): expr {
+): List<expr> {
     return transformer.visitCall(expression, context)
 }

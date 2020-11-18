@@ -62,7 +62,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         return listOf(
             Assign(
                 targets = listOf(Name(id = identifier(expression.symbol.owner.name.identifier), ctx = Store)),
-                value = IrElementToPyExpressionTransformer().visitExpression(expression.value, context),
+                value = IrElementToPyExpressionTransformer().visitExpression(expression.value, context).first(),
                 type_comment = null,
             )
         )
@@ -70,7 +70,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitReturn(expression: IrReturn, context: JsGenerationContext): List<stmt> {
         return listOf(Return(
-            value = IrElementToPyExpressionTransformer().visitExpression(expression.value, context),
+            value = IrElementToPyExpressionTransformer().visitExpression(expression.value, context).first(),
         ))
     }
 
@@ -84,7 +84,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         return listOf(declaration.initializer?.let { initializer ->
             Assign(
                 targets = listOf(Name(id = identifier(declaration.name.identifier), ctx = Store)),
-                value = IrElementToPyExpressionTransformer().visitExpression(initializer, context),
+                value = IrElementToPyExpressionTransformer().visitExpression(initializer, context).first(),
                 type_comment = null,
             )
         } ?: Expr(
@@ -102,7 +102,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitCall(expression: IrCall, data: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(IrElementToPyExpressionTransformer().visitCall(expression, data))
+        return IrElementToPyExpressionTransformer().visitCall(expression, data)
             .map { Expr(value = it) }
     }
 
@@ -119,8 +119,8 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     override fun visitWhen(expression: IrWhen, context: JsGenerationContext): List<stmt> {
         return expression.branches.map { branch ->
             If(
-                test = IrElementToPyExpressionTransformer().visitExpression(branch.condition, context),
-                body = listOf(Expr(value = IrElementToPyExpressionTransformer().visitExpression(branch.result, context))),
+                test = IrElementToPyExpressionTransformer().visitExpression(branch.condition, context).first(),
+                body = listOf(Expr(value = IrElementToPyExpressionTransformer().visitExpression(branch.result, context).first())),
                 orelse = emptyList(), // TODO
             )
         }
@@ -131,7 +131,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     override fun visitWhileLoop(loop: IrWhileLoop, context: JsGenerationContext): List<stmt> {
         // TODO
         return listOf(While(
-            test = IrElementToPyExpressionTransformer().visitExpression(loop.condition, context),
+            test = IrElementToPyExpressionTransformer().visitExpression(loop.condition, context).first(),
             body = loop.body?.accept(this, context) ?: emptyList(),
             orelse = emptyList(),
         ))
