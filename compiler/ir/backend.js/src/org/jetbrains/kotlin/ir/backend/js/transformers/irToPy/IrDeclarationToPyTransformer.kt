@@ -19,7 +19,7 @@ class IrDeclarationToPyTransformer : BaseIrElementToPyNodeTransformer<stmt, JsGe
 
     override fun visitConstructor(declaration: IrConstructor, context: JsGenerationContext): stmt {
         // TODO
-        return Expr(value = Name(id = identifier("visitConstructor"), ctx = Load))
+        return Expr(value = Name(id = identifier("visitConstructor $declaration"), ctx = Load))
     }
 
     override fun visitClass(declaration: IrClass, context: JsGenerationContext): stmt {
@@ -35,21 +35,21 @@ class IrDeclarationToPyTransformer : BaseIrElementToPyNodeTransformer<stmt, JsGe
 
     override fun visitErrorDeclaration(declaration: IrErrorDeclaration, data: JsGenerationContext): stmt {
         // TODO
-        return Expr(value = Name(id = identifier("visitErrorDeclaration"), ctx = Load))
+        return Expr(value = Name(id = identifier("visitErrorDeclaration $declaration"), ctx = Load))
     }
 
     override fun visitField(declaration: IrField, context: JsGenerationContext): stmt {
         // TODO
-        return Expr(value = Name(id = identifier("visitField"), ctx = Load))
+        return Expr(value = Name(id = identifier("visitField $declaration"), ctx = Load))
     }
 
     override fun visitVariable(declaration: IrVariable, context: JsGenerationContext): stmt {
         // TODO
-        return Expr(value = Name(id = identifier("visitVariable_irDeclarationToPyTransformer"), ctx = Load))
+        return Expr(value = Name(id = identifier("visitVariable_irDeclarationToPyTransformer $declaration"), ctx = Load))
     }
 
     override fun visitScript(irScript: IrScript, context: JsGenerationContext): stmt {
         // TODO
-        return Expr(value = Name(id = identifier("visitScript"), ctx = Load))
+        return Expr(value = Name(id = identifier("visitScript $irScript"), ctx = Load))
     }
 }

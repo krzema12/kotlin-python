@@ -16,7 +16,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitFunction(declaration: IrFunction, data: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(Expr(value = Name(id = identifier("visitFunction"), ctx = Load)))
+        return listOf(Expr(value = Name(id = identifier("visitFunction $declaration"), ctx = Load)))
     }
 
     override fun visitBlockBody(body: IrBlockBody, context: JsGenerationContext): List<stmt> {
@@ -40,22 +40,22 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitExpression(expression: IrExpression, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(Expr(value = Name(id = identifier("visitExpression"), ctx = Load)))
+        return listOf(Expr(value = Name(id = identifier("visitExpression $expression"), ctx = Load)))
     }
 
     override fun visitBreak(jump: IrBreak, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(Expr(value = Name(id = identifier("visitBreak"), ctx = Load)))
+        return listOf(Expr(value = Name(id = identifier("visitBreak $jump"), ctx = Load)))
     }
 
     override fun visitContinue(jump: IrContinue, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(Expr(value = Name(id = identifier("visitContinue"), ctx = Load)))
+        return listOf(Expr(value = Name(id = identifier("visitContinue $jump"), ctx = Load)))
     }
 
     override fun visitSetField(expression: IrSetField, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(Expr(value = Name(id = identifier("visitSetField"), ctx = Load)))
+        return listOf(Expr(value = Name(id = identifier("visitSetField $expression"), ctx = Load)))
     }
 
     override fun visitSetValue(expression: IrSetValue, context: JsGenerationContext): List<stmt> {
@@ -76,7 +76,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitThrow(expression: IrThrow, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(Expr(value = Name(id = identifier("visitThrow"), ctx = Load)))
+        return listOf(Expr(value = Name(id = identifier("visitThrow $expression"), ctx = Load)))
     }
 
     override fun visitVariable(declaration: IrVariable, context: JsGenerationContext): List<stmt> {
@@ -97,7 +97,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitDelegatingConstructorCall(expression: IrDelegatingConstructorCall, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(Expr(value = Name(id = identifier("visitDelegatingCOnstructorCall"), ctx = Load)))
+        return listOf(Expr(value = Name(id = identifier("visitDelegatingCOnstructorCall $expression"), ctx = Load)))
     }
 
     override fun visitCall(expression: IrCall, data: JsGenerationContext): List<stmt> {
@@ -108,12 +108,12 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitInstanceInitializerCall(expression: IrInstanceInitializerCall, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(Expr(value = Name(id = identifier("visitInstanceInitializerCall"), ctx = Load)))
+        return listOf(Expr(value = Name(id = identifier("visitInstanceInitializerCall $expression"), ctx = Load)))
     }
 
     override fun visitTry(aTry: IrTry, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(Expr(value = Name(id = identifier("visitTry"), ctx = Load)))
+        return listOf(Expr(value = Name(id = identifier("visitTry $aTry"), ctx = Load)))
     }
 
     override fun visitWhen(expression: IrWhen, context: JsGenerationContext): List<stmt> {
@@ -139,6 +139,6 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitDoWhileLoop(loop: IrDoWhileLoop, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(Expr(value = Name(id = identifier("visitDoWhileLoop"), ctx = Load)))
+        return listOf(Expr(value = Name(id = identifier("visitDoWhileLoop $loop"), ctx = Load)))
     }
 }

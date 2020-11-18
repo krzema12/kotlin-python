@@ -36,12 +36,12 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
 
     override fun visitExpressionBody(body: IrExpressionBody, context: JsGenerationContext): expr {
         // TODO
-        return Name(id = identifier("visitExpressionBody"), ctx = Load)
+        return Name(id = identifier("visitExpressionBody $body"), ctx = Load)
     }
 
     override fun visitFunctionExpression(expression: IrFunctionExpression, context: JsGenerationContext): expr {
         // TODO
-        return Name(id = identifier("visitFunctionExpression"), ctx = Load)
+        return Name(id = identifier("visitFunctionExpression $expression"), ctx = Load)
     }
 
     override fun <T> visitConst(expression: IrConst<T>, context: JsGenerationContext): expr {
@@ -55,18 +55,18 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
                 kind = null,
             )
             // TODO other types
-            else -> Name(id = identifier("visitConst-other"), ctx = Load)
+            else -> Name(id = identifier("visitConst-other $expression"), ctx = Load)
         }
     }
 
     override fun visitStringConcatenation(expression: IrStringConcatenation, context: JsGenerationContext): expr {
         // TODO
-        return Name(id = identifier("visitStringConcatenation"), ctx = Load)
+        return Name(id = identifier("visitStringConcatenation $expression"), ctx = Load)
     }
 
     override fun visitGetField(expression: IrGetField, context: JsGenerationContext): expr {
         // TODO
-        return Name(id = identifier("visitGetField"), ctx = Load)
+        return Name(id = identifier("visitGetField $expression"), ctx = Load)
     }
 
     override fun visitGetValue(expression: IrGetValue, context: JsGenerationContext): expr {
@@ -84,12 +84,12 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
 
     override fun visitGetObjectValue(expression: IrGetObjectValue, context: JsGenerationContext): expr {
         // TODO
-        return Name(id = identifier("visitGetObjectValue"), ctx = Load)
+        return Name(id = identifier("visitGetObjectValue $expression"), ctx = Load)
     }
 
     override fun visitSetField(expression: IrSetField, context: JsGenerationContext): expr {
         // TODO
-        return Name(id = identifier("visitSetField"), ctx = Load)
+        return Name(id = identifier("visitSetField $expression"), ctx = Load)
     }
 
     override fun visitSetValue(expression: IrSetValue, context: JsGenerationContext): expr {
@@ -99,12 +99,12 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
 
     override fun visitDelegatingConstructorCall(expression: IrDelegatingConstructorCall, context: JsGenerationContext): expr {
         // TODO
-        return Name(id = identifier("visitDelegatingConstructorCall"), ctx = Load)
+        return Name(id = identifier("visitDelegatingConstructorCall $expression"), ctx = Load)
     }
 
     override fun visitConstructorCall(expression: IrConstructorCall, context: JsGenerationContext): expr {
         // TODO
-        return Name(id = identifier("visitConstructorCall"), ctx = Load)
+        return Name(id = identifier("visitConstructorCall $expression"), ctx = Load)
     }
 
     override fun visitCall(expression: IrCall, context: JsGenerationContext): expr {
@@ -137,17 +137,17 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
 
     override fun visitTypeOperator(expression: IrTypeOperatorCall, data: JsGenerationContext): expr {
         // TODO
-        return Name(id = identifier("visitTypeOperator"), ctx = Load)
+        return Name(id = identifier("visitTypeOperator $expression"), ctx = Load)
     }
 
     override fun visitDynamicMemberExpression(expression: IrDynamicMemberExpression, data: JsGenerationContext): expr {
         // TODO
-        return Name(id = identifier("visitDynamicMemberExpression"), ctx = Load)
+        return Name(id = identifier("visitDynamicMemberExpression $expression"), ctx = Load)
     }
 
     override fun visitDynamicOperatorExpression(expression: IrDynamicOperatorExpression, data: JsGenerationContext): expr {
         // TODO
-        return Name(id = identifier("visitVararg"), ctx = Load)
+        return Name(id = identifier("visitVararg $expression"), ctx = Load)
     }
 
     override fun visitComposite(expression: IrComposite, data: JsGenerationContext): expr {
