@@ -14,14 +14,14 @@ def <get-indices>():
     return <init>(0, <get-lastIndex>())
 
 def indexOf(element):
-    if jsEqeq(element, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@51e0f2eb):
+    if jsEqeq(element, visitConst-other Null):
         inductionVariable = 0
         last = jsBitOr(jsMinus(jsArrayLength(<this>), 1), 0)
         if jsLtEq(inductionVariable, last):
             visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrDoWhileLoopImpl@4c9a3ae
         
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@2626aa35:
+    if visitConst-other Boolean:
         inductionVariable = 0
         last = jsBitOr(jsMinus(jsArrayLength(<this>), 1), 0)
         if jsLtEq(inductionVariable, last):
@@ -31,13 +31,13 @@ def indexOf(element):
     return -1
 
 def lastIndexOf(element):
-    if jsEqeq(element, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5e9f1a4c):
+    if jsEqeq(element, visitConst-other Null):
         inductionVariable = jsBitOr(jsMinus(jsArrayLength(<this>), 1), 0)
         if jsLtEq(0, inductionVariable):
             visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrDoWhileLoopImpl@7eb03024
         
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@696ce057:
+    if visitConst-other Boolean:
         inductionVariable = jsBitOr(jsMinus(jsArrayLength(<this>), 1), 0)
         if jsLtEq(0, inductionVariable):
             visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrDoWhileLoopImpl@5393c04
@@ -86,13 +86,13 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
         if jsGt(count, 1):
             visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrCompositeImpl@386643e
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1c825108:
+        if visitConst-other Boolean:
             
         
         if visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@68d93913:
             appendElement(element, transform)
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4fce3ed7:
+        if visitConst-other Boolean:
             visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrBreakImpl@54033a65
         
     
@@ -220,15 +220,15 @@ def any(predicate):
     if isInterface(<this>, jsClass()):
         tmp = isEmpty()
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@2f6a923d:
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7a0eca26:
-            tmp = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@dc1fbbc
+    if visitConst-other Boolean:
+        if visitConst-other Boolean:
+            tmp = visitConst-other Boolean
         
     
     if tmp:
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@477ac359
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@39c65cb4:
+    if visitConst-other Boolean:
         
     
     tmp0_iterator = iterator()
@@ -238,22 +238,22 @@ def any(predicate):
             visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@64b05928
         
     
-    return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7cb77d5
+    return visitConst-other Boolean
 
 def all(predicate):
     tmp
     if isInterface(<this>, jsClass()):
         tmp = isEmpty()
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6dbcb435:
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1b06c3f8:
-            tmp = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@20eee47c
+    if visitConst-other Boolean:
+        if visitConst-other Boolean:
+            tmp = visitConst-other Boolean
         
     
     if tmp:
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@3e9a0143
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@23368646:
+    if visitConst-other Boolean:
         
     
     tmp0_iterator = iterator()
@@ -263,7 +263,7 @@ def all(predicate):
             visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@179b88a6
         
     
-    return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@456d03cd
+    return visitConst-other Boolean
 
 def joinToString(separator, prefix, postfix, limit, truncated, transform):
     return toString()
@@ -300,13 +300,13 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
         if jsGt(count, 1):
             visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrCompositeImpl@1618b4fa
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3f2fd933:
+        if visitConst-other Boolean:
             
         
         if visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@3bd05779:
             appendElement(element, transform)
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@599310ab:
+        if visitConst-other Boolean:
             visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrBreakImpl@770cbe5d
         
     
@@ -532,7 +532,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@7343df40
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@346c568d):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@7fa1004
     
     return Companion_instance
@@ -557,7 +557,7 @@ class EmptyList:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@2028ecf4
 def EmptyList_getInstance():
-    if jsEqeq(EmptyList_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@26dcce41):
+    if jsEqeq(EmptyList_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@328f4e46
     
     return EmptyList_instance
@@ -567,7 +567,7 @@ class EmptyIterator:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@7bd03562
 def EmptyIterator_getInstance():
-    if jsEqeq(EmptyIterator_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6e7da5f4):
+    if jsEqeq(EmptyIterator_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@6f099f77
     
     return EmptyIterator_instance
@@ -576,16 +576,16 @@ def <get-lastIndex>():
     return jsBitOr(jsMinus(<get-size>(), 1), 0)
 
 def removeAll(predicate):
-    return filterInPlace(predicate, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@745c8a04)
+    return filterInPlace(predicate, visitConst-other Boolean)
 
 def removeAll(predicate):
-    return filterInPlace(predicate, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6b4a2887)
+    return filterInPlace(predicate, visitConst-other Boolean)
 
 def filterInPlace(predicate, predicateResultToRemove):
     if jsNot(isInterface(<this>, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrCompositeImpl@153d5d5b
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@30360716:
+    if visitConst-other Boolean:
         
     
     writeIndex = 0
@@ -599,19 +599,19 @@ def filterInPlace(predicate, predicateResultToRemove):
         if jsLtEq(writeIndex, inductionVariable):
             visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrDoWhileLoopImpl@c26c83f
         
-        return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@59d09ff3
+        return visitConst-other Boolean
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@39fc17be:
-        return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5c43cb12
+    if visitConst-other Boolean:
+        return visitConst-other Boolean
     
 
 def filterInPlace(predicate, predicateResultToRemove):
-    result = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5eae392d
+    result = visitConst-other Boolean
     tmp0_with_0 = iterator()
     while hasNext():
         if jsEqeqeq(invoke(next()), predicateResultToRemove):
             remove()
-            result = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@155ae856
+            result = visitConst-other Boolean
         
     
     return result
@@ -711,7 +711,7 @@ class Key:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@9d112d2
 def Key_getInstance():
-    if jsEqeq(Key_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4f1422f7):
+    if jsEqeq(Key_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@2012f14e
     
     return Key_instance
@@ -746,7 +746,7 @@ class EmptyCoroutineContext:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@9def6d
 def EmptyCoroutineContext_getInstance():
-    if jsEqeq(EmptyCoroutineContext_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5e206acb):
+    if jsEqeq(EmptyCoroutineContext_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@10ca3611
     
     return EmptyCoroutineContext_instance
@@ -759,7 +759,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@9ba905b
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6801536):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@4142586b
     
     return Companion_instance
@@ -787,14 +787,14 @@ def <get-element>($this):
 def size($this):
     cur = $this
     size = 2
-    while visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3ed1cff:
+    while visitConst-other Boolean:
         tmp = left
         tmp0_elvis_lhs = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@1cccf90d
         tmp
-        if jsEqeq(tmp0_elvis_lhs, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7efceb57):
+        if jsEqeq(tmp0_elvis_lhs, visitConst-other Null):
             return size
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4a1ac68f:
+        if visitConst-other Boolean:
             tmp = tmp0_elvis_lhs
         
         cur = tmp
@@ -808,7 +808,7 @@ def contains($this, element):
 
 def containsAll($this, context):
     cur = context
-    while visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@60155d7f:
+    while visitConst-other Boolean:
         if jsNot(contains($this, element)):
             visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@78483404
         
@@ -816,8 +816,8 @@ def containsAll($this, context):
         if jsInstanceOf(next, jsClass()):
             cur = kotlin.coroutines.CombinedContext(next)
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5e4b9f22:
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@18681121:
+        if visitConst-other Boolean:
+            if visitConst-other Boolean:
                 return contains($this, visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@7862e409)
             
         
@@ -825,7 +825,7 @@ def containsAll($this, context):
 
 def writeReplace($this):
     n = size($this)
-    elements = fillArrayVal(Array(n), visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@196f7dfd)
+    elements = fillArrayVal(Array(n), visitConst-other Null)
     index = $sharedBox$create(0)
     fold(Unit_getInstance(), <no name provided>$factory(elements, index))
     tmp0_check_0 = jsEqeqeq($sharedBox$read(index), n)
@@ -1010,7 +1010,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@633f8efd
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@14467f3b):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@6980c9c3
     
     return Companion_instance
@@ -1053,19 +1053,19 @@ def KVariance_OUT_getInstance():
     return KVariance_OUT_instance
 
 def appendElement(element, transform):
-    if jsNot(jsEqeq(transform, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@50d91a0f)):
+    if jsNot(jsEqeq(transform, visitConst-other Null)):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrCompositeImpl@77a3c614
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3f341562:
+    if visitConst-other Boolean:
         if visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@472ab5a1:
             visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrCompositeImpl@58f252fe
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@473a66a0:
+        if visitConst-other Boolean:
             if jsInstanceOf(element, jsClass()):
                 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrCompositeImpl@7d2b2f3a
             
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7ef4f2b0:
-                if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7402bfe7:
+            if visitConst-other Boolean:
+                if visitConst-other Boolean:
                     visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrCompositeImpl@25014710
                 
             
@@ -1122,9 +1122,9 @@ def <Result__<get-isFailure>-impl>(this):
 def Result__getOrNull-impl(this):
     tmp
     if <Result__<get-isFailure>-impl>(this):
-        tmp = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@eb87c61
+        tmp = visitConst-other Null
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@39415641:
+    if visitConst-other Boolean:
         tmp = <Result__<get-value>-impl>(this)
         tmp = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@299f3c2
     
@@ -1136,9 +1136,9 @@ def Result__exceptionOrNull-impl(this):
     if jsInstanceOf(tmp0_subject, jsClass()):
         tmp = exception
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1b67ea5f:
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@8a11a19:
-            tmp = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@47393345
+    if visitConst-other Boolean:
+        if visitConst-other Boolean:
+            tmp = visitConst-other Null
         
     
     return tmp
@@ -1149,8 +1149,8 @@ def Result__toString-impl(this):
     if jsInstanceOf(tmp0_subject, jsClass()):
         tmp = toString(<Result__<get-value>-impl>(this))
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@48a26095:
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@519eab1e:
+    if visitConst-other Boolean:
+        if visitConst-other Boolean:
             tmp = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrStringConcatenationImpl@b280053
         
     
@@ -1161,7 +1161,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@4bab64a2
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4af2f991):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@4b5d2a4c
     
     return Companion_instance
@@ -1176,14 +1176,14 @@ def Result__equals-impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@551725e4
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@197cf24e:
+    if visitConst-other Boolean:
         
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@22d2d248
     if jsNot(equals(value, value)):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@396519b
     
-    return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7f3a92fd
+    return visitConst-other Boolean
 
 class Result:
     pass
@@ -1201,7 +1201,7 @@ def throwOnFailure():
     if jsInstanceOf(tmp, jsClass()):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrThrowImpl@14745c3c
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5b64bc02:
+    if visitConst-other Boolean:
         
     
 
@@ -1257,7 +1257,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@511966dc
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1dafe1d2):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@77e86a53
     
     return Companion_instance
@@ -1406,7 +1406,7 @@ def UByte__toByte-impl(this):
 
 def UByte__toShort-impl(this):
     tmp0_and_0 = kotlin.Short(<UByte__<get-data>-impl>(this))
-    tmp1_and_0 = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@720a3eff
+    tmp1_and_0 = visitConst-other Short
     return toShort(jsBitAnd(kotlin.Int(tmp0_and_0), kotlin.Int(tmp1_and_0)))
 
 def UByte__toInt-impl(this):
@@ -1420,7 +1420,7 @@ def UByte__toUByte-impl(this):
 
 def UByte__toUShort-impl(this):
     tmp0_and_0 = kotlin.Short(<UByte__<get-data>-impl>(this))
-    tmp1_and_0 = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5a934ef9
+    tmp1_and_0 = visitConst-other Short
     return <init>(toShort(jsBitAnd(kotlin.Int(tmp0_and_0), kotlin.Int(tmp1_and_0))))
 
 def UByte__toUInt-impl(this):
@@ -1445,14 +1445,14 @@ def UByte__equals-impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@2148849f
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@58afc14:
+    if visitConst-other Boolean:
         
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@18a3095d
     if jsNot(jsEqeqeq(data, data)):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@2165d4ab
     
-    return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4d529bc0
+    return visitConst-other Boolean
 
 class UByte:
     pass
@@ -1507,7 +1507,7 @@ def UByteArray__contains-impl(this, element):
     if jsNot(jsInstanceOf(tmp, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@eda7dd3
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@25b14faf:
+    if visitConst-other Boolean:
         
     
     tmp = <UByteArray__<get-storage>-impl>(this)
@@ -1517,7 +1517,7 @@ def UByteArray__contains-impl(this, element):
     if jsNot(jsInstanceOf(element, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@5a2cb8e5
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@83ffa7b:
+    if visitConst-other Boolean:
         
     
     tmp = unboxIntrinsic(this)
@@ -1544,14 +1544,14 @@ def UByteArray__equals-impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@432b883
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1f8c7cd7:
+    if visitConst-other Boolean:
         
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@3a42b2b6
     if jsNot(equals(storage, storage)):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@2a4f1bc5
     
-    return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4d145177
+    return visitConst-other Boolean
 
 class UByteArray:
     pass
@@ -1564,7 +1564,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@4c6d1f1f
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@70ab102c):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@2793f84c
     
     return Companion_instance
@@ -1732,14 +1732,14 @@ def UInt__equals-impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@ad6255e
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7b5de23c:
+    if visitConst-other Boolean:
         
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@2dd61113
     if jsNot(jsEqeqeq(data, data)):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@26bbbe9e
     
-    return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@72ad577b
+    return visitConst-other Boolean
 
 class UInt:
     pass
@@ -1800,7 +1800,7 @@ def UIntArray__contains-impl(this, element):
     if jsNot(jsInstanceOf(tmp, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@6ab6ec33
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@418a5228:
+    if visitConst-other Boolean:
         
     
     tmp = <UIntArray__<get-storage>-impl>(this)
@@ -1810,7 +1810,7 @@ def UIntArray__contains-impl(this, element):
     if jsNot(jsInstanceOf(element, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@6e12352d
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@a404535:
+    if visitConst-other Boolean:
         
     
     tmp = unboxIntrinsic(this)
@@ -1837,14 +1837,14 @@ def UIntArray__equals-impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@3c39c739
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@285289cd:
+    if visitConst-other Boolean:
         
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@3a7f7201
     if jsNot(equals(storage, storage)):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@3e7da4cb
     
-    return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3a2881d6
+    return visitConst-other Boolean
 
 class UIntArray:
     pass
@@ -1854,7 +1854,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@3f81872b
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@561fdee3):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@23092aba
     
     return Companion_instance
@@ -1867,7 +1867,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@641c872d
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4cf22d79):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@76be352d
     
     return Companion_instance
@@ -1916,7 +1916,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@39b88618
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@321f3b88):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@68374279
     
     return Companion_instance
@@ -2085,14 +2085,14 @@ def ULong__equals-impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@7a0f1f9d
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@462d4f3c:
+    if visitConst-other Boolean:
         
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@17b41d39
     if jsNot(equals(data)):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@d98ce13
     
-    return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4865434e
+    return visitConst-other Boolean
 
 class ULong:
     pass
@@ -2153,7 +2153,7 @@ def ULongArray__contains-impl(this, element):
     if jsNot(jsInstanceOf(tmp, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@64641998
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@18cf55df:
+    if visitConst-other Boolean:
         
     
     tmp = <ULongArray__<get-storage>-impl>(this)
@@ -2163,7 +2163,7 @@ def ULongArray__contains-impl(this, element):
     if jsNot(jsInstanceOf(element, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@7a5db772
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4e41fbf5:
+    if visitConst-other Boolean:
         
     
     tmp = unboxIntrinsic(this)
@@ -2190,14 +2190,14 @@ def ULongArray__equals-impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@f776b4a
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@8d902f:
+    if visitConst-other Boolean:
         
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@62144e81
     if jsNot(equals(storage, storage)):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@7ab8f93
     
-    return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@14c7ab73
+    return visitConst-other Boolean
 
 class ULongArray:
     pass
@@ -2207,7 +2207,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@2f73cc9d
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6614987b):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@7bb8ede7
     
     return Companion_instance
@@ -2220,7 +2220,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@25af5c7f
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@58d5bdb0):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@9162869
     
     return Companion_instance
@@ -2256,8 +2256,8 @@ def getProgressionLastElement(start, end, step):
         if jsGtEq(uintCompare(<UInt__<get-data>-impl>(start), <UInt__<get-data>-impl>(end)), 0):
             tmp = end
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3d1d3525:
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@2b71a12e:
+        if visitConst-other Boolean:
+            if visitConst-other Boolean:
                 tmp0_minus_0 = differenceModulo(end, start, <init>(step))
                 tmp = <init>(jsBitOr(jsMinus(<UInt__<get-data>-impl>(end), <UInt__<get-data>-impl>(tmp0_minus_0)), 0))
             
@@ -2269,8 +2269,8 @@ def getProgressionLastElement(start, end, step):
         if jsLtEq(uintCompare(<UInt__<get-data>-impl>(start), <UInt__<get-data>-impl>(end)), 0):
             tmp = end
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7a2fd9de:
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@375682a5:
+        if visitConst-other Boolean:
+            if visitConst-other Boolean:
                 tmp1_toUInt_0 = jsBitOr(jsUnaryMinus(step), 0)
                 tmp2_plus_0 = differenceModulo(start, end, <init>(tmp1_toUInt_0))
                 tmp = <init>(jsBitOr(jsPlus(<UInt__<get-data>-impl>(end), <UInt__<get-data>-impl>(tmp2_plus_0)), 0))
@@ -2278,7 +2278,7 @@ def getProgressionLastElement(start, end, step):
         
         tmp = tmp
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@2ac00dc9:
+    if visitConst-other Boolean:
         visitThrow org.jetbrains.kotlin.ir.expressions.impl.IrThrowImpl@33293b34
     
     return tmp
@@ -2290,8 +2290,8 @@ def getProgressionLastElement(start, end, step):
         if jsGtEq(ulongCompare(<ULong__<get-data>-impl>(start), <ULong__<get-data>-impl>(end)), 0):
             tmp = end
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@42122f28:
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@197da701:
+        if visitConst-other Boolean:
+            if visitConst-other Boolean:
                 tmp0_minus_0 = differenceModulo(end, start, <init>(step))
                 tmp = <init>(minus(<ULong__<get-data>-impl>(tmp0_minus_0)))
             
@@ -2303,8 +2303,8 @@ def getProgressionLastElement(start, end, step):
         if jsLtEq(ulongCompare(<ULong__<get-data>-impl>(start), <ULong__<get-data>-impl>(end)), 0):
             tmp = end
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@d88f81c:
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@34ac72c3:
+        if visitConst-other Boolean:
+            if visitConst-other Boolean:
                 tmp1_toULong_0 = unaryMinus()
                 tmp2_plus_0 = differenceModulo(start, end, <init>(tmp1_toULong_0))
                 tmp = <init>(plus(<ULong__<get-data>-impl>(tmp2_plus_0)))
@@ -2312,7 +2312,7 @@ def getProgressionLastElement(start, end, step):
         
         tmp = tmp
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@40e41f88:
+    if visitConst-other Boolean:
         visitThrow org.jetbrains.kotlin.ir.expressions.impl.IrThrowImpl@27b7913
     
     return tmp
@@ -2324,8 +2324,8 @@ def differenceModulo(a, b, c):
     if jsGtEq(uintCompare(<UInt__<get-data>-impl>(ac), <UInt__<get-data>-impl>(bc)), 0):
         tmp = <init>(jsBitOr(jsMinus(<UInt__<get-data>-impl>(ac), <UInt__<get-data>-impl>(bc)), 0))
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@630a32f8:
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3344c1d7:
+    if visitConst-other Boolean:
+        if visitConst-other Boolean:
             tmp0_plus_0 = <init>(jsBitOr(jsMinus(<UInt__<get-data>-impl>(ac), <UInt__<get-data>-impl>(bc)), 0))
             tmp = <init>(jsBitOr(jsPlus(<UInt__<get-data>-impl>(tmp0_plus_0), <UInt__<get-data>-impl>(c)), 0))
         
@@ -2339,8 +2339,8 @@ def differenceModulo(a, b, c):
     if jsGtEq(ulongCompare(<ULong__<get-data>-impl>(ac), <ULong__<get-data>-impl>(bc)), 0):
         tmp = <init>(minus(<ULong__<get-data>-impl>(bc)))
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7fad58f8:
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@259f0fdb:
+    if visitConst-other Boolean:
+        if visitConst-other Boolean:
             tmp0_plus_0 = <init>(minus(<ULong__<get-data>-impl>(bc)))
             tmp = <init>(plus(<ULong__<get-data>-impl>(c)))
         
@@ -2355,7 +2355,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@5938d600
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5a6e1f51):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@5c2424a0
     
     return Companion_instance
@@ -2540,14 +2540,14 @@ def UShort__equals-impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@6015c745
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@71e55649:
+    if visitConst-other Boolean:
         
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@65eb16f7
     if jsNot(jsEqeqeq(data, data)):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@776b7fa2
     
-    return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@2403c1c5
+    return visitConst-other Boolean
 
 class UShort:
     pass
@@ -2599,7 +2599,7 @@ def UShortArray__contains-impl(this, element):
     if jsNot(jsInstanceOf(tmp, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@900ffc4
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@429691:
+    if visitConst-other Boolean:
         
     
     tmp = <UShortArray__<get-storage>-impl>(this)
@@ -2609,7 +2609,7 @@ def UShortArray__contains-impl(this, element):
     if jsNot(jsInstanceOf(element, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@4f724360
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@c546f73:
+    if visitConst-other Boolean:
         
     
     tmp = unboxIntrinsic(this)
@@ -2636,14 +2636,14 @@ def UShortArray__equals-impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@19412eef
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@485aa0d9:
+    if visitConst-other Boolean:
         
     
     tmp0_other_with_cast = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@5ca69552
     if jsNot(equals(storage, storage)):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@6bbff652
     
-    return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@45ea6c24
+    return visitConst-other Boolean
 
 class UShortArray:
     pass
@@ -2675,8 +2675,8 @@ def ulongDivide(v1, v2):
         if jsLt(ulongCompare(<ULong__<get-data>-impl>(v1), <ULong__<get-data>-impl>(v2)), 0):
             tmp = <init>(<init>(0, 0))
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7a02fa85:
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@715ea64a:
+        if visitConst-other Boolean:
+            if visitConst-other Boolean:
                 tmp = <init>(<init>(1, 0))
             
         
@@ -2693,8 +2693,8 @@ def ulongDivide(v1, v2):
     if jsGtEq(ulongCompare(<ULong__<get-data>-impl>(tmp0_compareTo_0), <ULong__<get-data>-impl>(tmp1_compareTo_0)), 0):
         tmp = 1
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@22bf3c03:
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@763a72da:
+    if visitConst-other Boolean:
+        if visitConst-other Boolean:
             tmp = 0
         
     
@@ -2709,8 +2709,8 @@ def ulongRemainder(v1, v2):
         if jsLt(ulongCompare(<ULong__<get-data>-impl>(v1), <ULong__<get-data>-impl>(v2)), 0):
             tmp = v1
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@80fc9d6:
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@631c6ef4:
+        if visitConst-other Boolean:
+            if visitConst-other Boolean:
                 tmp = <init>(minus(<ULong__<get-data>-impl>(v2)))
             
         
@@ -2727,8 +2727,8 @@ def ulongRemainder(v1, v2):
     if jsGtEq(ulongCompare(<ULong__<get-data>-impl>(tmp0_compareTo_0), <ULong__<get-data>-impl>(tmp1_compareTo_0)), 0):
         tmp = divisor
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@e93f8b4:
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@2f46bc25:
+    if visitConst-other Boolean:
+        if visitConst-other Boolean:
             tmp = <init>(0, 0)
         
     
@@ -2762,23 +2762,23 @@ def doubleToUInt(v):
     if isNaN():
         tmp = <init>(0)
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@79f40cc5:
+    if visitConst-other Boolean:
         tmp0_toDouble_0 = <init>(0)
         if jsLtEq(v, uintToDouble(<UInt__<get-data>-impl>(tmp0_toDouble_0))):
             tmp = <init>(0)
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@258350de:
+        if visitConst-other Boolean:
             tmp1_toDouble_0 = <init>(-1)
             if jsGtEq(v, uintToDouble(<UInt__<get-data>-impl>(tmp1_toDouble_0))):
                 tmp = <init>(-1)
             
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6265170a:
+            if visitConst-other Boolean:
                 if jsLtEq(v, kotlin.Double(MAX_VALUE)):
                     tmp2_toUInt_0 = numberToInt(v)
                     tmp = <init>(tmp2_toUInt_0)
                 
-                if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@28486181:
-                    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@661d49d1:
+                if visitConst-other Boolean:
+                    if visitConst-other Boolean:
                         tmp3_toUInt_0 = numberToInt(jsMinus(v, MAX_VALUE))
                         tmp5_plus_0 = <init>(tmp3_toUInt_0)
                         tmp4_toUInt_0 = MAX_VALUE
@@ -2796,24 +2796,24 @@ def doubleToULong(v):
     if isNaN():
         tmp = <init>(<init>(0, 0))
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@60b16a5b:
+    if visitConst-other Boolean:
         tmp0_toDouble_0 = <init>(<init>(0, 0))
         if jsLtEq(v, ulongToDouble(<ULong__<get-data>-impl>(tmp0_toDouble_0))):
             tmp = <init>(<init>(0, 0))
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4fb7a903:
+        if visitConst-other Boolean:
             tmp1_toDouble_0 = <init>(<init>(-1, -1))
             if jsGtEq(v, ulongToDouble(<ULong__<get-data>-impl>(tmp1_toDouble_0))):
                 tmp = <init>(<init>(-1, -1))
             
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@fa4b4a7:
-                if jsLt(v, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@efba38a):
+            if visitConst-other Boolean:
+                if jsLt(v, visitConst-other Double):
                     tmp2_toULong_0 = numberToLong(v)
                     tmp = <init>(tmp2_toULong_0)
                 
-                if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@56743526:
-                    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@c509742:
-                        tmp3_toULong_0 = numberToLong(jsMinus(v, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@35ffe3ac))
+                if visitConst-other Boolean:
+                    if visitConst-other Boolean:
+                        tmp3_toULong_0 = numberToLong(jsMinus(v, visitConst-other Double))
                         tmp4_plus_0 = <init>(tmp3_toULong_0)
                         tmp5_plus_0 = <init>(<init>(0, -2147483648))
                         tmp = <init>(plus(<ULong__<get-data>-impl>(tmp5_plus_0)))
@@ -3005,7 +3005,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@2c13db34
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@55398902):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@35ddc99b
     
     return Companion_instance
@@ -3018,7 +3018,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@79bc0ceb
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@129e23fc):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@714245ff
     
     return Companion_instance
@@ -3031,7 +3031,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@73858ba
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@68b4e3a1):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@315c13b4
     
     return Companion_instance
@@ -3047,7 +3047,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@4679df4b
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5b96272e):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@4c5c8926
     
     return Companion_instance
@@ -3060,7 +3060,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@60e4d95
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@461b078f):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@35f0652c
     
     return Companion_instance
@@ -3073,7 +3073,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@5e2975ff
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3b48e216):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@65e8bcef
     
     return Companion_instance
@@ -3086,7 +3086,7 @@ class Unit:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@2dac0733
 def Unit_getInstance():
-    if jsEqeq(Unit_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6b2f16b9):
+    if jsEqeq(Unit_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@67d15f2
     
     return Unit_instance
@@ -3261,7 +3261,7 @@ def getProgressionLastElement(start, end, step):
     if jsLt(step, 0):
         tmp = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@736d26f1
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@efe75a2:
+    if visitConst-other Boolean:
         visitThrow org.jetbrains.kotlin.ir.expressions.impl.IrThrowImpl@a49cdd6
     
     return tmp
@@ -3274,7 +3274,7 @@ def getProgressionLastElement(start, end, step):
     if jsLt(compareTo(<init>(0, 0)), 0):
         tmp = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@542024ac
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@297bbd41:
+    if visitConst-other Boolean:
         visitThrow org.jetbrains.kotlin.ir.expressions.impl.IrThrowImpl@3b5f72fa
     
     return tmp
@@ -3298,7 +3298,7 @@ class ByteCompanionObject:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@7e30dfa4
 def ByteCompanionObject_getInstance():
-    if jsEqeq(ByteCompanionObject_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@46c805be):
+    if jsEqeq(ByteCompanionObject_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@4150175
     
     return ByteCompanionObject_instance
@@ -3308,7 +3308,7 @@ class ShortCompanionObject:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@551e9796
 def ShortCompanionObject_getInstance():
-    if jsEqeq(ShortCompanionObject_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@287213ac):
+    if jsEqeq(ShortCompanionObject_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@74b8bc34
     
     return ShortCompanionObject_instance
@@ -3318,7 +3318,7 @@ class IntCompanionObject:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@3b10c5d
 def IntCompanionObject_getInstance():
-    if jsEqeq(IntCompanionObject_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@88d9da0):
+    if jsEqeq(IntCompanionObject_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@76022ebd
     
     return IntCompanionObject_instance
@@ -3328,7 +3328,7 @@ class FloatCompanionObject:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@104305f
 def FloatCompanionObject_getInstance():
-    if jsEqeq(FloatCompanionObject_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@38cac3f9):
+    if jsEqeq(FloatCompanionObject_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@642bd75c
     
     return FloatCompanionObject_instance
@@ -3338,7 +3338,7 @@ class DoubleCompanionObject:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@2e643cad
 def DoubleCompanionObject_getInstance():
-    if jsEqeq(DoubleCompanionObject_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@281b0f38):
+    if jsEqeq(DoubleCompanionObject_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@2bde6971
     
     return DoubleCompanionObject_instance
@@ -3348,7 +3348,7 @@ class StringCompanionObject:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@4e51a9f3
 def StringCompanionObject_getInstance():
-    if jsEqeq(StringCompanionObject_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@605d67f8):
+    if jsEqeq(StringCompanionObject_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@6e56373e
     
     return StringCompanionObject_instance
@@ -3358,7 +3358,7 @@ class BooleanCompanionObject:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@2cbad233
 def BooleanCompanionObject_getInstance():
-    if jsEqeq(BooleanCompanionObject_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@34289e5f):
+    if jsEqeq(BooleanCompanionObject_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@363843e
     
     return BooleanCompanionObject_instance
@@ -3378,8 +3378,8 @@ def copyToArray(collection):
         tmp0_unsafeCast_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@15eaa2ce
         tmp = kotlin.Any?(tmp0_unsafeCast_0)
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5b891149:
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1b841396:
+    if visitConst-other Boolean:
+        if visitConst-other Boolean:
             tmp1_unsafeCast_0 = copyToArrayImpl(collection)
             tmp = kotlin.Any?(tmp1_unsafeCast_0)
         
@@ -3408,7 +3408,7 @@ def copyToArrayImpl(collection, array):
     
     if jsLt(index, jsArrayLength(array)):
         tmp = index
-        tmp2_unsafeCast_0 = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@581da9e6
+        tmp2_unsafeCast_0 = visitConst-other Null
         jsArraySet(array, tmp, kotlin.Any?(tmp2_unsafeCast_0))
     
     return array
@@ -3599,12 +3599,12 @@ def <get-INV_2_53>():
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@1606ecbb
 def INV_2_26$init$():
-    tmp0_pow_0 = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5bb00dcc
+    tmp0_pow_0 = visitConst-other Double
     tmp1_pow_0 = -26
     return pow(tmp0_pow_0, kotlin.Double(tmp1_pow_0))
 
 def INV_2_53$init$():
-    tmp0_pow_0 = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@55732ae6
+    tmp0_pow_0 = visitConst-other Double
     tmp1_pow_0 = -53
     return pow(tmp0_pow_0, kotlin.Double(tmp1_pow_0))
 
@@ -3634,7 +3634,7 @@ class NothingKClassImpl:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@5e9feddd
 def NothingKClassImpl_getInstance():
-    if jsEqeq(NothingKClassImpl_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1bad6995):
+    if jsEqeq(NothingKClassImpl_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@8c790e7
     
     return NothingKClassImpl_instance
@@ -3684,7 +3684,7 @@ def createDynamicKType():
 def createKTypeParameter(name, upperBounds, variance):
     tmp0_subject = variance
     kVariance = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@363f986e
-    return <init>(name, asList(), kVariance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3fc2197d)
+    return <init>(name, asList(), kVariance, visitConst-other Boolean)
 
 def getStarKTypeProjection():
     return <get-STAR>()
@@ -3699,7 +3699,7 @@ def createContravariantKTypeProjection(type):
     return contravariant(type)
 
 def asString($this):
-    if jsEqeq(variance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7879e3ac):
+    if jsEqeq(variance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@4b288c86
     
     return jsPlus(prefixString(), toString())
@@ -3722,7 +3722,7 @@ def prefixString():
     if equals(KVariance_OUT_getInstance()):
         tmp = 'out '
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@70f5f6c7:
+    if visitConst-other Boolean:
         noWhenBranchMatchedException()
     
     return tmp
@@ -3732,7 +3732,7 @@ class DynamicKType:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@476fb241
 def DynamicKType_getInstance():
-    if jsEqeq(DynamicKType_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6270fadb):
+    if jsEqeq(DynamicKType_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@2cee7445
     
     return DynamicKType_instance
@@ -3813,7 +3813,7 @@ class PrimitiveClasses:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@467c9ad9
 def PrimitiveClasses_getInstance():
-    if jsEqeq(PrimitiveClasses_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@79703b86):
+    if jsEqeq(PrimitiveClasses_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@2f8892c5
     
     return PrimitiveClasses_instance
@@ -3900,14 +3900,14 @@ def <no name provided>$factory($arity):
 
 def functionClasses$init$():
     tmp0_arrayOfNulls_0 = 0
-    return fillArrayVal(Array(tmp0_arrayOfNulls_0), visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@20de2518)
+    return fillArrayVal(Array(tmp0_arrayOfNulls_0), visitConst-other Null)
 
 def getKClass(jClass):
     tmp
     if kotlin.Boolean(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@4398d):
         tmp = getKClassM(kotlin.Any?(jClass))
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@722a2ba2:
+    if visitConst-other Boolean:
         tmp = getKClass1(kotlin.Any?(jClass))
     
     return tmp
@@ -3922,7 +3922,7 @@ def getKClassM(jClasses):
         tmp0_unsafeCast_0 = NothingKClassImpl_getInstance()
         tmp = kotlin.Any?(tmp0_unsafeCast_0)
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@31eb5ed6:
+    if visitConst-other Boolean:
         tmp1_unsafeCast_0 = <init>()
         tmp = kotlin.Any?(tmp1_unsafeCast_0)
     
@@ -3941,12 +3941,12 @@ def getKClass1(jClass):
             visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@6ae247b7
             tmp = kClass
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@35f79e6d:
+        if visitConst-other Boolean:
             tmp = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicMemberExpressionImpl@742ce3ad
         
         tmp = kotlin.reflect.KClass<T>(tmp)
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@73ffe7b0:
+    if visitConst-other Boolean:
         tmp = <init>(jClass)
     
     return tmp
@@ -3963,8 +3963,8 @@ def getKClassFromExpression(e):
         if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@4f573b84:
             tmp = intClass
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@d1ef2b2:
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@399e43d0:
+        if visitConst-other Boolean:
+            if visitConst-other Boolean:
                 tmp = doubleClass
             
         
@@ -3977,49 +3977,49 @@ def getKClassFromExpression(e):
         tmp = PrimitiveClasses_getInstance()
         tmp = functionClass(kotlin.Int(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicMemberExpressionImpl@4893d628))
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@24a024c8:
+    if visitConst-other Boolean:
         tmp
         if isBooleanArray(e):
             tmp = booleanArrayClass
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1a714d1:
+        if visitConst-other Boolean:
             if isCharArray(e):
                 tmp = charArrayClass
             
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3b782329:
+            if visitConst-other Boolean:
                 if isByteArray(e):
                     tmp = byteArrayClass
                 
-                if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@215f2743:
+                if visitConst-other Boolean:
                     if isShortArray(e):
                         tmp = shortArrayClass
                     
-                    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@204a0e3c:
+                    if visitConst-other Boolean:
                         if isIntArray(e):
                             tmp = intArrayClass
                         
-                        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6f2530db:
+                        if visitConst-other Boolean:
                             if isLongArray(e):
                                 tmp = longArrayClass
                             
-                            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@133420f8:
+                            if visitConst-other Boolean:
                                 if isFloatArray(e):
                                     tmp = floatArrayClass
                                 
-                                if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1fd42c99:
+                                if visitConst-other Boolean:
                                     if isDoubleArray(e):
                                         tmp = doubleArrayClass
                                     
-                                    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@393e3f4b:
+                                    if visitConst-other Boolean:
                                         if isInterface(e, jsClass()):
                                             tmp = getKClass(jsClass())
                                         
-                                        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@250cf6a4:
+                                        if visitConst-other Boolean:
                                             if isArray(e):
                                                 tmp = arrayClass
                                             
-                                            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7d60ab:
-                                                if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@13668c8b:
+                                            if visitConst-other Boolean:
+                                                if visitConst-other Boolean:
                                                     constructor = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicMemberExpressionImpl@47ffce5d
                                                     tmp
                                                     if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@5165783c:
@@ -4028,7 +4028,7 @@ def getKClassFromExpression(e):
                                                     if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@3808bdfc:
                                                         tmp = throwableClass
                                                     
-                                                    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1fd226da:
+                                                    if visitConst-other Boolean:
                                                         jsClass = kotlin.js.JsClass<T>(constructor)
                                                         tmp = getKClass1(jsClass)
                                                     
@@ -4126,7 +4126,7 @@ def compareTo(other, ignoreCase):
             visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@30d4d6fb
         
         start = 0
-        while visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@245504d:
+        while visitConst-other Boolean:
             tmp0_minOf_0 = jsBitOr(jsPlus(start, 16), 0)
             end = min(int32ArrayOf(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl@507099cc))
             tmp1_substring_0 = start
@@ -4155,7 +4155,7 @@ def compareTo(other, ignoreCase):
         
         return jsBitOr(jsMinus(n1, n2), 0)
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@26a2106e:
+    if visitConst-other Boolean:
         return compareTo(<this>, other)
     
 
@@ -4231,7 +4231,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@d57ba2a
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@48b5a380):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@54a336d8
     
     return Companion_instance
@@ -4280,7 +4280,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@1cbfca27
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@258cb16c):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@3663806a
     
     return Companion_instance
@@ -4333,7 +4333,7 @@ class DefaultConstructorMarker:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@6fee485b
 def DefaultConstructorMarker_getInstance():
-    if jsEqeq(DefaultConstructorMarker_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@89d4a1a):
+    if jsEqeq(DefaultConstructorMarker_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@9fd26ec
     
     return DefaultConstructorMarker_instance
@@ -4396,7 +4396,7 @@ def doubleArrayIterator(array):
 
 def booleanArray(size):
     tmp0_withType_0 = 'BooleanArray'
-    tmp1_withType_0 = fillArrayVal(Array(size), visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@319fe034)
+    tmp1_withType_0 = fillArrayVal(Array(size), visitConst-other Boolean)
     visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@34b2a6f4
     tmp2_unsafeCast_0 = tmp1_withType_0
     return kotlin.Any?(tmp2_unsafeCast_0)
@@ -4492,7 +4492,7 @@ def getNumberHashCode(obj):
     if jsEqeqeq(kotlin.Any?(tmp0_unsafeCast_0), obj):
         return numberToInt(obj)
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@505806c8:
+    if visitConst-other Boolean:
         
     
     jsArraySet(bufFloat64, 0, obj)
@@ -4511,7 +4511,7 @@ def bufInt32$init$():
     return kotlin.Any?(tmp0_unsafeCast_0)
 
 def lowIndex$init$():
-    jsArraySet(bufFloat64, 0, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@434fa353)
+    jsArraySet(bufFloat64, 0, visitConst-other Double)
     return visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@68b7a133
 
 class DoNotIntrinsify:
@@ -4523,7 +4523,7 @@ def charSequenceGet(a, index):
         tmp0_unsafeCast_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@99e68b5
         tmp = <init>(kotlin.Any?(tmp0_unsafeCast_0))
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@13437ce5:
+    if visitConst-other Boolean:
         tmp = get(index)
     
     return tmp
@@ -4537,7 +4537,7 @@ def charSequenceLength(a):
         tmp0_unsafeCast_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicMemberExpressionImpl@55a430b2
         tmp = kotlin.Any?(tmp0_unsafeCast_0)
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3e492199:
+    if visitConst-other Boolean:
         tmp = <get-length>()
     
     return tmp
@@ -4548,13 +4548,13 @@ def charSequenceSubSequence(a, startIndex, endIndex):
         tmp0_unsafeCast_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@61186191
         tmp = kotlin.Any?(tmp0_unsafeCast_0)
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4e9ab294:
+    if visitConst-other Boolean:
         tmp = subSequence(startIndex, endIndex)
     
     return tmp
 
 def arrayToString(array):
-    return joinToString$default(', ', '[', ']', 0, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@762618bb, <no name provided>$factory(), 24, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@51413e47)
+    return joinToString$default(', ', '[', ']', 0, visitConst-other Null, <no name provided>$factory(), 24, visitConst-other Null)
 
 class <no name provided>:
     pass
@@ -4571,12 +4571,12 @@ def compareTo(a, b):
         if jsEqeqeq(jsTypeOf(b), 'number'):
             tmp = doubleCompareTo(a, b)
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7ac85fbe:
+        if visitConst-other Boolean:
             if jsInstanceOf(b, jsClass()):
                 tmp = doubleCompareTo(a, toDouble())
             
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6799bd93:
-                if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@21845b36:
+            if visitConst-other Boolean:
+                if visitConst-other Boolean:
                     tmp = primitiveCompareTo(a, b)
                 
             
@@ -4586,7 +4586,7 @@ def compareTo(a, b):
     if visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@6f750dea:
         tmp = primitiveCompareTo(a, b)
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@380ea757:
+    if visitConst-other Boolean:
         tmp = compareToDoNotIntrinsicify(kotlin.Comparable<dynamic>(a), b)
     
     return tmp
@@ -4604,7 +4604,7 @@ def doubleCompareTo(a, b):
         if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@50cf26b7:
             tmp = 0
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1fdc2d45:
+        if visitConst-other Boolean:
             tmp0_asDynamic_0 = 1
             ia = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@570f2cf7
             tmp
@@ -4612,12 +4612,12 @@ def doubleCompareTo(a, b):
             if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@15d844b2:
                 tmp = 0
             
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@48a07e1:
+            if visitConst-other Boolean:
                 if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@2295535f:
                     tmp = -1
                 
-                if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@2d9b7ff9:
-                    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@62b71cfa:
+                if visitConst-other Boolean:
+                    if visitConst-other Boolean:
                         tmp = 1
                     
                 
@@ -4629,7 +4629,7 @@ def doubleCompareTo(a, b):
     if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@2d0f850:
         tmp = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@236d434f
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@48ca44cd:
+    if visitConst-other Boolean:
         tmp = -1
     
     return tmp
@@ -4673,7 +4673,7 @@ def toString(o):
     if isArrayish(o):
         tmp = '[...]'
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6f8060ac:
+    if visitConst-other Boolean:
         tmp0_unsafeCast_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@1df1bd44
         tmp = kotlin.Any?(tmp0_unsafeCast_0)
     
@@ -4699,14 +4699,14 @@ def hashCode(obj):
         if kotlin.Any?(obj):
             tmp = 1
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4a5379e1:
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5e388a77:
+        if visitConst-other Boolean:
+            if visitConst-other Boolean:
                 tmp = 0
             
         
         tmp = tmp
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@890196b:
+    if visitConst-other Boolean:
         tmp = getStringHashCode(kotlin.String(js('String(obj)')))
     
     return tmp
@@ -4729,7 +4729,7 @@ def equals(obj1, obj2):
         return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@71c1ba6d
     
     if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@287d9e0c:
-        return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@411e5672
+        return visitConst-other Boolean
     
     if visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@338e70c8:
         return kotlin.Boolean(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@3a24306e)
@@ -4742,9 +4742,9 @@ def equals(obj1, obj2):
         if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@1e717745:
             tmp
             if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@338f96f5:
-                tmp = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@a6a7c4f
+                tmp = visitConst-other Boolean
             
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7431f4b8:
+            if visitConst-other Boolean:
                 tmp0_asDynamic_0 = 1
                 tmp = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@5c2fc86
                 tmp1_asDynamic_0 = 1
@@ -4752,8 +4752,8 @@ def equals(obj1, obj2):
             
             tmp = tmp
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4349f52c:
-            tmp = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@2522bea6
+        if visitConst-other Boolean:
+            tmp = visitConst-other Boolean
         
         return tmp
     
@@ -4771,7 +4771,7 @@ def captureStack(instance, constructorFunction):
     if visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@52baaf87:
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@23106076
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@cec9f23:
+    if visitConst-other Boolean:
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@57999175
     
 
@@ -4783,14 +4783,14 @@ def newThrowable(message, cause):
         if isUndefined(cause):
             tmp = message
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@571ecfe2:
+        if visitConst-other Boolean:
             tmp0_safe_receiver = cause
             tmp1_elvis_lhs = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@18f28a93
             tmp = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@6b0169ce
         
         tmp = tmp
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3048ec86:
+    if visitConst-other Boolean:
         tmp2_elvis_lhs = message
         tmp = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@51787bc1
     
@@ -4809,19 +4809,19 @@ def extendThrowable(this_, message, cause):
 def setPropertiesToThrowableInstance(this_, message, cause):
     if jsNot(hasOwnPrototypeProperty(kotlin.Any(this_), 'message')):
         tmp
-        if jsEqeq(message, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@32c8df0b):
+        if jsEqeq(message, visitConst-other Null):
             tmp
-            if jsNot(jsEqeqeq(message, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1e27ed87)):
+            if jsNot(jsEqeqeq(message, visitConst-other Null)):
                 tmp0_safe_receiver = cause
                 tmp1_elvis_lhs = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@6bc0b35c
                 tmp = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@337b9526
             
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@18fa4822:
+            if visitConst-other Boolean:
                 tmp = <get-undefined>()
             
             tmp = tmp
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@46e03c31:
+        if visitConst-other Boolean:
             tmp = message
         
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@3bafa95b
@@ -4849,10 +4849,10 @@ def getCoroutineContext():
 
 def ensureNotNull(v):
     tmp
-    if jsEqeq(v, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@370bd951):
+    if jsEqeq(v, visitConst-other Null):
         THROW_NPE()
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@73859ca8:
+    if visitConst-other Boolean:
         tmp = v
     
     return tmp
@@ -4892,7 +4892,7 @@ class Companion:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@1e5066ac
 def Companion_getInstance():
-    if jsEqeq(Companion_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@361069db):
+    if jsEqeq(Companion_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@168f1f0f
     
     return Companion_instance
@@ -4979,7 +4979,7 @@ def multiply(other):
         if isNegative():
             tmp = multiply(negate())
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@53a52b3f:
+        if visitConst-other Boolean:
             tmp = negate()
         
         return tmp
@@ -5038,13 +5038,13 @@ def divide(other):
         if equalsLong(MIN_VALUE):
             return ONE
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@24763d10:
+        if visitConst-other Boolean:
             halfThis = shiftRight(1)
             approx = shiftLeft(1)
             if equalsLong(ZERO):
                 return visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@5ad0a620
             
-            if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@13c02cec:
+            if visitConst-other Boolean:
                 rem = subtract(multiply(approx))
                 return add(div(other))
             
@@ -5058,7 +5058,7 @@ def divide(other):
         if isNegative():
             tmp = div(negate())
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5c866852:
+        if visitConst-other Boolean:
             tmp = negate()
         
         return tmp
@@ -5070,7 +5070,7 @@ def divide(other):
     rem = <this>
     while greaterThanOrEqual(other):
         approxDouble = jsDiv(toNumber(), toNumber())
-        approx2 = max(visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4d400e77, floor(approxDouble))
+        approx2 = max(visitConst-other Double, floor(approxDouble))
         log2 = ceil(jsDiv(log(approx2), <get-LN2>()))
         delta = visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@c63a15f
         approxRes = fromNumber(approx2)
@@ -5096,11 +5096,11 @@ def shiftLeft(numBits):
     if jsEqeqeq(numBits, 0):
         return <this>
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@403ca4ec:
+    if visitConst-other Boolean:
         if jsLt(numBits, 32):
             return <init>(jsBitShiftL(low, numBits), jsBitOr(jsBitShiftL(high, numBits), jsBitShiftRU(low, jsBitOr(jsMinus(32, numBits), 0))))
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@23338420:
+        if visitConst-other Boolean:
             return <init>(0, jsBitShiftL(low, jsBitOr(jsMinus(numBits, 32), 0)))
         
     
@@ -5110,11 +5110,11 @@ def shiftRight(numBits):
     if jsEqeqeq(numBits, 0):
         return <this>
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@47609e3d:
+    if visitConst-other Boolean:
         if jsLt(numBits, 32):
             return <init>(jsBitOr(jsBitShiftRU(low, numBits), jsBitShiftL(high, jsBitOr(jsMinus(32, numBits), 0))), jsBitShiftR(high, numBits))
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@67a2fb00:
+        if visitConst-other Boolean:
             return <init>(jsBitShiftR(high, jsBitOr(jsMinus(numBits, 32), 0)), visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@50165085)
         
     
@@ -5124,17 +5124,17 @@ def shiftRightUnsigned(numBits):
     if jsEqeqeq(numBits, 0):
         return <this>
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4ed74b13:
+    if visitConst-other Boolean:
         if jsLt(numBits, 32):
             return <init>(jsBitOr(jsBitShiftRU(low, numBits), jsBitShiftL(high, jsBitOr(jsMinus(32, numBits), 0))), jsBitShiftRU(high, numBits))
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7e18b9e6:
+        if visitConst-other Boolean:
             visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrCompositeImpl@3f793327
         
     
 
 def toNumber():
-    return jsPlus(jsMult(high, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@35f15782), getLowBitsUnsigned())
+    return jsPlus(jsMult(high, visitConst-other Double), getLowBitsUnsigned())
 
 def equalsLong(other):
     return visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@23efa674
@@ -5158,14 +5158,14 @@ def toStringImpl(radix):
             tmp0_unsafeCast_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@1c696163
             return jsPlus(tmp, kotlin.Any?(tmp0_unsafeCast_0))
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@64027866:
+        if visitConst-other Boolean:
             return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrStringConcatenationImpl@7b07ef24
         
     
-    radixToPower = fromNumber(pow(kotlin.Double(radix), visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@5e077a32))
+    radixToPower = fromNumber(pow(kotlin.Double(radix), visitConst-other Double))
     rem = <this>
     result = ''
-    while visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7fb57b7c:
+    while visitConst-other Boolean:
         remDiv = div(radixToPower)
         intval = toInt()
         tmp1_unsafeCast_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@51edc97d
@@ -5174,7 +5174,7 @@ def toStringImpl(radix):
         if isZero():
             return jsPlus(digits, result)
         
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3c05fb12:
+        if visitConst-other Boolean:
             while jsLt(jsArrayLength(digits), 6):
                 digits = jsPlus('0', digits)
             
@@ -5204,17 +5204,17 @@ def fromNumber(value):
     if isNaN():
         return ZERO
     
-    if jsLtEq(value, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@eba9ab4):
+    if jsLtEq(value, visitConst-other Double):
         return MIN_VALUE
     
-    if jsGtEq(jsPlus(value, 1), visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@d3e77a3):
+    if jsGtEq(jsPlus(value, 1), visitConst-other Double):
         return MAX_VALUE
     
-    if jsLt(value, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1199a91):
+    if jsLt(value, visitConst-other Double):
         return negate()
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@b92cdf9:
-        twoPwr32 = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@329181d1
+    if visitConst-other Boolean:
+        twoPwr32 = visitConst-other Double
         return <init>(jsBitwiseOr(jsMod(value, twoPwr32), 0), jsBitwiseOr(jsDiv(value, twoPwr32), 0))
     
 
@@ -5269,7 +5269,7 @@ def primitiveArrayConcat(args):
         tmp2_withType_0 = kotlin.String(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicMemberExpressionImpl@dc1cfde)
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@13c33a12
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6b92b8c9:
+    if visitConst-other Boolean:
         
     
     size_local = 0
@@ -5297,8 +5297,8 @@ def numberToInt(a):
     if jsInstanceOf(a, jsClass()):
         tmp = toInt()
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@71d0240d:
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@76e11cc:
+    if visitConst-other Boolean:
+        if visitConst-other Boolean:
             tmp = doubleToInt(kotlin.Double(a))
         
     
@@ -5323,8 +5323,8 @@ def numberToLong(a):
     if jsInstanceOf(a, jsClass()):
         tmp = kotlin.Long(a)
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@61d2ff30:
-        if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@2463a9ec:
+    if visitConst-other Boolean:
+        if visitConst-other Boolean:
             tmp = fromNumber(kotlin.Double(a))
         
     
@@ -5386,9 +5386,9 @@ def propertyRefClassMetadataCache$init$():
 def isArrayish(o):
     tmp
     if isJsArray(kotlin.Any(o)):
-        tmp = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3ee9eaa7
+        tmp = visitConst-other Boolean
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4690132:
+    if visitConst-other Boolean:
         tmp0_unsafeCast_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@378e50b9
         tmp = kotlin.Any?(tmp0_unsafeCast_0)
     
@@ -5401,10 +5401,10 @@ def isJsArray(obj):
 def isInterface(obj, iface):
     tmp0_elvis_lhs = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicMemberExpressionImpl@5b5b9038
     tmp
-    if jsEqeq(tmp0_elvis_lhs, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@2a09e0d4):
-        return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@41c983d3
+    if jsEqeq(tmp0_elvis_lhs, visitConst-other Null):
+        return visitConst-other Boolean
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@4064cd60:
+    if visitConst-other Boolean:
         tmp = tmp0_elvis_lhs
     
     ctor = tmp
@@ -5415,7 +5415,7 @@ def isInterfaceImpl(ctor, iface):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@65bcc339
     
     metadata = <get-$metadata$>()
-    if jsNot(jsEqeq(metadata, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@2164f202)):
+    if jsNot(jsEqeq(metadata, visitConst-other Null)):
         interfaces = <get-interfaces>()
         indexedObject = interfaces
         inductionVariable = 0
@@ -5424,7 +5424,7 @@ def isInterfaceImpl(ctor, iface):
             i = jsArrayGet(indexedObject, inductionVariable)
             inductionVariable = jsBitOr(jsPlus(inductionVariable, 1), 0)
             if isInterfaceImpl(i, iface):
-                return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@348143e1
+                return visitConst-other Boolean
             
         
     
@@ -5437,8 +5437,8 @@ def isArray(obj):
     if isJsArray(obj):
         tmp = kotlin.Boolean(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@356f7c71)
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@1c5123ca:
-        tmp = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6a75b8d3
+    if visitConst-other Boolean:
+        tmp = visitConst-other Boolean
     
     return tmp
 
@@ -5452,14 +5452,14 @@ def isSuspendFunction(obj, arity):
         tmp0_unsafeCast_0 = visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicMemberExpressionImpl@7101fb1c
         return jsEqeqeq(kotlin.Any?(tmp0_unsafeCast_0), arity)
     
-    return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@3c88bef5
+    return visitConst-other Boolean
 
 def isNumber(a):
     tmp
     if jsEqeqeq(jsTypeOf(a), 'number'):
-        tmp = visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@6bd2dd5d
+        tmp = visitConst-other Boolean
     
-    if visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@311a569d:
+    if visitConst-other Boolean:
         tmp = jsInstanceOf(a, jsClass())
     
     return tmp
@@ -5500,10 +5500,10 @@ def jsIsType(obj, jsClass):
         return isObject(obj)
     
     if visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@fb07c40:
-        return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@d9c54cd
+        return visitConst-other Boolean
     
     if visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@23e892d3:
-        return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@25b2d26a
+        return visitConst-other Boolean
     
     proto = jsGetPrototypeOf(jsClass)
     tmp0_safe_receiver = proto
@@ -5521,7 +5521,7 @@ def jsIsType(obj, jsClass):
     if visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@5d84189:
         return isInterfaceImpl(kotlin.js.Ctor(visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicMemberExpressionImpl@21e470cc), jsClass)
     
-    return visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@7b4db485
+    return visitConst-other Boolean
 
 def jsGetPrototypeOf(jsClass):
     return visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@49342fb7
@@ -5566,7 +5566,7 @@ class CompletedContinuation:
 
 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@41e8b043
 def CompletedContinuation_getInstance():
-    if jsEqeq(CompletedContinuation_instance, visitConst-other org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl@51110a39):
+    if jsEqeq(CompletedContinuation_instance, visitConst-other Null):
         visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@67cce6e8
     
     return CompletedContinuation_instance

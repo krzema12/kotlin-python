@@ -66,7 +66,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
                 kind = null,
             )
             // TODO other types
-            else -> Name(id = identifier("visitConst-other $expression"), ctx = Load)
+            else -> Name(id = identifier("visitConst-other $kind"), ctx = Load)
         })
     }
 
