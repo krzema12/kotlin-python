@@ -11,3 +11,5 @@ fun exampleFromAstTest() {
         println(x)
     }
 }
+
+fun returnString() = "Hello from Kotlin!"

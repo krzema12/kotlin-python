@@ -6,10 +6,8 @@
 package org.jetbrains.kotlin.ir.backend.js.transformers.irToPy
 
 import generated.Python.*
-import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.backend.js.utils.JsGenerationContext
 import org.jetbrains.kotlin.ir.backend.js.utils.asString
-import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.expressions.*
@@ -36,7 +34,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
             is IrConstructorCall -> visitConstructorCall(expression, data)
             is IrTypeOperatorCall -> visitTypeOperator(expression, data)
 //            is IrBlock -> visitBlock(expression, data)
-            else -> listOf(Name(id = identifier("visitExpression-other $expression"), ctx = Load))
+            else -> listOf(Name(id = identifier("visitExpression-other $expression".toValidPythonSymbol()), ctx = Load))
         }
     }
 
@@ -47,18 +45,18 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
 
     override fun visitExpressionBody(body: IrExpressionBody, context: JsGenerationContext): List<expr> {
         // TODO
-        return listOf(Name(id = identifier("visitExpressionBody $body"), ctx = Load))
+        return listOf(Name(id = identifier("visitExpressionBody $body".toValidPythonSymbol()), ctx = Load))
     }
 
     override fun visitFunctionExpression(expression: IrFunctionExpression, context: JsGenerationContext): List<expr> {
         // TODO
-        return listOf(Name(id = identifier("visitFunctionExpression $expression"), ctx = Load))
+        return listOf(Name(id = identifier("visitFunctionExpression $expression".toValidPythonSymbol()), ctx = Load))
     }
 
     override fun <T> visitConst(expression: IrConst<T>, context: JsGenerationContext): List<expr> {
         return listOf(when (val kind = expression.kind) {
             is IrConstKind.String -> Constant(
-                value = constant(value = "'${kind.valueOf(expression)}'"),
+                value = constant(value = "'${kind.valueOf(expression).replace("'", "\\'")}'"),
                 kind = null,
             )
             is IrConstKind.Int -> Constant(
@@ -78,19 +76,19 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
                 kind = null,
             )
             // TODO other types
-            else -> Name(id = identifier("visitConst-other $kind"), ctx = Load)
+            else -> Name(id = identifier("visitConst-other $kind".toValidPythonSymbol()), ctx = Load)
         })
     }
 
     override fun visitStringConcatenation(expression: IrStringConcatenation, context: JsGenerationContext): List<expr> {
         // TODO
-        return listOf(Name(id = identifier("visitStringConcatenation $expression"), ctx = Load))
+        return listOf(Name(id = identifier("visitStringConcatenation $expression".toValidPythonSymbol()), ctx = Load))
     }
 
     override fun visitGetField(expression: IrGetField, context: JsGenerationContext): List<expr> {
         // TODO
         val field = expression.symbol.owner
-        return listOf(Name(id = identifier(field.name.asString()), ctx = Load))
+        return listOf(Name(id = identifier(field.name.asString().toValidPythonSymbol()), ctx = Load))
     }
 
     override fun visitGetValue(expression: IrGetValue, context: JsGenerationContext): List<expr> {
@@ -101,29 +99,29 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
         println(expression.symbol.owner)
 
         return listOf(when (val owner = expression.symbol.owner) {
-            is IrValueParameter, is IrVariable -> Name(id = identifier(owner.name.asString()), ctx = Load)
-            else -> Name(id = identifier("visitGetValue_other $owner"), ctx = Load)
+            is IrValueParameter, is IrVariable -> Name(id = identifier(owner.name.asString().toValidPythonSymbol()), ctx = Load)
+            else -> Name(id = identifier("visitGetValue_other $owner".toValidPythonSymbol()), ctx = Load)
         })
     }
 
     override fun visitGetObjectValue(expression: IrGetObjectValue, context: JsGenerationContext): List<expr> {
         // TODO
-        return listOf(Name(id = identifier("visitGetObjectValue $expression"), ctx = Load))
+        return listOf(Name(id = identifier("visitGetObjectValue $expression".toValidPythonSymbol()), ctx = Load))
     }
 
     override fun visitSetField(expression: IrSetField, context: JsGenerationContext): List<expr> {
         // TODO
-        return listOf(Name(id = identifier("visitSetField $expression"), ctx = Load))
+        return listOf(Name(id = identifier("visitSetField $expression".toValidPythonSymbol()), ctx = Load))
     }
 
     override fun visitSetValue(expression: IrSetValue, context: JsGenerationContext): List<expr> {
         // TODO
-        return listOf(Name(id = identifier("visitSetValue-inToPyExpressionTransformer $expression"), ctx = Load))
+        return listOf(Name(id = identifier("visitSetValue-inToPyExpressionTransformer $expression".toValidPythonSymbol()), ctx = Load))
     }
 
     override fun visitDelegatingConstructorCall(expression: IrDelegatingConstructorCall, context: JsGenerationContext): List<expr> {
         // TODO
-        return listOf(Name(id = identifier("visitDelegatingConstructorCall $expression"), ctx = Load))
+        return listOf(Name(id = identifier("visitDelegatingConstructorCall $expression".toValidPythonSymbol()), ctx = Load))
     }
 
     override fun visitConstructorCall(expression: IrConstructorCall, context: JsGenerationContext): List<expr> {
@@ -137,7 +135,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
         }.flatten()
 
         return listOf(Call(
-            func = Name(id = identifier(expression.symbol.owner.name.asString()), ctx = Load),
+            func = Name(id = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Load),
             args = arguments,
             keywords = emptyList(),
         ))
@@ -160,7 +158,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
         }.flatten()
 
         return listOf(Call(
-            func = Name(id = identifier(expression.symbol.owner.name.asString()), ctx = Load),
+            func = Name(id = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Load),
             args = arguments,
             keywords = emptyList(),
         ))
@@ -168,33 +166,33 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
 
     override fun visitWhen(expression: IrWhen, context: JsGenerationContext): List<expr> {
         // TODO
-        return listOf(Name(id = identifier("visitWhen-inToByExpressionTransformer $expression"), ctx = Load))
+        return listOf(Name(id = identifier("visitWhen-inToByExpressionTransformer $expression".toValidPythonSymbol()), ctx = Load))
     }
 
     override fun visitTypeOperator(expression: IrTypeOperatorCall, data: JsGenerationContext): List<expr> {
         // TODO
         return listOf(when (expression.operator) {
             IrTypeOperator.REINTERPRET_CAST -> Call(
-                func = Name(id = identifier(expression.typeOperand.asString()), ctx = Load),
+                func = Name(id = identifier(expression.typeOperand.asString().toValidPythonSymbol()), ctx = Load),
                 args = visitExpression(expression.argument, data),
                 keywords = emptyList(),
             )
-            else -> Name(id = identifier("visitTypeOperator ${expression.operator}"), ctx = Load)
+            else -> Name(id = identifier("visitTypeOperator ${expression.operator}".toValidPythonSymbol()), ctx = Load)
         })
     }
 
     override fun visitDynamicMemberExpression(expression: IrDynamicMemberExpression, data: JsGenerationContext): List<expr> {
         // TODO
-        return listOf(Name(id = identifier("visitDynamicMemberExpression $expression"), ctx = Load))
+        return listOf(Name(id = identifier("visitDynamicMemberExpression $expression".toValidPythonSymbol()), ctx = Load))
     }
 
     override fun visitDynamicOperatorExpression(expression: IrDynamicOperatorExpression, data: JsGenerationContext): List<expr> {
         // TODO
-        return listOf(Name(id = identifier("visitVararg $expression"), ctx = Load))
+        return listOf(Name(id = identifier("visitVararg $expression".toValidPythonSymbol()), ctx = Load))
     }
 
     override fun visitComposite(expression: IrComposite, data: JsGenerationContext): List<expr> {
         // TODO
-        return listOf(Name(id = identifier("visitComposite-inToPyExpressionTransformer $expression"), ctx = Load))
+        return listOf(Name(id = identifier("visitComposite-inToPyExpressionTransformer $expression".toValidPythonSymbol()), ctx = Load))
     }
 }

@@ -21,7 +21,7 @@ class IrFunctionToPyTransformer : BaseIrElementToPyNodeTransformer<FunctionDef, 
     override fun visitConstructor(declaration: IrConstructor, context: JsGenerationContext): FunctionDef {
         // TODO
         return FunctionDef(
-            name = identifier("${declaration.name.identifier}_visitConstructor $declaration"),
+            name = identifier("${declaration.name.identifier}_visitConstructor $declaration".toValidPythonSymbol()),
             args = argumentsImpl(
                 posonlyargs = emptyList(),
                 args = emptyList(),

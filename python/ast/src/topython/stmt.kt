@@ -47,7 +47,7 @@ fun Expr.toPython() =
     value.toPython()
 
 fun FunctionDef.toPython() =
-    "def ${name.name}(${args.toPython()}):\n${body.toPython().indent()}\n"
+    "def ${name.name}(${args.toPython()}):\n${(if (body.isNotEmpty()) body.toPython() else "pass").indent()}\n"
 
 fun List<stmt>.toPython() =
     joinToString("\n") { it.toPython() }
@@ -59,7 +59,7 @@ fun While.toPython() =
     "while ${test.toPython()}:\n${body.toPython().indent()}\n"
 
 fun If.toPython() =
-    "if ${test.toPython()}:\n${body.toPython().indent()}\n${if (orelse.isNotEmpty()) "else:\n${orelse.toPython().indent()}\n" else ""}"
+    "if ${test.toPython()}:\n${(if (body.isNotEmpty()) body.toPython() else "pass").indent()}\n${if (orelse.isNotEmpty()) "else:\n${orelse.toPython().indent()}\n" else ""}"
 
 fun ClassDef.toPython() =
     "class ${name.name}:\n${"pass".indent()}\n"

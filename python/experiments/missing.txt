@@ -1,20 +1,20 @@
-    111 visitField org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrField@
-    105 visitWhen-inToByExpressionTransformer org.jetbrains.kotlin.ir.expressions.impl.IrWhenImpl@
-     70 visitSetField org.jetbrains.kotlin.ir.expressions.impl.IrSetFieldImpl@
-     70 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@
-     55 visitDelegatingCOnstructorCall org.jetbrains.kotlin.ir.expressions.impl.IrDelegatingConstructorCallImpl@
-     47 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl@
-     45 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrRawFunctionReferenceImpl@
-     39 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrSetValueImpl@
-     38 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl@
-     31 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrFunctionExpressionImpl@
-     29 visitThrow org.jetbrains.kotlin.ir.expressions.impl.IrThrowImpl@
-     29 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl@
-     18 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl@
-     17 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrDoWhileLoopImpl@
-     12 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrCompositeImpl@
-     11 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrDynamicMemberExpressionImpl@
-      6 visitExpression-other org.jetbrains.kotlin.ir.expressions.impl.IrStringConcatenationImpl@
-      4 visitDoWhileLoop org.jetbrains.kotlin.ir.expressions.impl.IrDoWhileLoopImpl@
-      3 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrBreakImpl@
-      1 visitExpression-other--inToPyStatementTransformer org.jetbrains.kotlin.ir.expressions.impl.IrThrowImpl@
+     99 visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField
+     94 visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl
+     64 visitSetField_org_jetbrains_kotlin_ir_expressions_impl_IrSetFieldImpl
+     64 visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+     53 visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl
+     44 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+     41 visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl
+     35 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+     33 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+     29 visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
+     27 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+     23 visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+     16 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+     15 visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl
+     10 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+      9 visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl
+      5 visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+      4 visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+      3 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrBreakImpl
+      1 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl

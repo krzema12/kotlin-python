@@ -19,13 +19,13 @@ class IrDeclarationToPyTransformer : BaseIrElementToPyNodeTransformer<stmt, JsGe
 
     override fun visitConstructor(declaration: IrConstructor, context: JsGenerationContext): stmt {
         // TODO
-        return Expr(value = Name(id = identifier("visitConstructor $declaration"), ctx = Load))
+        return Expr(value = Name(id = identifier("visitConstructor $declaration".toValidPythonSymbol()), ctx = Load))
     }
 
     override fun visitClass(declaration: IrClass, context: JsGenerationContext): stmt {
         // TODO
         return ClassDef(
-            name = identifier(declaration.name.asString()),
+            name = identifier(declaration.name.asString().toValidPythonSymbol()),
             bases = emptyList(),
             keywords = emptyList(),
             body = emptyList(),
@@ -35,21 +35,25 @@ class IrDeclarationToPyTransformer : BaseIrElementToPyNodeTransformer<stmt, JsGe
 
     override fun visitErrorDeclaration(declaration: IrErrorDeclaration, data: JsGenerationContext): stmt {
         // TODO
-        return Expr(value = Name(id = identifier("visitErrorDeclaration $declaration"), ctx = Load))
+        return Expr(value = Name(id = identifier("visitErrorDeclaration $declaration".toValidPythonSymbol()), ctx = Load))
     }
 
     override fun visitField(declaration: IrField, context: JsGenerationContext): stmt {
         // TODO
-        return Expr(value = Name(id = identifier("visitField $declaration"), ctx = Load))
+        return Assign(
+            targets = listOf(Name(id = identifier("visitField $declaration".toValidPythonSymbol()), ctx = Store)),
+            value = Constant(value = constant("0"), kind = null),
+            type_comment = null,
+        )
     }
 
     override fun visitVariable(declaration: IrVariable, context: JsGenerationContext): stmt {
         // TODO
-        return Expr(value = Name(id = identifier("visitVariable_irDeclarationToPyTransformer $declaration"), ctx = Load))
+        return Expr(value = Name(id = identifier("visitVariable_irDeclarationToPyTransformer $declaration".toValidPythonSymbol()), ctx = Load))
     }
 
     override fun visitScript(irScript: IrScript, context: JsGenerationContext): stmt {
         // TODO
-        return Expr(value = Name(id = identifier("visitScript $irScript"), ctx = Load))
+        return Expr(value = Name(id = identifier("visitScript $irScript".toValidPythonSymbol()), ctx = Load))
     }
 }
