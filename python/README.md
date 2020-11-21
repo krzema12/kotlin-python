@@ -17,7 +17,7 @@ See discussion at https://discuss.kotlinlang.org/t/idea-python-backend/19852
     - [ ] translate Kotlin IR to Python AST
       - [x] translate IR items present in the simple Python AST example (assignment, list, for loop, function invocation...)
       - [ ] move Python IR -> AST mapping logic to a separate module (don't piggy-back on JS stuff, like lowerings)
-      - [ ] make a simple `fun hello() = "hello"` function translated and executable by Python (rest of the bundle at least parses fine by Python)
+      - [x] make a simple `fun hello() = "hello"` function translated and executable by Python (rest of the bundle at least parses fine by Python)
       - [ ] set up box tests infra
       - [ ] translate all IR items
       - [ ] make all existing box tests pass
