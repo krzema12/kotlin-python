@@ -18,6 +18,7 @@ enum class TargetBackend(
     JS(false),
     JS_IR(true, JS),
     JS_IR_ES6(true, JS_IR),
+    PYTHON(true),
     WASM(true),
     ANDROID(false, JVM);
 

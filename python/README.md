@@ -28,3 +28,9 @@ See discussion at https://discuss.kotlinlang.org/t/idea-python-backend/19852
       - [ ] all Python AST items
   - [ ] use Python from Kotlin
     - ...
+
+## Running box tests
+
+```
+./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated"
+```
