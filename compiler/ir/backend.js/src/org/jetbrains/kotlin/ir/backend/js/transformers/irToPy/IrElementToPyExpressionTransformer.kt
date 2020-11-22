@@ -22,7 +22,6 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
 
     override fun visitExpression(expression: IrExpression, data: JsGenerationContext): List<expr> {
         // TODO
-//        println("visitExpression: $expression")
         return when (expression) {
             is IrConst<*> -> visitConst(expression, data)
             is IrGetValue -> visitGetValue(expression, data)
@@ -93,11 +92,6 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
 
     override fun visitGetValue(expression: IrGetValue, context: JsGenerationContext): List<expr> {
         // TODO
-        println("visitGetValue")
-        println(expression.origin)
-        println(expression.symbol)
-        println(expression.symbol.owner)
-
         return listOf(when (val owner = expression.symbol.owner) {
             is IrValueParameter, is IrVariable -> Name(id = identifier(owner.name.asString().toValidPythonSymbol()), ctx = Load)
             else -> Name(id = identifier("visitGetValue_other $owner".toValidPythonSymbol()), ctx = Load)
@@ -143,11 +137,6 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
 
     override fun visitCall(expression: IrCall, context: JsGenerationContext): List<expr> {
         // TODO
-//        with(expression) {
-//            println("symbol.owner.name: ${symbol.owner.name.identifier}")
-//        }
-//        println("========")
-
         val noOfArguments = expression.valueArgumentsCount
 
         val arguments = (0 until noOfArguments).mapNotNull { argIndex ->
