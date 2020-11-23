@@ -34,3 +34,10 @@ See discussion at https://discuss.kotlinlang.org/t/idea-python-backend/19852
 ```
 ./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated"
 ```
+
+### Test stats
+
+With no Python interpreter hooked into the tests and
+* when `OK` returned from the interpreter interface: all passed
+* when something else returned from the interpreter interface: **4512**/5367 failed
+  (the ones that succeeded are `testAllFilesPresentIn...` tests which doesn't depend on the actual invocation of code under test)
