@@ -76,8 +76,8 @@ abstract class AbstractJsTestChecker {
 
 object PythonTestChecker : AbstractJsTestChecker() {
     override fun run(files: List<String>, f: ScriptEngine.() -> Any?): Any? {
-        // TODO call Python interpreter - for now, mocking that the interpreter returned "OK" (success for most tests)
-        return "OK"
+        // TODO call Python interpreter - for now, mocking that the interpreter returned some nonsense, to make the tests fail.
+        return "FOO BAR BAZ!!!"
     }
 
     override fun checkStdout(files: List<String>, expectedResult: String) {
