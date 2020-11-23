@@ -41,3 +41,5 @@ With no Python interpreter hooked into the tests and
 * when `OK` returned from the interpreter interface: all passed
 * when something else returned from the interpreter interface: **4513**/5368 failed
   (the ones that succeeded are `testAllFilesPresentIn...` tests which doesn't depend on the actual invocation of code under test)
+
+With Python interpreter in place, no other changes to the compiler: **4429**/5368 failed

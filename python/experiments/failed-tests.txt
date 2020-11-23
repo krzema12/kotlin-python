@@ -1,4 +1,3 @@
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations > testNestedAnnotation FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations > testNestedClassesInAnnotations FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations > testResolveWithLowPriorityAnnotation FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder > testArgumentOrderInObjectSuperCall FAILED
@@ -74,7 +73,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ar
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays > testIteratorLongArrayNextLong FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays > testIteratorShortArray FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays > testKt1291 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays > testKt238 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays > testKt2997 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays > testKt33 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays > testKt3771 FAILED
@@ -119,7 +117,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bo
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testBoxedPrimitivesAreEqual FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testBoxedRealsCmp FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testCasts FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testExplicitEqualsOnDouble FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testFold FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testFoldRange FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testIntCompareTo FAILED
@@ -138,7 +135,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bo
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testSimple FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testSimpleUninitializedMerge FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testTaintedValuesBox FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testTaintedValues FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testUnsafeRemoving FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testVariables FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges$SubstitutionInSuperClass > testAbstractFun FAILED
@@ -165,7 +161,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Br
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testFakeGenericCovariantOverride FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testFakeGenericCovariantOverrideWithDelegation FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testFakeOverrideFromInterfaceThroughIntermediateClass FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testFakeOverrideMultiFile FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testFakeOverrideOfTraitImpl FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testFakeOverrideThroughGenericSuperclass FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testFakeOverrideWithSeveralSuperDeclarations FAILED
@@ -203,7 +198,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Br
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testTwoParentsWithDifferentMethodsTwoBridges FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testTwoParentsWithTheSameMethodOneBridge FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testTypeParameterInExtensionReceiver FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BuilderInference > testKt41164 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BuilderInference > testLackOfNullCheckOnNullableInsideBuild FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BuilderInference > testSubstituteStubTypeIntolambdaParameterDescriptor FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BuiltinStubMethods$ExtendJavaCollections > testAbstractSet FAILED
@@ -337,7 +331,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ca
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function > testInnerConstructorFromTopLevelNoArgs FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function > testInnerConstructorFromTopLevelOneStringArg FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function > testKt21787 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function > testKt32462 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function > testNestedConstructorFromClass FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function > testNestedConstructorFromTopLevelNoArgs FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function > testNestedConstructorFromTopLevelOneStringArg FAILED
@@ -387,7 +380,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ca
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property > testSimpleTopLevel FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference > testGenericConstructorReference FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference > testKt37604 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference > testNested FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts$Functions > testAsFunKSmall FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts$Functions > testReifiedAsFunKSmall FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts$Functions > testReifiedSafeAsFunKBig FAILED
@@ -410,12 +402,10 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ca
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts > testAsUnit FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts > testAsWithGeneric FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts > testCastGenericNull FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts > testDontCreateInconsistentTypeDuringStarProjectionSubstitution FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts > testIntersectionTypeMultipleBounds FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts > testIntersectionTypeMultipleBoundsImplicitReceiver FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts > testIntersectionTypeSmartcast FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts > testIntersectionTypeWithMultipleBoundsAsReceiver FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts > testIntersectionTypeWithoutGenericsAsReceiver FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts > testIsNullablePrimitive FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts > testKt22714 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts > testLambdaToUnitCast FAILED
@@ -432,7 +422,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes$Inner > testKt6708 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes$Inner > testProperOuter FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes$Inner > testProperSuperLinking FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testBoxPrimitiveTypeInClinitOfClassObject FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testClassNamedAsOldPackageFacade FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testClassObjectAsExtensionReceiver FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testClassObjectAsStaticInitializer FAILED
@@ -486,8 +475,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt2417 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt2477 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt2480 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt2482 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt2485 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt249 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt2532 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt2566_2 FAILED
@@ -505,7 +492,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt40332 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt454 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt471 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt48 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt496 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt500 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt501 FAILED
@@ -544,7 +530,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ClassLiteral$Bound > testSmartCast FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ClassLiteral > testBareArray FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$CapturedVarsOptimization > testCapturedInCrossinline FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$CapturedVarsOptimization > testCapturedInInlineOnlyAssign FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$CapturedVarsOptimization > testCapturedInInlineOnlyCAO FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$CapturedVarsOptimization > testCapturedInInlineOnlyIncrDecr FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$CapturedVarsOptimization > testCapturedInInlineOnlyIndexedCAO FAILED
@@ -653,7 +638,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Constants > testFloat FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Constants > testKt9532 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Constants > testKt9532_lv10 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Constants > testLong FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Constants > testPrivateConst FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testConstructorArgument FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testDestructuredVariable FAILED
@@ -825,9 +809,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt1742 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt17590 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt17590_long FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt1899 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt2147 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt2259 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt2291 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt2416 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt2577 FAILED
@@ -1100,7 +1082,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$TailOperations > testTailInlining_1_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$UnitTypeReturn > testCoroutineNonLocalReturn_1_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$UnitTypeReturn > testCoroutineReturn_1_3 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$UnitTypeReturn > testInlineUnitFunction FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$UnitTypeReturn > testInterfaceDelegation FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$UnitTypeReturn > testSuspendNonLocalReturn_1_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$UnitTypeReturn > testSuspendReturn_1_3 FAILED
@@ -1109,7 +1090,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$VarSpilling > testKt19475_1_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$VarSpilling > testKt38925_1_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$VarSpilling > testNullSpilling_1_3 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$VarSpilling > testRefinedIntTypesAnalysis FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$VarSpilling > testSafeCallElvis FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > test32defaultParametersInSuspend_1_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testAccessorForSuspend_1_3 FAILED
@@ -1135,7 +1115,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testDelegatedSuspendMember_1_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testDispatchResume_1_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testEmptyClosure_1_3 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testEmptyCommonConstraintSystemForCoroutineInferenceCall FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testEpam_1_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testFalseUnitCoercion_1_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testGenerate_1_3 FAILED
@@ -1161,7 +1140,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testKt28844_1_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testKt30858 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testKt31784 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testKt35967 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testKt42028 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testKt42554 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testLastExpressionIsLoop_1_3 FAILED
@@ -1201,7 +1179,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testSuspendInCycle_1_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testSuspendInTheMiddleOfObjectConstruction_1_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testSuspendInTheMiddleOfObjectConstructionWithJumpOut_1_3 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testSuspendLambdaInInterface FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testSuspendLambdaWithArgumentRearrangement_1_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testSuspensionInsideSafeCall_1_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testSuspensionInsideSafeCallWithElvis_1_3 FAILED
@@ -1259,7 +1236,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Da
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DeadCodeElimination > testEmptyVariableRange FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DeadCodeElimination > testIntersectingVariableRange FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DeadCodeElimination > testIntersectingVariableRangeInFinally FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DeadCodeElimination > testKt14357 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Constructor > testAnnotation FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Constructor > testAnnotationWithEmptyArray FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Constructor > testDefArgs1 FAILED
@@ -1323,7 +1299,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$De
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments > testInheritedFromInterfaceViaAbstractSuperclass FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments > testKt6382 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments > testProtected FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments > testRecursiveDefaultArguments FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments > testReferenceAsArg FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments > testSimpleFromOtherFile FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments > testUseNextParamInLambda FAILED
@@ -1354,7 +1329,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$De
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$OptimizedDelegatedProperties > testMixedArgumentSizes FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testDelegatedPropertyWithIdProvideDelegate FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testDifferentReceivers FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testEvaluationOrder FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testEvaluationOrderVar FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testExtensionDelegated FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testGenericDelegateWithNoAdditionalInfo FAILED
@@ -1560,7 +1534,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ex
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionProperties > testKt9897 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionProperties > testKt9897_topLevel FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionProperties > testNonAbstractInInterface FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionProperties > testTopLevel FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionProperties > testTopLevelLongTypeInReceiver FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FakeOverride > testDiamondFunction FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FakeOverride > testFunction FAILED
@@ -1617,12 +1590,10 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testBoundTypeParameterInVararg FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testCallBetweenLocalFunctions FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testCallInlineLocalInLambda FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testCaptureUpperBoundedTypeParameter FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testDefinedWithinLambda FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testDefinedWithinLambdaInnerUsage1 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testDefinedWithinLambdaInnerUsage2 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt2895 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt3308 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt3978_2 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt3978 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt4119_2 FAILED
@@ -1635,7 +1606,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testLocalFunctionInConstructor FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testLocalFunctionVsLocalVariable FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testNameClashAcrossDifferentContainers FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testNameClash FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testOverloadedLocalFunction1 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testOverloadedLocalFunction2 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testOverloadedLocalFunction3 FAILED
@@ -1670,7 +1640,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt2739 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt2929 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt3214 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt3313 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt3573 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt3724 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt395 FAILED
@@ -1682,7 +1651,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testPrefixRecursiveCall FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testRecursiveCompareTo FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testRecursiveIncrementCall FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testSimpleFunctionReturningString FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testTypeParameterAsUpperBound FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testTypeParametersInLocalFunction FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface$Equality > testFunctionReferencesBound FAILED
@@ -1732,7 +1700,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ie
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ieee754 > testGreaterFloat_properIeeeComparisons FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ieee754 > testInline FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ieee754 > testLessDouble FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ieee754 > testLessDouble_properIeeeAndNewInference FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ieee754 > testLessDouble_properIeeeComparisons FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ieee754 > testLessFloat FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ieee754 > testLessFloat_properIeeeComparisons FAILED
@@ -1781,16 +1748,12 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment > testPrefixIncrementOnSmartCast FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment > testPrefixNullableClassIncrement FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment > testPrefixNullableIncrement FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testApproximateNonTopLevelCapturedTypes FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testBuilderInferenceLeakingVariable FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testCapturedStarProjection FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testCoercionToUnitWithLastLambdaExpression FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testCoerctionToUnitForLastExpressionWithStarProjection FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testEarlyReturnInsideCrossinlineLambda FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testInferenceWithTypeVariableInsideCapturedType FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testIntegerLiteralTypeInLamdaReturnType FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testKt10822 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testKt35684 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testKt36446 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testKt38664 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testKt39824 FAILED
@@ -1800,7 +1763,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testMapCollectChainWithNullResult FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testNoCoercionToUniForNullableLambdaReturnType FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testNoCoercionToUnitWithEqualityConstraintForNullableReturnType FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testPlusAssignInsideLambda FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testRecursiveConstraintInsideTypeArgumentWithStarProjection FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testReferenceToCatchParameterFromLambdaExpression FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testSuspendExtensionRecevierFromConstraint FAILED
@@ -2161,7 +2123,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Instructions$Swap > testSwapRefToSharedVarInt FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Instructions$Swap > testSwapRefToSharedVarLong FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics > testCharToInt FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics > testEa35953 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics > testIncWithLabel FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics > testKt10131a FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics > testKt10131 FAILED
@@ -2217,13 +2178,10 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$La
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Labels > testPropertyAccessorInnerExtensionFun FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Labels > testPropertyAccessorObject FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Labels > testPropertyInClassAccessor FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateConstantCompare FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateFalse FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateFalseVarChain FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateFalseVar FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateObjectComp2 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateObjectComp FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateTrue FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateTrueVar FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNoOptimization FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen > testExceptionInFieldInitializer FAILED
@@ -2302,7 +2260,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Mu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$MultiDecl$ForRange$ExplicitRangeToWithDot$Int > testMultiDeclForComponentExtensionsValCaptured FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$MultiDecl$ForRange$ExplicitRangeToWithDot$Int > testMultiDeclForComponentMemberExtensions FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$MultiDecl$ForRange$ExplicitRangeToWithDot$Int > testMultiDeclForComponentMemberExtensionsInExtensionFunction FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$MultiDecl$ForRange$ExplicitRangeToWithDot$Long > testMultiDeclForComponentExtensions FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$MultiDecl$ForRange$ExplicitRangeToWithDot$Long > testMultiDeclForComponentExtensionsValCaptured FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$MultiDecl$ForRange$ExplicitRangeToWithDot$Long > testMultiDeclForComponentMemberExtensions FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$MultiDecl$ForRange$ExplicitRangeToWithDot$Long > testMultiDeclForComponentMemberExtensionsInExtensionFunction FAILED
@@ -2345,7 +2302,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Mu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testConstructor FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testDelegatedExpectedInterface FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testDispatchReceiverValue FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testExtensionReceiverValue FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testFunction FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testInheritedFromCommonClass FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testInheritedFromExpectedClass FAILED
@@ -2355,11 +2311,9 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Mu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testInheritedViaAnotherInterfaceIndirectly FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testInlineFunctionWithDefaultLambda FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testKt23239 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testKt23739 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testParametersInArgumentValues FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testSuperCall FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testSuspend FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testTypeAlias FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$NonLocalReturns > testKt9644let FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$NonLocalReturns > testLocalReturnInsideProperty FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$NonLocalReturns > testReturnInsideTwoLambdas FAILED
@@ -2429,7 +2383,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ob
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testKt2663_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testKt2663 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testKt2675 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testKt2719 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testKt2822 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testKt3684 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testKt4086 FAILED
@@ -2510,10 +2463,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Op
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions > testRemAssignmentOperation FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions > testRemOverModOperation FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Optimizations > testKt20844 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package > testBoxPrimitiveTypeInClinit FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package > testCheckCast FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package > testIncrementProperty FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package > testNullablePrimitiveNoFieldInitializer FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package > testPackageLocalClassNotImportedWithDefaultImport FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package > testPackageQualifiedMethod FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package > testPrivateMembersInImportList FAILED
@@ -2587,7 +2538,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt248 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt2768 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt2794 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt3078 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt3517 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt3576 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt3613 FAILED
@@ -2601,7 +2551,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt6590_identityEquals FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt665 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt711 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt737 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt828 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt877 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt882 FAILED
@@ -2627,7 +2576,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrivateConstructors > testWithVarargs FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Private > testArrayConvention FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Private > testKt9855 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties$Const > testAnotherFile FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties$Lateinit$IsInitializedAndDeinitialize > testCompanionObjectField FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties$Lateinit$IsInitializedAndDeinitialize > testEmptyLhs FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties$Lateinit$IsInitializedAndDeinitialize > testInnerSubclass FAILED
@@ -3434,8 +3382,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Re
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters > testUpperBounds FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters > testUpperBoundUsesOuterClassParameter FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testArrayLengthNPE FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testCommonSupertypeContravariant2 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testCommonSupertypeContravariant FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testDontCaptureTypesWithTypeVariables FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testDoubleMerge FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testFloatMerge FAILED
@@ -3445,7 +3391,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Re
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testInternalTopLevelOtherPackage FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testIntersectionOfEqualTypes FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testKt10143 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testKt10934 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testKt1149 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testKt13381 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testKt14447 FAILED
@@ -3483,13 +3428,10 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Re
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testKt789 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testKt998 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testLambdaAsLastExpressionInLambda FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testLambdaPostponeConstruction FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testLambdaWrongReturnType FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testNoAssertionsWhenNullableTypeParameterReplacedWithIntersectionType FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testNoCapturingForTypesWithTypeVariables FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testNoResolutionRecursion FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testNullabilityForCommonCapturedSupertypes FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testNullableAfterExclExcl FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testObjectCaptureOuterConstructorProperty FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testObjectInsideDelegation FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions > testResolvedCallForGetOperator FAILED
@@ -3500,7 +3442,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Re
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reified > testCopyToArray FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reified > testReifiedChain FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reified > testReifiedIntersectionTypeArgument FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reified > testReifiedIntersectionType FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reified > testReifiedTypeArgumentWithIntersectionTypeAsTypeArgument FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reified > testReifiedTypeArgumentWithRecursion FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reified > testSafecast FAILED
@@ -3508,7 +3449,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Re
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reified > testVarargs FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testGenericNull FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt1572 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt245 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt247 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt3430 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt4733 FAILED
@@ -3739,7 +3679,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ty
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping > testKt3286 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping > testKt3863 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping > testKt3976 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping > testNothing FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping > testNullableNothing FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping > testNullNothing FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnaryOp > testCall FAILED
@@ -3750,7 +3689,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Un
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnaryOp > testLongOverflow FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Unit > testClosureReturnsNullableUnit FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Unit > testIfElse FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Unit > testKt3634 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Unit > testKt4212 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Unit > testKt4265 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Unit > testNullableUnit FAILED
@@ -4072,13 +4010,11 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining$CallableReferences > testDifferentInvokeSignature2 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining$CallableReferences > testDifferentInvokeSignature FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining$CallableReferences > testFunctionImportedFromObject FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining$CallableReferences > testFunctionReference FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining$CallableReferences > testFunctionReferenceFromClass FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining$CallableReferences > testFunctionReferenceFromObject FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining$CallableReferences > testInnerClassConstuctorReference FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining$CallableReferences > testMutableBoundPropertyReferenceFromClass FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining$CallableReferences > testMutablePropertyReferenceFromClass FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining$CallableReferences > testPrivateFunctionReference FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining$CallableReferences > testPrivatePropertyReference FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining$CallableReferences > testPropertyImportedFromObject FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining$CallableReferences > testPropertyReference FAILED
@@ -4090,13 +4026,11 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testCheckStaticLambdaClassesArePresent FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testCheckStaticLambdaClassIsPresent FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testCheckStaticObjectClassIsPresent FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testDefaultCallInDefaultLambda FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testDefaultLambdaInNoInline FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testDifferentInvokeSignature FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testGenericLambda FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testInstanceCapturedInClass FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testInstanceCapturedInInterface FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testKt21827 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testKt21946 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testKt24477 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testKt25106 FAILED
@@ -4108,10 +4042,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testReceiverClashInClass FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testSimpleErased FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testSimpleErasedStaticInstance FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testSimpleExtension FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testSimple FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testSimpleGeneric FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testSimpleStaticInstance FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testThisClash FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining > testThisClashInClass FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$MaskElimination > test32Parameters FAILED
@@ -4267,7 +4198,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns > testExplicitLocalReturn FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns > testFromInterfaceDefaultGetter FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns > testJustReturnInLambda FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns > testKt5199 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns > testKt8948 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns > testKt8948v2 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns > testNestedNonLocals FAILED
@@ -4364,12 +4294,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$DefaultLambda > testInlineAnonymousInDefault FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$DefaultLambda > testInlinInDefault2 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$DefaultLambda > testInlinInDefault FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$DefaultLambda > testKt21827 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$DefaultLambda > testNested FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$DefaultLambda > testSimple2 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$DefaultLambda > testSimple FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$InlineOnly > testNoSmap FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$InlineOnly > testNoSmapWithProperty FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$InlineOnly > testStdlibInlineOnly FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$InlineOnly > testStdlibInlineOnlyOneLine FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$Newsmap > testDifferentMapping FAILED
@@ -4383,18 +4309,9 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testClassFromDefaultPackage FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testCrossroutines FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testDefaultFunction FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testDefaultFunctionWithInlineCall FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testInterleavedFiles FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testKt23369_2 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testKt23369_3 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testKt23369 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testKt35006 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testOneFile FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testRangeFolding FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testRangeFoldingInClass FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testSmap FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testSmapWithNewSyntax FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testSmapWithOldSyntax FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special > testIdentityCheck FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special > testIfBranches FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special > testIinc FAILED
@@ -4403,7 +4320,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special > testLoopInStoreLoadChains FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special > testPlusAssign FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special > testStackHeightBug FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special > testUnusedInlineLambda FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn > testElvis FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn > testIfThenElse FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn > testKt11499 FAILED

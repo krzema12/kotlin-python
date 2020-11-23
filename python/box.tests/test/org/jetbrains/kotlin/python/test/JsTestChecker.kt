@@ -7,9 +7,11 @@ package org.jetbrains.kotlin.python.test
 
 import org.jetbrains.kotlin.js.engine.ScriptEngine
 import org.jetbrains.kotlin.js.engine.ScriptEngineNashorn
-import org.jetbrains.kotlin.js.engine.ScriptEngineV8
-import org.jetbrains.kotlin.test.KotlinTestUtils
 import org.junit.Assert
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.nio.file.Files
+import java.nio.file.Paths
 
 fun createScriptEngine(): ScriptEngine {
     return ScriptEngineNashorn()
@@ -74,14 +76,44 @@ abstract class AbstractJsTestChecker {
     protected abstract fun run(files: List<String>, f: ScriptEngine.() -> Any?): Any?
 }
 
+class PythonException(override val message: String) : RuntimeException(message)
+
 object PythonTestChecker : AbstractJsTestChecker() {
     override fun run(files: List<String>, f: ScriptEngine.() -> Any?): Any? {
-        // TODO call Python interpreter - for now, mocking that the interpreter returned some nonsense, to make the tests fail.
-        return "FOO BAR BAZ!!!"
+        assert(files.size == 1) { "For now the test checker supports a single output from the compiler!" }
+        val fileToRun = files[0]
+        val pathToFileToRun = Paths.get(fileToRun)
+
+        val temporaryDirectory = Files.createTempDirectory(pathToFileToRun.parent, null)
+        Files.copy(pathToFileToRun, temporaryDirectory.resolve("compiled_module.py"))
+        val consumerScriptPath = temporaryDirectory.resolve("consumer.py")
+        consumerScriptPath.toFile().writeText("""
+            from compiled_module import box
+
+            print(box())
+        """.trimIndent())
+
+        val pythonOutput = runPython(consumerScriptPath.toString())
+        temporaryDirectory.toFile().deleteRecursively()
+        return pythonOutput
     }
 
     override fun checkStdout(files: List<String>, expectedResult: String) {
         TODO("Not yet implemented")
+    }
+
+    private fun runPython(scriptPath: String): String {
+        val process = Runtime.getRuntime().exec("python3.8 $scriptPath")
+        val exitCode = process.waitFor()
+
+        if (exitCode == 0) {
+            val stdoutReader = BufferedReader(InputStreamReader(process.inputStream))
+            return stdoutReader.lineSequence().joinToString("\n")
+        } else {
+            val stderrReader = BufferedReader(InputStreamReader(process.errorStream))
+            val stderr = stderrReader.lineSequence().joinToString("\n")
+            throw PythonException(stderr)
+        }
     }
 }
 
