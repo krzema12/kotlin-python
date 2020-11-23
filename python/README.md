@@ -39,5 +39,5 @@ See discussion at https://discuss.kotlinlang.org/t/idea-python-backend/19852
 
 With no Python interpreter hooked into the tests and
 * when `OK` returned from the interpreter interface: all passed
-* when something else returned from the interpreter interface: **4512**/5367 failed
+* when something else returned from the interpreter interface: **4513**/5368 failed
   (the ones that succeeded are `testAllFilesPresentIn...` tests which doesn't depend on the actual invocation of code under test)

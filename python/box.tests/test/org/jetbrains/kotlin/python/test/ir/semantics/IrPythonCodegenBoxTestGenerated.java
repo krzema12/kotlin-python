@@ -10655,6 +10655,11 @@ public class IrPythonCodegenBoxTestGenerated extends AbstractIrPythonCodegenBoxT
             runTest("compiler/testData/codegen/box/functions/recursiveIncrementCall.kt");
         }
 
+        @TestMetadata("simpleFunctionReturningString.kt")
+        public void testSimpleFunctionReturningString() throws Exception {
+            runTest("compiler/testData/codegen/box/functions/simpleFunctionReturningString.kt");
+        }
+
         @TestMetadata("typeParameterAsUpperBound.kt")
         public void testTypeParameterAsUpperBound() throws Exception {
             runTest("compiler/testData/codegen/box/functions/typeParameterAsUpperBound.kt");
