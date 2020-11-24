@@ -38,6 +38,10 @@ See discussion at https://discuss.kotlinlang.org/t/idea-python-backend/19852
 
 ### Test stats
 
+Current status - passed: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=17&leftFill=) (**939**/5368)
+
+#### History 
+
 With no Python interpreter hooked into the tests and
 * when `OK` returned from the interpreter interface: all passed
 * when something else returned from the interpreter interface: **4513**/5368 failed
