@@ -40,11 +40,11 @@ See discussion at https://discuss.kotlinlang.org/t/idea-python-backend/19852
 
 Current status: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=17&leftFill=) (**939**/5368 passed)
 
-### History 
+### History (newest on top)
 
-With no Python interpreter hooked into the tests and
-* when `OK` returned from the interpreter interface: all passed
-* when something else returned from the interpreter interface: **855**/5368 passed
-  (the ones that succeeded are `testAllFilesPresentIn...` tests which doesn't depend on the actual invocation of code under test)
+* with Python interpreter in place, no other changes to the compiler: **939**/5368 passed (+84)
 
-With Python interpreter in place, no other changes to the compiler: **939**/5368 passed (+84)
+* with no Python interpreter hooked into the tests and
+  * when `OK` returned from the interpreter interface: all passed
+  * when something else returned from the interpreter interface: **855**/5368 passed
+    (the ones that succeeded are `testAllFilesPresentIn...` tests which doesn't depend on the actual invocation of code under test)
