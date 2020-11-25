@@ -23,14 +23,7 @@ class IrDeclarationToPyTransformer : BaseIrElementToPyNodeTransformer<stmt, JsGe
     }
 
     override fun visitClass(declaration: IrClass, context: JsGenerationContext): stmt {
-        // TODO
-        return ClassDef(
-            name = identifier(declaration.name.asString().toValidPythonSymbol()),
-            bases = emptyList(),
-            keywords = emptyList(),
-            body = emptyList(),
-            decorator_list = emptyList(),
-        )
+        return declaration.toPythonStatement(context)
     }
 
     override fun visitErrorDeclaration(declaration: IrErrorDeclaration, data: JsGenerationContext): stmt {

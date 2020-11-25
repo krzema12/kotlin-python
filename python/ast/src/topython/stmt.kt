@@ -31,7 +31,7 @@ fun stmt.toPython(): String {
         is Global -> TODO()
         is Nonlocal -> TODO()
         is Expr -> toPython()
-        Pass -> TODO()
+        Pass -> "pass"
         Break -> TODO()
         Continue -> TODO()
     }
@@ -62,4 +62,4 @@ fun If.toPython() =
     "if ${test.toPython()}:\n${(if (body.isNotEmpty()) body.toPython() else "pass").indent()}\n${if (orelse.isNotEmpty()) "else:\n${orelse.toPython().indent()}\n" else ""}"
 
 fun ClassDef.toPython() =
-    "class ${name.name}:\n${"pass".indent()}\n"
+    "class ${name.name}:\n${(if (body.isNotEmpty()) body.toPython() else "pass").indent()}\n"
