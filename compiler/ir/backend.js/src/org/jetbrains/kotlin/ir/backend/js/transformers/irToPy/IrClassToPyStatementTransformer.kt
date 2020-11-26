@@ -18,12 +18,12 @@ fun IrClass.toPythonStatement(context: JsGenerationContext): stmt {
         name = identifier(name.asString().toValidPythonSymbol()),
         bases = emptyList(),
         keywords = emptyList(),
-        body = declarations.map { declaration ->
+        body = declarations.mapNotNull { declaration ->
             when (declaration) {
                 is IrConstructor -> IrDeclarationToPyTransformer().visitConstructor(declaration, context)
                 is IrSimpleFunction -> IrDeclarationToPyTransformer().visitSimpleFunction(declaration, context)
                 is IrClass -> Expr(value = Name(id = identifier("visitClassDeclaration_IrClass ${declaration.render()}".toValidPythonSymbol()), ctx = Load))
-                is IrField -> Expr(value = Name(id = identifier("visitClassDeclaration_IrField ${declaration.render()}".toValidPythonSymbol()), ctx = Load))
+                is IrField -> null
                 else -> throw IllegalArgumentException("Unknown declaration type: ${declaration.render()}")
             }
         },

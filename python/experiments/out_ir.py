@@ -478,7 +478,6 @@ class Experimental:
     def _get_level_():
         return level
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_level_type_kotlin_Level_visibility_private__final_
     def equals(other):
         pass
     
@@ -496,7 +495,6 @@ class WasExperimental:
     def _get_markerClass_():
         return markerClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_markerClass_type_kotlin_Array_out_kotlin_reflect_KClass_out_kotlin_Annotation___visibility_private__final_
     def equals(other):
         pass
     
@@ -618,11 +616,9 @@ class RequiresOptIn:
     def _get_message_():
         return message
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_message_type_kotlin_String_visibility_private__final_
     def _get_level_():
         return level
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_level_type_kotlin_Level_visibility_private__final_
     def equals(other):
         pass
     
@@ -640,7 +636,6 @@ class OptIn:
     def _get_markerClass_():
         return markerClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_markerClass_type_kotlin_Array_out_kotlin_reflect_KClass_out_kotlin_Annotation___visibility_private__final_
     def equals(other):
         pass
     
@@ -662,7 +657,6 @@ class _no_name_provided_:
     def invoke(p1):
         return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2d550996)
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name_this_0_type_kotlin_collections_AbstractCollection_E_of_kotlin_collections_AbstractCollection__visibility_private__final_
 
 class AbstractCollection:
     def _init_():
@@ -728,9 +722,6 @@ class SubList:
         checkRangeIndexes(fromIndex, toIndex, _get_size_())
         _this_._size = jsBitOr(jsMinus(toIndex, fromIndex), 0)
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_list_type_kotlin_collections_AbstractList_E_of_kotlin_collections_SubList__visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_fromIndex_type_kotlin_Int_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name__size_type_kotlin_Int_visibility_private
     def get(index):
         checkElementIndex(index, _size)
         return get(jsBitOr(jsPlus(fromIndex, index), 0))
@@ -793,7 +784,6 @@ class IteratorImpl:
     def _get_index_():
         return index
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_index_type_kotlin_Int_visibility_private
     def hasNext():
         return jsLt(index, _get_size_())
     
@@ -815,7 +805,6 @@ class IteratorImpl:
     def toString():
         pass
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_OUTER_THIS_name__this_type_kotlin_collections_AbstractList_E_of_kotlin_collections_AbstractList__visibility_protected__final_
 
 class ListIteratorImpl:
     def _init_(_outer, index):
@@ -862,7 +851,6 @@ class ListIteratorImpl:
     def toString():
         pass
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_OUTER_THIS_name__this_type_kotlin_collections_AbstractList_E_of_kotlin_collections_AbstractList__visibility_protected__final_
 
 class Companion:
     def _init_():
@@ -1024,7 +1012,6 @@ class EmptyList:
         visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_755009f2
         _this_.serialVersionUID = _init_(-1478467534, -1720727600)
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_serialVersionUID_type_kotlin_Long_visibility_private__final_
     def equals(other):
         tmp
         if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4591a080:
@@ -1505,8 +1492,6 @@ class _no_name_provided_:
     def toString():
         pass
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__context_type_kotlin_coroutines_CoroutineContext_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CROSSINLINE_CAPTURED_VALUE_name__resumeWith_type_kotlin_Function1_kotlin_Result_T_of_kotlin_coroutines_Continuation___kotlin_Unit__visibility_private__final_
 
 class Key:
     def _init_():
@@ -1720,7 +1705,6 @@ class EmptyCoroutineContext:
         visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6c96346b
         _this_.serialVersionUID = _init_(0, 0)
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_serialVersionUID_type_kotlin_Long_visibility_private__final_
     def get(key):
         return None
     
@@ -1759,7 +1743,6 @@ class Companion:
         visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_69a3944
         _this_.serialVersionUID = _init_(0, 0)
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_serialVersionUID_type_kotlin_Long_visibility_private__final_
     def equals(other):
         pass
     
@@ -1857,7 +1840,6 @@ class Serialized:
     def _get_elements_():
         return elements
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_elements_type_kotlin_Array_kotlin_coroutines_CoroutineContext__visibility_private__final_
     def equals(other):
         pass
     
@@ -1905,8 +1887,6 @@ class _no_name_provided_:
         invoke(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3243b967)
         return Unit_getInstance()
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__elements_type_kotlin_Array_kotlin_coroutines_CoroutineContext___visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__index_type_dynamic_visibility_private__final_
 
 class CombinedContext:
     def _init_(left, element):
@@ -1914,8 +1894,6 @@ class CombinedContext:
         _this_.left = left
         _this_.element = element
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_left_type_kotlin_coroutines_CoroutineContext_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_element_type_kotlin_coroutines_Element_visibility_private__final_
     def get(key):
         cur = _this_
         while True:
@@ -2013,8 +1991,6 @@ class AbstractCoroutineContextKey:
         
         tmp.topmostKey = tmp
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_safeCast_type_kotlin_Function1___ParameterName_name____element____kotlin_coroutines_Element__E_of_kotlin_coroutines_AbstractCoroutineContextKey___visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_topmostKey_type_kotlin_coroutines_Key____visibility_private__final_
     def tryCast(element):
         return invoke(element)
     
@@ -2164,23 +2140,18 @@ class RequireKotlin:
     def _get_version_():
         return version
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_version_type_kotlin_String_visibility_private__final_
     def _get_message_():
         return message
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_message_type_kotlin_String_visibility_private__final_
     def _get_level_():
         return level
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_level_type_kotlin_DeprecationLevel_visibility_private__final_
     def _get_versionKind_():
         return versionKind
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_versionKind_type_kotlin_internal_RequireKotlinVersionKind_visibility_private__final_
     def _get_errorCode_():
         return errorCode
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_errorCode_type_kotlin_Int_visibility_private__final_
     def equals(other):
         pass
     
@@ -2364,7 +2335,6 @@ class Companion:
     def _get_star_():
         return star
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_star_type_kotlin_reflect_KTypeProjection_visibility_private__final_
     def _get_STAR_():
         return star
     
@@ -2409,11 +2379,9 @@ class KTypeProjection:
     def _get_variance_():
         return variance
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_variance_type_kotlin_reflect_KVariance__visibility_private__final_
     def _get_type_():
         return type
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_type_type_kotlin_reflect_KType__visibility_private__final_
     def toString():
         tmp0_subject = variance
         tmp
@@ -2671,7 +2639,6 @@ class Failure:
     def _get_exception_():
         return exception
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_exception_type_kotlin_Throwable_visibility_private__final_
     def equals(other):
         tmp
         if jsInstanceOf(other, jsClass()):
@@ -2713,7 +2680,6 @@ class Result:
         visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2fbb098f
         _this_.value = value
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_value_type_kotlin_Any__visibility_private__final_
     def toString():
         return Result__toString_impl(unboxIntrinsic(_this_))
     
@@ -2818,19 +2784,15 @@ class Companion:
     def _get_MIN_VALUE_():
         return MIN_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MIN_VALUE_type_kotlin_UByte_visibility_public__final_
     def _get_MAX_VALUE_():
         return MAX_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MAX_VALUE_type_kotlin_UByte_visibility_public__final_
     def _get_SIZE_BYTES_():
         return SIZE_BYTES
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BYTES_type_kotlin_Int_visibility_public__final_
     def _get_SIZE_BITS_():
         return SIZE_BITS
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BITS_type_kotlin_Int_visibility_public__final_
     def equals(other):
         pass
     
@@ -3046,7 +3008,6 @@ class UByte:
         visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5cff6d1d
         _this_.data = data
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_data_type_kotlin_Byte_visibility_private__final_
     def compareTo(other):
         return UByte__compareTo_impl(unboxIntrinsic(_this_), other)
     
@@ -3111,8 +3072,6 @@ class Iterator:
         _this_.array = array
         _this_.index = 0
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_array_type_kotlin_ByteArray_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_index_type_kotlin_Int_visibility_private
     def hasNext():
         return jsLt(index, jsArrayLength(array))
     
@@ -3199,7 +3158,6 @@ class UByteArray:
         visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2daa5092
         _this_.storage = storage
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_storage_type_kotlin_ByteArray_visibility_private__final_
     def _get_size_():
         return _UByteArray___get_size__impl_(unboxIntrinsic(_this_))
     
@@ -3246,19 +3204,15 @@ class Companion:
     def _get_MIN_VALUE_():
         return MIN_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MIN_VALUE_type_kotlin_UInt_visibility_public__final_
     def _get_MAX_VALUE_():
         return MAX_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MAX_VALUE_type_kotlin_UInt_visibility_public__final_
     def _get_SIZE_BYTES_():
         return SIZE_BYTES
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BYTES_type_kotlin_Int_visibility_public__final_
     def _get_SIZE_BITS_():
         return SIZE_BITS
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BITS_type_kotlin_Int_visibility_public__final_
     def equals(other):
         pass
     
@@ -3454,7 +3408,6 @@ class UInt:
         visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_e98adb2
         _this_.data = data
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_data_type_kotlin_Int_visibility_private__final_
     def compareTo(other):
         return UInt__compareTo_impl(unboxIntrinsic(_this_), other)
     
@@ -3525,8 +3478,6 @@ class Iterator:
         _this_.array = array
         _this_.index = 0
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_array_type_kotlin_IntArray_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_index_type_kotlin_Int_visibility_private
     def hasNext():
         return jsLt(index, jsArrayLength(array))
     
@@ -3613,7 +3564,6 @@ class UIntArray:
         visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1cdb280b
         _this_.storage = storage
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_storage_type_kotlin_IntArray_visibility_private__final_
     def _get_size_():
         return _UIntArray___get_size__impl_(unboxIntrinsic(_this_))
     
@@ -3654,7 +3604,6 @@ class Companion:
     def _get_EMPTY_():
         return EMPTY
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_EMPTY_type_kotlin_ranges_UIntRange_visibility_private__final_
     def equals(other):
         pass
     
@@ -3794,15 +3743,12 @@ class UIntProgression:
     def _get_first_():
         return first
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_first_type_kotlin_UInt_visibility_private__final_
     def _get_last_():
         return last
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_last_type_kotlin_UInt_visibility_private__final_
     def _get_step_():
         return step
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_step_type_kotlin_Int_visibility_private__final_
     def iterator():
         return _init_(first, last, step)
     
@@ -3884,10 +3830,6 @@ class UIntProgressionIterator:
         tmp.step = _init_(step)
         _this_.next = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_675b0850
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_finalElement_type_kotlin_UInt_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_hasNext_type_kotlin_Boolean_visibility_private
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_step_type_kotlin_UInt_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_next_type_kotlin_UInt_visibility_private
     def hasNext():
         return hasNext
     
@@ -4040,19 +3982,15 @@ class Companion:
     def _get_MIN_VALUE_():
         return MIN_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MIN_VALUE_type_kotlin_ULong_visibility_public__final_
     def _get_MAX_VALUE_():
         return MAX_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MAX_VALUE_type_kotlin_ULong_visibility_public__final_
     def _get_SIZE_BYTES_():
         return SIZE_BYTES
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BYTES_type_kotlin_Int_visibility_public__final_
     def _get_SIZE_BITS_():
         return SIZE_BITS
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BITS_type_kotlin_Int_visibility_public__final_
     def equals(other):
         pass
     
@@ -4249,7 +4187,6 @@ class ULong:
         visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_785477e5
         _this_.data = data
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_data_type_kotlin_Long_visibility_private__final_
     def compareTo(other):
         return ULong__compareTo_impl(unboxIntrinsic(_this_), other)
     
@@ -4320,8 +4257,6 @@ class Iterator:
         _this_.array = array
         _this_.index = 0
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_array_type_kotlin_LongArray_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_index_type_kotlin_Int_visibility_private
     def hasNext():
         return jsLt(index, jsArrayLength(array))
     
@@ -4408,7 +4343,6 @@ class ULongArray:
         visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_171b0d3
         _this_.storage = storage
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_storage_type_kotlin_LongArray_visibility_private__final_
     def _get_size_():
         return _ULongArray___get_size__impl_(unboxIntrinsic(_this_))
     
@@ -4449,7 +4383,6 @@ class Companion:
     def _get_EMPTY_():
         return EMPTY
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_EMPTY_type_kotlin_ranges_ULongRange_visibility_private__final_
     def equals(other):
         pass
     
@@ -4597,15 +4530,12 @@ class ULongProgression:
     def _get_first_():
         return first
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_first_type_kotlin_ULong_visibility_private__final_
     def _get_last_():
         return last
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_last_type_kotlin_ULong_visibility_private__final_
     def _get_step_():
         return step
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_step_type_kotlin_Long_visibility_private__final_
     def iterator():
         return _init_(first, last, step)
     
@@ -4695,10 +4625,6 @@ class ULongProgressionIterator:
         tmp.step = _init_(step)
         _this_.next = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_574c8a2a
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_finalElement_type_kotlin_ULong_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_hasNext_type_kotlin_Boolean_visibility_private
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_step_type_kotlin_ULong_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_next_type_kotlin_ULong_visibility_private
     def hasNext():
         return hasNext
     
@@ -4845,19 +4771,15 @@ class Companion:
     def _get_MIN_VALUE_():
         return MIN_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MIN_VALUE_type_kotlin_UShort_visibility_public__final_
     def _get_MAX_VALUE_():
         return MAX_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MAX_VALUE_type_kotlin_UShort_visibility_public__final_
     def _get_SIZE_BYTES_():
         return SIZE_BYTES
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BYTES_type_kotlin_Int_visibility_public__final_
     def _get_SIZE_BITS_():
         return SIZE_BITS
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BITS_type_kotlin_Int_visibility_public__final_
     def equals(other):
         pass
     
@@ -5070,7 +4992,6 @@ class UShort:
         visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_c2ddfeb
         _this_.data = data
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_data_type_kotlin_Short_visibility_private__final_
     def compareTo(other):
         return UShort__compareTo_impl(unboxIntrinsic(_this_), other)
     
@@ -5132,8 +5053,6 @@ class Iterator:
         _this_.array = array
         _this_.index = 0
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_array_type_kotlin_ShortArray_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_index_type_kotlin_Int_visibility_private
     def hasNext():
         return jsLt(index, jsArrayLength(array))
     
@@ -5220,7 +5139,6 @@ class UShortArray:
         visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_e763080
         _this_.storage = storage
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_storage_type_kotlin_ShortArray_visibility_private__final_
     def _get_size_():
         return _UShortArray___get_size__impl_(unboxIntrinsic(_this_))
     
@@ -5654,7 +5572,6 @@ class SinceKotlin:
     def _get_version_():
         return version
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_version_type_kotlin_String_visibility_private__final_
     def equals(other):
         pass
     
@@ -5672,7 +5589,6 @@ class Suppress:
     def _get_names_():
         return names
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_names_type_kotlin_Array_out_kotlin_String__visibility_private__final_
     def equals(other):
         pass
     
@@ -5746,7 +5662,6 @@ class ParameterName:
     def _get_name_():
         return name
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_name_type_kotlin_String_visibility_private__final_
     def equals(other):
         pass
     
@@ -5779,15 +5694,12 @@ class Deprecated:
     def _get_message_():
         return message
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_message_type_kotlin_String_visibility_private__final_
     def _get_replaceWith_():
         return replaceWith
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_replaceWith_type_kotlin_ReplaceWith_visibility_private__final_
     def _get_level_():
         return level
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_level_type_kotlin_DeprecationLevel_visibility_private__final_
     def equals(other):
         pass
     
@@ -5806,11 +5718,9 @@ class ReplaceWith:
     def _get_expression_():
         return expression
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_expression_type_kotlin_String_visibility_private__final_
     def _get_imports_():
         return imports
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_imports_type_kotlin_Array_out_kotlin_String__visibility_private__final_
     def equals(other):
         pass
     
@@ -6071,10 +5981,6 @@ class IntProgressionIterator:
     def _get_step_():
         return step
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_step_type_kotlin_Int_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_finalElement_type_kotlin_Int_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_hasNext_type_kotlin_Boolean_visibility_private
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_next_type_kotlin_Int_visibility_private
     def hasNext():
         return hasNext
     
@@ -6131,10 +6037,6 @@ class LongProgressionIterator:
     def _get_step_():
         return step
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_step_type_kotlin_Long_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_finalElement_type_kotlin_Long_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_hasNext_type_kotlin_Boolean_visibility_private
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_next_type_kotlin_Long_visibility_private
     def hasNext():
         return hasNext
     
@@ -6191,10 +6093,6 @@ class CharProgressionIterator:
     def _get_step_():
         return step
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_step_type_kotlin_Int_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_finalElement_type_kotlin_Int_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_hasNext_type_kotlin_Boolean_visibility_private
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_next_type_kotlin_Int_visibility_private
     def hasNext():
         return hasNext
     
@@ -6267,15 +6165,12 @@ class IntProgression:
     def _get_first_():
         return first
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_first_type_kotlin_Int_visibility_private__final_
     def _get_last_():
         return last
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_last_type_kotlin_Int_visibility_private__final_
     def _get_step_():
         return step
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_step_type_kotlin_Int_visibility_private__final_
     def iterator():
         return _init_(first, last, step)
     
@@ -6343,15 +6238,12 @@ class LongProgression:
     def _get_first_():
         return first
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_first_type_kotlin_Long_visibility_private__final_
     def _get_last_():
         return last
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_last_type_kotlin_Long_visibility_private__final_
     def _get_step_():
         return step
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_step_type_kotlin_Long_visibility_private__final_
     def iterator():
         return _init_(first, last, step)
     
@@ -6419,15 +6311,12 @@ class CharProgression:
     def _get_first_():
         return first
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_first_type_kotlin_Char_visibility_private__final_
     def _get_last_():
         return last
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_last_type_kotlin_Char_visibility_private__final_
     def _get_step_():
         return step
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_step_type_kotlin_Int_visibility_private__final_
     def iterator():
         return _init_(first, last, step)
     
@@ -6488,7 +6377,6 @@ class Companion:
     def _get_EMPTY_():
         return EMPTY
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_EMPTY_type_kotlin_ranges_IntRange_visibility_private__final_
     def equals(other):
         pass
     
@@ -6566,7 +6454,6 @@ class Companion:
     def _get_EMPTY_():
         return EMPTY
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_EMPTY_type_kotlin_ranges_LongRange_visibility_private__final_
     def equals(other):
         pass
     
@@ -6644,7 +6531,6 @@ class Companion:
     def _get_EMPTY_():
         return EMPTY
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_EMPTY_type_kotlin_ranges_CharRange_visibility_private__final_
     def equals(other):
         pass
     
@@ -6742,7 +6628,6 @@ class Target:
     def _get_allowedTargets_():
         return allowedTargets
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_allowedTargets_type_kotlin_Array_out_kotlin_annotation_AnnotationTarget__visibility_private__final_
     def equals(other):
         pass
     
@@ -6850,7 +6735,6 @@ class Retention:
     def _get_value_():
         return value
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_value_type_kotlin_annotation_AnnotationRetention_visibility_private__final_
     def equals(other):
         pass
     
@@ -7041,19 +6925,15 @@ class ByteCompanionObject:
     def _get_MIN_VALUE_():
         return MIN_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MIN_VALUE_type_kotlin_Byte_visibility_private__final_
     def _get_MAX_VALUE_():
         return MAX_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MAX_VALUE_type_kotlin_Byte_visibility_private__final_
     def _get_SIZE_BYTES_():
         return SIZE_BYTES
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BYTES_type_kotlin_Int_visibility_public__final_
     def _get_SIZE_BITS_():
         return SIZE_BITS
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BITS_type_kotlin_Int_visibility_public__final_
     def equals(other):
         pass
     
@@ -7083,19 +6963,15 @@ class ShortCompanionObject:
     def _get_MIN_VALUE_():
         return MIN_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MIN_VALUE_type_kotlin_Short_visibility_private__final_
     def _get_MAX_VALUE_():
         return MAX_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MAX_VALUE_type_kotlin_Short_visibility_private__final_
     def _get_SIZE_BYTES_():
         return SIZE_BYTES
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BYTES_type_kotlin_Int_visibility_public__final_
     def _get_SIZE_BITS_():
         return SIZE_BITS
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BITS_type_kotlin_Int_visibility_public__final_
     def equals(other):
         pass
     
@@ -7125,19 +7001,15 @@ class IntCompanionObject:
     def _get_MIN_VALUE_():
         return MIN_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MIN_VALUE_type_kotlin_Int_visibility_private__final_
     def _get_MAX_VALUE_():
         return MAX_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MAX_VALUE_type_kotlin_Int_visibility_private__final_
     def _get_SIZE_BYTES_():
         return SIZE_BYTES
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BYTES_type_kotlin_Int_visibility_public__final_
     def _get_SIZE_BITS_():
         return SIZE_BITS
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BITS_type_kotlin_Int_visibility_public__final_
     def equals(other):
         pass
     
@@ -7170,31 +7042,24 @@ class FloatCompanionObject:
     def _get_MIN_VALUE_():
         return MIN_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MIN_VALUE_type_kotlin_Float_visibility_public__final_
     def _get_MAX_VALUE_():
         return MAX_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MAX_VALUE_type_kotlin_Float_visibility_public__final_
     def _get_POSITIVE_INFINITY_():
         return POSITIVE_INFINITY
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_POSITIVE_INFINITY_type_kotlin_Float_visibility_public__final_
     def _get_NEGATIVE_INFINITY_():
         return NEGATIVE_INFINITY
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_NEGATIVE_INFINITY_type_kotlin_Float_visibility_public__final_
     def _get_NaN_():
         return NaN
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_NaN_type_kotlin_Float_visibility_public__final_
     def _get_SIZE_BYTES_():
         return SIZE_BYTES
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BYTES_type_kotlin_Int_visibility_public__final_
     def _get_SIZE_BITS_():
         return SIZE_BITS
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BITS_type_kotlin_Int_visibility_public__final_
     def equals(other):
         pass
     
@@ -7227,31 +7092,24 @@ class DoubleCompanionObject:
     def _get_MIN_VALUE_():
         return MIN_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MIN_VALUE_type_kotlin_Double_visibility_public__final_
     def _get_MAX_VALUE_():
         return MAX_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MAX_VALUE_type_kotlin_Double_visibility_public__final_
     def _get_POSITIVE_INFINITY_():
         return POSITIVE_INFINITY
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_POSITIVE_INFINITY_type_kotlin_Double_visibility_public__final_
     def _get_NEGATIVE_INFINITY_():
         return NEGATIVE_INFINITY
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_NEGATIVE_INFINITY_type_kotlin_Double_visibility_public__final_
     def _get_NaN_():
         return NaN
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_NaN_type_kotlin_Double_visibility_public__final_
     def _get_SIZE_BYTES_():
         return SIZE_BYTES
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BYTES_type_kotlin_Int_visibility_public__final_
     def _get_SIZE_BITS_():
         return SIZE_BITS
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BITS_type_kotlin_Int_visibility_public__final_
     def equals(other):
         pass
     
@@ -7337,7 +7195,6 @@ class JsName:
     def _get_name_():
         return name
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_name_type_kotlin_String_visibility_private__final_
     def equals(other):
         pass
     
@@ -7403,7 +7260,6 @@ class _no_name_provided_:
     def invoke(p1):
         return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_699ae22e)
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__elements_type_kotlin_collections_Collection_E_of_kotlin_collections_AbstractMutableCollection__visibility_private__final_
 
 class _no_name_provided_:
     def _init_(_elements):
@@ -7416,7 +7272,6 @@ class _no_name_provided_:
     def invoke(p1):
         return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7fcc9949)
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__elements_type_kotlin_collections_Collection_E_of_kotlin_collections_AbstractMutableCollection__visibility_private__final_
 
 class AbstractMutableCollection:
     def _init_():
@@ -7537,14 +7392,12 @@ class IteratorImpl:
     def _get_index_():
         return index
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_index_type_kotlin_Int_visibility_private
     def _set_last_(_set___):
         _this_.last = _set___
     
     def _get_last_():
         return last
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_last_type_kotlin_Int_visibility_private
     def hasNext():
         return jsLt(index, _get_size_())
     
@@ -7579,7 +7432,6 @@ class IteratorImpl:
     def toString():
         pass
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_OUTER_THIS_name__this_type_kotlin_collections_AbstractMutableList_E_of_kotlin_collections_AbstractMutableList__visibility_protected__final_
 
 class ListIteratorImpl:
     def _init_(_outer, index):
@@ -7659,7 +7511,6 @@ class ListIteratorImpl:
     def toString():
         pass
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_OUTER_THIS_name__this_type_kotlin_collections_AbstractMutableList_E_of_kotlin_collections_AbstractMutableList__visibility_protected__final_
 
 class SubList:
     def _init_(list, fromIndex, toIndex):
@@ -7670,9 +7521,6 @@ class SubList:
         checkRangeIndexes(fromIndex, toIndex, _get_size_())
         _this_._size = jsBitOr(jsMinus(toIndex, fromIndex), 0)
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_list_type_kotlin_collections_AbstractMutableList_E_of_kotlin_collections_SubList__visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_fromIndex_type_kotlin_Int_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name__size_type_kotlin_Int_visibility_private
     def add(index, element):
         checkPositionIndex(index, _size)
         add(jsBitOr(jsPlus(fromIndex, index), 0), element)
@@ -7791,7 +7639,6 @@ class _no_name_provided_:
     def invoke(p1):
         return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7bf62880)
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__elements_type_kotlin_collections_Collection_E_of_kotlin_collections_AbstractMutableList__visibility_private__final_
 
 class _no_name_provided_:
     def _init_(_elements):
@@ -7804,7 +7651,6 @@ class _no_name_provided_:
     def invoke(p1):
         return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7697fc45)
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__elements_type_kotlin_collections_Collection_E_of_kotlin_collections_AbstractMutableList__visibility_private__final_
 
 class AbstractMutableList:
     def _init_():
@@ -7817,7 +7663,6 @@ class AbstractMutableList:
     def _get_modCount_():
         return modCount
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_modCount_type_kotlin_Int_visibility_private
     def add(index, element):
         pass
     
@@ -8010,8 +7855,6 @@ class ArrayList:
         _this_.array = array
         _this_.isReadOnly = False
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_array_type_kotlin_Array_kotlin_Any___visibility_private
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_isReadOnly_type_kotlin_Boolean_visibility_private
     def build():
         checkIsMutable()
         _this_.isReadOnly = True
@@ -8245,8 +8088,7 @@ class BaseOutput:
         visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3e5e7f4c
     
     def println():
-        print('
-        ')
+        print('\n')
     
     def println(message):
         print(message)
@@ -8276,7 +8118,6 @@ class NodeJsOutput:
     def _get_outputStream_():
         return outputStream
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_outputStream_type_dynamic_visibility_private__final_
     def print(message):
         messageString = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_44c639d4)
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_19f007c4
@@ -8307,8 +8148,7 @@ class BufferedOutputToConsoleLog:
     def print(message):
         s = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_6edd2ef4)
         tmp0_nativeLastIndexOf_0 = s
-        tmp1_nativeLastIndexOf_0 = '
-        '
+        tmp1_nativeLastIndexOf_0 = '\n'
         tmp2_nativeLastIndexOf_0 = 0
         i = kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_29ed425e)
         if jsGtEq(i, 0):
@@ -8365,7 +8205,6 @@ class BufferedOutput:
     def _get_buffer_():
         return buffer
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_buffer_type_kotlin_String_visibility_private
     def print(message):
         tmp0_this = _this_
         tmp = tmp0_this
@@ -8436,7 +8275,6 @@ class _no_name_provided__1:
     def toString_6():
         pass
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__tmp0_Continuation_0_type_kotlin_coroutines_EmptyCoroutineContext_visibility_private__final_
 
 def EmptyContinuation_init_():
     tmp0_Continuation_0 = EmptyCoroutineContext_getInstance()
@@ -8540,7 +8378,6 @@ class KClassImpl:
     def _get_jClass_():
         return jClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_jClass_type_kotlin_js_JsClass_T_of_kotlin_reflect_js_internal_KClassImpl__visibility_private__final_
     def _get_qualifiedName_():
         visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7e5432ca
     
@@ -8583,8 +8420,6 @@ class PrimitiveKClassImpl:
         _this_.givenSimpleName = givenSimpleName
         _this_.isInstanceFunction = isInstanceFunction
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_givenSimpleName_type_kotlin_String_visibility_private__final_
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_isInstanceFunction_type_kotlin_Function1_kotlin_Any___kotlin_Boolean__visibility_private__final_
     def equals(other):
         if jsNot(jsInstanceOf(other, jsClass())):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_1d691d4f
@@ -8622,7 +8457,6 @@ class NothingKClassImpl:
     def _get_simpleName_():
         return simpleName
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_simpleName_type_kotlin_String_visibility_private__final_
     def isInstance(value):
         return False
     
@@ -8686,7 +8520,6 @@ class SimpleKClassImpl:
     def _get_simpleName_():
         return simpleName
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_simpleName_type_kotlin_String__visibility_private__final_
     def isInstance(value):
         return jsIsType(value, _get_jClass_())
     
@@ -8967,7 +8800,6 @@ class _no_name_provided_:
     def invoke(p1):
         return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_49172e03)
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name_this_0_type_kotlin_reflect_js_internal_KTypeImpl_visibility_private__final_
 
 class KTypeImpl:
     def _init_(classifier, arguments, isMarkedNullable):
@@ -8979,15 +8811,12 @@ class KTypeImpl:
     def _get_classifier_():
         return classifier
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_classifier_type_kotlin_reflect_KClassifier_visibility_private__final_
     def _get_arguments_():
         return arguments
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_arguments_type_kotlin_collections_List_kotlin_reflect_KTypeProjection__visibility_private__final_
     def _get_isMarkedNullable_():
         return isMarkedNullable
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_isMarkedNullable_type_kotlin_Boolean_visibility_private__final_
     def equals(other):
         tmp
         tmp
@@ -9065,15 +8894,12 @@ class DynamicKType:
     def _get_classifier_():
         return classifier
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_classifier_type_kotlin_reflect_KClassifier__visibility_private__final_
     def _get_arguments_():
         return arguments
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_arguments_type_kotlin_collections_List_kotlin_reflect_KTypeProjection__visibility_private__final_
     def _get_isMarkedNullable_():
         return isMarkedNullable
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_isMarkedNullable_type_kotlin_Boolean_visibility_private__final_
     def toString():
         return 'dynamic'
     
@@ -9106,19 +8932,15 @@ class KTypeParameterImpl:
     def _get_name_():
         return name
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_name_type_kotlin_String_visibility_private__final_
     def _get_upperBounds_():
         return upperBounds
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_upperBounds_type_kotlin_collections_List_kotlin_reflect_KType__visibility_private__final_
     def _get_variance_():
         return variance
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_variance_type_kotlin_reflect_KVariance_visibility_private__final_
     def _get_isReified_():
         return isReified
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_isReified_type_kotlin_Boolean_visibility_private__final_
     def toString():
         return name
     
@@ -9416,7 +9238,6 @@ class _no_name_provided_:
     def invoke(p1):
         return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6eeee66f)
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__arity_type_kotlin_Int_visibility_private__final_
 
 class PrimitiveClasses:
     def _init_():
@@ -9503,83 +9324,63 @@ class PrimitiveClasses:
     def _get_anyClass_():
         return anyClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_anyClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_Any__visibility_private__final_
     def _get_numberClass_():
         return numberClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_numberClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_Number__visibility_private__final_
     def _get_nothingClass_():
         return nothingClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_nothingClass_type_kotlin_reflect_js_internal_NothingKClassImpl_visibility_private__final_
     def _get_booleanClass_():
         return booleanClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_booleanClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_Boolean__visibility_private__final_
     def _get_byteClass_():
         return byteClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_byteClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_Byte__visibility_private__final_
     def _get_shortClass_():
         return shortClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_shortClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_Short__visibility_private__final_
     def _get_intClass_():
         return intClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_intClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_Int__visibility_private__final_
     def _get_floatClass_():
         return floatClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_floatClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_Float__visibility_private__final_
     def _get_doubleClass_():
         return doubleClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_doubleClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_Double__visibility_private__final_
     def _get_arrayClass_():
         return arrayClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_arrayClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_Array_____visibility_private__final_
     def _get_stringClass_():
         return stringClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_stringClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_String__visibility_private__final_
     def _get_throwableClass_():
         return throwableClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_throwableClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_Throwable__visibility_private__final_
     def _get_booleanArrayClass_():
         return booleanArrayClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_booleanArrayClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_BooleanArray__visibility_private__final_
     def _get_charArrayClass_():
         return charArrayClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_charArrayClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_CharArray__visibility_private__final_
     def _get_byteArrayClass_():
         return byteArrayClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_byteArrayClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_ByteArray__visibility_private__final_
     def _get_shortArrayClass_():
         return shortArrayClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_shortArrayClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_ShortArray__visibility_private__final_
     def _get_intArrayClass_():
         return intArrayClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_intArrayClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_IntArray__visibility_private__final_
     def _get_longArrayClass_():
         return longArrayClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_longArrayClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_LongArray__visibility_private__final_
     def _get_floatArrayClass_():
         return floatArrayClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_floatArrayClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_FloatArray__visibility_private__final_
     def _get_doubleArrayClass_():
         return doubleArrayClass
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_doubleArrayClass_type_kotlin_reflect_js_internal_PrimitiveKClassImpl_kotlin_DoubleArray__visibility_private__final_
     def functionClass(arity):
         tmp0_elvis_lhs = jsArrayGet(functionClasses, arity)
         tmp
@@ -9908,7 +9709,6 @@ class StringBuilder:
         visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_13ebbdab
         _this_.string = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_38934406
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_string_type_kotlin_String_visibility_private
     def _get_length_():
         tmp0_asDynamic_0 = string
         return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_2a03b87)
@@ -10352,7 +10152,6 @@ def concatToString_default(startIndex, endIndex, _mask0, _handler):
     return concatToString(startIndex, endIndex)
 
 class sam_kotlin_Comparator_0:
-    visitClassDeclaration_IrField_FIELD_GENERATED_SAM_IMPLEMENTATION_name_function_type_kotlin_Function2_kotlin_Function2__kotlin_Function2__kotlin_Function2__visibility_private
     def _init_(function):
         visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_56609c11
         _this_.function = function
@@ -10422,43 +10221,33 @@ class Companion:
     def _get_MIN_VALUE_():
         return MIN_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MIN_VALUE_type_kotlin_Char_visibility_public__final_
     def _get_MAX_VALUE_():
         return MAX_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MAX_VALUE_type_kotlin_Char_visibility_public__final_
     def _get_MIN_HIGH_SURROGATE_():
         return MIN_HIGH_SURROGATE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MIN_HIGH_SURROGATE_type_kotlin_Char_visibility_public__final_
     def _get_MAX_HIGH_SURROGATE_():
         return MAX_HIGH_SURROGATE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MAX_HIGH_SURROGATE_type_kotlin_Char_visibility_public__final_
     def _get_MIN_LOW_SURROGATE_():
         return MIN_LOW_SURROGATE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MIN_LOW_SURROGATE_type_kotlin_Char_visibility_public__final_
     def _get_MAX_LOW_SURROGATE_():
         return MAX_LOW_SURROGATE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MAX_LOW_SURROGATE_type_kotlin_Char_visibility_public__final_
     def _get_MIN_SURROGATE_():
         return MIN_SURROGATE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MIN_SURROGATE_type_kotlin_Char_visibility_public__final_
     def _get_MAX_SURROGATE_():
         return MAX_SURROGATE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MAX_SURROGATE_type_kotlin_Char_visibility_public__final_
     def _get_SIZE_BYTES_():
         return SIZE_BYTES
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BYTES_type_kotlin_Int_visibility_public__final_
     def _get_SIZE_BITS_():
         return SIZE_BITS
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BITS_type_kotlin_Int_visibility_public__final_
     def equals(other):
         pass
     
@@ -10482,7 +10271,6 @@ class Char:
         visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_66ab765c
         _this_.value = value
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_value_type_kotlin_Int_visibility_private__final_
     def compareTo(other):
         return jsBitOr(jsMinus(value, value), 0)
     
@@ -11021,11 +10809,9 @@ class Enum:
     def _get_name_():
         return name
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_name_type_kotlin_String_visibility_private__final_
     def _get_ordinal_():
         return ordinal
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_ordinal_type_kotlin_Int_visibility_private__final_
     def compareTo(other):
         return compareTo(ordinal, ordinal)
     
@@ -11214,7 +11000,6 @@ class _no_name_provided_:
     def _get_index_():
         return index
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_index_type_kotlin_Int_visibility_private
     def hasNext():
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
@@ -11240,7 +11025,6 @@ class _no_name_provided_:
     def toString():
         pass
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__array_type_kotlin_Array_T_of_kotlin_js_arrayIterator__visibility_private__final_
 
 class _no_name_provided_:
     def _init_(_array):
@@ -11254,7 +11038,6 @@ class _no_name_provided_:
     def _get_index_():
         return index
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_index_type_kotlin_Int_visibility_private
     def hasNext():
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
@@ -11283,7 +11066,6 @@ class _no_name_provided_:
     def toString():
         pass
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__array_type_kotlin_BooleanArray_visibility_private__final_
 
 class _no_name_provided_:
     def _init_(_array):
@@ -11297,7 +11079,6 @@ class _no_name_provided_:
     def _get_index_():
         return index
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_index_type_kotlin_Int_visibility_private
     def hasNext():
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
@@ -11326,7 +11107,6 @@ class _no_name_provided_:
     def toString():
         pass
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__array_type_kotlin_CharArray_visibility_private__final_
 
 class _no_name_provided_:
     def _init_(_array):
@@ -11340,7 +11120,6 @@ class _no_name_provided_:
     def _get_index_():
         return index
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_index_type_kotlin_Int_visibility_private
     def hasNext():
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
@@ -11369,7 +11148,6 @@ class _no_name_provided_:
     def toString():
         pass
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__array_type_kotlin_ByteArray_visibility_private__final_
 
 class _no_name_provided_:
     def _init_(_array):
@@ -11383,7 +11161,6 @@ class _no_name_provided_:
     def _get_index_():
         return index
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_index_type_kotlin_Int_visibility_private
     def hasNext():
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
@@ -11412,7 +11189,6 @@ class _no_name_provided_:
     def toString():
         pass
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__array_type_kotlin_ShortArray_visibility_private__final_
 
 class _no_name_provided_:
     def _init_(_array):
@@ -11426,7 +11202,6 @@ class _no_name_provided_:
     def _get_index_():
         return index
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_index_type_kotlin_Int_visibility_private
     def hasNext():
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
@@ -11455,7 +11230,6 @@ class _no_name_provided_:
     def toString():
         pass
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__array_type_kotlin_IntArray_visibility_private__final_
 
 class _no_name_provided_:
     def _init_(_array):
@@ -11469,7 +11243,6 @@ class _no_name_provided_:
     def _get_index_():
         return index
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_index_type_kotlin_Int_visibility_private
     def hasNext():
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
@@ -11498,7 +11271,6 @@ class _no_name_provided_:
     def toString():
         pass
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__array_type_kotlin_FloatArray_visibility_private__final_
 
 class _no_name_provided_:
     def _init_(_array):
@@ -11512,7 +11284,6 @@ class _no_name_provided_:
     def _get_index_():
         return index
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_index_type_kotlin_Int_visibility_private
     def hasNext():
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
@@ -11541,7 +11312,6 @@ class _no_name_provided_:
     def toString():
         pass
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__array_type_kotlin_LongArray_visibility_private__final_
 
 class _no_name_provided_:
     def _init_(_array):
@@ -11555,7 +11325,6 @@ class _no_name_provided_:
     def _get_index_():
         return index
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_index_type_kotlin_Int_visibility_private
     def hasNext():
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
@@ -11584,7 +11353,6 @@ class _no_name_provided_:
     def toString():
         pass
     
-    visitClassDeclaration_IrField_FIELD_FIELD_FOR_CAPTURED_VALUE_name__array_type_kotlin_DoubleArray_visibility_private__final_
 
 def _get_buf_():
     return buf
@@ -12041,19 +11809,15 @@ class Companion:
     def _get_MIN_VALUE_():
         return MIN_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MIN_VALUE_type_kotlin_Long_visibility_public__final_
     def _get_MAX_VALUE_():
         return MAX_VALUE
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_MAX_VALUE_type_kotlin_Long_visibility_public__final_
     def _get_SIZE_BYTES_():
         return SIZE_BYTES
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BYTES_type_kotlin_Int_visibility_public__final_
     def _get_SIZE_BITS_():
         return SIZE_BITS
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_SIZE_BITS_type_kotlin_Int_visibility_public__final_
     def equals(other):
         pass
     
@@ -12081,11 +11845,9 @@ class Long:
     def _get_low_():
         return low
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_low_type_kotlin_Int_visibility_private__final_
     def _get_high_():
         return high
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_high_type_kotlin_Int_visibility_private__final_
     def compareTo(other):
         return compareTo(toLong(other))
     
@@ -12957,47 +12719,39 @@ class CoroutineImpl:
         tmp._context = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_60509848
         _this_.intercepted_ = None
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_resultContinuation_type_kotlin_coroutines_Continuation_kotlin_Any____visibility_private__final_
     def _set_state_(_set___):
         _this_.state = _set___
     
     def _get_state_():
         return state
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_state_type_kotlin_Int_visibility_private
     def _set_exceptionState_(_set___):
         _this_.exceptionState = _set___
     
     def _get_exceptionState_():
         return exceptionState
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_exceptionState_type_kotlin_Int_visibility_private
     def _set_result_(_set___):
         _this_.result = _set___
     
     def _get_result_():
         return result
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_result_type_dynamic_visibility_private
     def _set_exception_(_set___):
         _this_.exception = _set___
     
     def _get_exception_():
         return exception
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_exception_type_dynamic_visibility_private
     def _set_finallyPath_(_set___):
         _this_.finallyPath = _set___
     
     def _get_finallyPath_():
         return finallyPath
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_finallyPath_type_kotlin_Array_kotlin_Int___visibility_private
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name__context_type_kotlin_coroutines_CoroutineContext__visibility_private__final_
     def _get_context_():
         return ensureNotNull(_context)
     
-    visitClassDeclaration_IrField_FIELD_PROPERTY_BACKING_FIELD_name_intercepted__type_kotlin_coroutines_Continuation_kotlin_Any____visibility_private
     def intercepted():
         tmp2_elvis_lhs = intercepted_
         tmp

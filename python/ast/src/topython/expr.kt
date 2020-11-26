@@ -50,7 +50,7 @@ fun List.toPython() =
     }
 
 fun Constant.toPython() =
-    value.value
+    value.value.replace("\n", "\\n")
 
 fun Call.toPython() =
     "${func.toPython()}(${args.joinToString(", ") { it.toPython() }})"
