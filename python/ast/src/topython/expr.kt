@@ -32,7 +32,7 @@ fun expr.toPython(): String {
         is FormattedValue -> TODO()
         is JoinedStr -> TODO()
         is Constant -> toPython()
-        is Attribute -> TODO()
+        is Attribute -> toPython()
         is Subscript -> TODO()
         is Starred -> TODO()
         is List -> toPython()
@@ -54,3 +54,6 @@ fun Constant.toPython() =
 
 fun Call.toPython() =
     "${func.toPython()}(${args.joinToString(", ") { it.toPython() }})"
+
+fun Attribute.toPython() =
+    "${value.toPython()}.${attr.name}"

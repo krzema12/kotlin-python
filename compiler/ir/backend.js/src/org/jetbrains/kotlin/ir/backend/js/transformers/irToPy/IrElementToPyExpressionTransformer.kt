@@ -105,7 +105,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
 
     override fun visitSetField(expression: IrSetField, context: JsGenerationContext): List<expr> {
         // TODO
-        return listOf(Name(id = identifier("visitSetField $expression".toValidPythonSymbol()), ctx = Load))
+        return listOf(Name(id = identifier("visitSetField_expression $expression".toValidPythonSymbol()), ctx = Load))
     }
 
     override fun visitSetValue(expression: IrSetValue, context: JsGenerationContext): List<expr> {

@@ -57,7 +57,18 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitSetField(expression: IrSetField, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(Expr(value = Name(id = identifier("visitSetField $expression".toValidPythonSymbol()), ctx = Load)))
+        val receiverAsExpressions = expression.receiver?.accept(IrElementToPyExpressionTransformer(), context)?.get(0)
+        return listOf(
+            Assign(
+                targets = if (receiverAsExpressions != null) {
+                    listOf(Attribute(value = receiverAsExpressions, attr = identifier(expression.symbol.owner.name.identifier.toValidPythonSymbol()), ctx = Store))
+                } else {
+                    listOf(Name(id = identifier(expression.symbol.owner.name.identifier.toValidPythonSymbol()), ctx = Store))
+                },
+                value = IrElementToPyExpressionTransformer().visitExpression(expression.value, context).first(),
+                type_comment = null,
+            )
+        )
     }
 
     override fun visitSetValue(expression: IrSetValue, context: JsGenerationContext): List<stmt> {
