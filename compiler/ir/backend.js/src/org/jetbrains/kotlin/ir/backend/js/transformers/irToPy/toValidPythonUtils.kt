@@ -15,3 +15,4 @@ fun String.toValidPythonSymbol() =
         .replace(Regex("^with$"), "_with")
         .replace(Regex("^lambda$"), "_lambda")
         .replace(Regex("^from$"), "_from")
+        .replace(Regex("^assert$"), "_assert")
