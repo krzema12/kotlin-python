@@ -16,3 +16,4 @@ fun String.toValidPythonSymbol() =
         .replace(Regex("^lambda$"), "_lambda")
         .replace(Regex("^from$"), "_from")
         .replace(Regex("^assert$"), "_assert")
+        .replace(Regex("^yield$"), "_yield")

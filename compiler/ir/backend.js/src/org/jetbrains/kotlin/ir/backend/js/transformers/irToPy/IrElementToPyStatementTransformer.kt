@@ -61,7 +61,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         return listOf(
             Assign(
                 targets = if (receiverAsExpressions != null) {
-                    listOf(Attribute(value = receiverAsExpressions, attr = identifier(expression.symbol.owner.name.identifier.toValidPythonSymbol()), ctx = Store))
+                    listOf(Attribute(value = receiverAsExpressions, attr = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Store))
                 } else {
                     listOf(Name(id = identifier(expression.symbol.owner.name.identifier.toValidPythonSymbol()), ctx = Store))
                 },
