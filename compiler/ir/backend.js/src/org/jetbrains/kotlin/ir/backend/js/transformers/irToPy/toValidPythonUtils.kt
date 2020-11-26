@@ -14,3 +14,4 @@ fun String.toValidPythonSymbol() =
         .replace(Regex("^or$"), "_or")
         .replace(Regex("^with$"), "_with")
         .replace(Regex("^lambda$"), "_lambda")
+        .replace(Regex("^from$"), "_from")
