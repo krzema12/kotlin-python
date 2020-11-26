@@ -10946,7 +10946,7 @@ class MutableMap:
     def remove(key):
         pass
     
-    def putAll(from):
+    def putAll(_from):
         pass
     
     def clear():

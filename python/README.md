@@ -33,14 +33,17 @@ See discussion at https://discuss.kotlinlang.org/t/idea-python-backend/19852
 ## Running box tests
 
 ```
-./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated"
+./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated" | tee tests-out.txt
+less tests-out.txt | grep "FAILED" | grep "Codegen" | sort > python/experiments/failed-tests.txt
 ```
 
 ### Test stats
 
-Current status: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=17&leftFill=) (**939**/5368 passed)
+Current status: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=56&leftFill=) (**3030**/5368 passed)
 
 ### History (newest on top)
+
+* after implementing partial classes translation: **3030**/5368 passed (+2091)
 
 * with Python interpreter in place, no other changes to the compiler: **939**/5368 passed (+84)
 
