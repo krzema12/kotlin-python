@@ -84,7 +84,7 @@ object PythonTestChecker : AbstractJsTestChecker() {
         val fileToRun = files[0]
         val pathToFileToRun = Paths.get(fileToRun)
 
-        val temporaryDirectory = Files.createTempDirectory(pathToFileToRun.parent, null)
+        val temporaryDirectory = Files.createTempDirectory(pathToFileToRun.parent, pathToFileToRun.fileName.toString())
         Files.copy(pathToFileToRun, temporaryDirectory.resolve("compiled_module.py"))
         val consumerScriptPath = temporaryDirectory.resolve("consumer.py")
         consumerScriptPath.toFile().writeText("""
