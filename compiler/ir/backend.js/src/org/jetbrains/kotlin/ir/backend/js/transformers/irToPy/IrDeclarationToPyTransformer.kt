@@ -19,7 +19,7 @@ class IrDeclarationToPyTransformer : BaseIrElementToPyNodeTransformer<stmt, JsGe
 
     override fun visitConstructor(declaration: IrConstructor, context: JsGenerationContext): stmt {
         // TODO
-        return Expr(value = Name(id = identifier("visitConstructor $declaration".toValidPythonSymbol()), ctx = Load))
+        return declaration.accept(IrFunctionToPyTransformer(), context)
     }
 
     override fun visitClass(declaration: IrClass, context: JsGenerationContext): stmt {

@@ -6,8 +6,6 @@
 package org.jetbrains.kotlin.ir.backend.js.transformers.irToPy
 
 import generated.Python.FunctionDef
-import generated.Python.argumentsImpl
-import generated.Python.identifier
 import org.jetbrains.kotlin.ir.backend.js.utils.JsGenerationContext
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
@@ -19,22 +17,6 @@ class IrFunctionToPyTransformer : BaseIrElementToPyNodeTransformer<FunctionDef, 
     }
 
     override fun visitConstructor(declaration: IrConstructor, context: JsGenerationContext): FunctionDef {
-        // TODO
-        return FunctionDef(
-            name = identifier("${declaration.name.identifier}_visitConstructor $declaration".toValidPythonSymbol()),
-            args = argumentsImpl(
-                posonlyargs = emptyList(),
-                args = emptyList(),
-                vararg = null,
-                kwonlyargs = emptyList(),
-                kw_defaults = emptyList(),
-                kwarg = null,
-                defaults = emptyList(),
-            ),
-            body = emptyList(),
-            decorator_list = emptyList(),
-            returns = null,
-            type_comment = null,
-        )
+        return translateFunction(declaration, context)
     }
 }
