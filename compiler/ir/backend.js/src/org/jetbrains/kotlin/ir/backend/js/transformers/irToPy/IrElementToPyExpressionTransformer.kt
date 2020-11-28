@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.ir.backend.js.utils.asString
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.expressions.*
+import org.jetbrains.kotlin.ir.util.parentAsClass
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List<expr>, JsGenerationContext> {
@@ -128,8 +129,9 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
             }
         }.flatten()
 
+        val className = expression.symbol.owner.parentAsClass.name.asString().toValidPythonSymbol()
         return listOf(Call(
-            func = Name(id = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Load),
+            func = Name(id = identifier(className), ctx = Load),
             args = arguments,
             keywords = emptyList(),
         ))
@@ -146,11 +148,29 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
             }
         }.flatten()
 
-        return listOf(Call(
-            func = Name(id = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Load),
-            args = arguments,
-            keywords = emptyList(),
-        ))
+        val test: List<expr>? = expression.dispatchReceiver?.accept(this, context)
+
+        if (test == null) {
+            return listOf(
+                Call(
+                    func = Name(id = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Load),
+                    args = arguments,
+                    keywords = emptyList(),
+                )
+            )
+        } else {
+            return listOf(
+                Call(
+                    func = Attribute(
+                        value = test[0],
+                        attr = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()),
+                        ctx = Load,
+                    ),
+                    args = arguments,
+                    keywords = emptyList(),
+                )
+            )
+        }
     }
 
     override fun visitWhen(expression: IrWhen, context: JsGenerationContext): List<expr> {

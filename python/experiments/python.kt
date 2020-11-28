@@ -12,4 +12,13 @@ fun exampleFromAstTest() {
     }
 }
 
+class TestClass {
+    fun getSomeString() = "Hello from Kotlin class!"
+}
+
 fun returnString() = "Hello from Kotlin!"
+
+fun returnStringFromClass(): String {
+    val testClass = TestClass()
+    return testClass.getSomeString()
+}

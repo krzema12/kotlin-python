@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.expressions.IrCall
 
 fun translateFunction(declaration: IrFunction, context: JsGenerationContext): FunctionDef {
+    val isClassMethod = declaration.dispatchReceiverParameter != null
     val body = declaration.body?.accept(IrElementToPyStatementTransformer(), context) ?: listOf(Pass)
     val args = declaration.valueParameters.map { valueParameter ->
         argImpl(
@@ -19,12 +20,17 @@ fun translateFunction(declaration: IrFunction, context: JsGenerationContext): Fu
             type_comment = null,
         )
     }
+    val selfArg = argImpl(
+        arg = identifier("self"),
+        annotation = null,
+        type_comment = null,
+    )
 
     return FunctionDef(
         name = identifier(declaration.name.asString().toValidPythonSymbol()),
         args = argumentsImpl(
             posonlyargs = emptyList(),
-            args = args,
+            args = if (isClassMethod) { listOf(selfArg) + args } else args,
             vararg = null,
             kwonlyargs = emptyList(),
             kw_defaults = emptyList(),

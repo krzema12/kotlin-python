@@ -6,26 +6,26 @@ def fold(initial, operation):
     while jsLt(inductionVariable, last):
         element = jsArrayGet(indexedObject, inductionVariable)
         inductionVariable = jsBitOr(jsPlus(inductionVariable, 1), 0)
-        accumulator = invoke(accumulator, element)
+        accumulator = operation.invoke(accumulator, element)
     
     return accumulator
 
 def _get_indices_():
-    return _init_(0, _get_lastIndex_())
+    return IntRange(0, _get_lastIndex_())
 
 def indexOf(element):
     if jsEqeq(element, None):
         inductionVariable = 0
         last = jsBitOr(jsMinus(jsArrayLength(_this_), 1), 0)
         if jsLtEq(inductionVariable, last):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_5fcf9bff
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_cf39749
         
     
     if True:
         inductionVariable = 0
         last = jsBitOr(jsMinus(jsArrayLength(_this_), 1), 0)
         if jsLtEq(inductionVariable, last):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_7cb13e56
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_257a59c
         
     
     return -1
@@ -34,13 +34,13 @@ def lastIndexOf(element):
     if jsEqeq(element, None):
         inductionVariable = jsBitOr(jsMinus(jsArrayLength(_this_), 1), 0)
         if jsLtEq(0, inductionVariable):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_688fa02f
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_296a6a10
         
     
     if True:
         inductionVariable = jsBitOr(jsMinus(jsArrayLength(_this_), 1), 0)
         if jsLtEq(0, inductionVariable):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_285290a1
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_77d68b94
         
     
     return -1
@@ -49,31 +49,31 @@ def _get_lastIndex_():
     return jsBitOr(jsMinus(jsArrayLength(_this_), 1), 0)
 
 def joinToString(separator, prefix, postfix, limit, truncated, transform):
-    return toString()
+    return joinTo(StringBuilder_init__Create_(), separator, prefix, postfix, limit, truncated, transform).toString()
 
 def joinToString_default(separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 1), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_54f3fd30
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_12bc9450
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 2), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_209c0be5
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_58ea2bc2
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 4), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_49ce2726
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_8179cad
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 8), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_214ef199
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_152f96e5
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 16), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_680882bd
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_493d8aa7
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 32), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_f5b079f
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_36173114
     
     return joinToString(kotlin_CharSequence(separator), kotlin_CharSequence(prefix), kotlin_CharSequence(postfix), limit, kotlin_CharSequence(truncated), transform)
 
 def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
-    append(prefix)
+    buffer.append(prefix)
     Unit_getInstance()
     count = 0
     indexedObject = _this_
@@ -84,43 +84,43 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
         inductionVariable = jsBitOr(jsPlus(inductionVariable, 1), 0)
         count = jsBitOr(jsPlus(count, 1), 0)
         if jsGt(count, 1):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_6a75d12
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_64b05928
         
         if True:
             pass
         
-        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_73a815c2:
+        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_22251bb2:
             appendElement(element, transform)
         
         if True:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrBreakImpl_71e2843b
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrBreakImpl_8ee1404
         
     
-    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_16554f2e:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_14150a0a
+    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7155dce8:
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_1313d0b3
     
-    append(postfix)
+    buffer.append(postfix)
     Unit_getInstance()
     return buffer
 
 def joinTo_default(buffer, separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 2), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_2a063e1a
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_320aecd3
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 4), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_56d8f131
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_18cc07ca
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 8), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_4fc6dcb7
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_2aa93f15
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 16), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_84e1883
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_bc9cd27
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 32), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_5f519714
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_7316742f
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 64), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_3b05fba2
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_3ce7a0d1
     
     return joinTo(buffer, kotlin_CharSequence(separator), kotlin_CharSequence(prefix), kotlin_CharSequence(postfix), limit, kotlin_CharSequence(truncated), transform)
 
@@ -131,12 +131,12 @@ def indexOf(element):
     inductionVariable = 0
     last = jsBitOr(jsMinus(jsArrayLength(_this_), 1), 0)
     if jsLtEq(inductionVariable, last):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_14d25248
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_25db5479
     
     return -1
 
 def _get_indices_():
-    return _init_(0, _get_lastIndex_())
+    return IntRange(0, _get_lastIndex_())
 
 def _get_lastIndex_():
     return jsBitOr(jsMinus(jsArrayLength(_this_), 1), 0)
@@ -148,12 +148,12 @@ def indexOf(element):
     inductionVariable = 0
     last = jsBitOr(jsMinus(jsArrayLength(_this_), 1), 0)
     if jsLtEq(inductionVariable, last):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_1d05cbae
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_77d5a3ee
     
     return -1
 
 def _get_indices_():
-    return _init_(0, _get_lastIndex_())
+    return IntRange(0, _get_lastIndex_())
 
 def _get_lastIndex_():
     return jsBitOr(jsMinus(jsArrayLength(_this_), 1), 0)
@@ -165,12 +165,12 @@ def indexOf(element):
     inductionVariable = 0
     last = jsBitOr(jsMinus(jsArrayLength(_this_), 1), 0)
     if jsLtEq(inductionVariable, last):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_7094dc0
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_94af25
     
     return -1
 
 def _get_indices_():
-    return _init_(0, _get_lastIndex_())
+    return IntRange(0, _get_lastIndex_())
 
 def _get_lastIndex_():
     return jsBitOr(jsMinus(jsArrayLength(_this_), 1), 0)
@@ -182,23 +182,23 @@ def indexOf(element):
     inductionVariable = 0
     last = jsBitOr(jsMinus(jsArrayLength(_this_), 1), 0)
     if jsLtEq(inductionVariable, last):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_5c2463d8
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_4f8aa5fe
     
     return -1
 
 def _get_indices_():
-    return _init_(0, _get_lastIndex_())
+    return IntRange(0, _get_lastIndex_())
 
 def _get_lastIndex_():
     return jsBitOr(jsMinus(jsArrayLength(_this_), 1), 0)
 
 def indexOfFirst(predicate):
     index = 0
-    tmp0_iterator = iterator()
-    while hasNext():
-        item = next()
-        if invoke(item):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_3860542a
+    tmp0_iterator = _this_.iterator()
+    while tmp0_iterator.hasNext():
+        item = tmp0_iterator.next()
+        if predicate.invoke(item):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_241b5364
         
         tmp1 = index
         index = jsBitOr(jsPlus(tmp1, 1), 0)
@@ -207,10 +207,10 @@ def indexOfFirst(predicate):
     return -1
 
 def indexOfLast(predicate):
-    iterator = listIterator(_get_size_())
-    while hasPrevious():
-        if invoke(previous()):
-            return nextIndex()
+    iterator = _this_.listIterator(_this_._get_size_())
+    while iterator.hasPrevious():
+        if predicate.invoke(iterator.previous()):
+            return iterator.nextIndex()
         
     
     return -1
@@ -218,7 +218,7 @@ def indexOfLast(predicate):
 def any(predicate):
     tmp
     if isInterface(_this_, jsClass()):
-        tmp = isEmpty()
+        tmp = kotlin_collections_Collection_T_(_this_).isEmpty()
     
     if True:
         if True:
@@ -226,16 +226,16 @@ def any(predicate):
         
     
     if tmp:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_6dbcb435
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_35b1e5e5
     
     if True:
         pass
     
-    tmp0_iterator = iterator()
-    while hasNext():
-        element = next()
-        if invoke(element):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4c5afa2d
+    tmp0_iterator = _this_.iterator()
+    while tmp0_iterator.hasNext():
+        element = tmp0_iterator.next()
+        if predicate.invoke(element):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_38b65eb9
         
     
     return False
@@ -243,7 +243,7 @@ def any(predicate):
 def all(predicate):
     tmp
     if isInterface(_this_, jsClass()):
-        tmp = isEmpty()
+        tmp = kotlin_collections_Collection_T_(_this_).isEmpty()
     
     if True:
         if True:
@@ -251,190 +251,190 @@ def all(predicate):
         
     
     if tmp:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_7d3bf73f
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_704a0f9
     
     if True:
         pass
     
-    tmp0_iterator = iterator()
-    while hasNext():
-        element = next()
-        if jsNot(invoke(element)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_70420c70
+    tmp0_iterator = _this_.iterator()
+    while tmp0_iterator.hasNext():
+        element = tmp0_iterator.next()
+        if jsNot(predicate.invoke(element)):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_6add626f
         
     
     return True
 
 def joinToString(separator, prefix, postfix, limit, truncated, transform):
-    return toString()
+    return joinTo(StringBuilder_init__Create_(), separator, prefix, postfix, limit, truncated, transform).toString()
 
 def joinToString_default(separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 1), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_69c071db
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_6d0937e
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 2), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_1355d2a0
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_74a89061
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 4), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_5aa345a5
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_3e7de165
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 8), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_2e7e9897
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_167eab4
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 16), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_6c430548
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_2280c0f5
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 32), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_77d5a3ee
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_76cb6d16
     
     return joinToString(kotlin_CharSequence(separator), kotlin_CharSequence(prefix), kotlin_CharSequence(postfix), limit, kotlin_CharSequence(truncated), transform)
 
 def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
-    append(prefix)
+    buffer.append(prefix)
     Unit_getInstance()
     count = 0
-    tmp0_iterator = iterator()
-    while hasNext():
-        element = next()
+    tmp0_iterator = _this_.iterator()
+    while tmp0_iterator.hasNext():
+        element = tmp0_iterator.next()
         count = jsBitOr(jsPlus(count, 1), 0)
         if jsGt(count, 1):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_60a4f677
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_398c2298
         
         if True:
             pass
         
-        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_564d5883:
+        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_964a7b0:
             appendElement(element, transform)
         
         if True:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrBreakImpl_77d58f3a
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrBreakImpl_4d84688f
         
     
-    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_12025b72:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_13bd25ab
+    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_559ac87f:
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_7a9ad451
     
-    append(postfix)
+    buffer.append(postfix)
     Unit_getInstance()
     return buffer
 
 def joinTo_default(buffer, separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 2), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_4e365c33
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_2b360641
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 4), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_7ec65043
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_3729cdaf
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 8), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_5ef99f75
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_6549ac6d
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 16), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_22cc2ae5
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_25a8ff84
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 32), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_6dd6c64c
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_2181e6b6
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 64), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_53fa89e6
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_1dbecb0a
     
     return joinTo(buffer, kotlin_CharSequence(separator), kotlin_CharSequence(prefix), kotlin_CharSequence(postfix), limit, kotlin_CharSequence(truncated), transform)
 
 def downTo(to):
-    return fromClosedRange(_this_, to, -1)
+    return Companion_getInstance().fromClosedRange(_this_, to, -1)
 
 def until(to):
     if jsLtEq(to, MIN_VALUE):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4b5f022f
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_6a7ea7c
     
     return numberRangeToNumber(_this_, kotlin_Int(jsBitOr(jsMinus(to, 1), 0)))
 
 def reversed():
-    return fromClosedRange(last, first, jsBitOr(jsUnaryMinus(step), 0))
+    return Companion_getInstance().fromClosedRange(last, first, jsBitOr(jsUnaryMinus(step), 0))
 
 def getOrElse(index, defaultValue):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_11f8bff1
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_796a1cd1
 
 def KotlinNothingValueException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5e805a0d
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1465d125
     return _this
 
 def KotlinNothingValueException_init__Create_():
     tmp = KotlinNothingValueException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_254ed9ba)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_3460165f)
     return tmp
 
 def KotlinNothingValueException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1d95957c
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2a67ed1f
     return _this
 
 def KotlinNothingValueException_init__Create_(message):
     tmp = KotlinNothingValueException_init__Init_(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_242270ae)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_1eeae9d)
     return tmp
 
 def KotlinNothingValueException_init__Init_(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_37c47166
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_21def2c
     return _this
 
 def KotlinNothingValueException_init__Create_(message, cause):
     tmp = KotlinNothingValueException_init__Init_(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_4c1ce13a)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_3c72031c)
     return tmp
 
 def KotlinNothingValueException_init__Init_(cause, _this):
     RuntimeException_init__Init_(cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_658ec00c
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7a977d23
     return _this
 
 def KotlinNothingValueException_init__Create_(cause):
     tmp = KotlinNothingValueException_init__Init_(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_5d6d21e2)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_6ebdbe96)
     return tmp
 
 class KotlinNothingValueException:
-    def _get_message_():
+    def _get_message_(self):
         pass
     
-    def _get_cause_():
+    def _get_cause_(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
     def _init_():
-        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_726bbe64)
+        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_15d67d0f)
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_76cb6d16 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_764b7ff7 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_60a64104 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_12ceff30 = 0
 def values():
-    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_164fba04)
+    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_5f016147)
 
 def valueOf(value):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2b647344
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_e64ee56
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_3b60efd8 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_65b75087 = 0
 def Level_initEntries():
     if Level_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_79036056
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_5e0c445f
     
     Level_entriesInitialized = True
-    Level_WARNING_instance = _init_('WARNING', 0)
-    Level_ERROR_instance = _init_('ERROR', 1)
+    Level_WARNING_instance = Level('WARNING', 0)
+    Level_ERROR_instance = Level('ERROR', 1)
 
 def Experimental_init__Init_(level, _mask0, _marker, _this):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 1), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_11675922
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_781ebe48
     
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3d2bb013
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3342ec79
     return _this
 
 def Experimental_init__Create_(level, _mask0, _marker):
@@ -442,24 +442,24 @@ def Experimental_init__Create_(level, _mask0, _marker):
 
 class Level:
     def _init_(name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_d61ac34
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_21da6808
     
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def _get_ordinal_():
+    def _get_ordinal_(self):
         pass
     
-    def compareTo(other):
+    def compareTo(self, other):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -475,16 +475,16 @@ class Experimental:
     def _init_(level):
         _this_.level = level
     
-    def _get_level_():
+    def _get_level_(self):
         return level
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -492,16 +492,16 @@ class WasExperimental:
     def _init_(markerClass):
         _this_.markerClass = markerClass
     
-    def _get_markerClass_():
+    def _get_markerClass_(self):
         return markerClass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -509,13 +509,13 @@ class ExperimentalStdlibApi:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -523,13 +523,13 @@ class OptionalExpectation:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -537,41 +537,41 @@ class ExperimentalMultiplatform:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_599bda7e = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_39124055 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_16e2a7be = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_7e915daa = 0
 def values():
-    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_31ca510a)
+    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_1e6f7127)
 
 def valueOf(value):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_46eaf531
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_60cd2b02
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_40383b24 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_3b5cf4c6 = 0
 def Level_initEntries():
     if Level_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4e0d2ddd
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4e7d1e2
     
     Level_entriesInitialized = True
-    Level_WARNING_instance = _init_('WARNING', 0)
-    Level_ERROR_instance = _init_('ERROR', 1)
+    Level_WARNING_instance = Level('WARNING', 0)
+    Level_ERROR_instance = Level('ERROR', 1)
 
 def RequiresOptIn_init__Init_(message, level, _mask0, _marker, _this):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 1), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_75a45ce
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_20677bc2
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 2), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_bb0ca30
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_310d05c5
     
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5ab30bb4
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_64746794
     return _this
 
 def RequiresOptIn_init__Create_(message, level, _mask0, _marker):
@@ -579,24 +579,24 @@ def RequiresOptIn_init__Create_(message, level, _mask0, _marker):
 
 class Level:
     def _init_(name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_37aae870
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_59463bab
     
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def _get_ordinal_():
+    def _get_ordinal_(self):
         pass
     
-    def compareTo(other):
+    def compareTo(self, other):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -613,19 +613,19 @@ class RequiresOptIn:
         _this_.message = message
         _this_.level = level
     
-    def _get_message_():
+    def _get_message_(self):
         return message
     
-    def _get_level_():
+    def _get_level_(self):
         return level
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -633,73 +633,73 @@ class OptIn:
     def _init_(markerClass):
         _this_.markerClass = markerClass
     
-    def _get_markerClass_():
+    def _get_markerClass_(self):
         return markerClass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class _no_name_provided_:
     def _init_(this_0):
         _this_.this_0 = this_0
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5379839c
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_346c568d
     
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5fa851ac
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3c9b416a
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2d550996)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2de0f3e3)
     
 
 class AbstractCollection:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_44117b0d
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_66e62fc4
     
-    def _get_size_():
+    def _get_size_(self):
         pass
     
-    def iterator():
+    def iterator(self):
         pass
     
-    def contains(element):
+    def contains(self, element):
         tmp_ret_0
-        visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_6592f06
+        visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_7b29d791
         return tmp_ret_0
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         tmp_ret_0
-        visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_726d34de
+        visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_754c6edb
         return tmp_ret_0
     
-    def isEmpty():
-        return jsEqeqeq(_get_size_(), 0)
+    def isEmpty(self):
+        return jsEqeqeq(_this_._get_size_(), 0)
     
-    def toString():
+    def toString(self):
         return joinToString_default(', ', '[', ']', 0, None, _no_name_provided__factory(_this_), 24, None)
     
-    def toArray():
+    def toArray(self):
         return copyToArrayImpl(_this_)
     
-    def toArray(array):
+    def toArray(self, array):
         return copyToArrayImpl(_this_, array)
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
 
 def _no_name_provided__factory(this_0):
-    i = _init_(this_0)
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_3bd8032e
+    i = _no_name_provided_(this_0)
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_32f3174d
 
 def _get_list_(_this):
     return list
@@ -715,287 +715,287 @@ def _get__size_(_this):
 
 class SubList:
     def _init_(list, fromIndex, toIndex):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_64829470
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_74cff17c
         _this_.list = list
         _this_.fromIndex = fromIndex
         _this_._size = 0
-        checkRangeIndexes(fromIndex, toIndex, _get_size_())
+        Companion_getInstance().checkRangeIndexes(fromIndex, toIndex, list._get_size_())
         _this_._size = jsBitOr(jsMinus(toIndex, fromIndex), 0)
     
-    def get(index):
-        checkElementIndex(index, _size)
-        return get(jsBitOr(jsPlus(fromIndex, index), 0))
+    def get(self, index):
+        Companion_getInstance().checkElementIndex(index, _size)
+        return list.get(jsBitOr(jsPlus(fromIndex, index), 0))
     
-    def _get_size_():
+    def _get_size_(self):
         return _size
     
-    def toArray():
+    def toArray(self):
         pass
     
-    def toArray(array):
+    def toArray(self, array):
         pass
     
-    def contains(element):
+    def contains(self, element):
         pass
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         pass
     
-    def indexOf(element):
+    def indexOf(self, element):
         pass
     
-    def isEmpty():
+    def isEmpty(self):
         pass
     
-    def iterator():
+    def iterator(self):
         pass
     
-    def lastIndexOf(element):
+    def lastIndexOf(self, element):
         pass
     
-    def listIterator():
+    def listIterator(self):
         pass
     
-    def listIterator(index):
+    def listIterator(self, index):
         pass
     
-    def subList(fromIndex, toIndex):
+    def subList(self, fromIndex, toIndex):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class IteratorImpl:
     def _init_(_outer):
         _this_._this = _outer
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7c857e8f
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_8aa1562
         _this_.index = 0
     
-    def _set_index_(_set___):
+    def _set_index_(self, _set___):
         _this_.index = _set___
     
-    def _get_index_():
+    def _get_index_(self):
         return index
     
-    def hasNext():
-        return jsLt(index, _get_size_())
+    def hasNext(self):
+        return jsLt(index, _this._get_size_())
     
-    def next():
-        if jsNot(hasNext()):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_3a66d97e
+    def next(self):
+        if jsNot(_this_.hasNext()):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_5186c801
         
         tmp0_this = _this_
         tmp1 = index
         tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
-        return get(tmp1)
+        return _this.get(tmp1)
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class ListIteratorImpl:
     def _init_(_outer, index):
         _this_._this = _outer
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_69919fed
-        checkPositionIndex(index, _get_size_())
-        _set_index_(index)
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_153d5d5b
+        Companion_getInstance().checkPositionIndex(index, _this._get_size_())
+        _this_._set_index_(index)
     
-    def hasPrevious():
-        return jsGt(_get_index_(), 0)
+    def hasPrevious(self):
+        return jsGt(_this_._get_index_(), 0)
     
-    def nextIndex():
-        return _get_index_()
+    def nextIndex(self):
+        return _this_._get_index_()
     
-    def previous():
-        if jsNot(hasPrevious()):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_12dc702b
+    def previous(self):
+        if jsNot(_this_.hasPrevious()):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_ea45a5b
         
         tmp0_this = _this_
-        _set_index_(jsBitOr(jsMinus(_get_index_(), 1), 0))
-        return get(_get_index_())
+        tmp0_this._set_index_(jsBitOr(jsMinus(tmp0_this._get_index_(), 1), 0))
+        return _this.get(tmp0_this._get_index_())
     
-    def previousIndex():
-        return jsBitOr(jsMinus(_get_index_(), 1), 0)
+    def previousIndex(self):
+        return jsBitOr(jsMinus(_this_._get_index_(), 1), 0)
     
-    def _set_index_(_set___):
+    def _set_index_(self, _set___):
         pass
     
-    def _get_index_():
+    def _get_index_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def next():
+    def next(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4902c584
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_10e4cc6
     
-    def checkElementIndex(index, size):
-        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5b9fbaca:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_236a3e4
+    def checkElementIndex(self, index, size):
+        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6a377a:
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_6b6606d1
         
     
-    def checkPositionIndex(index, size):
-        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3dee7142:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_40105b39
+    def checkPositionIndex(self, index, size):
+        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1b06e304:
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_8b1bfdf
         
     
-    def checkRangeIndexes(fromIndex, toIndex, size):
-        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_59a9769e:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_1b96d447
+    def checkRangeIndexes(self, fromIndex, toIndex, size):
+        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_536e5b21:
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7dfab58d
         
         if jsGt(fromIndex, toIndex):
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_29d81c22
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_282240
         
     
-    def checkBoundsIndexes(startIndex, endIndex, size):
-        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_43f88cba:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_5357de0e
+    def checkBoundsIndexes(self, startIndex, endIndex, size):
+        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_52e7bed1:
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_675bf541
         
         if jsGt(startIndex, endIndex):
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_1fab0394
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_60e5eed0
         
     
-    def orderedHashCode(c):
+    def orderedHashCode(self, c):
         hashCode = 1
-        tmp0_iterator = iterator()
-        while hasNext():
-            e = next()
+        tmp0_iterator = c.iterator()
+        while tmp0_iterator.hasNext():
+            e = tmp0_iterator.next()
             tmp = imul(31, hashCode)
             tmp1_safe_receiver = e
-            tmp2_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5db9952b
-            hashCode = jsBitOr(jsPlus(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2de0f3e3), 0)
+            tmp2_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7855167a
+            hashCode = jsBitOr(jsPlus(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5a930c03), 0)
         
         return hashCode
     
-    def orderedEquals(c, other):
-        if jsNot(jsEqeqeq(_get_size_(), _get_size_())):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_394331a8
+    def orderedEquals(self, c, other):
+        if jsNot(jsEqeqeq(c._get_size_(), other._get_size_())):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_634d3439
         
-        otherIterator = iterator()
-        tmp0_iterator = iterator()
-        while hasNext():
-            elem = next()
-            elemOther = next()
+        otherIterator = other.iterator()
+        tmp0_iterator = c.iterator()
+        while tmp0_iterator.hasNext():
+            elem = tmp0_iterator.next()
+            elemOther = otherIterator.next()
             if jsNot(equals(elem, elemOther)):
                 return False
             
         
         return True
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_606beba4 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_419c537 = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_3c9d64e4
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_9129682
     
     return Companion_instance
 
 class AbstractList:
     def _init_():
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_32245b66
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_61aa6300
     
-    def _get_size_():
+    def _get_size_(self):
         pass
     
-    def get(index):
+    def get(self, index):
         pass
     
-    def iterator():
-        return _init_(_this_)
+    def iterator(self):
+        return IteratorImpl(_this_)
     
-    def indexOf(element):
+    def indexOf(self, element):
         tmp_ret_0
-        visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_162796e1
+        visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_4a9e4be7
         return tmp_ret_0
     
-    def lastIndexOf(element):
+    def lastIndexOf(self, element):
         tmp_ret_0
-        visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_17556c0a
+        visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_75f27234
         return tmp_ret_0
     
-    def listIterator():
-        return _init_(_this_, 0)
+    def listIterator(self):
+        return ListIteratorImpl(_this_, 0)
     
-    def listIterator(index):
-        return _init_(_this_, index)
+    def listIterator(self, index):
+        return ListIteratorImpl(_this_, index)
     
-    def subList(fromIndex, toIndex):
-        return _init_(_this_, fromIndex, toIndex)
+    def subList(self, fromIndex, toIndex):
+        return SubList(_this_, fromIndex, toIndex)
     
-    def equals(other):
+    def equals(self, other):
         if jsEqeqeq(other, _this_):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_66e62fc4
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4a29a1e6
         
-        if jsNot(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_54dd6160):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_35efd12c
+        if jsNot(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1f4c8062):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_34e53c02
         
         if True:
             pass
         
-        return orderedEquals(_this_, kotlin_collections_Collection___(other))
+        return Companion_getInstance().orderedEquals(_this_, kotlin_collections_Collection___(other))
     
-    def hashCode():
-        return orderedHashCode(_this_)
+    def hashCode(self):
+        return Companion_getInstance().orderedHashCode(_this_)
     
-    def contains(element):
+    def contains(self, element):
         pass
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         pass
     
-    def isEmpty():
+    def isEmpty(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def toArray():
+    def toArray(self):
         pass
     
-    def toArray(array):
+    def toArray(self, array):
         pass
     
 
 def listOf(elements):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_32f3174d
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_517fd762
 
 def emptyList():
     return EmptyList_getInstance()
@@ -1009,13 +1009,13 @@ def readResolve(_this):
 class EmptyList:
     def _init_():
         EmptyList_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_755009f2
-        _this_.serialVersionUID = _init_(-1478467534, -1720727600)
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6e22d6bf
+        _this_.serialVersionUID = Long(-1478467534, -1720727600)
     
-    def equals(other):
+    def equals(self, other):
         tmp
-        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4591a080:
-            tmp = isEmpty()
+        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1235abb2:
+            tmp = kotlin_collections_List_kotlin_Any__(other).isEmpty()
         
         if True:
             if True:
@@ -1024,24 +1024,24 @@ class EmptyList:
         
         return tmp
     
-    def hashCode():
+    def hashCode(self):
         return 1
     
-    def toString():
+    def toString(self):
         return '[]'
     
-    def _get_size_():
+    def _get_size_(self):
         return 0
     
-    def isEmpty():
+    def isEmpty(self):
         return True
     
-    def contains(element):
+    def contains(self, element):
         return False
     
-    def contains(element):
+    def contains(self, element):
         if jsNot(False):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_69f6b00b
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_61a098fa
         
         if True:
             pass
@@ -1055,23 +1055,23 @@ class EmptyList:
                 tmp = THROW_CCE()
             
         
-        return contains(tmp)
+        return _this_.contains(tmp)
     
-    def containsAll(elements):
-        return isEmpty()
+    def containsAll(self, elements):
+        return elements.isEmpty()
     
-    def containsAll(elements):
-        return containsAll(elements)
+    def containsAll(self, elements):
+        return _this_.containsAll(elements)
     
-    def get(index):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_8b1bfdf
+    def get(self, index):
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_25dc2c0
     
-    def indexOf(element):
+    def indexOf(self, element):
         return -1
     
-    def indexOf(element):
+    def indexOf(self, element):
         if jsNot(False):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_72a14347
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4b8816f7
         
         if True:
             pass
@@ -1085,14 +1085,14 @@ class EmptyList:
                 tmp = THROW_CCE()
             
         
-        return indexOf(tmp)
+        return _this_.indexOf(tmp)
     
-    def lastIndexOf(element):
+    def lastIndexOf(self, element):
         return -1
     
-    def lastIndexOf(element):
+    def lastIndexOf(self, element):
         if jsNot(False):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_365a0910
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_42e0f71e
         
         if True:
             pass
@@ -1106,76 +1106,76 @@ class EmptyList:
                 tmp = THROW_CCE()
             
         
-        return lastIndexOf(tmp)
+        return _this_.lastIndexOf(tmp)
     
-    def iterator():
+    def iterator(self):
         return EmptyIterator_getInstance()
     
-    def listIterator():
+    def listIterator(self):
         return EmptyIterator_getInstance()
     
-    def listIterator(index):
+    def listIterator(self, index):
         if jsNot(jsEqeqeq(index, 0)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_48126a17
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_4601a148
         
         return EmptyIterator_getInstance()
     
-    def subList(fromIndex, toIndex):
-        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_f9233ab:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_7b6b466a
+    def subList(self, fromIndex, toIndex):
+        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_11326597:
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_618e7761
         
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_2123a61c
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_34f8ce89
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_32a2da8c = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_72dfac2e = 0
 def EmptyList_getInstance():
     if jsEqeq(EmptyList_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_3f6aaa7
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_2acacb1
     
     return EmptyList_instance
 
 class EmptyIterator:
     def _init_():
         EmptyIterator_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7533923b
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_41948c13
     
-    def hasNext():
+    def hasNext(self):
         return False
     
-    def hasPrevious():
+    def hasPrevious(self):
         return False
     
-    def nextIndex():
+    def nextIndex(self):
         return 0
     
-    def previousIndex():
+    def previousIndex(self):
         return -1
     
-    def next():
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7a13ad55
+    def next(self):
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_18301763
     
-    def previous():
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_5773f83d
+    def previous(self):
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_29c21acb
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_42807bd7 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_6566da90 = 0
 def EmptyIterator_getInstance():
     if jsEqeq(EmptyIterator_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_1c244e31
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_74d3c448
     
     return EmptyIterator_instance
 
 def _get_lastIndex_():
-    return jsBitOr(jsMinus(_get_size_(), 1), 0)
+    return jsBitOr(jsMinus(_this_._get_size_(), 1), 0)
 
 def removeAll(predicate):
     return filterInPlace(predicate, True)
@@ -1185,7 +1185,7 @@ def removeAll(predicate):
 
 def filterInPlace(predicate, predicateResultToRemove):
     if jsNot(isInterface(_this_, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_e7e6e94
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_73d0dbbf
     
     if True:
         pass
@@ -1194,12 +1194,12 @@ def filterInPlace(predicate, predicateResultToRemove):
     inductionVariable = 0
     last = _get_lastIndex_()
     if jsLtEq(inductionVariable, last):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_66da2007
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_30dd9615
     
-    if jsLt(writeIndex, _get_size_()):
+    if jsLt(writeIndex, _this_._get_size_()):
         inductionVariable = _get_lastIndex_()
         if jsLtEq(writeIndex, inductionVariable):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_48313ada
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_11c885a6
         
         return True
     
@@ -1209,26 +1209,26 @@ def filterInPlace(predicate, predicateResultToRemove):
 
 def filterInPlace(predicate, predicateResultToRemove):
     result = False
-    tmp0_with_0 = iterator()
-    while hasNext():
-        if jsEqeqeq(invoke(next()), predicateResultToRemove):
-            remove()
+    tmp0_with_0 = _this_.iterator()
+    while tmp0_with_0.hasNext():
+        if jsEqeqeq(predicate.invoke(tmp0_with_0.next()), predicateResultToRemove):
+            tmp0_with_0.remove()
             result = True
         
     
     return result
 
 class Sequence:
-    def iterator():
+    def iterator(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -1239,78 +1239,78 @@ def contract(builder):
     pass
 
 class ContractBuilder:
-    def returns():
+    def returns(self):
         pass
     
-    def returns(value):
+    def returns(self, value):
         pass
     
-    def returnsNotNull():
+    def returnsNotNull(self):
         pass
     
-    def callsInPlace(_lambda, kind):
+    def callsInPlace(self, _lambda, kind):
         pass
     
-    def callsInPlace_default(_lambda, kind, _mask0, _handler):
+    def callsInPlace_default(self, _lambda, kind, _mask0, _handler):
         if jsNot(jsEqeqeq(jsBitAnd(_mask0, 2), 0)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_5dcd5046
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_37058d66
         
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_56482084
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_610f3f1b
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2a7648a9 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_54707af8 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_62c95d73 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2abbe420 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_64a768e7 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_26ed4e27 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_413e4756 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_68dc6497 = 0
 def values():
-    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_388555bd)
+    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_4377e40a)
 
 def valueOf(value):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_49702efb
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_38be950e
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_20ea933f = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5f4ddd09 = 0
 def InvocationKind_initEntries():
     if InvocationKind_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_1da9b95d
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_7370f35b
     
     InvocationKind_entriesInitialized = True
-    InvocationKind_AT_MOST_ONCE_instance = _init_('AT_MOST_ONCE', 0)
-    InvocationKind_AT_LEAST_ONCE_instance = _init_('AT_LEAST_ONCE', 1)
-    InvocationKind_EXACTLY_ONCE_instance = _init_('EXACTLY_ONCE', 2)
-    InvocationKind_UNKNOWN_instance = _init_('UNKNOWN', 3)
+    InvocationKind_AT_MOST_ONCE_instance = InvocationKind('AT_MOST_ONCE', 0)
+    InvocationKind_AT_LEAST_ONCE_instance = InvocationKind('AT_LEAST_ONCE', 1)
+    InvocationKind_EXACTLY_ONCE_instance = InvocationKind('EXACTLY_ONCE', 2)
+    InvocationKind_UNKNOWN_instance = InvocationKind('UNKNOWN', 3)
 
 class InvocationKind:
     def _init_(name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4c864fd0
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1e9b9276
     
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def _get_ordinal_():
+    def _get_ordinal_(self):
         pass
     
-    def compareTo(other):
+    def compareTo(self, other):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -1318,13 +1318,13 @@ class ExperimentalContracts:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -1345,13 +1345,13 @@ def InvocationKind_UNKNOWN_getInstance():
     return InvocationKind_UNKNOWN_instance
 
 class CallsInPlace:
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -1359,16 +1359,16 @@ class CallsInPlace:
     
 
 class Returns:
-    def implies(booleanExpression):
+    def implies(self, booleanExpression):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -1376,16 +1376,16 @@ class Returns:
     
 
 class ReturnsNotNull:
-    def implies(booleanExpression):
+    def implies(self, booleanExpression):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -1393,13 +1393,13 @@ class ReturnsNotNull:
     
 
 class Effect:
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -1407,16 +1407,16 @@ class Effect:
     
 
 class SimpleEffect:
-    def implies(booleanExpression):
+    def implies(self, booleanExpression):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -1424,13 +1424,13 @@ class SimpleEffect:
     
 
 class ConditionalEffect:
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -1438,19 +1438,19 @@ class ConditionalEffect:
     
 
 class Continuation:
-    def _get_context_():
+    def _get_context_(self):
         pass
     
-    def resumeWith(result):
+    def resumeWith(self, result):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -1458,76 +1458,76 @@ class Continuation:
     
 
 def Continuation(context, resumeWith):
-    return _init_(context, resumeWith)
+    return _no_name_provided_(context, resumeWith)
 
 def resumeWithException(exception):
     tmp0_failure_0 = Companion_getInstance()
-    return resumeWith(_init_(createFailure(exception)))
+    return _this_.resumeWith(Result(createFailure(exception)))
 
 def resume(value):
     tmp0_success_0 = Companion_getInstance()
-    return resumeWith(_init_(value))
+    return _this_.resumeWith(Result(value))
 
 def _get_coroutineContext_():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7843efc5
+    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_14fd1bc
 
 class _no_name_provided_:
     def _init_(_context, _resumeWith):
         _this_._context = _context
         _this_._resumeWith = _resumeWith
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_30f1487d
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_483381ea
     
-    def _get_context_():
+    def _get_context_(self):
         return _context
     
-    def resumeWith(result):
-        return invoke(boxIntrinsic(result))
+    def resumeWith(self, result):
+        return _resumeWith.invoke(boxIntrinsic(result))
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class Key:
     def _init_():
         Key_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_623ded82
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4440750
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2b0a0c83 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_78e1625f = 0
 def Key_getInstance():
     if jsEqeq(Key_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_222e8b99
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_2ee3549e
     
     return Key_instance
 
 class ContinuationInterceptor:
-    def interceptContinuation(continuation):
+    def interceptContinuation(self, continuation):
         pass
     
-    def releaseInterceptedContinuation(continuation):
+    def releaseInterceptedContinuation(self, continuation):
         pass
     
-    def get(key):
+    def get(self, key):
         if jsInstanceOf(key, jsClass()):
             tmp
-            if isSubKey(_get_key_()):
-                tmp = tryCast(_this_)
-                tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2858d3d9
+            if kotlin_coroutines_AbstractCoroutineContextKey_out_kotlin_coroutines_Element_out_kotlin_coroutines_Element_(key).isSubKey(_this_._get_key_()):
+                tmp = kotlin_coroutines_AbstractCoroutineContextKey_out_kotlin_coroutines_Element_out_kotlin_coroutines_Element_(key).tryCast(_this_)
+                tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3d91d937
             
             if True:
                 tmp = None
@@ -1539,38 +1539,38 @@ class ContinuationInterceptor:
         
         tmp
         if jsEqeqeq(Key_getInstance(), key):
-            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_31b07a16
+            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_180e1754
         
         if True:
             tmp = None
         
         return tmp
     
-    def minusKey(key):
+    def minusKey(self, key):
         if jsInstanceOf(key, jsClass()):
-            return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6a67e945
+            return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5cf24f99
         
         if True:
             pass
         
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_71c9e0a4
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_485fe2cd
     
-    def _get_key_():
+    def _get_key_(self):
         pass
     
-    def fold(initial, operation):
+    def fold(self, initial, operation):
         pass
     
-    def plus(context):
+    def plus(self, context):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -1578,13 +1578,13 @@ class ContinuationInterceptor:
     
 
 class Key:
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -1592,35 +1592,35 @@ class Key:
     
 
 class Element:
-    def _get_key_():
+    def _get_key_(self):
         pass
     
-    def get(key):
+    def get(self, key):
         tmp
-        if equals(_get_key_(), key):
-            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7beb2da0
+        if equals(_this_._get_key_(), key):
+            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_751d9a40
         
         if True:
             tmp = None
         
         return tmp
     
-    def fold(initial, operation):
-        return invoke(initial, _this_)
+    def fold(self, initial, operation):
+        return operation.invoke(initial, _this_)
     
-    def minusKey(key):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7e821499
+    def minusKey(self, key):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1e060d4b
     
-    def plus(context):
+    def plus(self, context):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -1629,60 +1629,60 @@ class Element:
 
 class _no_name_provided_:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_21e860cd
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_55c9400d
     
-    def invoke(acc, element):
-        removed = minusKey(_get_key_())
+    def invoke(self, acc, element):
+        removed = acc.minusKey(element._get_key_())
         tmp
         if jsEqeqeq(removed, EmptyCoroutineContext_getInstance()):
             tmp = element
         
         if True:
-            interceptor = get(Key_getInstance())
+            interceptor = removed.get(Key_getInstance())
             tmp
             if jsEqeq(interceptor, None):
-                tmp = _init_(removed, element)
+                tmp = CombinedContext(removed, element)
             
             if True:
-                left = minusKey(Key_getInstance())
-                tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4eed10a1
+                left = removed.minusKey(Key_getInstance())
+                tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_65d07158
             
             tmp = tmp
         
         return tmp
     
-    def invoke(p1, p2):
-        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6629ce82
-        return invoke(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_76117cac)
+    def invoke(self, p1, p2):
+        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2300d6fd
+        return _this_.invoke(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5e86dc1c)
     
 
 class CoroutineContext:
-    def get(key):
+    def get(self, key):
         pass
     
-    def fold(initial, operation):
+    def fold(self, initial, operation):
         pass
     
-    def plus(context):
+    def plus(self, context):
         tmp
         if jsEqeqeq(context, EmptyCoroutineContext_getInstance()):
             tmp = _this_
         
         if True:
-            tmp = fold(_this_, _no_name_provided__factory())
+            tmp = context.fold(_this_, _no_name_provided__factory())
         
         return tmp
     
-    def minusKey(key):
+    def minusKey(self, key):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -1690,8 +1690,8 @@ class CoroutineContext:
     
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_5e206acb
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_79527eb9
 
 def _get_serialVersionUID_(_this):
     return serialVersionUID
@@ -1702,35 +1702,35 @@ def readResolve(_this):
 class EmptyCoroutineContext:
     def _init_():
         EmptyCoroutineContext_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6c96346b
-        _this_.serialVersionUID = _init_(0, 0)
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_77acc95a
+        _this_.serialVersionUID = Long(0, 0)
     
-    def get(key):
+    def get(self, key):
         return None
     
-    def fold(initial, operation):
+    def fold(self, initial, operation):
         return initial
     
-    def plus(context):
+    def plus(self, context):
         return context
     
-    def minusKey(key):
+    def minusKey(self, key):
         return _this_
     
-    def hashCode():
+    def hashCode(self):
         return 0
     
-    def toString():
+    def toString(self):
         return 'EmptyCoroutineContext'
     
-    def equals(other):
+    def equals(self, other):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_7a4154c = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_4ddb882 = 0
 def EmptyCoroutineContext_getInstance():
     if jsEqeq(EmptyCoroutineContext_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_aae69d3
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_4334aa1b
     
     return EmptyCoroutineContext_instance
 
@@ -1740,23 +1740,23 @@ def _get_serialVersionUID_(_this):
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_69a3944
-        _this_.serialVersionUID = _init_(0, 0)
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7983a5d5
+        _this_.serialVersionUID = Long(0, 0)
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5ef5455c = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_12326ccb = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_78828aca
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_43188555
     
     return Companion_instance
 
@@ -1770,7 +1770,7 @@ def readResolve(_this):
     while jsLt(inductionVariable, last):
         element_3 = jsArrayGet(indexedObject, inductionVariable)
         inductionVariable = jsBitOr(jsPlus(inductionVariable, 1), 0)
-        accumulator_1 = plus(element_3)
+        accumulator_1 = accumulator_1.plus(element_3)
     
     return accumulator_1
 
@@ -1785,7 +1785,7 @@ def size(_this):
     size = 2
     while True:
         tmp = left
-        tmp0_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4b3ebc09
+        tmp0_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_f9a82ac
         tmp
         if jsEqeq(tmp0_elvis_lhs, None):
             return size
@@ -1800,13 +1800,13 @@ def size(_this):
     
 
 def contains(_this, element):
-    return equals(get(_get_key_()), element)
+    return equals(_this.get(element._get_key_()), element)
 
 def containsAll(_this, context):
     cur = context
     while True:
         if jsNot(contains(_this, element)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_56eb8c30
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_ab58ff
         
         next = left
         if jsInstanceOf(next, jsClass()):
@@ -1814,7 +1814,7 @@ def containsAll(_this, context):
         
         if True:
             if True:
-                return contains(_this, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_17baf642)
+                return contains(_this, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_576c8cea)
             
         
     
@@ -1823,86 +1823,86 @@ def writeReplace(_this):
     n = size(_this)
     elements = fillArrayVal(Array(n), None)
     index = _sharedBox_create(0)
-    fold(Unit_getInstance(), _no_name_provided__factory(elements, index))
+    _this.fold(Unit_getInstance(), _no_name_provided__factory(elements, index))
     tmp0_check_0 = jsEqeqeq(_sharedBox_read(index), n)
     if jsNot(tmp0_check_0):
         message_2 = 'Check failed.'
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_13e4acf6
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_1e20dad5
     
-    return _init_(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4142586b)
+    return Serialized(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_349247c9)
 
 class Serialized:
     def _init_(elements):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_102f3f05
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6e466fdf
         _this_.elements = elements
     
-    def _get_elements_():
+    def _get_elements_(self):
         return elements
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class _no_name_provided_:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2dbc453a
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3ff4ed56
     
-    def invoke(acc, element):
+    def invoke(self, acc, element):
         tmp
         if jsEqeqeq(charSequenceLength(acc), 0):
             tmp = toString(element)
         
         if True:
             if True:
-                tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_7650e219
+                tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_32dbf42
             
         
         return tmp
     
-    def invoke(p1, p2):
-        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_19a3bfb5
-        return invoke(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7df7cc64)
+    def invoke(self, p1, p2):
+        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_22aeac34
+        return _this_.invoke(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_77e55368)
     
 
 class _no_name_provided_:
     def _init_(_elements, _index):
         _this_._elements = _elements
         _this_._index = _index
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3291cfad
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_29c2e92
     
-    def invoke(_anonymous_parameter_0_, element):
+    def invoke(self, _anonymous_parameter_0_, element):
         tmp0 = _sharedBox_read(_index)
         _sharedBox_write(_index, jsBitOr(jsPlus(tmp0, 1), 0))
         jsArraySet(_elements, tmp0, element)
     
-    def invoke(p1, p2):
-        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_912756d
-        invoke(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3243b967)
+    def invoke(self, p1, p2):
+        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_14062855
+        _this_.invoke(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_24ba43e0)
         return Unit_getInstance()
     
 
 class CombinedContext:
     def _init_(left, element):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_44aa5585
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_23ee70a7
         _this_.left = left
         _this_.element = element
     
-    def get(key):
+    def get(self, key):
         cur = _this_
         while True:
-            tmp0_safe_receiver = get(key)
+            tmp0_safe_receiver = element.get(key)
             if jsEqeq(tmp0_safe_receiver, None):
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstImpl_447630c4
+                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstImpl_67b20b4c
             
             if True:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_7d32399a
+                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_447dd61f
             
             Unit_getInstance()
             next = left
@@ -1911,27 +1911,27 @@ class CombinedContext:
             
             if True:
                 if True:
-                    return get(key)
+                    return next.get(key)
                 
             
         
     
-    def fold(initial, operation):
-        return invoke(fold(initial, operation), element)
+    def fold(self, initial, operation):
+        return operation.invoke(left.fold(initial, operation), element)
     
-    def minusKey(key):
-        tmp0_safe_receiver = get(key)
+    def minusKey(self, key):
+        tmp0_safe_receiver = element.get(key)
         if jsEqeq(tmp0_safe_receiver, None):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstImpl_3c34c491
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstImpl_5c261c74
         
         if True:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_5ef79613
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_3bc22ada
         
         Unit_getInstance()
-        newLeft = minusKey(key)
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2fce34e4
+        newLeft = left.minusKey(key)
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_568514f
     
-    def equals(other):
+    def equals(self, other):
         tmp
         if jsEqeqeq(_this_, other):
             tmp = True
@@ -1959,13 +1959,13 @@ class CombinedContext:
         
         return tmp
     
-    def hashCode():
+    def hashCode(self):
         return jsBitOr(jsPlus(hashCode(left), hashCode(element)), 0)
     
-    def toString():
-        return jsPlus(jsPlus('[', fold('', _no_name_provided__factory())), ']')
+    def toString(self):
+        return jsPlus(jsPlus('[', _this_.fold('', _no_name_provided__factory())), ']')
     
-    def plus(context):
+    def plus(self, context):
         pass
     
 
@@ -1977,7 +1977,7 @@ def _get_topmostKey_(_this):
 
 class AbstractCoroutineContextKey:
     def _init_(baseKey, safeCast):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1fc386f8
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_19b0a9f2
         _this_.safeCast = safeCast
         tmp = _this_
         tmp
@@ -1991,72 +1991,72 @@ class AbstractCoroutineContextKey:
         
         tmp.topmostKey = tmp
     
-    def tryCast(element):
-        return invoke(element)
+    def tryCast(self, element):
+        return safeCast.invoke(element)
     
-    def isSubKey(key):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2933669e
+    def isSubKey(self, key):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3479e14e
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_1ddf5237
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_1cdb691a
 
 def _no_name_provided__factory(_elements, _index):
-    i = _init_(_elements, _index)
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_381f0bf4
+    i = _no_name_provided_(_elements, _index)
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_c129b51
 
 def _get_COROUTINE_SUSPENDED_():
     return CoroutineSingletons_COROUTINE_SUSPENDED_getInstance()
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_c3976d4 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_7dc97564 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_23fee93a = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_115e7c5e = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_1444fa42 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_ffc9278 = 0
 def values():
-    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_3b5f3ffb)
+    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_27e93770)
 
 def valueOf(value):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_40904969
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_46721812
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_4d574ec7 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_39660d2 = 0
 def CoroutineSingletons_initEntries():
     if CoroutineSingletons_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_328b60fb
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_30012b46
     
     CoroutineSingletons_entriesInitialized = True
-    CoroutineSingletons_COROUTINE_SUSPENDED_instance = _init_('COROUTINE_SUSPENDED', 0)
-    CoroutineSingletons_UNDECIDED_instance = _init_('UNDECIDED', 1)
-    CoroutineSingletons_RESUMED_instance = _init_('RESUMED', 2)
+    CoroutineSingletons_COROUTINE_SUSPENDED_instance = CoroutineSingletons('COROUTINE_SUSPENDED', 0)
+    CoroutineSingletons_UNDECIDED_instance = CoroutineSingletons('UNDECIDED', 1)
+    CoroutineSingletons_RESUMED_instance = CoroutineSingletons('RESUMED', 2)
 
 class CoroutineSingletons:
     def _init_(name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_141cb3a4
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_32c6eb3c
     
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def _get_ordinal_():
+    def _get_ordinal_(self):
         pass
     
-    def compareTo(other):
+    def compareTo(self, other):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -2100,30 +2100,30 @@ class ExperimentalTypeInference:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 def RequireKotlin_init__Init_(version, message, level, versionKind, errorCode, _mask0, _marker, _this):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 2), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_5bbfd031
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_42c63e72
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 4), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_76ccefaf
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_6e14a376
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 8), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_43e78ed6
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_6d340d36
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 16), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_14062855
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_24abee74
     
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_42542698
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4da069f0
     return _this
 
 def RequireKotlin_init__Create_(version, message, level, versionKind, errorCode, _mask0, _marker):
@@ -2137,70 +2137,70 @@ class RequireKotlin:
         _this_.versionKind = versionKind
         _this_.errorCode = errorCode
     
-    def _get_version_():
+    def _get_version_(self):
         return version
     
-    def _get_message_():
+    def _get_message_(self):
         return message
     
-    def _get_level_():
+    def _get_level_(self):
         return level
     
-    def _get_versionKind_():
+    def _get_versionKind_(self):
         return versionKind
     
-    def _get_errorCode_():
+    def _get_errorCode_(self):
         return errorCode
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_4cd6143c = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_3ed50b5f = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2ae63c84 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_4daa4a5a = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_16f86d8f = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5a025435 = 0
 def values():
-    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_3de4bfa9)
+    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_7c394b55)
 
 def valueOf(value):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1d5e16a9
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2ff89271
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5f18ed13 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_d06a341 = 0
 def RequireKotlinVersionKind_initEntries():
     if RequireKotlinVersionKind_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_75b18097
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_6bf597a9
     
     RequireKotlinVersionKind_entriesInitialized = True
-    RequireKotlinVersionKind_LANGUAGE_VERSION_instance = _init_('LANGUAGE_VERSION', 0)
-    RequireKotlinVersionKind_COMPILER_VERSION_instance = _init_('COMPILER_VERSION', 1)
-    RequireKotlinVersionKind_API_VERSION_instance = _init_('API_VERSION', 2)
+    RequireKotlinVersionKind_LANGUAGE_VERSION_instance = RequireKotlinVersionKind('LANGUAGE_VERSION', 0)
+    RequireKotlinVersionKind_COMPILER_VERSION_instance = RequireKotlinVersionKind('COMPILER_VERSION', 1)
+    RequireKotlinVersionKind_API_VERSION_instance = RequireKotlinVersionKind('API_VERSION', 2)
 
 class RequireKotlinVersionKind:
     def _init_(name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1ecd979e
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_63f70fd7
     
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def _get_ordinal_():
+    def _get_ordinal_(self):
         pass
     
-    def compareTo(other):
+    def compareTo(self, other):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -2208,13 +2208,13 @@ class InlineOnly:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -2222,13 +2222,13 @@ class NoInfer:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -2236,13 +2236,13 @@ class DynamicExtension:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -2250,13 +2250,13 @@ class ContractsDsl:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -2264,13 +2264,13 @@ class OnlyInputTypes:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -2287,13 +2287,13 @@ def RequireKotlinVersionKind_API_VERSION_getInstance():
     return RequireKotlinVersionKind_API_VERSION_instance
 
 class KClassifier:
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -2301,25 +2301,25 @@ class KClassifier:
     
 
 class KTypeParameter:
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def _get_upperBounds_():
+    def _get_upperBounds_(self):
         pass
     
-    def _get_variance_():
+    def _get_variance_(self):
         pass
     
-    def _get_isReified_():
+    def _get_isReified_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -2329,60 +2329,60 @@ class KTypeParameter:
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1db5de29
-        _this_.star = _init_(None, None)
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_30a5a58d
+        _this_.star = KTypeProjection(None, None)
     
-    def _get_star_():
+    def _get_star_(self):
         return star
     
-    def _get_STAR_():
+    def _get_STAR_(self):
         return star
     
-    def invariant(type):
-        return _init_(KVariance_INVARIANT_getInstance(), type)
+    def invariant(self, type):
+        return KTypeProjection(KVariance_INVARIANT_getInstance(), type)
     
-    def contravariant(type):
-        return _init_(KVariance_IN_getInstance(), type)
+    def contravariant(self, type):
+        return KTypeProjection(KVariance_IN_getInstance(), type)
     
-    def covariant(type):
-        return _init_(KVariance_OUT_getInstance(), type)
+    def covariant(self, type):
+        return KTypeProjection(KVariance_OUT_getInstance(), type)
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5a5183ed = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_684d5845 = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_774ea667
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_471e3e69
     
     return Companion_instance
 
 class KTypeProjection:
     def _init_(variance, type):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_255d4d7
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_ea40c9f
         _this_.variance = variance
         _this_.type = type
         tmp0_require_0 = jsEqeqeq(jsEqeq(variance, None), jsEqeq(type, None))
         if jsNot(tmp0_require_0):
-            message_2 = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_343f54c7
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_2e3e587
+            message_2 = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_59ccdde4
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_f157271
         
     
-    def _get_variance_():
+    def _get_variance_(self):
         return variance
     
-    def _get_type_():
+    def _get_type_(self):
         return type
     
-    def toString():
+    def toString(self):
         tmp0_subject = variance
         tmp
         if jsEqeq(tmp0_subject, None):
@@ -2392,98 +2392,98 @@ class KTypeProjection:
             tmp = toString()
         
         if equals(tmp0_subject, KVariance_IN_getInstance()):
-            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_42bd5540
+            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_48841b10
         
         if equals(tmp0_subject, KVariance_OUT_getInstance()):
-            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_27a93cfa
+            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_5e231326
         
         if True:
             noWhenBranchMatchedException()
         
         return tmp
     
-    def component1():
+    def component1(self):
         return variance
     
-    def component2():
+    def component2(self):
         return type
     
-    def copy(variance, type):
-        return _init_(variance, type)
+    def copy(self, variance, type):
+        return KTypeProjection(variance, type)
     
-    def copy_default(variance, type, _mask0, _handler):
+    def copy_default(self, variance, type, _mask0, _handler):
         if jsNot(jsEqeqeq(jsBitAnd(_mask0, 1), 0)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_60f66b9
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_653e6996
         
         if jsNot(jsEqeqeq(jsBitAnd(_mask0, 2), 0)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_24bbe3c6
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_56ed77b1
         
-        return copy(variance, type)
+        return _this_.copy(variance, type)
     
-    def hashCode():
-        result = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3cfa429c
-        result = jsBitOr(jsPlus(imul(result, 31), visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_60eabf53), 0)
+    def hashCode(self):
+        result = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6b0090ca
+        result = jsBitOr(jsPlus(imul(result, 31), visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6a1f63fd), 0)
         return result
     
-    def equals(other):
+    def equals(self, other):
         if jsEqeqeq(_this_, other):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_28befd62
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_66b3eab0
         
         if jsNot(jsInstanceOf(other, jsClass())):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_612531a3
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_7699e60a
         
         if True:
             pass
         
-        tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_23096e4d
+        tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_25832704
         if jsNot(equals(variance, variance)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_52667676
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4220468
         
         if jsNot(equals(type, type)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_44d6f9cf
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_1892865f
         
         return True
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_4474a287 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_47c90585 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_7cf6ea5b = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_723c7f2f = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5cb077e3 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_278758da = 0
 def values():
-    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_25fb28dd)
+    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_2e740f3c)
 
 def valueOf(value):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_73344756
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4a5bc21
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_77a3c614 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_54cf024c = 0
 def KVariance_initEntries():
     if KVariance_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_48012514
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_2b3d662e
     
     KVariance_entriesInitialized = True
-    KVariance_INVARIANT_instance = _init_('INVARIANT', 0)
-    KVariance_IN_instance = _init_('IN', 1)
-    KVariance_OUT_instance = _init_('OUT', 2)
+    KVariance_INVARIANT_instance = KVariance('INVARIANT', 0)
+    KVariance_IN_instance = KVariance('IN', 1)
+    KVariance_OUT_instance = KVariance('OUT', 2)
 
 class KVariance:
     def _init_(name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_30f6791d
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_14c75caf
     
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def _get_ordinal_():
+    def _get_ordinal_(self):
         pass
     
-    def compareTo(other):
+    def compareTo(self, other):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -2501,19 +2501,19 @@ def KVariance_OUT_getInstance():
 
 def appendElement(element, transform):
     if jsNot(jsEqeq(transform, None)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_581242e1
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_3e900cf4
     
     if True:
-        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6e29615e:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_65876774
+        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_67ba7db3:
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_3b0c48bd
         
         if True:
             if jsInstanceOf(element, jsClass()):
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_6bf597a9
+                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_88d92e5
             
             if True:
                 if True:
-                    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_5519eea8
+                    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_5e23d0db
                 
             
         
@@ -2528,31 +2528,31 @@ def _get_lastIndex_():
 def _get_UNDEFINED_RESULT_():
     return UNDEFINED_RESULT
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_34cb1310 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_6bbb3280 = 0
 def UNDEFINED_RESULT_init_():
     tmp0_success_0 = Companion_getInstance()
     tmp1_success_0 = _get_COROUTINE_SUSPENDED_()
-    return _init_(tmp1_success_0)
+    return Result(tmp1_success_0)
 
 def check(value):
     if jsNot(value):
         message_2 = 'Check failed.'
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_5c6e4d6b
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_6cf4325b
     
 
 def check(value, lazyMessage):
     if jsNot(value):
-        message = invoke()
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_48b4fecb
+        message = lazyMessage.invoke()
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_6bd5101f
     
 
 def error(message):
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_6e609e8a
+    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7c1ac3b
 
 def require(value, lazyMessage):
     if jsNot(value):
-        message = invoke()
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_51e28071
+        message = lazyMessage.invoke()
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_24d7df03
     
 
 def _Result___get_value__impl_(this):
@@ -2573,7 +2573,7 @@ def Result__getOrNull_impl(this):
     
     if True:
         tmp = _Result___get_value__impl_(this)
-        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_10742c78
+        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_304d96b5
     
     return tmp
 
@@ -2598,7 +2598,7 @@ def Result__toString_impl(this):
     
     if True:
         if True:
-            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_261a0d86
+            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_3887b71
         
     
     return tmp
@@ -2606,40 +2606,40 @@ def Result__toString_impl(this):
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_34604b32
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5570ee6d
     
-    def success(value):
-        return _init_(value)
+    def success(self, value):
+        return Result(value)
     
-    def failure(exception):
-        return _init_(createFailure(exception))
+    def failure(self, exception):
+        return Result(createFailure(exception))
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_278758da = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_3aba9252 = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_62254d29
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_30b9d1f0
     
     return Companion_instance
 
 class Failure:
     def _init_(exception):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_45b2b0ed
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_293ba26c
         _this_.exception = exception
     
-    def _get_exception_():
+    def _get_exception_(self):
         return exception
     
-    def equals(other):
+    def equals(self, other):
         tmp
         if jsInstanceOf(other, jsClass()):
             tmp = equals(exception, exception)
@@ -2651,123 +2651,123 @@ class Failure:
         
         return tmp
     
-    def hashCode():
+    def hashCode(self):
         return hashCode(exception)
     
-    def toString():
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_5930e350
+    def toString(self):
+        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_277cf420
     
 
 def Result__hashCode_impl(this):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_760c63d0
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_22f9cea5
 
 def Result__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_629fe84
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_789f5552
     
     if True:
         pass
     
-    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_147ee877
+    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7b6bf067
     if jsNot(equals(value, value)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_8942ece
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4d7fba20
     
     return True
 
 class Result:
     def _init_(value):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2fbb098f
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7a6b214c
         _this_.value = value
     
-    def toString():
+    def toString(self):
         return Result__toString_impl(unboxIntrinsic(_this_))
     
-    def hashCode():
+    def hashCode(self):
         return Result__hashCode_impl(unboxIntrinsic(_this_))
     
-    def equals(other):
+    def equals(self, other):
         return Result__equals_impl(unboxIntrinsic(_this_), other)
     
 
 def createFailure(exception):
-    return _init_(exception)
+    return Failure(exception)
 
 def getOrThrow():
     throwOnFailure()
     tmp = _Result___get_value__impl_(_this_)
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_67b1f69
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3bc59637
 
 def throwOnFailure():
     tmp = _Result___get_value__impl_(_this_)
     if jsInstanceOf(tmp, jsClass()):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_220a5163
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_5d24703e
     
     if True:
         pass
     
 
 def run(block):
-    return invoke()
+    return block.invoke()
 
 def TODO():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_c56ea7b
+    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_b106842
 
 def NotImplementedError_init__Init_(message, _mask0, _marker, _this):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 1), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_42e58f8e
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_65bccd0f
     
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1d67a1ad
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_63dee1b7
     return _this
 
 def NotImplementedError_init__Create_(message, _mask0, _marker):
     tmp = NotImplementedError_init__Init_(message, _mask0, _marker, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_1c486cec)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_5eb1fd44)
     return tmp
 
 class NotImplementedError:
     def _init_(message):
         Error_init__Init_(message, _this_)
-        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_73536bcc)
+        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_786f4b15)
     
-    def _get_message_():
+    def _get_message_(self):
         pass
     
-    def _get_cause_():
+    def _get_cause_(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
 
 def let(block):
-    return invoke(_this_)
+    return block.invoke(_this_)
 
 def apply(block):
-    invoke(_this_)
+    block.invoke(_this_)
     return _this_
 
 def repeat(times, action):
     inductionVariable = 0
     if jsLt(inductionVariable, times):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_5d548872
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_343418b2
     
 
 def _with(receiver, block):
-    return invoke(receiver)
+    return block.invoke(receiver)
 
 def also(block):
-    invoke(_this_)
+    block.invoke(_this_)
     return _this_
 
 def run(block):
-    return invoke(_this_)
+    return block.invoke(_this_)
 
 def _UByte___get_data__impl_(this):
     return data
@@ -2775,38 +2775,38 @@ def _UByte___get_data__impl_(this):
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3f030217
-        _this_.MIN_VALUE = _init_(visitConst_other_Byte)
-        _this_.MAX_VALUE = _init_(visitConst_other_Byte)
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_61d9dd15
+        _this_.MIN_VALUE = UByte(visitConst_other_Byte)
+        _this_.MAX_VALUE = UByte(visitConst_other_Byte)
         _this_.SIZE_BYTES = 1
         _this_.SIZE_BITS = 8
     
-    def _get_MIN_VALUE_():
+    def _get_MIN_VALUE_(self):
         return MIN_VALUE
     
-    def _get_MAX_VALUE_():
+    def _get_MAX_VALUE_(self):
         return MAX_VALUE
     
-    def _get_SIZE_BYTES_():
+    def _get_SIZE_BYTES_(self):
         return SIZE_BYTES
     
-    def _get_SIZE_BITS_():
+    def _get_SIZE_BITS_(self):
         return SIZE_BITS
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_b2bfd65 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_6b6eaa73 = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_2a542f65
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_e2ff893
     
     return Companion_instance
 
@@ -2816,138 +2816,138 @@ def UByte__compareTo_impl(this, other):
 
 def UByte__compareTo_impl(this, other):
     tmp = unboxIntrinsic(this)
-    return UByte__compareTo_impl(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_15411d35)
+    return UByte__compareTo_impl(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7edf6563)
 
 def UByte__compareTo_impl(this, other):
     tmp = jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255)
     return compareTo(tmp, jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
 
 def UByte__compareTo_impl(this, other):
-    tmp0_compareTo_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    tmp0_compareTo_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
     return uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(other))
 
 def UByte__compareTo_impl(this, other):
-    tmp0_compareTo_0 = _init_(_and(_init_(255, 0)))
+    tmp0_compareTo_0 = ULong(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
     return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other))
 
 def UByte__plus_impl(this, other):
-    tmp0_plus_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
-    tmp1_plus_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
-    return _init_(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp0_plus_0), _UInt___get_data__impl_(tmp1_plus_0)), 0))
+    tmp0_plus_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    tmp1_plus_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
+    return UInt(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp0_plus_0), _UInt___get_data__impl_(tmp1_plus_0)), 0))
 
 def UByte__plus_impl(this, other):
-    tmp0_plus_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
-    tmp1_plus_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
-    return _init_(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp0_plus_0), _UInt___get_data__impl_(tmp1_plus_0)), 0))
+    tmp0_plus_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    tmp1_plus_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
+    return UInt(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp0_plus_0), _UInt___get_data__impl_(tmp1_plus_0)), 0))
 
 def UByte__plus_impl(this, other):
-    tmp0_plus_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
-    return _init_(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp0_plus_0), _UInt___get_data__impl_(other)), 0))
+    tmp0_plus_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    return UInt(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp0_plus_0), _UInt___get_data__impl_(other)), 0))
 
 def UByte__plus_impl(this, other):
-    tmp0_plus_0 = _init_(_and(_init_(255, 0)))
-    return _init_(plus(_ULong___get_data__impl_(other)))
+    tmp0_plus_0 = ULong(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
+    return ULong(_ULong___get_data__impl_(tmp0_plus_0).plus(_ULong___get_data__impl_(other)))
 
 def UByte__minus_impl(this, other):
-    tmp0_minus_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
-    tmp1_minus_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
-    return _init_(jsBitOr(jsMinus(_UInt___get_data__impl_(tmp0_minus_0), _UInt___get_data__impl_(tmp1_minus_0)), 0))
+    tmp0_minus_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    tmp1_minus_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
+    return UInt(jsBitOr(jsMinus(_UInt___get_data__impl_(tmp0_minus_0), _UInt___get_data__impl_(tmp1_minus_0)), 0))
 
 def UByte__minus_impl(this, other):
-    tmp0_minus_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
-    tmp1_minus_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
-    return _init_(jsBitOr(jsMinus(_UInt___get_data__impl_(tmp0_minus_0), _UInt___get_data__impl_(tmp1_minus_0)), 0))
+    tmp0_minus_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    tmp1_minus_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
+    return UInt(jsBitOr(jsMinus(_UInt___get_data__impl_(tmp0_minus_0), _UInt___get_data__impl_(tmp1_minus_0)), 0))
 
 def UByte__minus_impl(this, other):
-    tmp0_minus_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
-    return _init_(jsBitOr(jsMinus(_UInt___get_data__impl_(tmp0_minus_0), _UInt___get_data__impl_(other)), 0))
+    tmp0_minus_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    return UInt(jsBitOr(jsMinus(_UInt___get_data__impl_(tmp0_minus_0), _UInt___get_data__impl_(other)), 0))
 
 def UByte__minus_impl(this, other):
-    tmp0_minus_0 = _init_(_and(_init_(255, 0)))
-    return _init_(minus(_ULong___get_data__impl_(other)))
+    tmp0_minus_0 = ULong(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
+    return ULong(_ULong___get_data__impl_(tmp0_minus_0).minus(_ULong___get_data__impl_(other)))
 
 def UByte__times_impl(this, other):
-    tmp0_times_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
-    tmp1_times_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
-    return _init_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)))
+    tmp0_times_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    tmp1_times_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
+    return UInt(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)))
 
 def UByte__times_impl(this, other):
-    tmp0_times_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
-    tmp1_times_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
-    return _init_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)))
+    tmp0_times_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    tmp1_times_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
+    return UInt(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)))
 
 def UByte__times_impl(this, other):
-    tmp0_times_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
-    return _init_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(other)))
+    tmp0_times_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    return UInt(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(other)))
 
 def UByte__times_impl(this, other):
-    tmp0_times_0 = _init_(_and(_init_(255, 0)))
-    return _init_(times(_ULong___get_data__impl_(other)))
+    tmp0_times_0 = ULong(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
+    return ULong(_ULong___get_data__impl_(tmp0_times_0).times(_ULong___get_data__impl_(other)))
 
 def UByte__div_impl(this, other):
-    tmp0_div_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
-    tmp1_div_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
+    tmp0_div_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    tmp1_div_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
     return uintDivide(tmp0_div_0, tmp1_div_0)
 
 def UByte__div_impl(this, other):
-    tmp0_div_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
-    tmp1_div_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
+    tmp0_div_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    tmp1_div_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
     return uintDivide(tmp0_div_0, tmp1_div_0)
 
 def UByte__div_impl(this, other):
-    tmp0_div_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    tmp0_div_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
     return uintDivide(tmp0_div_0, other)
 
 def UByte__div_impl(this, other):
-    tmp0_div_0 = _init_(_and(_init_(255, 0)))
+    tmp0_div_0 = ULong(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
     return ulongDivide(tmp0_div_0, other)
 
 def UByte__rem_impl(this, other):
-    tmp0_rem_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
-    tmp1_rem_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
+    tmp0_rem_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    tmp1_rem_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
     return uintRemainder(tmp0_rem_0, tmp1_rem_0)
 
 def UByte__rem_impl(this, other):
-    tmp0_rem_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
-    tmp1_rem_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
+    tmp0_rem_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    tmp1_rem_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
     return uintRemainder(tmp0_rem_0, tmp1_rem_0)
 
 def UByte__rem_impl(this, other):
-    tmp0_rem_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    tmp0_rem_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
     return uintRemainder(tmp0_rem_0, other)
 
 def UByte__rem_impl(this, other):
-    tmp0_rem_0 = _init_(_and(_init_(255, 0)))
+    tmp0_rem_0 = ULong(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
     return ulongRemainder(tmp0_rem_0, other)
 
 def UByte__inc_impl(this):
-    return _init_(numberToByte(jsPlus(_UByte___get_data__impl_(this), 1)))
+    return UByte(numberToByte(jsPlus(_UByte___get_data__impl_(this), 1)))
 
 def UByte__dec_impl(this):
-    return _init_(numberToByte(jsMinus(_UByte___get_data__impl_(this), 1)))
+    return UByte(numberToByte(jsMinus(_UByte___get_data__impl_(this), 1)))
 
 def UByte__rangeTo_impl(this, other):
-    tmp = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
-    return _init_(tmp, _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255)))
+    tmp = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    return UIntRange(tmp, UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255)))
 
 def UByte__and_impl(this, other):
     tmp0_and_0 = _UByte___get_data__impl_(this)
     tmp1_and_0 = _UByte___get_data__impl_(other)
-    return _init_(toByte(jsBitAnd(kotlin_Int(tmp0_and_0), kotlin_Int(tmp1_and_0))))
+    return UByte(toByte(jsBitAnd(kotlin_Int(tmp0_and_0), kotlin_Int(tmp1_and_0))))
 
 def UByte__or_impl(this, other):
     tmp0_or_0 = _UByte___get_data__impl_(this)
     tmp1_or_0 = _UByte___get_data__impl_(other)
-    return _init_(toByte(jsBitOr(kotlin_Int(tmp0_or_0), kotlin_Int(tmp1_or_0))))
+    return UByte(toByte(jsBitOr(kotlin_Int(tmp0_or_0), kotlin_Int(tmp1_or_0))))
 
 def UByte__xor_impl(this, other):
     tmp0_xor_0 = _UByte___get_data__impl_(this)
     tmp1_xor_0 = _UByte___get_data__impl_(other)
-    return _init_(toByte(jsBitXor(kotlin_Int(tmp0_xor_0), kotlin_Int(tmp1_xor_0))))
+    return UByte(toByte(jsBitXor(kotlin_Int(tmp0_xor_0), kotlin_Int(tmp1_xor_0))))
 
 def UByte__inv_impl(this):
     tmp0_inv_0 = _UByte___get_data__impl_(this)
-    return _init_(toByte(jsBitNot(kotlin_Int(tmp0_inv_0))))
+    return UByte(toByte(jsBitNot(kotlin_Int(tmp0_inv_0))))
 
 def UByte__toByte_impl(this):
     return _UByte___get_data__impl_(this)
@@ -2961,7 +2961,7 @@ def UByte__toInt_impl(this):
     return jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255)
 
 def UByte__toLong_impl(this):
-    return _and(_init_(255, 0))
+    return toLong(_UByte___get_data__impl_(this))._and(Long(255, 0))
 
 def UByte__toUByte_impl(this):
     return this
@@ -2969,13 +2969,13 @@ def UByte__toUByte_impl(this):
 def UByte__toUShort_impl(this):
     tmp0_and_0 = kotlin_Short(_UByte___get_data__impl_(this))
     tmp1_and_0 = visitConst_other_Short
-    return _init_(toShort(jsBitAnd(kotlin_Int(tmp0_and_0), kotlin_Int(tmp1_and_0))))
+    return UShort(toShort(jsBitAnd(kotlin_Int(tmp0_and_0), kotlin_Int(tmp1_and_0))))
 
 def UByte__toUInt_impl(this):
-    return _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
+    return UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
 
 def UByte__toULong_impl(this):
-    return _init_(_and(_init_(255, 0)))
+    return ULong(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
 
 def UByte__toFloat_impl(this):
     return kotlin_Float(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
@@ -2984,57 +2984,57 @@ def UByte__toDouble_impl(this):
     return kotlin_Double(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255))
 
 def UByte__toString_impl(this):
-    return toString()
+    return jsBitAnd(kotlin_Int(_UByte___get_data__impl_(this)), 255).toString()
 
 def UByte__hashCode_impl(this):
     return data
 
 def UByte__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_18ab513d
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_7712df76
     
     if True:
         pass
     
-    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_26772e54
+    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_341b0573
     if jsNot(jsEqeqeq(data, data)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_bb1b872
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_2c6d442d
     
     return True
 
 class UByte:
     def _init_(data):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5cff6d1d
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3006aef5
         _this_.data = data
     
-    def compareTo(other):
+    def compareTo(self, other):
         return UByte__compareTo_impl(unboxIntrinsic(_this_), other)
     
-    def compareTo(other):
+    def compareTo(self, other):
         return UByte__compareTo_impl(_this_, other)
     
-    def toString():
+    def toString(self):
         return UByte__toString_impl(unboxIntrinsic(_this_))
     
-    def hashCode():
+    def hashCode(self):
         return UByte__hashCode_impl(unboxIntrinsic(_this_))
     
-    def equals(other):
+    def equals(self, other):
         return UByte__equals_impl(unboxIntrinsic(_this_), other)
     
 
 def toUByte():
-    return _init_(toByte(_this_))
+    return UByte(toByte(_this_))
 
 def toUByte():
-    return _init_(toByte(_this_))
+    return UByte(toByte(_this_))
 
 def toUByte():
-    return _init_(toByte())
+    return UByte(_this_.toByte())
 
 def toUByte():
-    return _init_(_this_)
+    return UByte(_this_)
 
 def _get_array_(_this):
     return array
@@ -3049,12 +3049,12 @@ def _UByteArray___get_storage__impl_(this):
     return storage
 
 def _UByteArray___init__impl_(size):
-    tmp = _init_(int8Array(size))
+    tmp = UByteArray(int8Array(size))
     return tmp
 
 def UByteArray__get_impl(this, index):
     tmp0_toUByte_0 = jsArrayGet(_UByteArray___get_storage__impl_(this), index)
-    return _init_(tmp0_toUByte_0)
+    return UByte(tmp0_toUByte_0)
 
 def UByteArray__set_impl(this, index, value):
     tmp = _UByteArray___get_storage__impl_(this)
@@ -3064,48 +3064,48 @@ def _UByteArray___get_size__impl_(this):
     return jsArrayLength(_UByteArray___get_storage__impl_(this))
 
 def UByteArray__iterator_impl(this):
-    return _init_(_UByteArray___get_storage__impl_(this))
+    return Iterator(_UByteArray___get_storage__impl_(this))
 
 class Iterator:
     def _init_(array):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_96448ee
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6771efaa
         _this_.array = array
         _this_.index = 0
     
-    def hasNext():
+    def hasNext(self):
         return jsLt(index, jsArrayLength(array))
     
-    def nextUByte():
+    def nextUByte(self):
         tmp
         if jsLt(index, jsArrayLength(array)):
             tmp0_this = _this_
             tmp1 = index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
             tmp0_toUByte_0 = jsArrayGet(array, tmp1)
-            tmp = _init_(tmp0_toUByte_0)
+            tmp = UByte(tmp0_toUByte_0)
         
         if True:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_1ee126de
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_5abc488d
         
         return tmp
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 def UByteArray__contains_impl(this, element):
-    tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_58ba1195
+    tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_345292c1
     if jsNot(jsInstanceOf(tmp, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_25762f04
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_2dbc66f0
     
     if True:
         pass
@@ -3115,17 +3115,17 @@ def UByteArray__contains_impl(this, element):
 
 def UByteArray__contains_impl(this, element):
     if jsNot(jsInstanceOf(element, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4ee706ff
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_61d4bc03
     
     if True:
         pass
     
     tmp = unboxIntrinsic(this)
-    return UByteArray__contains_impl(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1f0eabb8)
+    return UByteArray__contains_impl(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_230ac978)
 
 def UByteArray__containsAll_impl(this, elements):
     tmp_ret_0
-    visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_69d142f6
+    visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_6e879a78
     return tmp_ret_0
 
 def UByteArray__containsAll_impl(this, elements):
@@ -3135,57 +3135,57 @@ def UByteArray__isEmpty_impl(this):
     return jsEqeqeq(jsArrayLength(_UByteArray___get_storage__impl_(this)), 0)
 
 def UByteArray__toString_impl(this):
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_15db982e
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_5a2c8199
 
 def UByteArray__hashCode_impl(this):
     return hashCode(storage)
 
 def UByteArray__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_77b01226
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_5746609e
     
     if True:
         pass
     
-    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3b764ae5
+    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_368d76d7
     if jsNot(equals(storage, storage)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_40b678b3
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_5c648e38
     
     return True
 
 class UByteArray:
     def _init_(storage):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2daa5092
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_92775a3
         _this_.storage = storage
     
-    def _get_size_():
+    def _get_size_(self):
         return _UByteArray___get_size__impl_(unboxIntrinsic(_this_))
     
-    def iterator():
+    def iterator(self):
         return UByteArray__iterator_impl(unboxIntrinsic(_this_))
     
-    def contains(element):
+    def contains(self, element):
         return UByteArray__contains_impl(unboxIntrinsic(_this_), element)
     
-    def contains(element):
+    def contains(self, element):
         return UByteArray__contains_impl(_this_, element)
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         return UByteArray__containsAll_impl(unboxIntrinsic(_this_), elements)
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         return UByteArray__containsAll_impl(_this_, elements)
     
-    def isEmpty():
+    def isEmpty(self):
         return UByteArray__isEmpty_impl(unboxIntrinsic(_this_))
     
-    def toString():
+    def toString(self):
         return UByteArray__toString_impl(unboxIntrinsic(_this_))
     
-    def hashCode():
+    def hashCode(self):
         return UByteArray__hashCode_impl(unboxIntrinsic(_this_))
     
-    def equals(other):
+    def equals(self, other):
         return UByteArray__equals_impl(unboxIntrinsic(_this_), other)
     
 
@@ -3195,47 +3195,47 @@ def _UInt___get_data__impl_(this):
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_13cc3984
-        _this_.MIN_VALUE = _init_(0)
-        _this_.MAX_VALUE = _init_(-1)
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_74cf2d5f
+        _this_.MIN_VALUE = UInt(0)
+        _this_.MAX_VALUE = UInt(-1)
         _this_.SIZE_BYTES = 4
         _this_.SIZE_BITS = 32
     
-    def _get_MIN_VALUE_():
+    def _get_MIN_VALUE_(self):
         return MIN_VALUE
     
-    def _get_MAX_VALUE_():
+    def _get_MAX_VALUE_(self):
         return MAX_VALUE
     
-    def _get_SIZE_BYTES_():
+    def _get_SIZE_BYTES_(self):
         return SIZE_BYTES
     
-    def _get_SIZE_BITS_():
+    def _get_SIZE_BITS_(self):
         return SIZE_BITS
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_20f7197f = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_44e49229 = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_515f104c
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_5a187cd4
     
     return Companion_instance
 
 def UInt__compareTo_impl(this, other):
-    tmp0_compareTo_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
+    tmp0_compareTo_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
     return uintCompare(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_compareTo_0))
 
 def UInt__compareTo_impl(this, other):
-    tmp0_compareTo_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
+    tmp0_compareTo_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
     return uintCompare(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_compareTo_0))
 
 def UInt__compareTo_impl(this, other):
@@ -3243,113 +3243,113 @@ def UInt__compareTo_impl(this, other):
 
 def UInt__compareTo_impl(this, other):
     tmp = unboxIntrinsic(this)
-    return UInt__compareTo_impl(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_716661b3)
+    return UInt__compareTo_impl(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_270741c2)
 
 def UInt__compareTo_impl(this, other):
-    tmp0_compareTo_0 = _init_(_and(_init_(-1, 0)))
+    tmp0_compareTo_0 = ULong(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
     return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other))
 
 def UInt__plus_impl(this, other):
-    tmp0_plus_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
-    return _init_(jsBitOr(jsPlus(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_plus_0)), 0))
+    tmp0_plus_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
+    return UInt(jsBitOr(jsPlus(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_plus_0)), 0))
 
 def UInt__plus_impl(this, other):
-    tmp0_plus_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
-    return _init_(jsBitOr(jsPlus(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_plus_0)), 0))
+    tmp0_plus_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
+    return UInt(jsBitOr(jsPlus(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_plus_0)), 0))
 
 def UInt__plus_impl(this, other):
-    return _init_(jsBitOr(jsPlus(_UInt___get_data__impl_(this), _UInt___get_data__impl_(other)), 0))
+    return UInt(jsBitOr(jsPlus(_UInt___get_data__impl_(this), _UInt___get_data__impl_(other)), 0))
 
 def UInt__plus_impl(this, other):
-    tmp0_plus_0 = _init_(_and(_init_(-1, 0)))
-    return _init_(plus(_ULong___get_data__impl_(other)))
+    tmp0_plus_0 = ULong(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
+    return ULong(_ULong___get_data__impl_(tmp0_plus_0).plus(_ULong___get_data__impl_(other)))
 
 def UInt__minus_impl(this, other):
-    tmp0_minus_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
-    return _init_(jsBitOr(jsMinus(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_minus_0)), 0))
+    tmp0_minus_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
+    return UInt(jsBitOr(jsMinus(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_minus_0)), 0))
 
 def UInt__minus_impl(this, other):
-    tmp0_minus_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
-    return _init_(jsBitOr(jsMinus(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_minus_0)), 0))
+    tmp0_minus_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
+    return UInt(jsBitOr(jsMinus(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_minus_0)), 0))
 
 def UInt__minus_impl(this, other):
-    return _init_(jsBitOr(jsMinus(_UInt___get_data__impl_(this), _UInt___get_data__impl_(other)), 0))
+    return UInt(jsBitOr(jsMinus(_UInt___get_data__impl_(this), _UInt___get_data__impl_(other)), 0))
 
 def UInt__minus_impl(this, other):
-    tmp0_minus_0 = _init_(_and(_init_(-1, 0)))
-    return _init_(minus(_ULong___get_data__impl_(other)))
+    tmp0_minus_0 = ULong(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
+    return ULong(_ULong___get_data__impl_(tmp0_minus_0).minus(_ULong___get_data__impl_(other)))
 
 def UInt__times_impl(this, other):
-    tmp0_times_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
-    return _init_(imul(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_times_0)))
+    tmp0_times_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
+    return UInt(imul(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_times_0)))
 
 def UInt__times_impl(this, other):
-    tmp0_times_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
-    return _init_(imul(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_times_0)))
+    tmp0_times_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
+    return UInt(imul(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_times_0)))
 
 def UInt__times_impl(this, other):
-    return _init_(imul(_UInt___get_data__impl_(this), _UInt___get_data__impl_(other)))
+    return UInt(imul(_UInt___get_data__impl_(this), _UInt___get_data__impl_(other)))
 
 def UInt__times_impl(this, other):
-    tmp0_times_0 = _init_(_and(_init_(-1, 0)))
-    return _init_(times(_ULong___get_data__impl_(other)))
+    tmp0_times_0 = ULong(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
+    return ULong(_ULong___get_data__impl_(tmp0_times_0).times(_ULong___get_data__impl_(other)))
 
 def UInt__div_impl(this, other):
-    tmp0_div_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
+    tmp0_div_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
     return uintDivide(this, tmp0_div_0)
 
 def UInt__div_impl(this, other):
-    tmp0_div_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
+    tmp0_div_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
     return uintDivide(this, tmp0_div_0)
 
 def UInt__div_impl(this, other):
     return uintDivide(this, other)
 
 def UInt__div_impl(this, other):
-    tmp0_div_0 = _init_(_and(_init_(-1, 0)))
+    tmp0_div_0 = ULong(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
     return ulongDivide(tmp0_div_0, other)
 
 def UInt__rem_impl(this, other):
-    tmp0_rem_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
+    tmp0_rem_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
     return uintRemainder(this, tmp0_rem_0)
 
 def UInt__rem_impl(this, other):
-    tmp0_rem_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
+    tmp0_rem_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
     return uintRemainder(this, tmp0_rem_0)
 
 def UInt__rem_impl(this, other):
     return uintRemainder(this, other)
 
 def UInt__rem_impl(this, other):
-    tmp0_rem_0 = _init_(_and(_init_(-1, 0)))
+    tmp0_rem_0 = ULong(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
     return ulongRemainder(tmp0_rem_0, other)
 
 def UInt__inc_impl(this):
-    return _init_(jsBitOr(jsPlus(_UInt___get_data__impl_(this), 1), 0))
+    return UInt(jsBitOr(jsPlus(_UInt___get_data__impl_(this), 1), 0))
 
 def UInt__dec_impl(this):
-    return _init_(jsBitOr(jsMinus(_UInt___get_data__impl_(this), 1), 0))
+    return UInt(jsBitOr(jsMinus(_UInt___get_data__impl_(this), 1), 0))
 
 def UInt__rangeTo_impl(this, other):
-    return _init_(this, other)
+    return UIntRange(this, other)
 
 def UInt__shl_impl(this, bitCount):
-    return _init_(jsBitShiftL(_UInt___get_data__impl_(this), bitCount))
+    return UInt(jsBitShiftL(_UInt___get_data__impl_(this), bitCount))
 
 def UInt__shr_impl(this, bitCount):
-    return _init_(jsBitShiftRU(_UInt___get_data__impl_(this), bitCount))
+    return UInt(jsBitShiftRU(_UInt___get_data__impl_(this), bitCount))
 
 def UInt__and_impl(this, other):
-    return _init_(jsBitAnd(_UInt___get_data__impl_(this), _UInt___get_data__impl_(other)))
+    return UInt(jsBitAnd(_UInt___get_data__impl_(this), _UInt___get_data__impl_(other)))
 
 def UInt__or_impl(this, other):
-    return _init_(jsBitOr(_UInt___get_data__impl_(this), _UInt___get_data__impl_(other)))
+    return UInt(jsBitOr(_UInt___get_data__impl_(this), _UInt___get_data__impl_(other)))
 
 def UInt__xor_impl(this, other):
-    return _init_(jsBitXor(_UInt___get_data__impl_(this), _UInt___get_data__impl_(other)))
+    return UInt(jsBitXor(_UInt___get_data__impl_(this), _UInt___get_data__impl_(other)))
 
 def UInt__inv_impl(this):
-    return _init_(jsBitNot(_UInt___get_data__impl_(this)))
+    return UInt(jsBitNot(_UInt___get_data__impl_(this)))
 
 def UInt__toByte_impl(this):
     return toByte(_UInt___get_data__impl_(this))
@@ -3361,21 +3361,21 @@ def UInt__toInt_impl(this):
     return _UInt___get_data__impl_(this)
 
 def UInt__toLong_impl(this):
-    return _and(_init_(-1, 0))
+    return toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0))
 
 def UInt__toUByte_impl(this):
     tmp0_toUByte_0 = _UInt___get_data__impl_(this)
-    return _init_(toByte(tmp0_toUByte_0))
+    return UByte(toByte(tmp0_toUByte_0))
 
 def UInt__toUShort_impl(this):
     tmp0_toUShort_0 = _UInt___get_data__impl_(this)
-    return _init_(toShort(tmp0_toUShort_0))
+    return UShort(toShort(tmp0_toUShort_0))
 
 def UInt__toUInt_impl(this):
     return this
 
 def UInt__toULong_impl(this):
-    return _init_(_and(_init_(-1, 0)))
+    return ULong(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
 
 def UInt__toFloat_impl(this):
     return kotlin_Float(uintToDouble(_UInt___get_data__impl_(this)))
@@ -3384,54 +3384,54 @@ def UInt__toDouble_impl(this):
     return uintToDouble(_UInt___get_data__impl_(this))
 
 def UInt__toString_impl(this):
-    return toString()
+    return toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)).toString()
 
 def UInt__hashCode_impl(this):
     return data
 
 def UInt__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_16a14076
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_5390862e
     
     if True:
         pass
     
-    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4f5bb24d
+    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_51413fc7
     if jsNot(jsEqeqeq(data, data)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_3df4cd96
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_5006a697
     
     return True
 
 class UInt:
     def _init_(data):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_e98adb2
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_18f794e
         _this_.data = data
     
-    def compareTo(other):
+    def compareTo(self, other):
         return UInt__compareTo_impl(unboxIntrinsic(_this_), other)
     
-    def compareTo(other):
+    def compareTo(self, other):
         return UInt__compareTo_impl(_this_, other)
     
-    def toString():
+    def toString(self):
         return UInt__toString_impl(unboxIntrinsic(_this_))
     
-    def hashCode():
+    def hashCode(self):
         return UInt__hashCode_impl(unboxIntrinsic(_this_))
     
-    def equals(other):
+    def equals(self, other):
         return UInt__equals_impl(unboxIntrinsic(_this_), other)
     
 
 def toUInt():
-    return _init_(toInt())
+    return UInt(_this_.toInt())
 
 def toUInt():
-    return _init_(_this_)
+    return UInt(_this_)
 
 def toUInt():
-    return _init_(kotlin_Int(_this_))
+    return UInt(kotlin_Int(_this_))
 
 def toUInt():
     return doubleToUInt(_this_)
@@ -3440,7 +3440,7 @@ def toUInt():
     return doubleToUInt(kotlin_Double(_this_))
 
 def toUInt():
-    return _init_(kotlin_Int(_this_))
+    return UInt(kotlin_Int(_this_))
 
 def _get_array_(_this):
     return array
@@ -3455,12 +3455,12 @@ def _UIntArray___get_storage__impl_(this):
     return storage
 
 def _UIntArray___init__impl_(size):
-    tmp = _init_(int32Array(size))
+    tmp = UIntArray(int32Array(size))
     return tmp
 
 def UIntArray__get_impl(this, index):
     tmp0_toUInt_0 = jsArrayGet(_UIntArray___get_storage__impl_(this), index)
-    return _init_(tmp0_toUInt_0)
+    return UInt(tmp0_toUInt_0)
 
 def UIntArray__set_impl(this, index, value):
     tmp = _UIntArray___get_storage__impl_(this)
@@ -3470,48 +3470,48 @@ def _UIntArray___get_size__impl_(this):
     return jsArrayLength(_UIntArray___get_storage__impl_(this))
 
 def UIntArray__iterator_impl(this):
-    return _init_(_UIntArray___get_storage__impl_(this))
+    return Iterator(_UIntArray___get_storage__impl_(this))
 
 class Iterator:
     def _init_(array):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7b6b8cea
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3d0ce151
         _this_.array = array
         _this_.index = 0
     
-    def hasNext():
+    def hasNext(self):
         return jsLt(index, jsArrayLength(array))
     
-    def nextUInt():
+    def nextUInt(self):
         tmp
         if jsLt(index, jsArrayLength(array)):
             tmp0_this = _this_
             tmp1 = index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
             tmp0_toUInt_0 = jsArrayGet(array, tmp1)
-            tmp = _init_(tmp0_toUInt_0)
+            tmp = UInt(tmp0_toUInt_0)
         
         if True:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_402fdef1
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_23307c6c
         
         return tmp
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 def UIntArray__contains_impl(this, element):
-    tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7f31e2fb
+    tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_284c84de
     if jsNot(jsInstanceOf(tmp, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_75c30a4f
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_237b54bc
     
     if True:
         pass
@@ -3521,17 +3521,17 @@ def UIntArray__contains_impl(this, element):
 
 def UIntArray__contains_impl(this, element):
     if jsNot(jsInstanceOf(element, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_45c20d8f
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4beea618
     
     if True:
         pass
     
     tmp = unboxIntrinsic(this)
-    return UIntArray__contains_impl(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_393751a0)
+    return UIntArray__contains_impl(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_160a3238)
 
 def UIntArray__containsAll_impl(this, elements):
     tmp_ret_0
-    visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_555856fa
+    visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_882364e
     return tmp_ret_0
 
 def UIntArray__containsAll_impl(this, elements):
@@ -3541,108 +3541,108 @@ def UIntArray__isEmpty_impl(this):
     return jsEqeqeq(jsArrayLength(_UIntArray___get_storage__impl_(this)), 0)
 
 def UIntArray__toString_impl(this):
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_34ea5eff
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_26dc0c5
 
 def UIntArray__hashCode_impl(this):
     return hashCode(storage)
 
 def UIntArray__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_6600d07d
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_5b11d0d8
     
     if True:
         pass
     
-    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7ffb60a4
+    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_30a0c356
     if jsNot(equals(storage, storage)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_6c38f4de
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_19b33b0d
     
     return True
 
 class UIntArray:
     def _init_(storage):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1cdb280b
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7f65639e
         _this_.storage = storage
     
-    def _get_size_():
+    def _get_size_(self):
         return _UIntArray___get_size__impl_(unboxIntrinsic(_this_))
     
-    def iterator():
+    def iterator(self):
         return UIntArray__iterator_impl(unboxIntrinsic(_this_))
     
-    def contains(element):
+    def contains(self, element):
         return UIntArray__contains_impl(unboxIntrinsic(_this_), element)
     
-    def contains(element):
+    def contains(self, element):
         return UIntArray__contains_impl(_this_, element)
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         return UIntArray__containsAll_impl(unboxIntrinsic(_this_), elements)
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         return UIntArray__containsAll_impl(_this_, elements)
     
-    def isEmpty():
+    def isEmpty(self):
         return UIntArray__isEmpty_impl(unboxIntrinsic(_this_))
     
-    def toString():
+    def toString(self):
         return UIntArray__toString_impl(unboxIntrinsic(_this_))
     
-    def hashCode():
+    def hashCode(self):
         return UIntArray__hashCode_impl(unboxIntrinsic(_this_))
     
-    def equals(other):
+    def equals(self, other):
         return UIntArray__equals_impl(unboxIntrinsic(_this_), other)
     
 
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_41041c31
-        _this_.EMPTY = _init_(_init_(-1), _init_(0))
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_53813f01
+        _this_.EMPTY = UIntRange(UInt(-1), UInt(0))
     
-    def _get_EMPTY_():
+    def _get_EMPTY_(self):
         return EMPTY
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_4c8a893e = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_52214284 = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_34d27e12
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_5069b3c6
     
     return Companion_instance
 
 class UIntRange:
     def _init_(start, endInclusive):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_21f9a305
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6408a8ac
     
-    def _get_start_():
-        return _get_first_()
+    def _get_start_(self):
+        return _this_._get_first_()
     
-    def _get_start_():
-        return boxIntrinsic(_get_start_())
+    def _get_start_(self):
+        return boxIntrinsic(_this_._get_start_())
     
-    def _get_endInclusive_():
-        return _get_last_()
+    def _get_endInclusive_(self):
+        return _this_._get_last_()
     
-    def _get_endInclusive_():
-        return boxIntrinsic(_get_endInclusive_())
+    def _get_endInclusive_(self):
+        return boxIntrinsic(_this_._get_endInclusive_())
     
-    def contains(value):
+    def contains(self, value):
         tmp
-        tmp0_compareTo_0 = _get_first_()
+        tmp0_compareTo_0 = _this_._get_first_()
         if jsLtEq(uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(value)), 0):
-            tmp1_compareTo_0 = _get_last_()
+            tmp1_compareTo_0 = _this_._get_last_()
             tmp = jsLtEq(uintCompare(_UInt___get_data__impl_(value), _UInt___get_data__impl_(tmp1_compareTo_0)), 0)
         
         if True:
@@ -3652,18 +3652,18 @@ class UIntRange:
         
         return tmp
     
-    def contains(value):
-        return contains(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1c0b38af)
+    def contains(self, value):
+        return _this_.contains(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_675b0850)
     
-    def isEmpty():
-        tmp0_compareTo_0 = _get_first_()
-        tmp1_compareTo_0 = _get_last_()
+    def isEmpty(self):
+        tmp0_compareTo_0 = _this_._get_first_()
+        tmp1_compareTo_0 = _this_._get_last_()
         return jsGt(uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(tmp1_compareTo_0)), 0)
     
-    def equals(other):
+    def equals(self, other):
         tmp
         if jsInstanceOf(other, jsClass()):
-            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_b6aa7e9
+            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_80cec05
         
         if True:
             if True:
@@ -3672,87 +3672,87 @@ class UIntRange:
         
         return tmp
     
-    def hashCode():
+    def hashCode(self):
         tmp
-        if isEmpty():
+        if _this_.isEmpty():
             tmp = -1
         
         if True:
-            tmp0_toInt_0 = _get_first_()
+            tmp0_toInt_0 = _this_._get_first_()
             tmp = imul(31, _UInt___get_data__impl_(tmp0_toInt_0))
-            tmp1_toInt_0 = _get_last_()
+            tmp1_toInt_0 = _this_._get_last_()
             tmp = jsBitOr(jsPlus(tmp, _UInt___get_data__impl_(tmp1_toInt_0)), 0)
         
         return tmp
     
-    def toString():
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_46441754
+    def toString(self):
+        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_3f096fa1
     
-    def _get_first_():
+    def _get_first_(self):
         pass
     
-    def _get_last_():
+    def _get_last_(self):
         pass
     
-    def _get_step_():
+    def _get_step_(self):
         pass
     
-    def iterator():
+    def iterator(self):
         pass
     
 
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5d50e7f6
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4b6fc231
     
-    def fromClosedRange(rangeStart, rangeEnd, step):
-        return _init_(rangeStart, rangeEnd, step)
+    def fromClosedRange(self, rangeStart, rangeEnd, step):
+        return UIntProgression(rangeStart, rangeEnd, step)
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5a12819f = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_51aafde5 = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_82300e1
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_6f75d11b
     
     return Companion_instance
 
 class UIntProgression:
     def _init_(start, endInclusive, step):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_93c66ef
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_ae85aad
         if jsEqeqeq(step, 0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_736e4a59
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_39b88618
         
         if jsEqeqeq(step, MIN_VALUE):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_3369fe5c
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_2c0c1730
         
         _this_.first = start
         _this_.last = getProgressionLastElement(start, endInclusive, step)
         _this_.step = step
     
-    def _get_first_():
+    def _get_first_(self):
         return first
     
-    def _get_last_():
+    def _get_last_(self):
         return last
     
-    def _get_step_():
+    def _get_step_(self):
         return step
     
-    def iterator():
-        return _init_(first, last, step)
+    def iterator(self):
+        return UIntProgressionIterator(first, last, step)
     
-    def isEmpty():
+    def isEmpty(self):
         tmp
         if jsGt(step, 0):
             tmp0_compareTo_0 = first
@@ -3766,10 +3766,10 @@ class UIntProgression:
         
         return tmp
     
-    def equals(other):
+    def equals(self, other):
         tmp
         if jsInstanceOf(other, jsClass()):
-            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_d1ccec8
+            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_24a887a0
         
         if True:
             if True:
@@ -3778,9 +3778,9 @@ class UIntProgression:
         
         return tmp
     
-    def hashCode():
+    def hashCode(self):
         tmp
-        if isEmpty():
+        if _this_.isEmpty():
             tmp = -1
         
         if True:
@@ -3791,8 +3791,8 @@ class UIntProgression:
         
         return tmp
     
-    def toString():
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7963767d
+    def toString(self):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2d617d27
     
 
 def _get_finalElement_(_this):
@@ -3815,7 +3815,7 @@ def _get_next_(_this):
 
 class UIntProgressionIterator:
     def _init_(first, last, step):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3054cdd3
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7d7888a5
         _this_.finalElement = last
         tmp = _this_
         tmp
@@ -3827,17 +3827,17 @@ class UIntProgressionIterator:
         
         tmp.hasNext = tmp
         tmp = _this_
-        tmp.step = _init_(step)
-        _this_.next = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_675b0850
+        tmp.step = UInt(step)
+        _this_.next = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3c31c0c8
     
-    def hasNext():
+    def hasNext(self):
         return hasNext
     
-    def nextUInt():
+    def nextUInt(self):
         value = next
         if equals(boxIntrinsic(value), boxIntrinsic(finalElement)):
             if jsNot(hasNext):
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_4ae435a3
+                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_24455d50
             
             _this_.hasNext = False
         
@@ -3846,124 +3846,124 @@ class UIntProgressionIterator:
             tmp = tmp0_this
             tmp0_plus_0 = next
             tmp1_plus_0 = step
-            tmp.next = _init_(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp0_plus_0), _UInt___get_data__impl_(tmp1_plus_0)), 0))
+            tmp.next = UInt(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp0_plus_0), _UInt___get_data__impl_(tmp1_plus_0)), 0))
         
         return value
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class UIntIterator:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_31c31fa6
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6a7cbeed
     
-    def next():
-        return nextUInt()
+    def next(self):
+        return _this_.nextUInt()
     
-    def next():
-        return boxIntrinsic(next())
+    def next(self):
+        return boxIntrinsic(_this_.next())
     
-    def nextUInt():
+    def nextUInt(self):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class ULongIterator:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_39d37da8
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4b8c9729
     
-    def next():
-        return nextULong()
+    def next(self):
+        return _this_.nextULong()
     
-    def next():
-        return boxIntrinsic(next())
+    def next(self):
+        return boxIntrinsic(_this_.next())
     
-    def nextULong():
+    def nextULong(self):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class UByteIterator:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_62966c9f
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7bbc11ed
     
-    def next():
-        return nextUByte()
+    def next(self):
+        return _this_.nextUByte()
     
-    def next():
-        return boxIntrinsic(next())
+    def next(self):
+        return boxIntrinsic(_this_.next())
     
-    def nextUByte():
+    def nextUByte(self):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class UShortIterator:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_62536882
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_76d220eb
     
-    def next():
-        return nextUShort()
+    def next(self):
+        return _this_.nextUShort()
     
-    def next():
-        return boxIntrinsic(next())
+    def next(self):
+        return boxIntrinsic(_this_.next())
     
-    def nextUShort():
+    def nextUShort(self):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -3973,51 +3973,51 @@ def _ULong___get_data__impl_(this):
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2f83467
-        _this_.MIN_VALUE = _init_(_init_(0, 0))
-        _this_.MAX_VALUE = _init_(_init_(-1, -1))
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_c5c2a84
+        _this_.MIN_VALUE = ULong(Long(0, 0))
+        _this_.MAX_VALUE = ULong(Long(-1, -1))
         _this_.SIZE_BYTES = 8
         _this_.SIZE_BITS = 64
     
-    def _get_MIN_VALUE_():
+    def _get_MIN_VALUE_(self):
         return MIN_VALUE
     
-    def _get_MAX_VALUE_():
+    def _get_MAX_VALUE_(self):
         return MAX_VALUE
     
-    def _get_SIZE_BYTES_():
+    def _get_SIZE_BYTES_(self):
         return SIZE_BYTES
     
-    def _get_SIZE_BITS_():
+    def _get_SIZE_BITS_(self):
         return SIZE_BITS
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_6f377b1f = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5ab315ed = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_1d243ebb
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_73959127
     
     return Companion_instance
 
 def ULong__compareTo_impl(this, other):
-    tmp0_compareTo_0 = _init_(_and(_init_(255, 0)))
+    tmp0_compareTo_0 = ULong(toLong(_UByte___get_data__impl_(other))._and(Long(255, 0)))
     return ulongCompare(_ULong___get_data__impl_(this), _ULong___get_data__impl_(tmp0_compareTo_0))
 
 def ULong__compareTo_impl(this, other):
-    tmp0_compareTo_0 = _init_(_and(_init_(65535, 0)))
+    tmp0_compareTo_0 = ULong(toLong(_UShort___get_data__impl_(other))._and(Long(65535, 0)))
     return ulongCompare(_ULong___get_data__impl_(this), _ULong___get_data__impl_(tmp0_compareTo_0))
 
 def ULong__compareTo_impl(this, other):
-    tmp0_compareTo_0 = _init_(_and(_init_(-1, 0)))
+    tmp0_compareTo_0 = ULong(toLong(_UInt___get_data__impl_(other))._and(Long(-1, 0)))
     return ulongCompare(_ULong___get_data__impl_(this), _ULong___get_data__impl_(tmp0_compareTo_0))
 
 def ULong__compareTo_impl(this, other):
@@ -4025,133 +4025,133 @@ def ULong__compareTo_impl(this, other):
 
 def ULong__compareTo_impl(this, other):
     tmp = unboxIntrinsic(this)
-    return ULong__compareTo_impl(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_135a2a14)
+    return ULong__compareTo_impl(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6acdbe95)
 
 def ULong__plus_impl(this, other):
-    tmp0_plus_0 = _init_(_and(_init_(255, 0)))
-    return _init_(plus(_ULong___get_data__impl_(tmp0_plus_0)))
+    tmp0_plus_0 = ULong(toLong(_UByte___get_data__impl_(other))._and(Long(255, 0)))
+    return ULong(_ULong___get_data__impl_(this).plus(_ULong___get_data__impl_(tmp0_plus_0)))
 
 def ULong__plus_impl(this, other):
-    tmp0_plus_0 = _init_(_and(_init_(65535, 0)))
-    return _init_(plus(_ULong___get_data__impl_(tmp0_plus_0)))
+    tmp0_plus_0 = ULong(toLong(_UShort___get_data__impl_(other))._and(Long(65535, 0)))
+    return ULong(_ULong___get_data__impl_(this).plus(_ULong___get_data__impl_(tmp0_plus_0)))
 
 def ULong__plus_impl(this, other):
-    tmp0_plus_0 = _init_(_and(_init_(-1, 0)))
-    return _init_(plus(_ULong___get_data__impl_(tmp0_plus_0)))
+    tmp0_plus_0 = ULong(toLong(_UInt___get_data__impl_(other))._and(Long(-1, 0)))
+    return ULong(_ULong___get_data__impl_(this).plus(_ULong___get_data__impl_(tmp0_plus_0)))
 
 def ULong__plus_impl(this, other):
-    return _init_(plus(_ULong___get_data__impl_(other)))
+    return ULong(_ULong___get_data__impl_(this).plus(_ULong___get_data__impl_(other)))
 
 def ULong__minus_impl(this, other):
-    tmp0_minus_0 = _init_(_and(_init_(255, 0)))
-    return _init_(minus(_ULong___get_data__impl_(tmp0_minus_0)))
+    tmp0_minus_0 = ULong(toLong(_UByte___get_data__impl_(other))._and(Long(255, 0)))
+    return ULong(_ULong___get_data__impl_(this).minus(_ULong___get_data__impl_(tmp0_minus_0)))
 
 def ULong__minus_impl(this, other):
-    tmp0_minus_0 = _init_(_and(_init_(65535, 0)))
-    return _init_(minus(_ULong___get_data__impl_(tmp0_minus_0)))
+    tmp0_minus_0 = ULong(toLong(_UShort___get_data__impl_(other))._and(Long(65535, 0)))
+    return ULong(_ULong___get_data__impl_(this).minus(_ULong___get_data__impl_(tmp0_minus_0)))
 
 def ULong__minus_impl(this, other):
-    tmp0_minus_0 = _init_(_and(_init_(-1, 0)))
-    return _init_(minus(_ULong___get_data__impl_(tmp0_minus_0)))
+    tmp0_minus_0 = ULong(toLong(_UInt___get_data__impl_(other))._and(Long(-1, 0)))
+    return ULong(_ULong___get_data__impl_(this).minus(_ULong___get_data__impl_(tmp0_minus_0)))
 
 def ULong__minus_impl(this, other):
-    return _init_(minus(_ULong___get_data__impl_(other)))
+    return ULong(_ULong___get_data__impl_(this).minus(_ULong___get_data__impl_(other)))
 
 def ULong__times_impl(this, other):
-    tmp0_times_0 = _init_(_and(_init_(255, 0)))
-    return _init_(times(_ULong___get_data__impl_(tmp0_times_0)))
+    tmp0_times_0 = ULong(toLong(_UByte___get_data__impl_(other))._and(Long(255, 0)))
+    return ULong(_ULong___get_data__impl_(this).times(_ULong___get_data__impl_(tmp0_times_0)))
 
 def ULong__times_impl(this, other):
-    tmp0_times_0 = _init_(_and(_init_(65535, 0)))
-    return _init_(times(_ULong___get_data__impl_(tmp0_times_0)))
+    tmp0_times_0 = ULong(toLong(_UShort___get_data__impl_(other))._and(Long(65535, 0)))
+    return ULong(_ULong___get_data__impl_(this).times(_ULong___get_data__impl_(tmp0_times_0)))
 
 def ULong__times_impl(this, other):
-    tmp0_times_0 = _init_(_and(_init_(-1, 0)))
-    return _init_(times(_ULong___get_data__impl_(tmp0_times_0)))
+    tmp0_times_0 = ULong(toLong(_UInt___get_data__impl_(other))._and(Long(-1, 0)))
+    return ULong(_ULong___get_data__impl_(this).times(_ULong___get_data__impl_(tmp0_times_0)))
 
 def ULong__times_impl(this, other):
-    return _init_(times(_ULong___get_data__impl_(other)))
+    return ULong(_ULong___get_data__impl_(this).times(_ULong___get_data__impl_(other)))
 
 def ULong__div_impl(this, other):
-    tmp0_div_0 = _init_(_and(_init_(255, 0)))
+    tmp0_div_0 = ULong(toLong(_UByte___get_data__impl_(other))._and(Long(255, 0)))
     return ulongDivide(this, tmp0_div_0)
 
 def ULong__div_impl(this, other):
-    tmp0_div_0 = _init_(_and(_init_(65535, 0)))
+    tmp0_div_0 = ULong(toLong(_UShort___get_data__impl_(other))._and(Long(65535, 0)))
     return ulongDivide(this, tmp0_div_0)
 
 def ULong__div_impl(this, other):
-    tmp0_div_0 = _init_(_and(_init_(-1, 0)))
+    tmp0_div_0 = ULong(toLong(_UInt___get_data__impl_(other))._and(Long(-1, 0)))
     return ulongDivide(this, tmp0_div_0)
 
 def ULong__div_impl(this, other):
     return ulongDivide(this, other)
 
 def ULong__rem_impl(this, other):
-    tmp0_rem_0 = _init_(_and(_init_(255, 0)))
+    tmp0_rem_0 = ULong(toLong(_UByte___get_data__impl_(other))._and(Long(255, 0)))
     return ulongRemainder(this, tmp0_rem_0)
 
 def ULong__rem_impl(this, other):
-    tmp0_rem_0 = _init_(_and(_init_(65535, 0)))
+    tmp0_rem_0 = ULong(toLong(_UShort___get_data__impl_(other))._and(Long(65535, 0)))
     return ulongRemainder(this, tmp0_rem_0)
 
 def ULong__rem_impl(this, other):
-    tmp0_rem_0 = _init_(_and(_init_(-1, 0)))
+    tmp0_rem_0 = ULong(toLong(_UInt___get_data__impl_(other))._and(Long(-1, 0)))
     return ulongRemainder(this, tmp0_rem_0)
 
 def ULong__rem_impl(this, other):
     return ulongRemainder(this, other)
 
 def ULong__inc_impl(this):
-    return _init_(inc())
+    return ULong(_ULong___get_data__impl_(this).inc())
 
 def ULong__dec_impl(this):
-    return _init_(dec())
+    return ULong(_ULong___get_data__impl_(this).dec())
 
 def ULong__rangeTo_impl(this, other):
-    return _init_(this, other)
+    return ULongRange(this, other)
 
 def ULong__shl_impl(this, bitCount):
-    return _init_(shl(bitCount))
+    return ULong(_ULong___get_data__impl_(this).shl(bitCount))
 
 def ULong__shr_impl(this, bitCount):
-    return _init_(ushr(bitCount))
+    return ULong(_ULong___get_data__impl_(this).ushr(bitCount))
 
 def ULong__and_impl(this, other):
-    return _init_(_and(_ULong___get_data__impl_(other)))
+    return ULong(_ULong___get_data__impl_(this)._and(_ULong___get_data__impl_(other)))
 
 def ULong__or_impl(this, other):
-    return _init_(_or(_ULong___get_data__impl_(other)))
+    return ULong(_ULong___get_data__impl_(this)._or(_ULong___get_data__impl_(other)))
 
 def ULong__xor_impl(this, other):
-    return _init_(xor(_ULong___get_data__impl_(other)))
+    return ULong(_ULong___get_data__impl_(this).xor(_ULong___get_data__impl_(other)))
 
 def ULong__inv_impl(this):
-    return _init_(inv())
+    return ULong(_ULong___get_data__impl_(this).inv())
 
 def ULong__toByte_impl(this):
-    return toByte()
+    return _ULong___get_data__impl_(this).toByte()
 
 def ULong__toShort_impl(this):
-    return toShort()
+    return _ULong___get_data__impl_(this).toShort()
 
 def ULong__toInt_impl(this):
-    return toInt()
+    return _ULong___get_data__impl_(this).toInt()
 
 def ULong__toLong_impl(this):
     return _ULong___get_data__impl_(this)
 
 def ULong__toUByte_impl(this):
     tmp0_toUByte_0 = _ULong___get_data__impl_(this)
-    return _init_(toByte())
+    return UByte(tmp0_toUByte_0.toByte())
 
 def ULong__toUShort_impl(this):
     tmp0_toUShort_0 = _ULong___get_data__impl_(this)
-    return _init_(toShort())
+    return UShort(tmp0_toUShort_0.toShort())
 
 def ULong__toUInt_impl(this):
     tmp0_toUInt_0 = _ULong___get_data__impl_(this)
-    return _init_(toInt())
+    return UInt(tmp0_toUInt_0.toInt())
 
 def ULong__toULong_impl(this):
     return this
@@ -4166,48 +4166,48 @@ def ULong__toString_impl(this):
     return ulongToString(_ULong___get_data__impl_(this))
 
 def ULong__hashCode_impl(this):
-    return hashCode()
+    return data.hashCode()
 
 def ULong__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_1415f18d
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_408bb173
     
     if True:
         pass
     
-    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3a369bbd
-    if jsNot(equals(data)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_48cbb4c5
+    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2bfd3970
+    if jsNot(data.equals(data)):
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_7fb8d720
     
     return True
 
 class ULong:
     def _init_(data):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_785477e5
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6f2b608e
         _this_.data = data
     
-    def compareTo(other):
+    def compareTo(self, other):
         return ULong__compareTo_impl(unboxIntrinsic(_this_), other)
     
-    def compareTo(other):
+    def compareTo(self, other):
         return ULong__compareTo_impl(_this_, other)
     
-    def toString():
+    def toString(self):
         return ULong__toString_impl(unboxIntrinsic(_this_))
     
-    def hashCode():
+    def hashCode(self):
         return ULong__hashCode_impl(unboxIntrinsic(_this_))
     
-    def equals(other):
+    def equals(self, other):
         return ULong__equals_impl(unboxIntrinsic(_this_), other)
     
 
 def toULong():
-    return _init_(_this_)
+    return ULong(_this_)
 
 def toULong():
-    return _init_(toLong(_this_))
+    return ULong(toLong(_this_))
 
 def toULong():
     return doubleToULong(_this_)
@@ -4216,10 +4216,10 @@ def toULong():
     return doubleToULong(kotlin_Double(_this_))
 
 def toULong():
-    return _init_(toLong(_this_))
+    return ULong(toLong(_this_))
 
 def toULong():
-    return _init_(toLong(_this_))
+    return ULong(toLong(_this_))
 
 def _get_array_(_this):
     return array
@@ -4234,12 +4234,12 @@ def _ULongArray___get_storage__impl_(this):
     return storage
 
 def _ULongArray___init__impl_(size):
-    tmp = _init_(longArray(size))
+    tmp = ULongArray(longArray(size))
     return tmp
 
 def ULongArray__get_impl(this, index):
     tmp0_toULong_0 = jsArrayGet(_ULongArray___get_storage__impl_(this), index)
-    return _init_(tmp0_toULong_0)
+    return ULong(tmp0_toULong_0)
 
 def ULongArray__set_impl(this, index, value):
     tmp = _ULongArray___get_storage__impl_(this)
@@ -4249,48 +4249,48 @@ def _ULongArray___get_size__impl_(this):
     return jsArrayLength(_ULongArray___get_storage__impl_(this))
 
 def ULongArray__iterator_impl(this):
-    return _init_(_ULongArray___get_storage__impl_(this))
+    return Iterator(_ULongArray___get_storage__impl_(this))
 
 class Iterator:
     def _init_(array):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_35a81281
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_ee7a538
         _this_.array = array
         _this_.index = 0
     
-    def hasNext():
+    def hasNext(self):
         return jsLt(index, jsArrayLength(array))
     
-    def nextULong():
+    def nextULong(self):
         tmp
         if jsLt(index, jsArrayLength(array)):
             tmp0_this = _this_
             tmp1 = index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
             tmp0_toULong_0 = jsArrayGet(array, tmp1)
-            tmp = _init_(tmp0_toULong_0)
+            tmp = ULong(tmp0_toULong_0)
         
         if True:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_35bb3fea
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_2c1b10f2
         
         return tmp
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 def ULongArray__contains_impl(this, element):
-    tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_27df0864
+    tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2e4f3c14
     if jsNot(jsInstanceOf(tmp, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_53b579d2
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_2a3c3a04
     
     if True:
         pass
@@ -4300,17 +4300,17 @@ def ULongArray__contains_impl(this, element):
 
 def ULongArray__contains_impl(this, element):
     if jsNot(jsInstanceOf(element, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_16ae5d46
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4556a9a7
     
     if True:
         pass
     
     tmp = unboxIntrinsic(this)
-    return ULongArray__contains_impl(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_45b4135)
+    return ULongArray__contains_impl(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_61be6b03)
 
 def ULongArray__containsAll_impl(this, elements):
     tmp_ret_0
-    visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_5766f830
+    visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_5db7419c
     return tmp_ret_0
 
 def ULongArray__containsAll_impl(this, elements):
@@ -4320,108 +4320,108 @@ def ULongArray__isEmpty_impl(this):
     return jsEqeqeq(jsArrayLength(_ULongArray___get_storage__impl_(this)), 0)
 
 def ULongArray__toString_impl(this):
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_3ff5b628
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_45a1f1d0
 
 def ULongArray__hashCode_impl(this):
     return hashCode(storage)
 
 def ULongArray__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_12a8d03b
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_2fda92e0
     
     if True:
         pass
     
-    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_53a517e9
+    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_54a1be3a
     if jsNot(equals(storage, storage)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_32eeef08
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4fa3bebe
     
     return True
 
 class ULongArray:
     def _init_(storage):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_171b0d3
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1e6cd1c
         _this_.storage = storage
     
-    def _get_size_():
+    def _get_size_(self):
         return _ULongArray___get_size__impl_(unboxIntrinsic(_this_))
     
-    def iterator():
+    def iterator(self):
         return ULongArray__iterator_impl(unboxIntrinsic(_this_))
     
-    def contains(element):
+    def contains(self, element):
         return ULongArray__contains_impl(unboxIntrinsic(_this_), element)
     
-    def contains(element):
+    def contains(self, element):
         return ULongArray__contains_impl(_this_, element)
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         return ULongArray__containsAll_impl(unboxIntrinsic(_this_), elements)
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         return ULongArray__containsAll_impl(_this_, elements)
     
-    def isEmpty():
+    def isEmpty(self):
         return ULongArray__isEmpty_impl(unboxIntrinsic(_this_))
     
-    def toString():
+    def toString(self):
         return ULongArray__toString_impl(unboxIntrinsic(_this_))
     
-    def hashCode():
+    def hashCode(self):
         return ULongArray__hashCode_impl(unboxIntrinsic(_this_))
     
-    def equals(other):
+    def equals(self, other):
         return ULongArray__equals_impl(unboxIntrinsic(_this_), other)
     
 
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2086f336
-        _this_.EMPTY = _init_(_init_(_init_(-1, -1)), _init_(_init_(0, 0)))
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_30b0d5a7
+        _this_.EMPTY = ULongRange(ULong(Long(-1, -1)), ULong(Long(0, 0)))
     
-    def _get_EMPTY_():
+    def _get_EMPTY_(self):
         return EMPTY
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5914bf5f = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_36840e6c = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_514111ca
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_24411981
     
     return Companion_instance
 
 class ULongRange:
     def _init_(start, endInclusive):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6202f8bf
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_27f8f1cc
     
-    def _get_start_():
-        return _get_first_()
+    def _get_start_(self):
+        return _this_._get_first_()
     
-    def _get_start_():
-        return boxIntrinsic(_get_start_())
+    def _get_start_(self):
+        return boxIntrinsic(_this_._get_start_())
     
-    def _get_endInclusive_():
-        return _get_last_()
+    def _get_endInclusive_(self):
+        return _this_._get_last_()
     
-    def _get_endInclusive_():
-        return boxIntrinsic(_get_endInclusive_())
+    def _get_endInclusive_(self):
+        return boxIntrinsic(_this_._get_endInclusive_())
     
-    def contains(value):
+    def contains(self, value):
         tmp
-        tmp0_compareTo_0 = _get_first_()
+        tmp0_compareTo_0 = _this_._get_first_()
         if jsLtEq(ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(value)), 0):
-            tmp1_compareTo_0 = _get_last_()
+            tmp1_compareTo_0 = _this_._get_last_()
             tmp = jsLtEq(ulongCompare(_ULong___get_data__impl_(value), _ULong___get_data__impl_(tmp1_compareTo_0)), 0)
         
         if True:
@@ -4431,18 +4431,18 @@ class ULongRange:
         
         return tmp
     
-    def contains(value):
-        return contains(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6c3dae0f)
+    def contains(self, value):
+        return _this_.contains(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5747a07c)
     
-    def isEmpty():
-        tmp0_compareTo_0 = _get_first_()
-        tmp1_compareTo_0 = _get_last_()
+    def isEmpty(self):
+        tmp0_compareTo_0 = _this_._get_first_()
+        tmp1_compareTo_0 = _this_._get_last_()
         return jsGt(ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(tmp1_compareTo_0)), 0)
     
-    def equals(other):
+    def equals(self, other):
         tmp
         if jsInstanceOf(other, jsClass()):
-            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_54fb9fef
+            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3e2e653d
         
         if True:
             if True:
@@ -4451,97 +4451,97 @@ class ULongRange:
         
         return tmp
     
-    def hashCode():
+    def hashCode(self):
         tmp
-        if isEmpty():
+        if _this_.isEmpty():
             tmp = -1
         
         if True:
-            tmp2_xor_0 = _get_first_()
-            tmp0_shr_0 = _get_first_()
+            tmp2_xor_0 = _this_._get_first_()
+            tmp0_shr_0 = _this_._get_first_()
             tmp1_shr_0 = 32
-            tmp3_xor_0 = _init_(ushr(tmp1_shr_0))
-            tmp4_toInt_0 = _init_(xor(_ULong___get_data__impl_(tmp3_xor_0)))
-            tmp = imul(31, toInt())
-            tmp7_xor_0 = _get_last_()
-            tmp5_shr_0 = _get_last_()
+            tmp3_xor_0 = ULong(_ULong___get_data__impl_(tmp0_shr_0).ushr(tmp1_shr_0))
+            tmp4_toInt_0 = ULong(_ULong___get_data__impl_(tmp2_xor_0).xor(_ULong___get_data__impl_(tmp3_xor_0)))
+            tmp = imul(31, _ULong___get_data__impl_(tmp4_toInt_0).toInt())
+            tmp7_xor_0 = _this_._get_last_()
+            tmp5_shr_0 = _this_._get_last_()
             tmp6_shr_0 = 32
-            tmp8_xor_0 = _init_(ushr(tmp6_shr_0))
-            tmp9_toInt_0 = _init_(xor(_ULong___get_data__impl_(tmp8_xor_0)))
-            tmp = jsBitOr(jsPlus(tmp, toInt()), 0)
+            tmp8_xor_0 = ULong(_ULong___get_data__impl_(tmp5_shr_0).ushr(tmp6_shr_0))
+            tmp9_toInt_0 = ULong(_ULong___get_data__impl_(tmp7_xor_0).xor(_ULong___get_data__impl_(tmp8_xor_0)))
+            tmp = jsBitOr(jsPlus(tmp, _ULong___get_data__impl_(tmp9_toInt_0).toInt()), 0)
         
         return tmp
     
-    def toString():
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_387051e3
+    def toString(self):
+        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_30ee00f6
     
-    def _get_first_():
+    def _get_first_(self):
         pass
     
-    def _get_last_():
+    def _get_last_(self):
         pass
     
-    def _get_step_():
+    def _get_step_(self):
         pass
     
-    def iterator():
+    def iterator(self):
         pass
     
 
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7dd92a36
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_74eae1e0
     
-    def fromClosedRange(rangeStart, rangeEnd, step):
-        return _init_(rangeStart, rangeEnd, step)
+    def fromClosedRange(self, rangeStart, rangeEnd, step):
+        return ULongProgression(rangeStart, rangeEnd, step)
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_337348de = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_3486cb21 = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_edc900a
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_356be87
     
     return Companion_instance
 
 class ULongProgression:
     def _init_(start, endInclusive, step):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4b718c45
-        if equals(_init_(0, 0)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_41277db
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_765e5a55
+        if step.equals(Long(0, 0)):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_1a180d5b
         
-        if equals(_init_(0, -2147483648)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_402b10af
+        if step.equals(Long(0, -2147483648)):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_f04ed21
         
         _this_.first = start
         _this_.last = getProgressionLastElement(start, endInclusive, step)
         _this_.step = step
     
-    def _get_first_():
+    def _get_first_(self):
         return first
     
-    def _get_last_():
+    def _get_last_(self):
         return last
     
-    def _get_step_():
+    def _get_step_(self):
         return step
     
-    def iterator():
-        return _init_(first, last, step)
+    def iterator(self):
+        return ULongProgressionIterator(first, last, step)
     
-    def isEmpty():
+    def isEmpty(self):
         tmp
-        if jsGt(compareTo(_init_(0, 0)), 0):
+        if jsGt(step.compareTo(Long(0, 0)), 0):
             tmp0_compareTo_0 = first
             tmp1_compareTo_0 = last
             tmp = jsGt(ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(tmp1_compareTo_0)), 0)
@@ -4553,10 +4553,10 @@ class ULongProgression:
         
         return tmp
     
-    def equals(other):
+    def equals(self, other):
         tmp
         if jsInstanceOf(other, jsClass()):
-            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_41a3a2fd
+            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_13428b9d
         
         if True:
             if True:
@@ -4565,29 +4565,29 @@ class ULongProgression:
         
         return tmp
     
-    def hashCode():
+    def hashCode(self):
         tmp
-        if isEmpty():
+        if _this_.isEmpty():
             tmp = -1
         
         if True:
             tmp2_xor_0 = first
             tmp0_shr_0 = first
             tmp1_shr_0 = 32
-            tmp3_xor_0 = _init_(ushr(tmp1_shr_0))
-            tmp4_toInt_0 = _init_(xor(_ULong___get_data__impl_(tmp3_xor_0)))
-            tmp = imul(31, toInt())
+            tmp3_xor_0 = ULong(_ULong___get_data__impl_(tmp0_shr_0).ushr(tmp1_shr_0))
+            tmp4_toInt_0 = ULong(_ULong___get_data__impl_(tmp2_xor_0).xor(_ULong___get_data__impl_(tmp3_xor_0)))
+            tmp = imul(31, _ULong___get_data__impl_(tmp4_toInt_0).toInt())
             tmp7_xor_0 = last
             tmp5_shr_0 = last
             tmp6_shr_0 = 32
-            tmp8_xor_0 = _init_(ushr(tmp6_shr_0))
-            tmp9_toInt_0 = _init_(xor(_ULong___get_data__impl_(tmp8_xor_0)))
-            tmp = jsBitOr(jsPlus(imul(31, jsBitOr(jsPlus(tmp, toInt()), 0)), toInt()), 0)
+            tmp8_xor_0 = ULong(_ULong___get_data__impl_(tmp5_shr_0).ushr(tmp6_shr_0))
+            tmp9_toInt_0 = ULong(_ULong___get_data__impl_(tmp7_xor_0).xor(_ULong___get_data__impl_(tmp8_xor_0)))
+            tmp = jsBitOr(jsPlus(imul(31, jsBitOr(jsPlus(tmp, _ULong___get_data__impl_(tmp9_toInt_0).toInt()), 0)), step.xor(step.ushr(32)).toInt()), 0)
         
         return tmp
     
-    def toString():
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_20325baf
+    def toString(self):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_28feec4f
     
 
 def _get_finalElement_(_this):
@@ -4610,11 +4610,11 @@ def _get_next_(_this):
 
 class ULongProgressionIterator:
     def _init_(first, last, step):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_66487713
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_149ef64a
         _this_.finalElement = last
         tmp = _this_
         tmp
-        if jsGt(compareTo(_init_(0, 0)), 0):
+        if jsGt(step.compareTo(Long(0, 0)), 0):
             tmp = jsLtEq(ulongCompare(_ULong___get_data__impl_(first), _ULong___get_data__impl_(last)), 0)
         
         if True:
@@ -4622,17 +4622,17 @@ class ULongProgressionIterator:
         
         tmp.hasNext = tmp
         tmp = _this_
-        tmp.step = _init_(step)
-        _this_.next = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_574c8a2a
+        tmp.step = ULong(step)
+        _this_.next = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_41d7b4cf
     
-    def hasNext():
+    def hasNext(self):
         return hasNext
     
-    def nextULong():
+    def nextULong(self):
         value = next
         if equals(boxIntrinsic(value), boxIntrinsic(finalElement)):
             if jsNot(hasNext):
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_752e50c6
+                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_519e14f6
             
             _this_.hasNext = False
         
@@ -4641,20 +4641,20 @@ class ULongProgressionIterator:
             tmp = tmp0_this
             tmp0_plus_0 = next
             tmp1_plus_0 = step
-            tmp.next = _init_(plus(_ULong___get_data__impl_(tmp1_plus_0)))
+            tmp.next = ULong(_ULong___get_data__impl_(tmp0_plus_0).plus(_ULong___get_data__impl_(tmp1_plus_0)))
         
         return value
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -4667,8 +4667,8 @@ def getProgressionLastElement(start, end, step):
         
         if True:
             if True:
-                tmp0_minus_0 = differenceModulo(end, start, _init_(step))
-                tmp = _init_(jsBitOr(jsMinus(_UInt___get_data__impl_(end), _UInt___get_data__impl_(tmp0_minus_0)), 0))
+                tmp0_minus_0 = differenceModulo(end, start, UInt(step))
+                tmp = UInt(jsBitOr(jsMinus(_UInt___get_data__impl_(end), _UInt___get_data__impl_(tmp0_minus_0)), 0))
             
         
         tmp = tmp
@@ -4681,48 +4681,48 @@ def getProgressionLastElement(start, end, step):
         if True:
             if True:
                 tmp1_toUInt_0 = jsBitOr(jsUnaryMinus(step), 0)
-                tmp2_plus_0 = differenceModulo(start, end, _init_(tmp1_toUInt_0))
-                tmp = _init_(jsBitOr(jsPlus(_UInt___get_data__impl_(end), _UInt___get_data__impl_(tmp2_plus_0)), 0))
+                tmp2_plus_0 = differenceModulo(start, end, UInt(tmp1_toUInt_0))
+                tmp = UInt(jsBitOr(jsPlus(_UInt___get_data__impl_(end), _UInt___get_data__impl_(tmp2_plus_0)), 0))
             
         
         tmp = tmp
     
     if True:
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7c5fbde4
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_2044f708
     
     return tmp
 
 def getProgressionLastElement(start, end, step):
     tmp
-    if jsGt(compareTo(_init_(0, 0)), 0):
+    if jsGt(step.compareTo(Long(0, 0)), 0):
         tmp
         if jsGtEq(ulongCompare(_ULong___get_data__impl_(start), _ULong___get_data__impl_(end)), 0):
             tmp = end
         
         if True:
             if True:
-                tmp0_minus_0 = differenceModulo(end, start, _init_(step))
-                tmp = _init_(minus(_ULong___get_data__impl_(tmp0_minus_0)))
+                tmp0_minus_0 = differenceModulo(end, start, ULong(step))
+                tmp = ULong(_ULong___get_data__impl_(end).minus(_ULong___get_data__impl_(tmp0_minus_0)))
             
         
         tmp = tmp
     
-    if jsLt(compareTo(_init_(0, 0)), 0):
+    if jsLt(step.compareTo(Long(0, 0)), 0):
         tmp
         if jsLtEq(ulongCompare(_ULong___get_data__impl_(start), _ULong___get_data__impl_(end)), 0):
             tmp = end
         
         if True:
             if True:
-                tmp1_toULong_0 = unaryMinus()
-                tmp2_plus_0 = differenceModulo(start, end, _init_(tmp1_toULong_0))
-                tmp = _init_(plus(_ULong___get_data__impl_(tmp2_plus_0)))
+                tmp1_toULong_0 = step.unaryMinus()
+                tmp2_plus_0 = differenceModulo(start, end, ULong(tmp1_toULong_0))
+                tmp = ULong(_ULong___get_data__impl_(end).plus(_ULong___get_data__impl_(tmp2_plus_0)))
             
         
         tmp = tmp
     
     if True:
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_2a41d17a
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_5e38329d
     
     return tmp
 
@@ -4731,12 +4731,12 @@ def differenceModulo(a, b, c):
     bc = uintRemainder(b, c)
     tmp
     if jsGtEq(uintCompare(_UInt___get_data__impl_(ac), _UInt___get_data__impl_(bc)), 0):
-        tmp = _init_(jsBitOr(jsMinus(_UInt___get_data__impl_(ac), _UInt___get_data__impl_(bc)), 0))
+        tmp = UInt(jsBitOr(jsMinus(_UInt___get_data__impl_(ac), _UInt___get_data__impl_(bc)), 0))
     
     if True:
         if True:
-            tmp0_plus_0 = _init_(jsBitOr(jsMinus(_UInt___get_data__impl_(ac), _UInt___get_data__impl_(bc)), 0))
-            tmp = _init_(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp0_plus_0), _UInt___get_data__impl_(c)), 0))
+            tmp0_plus_0 = UInt(jsBitOr(jsMinus(_UInt___get_data__impl_(ac), _UInt___get_data__impl_(bc)), 0))
+            tmp = UInt(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp0_plus_0), _UInt___get_data__impl_(c)), 0))
         
     
     return tmp
@@ -4746,12 +4746,12 @@ def differenceModulo(a, b, c):
     bc = ulongRemainder(b, c)
     tmp
     if jsGtEq(ulongCompare(_ULong___get_data__impl_(ac), _ULong___get_data__impl_(bc)), 0):
-        tmp = _init_(minus(_ULong___get_data__impl_(bc)))
+        tmp = ULong(_ULong___get_data__impl_(ac).minus(_ULong___get_data__impl_(bc)))
     
     if True:
         if True:
-            tmp0_plus_0 = _init_(minus(_ULong___get_data__impl_(bc)))
-            tmp = _init_(plus(_ULong___get_data__impl_(c)))
+            tmp0_plus_0 = ULong(_ULong___get_data__impl_(ac).minus(_ULong___get_data__impl_(bc)))
+            tmp = ULong(_ULong___get_data__impl_(tmp0_plus_0).plus(_ULong___get_data__impl_(c)))
         
     
     return tmp
@@ -4762,38 +4762,38 @@ def _UShort___get_data__impl_(this):
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1300112e
-        _this_.MIN_VALUE = _init_(visitConst_other_Short)
-        _this_.MAX_VALUE = _init_(visitConst_other_Short)
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_72ea5674
+        _this_.MIN_VALUE = UShort(visitConst_other_Short)
+        _this_.MAX_VALUE = UShort(visitConst_other_Short)
         _this_.SIZE_BYTES = 2
         _this_.SIZE_BITS = 16
     
-    def _get_MIN_VALUE_():
+    def _get_MIN_VALUE_(self):
         return MIN_VALUE
     
-    def _get_MAX_VALUE_():
+    def _get_MAX_VALUE_(self):
         return MAX_VALUE
     
-    def _get_SIZE_BYTES_():
+    def _get_SIZE_BYTES_(self):
         return SIZE_BYTES
     
-    def _get_SIZE_BITS_():
+    def _get_SIZE_BITS_(self):
         return SIZE_BITS
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5b99ede3 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_4f00ee48 = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_32b72d9d
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_27bcfd19
     
     return Companion_instance
 
@@ -4807,134 +4807,134 @@ def UShort__compareTo_impl(this, other):
 
 def UShort__compareTo_impl(this, other):
     tmp = unboxIntrinsic(this)
-    return UShort__compareTo_impl(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5e428dde)
+    return UShort__compareTo_impl(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_ab3cd69)
 
 def UShort__compareTo_impl(this, other):
-    tmp0_compareTo_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    tmp0_compareTo_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
     return uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(other))
 
 def UShort__compareTo_impl(this, other):
-    tmp0_compareTo_0 = _init_(_and(_init_(65535, 0)))
+    tmp0_compareTo_0 = ULong(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
     return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other))
 
 def UShort__plus_impl(this, other):
-    tmp0_plus_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
-    tmp1_plus_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
-    return _init_(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp0_plus_0), _UInt___get_data__impl_(tmp1_plus_0)), 0))
+    tmp0_plus_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    tmp1_plus_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
+    return UInt(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp0_plus_0), _UInt___get_data__impl_(tmp1_plus_0)), 0))
 
 def UShort__plus_impl(this, other):
-    tmp0_plus_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
-    tmp1_plus_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
-    return _init_(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp0_plus_0), _UInt___get_data__impl_(tmp1_plus_0)), 0))
+    tmp0_plus_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    tmp1_plus_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
+    return UInt(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp0_plus_0), _UInt___get_data__impl_(tmp1_plus_0)), 0))
 
 def UShort__plus_impl(this, other):
-    tmp0_plus_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
-    return _init_(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp0_plus_0), _UInt___get_data__impl_(other)), 0))
+    tmp0_plus_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    return UInt(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp0_plus_0), _UInt___get_data__impl_(other)), 0))
 
 def UShort__plus_impl(this, other):
-    tmp0_plus_0 = _init_(_and(_init_(65535, 0)))
-    return _init_(plus(_ULong___get_data__impl_(other)))
+    tmp0_plus_0 = ULong(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
+    return ULong(_ULong___get_data__impl_(tmp0_plus_0).plus(_ULong___get_data__impl_(other)))
 
 def UShort__minus_impl(this, other):
-    tmp0_minus_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
-    tmp1_minus_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
-    return _init_(jsBitOr(jsMinus(_UInt___get_data__impl_(tmp0_minus_0), _UInt___get_data__impl_(tmp1_minus_0)), 0))
+    tmp0_minus_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    tmp1_minus_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
+    return UInt(jsBitOr(jsMinus(_UInt___get_data__impl_(tmp0_minus_0), _UInt___get_data__impl_(tmp1_minus_0)), 0))
 
 def UShort__minus_impl(this, other):
-    tmp0_minus_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
-    tmp1_minus_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
-    return _init_(jsBitOr(jsMinus(_UInt___get_data__impl_(tmp0_minus_0), _UInt___get_data__impl_(tmp1_minus_0)), 0))
+    tmp0_minus_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    tmp1_minus_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
+    return UInt(jsBitOr(jsMinus(_UInt___get_data__impl_(tmp0_minus_0), _UInt___get_data__impl_(tmp1_minus_0)), 0))
 
 def UShort__minus_impl(this, other):
-    tmp0_minus_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
-    return _init_(jsBitOr(jsMinus(_UInt___get_data__impl_(tmp0_minus_0), _UInt___get_data__impl_(other)), 0))
+    tmp0_minus_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    return UInt(jsBitOr(jsMinus(_UInt___get_data__impl_(tmp0_minus_0), _UInt___get_data__impl_(other)), 0))
 
 def UShort__minus_impl(this, other):
-    tmp0_minus_0 = _init_(_and(_init_(65535, 0)))
-    return _init_(minus(_ULong___get_data__impl_(other)))
+    tmp0_minus_0 = ULong(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
+    return ULong(_ULong___get_data__impl_(tmp0_minus_0).minus(_ULong___get_data__impl_(other)))
 
 def UShort__times_impl(this, other):
-    tmp0_times_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
-    tmp1_times_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
-    return _init_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)))
+    tmp0_times_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    tmp1_times_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
+    return UInt(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)))
 
 def UShort__times_impl(this, other):
-    tmp0_times_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
-    tmp1_times_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
-    return _init_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)))
+    tmp0_times_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    tmp1_times_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
+    return UInt(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)))
 
 def UShort__times_impl(this, other):
-    tmp0_times_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
-    return _init_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(other)))
+    tmp0_times_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    return UInt(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(other)))
 
 def UShort__times_impl(this, other):
-    tmp0_times_0 = _init_(_and(_init_(65535, 0)))
-    return _init_(times(_ULong___get_data__impl_(other)))
+    tmp0_times_0 = ULong(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
+    return ULong(_ULong___get_data__impl_(tmp0_times_0).times(_ULong___get_data__impl_(other)))
 
 def UShort__div_impl(this, other):
-    tmp0_div_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
-    tmp1_div_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
+    tmp0_div_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    tmp1_div_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
     return uintDivide(tmp0_div_0, tmp1_div_0)
 
 def UShort__div_impl(this, other):
-    tmp0_div_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
-    tmp1_div_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
+    tmp0_div_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    tmp1_div_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
     return uintDivide(tmp0_div_0, tmp1_div_0)
 
 def UShort__div_impl(this, other):
-    tmp0_div_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    tmp0_div_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
     return uintDivide(tmp0_div_0, other)
 
 def UShort__div_impl(this, other):
-    tmp0_div_0 = _init_(_and(_init_(65535, 0)))
+    tmp0_div_0 = ULong(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
     return ulongDivide(tmp0_div_0, other)
 
 def UShort__rem_impl(this, other):
-    tmp0_rem_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
-    tmp1_rem_0 = _init_(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
+    tmp0_rem_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    tmp1_rem_0 = UInt(jsBitAnd(kotlin_Int(_UByte___get_data__impl_(other)), 255))
     return uintRemainder(tmp0_rem_0, tmp1_rem_0)
 
 def UShort__rem_impl(this, other):
-    tmp0_rem_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
-    tmp1_rem_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
+    tmp0_rem_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    tmp1_rem_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535))
     return uintRemainder(tmp0_rem_0, tmp1_rem_0)
 
 def UShort__rem_impl(this, other):
-    tmp0_rem_0 = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    tmp0_rem_0 = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
     return uintRemainder(tmp0_rem_0, other)
 
 def UShort__rem_impl(this, other):
-    tmp0_rem_0 = _init_(_and(_init_(65535, 0)))
+    tmp0_rem_0 = ULong(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
     return ulongRemainder(tmp0_rem_0, other)
 
 def UShort__inc_impl(this):
-    return _init_(numberToShort(jsPlus(_UShort___get_data__impl_(this), 1)))
+    return UShort(numberToShort(jsPlus(_UShort___get_data__impl_(this), 1)))
 
 def UShort__dec_impl(this):
-    return _init_(numberToShort(jsMinus(_UShort___get_data__impl_(this), 1)))
+    return UShort(numberToShort(jsMinus(_UShort___get_data__impl_(this), 1)))
 
 def UShort__rangeTo_impl(this, other):
-    tmp = _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
-    return _init_(tmp, _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535)))
+    tmp = UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    return UIntRange(tmp, UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(other)), 65535)))
 
 def UShort__and_impl(this, other):
     tmp0_and_0 = _UShort___get_data__impl_(this)
     tmp1_and_0 = _UShort___get_data__impl_(other)
-    return _init_(toShort(jsBitAnd(kotlin_Int(tmp0_and_0), kotlin_Int(tmp1_and_0))))
+    return UShort(toShort(jsBitAnd(kotlin_Int(tmp0_and_0), kotlin_Int(tmp1_and_0))))
 
 def UShort__or_impl(this, other):
     tmp0_or_0 = _UShort___get_data__impl_(this)
     tmp1_or_0 = _UShort___get_data__impl_(other)
-    return _init_(toShort(jsBitOr(kotlin_Int(tmp0_or_0), kotlin_Int(tmp1_or_0))))
+    return UShort(toShort(jsBitOr(kotlin_Int(tmp0_or_0), kotlin_Int(tmp1_or_0))))
 
 def UShort__xor_impl(this, other):
     tmp0_xor_0 = _UShort___get_data__impl_(this)
     tmp1_xor_0 = _UShort___get_data__impl_(other)
-    return _init_(toShort(jsBitXor(kotlin_Int(tmp0_xor_0), kotlin_Int(tmp1_xor_0))))
+    return UShort(toShort(jsBitXor(kotlin_Int(tmp0_xor_0), kotlin_Int(tmp1_xor_0))))
 
 def UShort__inv_impl(this):
     tmp0_inv_0 = _UShort___get_data__impl_(this)
-    return _init_(toShort(jsBitNot(kotlin_Int(tmp0_inv_0))))
+    return UShort(toShort(jsBitNot(kotlin_Int(tmp0_inv_0))))
 
 def UShort__toByte_impl(this):
     return toByte(_UShort___get_data__impl_(this))
@@ -4946,20 +4946,20 @@ def UShort__toInt_impl(this):
     return jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535)
 
 def UShort__toLong_impl(this):
-    return _and(_init_(65535, 0))
+    return toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0))
 
 def UShort__toUByte_impl(this):
     tmp0_toUByte_0 = _UShort___get_data__impl_(this)
-    return _init_(toByte(tmp0_toUByte_0))
+    return UByte(toByte(tmp0_toUByte_0))
 
 def UShort__toUShort_impl(this):
     return this
 
 def UShort__toUInt_impl(this):
-    return _init_(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
+    return UInt(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
 
 def UShort__toULong_impl(this):
-    return _init_(_and(_init_(65535, 0)))
+    return ULong(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
 
 def UShort__toFloat_impl(this):
     return kotlin_Float(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
@@ -4968,54 +4968,54 @@ def UShort__toDouble_impl(this):
     return kotlin_Double(jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535))
 
 def UShort__toString_impl(this):
-    return toString()
+    return jsBitAnd(kotlin_Int(_UShort___get_data__impl_(this)), 65535).toString()
 
 def UShort__hashCode_impl(this):
     return data
 
 def UShort__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_7ecf4608
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_6012bee8
     
     if True:
         pass
     
-    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_50be06c0
+    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6982bcf4
     if jsNot(jsEqeqeq(data, data)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_786de0a3
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_13cec4ff
     
     return True
 
 class UShort:
     def _init_(data):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_c2ddfeb
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6bab373c
         _this_.data = data
     
-    def compareTo(other):
+    def compareTo(self, other):
         return UShort__compareTo_impl(unboxIntrinsic(_this_), other)
     
-    def compareTo(other):
+    def compareTo(self, other):
         return UShort__compareTo_impl(_this_, other)
     
-    def toString():
+    def toString(self):
         return UShort__toString_impl(unboxIntrinsic(_this_))
     
-    def hashCode():
+    def hashCode(self):
         return UShort__hashCode_impl(unboxIntrinsic(_this_))
     
-    def equals(other):
+    def equals(self, other):
         return UShort__equals_impl(unboxIntrinsic(_this_), other)
     
 
 def toUShort():
-    return _init_(toShort(_this_))
+    return UShort(toShort(_this_))
 
 def toUShort():
-    return _init_(toShort())
+    return UShort(_this_.toShort())
 
 def toUShort():
-    return _init_(_this_)
+    return UShort(_this_)
 
 def _get_array_(_this):
     return array
@@ -5030,12 +5030,12 @@ def _UShortArray___get_storage__impl_(this):
     return storage
 
 def _UShortArray___init__impl_(size):
-    tmp = _init_(int16Array(size))
+    tmp = UShortArray(int16Array(size))
     return tmp
 
 def UShortArray__get_impl(this, index):
     tmp0_toUShort_0 = jsArrayGet(_UShortArray___get_storage__impl_(this), index)
-    return _init_(tmp0_toUShort_0)
+    return UShort(tmp0_toUShort_0)
 
 def UShortArray__set_impl(this, index, value):
     tmp = _UShortArray___get_storage__impl_(this)
@@ -5045,48 +5045,48 @@ def _UShortArray___get_size__impl_(this):
     return jsArrayLength(_UShortArray___get_storage__impl_(this))
 
 def UShortArray__iterator_impl(this):
-    return _init_(_UShortArray___get_storage__impl_(this))
+    return Iterator(_UShortArray___get_storage__impl_(this))
 
 class Iterator:
     def _init_(array):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6a35cccf
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_763a72da
         _this_.array = array
         _this_.index = 0
     
-    def hasNext():
+    def hasNext(self):
         return jsLt(index, jsArrayLength(array))
     
-    def nextUShort():
+    def nextUShort(self):
         tmp
         if jsLt(index, jsArrayLength(array)):
             tmp0_this = _this_
             tmp1 = index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
             tmp0_toUShort_0 = jsArrayGet(array, tmp1)
-            tmp = _init_(tmp0_toUShort_0)
+            tmp = UShort(tmp0_toUShort_0)
         
         if True:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_1ec96512
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_4d6f951a
         
         return tmp
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 def UShortArray__contains_impl(this, element):
-    tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_510a5fe1
+    tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7134cb8f
     if jsNot(jsInstanceOf(tmp, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_307eb95f
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_77a14911
     
     if True:
         pass
@@ -5096,17 +5096,17 @@ def UShortArray__contains_impl(this, element):
 
 def UShortArray__contains_impl(this, element):
     if jsNot(jsInstanceOf(element, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4dec9271
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_45583680
     
     if True:
         pass
     
     tmp = unboxIntrinsic(this)
-    return UShortArray__contains_impl(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7d9d4205)
+    return UShortArray__contains_impl(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2a6dab20)
 
 def UShortArray__containsAll_impl(this, elements):
     tmp_ret_0
-    visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_4eb3dacc
+    visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_7aff1fa3
     return tmp_ret_0
 
 def UShortArray__containsAll_impl(this, elements):
@@ -5116,57 +5116,57 @@ def UShortArray__isEmpty_impl(this):
     return jsEqeqeq(jsArrayLength(_UShortArray___get_storage__impl_(this)), 0)
 
 def UShortArray__toString_impl(this):
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_26569cfa
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_28af6afe
 
 def UShortArray__hashCode_impl(this):
     return hashCode(storage)
 
 def UShortArray__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_72b4ecb2
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4f378d7e
     
     if True:
         pass
     
-    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_44a2f289
+    tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6831b1f6
     if jsNot(equals(storage, storage)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4582da06
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_2c40e456
     
     return True
 
 class UShortArray:
     def _init_(storage):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_e763080
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_19370af1
         _this_.storage = storage
     
-    def _get_size_():
+    def _get_size_(self):
         return _UShortArray___get_size__impl_(unboxIntrinsic(_this_))
     
-    def iterator():
+    def iterator(self):
         return UShortArray__iterator_impl(unboxIntrinsic(_this_))
     
-    def contains(element):
+    def contains(self, element):
         return UShortArray__contains_impl(unboxIntrinsic(_this_), element)
     
-    def contains(element):
+    def contains(self, element):
         return UShortArray__contains_impl(_this_, element)
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         return UShortArray__containsAll_impl(unboxIntrinsic(_this_), elements)
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         return UShortArray__containsAll_impl(_this_, elements)
     
-    def isEmpty():
+    def isEmpty(self):
         return UShortArray__isEmpty_impl(unboxIntrinsic(_this_))
     
-    def toString():
+    def toString(self):
         return UShortArray__toString_impl(unboxIntrinsic(_this_))
     
-    def hashCode():
+    def hashCode(self):
         return UShortArray__hashCode_impl(unboxIntrinsic(_this_))
     
-    def equals(other):
+    def equals(self, other):
         return UShortArray__equals_impl(unboxIntrinsic(_this_), other)
     
 
@@ -5174,44 +5174,44 @@ def uintCompare(v1, v2):
     return compareTo(jsBitXor(v1, MIN_VALUE), jsBitXor(v2, MIN_VALUE))
 
 def uintDivide(v1, v2):
-    tmp = _and(_init_(-1, 0))
-    tmp0_toUInt_0 = div(_and(_init_(-1, 0)))
-    return _init_(toInt())
+    tmp = toLong(_UInt___get_data__impl_(v1))._and(Long(-1, 0))
+    tmp0_toUInt_0 = tmp.div(toLong(_UInt___get_data__impl_(v2))._and(Long(-1, 0)))
+    return UInt(tmp0_toUInt_0.toInt())
 
 def uintRemainder(v1, v2):
-    tmp = _and(_init_(-1, 0))
-    tmp0_toUInt_0 = rem(_and(_init_(-1, 0)))
-    return _init_(toInt())
+    tmp = toLong(_UInt___get_data__impl_(v1))._and(Long(-1, 0))
+    tmp0_toUInt_0 = tmp.rem(toLong(_UInt___get_data__impl_(v2))._and(Long(-1, 0)))
+    return UInt(tmp0_toUInt_0.toInt())
 
 def uintToDouble(v):
     return jsPlus(kotlin_Double(jsBitAnd(v, MAX_VALUE)), jsMult(kotlin_Double(jsBitShiftL(jsBitShiftRU(v, 31), 30)), 2))
 
 def ulongCompare(v1, v2):
-    return compareTo(xor(_init_(0, -2147483648)))
+    return v1.xor(Long(0, -2147483648)).compareTo(v2.xor(Long(0, -2147483648)))
 
 def ulongDivide(v1, v2):
     dividend = _ULong___get_data__impl_(v1)
     divisor = _ULong___get_data__impl_(v2)
-    if jsLt(compareTo(_init_(0, 0)), 0):
+    if jsLt(divisor.compareTo(Long(0, 0)), 0):
         tmp
         if jsLt(ulongCompare(_ULong___get_data__impl_(v1), _ULong___get_data__impl_(v2)), 0):
-            tmp = _init_(_init_(0, 0))
+            tmp = ULong(Long(0, 0))
         
         if True:
             if True:
-                tmp = _init_(_init_(1, 0))
+                tmp = ULong(Long(1, 0))
             
         
         return tmp
     
-    if jsGtEq(compareTo(_init_(0, 0)), 0):
-        return _init_(div(divisor))
+    if jsGtEq(dividend.compareTo(Long(0, 0)), 0):
+        return ULong(dividend.div(divisor))
     
-    quotient = shl(1)
-    rem = minus(times(divisor))
+    quotient = dividend.ushr(1).div(divisor).shl(1)
+    rem = dividend.minus(quotient.times(divisor))
     tmp
-    tmp0_compareTo_0 = _init_(rem)
-    tmp1_compareTo_0 = _init_(divisor)
+    tmp0_compareTo_0 = ULong(rem)
+    tmp1_compareTo_0 = ULong(divisor)
     if jsGtEq(ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(tmp1_compareTo_0)), 0):
         tmp = 1
     
@@ -5221,91 +5221,91 @@ def ulongDivide(v1, v2):
         
     
     tmp2_plus_0 = tmp
-    return _init_(plus(toLong(tmp2_plus_0)))
+    return ULong(quotient.plus(toLong(tmp2_plus_0)))
 
 def ulongRemainder(v1, v2):
     dividend = _ULong___get_data__impl_(v1)
     divisor = _ULong___get_data__impl_(v2)
-    if jsLt(compareTo(_init_(0, 0)), 0):
+    if jsLt(divisor.compareTo(Long(0, 0)), 0):
         tmp
         if jsLt(ulongCompare(_ULong___get_data__impl_(v1), _ULong___get_data__impl_(v2)), 0):
             tmp = v1
         
         if True:
             if True:
-                tmp = _init_(minus(_ULong___get_data__impl_(v2)))
+                tmp = ULong(_ULong___get_data__impl_(v1).minus(_ULong___get_data__impl_(v2)))
             
         
         return tmp
     
-    if jsGtEq(compareTo(_init_(0, 0)), 0):
-        return _init_(rem(divisor))
+    if jsGtEq(dividend.compareTo(Long(0, 0)), 0):
+        return ULong(dividend.rem(divisor))
     
-    quotient = shl(1)
-    rem = minus(times(divisor))
+    quotient = dividend.ushr(1).div(divisor).shl(1)
+    rem = dividend.minus(quotient.times(divisor))
     tmp
-    tmp0_compareTo_0 = _init_(rem)
-    tmp1_compareTo_0 = _init_(divisor)
+    tmp0_compareTo_0 = ULong(rem)
+    tmp1_compareTo_0 = ULong(divisor)
     if jsGtEq(ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(tmp1_compareTo_0)), 0):
         tmp = divisor
     
     if True:
         if True:
-            tmp = _init_(0, 0)
+            tmp = Long(0, 0)
         
     
-    return _init_(minus(tmp))
+    return ULong(rem.minus(tmp))
 
 def ulongToDouble(v):
-    return jsPlus(jsMult(toDouble(), 2048), toDouble())
+    return jsPlus(jsMult(v.ushr(11).toDouble(), 2048), v._and(Long(2047, 0)).toDouble())
 
 def ulongToString(v):
     return ulongToString(v, 10)
 
 def ulongToString(v, base):
-    if jsGtEq(compareTo(_init_(0, 0)), 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_39adf4e6
+    if jsGtEq(v.compareTo(Long(0, 0)), 0):
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_2c914364
     
-    tmp0_div_0 = ushr(1)
-    quotient = shl(1)
+    tmp0_div_0 = v.ushr(1)
+    quotient = tmp0_div_0.div(toLong(base)).shl(1)
     tmp1_times_0 = quotient
-    rem = minus(times(toLong(base)))
-    if jsGtEq(compareTo(toLong(base)), 0):
+    rem = v.minus(tmp1_times_0.times(toLong(base)))
+    if jsGtEq(rem.compareTo(toLong(base)), 0):
         tmp2_minus_0 = rem
-        rem = minus(toLong(base))
+        rem = tmp2_minus_0.minus(toLong(base))
         tmp3_plus_0 = quotient
         tmp4_plus_0 = 1
-        quotient = plus(toLong(tmp4_plus_0))
+        quotient = tmp3_plus_0.plus(toLong(tmp4_plus_0))
     
     return jsPlus(toString(base), toString(base))
 
 def doubleToUInt(v):
     tmp
     if isNaN():
-        tmp = _init_(0)
+        tmp = UInt(0)
     
     if True:
-        tmp0_toDouble_0 = _init_(0)
+        tmp0_toDouble_0 = UInt(0)
         if jsLtEq(v, uintToDouble(_UInt___get_data__impl_(tmp0_toDouble_0))):
-            tmp = _init_(0)
+            tmp = UInt(0)
         
         if True:
-            tmp1_toDouble_0 = _init_(-1)
+            tmp1_toDouble_0 = UInt(-1)
             if jsGtEq(v, uintToDouble(_UInt___get_data__impl_(tmp1_toDouble_0))):
-                tmp = _init_(-1)
+                tmp = UInt(-1)
             
             if True:
                 if jsLtEq(v, kotlin_Double(MAX_VALUE)):
                     tmp2_toUInt_0 = numberToInt(v)
-                    tmp = _init_(tmp2_toUInt_0)
+                    tmp = UInt(tmp2_toUInt_0)
                 
                 if True:
                     if True:
                         tmp3_toUInt_0 = numberToInt(jsMinus(v, MAX_VALUE))
-                        tmp5_plus_0 = _init_(tmp3_toUInt_0)
+                        tmp5_plus_0 = UInt(tmp3_toUInt_0)
                         tmp4_toUInt_0 = MAX_VALUE
-                        tmp6_plus_0 = _init_(tmp4_toUInt_0)
-                        tmp = _init_(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp5_plus_0), _UInt___get_data__impl_(tmp6_plus_0)), 0))
+                        tmp6_plus_0 = UInt(tmp4_toUInt_0)
+                        tmp = UInt(jsBitOr(jsPlus(_UInt___get_data__impl_(tmp5_plus_0), _UInt___get_data__impl_(tmp6_plus_0)), 0))
                     
                 
             
@@ -5316,29 +5316,29 @@ def doubleToUInt(v):
 def doubleToULong(v):
     tmp
     if isNaN():
-        tmp = _init_(_init_(0, 0))
+        tmp = ULong(Long(0, 0))
     
     if True:
-        tmp0_toDouble_0 = _init_(_init_(0, 0))
+        tmp0_toDouble_0 = ULong(Long(0, 0))
         if jsLtEq(v, ulongToDouble(_ULong___get_data__impl_(tmp0_toDouble_0))):
-            tmp = _init_(_init_(0, 0))
+            tmp = ULong(Long(0, 0))
         
         if True:
-            tmp1_toDouble_0 = _init_(_init_(-1, -1))
+            tmp1_toDouble_0 = ULong(Long(-1, -1))
             if jsGtEq(v, ulongToDouble(_ULong___get_data__impl_(tmp1_toDouble_0))):
-                tmp = _init_(_init_(-1, -1))
+                tmp = ULong(Long(-1, -1))
             
             if True:
                 if jsLt(v, 9.223372036854776E18):
                     tmp2_toULong_0 = numberToLong(v)
-                    tmp = _init_(tmp2_toULong_0)
+                    tmp = ULong(tmp2_toULong_0)
                 
                 if True:
                     if True:
                         tmp3_toULong_0 = numberToLong(jsMinus(v, 9.223372036854776E18))
-                        tmp4_plus_0 = _init_(tmp3_toULong_0)
-                        tmp5_plus_0 = _init_(_init_(0, -2147483648))
-                        tmp = _init_(plus(_ULong___get_data__impl_(tmp5_plus_0)))
+                        tmp4_plus_0 = ULong(tmp3_toULong_0)
+                        tmp5_plus_0 = ULong(Long(0, -2147483648))
+                        tmp = ULong(_ULong___get_data__impl_(tmp4_plus_0).plus(_ULong___get_data__impl_(tmp5_plus_0)))
                     
                 
             
@@ -5350,24 +5350,24 @@ class ExperimentalUnsignedTypes:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class Annotation:
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -5375,22 +5375,22 @@ class Annotation:
     
 
 class CharSequence:
-    def _get_length_():
+    def _get_length_(self):
         pass
     
-    def get(index):
+    def get(self, index):
         pass
     
-    def subSequence(startIndex, endIndex):
+    def subSequence(self, startIndex, endIndex):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -5398,16 +5398,16 @@ class CharSequence:
     
 
 class Comparable:
-    def compareTo(other):
+    def compareTo(self, other):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -5415,19 +5415,19 @@ class Comparable:
     
 
 class Iterator:
-    def next():
+    def next(self):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -5435,31 +5435,31 @@ class Iterator:
     
 
 class ListIterator:
-    def next():
+    def next(self):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def hasPrevious():
+    def hasPrevious(self):
         pass
     
-    def previous():
+    def previous(self):
         pass
     
-    def nextIndex():
+    def nextIndex(self):
         pass
     
-    def previousIndex():
+    def previousIndex(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -5467,22 +5467,22 @@ class ListIterator:
     
 
 class MutableIterator:
-    def remove():
+    def remove(self):
         pass
     
-    def next():
+    def next(self):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -5490,40 +5490,40 @@ class MutableIterator:
     
 
 class MutableListIterator:
-    def next():
+    def next(self):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def remove():
+    def remove(self):
         pass
     
-    def set(element):
+    def set(self, element):
         pass
     
-    def add(element):
+    def add(self, element):
         pass
     
-    def hasPrevious():
+    def hasPrevious(self):
         pass
     
-    def previous():
+    def previous(self):
         pass
     
-    def nextIndex():
+    def nextIndex(self):
         pass
     
-    def previousIndex():
+    def previousIndex(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -5532,36 +5532,36 @@ class MutableListIterator:
 
 class Number:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_67e12e28
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_54af9cce
     
-    def toDouble():
+    def toDouble(self):
         pass
     
-    def toFloat():
+    def toFloat(self):
         pass
     
-    def toLong():
+    def toLong(self):
         pass
     
-    def toInt():
+    def toInt(self):
         pass
     
-    def toChar():
+    def toChar(self):
         pass
     
-    def toShort():
+    def toShort(self):
         pass
     
-    def toByte():
+    def toByte(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -5569,16 +5569,16 @@ class SinceKotlin:
     def _init_(version):
         _this_.version = version
     
-    def _get_version_():
+    def _get_version_(self):
         return version
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -5586,58 +5586,58 @@ class Suppress:
     def _init_(names):
         _this_.names = names
     
-    def _get_names_():
+    def _get_names_(self):
         return names
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_78c4bea3 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_22336af7 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_7d814dc4 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_59527c30 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_794bf212 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_6b1a2c9f = 0
 def values():
-    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_323f7bf)
+    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_a7240fe)
 
 def valueOf(value):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_186da764
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_267a3722
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2bbf85e2 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_3dc21e8d = 0
 def DeprecationLevel_initEntries():
     if DeprecationLevel_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_1f40fddd
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_484794d6
     
     DeprecationLevel_entriesInitialized = True
-    DeprecationLevel_WARNING_instance = _init_('WARNING', 0)
-    DeprecationLevel_ERROR_instance = _init_('ERROR', 1)
-    DeprecationLevel_HIDDEN_instance = _init_('HIDDEN', 2)
+    DeprecationLevel_WARNING_instance = DeprecationLevel('WARNING', 0)
+    DeprecationLevel_ERROR_instance = DeprecationLevel('ERROR', 1)
+    DeprecationLevel_HIDDEN_instance = DeprecationLevel('HIDDEN', 2)
 
 class DeprecationLevel:
     def _init_(name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1f98b6aa
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_64589c34
     
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def _get_ordinal_():
+    def _get_ordinal_(self):
         pass
     
-    def compareTo(other):
+    def compareTo(self, other):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -5645,13 +5645,13 @@ class PublishedApi:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -5659,27 +5659,27 @@ class ParameterName:
     def _init_(name):
         _this_.name = name
     
-    def _get_name_():
+    def _get_name_(self):
         return name
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 def Deprecated_init__Init_(message, replaceWith, level, _mask0, _marker, _this):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 2), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_61af0834
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_24aca5f1
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 4), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_717a5a92
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_4f0f76b4
     
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_27af34df
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_13ff179a
     return _this
 
 def Deprecated_init__Create_(message, replaceWith, level, _mask0, _marker):
@@ -5691,22 +5691,22 @@ class Deprecated:
         _this_.replaceWith = replaceWith
         _this_.level = level
     
-    def _get_message_():
+    def _get_message_(self):
         return message
     
-    def _get_replaceWith_():
+    def _get_replaceWith_(self):
         return replaceWith
     
-    def _get_level_():
+    def _get_level_(self):
         return level
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -5715,19 +5715,19 @@ class ReplaceWith:
         _this_.expression = expression
         _this_.imports = imports
     
-    def _get_expression_():
+    def _get_expression_(self):
         return expression
     
-    def _get_imports_():
+    def _get_imports_(self):
         return imports
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -5735,13 +5735,13 @@ class ExtensionFunctionType:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -5749,13 +5749,13 @@ class UnsafeVariance:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -5773,185 +5773,185 @@ def DeprecationLevel_HIDDEN_getInstance():
 
 class ByteIterator:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_10ecf244
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_70ed03e4
     
-    def next():
-        return nextByte()
+    def next(self):
+        return _this_.nextByte()
     
-    def nextByte():
+    def nextByte(self):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class IntIterator:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7510824
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_15d0f2a3
     
-    def next():
-        return nextInt()
+    def next(self):
+        return _this_.nextInt()
     
-    def nextInt():
+    def nextInt(self):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class DoubleIterator:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_23c0fcf0
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_62a78446
     
-    def next():
-        return nextDouble()
+    def next(self):
+        return _this_.nextDouble()
     
-    def nextDouble():
+    def nextDouble(self):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class FloatIterator:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1cafb30
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_26f0ab88
     
-    def next():
-        return nextFloat()
+    def next(self):
+        return _this_.nextFloat()
     
-    def nextFloat():
+    def nextFloat(self):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class LongIterator:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_48e859f7
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7f9b46ed
     
-    def next():
-        return nextLong()
+    def next(self):
+        return _this_.nextLong()
     
-    def nextLong():
+    def nextLong(self):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class CharIterator:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5f113867
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_38a3c078
     
-    def next():
-        return nextChar()
+    def next(self):
+        return _this_.nextChar()
     
-    def nextChar():
+    def nextChar(self):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class BooleanIterator:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_39aaa7db
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5982255e
     
-    def next():
-        return nextBoolean()
+    def next(self):
+        return _this_.nextBoolean()
     
-    def nextBoolean():
+    def nextBoolean(self):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class ShortIterator:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4848681d
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_68bef3df
     
-    def next():
-        return nextShort()
+    def next(self):
+        return _this_.nextShort()
     
-    def nextShort():
+    def nextShort(self):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -5972,23 +5972,23 @@ def _get_next_(_this):
 
 class IntProgressionIterator:
     def _init_(first, last, step):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5817b0d1
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_60052518
         _this_.step = step
         _this_.finalElement = last
-        _this_.hasNext = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1eb45da0
-        _this_.next = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6e0c20b8
+        _this_.hasNext = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_f3bea57
+        _this_.next = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4fc1edc3
     
-    def _get_step_():
+    def _get_step_(self):
         return step
     
-    def hasNext():
+    def hasNext(self):
         return hasNext
     
-    def nextInt():
+    def nextInt(self):
         value = next
         if jsEqeqeq(value, finalElement):
             if jsNot(hasNext):
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_2d10160a
+                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_51a8aed8
             
             _this_.hasNext = False
         
@@ -5998,16 +5998,16 @@ class IntProgressionIterator:
         
         return value
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -6028,42 +6028,42 @@ def _get_next_(_this):
 
 class LongProgressionIterator:
     def _init_(first, last, step):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1ae8556c
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_10d8769e
         _this_.step = step
         _this_.finalElement = last
-        _this_.hasNext = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7445d24
-        _this_.next = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_571aeb15
+        _this_.hasNext = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4a8f6f49
+        _this_.next = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7a715766
     
-    def _get_step_():
+    def _get_step_(self):
         return step
     
-    def hasNext():
+    def hasNext(self):
         return hasNext
     
-    def nextLong():
+    def nextLong(self):
         value = next
-        if equals(finalElement):
+        if value.equals(finalElement):
             if jsNot(hasNext):
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_4d6fa22c
+                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_57d8d8e2
             
             _this_.hasNext = False
         
         if True:
             tmp0_this = _this_
-            tmp0_this.next = plus(step)
+            tmp0_this.next = next.plus(step)
         
         return value
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -6084,23 +6084,23 @@ def _get_next_(_this):
 
 class CharProgressionIterator:
     def _init_(first, last, step):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_31e5d408
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_eaf3dd0
         _this_.step = step
-        _this_.finalElement = toInt()
-        _this_.hasNext = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6b1a2c9f
-        _this_.next = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_18121865
+        _this_.finalElement = last.toInt()
+        _this_.hasNext = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1919382c
+        _this_.next = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_617f42cc
     
-    def _get_step_():
+    def _get_step_(self):
         return step
     
-    def hasNext():
+    def hasNext(self):
         return hasNext
     
-    def nextChar():
+    def nextChar(self):
         value = next
         if jsEqeqeq(value, finalElement):
             if jsNot(hasNext):
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_35e0d91e
+                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_39a8c08f
             
             _this_.hasNext = False
         
@@ -6110,77 +6110,77 @@ class CharProgressionIterator:
         
         return numberToChar(value)
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1cc5d8a9
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_49620576
     
-    def fromClosedRange(rangeStart, rangeEnd, step):
-        return _init_(rangeStart, rangeEnd, step)
+    def fromClosedRange(self, rangeStart, rangeEnd, step):
+        return IntProgression(rangeStart, rangeEnd, step)
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_676f8fab = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5f24bda8 = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_1f22ac9b
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_474f8a2b
     
     return Companion_instance
 
 class IntProgression:
     def _init_(start, endInclusive, step):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5cb654e3
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_74cd82f1
         if jsEqeqeq(step, 0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_71b0d2ec
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7f1dfdbc
         
         if jsEqeqeq(step, MIN_VALUE):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_2372ada3
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7707cd05
         
         _this_.first = start
         _this_.last = kotlin_Int(getProgressionLastElement(kotlin_Int(start), kotlin_Int(endInclusive), step))
         _this_.step = step
     
-    def _get_first_():
+    def _get_first_(self):
         return first
     
-    def _get_last_():
+    def _get_last_(self):
         return last
     
-    def _get_step_():
+    def _get_step_(self):
         return step
     
-    def iterator():
-        return _init_(first, last, step)
+    def iterator(self):
+        return IntProgressionIterator(first, last, step)
     
-    def isEmpty():
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2393b885
+    def isEmpty(self):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_68311b85
     
-    def equals(other):
+    def equals(self, other):
         tmp
         if jsInstanceOf(other, jsClass()):
-            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_264cef82
+            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6b873080
         
         if True:
             if True:
@@ -6189,71 +6189,71 @@ class IntProgression:
         
         return tmp
     
-    def hashCode():
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6c7c8480
+    def hashCode(self):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_485b21ec
     
-    def toString():
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_31222be0
+    def toString(self):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_720c54c6
     
 
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7c1e5d14
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_67857a20
     
-    def fromClosedRange(rangeStart, rangeEnd, step):
-        return _init_(rangeStart, rangeEnd, step)
+    def fromClosedRange(self, rangeStart, rangeEnd, step):
+        return LongProgression(rangeStart, rangeEnd, step)
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_e39a6c2 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_119a8125 = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_610f8dd8
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_2547d1b8
     
     return Companion_instance
 
 class LongProgression:
     def _init_(start, endInclusive, step):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7cd6b76a
-        if equals(_init_(0, 0)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_2fe328b9
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_38c7ad43
+        if step.equals(Long(0, 0)):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_1b12f58d
         
-        if equals(_init_(0, -2147483648)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_58620d12
+        if step.equals(Long(0, -2147483648)):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_2c6dab96
         
         _this_.first = start
-        _this_.last = toLong()
+        _this_.last = getProgressionLastElement(start.toLong(), endInclusive.toLong(), step).toLong()
         _this_.step = step
     
-    def _get_first_():
+    def _get_first_(self):
         return first
     
-    def _get_last_():
+    def _get_last_(self):
         return last
     
-    def _get_step_():
+    def _get_step_(self):
         return step
     
-    def iterator():
-        return _init_(first, last, step)
+    def iterator(self):
+        return LongProgressionIterator(first, last, step)
     
-    def isEmpty():
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_51dfb693
+    def isEmpty(self):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_68817cd7
     
-    def equals(other):
+    def equals(self, other):
         tmp
         if jsInstanceOf(other, jsClass()):
-            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4dafab49
+            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_25169558
         
         if True:
             if True:
@@ -6262,71 +6262,71 @@ class LongProgression:
         
         return tmp
     
-    def hashCode():
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_79bc0ceb
+    def hashCode(self):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_54c252a4
     
-    def toString():
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_47fe4f78
+    def toString(self):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2e002852
     
 
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_64dc0a5f
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7a7698f4
     
-    def fromClosedRange(rangeStart, rangeEnd, step):
-        return _init_(rangeStart, rangeEnd, step)
+    def fromClosedRange(self, rangeStart, rangeEnd, step):
+        return CharProgression(rangeStart, rangeEnd, step)
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_c1f6a16 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_6e74986c = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_3a9b4a6e
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_2eea76bc
     
     return Companion_instance
 
 class CharProgression:
     def _init_(start, endInclusive, step):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7ee0dbd1
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_685e97e0
         if jsEqeqeq(step, 0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_6707fc3e
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_2b60c832
         
         if jsEqeqeq(step, MIN_VALUE):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_347bc2ad
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_71d8985
         
         _this_.first = start
-        _this_.last = numberToChar(getProgressionLastElement(toInt(), toInt(), step))
+        _this_.last = numberToChar(getProgressionLastElement(start.toInt(), endInclusive.toInt(), step))
         _this_.step = step
     
-    def _get_first_():
+    def _get_first_(self):
         return first
     
-    def _get_last_():
+    def _get_last_(self):
         return last
     
-    def _get_step_():
+    def _get_step_(self):
         return step
     
-    def iterator():
-        return _init_(first, last, step)
+    def iterator(self):
+        return CharProgressionIterator(first, last, step)
     
-    def isEmpty():
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_579ffb7e
+    def isEmpty(self):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_37526ddf
     
-    def equals(other):
+    def equals(self, other):
         tmp
         if jsInstanceOf(other, jsClass()):
-            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6e96ff9a
+            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3b48e216
         
         if True:
             if True:
@@ -6335,33 +6335,33 @@ class CharProgression:
         
         return tmp
     
-    def hashCode():
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_b6ae271
+    def hashCode(self):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_437eeb4
     
-    def toString():
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4845abe5
+    def toString(self):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6f303c5d
     
 
 class ClosedRange:
-    def _get_start_():
+    def _get_start_(self):
         pass
     
-    def _get_endInclusive_():
+    def _get_endInclusive_(self):
         pass
     
-    def contains(value):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_e9c78b3
+    def contains(self, value):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_194910bc
     
-    def isEmpty():
-        return jsGt(compareTo(_get_start_(), _get_endInclusive_()), 0)
+    def isEmpty(self):
+        return jsGt(compareTo(_this_._get_start_(), _this_._get_endInclusive_()), 0)
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -6371,53 +6371,53 @@ class ClosedRange:
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5f0c45ae
-        _this_.EMPTY = _init_(1, 0)
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2b08f55a
+        _this_.EMPTY = IntRange(1, 0)
     
-    def _get_EMPTY_():
+    def _get_EMPTY_(self):
         return EMPTY
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_309c821d = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_ec75805 = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_2d06acfd
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_790d28a7
     
     return Companion_instance
 
 class IntRange:
     def _init_(start, endInclusive):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_294aaa6
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_594793d1
     
-    def _get_start_():
-        return _get_first_()
+    def _get_start_(self):
+        return _this_._get_first_()
     
-    def _get_endInclusive_():
-        return _get_last_()
+    def _get_endInclusive_(self):
+        return _this_._get_last_()
     
-    def contains(value):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_198d9e3b
+    def contains(self, value):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1ee7a438
     
-    def contains(value):
-        return contains(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_300eabce)
+    def contains(self, value):
+        return _this_.contains(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_725d70ca)
     
-    def isEmpty():
-        return jsGt(_get_first_(), _get_last_())
+    def isEmpty(self):
+        return jsGt(_this_._get_first_(), _this_._get_last_())
     
-    def equals(other):
+    def equals(self, other):
         tmp
         if jsInstanceOf(other, jsClass()):
-            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2c6dab96
+            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4327b21f
         
         if True:
             if True:
@@ -6426,75 +6426,75 @@ class IntRange:
         
         return tmp
     
-    def hashCode():
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_535203b8
+    def hashCode(self):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6d0dd338
     
-    def toString():
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_1a8b3791
+    def toString(self):
+        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_5e0cc49d
     
-    def _get_first_():
+    def _get_first_(self):
         pass
     
-    def _get_last_():
+    def _get_last_(self):
         pass
     
-    def _get_step_():
+    def _get_step_(self):
         pass
     
-    def iterator():
+    def iterator(self):
         pass
     
 
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_63bdf82d
-        _this_.EMPTY = _init_(_init_(1, 0), _init_(0, 0))
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_f3ae18f
+        _this_.EMPTY = LongRange(Long(1, 0), Long(0, 0))
     
-    def _get_EMPTY_():
+    def _get_EMPTY_(self):
         return EMPTY
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_79871eeb = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_566809db = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_4260a1c
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_170f2883
     
     return Companion_instance
 
 class LongRange:
     def _init_(start, endInclusive):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_29a51ff1
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5a004dd4
     
-    def _get_start_():
-        return _get_first_()
+    def _get_start_(self):
+        return _this_._get_first_()
     
-    def _get_endInclusive_():
-        return _get_last_()
+    def _get_endInclusive_(self):
+        return _this_._get_last_()
     
-    def contains(value):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4d087555
+    def contains(self, value):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_8f1b830
     
-    def contains(value):
-        return contains(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_532ad0fd)
+    def contains(self, value):
+        return _this_.contains(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7767c18d)
     
-    def isEmpty():
-        return jsGt(compareTo(_get_last_()), 0)
+    def isEmpty(self):
+        return jsGt(_this_._get_first_().compareTo(_this_._get_last_()), 0)
     
-    def equals(other):
+    def equals(self, other):
         tmp
         if jsInstanceOf(other, jsClass()):
-            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1f78d2a7
+            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3b181488
         
         if True:
             if True:
@@ -6503,75 +6503,75 @@ class LongRange:
         
         return tmp
     
-    def hashCode():
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_31f5f65a
+    def hashCode(self):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_697c3410
     
-    def toString():
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_156eb310
+    def toString(self):
+        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_45348159
     
-    def _get_first_():
+    def _get_first_(self):
         pass
     
-    def _get_last_():
+    def _get_last_(self):
         pass
     
-    def _get_step_():
+    def _get_step_(self):
         pass
     
-    def iterator():
+    def iterator(self):
         pass
     
 
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5afbbf9b
-        _this_.EMPTY = _init_(_init_(1), _init_(0))
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2aec09a3
+        _this_.EMPTY = CharRange(Char(1), Char(0))
     
-    def _get_EMPTY_():
+    def _get_EMPTY_(self):
         return EMPTY
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_6e094fb7 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_1172a648 = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_5dfabe82
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_2361dc11
     
     return Companion_instance
 
 class CharRange:
     def _init_(start, endInclusive):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4ff5711b
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_207e3ffd
     
-    def _get_start_():
-        return _get_first_()
+    def _get_start_(self):
+        return _this_._get_first_()
     
-    def _get_endInclusive_():
-        return _get_last_()
+    def _get_endInclusive_(self):
+        return _this_._get_last_()
     
-    def contains(value):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1d7ca8b0
+    def contains(self, value):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_143170b7
     
-    def contains(value):
-        return contains(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_73b6167d)
+    def contains(self, value):
+        return _this_.contains(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7943d3ac)
     
-    def isEmpty():
-        return jsGt(compareTo(_get_last_()), 0)
+    def isEmpty(self):
+        return jsGt(_this_._get_first_().compareTo(_this_._get_last_()), 0)
     
-    def equals(other):
+    def equals(self, other):
         tmp
         if jsInstanceOf(other, jsClass()):
-            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3c521d01
+            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1b4bfdb
         
         if True:
             if True:
@@ -6580,44 +6580,44 @@ class CharRange:
         
         return tmp
     
-    def hashCode():
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_be74f53
+    def hashCode(self):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_15fd41c0
     
-    def toString():
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_5eca6e7d
+    def toString(self):
+        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_316296ae
     
-    def _get_first_():
+    def _get_first_(self):
         pass
     
-    def _get_last_():
+    def _get_last_(self):
         pass
     
-    def _get_step_():
+    def _get_step_(self):
         pass
     
-    def iterator():
+    def iterator(self):
         pass
     
 
 class Unit:
     def _init_():
         Unit_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_16817bad
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_405d123c
     
-    def toString():
+    def toString(self):
         return 'kotlin.Unit'
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2c1ce593 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_f62fe59 = 0
 def Unit_getInstance():
     if jsEqeq(Unit_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_3a0d3af1
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_7f5c7538
     
     return Unit_instance
 
@@ -6625,82 +6625,82 @@ class Target:
     def _init_(allowedTargets):
         _this_.allowedTargets = allowedTargets
     
-    def _get_allowedTargets_():
+    def _get_allowedTargets_(self):
         return allowedTargets
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_1ca749cb = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_1d7dca19 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5bc776e2 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5bf54c2c = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_7d3abf88 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_ee49f34 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_6e74986c = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_1f112da2 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_377f0737 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_1dc823d3 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_57b57ffe = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_41df3497 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_e56c524 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_525cb986 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2eea76bc = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_3b5c6eee = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_4526b3d5 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_47120b41 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_525d09b7 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_aae360c = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_7a668497 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2df9d099 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_17537420 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_6cb62e90 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_223a5dad = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_41a42c6b = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_4d5aa20b = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_1045c79e = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_60e2370e = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_45980d = 0
 def values():
-    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_64ebcabf)
+    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_7bd203ce)
 
 def valueOf(value):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_17598d70
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_63d0920a
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_16e73d83 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_7ac71b01 = 0
 def AnnotationTarget_initEntries():
     if AnnotationTarget_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_654b7497
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_2b4ab7
     
     AnnotationTarget_entriesInitialized = True
-    AnnotationTarget_CLASS_instance = _init_('CLASS', 0)
-    AnnotationTarget_ANNOTATION_CLASS_instance = _init_('ANNOTATION_CLASS', 1)
-    AnnotationTarget_TYPE_PARAMETER_instance = _init_('TYPE_PARAMETER', 2)
-    AnnotationTarget_PROPERTY_instance = _init_('PROPERTY', 3)
-    AnnotationTarget_FIELD_instance = _init_('FIELD', 4)
-    AnnotationTarget_LOCAL_VARIABLE_instance = _init_('LOCAL_VARIABLE', 5)
-    AnnotationTarget_VALUE_PARAMETER_instance = _init_('VALUE_PARAMETER', 6)
-    AnnotationTarget_CONSTRUCTOR_instance = _init_('CONSTRUCTOR', 7)
-    AnnotationTarget_FUNCTION_instance = _init_('FUNCTION', 8)
-    AnnotationTarget_PROPERTY_GETTER_instance = _init_('PROPERTY_GETTER', 9)
-    AnnotationTarget_PROPERTY_SETTER_instance = _init_('PROPERTY_SETTER', 10)
-    AnnotationTarget_TYPE_instance = _init_('TYPE', 11)
-    AnnotationTarget_EXPRESSION_instance = _init_('EXPRESSION', 12)
-    AnnotationTarget_FILE_instance = _init_('FILE', 13)
-    AnnotationTarget_TYPEALIAS_instance = _init_('TYPEALIAS', 14)
+    AnnotationTarget_CLASS_instance = AnnotationTarget('CLASS', 0)
+    AnnotationTarget_ANNOTATION_CLASS_instance = AnnotationTarget('ANNOTATION_CLASS', 1)
+    AnnotationTarget_TYPE_PARAMETER_instance = AnnotationTarget('TYPE_PARAMETER', 2)
+    AnnotationTarget_PROPERTY_instance = AnnotationTarget('PROPERTY', 3)
+    AnnotationTarget_FIELD_instance = AnnotationTarget('FIELD', 4)
+    AnnotationTarget_LOCAL_VARIABLE_instance = AnnotationTarget('LOCAL_VARIABLE', 5)
+    AnnotationTarget_VALUE_PARAMETER_instance = AnnotationTarget('VALUE_PARAMETER', 6)
+    AnnotationTarget_CONSTRUCTOR_instance = AnnotationTarget('CONSTRUCTOR', 7)
+    AnnotationTarget_FUNCTION_instance = AnnotationTarget('FUNCTION', 8)
+    AnnotationTarget_PROPERTY_GETTER_instance = AnnotationTarget('PROPERTY_GETTER', 9)
+    AnnotationTarget_PROPERTY_SETTER_instance = AnnotationTarget('PROPERTY_SETTER', 10)
+    AnnotationTarget_TYPE_instance = AnnotationTarget('TYPE', 11)
+    AnnotationTarget_EXPRESSION_instance = AnnotationTarget('EXPRESSION', 12)
+    AnnotationTarget_FILE_instance = AnnotationTarget('FILE', 13)
+    AnnotationTarget_TYPEALIAS_instance = AnnotationTarget('TYPEALIAS', 14)
 
 class AnnotationTarget:
     def _init_(name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1c43b31d
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7b70ae8e
     
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def _get_ordinal_():
+    def _get_ordinal_(self):
         pass
     
-    def compareTo(other):
+    def compareTo(self, other):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -6708,21 +6708,21 @@ class MustBeDocumented:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 def Retention_init__Init_(value, _mask0, _marker, _this):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 1), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_7a140446
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_789a8251
     
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_68fa9450
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_23dfcae3
     return _this
 
 def Retention_init__Create_(value, _mask0, _marker):
@@ -6732,58 +6732,58 @@ class Retention:
     def _init_(value):
         _this_.value = value
     
-    def _get_value_():
+    def _get_value_(self):
         return value
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_6c262251 = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_74bbaa1b = 0
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5b3a4c43 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2a2e21ea = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_29fea6c2 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_47c57d0f = 0
 def values():
-    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_9322cfe)
+    return arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_1641c156)
 
 def valueOf(value):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3c42114d
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_61cb973d
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2b05257a = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_3b1261ed = 0
 def AnnotationRetention_initEntries():
     if AnnotationRetention_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_7a49c426
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_22f31149
     
     AnnotationRetention_entriesInitialized = True
-    AnnotationRetention_SOURCE_instance = _init_('SOURCE', 0)
-    AnnotationRetention_BINARY_instance = _init_('BINARY', 1)
-    AnnotationRetention_RUNTIME_instance = _init_('RUNTIME', 2)
+    AnnotationRetention_SOURCE_instance = AnnotationRetention('SOURCE', 0)
+    AnnotationRetention_BINARY_instance = AnnotationRetention('BINARY', 1)
+    AnnotationRetention_RUNTIME_instance = AnnotationRetention('RUNTIME', 2)
 
 class AnnotationRetention:
     def _init_(name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_30370ce
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_765ea1ac
     
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def _get_ordinal_():
+    def _get_ordinal_(self):
         pass
     
-    def compareTo(other):
+    def compareTo(self, other):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -6791,13 +6791,13 @@ class Repeatable:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -6876,26 +6876,26 @@ def AnnotationRetention_RUNTIME_getInstance():
 def getProgressionLastElement(start, end, step):
     tmp
     if jsGt(step, 0):
-        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_bf90cf8
+        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6376db97
     
     if jsLt(step, 0):
-        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_169f1c39
+        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1c3455e5
     
     if True:
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_347770a9
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_394e0104
     
     return tmp
 
 def getProgressionLastElement(start, end, step):
     tmp
-    if jsGt(compareTo(_init_(0, 0)), 0):
-        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_36f59005
+    if jsGt(step.compareTo(Long(0, 0)), 0):
+        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_471a163a
     
-    if jsLt(compareTo(_init_(0, 0)), 0):
-        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_43b36393
+    if jsLt(step.compareTo(Long(0, 0)), 0):
+        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6315cb3c
     
     if True:
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_4f6f7a86
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_35fd987b
     
     return tmp
 
@@ -6903,134 +6903,134 @@ def differenceModulo(a, b, c):
     return mod(jsBitOr(jsMinus(mod(a, c), mod(b, c)), 0), c)
 
 def differenceModulo(a, b, c):
-    return mod(minus(mod(b, c)), c)
+    return mod(mod(a, c).minus(mod(b, c)), c)
 
 def mod(a, b):
     mod = jsMod(a, b)
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2f22904
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6cc52eb1
 
 def mod(a, b):
-    mod = rem(b)
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_58721f69
+    mod = a.rem(b)
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_319c6f69
 
 class ByteCompanionObject:
     def _init_():
         ByteCompanionObject_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_50c442a5
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4540aade
         _this_.MIN_VALUE = visitConst_other_Byte
         _this_.MAX_VALUE = visitConst_other_Byte
         _this_.SIZE_BYTES = 1
         _this_.SIZE_BITS = 8
     
-    def _get_MIN_VALUE_():
+    def _get_MIN_VALUE_(self):
         return MIN_VALUE
     
-    def _get_MAX_VALUE_():
+    def _get_MAX_VALUE_(self):
         return MAX_VALUE
     
-    def _get_SIZE_BYTES_():
+    def _get_SIZE_BYTES_(self):
         return SIZE_BYTES
     
-    def _get_SIZE_BITS_():
+    def _get_SIZE_BITS_(self):
         return SIZE_BITS
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_74b8bc34 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_6cb84c4c = 0
 def ByteCompanionObject_getInstance():
     if jsEqeq(ByteCompanionObject_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_380d3099
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_3a6c74d9
     
     return ByteCompanionObject_instance
 
 class ShortCompanionObject:
     def _init_():
         ShortCompanionObject_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1495f70
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_17da6e45
         _this_.MIN_VALUE = visitConst_other_Short
         _this_.MAX_VALUE = visitConst_other_Short
         _this_.SIZE_BYTES = 2
         _this_.SIZE_BITS = 16
     
-    def _get_MIN_VALUE_():
+    def _get_MIN_VALUE_(self):
         return MIN_VALUE
     
-    def _get_MAX_VALUE_():
+    def _get_MAX_VALUE_(self):
         return MAX_VALUE
     
-    def _get_SIZE_BYTES_():
+    def _get_SIZE_BYTES_(self):
         return SIZE_BYTES
     
-    def _get_SIZE_BITS_():
+    def _get_SIZE_BITS_(self):
         return SIZE_BITS
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_76022ebd = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2a7eb66e = 0
 def ShortCompanionObject_getInstance():
     if jsEqeq(ShortCompanionObject_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_6c01bc57
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_2f05cf02
     
     return ShortCompanionObject_instance
 
 class IntCompanionObject:
     def _init_():
         IntCompanionObject_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7d440378
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4b93a232
         _this_.MIN_VALUE = -2147483648
         _this_.MAX_VALUE = 2147483647
         _this_.SIZE_BYTES = 4
         _this_.SIZE_BITS = 32
     
-    def _get_MIN_VALUE_():
+    def _get_MIN_VALUE_(self):
         return MIN_VALUE
     
-    def _get_MAX_VALUE_():
+    def _get_MAX_VALUE_(self):
         return MAX_VALUE
     
-    def _get_SIZE_BYTES_():
+    def _get_SIZE_BYTES_(self):
         return SIZE_BYTES
     
-    def _get_SIZE_BITS_():
+    def _get_SIZE_BITS_(self):
         return SIZE_BITS
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_f9ad4c9 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_b484c37 = 0
 def IntCompanionObject_getInstance():
     if jsEqeq(IntCompanionObject_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_153de49f
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_760eb57e
     
     return IntCompanionObject_instance
 
 class FloatCompanionObject:
     def _init_():
         FloatCompanionObject_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_33e6176b
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6affa355
         _this_.MIN_VALUE = visitConst_other_Float
         _this_.MAX_VALUE = visitConst_other_Float
         _this_.POSITIVE_INFINITY = visitConst_other_Float
@@ -7039,48 +7039,48 @@ class FloatCompanionObject:
         _this_.SIZE_BYTES = 4
         _this_.SIZE_BITS = 32
     
-    def _get_MIN_VALUE_():
+    def _get_MIN_VALUE_(self):
         return MIN_VALUE
     
-    def _get_MAX_VALUE_():
+    def _get_MAX_VALUE_(self):
         return MAX_VALUE
     
-    def _get_POSITIVE_INFINITY_():
+    def _get_POSITIVE_INFINITY_(self):
         return POSITIVE_INFINITY
     
-    def _get_NEGATIVE_INFINITY_():
+    def _get_NEGATIVE_INFINITY_(self):
         return NEGATIVE_INFINITY
     
-    def _get_NaN_():
+    def _get_NaN_(self):
         return NaN
     
-    def _get_SIZE_BYTES_():
+    def _get_SIZE_BYTES_(self):
         return SIZE_BYTES
     
-    def _get_SIZE_BITS_():
+    def _get_SIZE_BITS_(self):
         return SIZE_BITS
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_1d20aae4 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_56c390fc = 0
 def FloatCompanionObject_getInstance():
     if jsEqeq(FloatCompanionObject_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_22f31149
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_53937f1a
     
     return FloatCompanionObject_instance
 
 class DoubleCompanionObject:
     def _init_():
         DoubleCompanionObject_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2c841ac4
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_71077d1
         _this_.MIN_VALUE = 4.9E-324
         _this_.MAX_VALUE = 1.7976931348623157E308
         _this_.POSITIVE_INFINITY = Infinity
@@ -7089,99 +7089,99 @@ class DoubleCompanionObject:
         _this_.SIZE_BYTES = 8
         _this_.SIZE_BITS = 64
     
-    def _get_MIN_VALUE_():
+    def _get_MIN_VALUE_(self):
         return MIN_VALUE
     
-    def _get_MAX_VALUE_():
+    def _get_MAX_VALUE_(self):
         return MAX_VALUE
     
-    def _get_POSITIVE_INFINITY_():
+    def _get_POSITIVE_INFINITY_(self):
         return POSITIVE_INFINITY
     
-    def _get_NEGATIVE_INFINITY_():
+    def _get_NEGATIVE_INFINITY_(self):
         return NEGATIVE_INFINITY
     
-    def _get_NaN_():
+    def _get_NaN_(self):
         return NaN
     
-    def _get_SIZE_BYTES_():
+    def _get_SIZE_BYTES_(self):
         return SIZE_BYTES
     
-    def _get_SIZE_BITS_():
+    def _get_SIZE_BITS_(self):
         return SIZE_BITS
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_16109bed = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_829264f = 0
 def DoubleCompanionObject_getInstance():
     if jsEqeq(DoubleCompanionObject_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_3cf3216c
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_42bf98f0
     
     return DoubleCompanionObject_instance
 
 class StringCompanionObject:
     def _init_():
         StringCompanionObject_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_327af731
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_554a4d18
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_1325a2ba = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_3abb7923 = 0
 def StringCompanionObject_getInstance():
     if jsEqeq(StringCompanionObject_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_49290bfb
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_687e13c4
     
     return StringCompanionObject_instance
 
 class BooleanCompanionObject:
     def _init_():
         BooleanCompanionObject_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7ba70b3b
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_65448932
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_4152faad = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2948e596 = 0
 def BooleanCompanionObject_getInstance():
     if jsEqeq(BooleanCompanionObject_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_44e60564
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_335c77fe
     
     return BooleanCompanionObject_instance
 
 class Comparator:
-    def compare(a, b):
+    def compare(self, a, b):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -7192,16 +7192,16 @@ class JsName:
     def _init_(name):
         _this_.name = name
     
-    def _get_name_():
+    def _get_name_(self):
         return name
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
@@ -7210,8 +7210,8 @@ def toTypedArray():
 
 def copyToArray(collection):
     tmp
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_3f803fae:
-        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_76a13b12
+    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4e7bf371:
+        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_650929dc
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
     
     if True:
@@ -7224,22 +7224,22 @@ def copyToArray(collection):
 
 def copyToArrayImpl(collection):
     array = kotlin_Array_kotlin_Any__(js('[]'))
-    iterator = iterator()
-    while hasNext():
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1dfd39fe
+    iterator = collection.iterator()
+    while iterator.hasNext():
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_cbf9cc1
     
     return array
 
 def copyToArrayImpl(collection, array):
-    if jsLt(jsArrayLength(array), _get_size_()):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_6080eac7
+    if jsLt(jsArrayLength(array), collection._get_size_()):
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_b93aba8
     
-    iterator = iterator()
+    iterator = collection.iterator()
     index = 0
-    while hasNext():
+    while iterator.hasNext():
         tmp0 = index
         index = jsBitOr(jsPlus(tmp0, 1), 0)
-        tmp1_unsafeCast_0 = next()
+        tmp1_unsafeCast_0 = iterator.next()
         jsArraySet(array, tmp0, kotlin_Any_(tmp1_unsafeCast_0))
     
     if jsLt(index, jsArrayLength(array)):
@@ -7252,120 +7252,120 @@ def copyToArrayImpl(collection, array):
 class _no_name_provided_:
     def _init_(_elements):
         _this_._elements = _elements
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_19019811
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3d435f83
     
-    def invoke(it):
-        return contains(it)
+    def invoke(self, it):
+        return _elements.contains(it)
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_699ae22e)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_f329350)
     
 
 class _no_name_provided_:
     def _init_(_elements):
         _this_._elements = _elements
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7e860a11
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_78ca3d6b
     
-    def invoke(it):
-        return jsNot(contains(it))
+    def invoke(self, it):
+        return jsNot(_elements.contains(it))
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7fcc9949)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3d6aa682)
     
 
 class AbstractMutableCollection:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_408573b1
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4467088e
     
-    def add(element):
+    def add(self, element):
         pass
     
-    def remove(element):
-        checkIsMutable()
-        iterator = iterator()
-        while hasNext():
-            if equals(next(), element):
-                remove()
+    def remove(self, element):
+        _this_.checkIsMutable()
+        iterator = _this_.iterator()
+        while iterator.hasNext():
+            if equals(iterator.next(), element):
+                iterator.remove()
                 return True
             
         
         return False
     
-    def addAll(elements):
-        checkIsMutable()
+    def addAll(self, elements):
+        _this_.checkIsMutable()
         modified = False
-        tmp0_iterator = iterator()
-        while hasNext():
-            element = next()
-            if add(element):
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_7e383712
+        tmp0_iterator = elements.iterator()
+        while tmp0_iterator.hasNext():
+            element = tmp0_iterator.next()
+            if _this_.add(element):
+                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_340f4723
             
         
         return modified
     
-    def removeAll(elements):
-        checkIsMutable()
-        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4262ac5e
+    def removeAll(self, elements):
+        _this_.checkIsMutable()
+        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_44acc838
         return removeAll(_no_name_provided__factory(elements))
     
-    def retainAll(elements):
-        checkIsMutable()
-        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_10151ecd
+    def retainAll(self, elements):
+        _this_.checkIsMutable()
+        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_230ca3c3
         return removeAll(_no_name_provided__factory(elements))
     
-    def clear():
-        checkIsMutable()
-        iterator = iterator()
-        while hasNext():
-            next()
+    def clear(self):
+        _this_.checkIsMutable()
+        iterator = _this_.iterator()
+        while iterator.hasNext():
+            iterator.next()
             Unit_getInstance()
-            remove()
+            iterator.remove()
         
     
-    def toJSON():
-        return toArray()
+    def toJSON(self):
+        return _this_.toArray()
     
-    def checkIsMutable():
+    def checkIsMutable(self):
         pass
     
-    def _get_size_():
+    def _get_size_(self):
         pass
     
-    def iterator():
+    def iterator(self):
         pass
     
-    def contains(element):
+    def contains(self, element):
         pass
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         pass
     
-    def isEmpty():
+    def isEmpty(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def toArray():
+    def toArray(self):
         pass
     
-    def toArray(array):
+    def toArray(self, array):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
 
 def _no_name_provided__factory(_elements):
-    i = _init_(_elements)
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_62231c0f
+    i = _no_name_provided_(_elements)
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_eddf865
 
 def _no_name_provided__factory(_elements):
-    i = _init_(_elements)
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_6e3a9891
+    i = _no_name_provided_(_elements)
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_3131a06d
 
 def _get_list_(_this):
     return list
@@ -7382,421 +7382,421 @@ def _get__size_(_this):
 class IteratorImpl:
     def _init_(_outer):
         _this_._this = _outer
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_598f065f
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_771deee6
         _this_.index = 0
         _this_.last = -1
     
-    def _set_index_(_set___):
+    def _set_index_(self, _set___):
         _this_.index = _set___
     
-    def _get_index_():
+    def _get_index_(self):
         return index
     
-    def _set_last_(_set___):
+    def _set_last_(self, _set___):
         _this_.last = _set___
     
-    def _get_last_():
+    def _get_last_(self):
         return last
     
-    def hasNext():
-        return jsLt(index, _get_size_())
+    def hasNext(self):
+        return jsLt(index, _this._get_size_())
     
-    def next():
-        if jsNot(hasNext()):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_57cd77e1
+    def next(self):
+        if jsNot(_this_.hasNext()):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_2b39e77d
         
         tmp = _this_
         tmp0_this = _this_
         tmp1 = index
         tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
         tmp.last = tmp1
-        return get(last)
+        return _this.get(last)
     
-    def remove():
+    def remove(self):
         tmp0_check_0 = jsNot(jsEqeqeq(last, -1))
         if jsNot(tmp0_check_0):
             message_1 = 'Call next() or previous() before removing element from the iterator.'
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_2585437a
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_716a2c04
         
-        removeAt(last)
+        _this.removeAt(last)
         Unit_getInstance()
         _this_.index = last
         _this_.last = -1
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class ListIteratorImpl:
     def _init_(_outer, index):
         _this_._this = _outer
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_131e10ca
-        checkPositionIndex(index, _get_size_())
-        _set_index_(index)
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_67c09530
+        Companion_getInstance().checkPositionIndex(index, _this._get_size_())
+        _this_._set_index_(index)
     
-    def hasPrevious():
-        return jsGt(_get_index_(), 0)
+    def hasPrevious(self):
+        return jsGt(_this_._get_index_(), 0)
     
-    def nextIndex():
-        return _get_index_()
+    def nextIndex(self):
+        return _this_._get_index_()
     
-    def previous():
-        if jsNot(hasPrevious()):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_4eba6e1f
+    def previous(self):
+        if jsNot(_this_.hasPrevious()):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_582b6362
         
         tmp0_this = _this_
-        _set_index_(jsBitOr(jsMinus(_get_index_(), 1), 0))
-        _set_last_(_get_index_())
-        return get(_get_last_())
+        tmp0_this._set_index_(jsBitOr(jsMinus(tmp0_this._get_index_(), 1), 0))
+        _this_._set_last_(tmp0_this._get_index_())
+        return _this.get(_this_._get_last_())
     
-    def previousIndex():
-        return jsBitOr(jsMinus(_get_index_(), 1), 0)
+    def previousIndex(self):
+        return jsBitOr(jsMinus(_this_._get_index_(), 1), 0)
     
-    def add(element):
-        add(_get_index_(), element)
+    def add(self, element):
+        _this.add(_this_._get_index_(), element)
         tmp0_this = _this_
-        tmp1 = _get_index_()
-        _set_index_(jsBitOr(jsPlus(tmp1, 1), 0))
+        tmp1 = tmp0_this._get_index_()
+        tmp0_this._set_index_(jsBitOr(jsPlus(tmp1, 1), 0))
         Unit_getInstance()
-        _set_last_(-1)
+        _this_._set_last_(-1)
     
-    def add(element):
-        return add(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4a4525a1)
+    def add(self, element):
+        return _this_.add(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4a50f850)
     
-    def set(element):
-        tmp0_check_0 = jsNot(jsEqeqeq(_get_last_(), -1))
+    def set(self, element):
+        tmp0_check_0 = jsNot(jsEqeqeq(_this_._get_last_(), -1))
         if jsNot(tmp0_check_0):
             message_1 = 'Call next() or previous() before updating element value with the iterator.'
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_63143b83
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_e84d76d
         
-        set(_get_last_(), element)
+        _this.set(_this_._get_last_(), element)
         Unit_getInstance()
     
-    def set(element):
-        return set(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_62b899bf)
+    def set(self, element):
+        return _this_.set(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_432e9de9)
     
-    def _set_index_(_set___):
+    def _set_index_(self, _set___):
         pass
     
-    def _get_index_():
+    def _get_index_(self):
         pass
     
-    def _set_last_(_set___):
+    def _set_last_(self, _set___):
         pass
     
-    def _get_last_():
+    def _get_last_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hasNext():
+    def hasNext(self):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def next():
+    def next(self):
         pass
     
-    def remove():
+    def remove(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class SubList:
     def _init_(list, fromIndex, toIndex):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5b1dd206
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_679f3e12
         _this_.list = list
         _this_.fromIndex = fromIndex
         _this_._size = 0
-        checkRangeIndexes(fromIndex, toIndex, _get_size_())
+        Companion_getInstance().checkRangeIndexes(fromIndex, toIndex, list._get_size_())
         _this_._size = jsBitOr(jsMinus(toIndex, fromIndex), 0)
     
-    def add(index, element):
-        checkPositionIndex(index, _size)
-        add(jsBitOr(jsPlus(fromIndex, index), 0), element)
+    def add(self, index, element):
+        Companion_getInstance().checkPositionIndex(index, _size)
+        list.add(jsBitOr(jsPlus(fromIndex, index), 0), element)
         tmp0_this = _this_
         tmp1 = _size
         tmp0_this._size = jsBitOr(jsPlus(tmp1, 1), 0)
         Unit_getInstance()
     
-    def get(index):
-        checkElementIndex(index, _size)
-        return get(jsBitOr(jsPlus(fromIndex, index), 0))
+    def get(self, index):
+        Companion_getInstance().checkElementIndex(index, _size)
+        return list.get(jsBitOr(jsPlus(fromIndex, index), 0))
     
-    def removeAt(index):
-        checkElementIndex(index, _size)
-        result = removeAt(jsBitOr(jsPlus(fromIndex, index), 0))
+    def removeAt(self, index):
+        Companion_getInstance().checkElementIndex(index, _size)
+        result = list.removeAt(jsBitOr(jsPlus(fromIndex, index), 0))
         tmp0_this = _this_
         tmp1 = _size
         tmp0_this._size = jsBitOr(jsMinus(tmp1, 1), 0)
         Unit_getInstance()
         return result
     
-    def set(index, element):
-        checkElementIndex(index, _size)
-        return set(jsBitOr(jsPlus(fromIndex, index), 0), element)
+    def set(self, index, element):
+        Companion_getInstance().checkElementIndex(index, _size)
+        return list.set(jsBitOr(jsPlus(fromIndex, index), 0), element)
     
-    def _get_size_():
+    def _get_size_(self):
         return _size
     
-    def checkIsMutable():
-        return checkIsMutable()
+    def checkIsMutable(self):
+        return list.checkIsMutable()
     
-    def toArray():
+    def toArray(self):
         pass
     
-    def toJSON():
+    def toJSON(self):
         pass
     
-    def _set_modCount_(_set___):
+    def _set_modCount_(self, _set___):
         pass
     
-    def _get_modCount_():
+    def _get_modCount_(self):
         pass
     
-    def toArray(array):
+    def toArray(self, array):
         pass
     
-    def removeRange(fromIndex, toIndex):
+    def removeRange(self, fromIndex, toIndex):
         pass
     
-    def add(element):
+    def add(self, element):
         pass
     
-    def addAll(elements):
+    def addAll(self, elements):
         pass
     
-    def addAll(index, elements):
+    def addAll(self, index, elements):
         pass
     
-    def clear():
+    def clear(self):
         pass
     
-    def contains(element):
+    def contains(self, element):
         pass
     
-    def indexOf(element):
+    def indexOf(self, element):
         pass
     
-    def iterator():
+    def iterator(self):
         pass
     
-    def lastIndexOf(element):
+    def lastIndexOf(self, element):
         pass
     
-    def listIterator():
+    def listIterator(self):
         pass
     
-    def listIterator(index):
+    def listIterator(self, index):
         pass
     
-    def remove(element):
+    def remove(self, element):
         pass
     
-    def removeAll(elements):
+    def removeAll(self, elements):
         pass
     
-    def retainAll(elements):
+    def retainAll(self, elements):
         pass
     
-    def subList(fromIndex, toIndex):
+    def subList(self, fromIndex, toIndex):
         pass
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         pass
     
-    def isEmpty():
+    def isEmpty(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class _no_name_provided_:
     def _init_(_elements):
         _this_._elements = _elements
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1f520187
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_771da67d
     
-    def invoke(it):
-        return contains(it)
+    def invoke(self, it):
+        return _elements.contains(it)
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7bf62880)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4f1a963b)
     
 
 class _no_name_provided_:
     def _init_(_elements):
         _this_._elements = _elements
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4b5c0183
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5b71f335
     
-    def invoke(it):
-        return jsNot(contains(it))
+    def invoke(self, it):
+        return jsNot(_elements.contains(it))
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7697fc45)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_431e67f8)
     
 
 class AbstractMutableList:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7bb78381
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6e1d939e
         _this_.modCount = 0
     
-    def _set_modCount_(_set___):
+    def _set_modCount_(self, _set___):
         _this_.modCount = _set___
     
-    def _get_modCount_():
+    def _get_modCount_(self):
         return modCount
     
-    def add(index, element):
+    def add(self, index, element):
         pass
     
-    def removeAt(index):
+    def removeAt(self, index):
         pass
     
-    def set(index, element):
+    def set(self, index, element):
         pass
     
-    def add(element):
-        checkIsMutable()
-        add(_get_size_(), element)
+    def add(self, element):
+        _this_.checkIsMutable()
+        _this_.add(_this_._get_size_(), element)
         return True
     
-    def addAll(index, elements):
-        checkIsMutable()
+    def addAll(self, index, elements):
+        _this_.checkIsMutable()
         _index = index
         changed = False
-        tmp0_iterator = iterator()
-        while hasNext():
-            e = next()
+        tmp0_iterator = elements.iterator()
+        while tmp0_iterator.hasNext():
+            e = tmp0_iterator.next()
             tmp1 = _index
             _index = jsBitOr(jsPlus(tmp1, 1), 0)
-            add(tmp1, e)
+            _this_.add(tmp1, e)
             changed = True
         
         return changed
     
-    def clear():
-        checkIsMutable()
-        removeRange(0, _get_size_())
+    def clear(self):
+        _this_.checkIsMutable()
+        _this_.removeRange(0, _this_._get_size_())
     
-    def removeAll(elements):
-        checkIsMutable()
+    def removeAll(self, elements):
+        _this_.checkIsMutable()
         return removeAll(_no_name_provided__factory(elements))
     
-    def retainAll(elements):
-        checkIsMutable()
+    def retainAll(self, elements):
+        _this_.checkIsMutable()
         return removeAll(_no_name_provided__factory(elements))
     
-    def iterator():
-        return _init_(_this_)
+    def iterator(self):
+        return IteratorImpl(_this_)
     
-    def contains(element):
-        return jsGtEq(indexOf(element), 0)
+    def contains(self, element):
+        return jsGtEq(_this_.indexOf(element), 0)
     
-    def indexOf(element):
+    def indexOf(self, element):
         inductionVariable = 0
         last = _get_lastIndex_()
         if jsLtEq(inductionVariable, last):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_2ce33999
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_3fdc7786
         
         return -1
     
-    def lastIndexOf(element):
+    def lastIndexOf(self, element):
         inductionVariable = _get_lastIndex_()
         if jsLtEq(0, inductionVariable):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_69745cfe
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_117eac4a
         
         return -1
     
-    def listIterator():
-        return listIterator(0)
+    def listIterator(self):
+        return _this_.listIterator(0)
     
-    def listIterator(index):
-        return _init_(_this_, index)
+    def listIterator(self, index):
+        return ListIteratorImpl(_this_, index)
     
-    def subList(fromIndex, toIndex):
-        return _init_(_this_, fromIndex, toIndex)
+    def subList(self, fromIndex, toIndex):
+        return SubList(_this_, fromIndex, toIndex)
     
-    def removeRange(fromIndex, toIndex):
-        iterator = listIterator(fromIndex)
+    def removeRange(self, fromIndex, toIndex):
+        iterator = _this_.listIterator(fromIndex)
         tmp0_repeat_0 = jsBitOr(jsMinus(toIndex, fromIndex), 0)
         inductionVariable = 0
         if jsLt(inductionVariable, tmp0_repeat_0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_6180eb8
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_5d65a2f1
         
     
-    def equals(other):
+    def equals(self, other):
         if jsEqeqeq(other, _this_):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_3dc976da
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_5ceb6796
         
-        if jsNot(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_634324c9):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_70b437bb
+        if jsNot(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_67779915):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_6a9861de
         
         if True:
             pass
         
-        return orderedEquals(_this_, kotlin_collections_Collection___(other))
+        return Companion_getInstance().orderedEquals(_this_, kotlin_collections_Collection___(other))
     
-    def hashCode():
-        return orderedHashCode(_this_)
+    def hashCode(self):
+        return Companion_getInstance().orderedHashCode(_this_)
     
-    def remove(element):
+    def remove(self, element):
         pass
     
-    def addAll(elements):
+    def addAll(self, elements):
         pass
     
-    def toJSON():
+    def toJSON(self):
         pass
     
-    def checkIsMutable():
+    def checkIsMutable(self):
         pass
     
-    def _get_size_():
+    def _get_size_(self):
         pass
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         pass
     
-    def isEmpty():
+    def isEmpty(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def toArray():
+    def toArray(self):
         pass
     
-    def toArray(array):
+    def toArray(self, array):
         pass
     
-    def get(index):
+    def get(self, index):
         pass
     
 
 def _no_name_provided__factory(_elements):
-    i = _init_(_elements)
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_6ae9b2f0
+    i = _no_name_provided_(_elements)
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_4f613e30
 
 def _no_name_provided__factory(_elements):
-    i = _init_(_elements)
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_49ccecb0
+    i = _no_name_provided_(_elements)
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_3f05744b
 
 def _set_array_(_this, _set___):
     _this.array = _set___
@@ -7811,14 +7811,14 @@ def _get_isReadOnly_(_this):
     return isReadOnly
 
 def ArrayList_init__Init_(_this):
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4e78b5bb
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_67503009
     return _this
 
 def ArrayList_init__Create_():
     return ArrayList_init__Init_(Object_create())
 
 def ArrayList_init__Init_(initialCapacity, _this):
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_121f1533
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5631baf5
     return _this
 
 def ArrayList_init__Create_(initialCapacity):
@@ -7826,7 +7826,7 @@ def ArrayList_init__Create_(initialCapacity):
 
 def ArrayList_init__Init_(initialCapacity, _mask0, _marker, _this):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 1), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_371a3078
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_182a5c56
     
     ArrayList_init__Init_(initialCapacity, _this)
     return _this
@@ -7835,223 +7835,223 @@ def ArrayList_init__Create_(initialCapacity, _mask0, _marker):
     return ArrayList_init__Init_(initialCapacity, _mask0, _marker, Object_create())
 
 def ArrayList_init__Init_(elements, _this):
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6e2ff120
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_509c1d50
     return _this
 
 def ArrayList_init__Create_(elements):
     return ArrayList_init__Init_(elements, Object_create())
 
 def rangeCheck(_this, index):
-    checkElementIndex(index, _get_size_())
+    Companion_getInstance().checkElementIndex(index, _this._get_size_())
     return index
 
 def insertionRangeCheck(_this, index):
-    checkPositionIndex(index, _get_size_())
+    Companion_getInstance().checkPositionIndex(index, _this._get_size_())
     return index
 
 class ArrayList:
     def _init_(array):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_74ee8f57
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4f1cb802
         _this_.array = array
         _this_.isReadOnly = False
     
-    def build():
-        checkIsMutable()
+    def build(self):
+        _this_.checkIsMutable()
         _this_.isReadOnly = True
         return _this_
     
-    def trimToSize():
+    def trimToSize(self):
         pass
     
-    def ensureCapacity(minCapacity):
+    def ensureCapacity(self, minCapacity):
         pass
     
-    def _get_size_():
+    def _get_size_(self):
         return jsArrayLength(array)
     
-    def get(index):
+    def get(self, index):
         tmp = jsArrayGet(array, rangeCheck(_this_, index))
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7c510a83
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_26dcac0d
     
-    def set(index, element):
-        checkIsMutable()
+    def set(self, index, element):
+        _this_.checkIsMutable()
         rangeCheck(_this_, index)
         Unit_getInstance()
         tmp0_apply_0 = jsArrayGet(array, index)
         jsArraySet(array, index, element)
         tmp = tmp0_apply_0
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_46af3131
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4008caaf
     
-    def add(element):
-        checkIsMutable()
+    def add(self, element):
+        _this_.checkIsMutable()
         tmp0_asDynamic_0 = array
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5e05dd42
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_20e7ea20
         tmp0_this = _this_
-        tmp1 = _get_modCount_()
-        _set_modCount_(jsBitOr(jsPlus(tmp1, 1), 0))
+        tmp1 = tmp0_this._get_modCount_()
+        tmp0_this._set_modCount_(jsBitOr(jsPlus(tmp1, 1), 0))
         Unit_getInstance()
         return True
     
-    def add(index, element):
-        checkIsMutable()
+    def add(self, index, element):
+        _this_.checkIsMutable()
         tmp0_asDynamic_0 = array
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_264f18fe
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_f2e28c7
         tmp0_this = _this_
-        tmp1 = _get_modCount_()
-        _set_modCount_(jsBitOr(jsPlus(tmp1, 1), 0))
+        tmp1 = tmp0_this._get_modCount_()
+        tmp0_this._set_modCount_(jsBitOr(jsPlus(tmp1, 1), 0))
         Unit_getInstance()
     
-    def addAll(elements):
-        checkIsMutable()
-        if isEmpty():
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_7d4bb16b
+    def addAll(self, elements):
+        _this_.checkIsMutable()
+        if elements.isEmpty():
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_5bbd8118
         
         tmp0_this = _this_
         tmp = tmp0_this
         tmp0_plus_0 = array
         tmp1_plus_0 = copyToArray(elements)
-        tmp.array = kotlin_Array_kotlin_Any__(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_44a98855)
+        tmp.array = kotlin_Array_kotlin_Any__(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_30f2e0e0)
         tmp1_this = _this_
-        tmp2 = _get_modCount_()
-        _set_modCount_(jsBitOr(jsPlus(tmp2, 1), 0))
+        tmp2 = tmp1_this._get_modCount_()
+        tmp1_this._set_modCount_(jsBitOr(jsPlus(tmp2, 1), 0))
         Unit_getInstance()
         return True
     
-    def addAll(index, elements):
-        checkIsMutable()
+    def addAll(self, index, elements):
+        _this_.checkIsMutable()
         insertionRangeCheck(_this_, index)
         Unit_getInstance()
-        if jsEqeqeq(index, _get_size_()):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_7abc838a
+        if jsEqeqeq(index, _this_._get_size_()):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_3a3fc789
         
-        if isEmpty():
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_417f7d7f
+        if elements.isEmpty():
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_3d577add
         
         tmp0_subject = index
-        if jsEqeqeq(tmp0_subject, _get_size_()):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_69173bb7
+        if jsEqeqeq(tmp0_subject, _this_._get_size_()):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_2984edab
         
         if jsEqeqeq(tmp0_subject, 0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_3af1dda5
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_29dbf03f
         
         if True:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_4b305823
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_5f83000c
         
         tmp1_this = _this_
-        tmp2 = _get_modCount_()
-        _set_modCount_(jsBitOr(jsPlus(tmp2, 1), 0))
+        tmp2 = tmp1_this._get_modCount_()
+        tmp1_this._set_modCount_(jsBitOr(jsPlus(tmp2, 1), 0))
         Unit_getInstance()
         return True
     
-    def removeAt(index):
-        checkIsMutable()
+    def removeAt(self, index):
+        _this_.checkIsMutable()
         rangeCheck(_this_, index)
         Unit_getInstance()
         tmp0_this = _this_
-        tmp1 = _get_modCount_()
-        _set_modCount_(jsBitOr(jsPlus(tmp1, 1), 0))
+        tmp1 = tmp0_this._get_modCount_()
+        tmp0_this._set_modCount_(jsBitOr(jsPlus(tmp1, 1), 0))
         Unit_getInstance()
         tmp
         if jsEqeqeq(index, _get_lastIndex_()):
             tmp0_asDynamic_0 = array
-            tmp = E(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5a14a8c1)
+            tmp = E(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_58fa8762)
         
         if True:
             tmp1_asDynamic_0 = array
-            tmp = E(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1f6af096)
+            tmp = E(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_35abfeba)
         
         return tmp
     
-    def remove(element):
-        checkIsMutable()
+    def remove(self, element):
+        _this_.checkIsMutable()
         inductionVariable = 0
         last = jsBitOr(jsMinus(jsArrayLength(array), 1), 0)
         if jsLtEq(inductionVariable, last):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_eb5589
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_7027c359
         
         return False
     
-    def removeRange(fromIndex, toIndex):
-        checkIsMutable()
+    def removeRange(self, fromIndex, toIndex):
+        _this_.checkIsMutable()
         tmp0_this = _this_
-        tmp1 = _get_modCount_()
-        _set_modCount_(jsBitOr(jsPlus(tmp1, 1), 0))
+        tmp1 = tmp0_this._get_modCount_()
+        tmp0_this._set_modCount_(jsBitOr(jsPlus(tmp1, 1), 0))
         Unit_getInstance()
         tmp0_asDynamic_0 = array
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_34d08905
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_3343997b
     
-    def clear():
-        checkIsMutable()
+    def clear(self):
+        _this_.checkIsMutable()
         tmp = _this_
         tmp.array = kotlin_Array_kotlin_Any__(js('[]'))
         tmp0_this = _this_
-        tmp1 = _get_modCount_()
-        _set_modCount_(jsBitOr(jsPlus(tmp1, 1), 0))
+        tmp1 = tmp0_this._get_modCount_()
+        tmp0_this._set_modCount_(jsBitOr(jsPlus(tmp1, 1), 0))
         Unit_getInstance()
     
-    def indexOf(element):
+    def indexOf(self, element):
         return indexOf(element)
     
-    def lastIndexOf(element):
+    def lastIndexOf(self, element):
         return lastIndexOf(element)
     
-    def toString():
+    def toString(self):
         return arrayToString(array)
     
-    def toArray():
-        return kotlin_Array_kotlin_Any__(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_e00f822)
+    def toArray(self):
+        return kotlin_Array_kotlin_Any__(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_75edfe9a)
     
-    def toArray():
-        return toArray()
+    def toArray(self):
+        return _this_.toArray()
     
-    def checkIsMutable():
+    def checkIsMutable(self):
         if isReadOnly:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_1a2d9177
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_4bdec54
         
     
-    def _set_modCount_(_set___):
+    def _set_modCount_(self, _set___):
         pass
     
-    def _get_modCount_():
+    def _get_modCount_(self):
         pass
     
-    def removeAll(elements):
+    def removeAll(self, elements):
         pass
     
-    def retainAll(elements):
+    def retainAll(self, elements):
         pass
     
-    def iterator():
+    def iterator(self):
         pass
     
-    def contains(element):
+    def contains(self, element):
         pass
     
-    def listIterator():
+    def listIterator(self):
         pass
     
-    def listIterator(index):
+    def listIterator(self, index):
         pass
     
-    def subList(fromIndex, toIndex):
+    def subList(self, fromIndex, toIndex):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toJSON():
+    def toJSON(self):
         pass
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         pass
     
-    def isEmpty():
+    def isEmpty(self):
         pass
     
-    def toArray(array):
+    def toArray(self, array):
         pass
     
 
@@ -8061,15 +8061,15 @@ def _set__stableSortingIsSupported_(_set___):
 def _get__stableSortingIsSupported_():
     return _stableSortingIsSupported
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_13e76a91 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_59acb725 = 0
 class RandomAccess:
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -8082,203 +8082,203 @@ def _set_output_(_set___):
 def _get_output_():
     return output
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_28dae87e = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_71f9f8ba = 0
 class BaseOutput:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3e5e7f4c
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_726e780a
     
-    def println():
-        print('\n')
+    def println(self):
+        _this_.print('\n')
     
-    def println(message):
-        print(message)
-        println()
+    def println(self, message):
+        _this_.print(message)
+        _this_.println()
     
-    def print(message):
+    def print(self, message):
         pass
     
-    def flush():
+    def flush(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class NodeJsOutput:
     def _init_(outputStream):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7902a4d7
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1703e50d
         _this_.outputStream = outputStream
     
-    def _get_outputStream_():
+    def _get_outputStream_(self):
         return outputStream
     
-    def print(message):
-        messageString = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_44c639d4)
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_19f007c4
+    def print(self, message):
+        messageString = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_11cd442d)
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_734d870f
     
-    def println():
+    def println(self):
         pass
     
-    def println(message):
+    def println(self, message):
         pass
     
-    def flush():
+    def flush(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class BufferedOutputToConsoleLog:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3f6f26cb
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_37b97394
     
-    def print(message):
-        s = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_6edd2ef4)
+    def print(self, message):
+        s = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1443f11c)
         tmp0_nativeLastIndexOf_0 = s
         tmp1_nativeLastIndexOf_0 = '\n'
         tmp2_nativeLastIndexOf_0 = 0
-        i = kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_29ed425e)
+        i = kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_60fa2d75)
         if jsGtEq(i, 0):
             tmp0_this = _this_
-            tmp = _get_buffer_()
+            tmp = tmp0_this._get_buffer_()
             tmp3_substring_0 = s
             tmp4_substring_0 = 0
-            _set_buffer_(jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_7f91d389)))
-            flush()
+            tmp0_this._set_buffer_(jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_ffea9ca)))
+            _this_.flush()
             tmp5_substring_0 = s
             tmp6_substring_0 = jsBitOr(jsPlus(i, 1), 0)
-            s = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_50a59a0b)
+            s = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_357d787b)
         
         tmp1_this = _this_
-        _set_buffer_(jsPlus(_get_buffer_(), s))
+        tmp1_this._set_buffer_(jsPlus(tmp1_this._get_buffer_(), s))
     
-    def flush():
-        log(arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_75388ef2))
-        _set_buffer_('')
+    def flush(self):
+        _get_console_().log(arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_1f193005))
+        _this_._set_buffer_('')
     
-    def _set_buffer_(_set___):
+    def _set_buffer_(self, _set___):
         pass
     
-    def _get_buffer_():
+    def _get_buffer_(self):
         pass
     
-    def println():
+    def println(self):
         pass
     
-    def println(message):
+    def println(self, message):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 def String(value):
-    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_371ce753)
+    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_19469022)
 
 class BufferedOutput:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_529a2d6f
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7b2cd7ff
         _this_.buffer = ''
     
-    def _set_buffer_(_set___):
+    def _set_buffer_(self, _set___):
         _this_.buffer = _set___
     
-    def _get_buffer_():
+    def _get_buffer_(self):
         return buffer
     
-    def print(message):
+    def print(self, message):
         tmp0_this = _this_
         tmp = tmp0_this
         tmp = buffer
-        tmp.buffer = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_22d12034))
+        tmp.buffer = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_17dd02ff))
     
-    def flush():
+    def flush(self):
         _this_.buffer = ''
     
-    def println():
+    def println(self):
         pass
     
-    def println(message):
+    def println(self, message):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 def println(message):
-    println(message)
+    output.println(message)
 
 def output_init_():
     isNode_2 = kotlin_Boolean(js('typeof process !== \'undefined\' && process.versions && !!process.versions.node'))
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_660afeb2
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_31cce16b
 
 def _get_EmptyContinuation_():
     return EmptyContinuation
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2620f935 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_147c00c7 = 0
 class _no_name_provided__1:
     def _init_(_tmp0_Continuation_0):
         _this_._tmp0_Continuation_0 = _tmp0_Continuation_0
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_692cea53
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_35050186
     
-    def _get_context__2():
+    def _get_context__2(self):
         return _tmp0_Continuation_0
     
-    def _get_context_():
-        return _get_context__2()
+    def _get_context_(self):
+        return _this_._get_context__2()
     
-    def resumeWith_3(result):
+    def resumeWith_3(self, result):
         throwOnFailure()
         tmp = _Result___get_value__impl_(result)
-        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_19eb658:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrTypeOperatorCallImpl_75c99797
+        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_68be702f:
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrTypeOperatorCallImpl_3dade0d4
         
         if True:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl_36b3240f
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl_eb8378c
         
         return Unit_getInstance()
     
-    def resumeWith(result):
-        return resumeWith_3(result)
+    def resumeWith(self, result):
+        return _this_.resumeWith_3(result)
     
-    def equals_4(other):
+    def equals_4(self, other):
         pass
     
-    def hashCode_5():
+    def hashCode_5(self):
         pass
     
-    def toString_6():
+    def toString_6(self):
         pass
     
 
 def EmptyContinuation_init_():
     tmp0_Continuation_0 = EmptyCoroutineContext_getInstance()
-    return _init_(tmp0_Continuation_0)
+    return _no_name_provided__1(tmp0_Continuation_0)
 
 def asDynamic():
     return _this_
@@ -8290,13 +8290,13 @@ def unsafeCast():
     return T(_this_)
 
 class Serializable:
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -8304,7 +8304,7 @@ class Serializable:
     
 
 def pow(n):
-    return pow(_this_, kotlin_Double(n))
+    return visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl_2e9290bc.pow(_this_, kotlin_Double(n))
 
 def isNaN():
     return jsNot(jsEqeqeq(_this_, _this_))
@@ -8312,35 +8312,35 @@ def isNaN():
 def _get_INV_2_26_():
     return INV_2_26
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_68b59e2f = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_1bef1304 = 0
 def _get_INV_2_53_():
     return INV_2_53
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_79dd79eb = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5188c0f2 = 0
 def INV_2_26_init_():
     tmp0_pow_0 = 2.0
     tmp1_pow_0 = -26
-    return pow(tmp0_pow_0, kotlin_Double(tmp1_pow_0))
+    return visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl_4d61d93a.pow(tmp0_pow_0, kotlin_Double(tmp1_pow_0))
 
 def INV_2_53_init_():
     tmp0_pow_0 = 2.0
     tmp1_pow_0 = -53
-    return pow(tmp0_pow_0, kotlin_Double(tmp1_pow_0))
+    return visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl_519565a5.pow(tmp0_pow_0, kotlin_Double(tmp1_pow_0))
 
 def _get_js_():
-    return _get_jClass_()
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_253caf40._get_jClass_()
 
 class KCallable:
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -8348,22 +8348,22 @@ class KCallable:
     
 
 class KClass:
-    def _get_simpleName_():
+    def _get_simpleName_(self):
         pass
     
-    def _get_qualifiedName_():
+    def _get_qualifiedName_(self):
         pass
     
-    def isInstance(value):
+    def isInstance(self, value):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -8372,19 +8372,19 @@ class KClass:
 
 class KClassImpl:
     def _init_(jClass):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4ec1192f
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_62a5e4c7
         _this_.jClass = jClass
     
-    def _get_jClass_():
+    def _get_jClass_(self):
         return jClass
     
-    def _get_qualifiedName_():
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7e5432ca
+    def _get_qualifiedName_(self):
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_4a192cc6
     
-    def equals(other):
+    def equals(self, other):
         tmp
         if jsInstanceOf(other, jsClass()):
-            tmp = equals(_get_jClass_(), _get_jClass_())
+            tmp = equals(_this_._get_jClass_(), kotlin_reflect_js_internal_KClassImpl_out_kotlin_Any_(other)._get_jClass_())
         
         if True:
             if True:
@@ -8393,18 +8393,18 @@ class KClassImpl:
         
         return tmp
     
-    def hashCode():
-        tmp0_safe_receiver = _get_simpleName_()
-        tmp1_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_e31b415
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7027c359
+    def hashCode(self):
+        tmp0_safe_receiver = _this_._get_simpleName_()
+        tmp1_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3027ba9b
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_d609083
     
-    def toString():
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_7458d7a9
+    def toString(self):
+        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_3c9be087
     
-    def _get_simpleName_():
+    def _get_simpleName_(self):
         pass
     
-    def isInstance(value):
+    def isInstance(self, value):
         pass
     
 
@@ -8416,140 +8416,140 @@ def _get_isInstanceFunction_(_this):
 
 class PrimitiveKClassImpl:
     def _init_(jClass, givenSimpleName, isInstanceFunction):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_642ebd4c
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_76737130
         _this_.givenSimpleName = givenSimpleName
         _this_.isInstanceFunction = isInstanceFunction
     
-    def equals(other):
+    def equals(self, other):
         if jsNot(jsInstanceOf(other, jsClass())):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_1d691d4f
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_7668edd7
         
         if True:
             pass
         
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3b43a957
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_74ebbc13
     
-    def _get_simpleName_():
+    def _get_simpleName_(self):
         return givenSimpleName
     
-    def isInstance(value):
-        return invoke(value)
+    def isInstance(self, value):
+        return isInstanceFunction.invoke(value)
     
-    def _get_jClass_():
+    def _get_jClass_(self):
         pass
     
-    def _get_qualifiedName_():
+    def _get_qualifiedName_(self):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class NothingKClassImpl:
     def _init_():
         NothingKClassImpl_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3d70dab8
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_48028e11
         _this_.simpleName = 'Nothing'
     
-    def _get_simpleName_():
+    def _get_simpleName_(self):
         return simpleName
     
-    def isInstance(value):
+    def isInstance(self, value):
         return False
     
-    def _get_jClass_():
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_3c2b7322
+    def _get_jClass_(self):
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_26a5007
     
-    def equals(other):
+    def equals(self, other):
         return jsEqeqeq(other, _this_)
     
-    def hashCode():
+    def hashCode(self):
         return 0
     
-    def _get_qualifiedName_():
+    def _get_qualifiedName_(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5ad07e46 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2c1312c1 = 0
 def NothingKClassImpl_getInstance():
     if jsEqeq(NothingKClassImpl_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_13b18bd2
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_68496278
     
     return NothingKClassImpl_instance
 
 class ErrorKClass:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6d821475
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_33c6c4f
     
-    def _get_simpleName_():
+    def _get_simpleName_(self):
         tmp0_error_0 = 'Unknown simpleName for ErrorKClass'
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_3845dedd
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_2cfc75cb
     
-    def _get_qualifiedName_():
+    def _get_qualifiedName_(self):
         tmp0_error_0 = 'Unknown qualifiedName for ErrorKClass'
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_64c555f7
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_44af21cf
     
-    def isInstance(value):
+    def isInstance(self, value):
         tmp0_error_0 = 'Can\'s check isInstance on ErrorKClass'
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_781b09b3
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_144cf818
     
-    def equals(other):
+    def equals(self, other):
         return jsEqeqeq(other, _this_)
     
-    def hashCode():
+    def hashCode(self):
         return 0
     
-    def toString():
+    def toString(self):
         pass
     
 
 class SimpleKClassImpl:
     def _init_(jClass):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3a7e13c0
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_319c77de
         tmp = _this_
-        tmp0_safe_receiver = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_598ffbc8
-        tmp0_unsafeCast_0 = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_49a23dd4
+        tmp0_safe_receiver = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_2860427c
+        tmp0_unsafeCast_0 = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_15d24cb4
         tmp.simpleName = kotlin_Any_(tmp0_unsafeCast_0)
     
-    def _get_simpleName_():
+    def _get_simpleName_(self):
         return simpleName
     
-    def isInstance(value):
-        return jsIsType(value, _get_jClass_())
+    def isInstance(self, value):
+        return jsIsType(value, _this_._get_jClass_())
     
-    def _get_jClass_():
+    def _get_jClass_(self):
         pass
     
-    def _get_qualifiedName_():
+    def _get_qualifiedName_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class KFunction:
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -8557,16 +8557,16 @@ class KFunction:
     
 
 class KProperty:
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -8574,22 +8574,22 @@ class KProperty:
     
 
 class KProperty0:
-    def get():
+    def get(self):
         pass
     
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def invoke():
+    def invoke(self):
         pass
     
     def _init_():
@@ -8597,22 +8597,22 @@ class KProperty0:
     
 
 class KProperty1:
-    def get(receiver):
+    def get(self, receiver):
         pass
     
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def invoke(p1):
+    def invoke(self, p1):
         pass
     
     def _init_():
@@ -8620,22 +8620,22 @@ class KProperty1:
     
 
 class KProperty2:
-    def get(receiver1, receiver2):
+    def get(self, receiver1, receiver2):
         pass
     
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def invoke(p1, p2):
+    def invoke(self, p1, p2):
         pass
     
     def _init_():
@@ -8643,25 +8643,25 @@ class KProperty2:
     
 
 class KMutableProperty0:
-    def set(value):
+    def set(self, value):
         pass
     
-    def get():
+    def get(self):
         pass
     
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def invoke():
+    def invoke(self):
         pass
     
     def _init_():
@@ -8669,16 +8669,16 @@ class KMutableProperty0:
     
 
 class KMutableProperty:
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -8686,25 +8686,25 @@ class KMutableProperty:
     
 
 class KMutableProperty1:
-    def set(receiver, value):
+    def set(self, receiver, value):
         pass
     
-    def get(receiver):
+    def get(self, receiver):
         pass
     
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def invoke(p1):
+    def invoke(self, p1):
         pass
     
     def _init_():
@@ -8712,25 +8712,25 @@ class KMutableProperty1:
     
 
 class KMutableProperty2:
-    def set(receiver1, receiver2, value):
+    def set(self, receiver1, receiver2, value):
         pass
     
-    def get(receiver1, receiver2):
+    def get(self, receiver1, receiver2):
         pass
     
-    def _get_name_():
+    def _get_name_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def invoke(p1, p2):
+    def invoke(self, p1, p2):
         pass
     
     def _init_():
@@ -8738,22 +8738,22 @@ class KMutableProperty2:
     
 
 class KType:
-    def _get_classifier_():
+    def _get_classifier_(self):
         pass
     
-    def _get_arguments_():
+    def _get_arguments_(self):
         pass
     
-    def _get_isMarkedNullable_():
+    def _get_isMarkedNullable_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -8761,63 +8761,63 @@ class KType:
     
 
 def createKType(classifier, arguments, isMarkedNullable):
-    return _init_(classifier, asList(), isMarkedNullable)
+    return KTypeImpl(classifier, asList(), isMarkedNullable)
 
 def createDynamicKType():
     return DynamicKType_getInstance()
 
 def createKTypeParameter(name, upperBounds, variance):
     tmp0_subject = variance
-    kVariance = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_230e2893
-    return _init_(name, asList(), kVariance, False)
+    kVariance = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3c1aede3
+    return KTypeParameterImpl(name, asList(), kVariance, False)
 
 def getStarKTypeProjection():
-    return _get_STAR_()
+    return Companion_getInstance()._get_STAR_()
 
 def createCovariantKTypeProjection(type):
-    return covariant(type)
+    return Companion_getInstance().covariant(type)
 
 def createInvariantKTypeProjection(type):
-    return invariant(type)
+    return Companion_getInstance().invariant(type)
 
 def createContravariantKTypeProjection(type):
-    return contravariant(type)
+    return Companion_getInstance().contravariant(type)
 
 def asString(_this):
     if jsEqeq(variance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_544a93b0
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_76797720
     
     return jsPlus(prefixString(), toString())
 
 class _no_name_provided_:
     def _init_(this_0):
         _this_.this_0 = this_0
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_73c29540
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_70ed9c7f
     
-    def invoke(it):
+    def invoke(self, it):
         return asString(this_0)
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_49172e03)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_33de2803)
     
 
 class KTypeImpl:
     def _init_(classifier, arguments, isMarkedNullable):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_561494af
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_142f0ac1
         _this_.classifier = classifier
         _this_.arguments = arguments
         _this_.isMarkedNullable = isMarkedNullable
     
-    def _get_classifier_():
+    def _get_classifier_(self):
         return classifier
     
-    def _get_arguments_():
+    def _get_arguments_(self):
         return arguments
     
-    def _get_isMarkedNullable_():
+    def _get_isMarkedNullable_(self):
         return isMarkedNullable
     
-    def equals(other):
+    def equals(self, other):
         tmp
         tmp
         tmp
@@ -8847,35 +8847,35 @@ class KTypeImpl:
         
         return tmp
     
-    def hashCode():
+    def hashCode(self):
         return jsBitOr(jsPlus(imul(jsBitOr(jsPlus(imul(hashCode(classifier), 31), hashCode(arguments)), 0), 31), jsBitOr(isMarkedNullable, 0)), 0)
     
-    def toString():
+    def toString(self):
         tmp = classifier
-        kClass = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4808c603
-        classifierName = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2ab33a27
+        kClass = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2687bf90
+        classifierName = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1b7c7d84
         tmp
-        if isEmpty():
+        if arguments.isEmpty():
             tmp = ''
         
         if True:
             tmp = joinToString_default(', ', '<', '>', 0, None, _no_name_provided__factory(_this_), 24, None)
         
         args = tmp
-        nullable = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3a05ba57
+        nullable = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_52d7889a
         return jsPlus(plus(args), nullable)
     
 
 def prefixString():
     tmp0_subject = _this_
     tmp
-    if equals(KVariance_INVARIANT_getInstance()):
+    if tmp0_subject.equals(KVariance_INVARIANT_getInstance()):
         tmp = ''
     
-    if equals(KVariance_IN_getInstance()):
+    if tmp0_subject.equals(KVariance_IN_getInstance()):
         tmp = 'in '
     
-    if equals(KVariance_OUT_getInstance()):
+    if tmp0_subject.equals(KVariance_OUT_getInstance()):
         tmp = 'out '
     
     if True:
@@ -8886,123 +8886,123 @@ def prefixString():
 class DynamicKType:
     def _init_():
         DynamicKType_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3f04847e
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5304ac92
         _this_.classifier = None
         _this_.arguments = emptyList()
         _this_.isMarkedNullable = False
     
-    def _get_classifier_():
+    def _get_classifier_(self):
         return classifier
     
-    def _get_arguments_():
+    def _get_arguments_(self):
         return arguments
     
-    def _get_isMarkedNullable_():
+    def _get_isMarkedNullable_(self):
         return isMarkedNullable
     
-    def toString():
+    def toString(self):
         return 'dynamic'
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_31e420b5 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_46a4eecd = 0
 def DynamicKType_getInstance():
     if jsEqeq(DynamicKType_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_1d5c1e0b
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_36881f62
     
     return DynamicKType_instance
 
 def _no_name_provided__factory(this_0):
-    i = _init_(this_0)
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_3cd39478
+    i = _no_name_provided_(this_0)
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_379ebdf
 
 class KTypeParameterImpl:
     def _init_(name, upperBounds, variance, isReified):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2265a052
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4044f07b
         _this_.name = name
         _this_.upperBounds = upperBounds
         _this_.variance = variance
         _this_.isReified = isReified
     
-    def _get_name_():
+    def _get_name_(self):
         return name
     
-    def _get_upperBounds_():
+    def _get_upperBounds_(self):
         return upperBounds
     
-    def _get_variance_():
+    def _get_variance_(self):
         return variance
     
-    def _get_isReified_():
+    def _get_isReified_(self):
         return isReified
     
-    def toString():
+    def toString(self):
         return name
     
-    def component1():
+    def component1(self):
         return name
     
-    def component2():
+    def component2(self):
         return upperBounds
     
-    def component3():
+    def component3(self):
         return variance
     
-    def component4():
+    def component4(self):
         return isReified
     
-    def copy(name, upperBounds, variance, isReified):
-        return _init_(name, upperBounds, variance, isReified)
+    def copy(self, name, upperBounds, variance, isReified):
+        return KTypeParameterImpl(name, upperBounds, variance, isReified)
     
-    def copy_default(name, upperBounds, variance, isReified, _mask0, _handler):
+    def copy_default(self, name, upperBounds, variance, isReified, _mask0, _handler):
         if jsNot(jsEqeqeq(jsBitAnd(_mask0, 1), 0)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_44af21cf
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_4e27eb57
         
         if jsNot(jsEqeqeq(jsBitAnd(_mask0, 2), 0)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_141b6877
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_7643ae41
         
         if jsNot(jsEqeqeq(jsBitAnd(_mask0, 4), 0)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_f8f9ce0
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_52386242
         
         if jsNot(jsEqeqeq(jsBitAnd(_mask0, 8), 0)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_aa85268
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_5a6e1d26
         
-        return copy(kotlin_String(name), kotlin_collections_List_kotlin_reflect_KType_(upperBounds), kotlin_reflect_KVariance(variance), isReified)
+        return _this_.copy(kotlin_String(name), kotlin_collections_List_kotlin_reflect_KType_(upperBounds), kotlin_reflect_KVariance(variance), isReified)
     
-    def hashCode():
+    def hashCode(self):
         result = getStringHashCode(name)
         result = jsBitOr(jsPlus(imul(result, 31), hashCode(upperBounds)), 0)
-        result = jsBitOr(jsPlus(imul(result, 31), hashCode()), 0)
+        result = jsBitOr(jsPlus(imul(result, 31), variance.hashCode()), 0)
         result = jsBitOr(jsPlus(imul(result, 31), jsBitOr(isReified, 0)), 0)
         return result
     
-    def equals(other):
+    def equals(self, other):
         if jsEqeqeq(_this_, other):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_5cb6fac3
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4b95fdf2
         
         if jsNot(jsInstanceOf(other, jsClass())):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_2ea3f905
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_25727f74
         
         if True:
             pass
         
-        tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6a18bbeb
+        tmp0_other_with_cast = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_35dbed4f
         if jsNot(jsEqeqeq(name, name)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_122557f8
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_53a4637c
         
         if jsNot(equals(upperBounds, upperBounds)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_24663d05
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_2c226db0
         
-        if jsNot(equals(variance)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_279e9c95
+        if jsNot(variance.equals(variance)):
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_10db002c
         
         if jsNot(jsEqeqeq(isReified, isReified)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_427c8f6
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_5205b2e5
         
         return True
     
@@ -9010,387 +9010,387 @@ class KTypeParameterImpl:
 def _get_functionClasses_():
     return functionClasses
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_3bd466bd = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_3abe8714 = 0
 class _no_name_provided_:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_48d54b1c
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1acfd193
     
-    def invoke(it):
+    def invoke(self, it):
         return isObject(it)
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2e897323)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1b6ad296)
     
 
 class _no_name_provided_:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6c439a57
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7fe1dee9
     
-    def invoke(it):
+    def invoke(self, it):
         return isNumber(it)
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3b678c5)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_14c5f96)
     
 
 class _no_name_provided_:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6d4d4108
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_564c9626
     
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_365b1eb5
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_61523c3
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5aef3960)
-    
-
-class _no_name_provided_:
-    def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_412dd71b
-    
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_332f6402
-    
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6399a7e2)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_37f5c5fd)
     
 
 class _no_name_provided_:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4a9f9ed2
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4dd1d767
     
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_a9781d8
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_45f53ff6
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4e26774d)
-    
-
-class _no_name_provided_:
-    def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3032aa88
-    
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_21a9e25a
-    
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_74134494)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_459dea3e)
     
 
 class _no_name_provided_:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5feb2d13
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_143cb21
     
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3195d44a
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_447d14a9
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5e90de14)
-    
-
-class _no_name_provided_:
-    def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_702a0b7d
-    
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_31786c4c
-    
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5fdc1f4a)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6203846e)
     
 
 class _no_name_provided_:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7e1716c2
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3611cae8
     
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_34a86c40
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6056e9b4
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_a98ce67)
-    
-
-class _no_name_provided_:
-    def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7c397b0c
-    
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_752ee6e1
-    
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_173de441)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_16a1738d)
     
 
 class _no_name_provided_:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_372741bb
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_53a3132f
     
-    def invoke(it):
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2ab75fdc
+    
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_55fd98e2)
+    
+
+class _no_name_provided_:
+    def _init_():
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_67ea360f
+    
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_16abeca6
+    
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6f79d583)
+    
+
+class _no_name_provided_:
+    def _init_():
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_145f4f6c
+    
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_602d2058
+    
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3b3809e2)
+    
+
+class _no_name_provided_:
+    def _init_():
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_26c700ff
+    
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7ec33496
+    
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_517c30f)
+    
+
+class _no_name_provided_:
+    def _init_():
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5e24661a
+    
+    def invoke(self, it):
         return jsInstanceOf(it, jsClass())
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3eb36de9)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3b71b6b1)
     
 
 class _no_name_provided_:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1a7da0b9
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_47f71f50
     
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4dd1d767
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_78c3b3ec
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5f5bc594)
-    
-
-class _no_name_provided_:
-    def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_515e9100
-    
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_51d502a6
-    
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1ac864d7)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3babb257)
     
 
 class _no_name_provided_:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_464735bf
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_40bf36b1
     
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3b3cc6b1
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2294d35c
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3a37d3b6)
-    
-
-class _no_name_provided_:
-    def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3adb51f2
-    
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_26b3f25b
-    
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6a907765)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3ccbc947)
     
 
 class _no_name_provided_:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4497e084
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5c56cb6d
     
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5d3b93b4
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_9f3d1b9
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_77833456)
-    
-
-class _no_name_provided_:
-    def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_45b0f44b
-    
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_44ce8395
-    
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_11214149)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_174058f0)
     
 
 class _no_name_provided_:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6cd17c11
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_54366cf2
     
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_74ecaa35
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4a8afcae
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_360b8448)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_21c1fb2e)
     
 
 class _no_name_provided_:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5aefdd21
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_433b7810
     
-    def invoke(it):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_57fb5ebf
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6b6371a0
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_73f55299)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_34f7b98b)
+    
+
+class _no_name_provided_:
+    def _init_():
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_22c73577
+    
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_28e8c2d6
+    
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3e843b50)
+    
+
+class _no_name_provided_:
+    def _init_():
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5eb0f030
+    
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_70fd626f
+    
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_60bdba16)
+    
+
+class _no_name_provided_:
+    def _init_():
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2fe310b
+    
+    def invoke(self, it):
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_20de2518
+    
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4d5d8bdb)
     
 
 class _no_name_provided_:
     def _init_(_arity):
         _this_._arity = _arity
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_169b16dd
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1487c3b3
     
-    def invoke(it):
+    def invoke(self, it):
         tmp
         if jsEqeqeq(jsTypeOf(it), 'function'):
-            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_467c9ad9
+            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_75abea6
         
         if True:
             tmp = False
         
         return tmp
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6eeee66f)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_52924c1c)
     
 
 class PrimitiveClasses:
     def _init_():
         PrimitiveClasses_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5ccf1542
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2822ee4b
         tmp = _this_
         tmp0_unsafeCast_0 = js('Object')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.anyClass = _init_(tmp, 'Any', _no_name_provided__factory())
+        tmp.anyClass = PrimitiveKClassImpl(tmp, 'Any', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('Number')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.numberClass = _init_(tmp, 'Number', _no_name_provided__factory())
+        tmp.numberClass = PrimitiveKClassImpl(tmp, 'Number', _no_name_provided__factory())
         _this_.nothingClass = NothingKClassImpl_getInstance()
         tmp = _this_
         tmp0_unsafeCast_0 = js('Boolean')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.booleanClass = _init_(tmp, 'Boolean', _no_name_provided__factory())
+        tmp.booleanClass = PrimitiveKClassImpl(tmp, 'Boolean', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('Number')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.byteClass = _init_(tmp, 'Byte', _no_name_provided__factory())
+        tmp.byteClass = PrimitiveKClassImpl(tmp, 'Byte', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('Number')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.shortClass = _init_(tmp, 'Short', _no_name_provided__factory())
+        tmp.shortClass = PrimitiveKClassImpl(tmp, 'Short', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('Number')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.intClass = _init_(tmp, 'Int', _no_name_provided__factory())
+        tmp.intClass = PrimitiveKClassImpl(tmp, 'Int', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('Number')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.floatClass = _init_(tmp, 'Float', _no_name_provided__factory())
+        tmp.floatClass = PrimitiveKClassImpl(tmp, 'Float', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('Number')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.doubleClass = _init_(tmp, 'Double', _no_name_provided__factory())
+        tmp.doubleClass = PrimitiveKClassImpl(tmp, 'Double', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('Array')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.arrayClass = _init_(tmp, 'Array', _no_name_provided__factory())
+        tmp.arrayClass = PrimitiveKClassImpl(tmp, 'Array', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('String')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.stringClass = _init_(tmp, 'String', _no_name_provided__factory())
+        tmp.stringClass = PrimitiveKClassImpl(tmp, 'String', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('Error')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.throwableClass = _init_(tmp, 'Throwable', _no_name_provided__factory())
+        tmp.throwableClass = PrimitiveKClassImpl(tmp, 'Throwable', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('Array')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.booleanArrayClass = _init_(tmp, 'BooleanArray', _no_name_provided__factory())
+        tmp.booleanArrayClass = PrimitiveKClassImpl(tmp, 'BooleanArray', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('Uint16Array')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.charArrayClass = _init_(tmp, 'CharArray', _no_name_provided__factory())
+        tmp.charArrayClass = PrimitiveKClassImpl(tmp, 'CharArray', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('Int8Array')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.byteArrayClass = _init_(tmp, 'ByteArray', _no_name_provided__factory())
+        tmp.byteArrayClass = PrimitiveKClassImpl(tmp, 'ByteArray', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('Int16Array')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.shortArrayClass = _init_(tmp, 'ShortArray', _no_name_provided__factory())
+        tmp.shortArrayClass = PrimitiveKClassImpl(tmp, 'ShortArray', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('Int32Array')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.intArrayClass = _init_(tmp, 'IntArray', _no_name_provided__factory())
+        tmp.intArrayClass = PrimitiveKClassImpl(tmp, 'IntArray', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('Array')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.longArrayClass = _init_(tmp, 'LongArray', _no_name_provided__factory())
+        tmp.longArrayClass = PrimitiveKClassImpl(tmp, 'LongArray', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('Float32Array')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.floatArrayClass = _init_(tmp, 'FloatArray', _no_name_provided__factory())
+        tmp.floatArrayClass = PrimitiveKClassImpl(tmp, 'FloatArray', _no_name_provided__factory())
         tmp = _this_
         tmp0_unsafeCast_0 = js('Float64Array')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
-        tmp.doubleArrayClass = _init_(tmp, 'DoubleArray', _no_name_provided__factory())
+        tmp.doubleArrayClass = PrimitiveKClassImpl(tmp, 'DoubleArray', _no_name_provided__factory())
     
-    def _get_anyClass_():
+    def _get_anyClass_(self):
         return anyClass
     
-    def _get_numberClass_():
+    def _get_numberClass_(self):
         return numberClass
     
-    def _get_nothingClass_():
+    def _get_nothingClass_(self):
         return nothingClass
     
-    def _get_booleanClass_():
+    def _get_booleanClass_(self):
         return booleanClass
     
-    def _get_byteClass_():
+    def _get_byteClass_(self):
         return byteClass
     
-    def _get_shortClass_():
+    def _get_shortClass_(self):
         return shortClass
     
-    def _get_intClass_():
+    def _get_intClass_(self):
         return intClass
     
-    def _get_floatClass_():
+    def _get_floatClass_(self):
         return floatClass
     
-    def _get_doubleClass_():
+    def _get_doubleClass_(self):
         return doubleClass
     
-    def _get_arrayClass_():
+    def _get_arrayClass_(self):
         return arrayClass
     
-    def _get_stringClass_():
+    def _get_stringClass_(self):
         return stringClass
     
-    def _get_throwableClass_():
+    def _get_throwableClass_(self):
         return throwableClass
     
-    def _get_booleanArrayClass_():
+    def _get_booleanArrayClass_(self):
         return booleanArrayClass
     
-    def _get_charArrayClass_():
+    def _get_charArrayClass_(self):
         return charArrayClass
     
-    def _get_byteArrayClass_():
+    def _get_byteArrayClass_(self):
         return byteArrayClass
     
-    def _get_shortArrayClass_():
+    def _get_shortArrayClass_(self):
         return shortArrayClass
     
-    def _get_intArrayClass_():
+    def _get_intArrayClass_(self):
         return intArrayClass
     
-    def _get_longArrayClass_():
+    def _get_longArrayClass_(self):
         return longArrayClass
     
-    def _get_floatArrayClass_():
+    def _get_floatArrayClass_(self):
         return floatArrayClass
     
-    def _get_doubleArrayClass_():
+    def _get_doubleArrayClass_(self):
         return doubleArrayClass
     
-    def functionClass(arity):
+    def functionClass(self, arity):
         tmp0_elvis_lhs = jsArrayGet(functionClasses, arity)
         tmp
         if jsEqeq(tmp0_elvis_lhs, None):
             tmp0_unsafeCast_0_3 = js('Function')
             tmp = kotlin_Any_(tmp0_unsafeCast_0_3)
-            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_3dc3c293
-            result_2 = _init_(tmp, tmp, _no_name_provided__factory(arity))
+            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_582b8d30
+            result_2 = PrimitiveKClassImpl(tmp, tmp, _no_name_provided__factory(arity))
             tmp1_asDynamic_0_5 = functionClasses
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1d132288
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_53da3955
             tmp = result_2
         
         if True:
@@ -9398,102 +9398,102 @@ class PrimitiveClasses:
         
         return tmp
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_9d45e6e = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_29420437 = 0
 def PrimitiveClasses_getInstance():
     if jsEqeq(PrimitiveClasses_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_352a4317
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_3d9033b
     
     return PrimitiveClasses_instance
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_3675ad98
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_11e3225c
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_755fbfab
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_17b9c3aa
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_23d0a0
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_5991020b
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_174058f0
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_45d7e92
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_259fabf7
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_215f2743
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_3b4e6329
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_3217fef1
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_3c7da546
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_4241aecb
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_4fe03311
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_21e5812b
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_4182abba
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_6f1c19d
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_342dc6d4
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_51ddc08e
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_66f02ece
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_57c09e37
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_28e8c2d6
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_2db51c5b
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_2242013
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_20c3f767
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_7a287117
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_ddcd9f1
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_5eb0f030
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_3d04a253
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_6d97c8aa
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_652b77eb
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_61b4da5c
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_28449652
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_5f1f59e3
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_2f2c41d3
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_20f21dd9
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_3bd3d820
 
 def _no_name_provided__factory(_arity):
-    i = _init_(_arity)
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_261ddbf5
+    i = _no_name_provided_(_arity)
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_47d054db
 
 def functionClasses_init_():
     tmp0_arrayOfNulls_0 = 0
@@ -9501,7 +9501,7 @@ def functionClasses_init_():
 
 def getKClass(jClass):
     tmp
-    if kotlin_Boolean(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4fb53b76):
+    if kotlin_Boolean(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_67d4e8f7):
         tmp = getKClassM(kotlin_Any_(jClass))
     
     if True:
@@ -9520,31 +9520,31 @@ def getKClassM(jClasses):
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
     
     if True:
-        tmp1_unsafeCast_0 = _init_()
+        tmp1_unsafeCast_0 = ErrorKClass()
         tmp = kotlin_Any_(tmp1_unsafeCast_0)
     
     return tmp
 
 def getKClass1(jClass):
     if jsEqeqeq(jClass, js('String')):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_15ddb82a
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_7d9d59df
     
-    metadata = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_73ffe7b0
+    metadata = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_3a770af8
     tmp
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_30bd925c:
+    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4b6e296a:
         tmp
-        if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5796ae15:
-            kClass = _init_(jClass)
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_d4594a8
+        if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_791b9887:
+            kClass = SimpleKClassImpl(jClass)
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_7c689379
             tmp = kClass
         
         if True:
-            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_67744663
+            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_5a816a78
         
         tmp = kotlin_reflect_KClass_T_(tmp)
     
     if True:
-        tmp = _init_(jClass)
+        tmp = SimpleKClassImpl(jClass)
     
     return tmp
 
@@ -9557,7 +9557,7 @@ def getKClassFromExpression(e):
     if jsEqeqeq(tmp0_subject, 'number'):
         tmp
         tmp0_asDynamic_0 = jsBitwiseOr(e, 0)
-        if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_158bd27d:
+        if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_77095c8c:
             tmp = intClass
         
         if True:
@@ -9572,7 +9572,7 @@ def getKClassFromExpression(e):
     
     if jsEqeqeq(tmp0_subject, 'function'):
         tmp = PrimitiveClasses_getInstance()
-        tmp = functionClass(kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_21440e36))
+        tmp = tmp.functionClass(kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_64bcf689))
     
     if True:
         tmp
@@ -9617,12 +9617,12 @@ def getKClassFromExpression(e):
                                             
                                             if True:
                                                 if True:
-                                                    constructor = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_2662997a
+                                                    constructor = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_9918487
                                                     tmp
-                                                    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_72ab75c:
+                                                    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_59f0ef6e:
                                                         tmp = anyClass
                                                     
-                                                    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_30f39d9d:
+                                                    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_8a0447e:
                                                         tmp = throwableClass
                                                     
                                                     if True:
@@ -9647,22 +9647,22 @@ def getKClassFromExpression(e):
     return kotlin_Any_(tmp1_unsafeCast_0)
 
 class Appendable:
-    def append(value):
+    def append(self, value):
         pass
     
-    def append(value):
+    def append(self, value):
         pass
     
-    def append(value, startIndex, endIndex):
+    def append(self, value, startIndex, endIndex):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -9677,14 +9677,14 @@ def StringBuilder_init__Create_(capacity):
     return StringBuilder_init__Init_(capacity, Object_create())
 
 def StringBuilder_init__Init_(content, _this):
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1cc784c9
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_61725c0e
     return _this
 
 def StringBuilder_init__Create_(content):
     return StringBuilder_init__Init_(content, Object_create())
 
 def StringBuilder_init__Init_(_this):
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_18a71e25
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5be872b6
     return _this
 
 def StringBuilder_init__Create_():
@@ -9697,52 +9697,52 @@ def _get_string_(_this):
     return string
 
 def checkReplaceRange(_this, startIndex, endIndex, length):
-    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6b86a5a4:
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_ecd59a3
+    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7e5ffe4e:
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_f57058f
     
     if jsGt(startIndex, endIndex):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_56984e92
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_6cd7d43f
     
 
 class StringBuilder:
     def _init_(content):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_13ebbdab
-        _this_.string = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_38934406
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7b01f056
+        _this_.string = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7b0dc526
     
-    def _get_length_():
+    def _get_length_(self):
         tmp0_asDynamic_0 = string
-        return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_2a03b87)
+        return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_406ea770)
     
-    def get(index):
+    def get(self, index):
         tmp0_getOrElse_0 = string
         tmp
-        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5d978663:
+        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2c44833f:
             tmp = charSequenceGet(tmp0_getOrElse_0, index)
         
         if True:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7d9d59df
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_131879fc
         
         return tmp
     
-    def subSequence(startIndex, endIndex):
+    def subSequence(self, startIndex, endIndex):
         tmp0_substring_0 = string
-        return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_7296a632)
+        return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_3ca941f6)
     
-    def append(value):
+    def append(self, value):
         tmp0_this = _this_
         tmp0_this.string = jsPlus(string, value)
         return _this_
     
-    def append(value):
+    def append(self, value):
         tmp0_this = _this_
         tmp0_this.string = jsPlus(string, toString())
         return _this_
     
-    def append(value, startIndex, endIndex):
+    def append(self, value, startIndex, endIndex):
         tmp0_elvis_lhs = value
-        return appendRange(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1fc0e258, startIndex, endIndex)
+        return _this_.appendRange(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_23edc081, startIndex, endIndex)
     
-    def reverse():
+    def reverse(self):
         reversed = ''
         index = jsBitOr(jsMinus(jsArrayLength(string), 1), 0)
         while jsGtEq(index, 0):
@@ -9750,7 +9750,7 @@ class StringBuilder:
             tmp0 = index
             index = jsBitOr(jsMinus(tmp0, 1), 0)
             low = charSequenceGet(tmp, tmp0)
-            if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_423a5c9c:
+            if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_47b9622:
                 tmp = string
                 tmp1 = index
                 index = jsBitOr(jsMinus(tmp1, 1), 0)
@@ -9769,51 +9769,51 @@ class StringBuilder:
         _this_.string = reversed
         return _this_
     
-    def append(value):
+    def append(self, value):
         tmp0_this = _this_
         tmp0_this.string = jsPlus(string, toString())
         return _this_
     
-    def append(value):
+    def append(self, value):
         tmp0_this = _this_
         tmp0_this.string = jsPlus(string, value)
         return _this_
     
-    def append(value):
+    def append(self, value):
         tmp0_this = _this_
         tmp0_this.string = jsPlus(string, concatToString())
         return _this_
     
-    def append(value):
-        return append(value)
+    def append(self, value):
+        return _this_.append(value)
     
-    def append(value):
+    def append(self, value):
         tmp0_this = _this_
         tmp = tmp0_this
         tmp = string
         tmp1_elvis_lhs = value
-        tmp.string = jsPlus(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_736500e6)
+        tmp.string = jsPlus(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6ff9b4f2)
         return _this_
     
-    def capacity():
-        return _get_length_()
+    def capacity(self):
+        return _this_._get_length_()
     
-    def ensureCapacity(minimumCapacity):
+    def ensureCapacity(self, minimumCapacity):
         pass
     
-    def indexOf(string):
+    def indexOf(self, string):
         tmp0_asDynamic_0 = string
-        return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4d619aa0)
+        return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_3fe8d57a)
     
-    def indexOf(string, startIndex):
+    def indexOf(self, string, startIndex):
         tmp0_asDynamic_0 = string
-        return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4e64e44c)
+        return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_64b262a7)
     
-    def lastIndexOf(string):
+    def lastIndexOf(self, string):
         tmp0_asDynamic_0 = string
-        return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_510c6b9)
+        return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_61d1315b)
     
-    def lastIndexOf(string, startIndex):
+    def lastIndexOf(self, string, startIndex):
         tmp
         if jsEqeqeq(charSequenceLength(string), 0):
             tmp = jsLt(startIndex, 0)
@@ -9824,282 +9824,282 @@ class StringBuilder:
             
         
         if tmp:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_298154d4
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_60035f1e
         
         if True:
             pass
         
         tmp0_asDynamic_0 = string
-        return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_8e654f7)
+        return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2459715c)
     
-    def insert(index, value):
-        checkPositionIndex(index, _get_length_())
+    def insert(self, index, value):
+        Companion_getInstance().checkPositionIndex(index, _this_._get_length_())
         tmp = _this_
         tmp0_substring_0 = string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_3144dd1a), value)
+        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4e7148dd), value)
         tmp2_substring_0 = string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_6795c28a))
+        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_126606bc))
         return _this_
     
-    def insert(index, value):
-        checkPositionIndex(index, _get_length_())
+    def insert(self, index, value):
+        Companion_getInstance().checkPositionIndex(index, _this_._get_length_())
         tmp = _this_
         tmp0_substring_0 = string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_596416c5), value)
+        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4d957f5a), value)
         tmp2_substring_0 = string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_3f575bad))
+        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_669abb5c))
         return _this_
     
-    def insert(index, value):
-        checkPositionIndex(index, _get_length_())
+    def insert(self, index, value):
+        Companion_getInstance().checkPositionIndex(index, _this_._get_length_())
         tmp = _this_
         tmp0_substring_0 = string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2bc8c738), concatToString())
+        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_548b7e1a), concatToString())
         tmp2_substring_0 = string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_346df1c0))
+        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5f6ef272))
         return _this_
     
-    def insert(index, value):
-        checkPositionIndex(index, _get_length_())
+    def insert(self, index, value):
+        Companion_getInstance().checkPositionIndex(index, _this_._get_length_())
         tmp = _this_
         tmp0_substring_0 = string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_21612e76), toString())
+        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_416374ec), toString())
         tmp2_substring_0 = string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_26d60427))
+        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_485b39d6))
         return _this_
     
-    def insert(index, value):
-        checkPositionIndex(index, _get_length_())
+    def insert(self, index, value):
+        Companion_getInstance().checkPositionIndex(index, _this_._get_length_())
         tmp = _this_
         tmp0_substring_0 = string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_30c6f027), toString())
+        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_29ff6e15), toString())
         tmp2_substring_0 = string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_59c08dd4))
+        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_76242b2c))
         return _this_
     
-    def insert(index, value):
-        return insert(index, value)
+    def insert(self, index, value):
+        return _this_.insert(index, value)
     
-    def insert(index, value):
-        checkPositionIndex(index, _get_length_())
+    def insert(self, index, value):
+        Companion_getInstance().checkPositionIndex(index, _this_._get_length_())
         tmp0_elvis_lhs = value
-        toInsert = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_ca0ccb6
+        toInsert = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2ee6cb8a
         tmp = _this_
         tmp0_substring_0 = string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_10b69457), toInsert)
+        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_7ee8882a), toInsert)
         tmp2_substring_0 = string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_6e2a031b))
+        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_526c0134))
         return _this_
     
-    def setLength(newLength):
+    def setLength(self, newLength):
         if jsLt(newLength, 0):
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_1129775
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_3619ecd
         
-        if jsLtEq(newLength, _get_length_()):
+        if jsLtEq(newLength, _this_._get_length_()):
             tmp = _this_
             tmp0_substring_0 = string
             tmp1_substring_0 = 0
-            tmp.string = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1c097e3)
+            tmp.string = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4d0aa772)
         
         if True:
-            inductionVariable = _get_length_()
+            inductionVariable = _this_._get_length_()
             if jsLt(inductionVariable, newLength):
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_25a85c9
+                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_3fa87583
             
         
     
-    def substring(startIndex):
-        checkPositionIndex(startIndex, _get_length_())
+    def substring(self, startIndex):
+        Companion_getInstance().checkPositionIndex(startIndex, _this_._get_length_())
         tmp0_substring_0 = string
-        return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_67b5a089)
+        return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2c895dff)
     
-    def substring(startIndex, endIndex):
-        checkBoundsIndexes(startIndex, endIndex, _get_length_())
+    def substring(self, startIndex, endIndex):
+        Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, _this_._get_length_())
         tmp0_substring_0 = string
-        return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_714bd7ad)
+        return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_70224e31)
     
-    def trimToSize():
+    def trimToSize(self):
         pass
     
-    def toString():
+    def toString(self):
         return string
     
-    def clear():
+    def clear(self):
         _this_.string = ''
         return _this_
     
-    def set(index, value):
-        checkElementIndex(index, _get_length_())
+    def set(self, index, value):
+        Companion_getInstance().checkElementIndex(index, _this_._get_length_())
         tmp = _this_
         tmp0_substring_0 = string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_3209eb), value)
+        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_6bc04a88), value)
         tmp2_substring_0 = string
         tmp3_substring_0 = jsBitOr(jsPlus(index, 1), 0)
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_57ddbe75))
+        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1cd7de2))
     
-    def setRange(startIndex, endIndex, value):
-        checkReplaceRange(_this_, startIndex, endIndex, _get_length_())
+    def setRange(self, startIndex, endIndex, value):
+        checkReplaceRange(_this_, startIndex, endIndex, _this_._get_length_())
         tmp = _this_
         tmp0_substring_0 = string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5233090a), value)
+        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_84b0639), value)
         tmp2_substring_0 = string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_68e66fff))
+        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1fa0e5a8))
         return _this_
     
-    def deleteAt(index):
-        checkElementIndex(index, _get_length_())
+    def deleteAt(self, index):
+        Companion_getInstance().checkElementIndex(index, _this_._get_length_())
         tmp = _this_
         tmp0_substring_0 = string
         tmp1_substring_0 = 0
-        tmp = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5d5790ea)
+        tmp = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2d38cc6)
         tmp2_substring_0 = string
         tmp3_substring_0 = jsBitOr(jsPlus(index, 1), 0)
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_614eceb))
+        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_a891214))
         return _this_
     
-    def deleteRange(startIndex, endIndex):
-        checkReplaceRange(_this_, startIndex, endIndex, _get_length_())
+    def deleteRange(self, startIndex, endIndex):
+        checkReplaceRange(_this_, startIndex, endIndex, _this_._get_length_())
         tmp = _this_
         tmp0_substring_0 = string
         tmp1_substring_0 = 0
-        tmp = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5b4bdee3)
+        tmp = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_6b61b3a8)
         tmp2_substring_0 = string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_56e18141))
+        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1b5c2310))
         return _this_
     
-    def toCharArray(destination, destinationOffset, startIndex, endIndex):
-        checkBoundsIndexes(startIndex, endIndex, _get_length_())
-        checkBoundsIndexes(destinationOffset, jsBitOr(jsMinus(jsBitOr(jsPlus(destinationOffset, endIndex), 0), startIndex), 0), jsArrayLength(destination))
+    def toCharArray(self, destination, destinationOffset, startIndex, endIndex):
+        Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, _this_._get_length_())
+        Companion_getInstance().checkBoundsIndexes(destinationOffset, jsBitOr(jsMinus(jsBitOr(jsPlus(destinationOffset, endIndex), 0), startIndex), 0), jsArrayLength(destination))
         dstIndex = destinationOffset
         inductionVariable = startIndex
         if jsLt(inductionVariable, endIndex):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_38c203a6
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_687bf48e
         
     
-    def toCharArray_default(destination, destinationOffset, startIndex, endIndex, _mask0, _handler):
+    def toCharArray_default(self, destination, destinationOffset, startIndex, endIndex, _mask0, _handler):
         if jsNot(jsEqeqeq(jsBitAnd(_mask0, 2), 0)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_55b678dc
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_fe618cc
         
         if jsNot(jsEqeqeq(jsBitAnd(_mask0, 4), 0)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_c541518
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_603af797
         
         if jsNot(jsEqeqeq(jsBitAnd(_mask0, 8), 0)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_d0a2a80
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_5b1965ea
         
-        return toCharArray(destination, destinationOffset, startIndex, endIndex)
+        return _this_.toCharArray(destination, destinationOffset, startIndex, endIndex)
     
-    def appendRange(value, startIndex, endIndex):
+    def appendRange(self, value, startIndex, endIndex):
         tmp0_this = _this_
         tmp0_this.string = jsPlus(string, concatToString(startIndex, endIndex))
         return _this_
     
-    def appendRange(value, startIndex, endIndex):
+    def appendRange(self, value, startIndex, endIndex):
         stringCsq = toString(value)
-        checkBoundsIndexes(startIndex, endIndex, jsArrayLength(stringCsq))
+        Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, jsArrayLength(stringCsq))
         tmp0_this = _this_
         tmp = tmp0_this
         tmp = string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_56b3165c))
+        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_299bdcbf))
         return _this_
     
-    def insertRange(index, value, startIndex, endIndex):
-        checkPositionIndex(index, _get_length_())
+    def insertRange(self, index, value, startIndex, endIndex):
+        Companion_getInstance().checkPositionIndex(index, _this_._get_length_())
         tmp = _this_
         tmp0_substring_0 = string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4e59830b), concatToString(startIndex, endIndex))
+        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_79781e77), concatToString(startIndex, endIndex))
         tmp2_substring_0 = string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2646531d))
+        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_584b3bdc))
         return _this_
     
-    def insertRange(index, value, startIndex, endIndex):
-        checkPositionIndex(index, _get_length_())
+    def insertRange(self, index, value, startIndex, endIndex):
+        Companion_getInstance().checkPositionIndex(index, _this_._get_length_())
         stringCsq = toString(value)
-        checkBoundsIndexes(startIndex, endIndex, jsArrayLength(stringCsq))
+        Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, jsArrayLength(stringCsq))
         tmp = _this_
         tmp0_substring_0 = string
         tmp1_substring_0 = 0
-        tmp = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4077b71e)
-        tmp = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_515a4ee))
+        tmp = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5a77475d)
+        tmp = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_3db1ebbb))
         tmp2_substring_0 = string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_f86b42c))
+        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_3cd7ca94))
         return _this_
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
 
 def isLowSurrogate():
-    containsLower = _init_(56320)
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_493b0b09
+    containsLower = Char(56320)
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_da3cab
 
 def isHighSurrogate():
-    containsLower = _init_(55296)
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5be38ef2
+    containsLower = Char(55296)
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1992ce66
 
 def checkRadix(radix):
-    if jsNot(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_482741af):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_466d87a1
+    if jsNot(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_105be2d9):
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_2d4eba14
     
     return radix
 
 def _get_STRING_CASE_INSENSITIVE_ORDER_():
     return STRING_CASE_INSENSITIVE_ORDER
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_7d6f31ef = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2693b289 = 0
 def nativeLastIndexOf(str, fromIndex):
-    return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_158f30b5)
+    return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1fe56f3e)
 
 def substring(startIndex, endIndex):
-    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_84b0639)
+    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_73756237)
 
 def substring(startIndex):
-    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1c45c8ad)
+    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_68fb4908)
 
 def compareTo(other, ignoreCase):
     if ignoreCase:
         n1 = jsArrayLength(_this_)
         n2 = jsArrayLength(other)
-        min = min(int32ArrayOf(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_7a1be5d6))
+        min = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl_3d8904f8.min(int32ArrayOf(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_6a348e99))
         if jsEqeqeq(min, 0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4115b8a7
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_4691e2f5
         
         start = 0
         while True:
             tmp0_minOf_0 = jsBitOr(jsPlus(start, 16), 0)
-            end = min(int32ArrayOf(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_4d704218))
+            end = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl_40dc88ca.min(int32ArrayOf(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_3f9d5896))
             tmp1_substring_0 = start
-            s1 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_64fd2816)
+            s1 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2241cafe)
             tmp2_substring_0 = start
-            s2 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_6cd7d43f)
+            s2 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_531b77d)
             if jsNot(jsEqeqeq(s1, s2)):
                 tmp3_toUpperCase_0 = s1
-                s1 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5dbe891a)
+                s1 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_3baeb38d)
                 tmp4_toUpperCase_0 = s2
-                s2 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2a961de3)
+                s2 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_709b21e0)
                 if jsNot(jsEqeqeq(s1, s2)):
                     tmp5_toLowerCase_0 = s1
-                    s1 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4f3ea60d)
+                    s1 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_727d51a)
                     tmp6_toLowerCase_0 = s2
-                    s2 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_773bccc3)
+                    s2 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_fb8fa44)
                     if jsNot(jsEqeqeq(s1, s2)):
                         return compareTo(s1, s2)
                     
                 
             
             if jsEqeqeq(end, min):
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrBreakImpl_4b477d05
+                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrBreakImpl_5e1d6ace
             
             start = end
         
@@ -10111,15 +10111,15 @@ def compareTo(other, ignoreCase):
 
 def compareTo_default(other, ignoreCase, _mask0, _handler):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 2), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_6fc75d9c
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_32124a62
     
     return compareTo(other, ignoreCase)
 
 def toUpperCase():
-    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_41d1b958)
+    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1c5c560a)
 
 def toLowerCase():
-    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_8cd6635)
+    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_d57ba2a)
 
 def concatToString():
     result = ''
@@ -10134,70 +10134,70 @@ def concatToString():
     return result
 
 def concatToString(startIndex, endIndex):
-    checkBoundsIndexes(startIndex, endIndex, jsArrayLength(_this_))
+    Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, jsArrayLength(_this_))
     result = ''
     inductionVariable = startIndex
     if jsLt(inductionVariable, endIndex):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_3984f360
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_761a8ca1
     
     return result
 
 def concatToString_default(startIndex, endIndex, _mask0, _handler):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 1), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_2454ee88
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_34e79514
     
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 2), 0)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_7cc87859
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_662c71e5
     
     return concatToString(startIndex, endIndex)
 
 class sam_kotlin_Comparator_0:
     def _init_(function):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_56609c11
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_32d608ce
         _this_.function = function
     
-    def compare(a, b):
-        return invoke(a, b)
+    def compare(self, a, b):
+        return function.invoke(a, b)
     
-    def compare(a, b):
-        return compare(a, b)
+    def compare(self, a, b):
+        return _this_.compare(a, b)
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class _no_name_provided_:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_29031a38
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_69faebc2
     
-    def invoke(a, b):
+    def invoke(self, a, b):
         return compareTo(b, True)
     
-    def invoke(p1, p2):
-        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5494539a
-        return invoke(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4a114a53)
+    def invoke(self, p1, p2):
+        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4473d830
+        return _this_.invoke(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3864569f)
     
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_218f65a8
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_6c1ff6a9
 
 def STRING_CASE_INSENSITIVE_ORDER_init_():
     tmp = _no_name_provided__factory()
-    return _init_(tmp)
+    return sam_kotlin_Comparator_0(tmp)
 
 def _get_REPLACEMENT_BYTE_SEQUENCE_():
     return REPLACEMENT_BYTE_SEQUENCE
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_39d0775c = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_611d867 = 0
 def REPLACEMENT_BYTE_SEQUENCE_init_():
-    tmp0_byteArrayOf_0 = int8ArrayOf(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_5a5e7ddf)
+    tmp0_byteArrayOf_0 = int8ArrayOf(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_694330ff)
     return tmp0_byteArrayOf_0
 
 def _get_value_(_this):
@@ -10206,147 +10206,147 @@ def _get_value_(_this):
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6042b613
-        _this_.MIN_VALUE = _init_(0)
-        _this_.MAX_VALUE = _init_(65535)
-        _this_.MIN_HIGH_SURROGATE = _init_(55296)
-        _this_.MAX_HIGH_SURROGATE = _init_(56319)
-        _this_.MIN_LOW_SURROGATE = _init_(56320)
-        _this_.MAX_LOW_SURROGATE = _init_(57343)
-        _this_.MIN_SURROGATE = _init_(55296)
-        _this_.MAX_SURROGATE = _init_(57343)
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_15a8b228
+        _this_.MIN_VALUE = Char(0)
+        _this_.MAX_VALUE = Char(65535)
+        _this_.MIN_HIGH_SURROGATE = Char(55296)
+        _this_.MAX_HIGH_SURROGATE = Char(56319)
+        _this_.MIN_LOW_SURROGATE = Char(56320)
+        _this_.MAX_LOW_SURROGATE = Char(57343)
+        _this_.MIN_SURROGATE = Char(55296)
+        _this_.MAX_SURROGATE = Char(57343)
         _this_.SIZE_BYTES = 2
         _this_.SIZE_BITS = 16
     
-    def _get_MIN_VALUE_():
+    def _get_MIN_VALUE_(self):
         return MIN_VALUE
     
-    def _get_MAX_VALUE_():
+    def _get_MAX_VALUE_(self):
         return MAX_VALUE
     
-    def _get_MIN_HIGH_SURROGATE_():
+    def _get_MIN_HIGH_SURROGATE_(self):
         return MIN_HIGH_SURROGATE
     
-    def _get_MAX_HIGH_SURROGATE_():
+    def _get_MAX_HIGH_SURROGATE_(self):
         return MAX_HIGH_SURROGATE
     
-    def _get_MIN_LOW_SURROGATE_():
+    def _get_MIN_LOW_SURROGATE_(self):
         return MIN_LOW_SURROGATE
     
-    def _get_MAX_LOW_SURROGATE_():
+    def _get_MAX_LOW_SURROGATE_(self):
         return MAX_LOW_SURROGATE
     
-    def _get_MIN_SURROGATE_():
+    def _get_MIN_SURROGATE_(self):
         return MIN_SURROGATE
     
-    def _get_MAX_SURROGATE_():
+    def _get_MAX_SURROGATE_(self):
         return MAX_SURROGATE
     
-    def _get_SIZE_BYTES_():
+    def _get_SIZE_BYTES_(self):
         return SIZE_BYTES
     
-    def _get_SIZE_BITS_():
+    def _get_SIZE_BITS_(self):
         return SIZE_BITS
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_7e2f2791 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_a0b221f = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_383cd5d8
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_b46b5ef
     
     return Companion_instance
 
 class Char:
     def _init_(value):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_66ab765c
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_124ba047
         _this_.value = value
     
-    def compareTo(other):
+    def compareTo(self, other):
         return jsBitOr(jsMinus(value, value), 0)
     
-    def compareTo(other):
-        return compareTo(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_263ecd4b)
+    def compareTo(self, other):
+        return _this_.compareTo(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3561a0f7)
     
-    def plus(other):
+    def plus(self, other):
         return numberToChar(jsBitOr(jsPlus(value, other), 0))
     
-    def minus(other):
+    def minus(self, other):
         return jsBitOr(jsMinus(value, value), 0)
     
-    def minus(other):
+    def minus(self, other):
         return numberToChar(jsBitOr(jsMinus(value, other), 0))
     
-    def inc():
+    def inc(self):
         return numberToChar(jsBitOr(jsPlus(value, 1), 0))
     
-    def dec():
+    def dec(self):
         return numberToChar(jsBitOr(jsMinus(value, 1), 0))
     
-    def rangeTo(other):
-        return _init_(_this_, other)
+    def rangeTo(self, other):
+        return CharRange(_this_, other)
     
-    def toByte():
+    def toByte(self):
         return toByte(value)
     
-    def toChar():
+    def toChar(self):
         return _this_
     
-    def toShort():
+    def toShort(self):
         return toShort(value)
     
-    def toInt():
+    def toInt(self):
         return value
     
-    def toLong():
+    def toLong(self):
         return toLong(value)
     
-    def toFloat():
+    def toFloat(self):
         return kotlin_Float(value)
     
-    def toDouble():
+    def toDouble(self):
         return kotlin_Double(value)
     
-    def equals(other):
+    def equals(self, other):
         if jsEqeqeq(other, _this_):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_76c5599b
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_2b35976a
         
         if jsNot(jsInstanceOf(other, jsClass())):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_3b68a50c
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_67a6f2c4
         
         if True:
             pass
         
         return jsEqeqeq(value, value)
     
-    def hashCode():
+    def hashCode(self):
         return value
     
-    def toString():
-        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_7b9661d4
+    def toString(self):
+        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4a282c78
         return kotlin_Any_(tmp0_unsafeCast_0)
     
 
 class Iterable:
-    def iterator():
+    def iterator(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -10354,28 +10354,28 @@ class Iterable:
     
 
 class Collection:
-    def _get_size_():
+    def _get_size_(self):
         pass
     
-    def isEmpty():
+    def isEmpty(self):
         pass
     
-    def contains(element):
+    def contains(self, element):
         pass
     
-    def iterator():
+    def iterator(self):
         pass
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -10383,46 +10383,46 @@ class Collection:
     
 
 class List:
-    def _get_size_():
+    def _get_size_(self):
         pass
     
-    def isEmpty():
+    def isEmpty(self):
         pass
     
-    def contains(element):
+    def contains(self, element):
         pass
     
-    def iterator():
+    def iterator(self):
         pass
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         pass
     
-    def get(index):
+    def get(self, index):
         pass
     
-    def indexOf(element):
+    def indexOf(self, element):
         pass
     
-    def lastIndexOf(element):
+    def lastIndexOf(self, element):
         pass
     
-    def listIterator():
+    def listIterator(self):
         pass
     
-    def listIterator(index):
+    def listIterator(self, index):
         pass
     
-    def subList(fromIndex, toIndex):
+    def subList(self, fromIndex, toIndex):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -10430,76 +10430,76 @@ class List:
     
 
 class MutableList:
-    def add(element):
+    def add(self, element):
         pass
     
-    def remove(element):
+    def remove(self, element):
         pass
     
-    def addAll(elements):
+    def addAll(self, elements):
         pass
     
-    def addAll(index, elements):
+    def addAll(self, index, elements):
         pass
     
-    def removeAll(elements):
+    def removeAll(self, elements):
         pass
     
-    def retainAll(elements):
+    def retainAll(self, elements):
         pass
     
-    def clear():
+    def clear(self):
         pass
     
-    def set(index, element):
+    def set(self, index, element):
         pass
     
-    def add(index, element):
+    def add(self, index, element):
         pass
     
-    def removeAt(index):
+    def removeAt(self, index):
         pass
     
-    def listIterator():
+    def listIterator(self):
         pass
     
-    def listIterator(index):
+    def listIterator(self, index):
         pass
     
-    def subList(fromIndex, toIndex):
+    def subList(self, fromIndex, toIndex):
         pass
     
-    def _get_size_():
+    def _get_size_(self):
         pass
     
-    def isEmpty():
+    def isEmpty(self):
         pass
     
-    def contains(element):
+    def contains(self, element):
         pass
     
-    def iterator():
+    def iterator(self):
         pass
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         pass
     
-    def get(index):
+    def get(self, index):
         pass
     
-    def indexOf(element):
+    def indexOf(self, element):
         pass
     
-    def lastIndexOf(element):
+    def lastIndexOf(self, element):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -10507,46 +10507,46 @@ class MutableList:
     
 
 class MutableCollection:
-    def iterator():
+    def iterator(self):
         pass
     
-    def add(element):
+    def add(self, element):
         pass
     
-    def remove(element):
+    def remove(self, element):
         pass
     
-    def addAll(elements):
+    def addAll(self, elements):
         pass
     
-    def removeAll(elements):
+    def removeAll(self, elements):
         pass
     
-    def retainAll(elements):
+    def retainAll(self, elements):
         pass
     
-    def clear():
+    def clear(self):
         pass
     
-    def _get_size_():
+    def _get_size_(self):
         pass
     
-    def isEmpty():
+    def isEmpty(self):
         pass
     
-    def contains(element):
+    def contains(self, element):
         pass
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -10554,16 +10554,16 @@ class MutableCollection:
     
 
 class MutableIterable:
-    def iterator():
+    def iterator(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -10571,28 +10571,28 @@ class MutableIterable:
     
 
 class Set:
-    def _get_size_():
+    def _get_size_(self):
         pass
     
-    def isEmpty():
+    def isEmpty(self):
         pass
     
-    def contains(element):
+    def contains(self, element):
         pass
     
-    def iterator():
+    def iterator(self):
         pass
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -10600,19 +10600,19 @@ class Set:
     
 
 class Entry:
-    def _get_key_():
+    def _get_key_(self):
         pass
     
-    def _get_value_():
+    def _get_value_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -10620,37 +10620,37 @@ class Entry:
     
 
 class Map:
-    def _get_size_():
+    def _get_size_(self):
         pass
     
-    def isEmpty():
+    def isEmpty(self):
         pass
     
-    def containsKey(key):
+    def containsKey(self, key):
         pass
     
-    def containsValue(value):
+    def containsValue(self, value):
         pass
     
-    def get(key):
+    def get(self, key):
         pass
     
-    def _get_keys_():
+    def _get_keys_(self):
         pass
     
-    def _get_values_():
+    def _get_values_(self):
         pass
     
-    def _get_entries_():
+    def _get_entries_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -10658,46 +10658,46 @@ class Map:
     
 
 class MutableSet:
-    def iterator():
+    def iterator(self):
         pass
     
-    def add(element):
+    def add(self, element):
         pass
     
-    def remove(element):
+    def remove(self, element):
         pass
     
-    def addAll(elements):
+    def addAll(self, elements):
         pass
     
-    def removeAll(elements):
+    def removeAll(self, elements):
         pass
     
-    def retainAll(elements):
+    def retainAll(self, elements):
         pass
     
-    def clear():
+    def clear(self):
         pass
     
-    def _get_size_():
+    def _get_size_(self):
         pass
     
-    def isEmpty():
+    def isEmpty(self):
         pass
     
-    def contains(element):
+    def contains(self, element):
         pass
     
-    def containsAll(elements):
+    def containsAll(self, elements):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -10705,22 +10705,22 @@ class MutableSet:
     
 
 class MutableEntry:
-    def setValue(newValue):
+    def setValue(self, newValue):
         pass
     
-    def _get_key_():
+    def _get_key_(self):
         pass
     
-    def _get_value_():
+    def _get_value_(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -10728,49 +10728,49 @@ class MutableEntry:
     
 
 class MutableMap:
-    def put(key, value):
+    def put(self, key, value):
         pass
     
-    def remove(key):
+    def remove(self, key):
         pass
     
-    def putAll(_from):
+    def putAll(self, _from):
         pass
     
-    def clear():
+    def clear(self):
         pass
     
-    def _get_keys_():
+    def _get_keys_(self):
         pass
     
-    def _get_values_():
+    def _get_values_(self):
         pass
     
-    def _get_entries_():
+    def _get_entries_(self):
         pass
     
-    def _get_size_():
+    def _get_size_(self):
         pass
     
-    def isEmpty():
+    def isEmpty(self):
         pass
     
-    def containsKey(key):
+    def containsKey(self, key):
         pass
     
-    def containsValue(value):
+    def containsValue(self, value):
         pass
     
-    def get(key):
+    def get(self, key):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
     def _init_():
@@ -10780,51 +10780,51 @@ class MutableMap:
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_a5f5b96
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_10ac5a14
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_51b75097 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5e220be6 = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_41f968b0
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_27a4a890
     
     return Companion_instance
 
 class Enum:
     def _init_(name, ordinal):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_13ae0ffd
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_249c96cf
         _this_.name = name
         _this_.ordinal = ordinal
     
-    def _get_name_():
+    def _get_name_(self):
         return name
     
-    def _get_ordinal_():
+    def _get_ordinal_(self):
         return ordinal
     
-    def compareTo(other):
+    def compareTo(self, other):
         return compareTo(ordinal, ordinal)
     
-    def compareTo(other):
-        return compareTo(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_da1abd6)
+    def compareTo(self, other):
+        return _this_.compareTo(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7fdcccd5)
     
-    def equals(other):
+    def equals(self, other):
         return jsEqeqeq(_this_, other)
     
-    def hashCode():
+    def hashCode(self):
         return identityHashCode(_this_)
     
-    def toString():
+    def toString(self):
         return name
     
 
@@ -10836,16 +10836,16 @@ def arrayOf(elements):
 
 def toString():
     tmp0_safe_receiver = _this_
-    tmp1_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_382d4ad8
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_aed8be
+    tmp1_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_349cde1a
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7bc81a1f
 
 def plus(other):
     tmp2_safe_receiver = _this_
-    tmp3_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7c36ce16
-    tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4407b019
+    tmp3_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_71a3205
+    tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4b4be42c
     tmp0_safe_receiver = other
-    tmp1_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_59e182
-    return jsPlus(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_138c53c7)
+    tmp1_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4176d8a1
+    return jsPlus(tmp, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7ac397d6)
 
 def booleanArrayOf(elements):
     return elements
@@ -10871,22 +10871,22 @@ def doubleArrayOf(elements):
 class DefaultConstructorMarker:
     def _init_():
         DefaultConstructorMarker_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4dbf902
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2b3247f8
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_6c1ff6a9 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2b7c980 = 0
 def DefaultConstructorMarker_getInstance():
     if jsEqeq(DefaultConstructorMarker_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_50e7a238
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_1ab5da0c
     
     return DefaultConstructorMarker_instance
 
@@ -10894,7 +10894,7 @@ def fillArrayVal(array, initValue):
     inductionVariable = 0
     last = jsBitOr(jsMinus(jsArrayLength(array), 1), 0)
     if jsLtEq(inductionVariable, last):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_333b5a6e
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_501c3ef6
     
     return array
 
@@ -10903,7 +10903,7 @@ def arrayWithFun(size, init):
     result_1 = kotlin_Any_(tmp0_fillArrayFun_0)
     i_2 = 0
     while jsNot(jsEqeqeq(i_2, jsArrayLength(result_1))):
-        jsArraySet(result_1, i_2, invoke(i_2))
+        jsArraySet(result_1, i_2, init.invoke(i_2))
         i_2 = jsBitOr(jsPlus(i_2, 1), 0)
         Unit_getInstance()
     
@@ -10913,97 +10913,97 @@ def fillArrayFun(array, init):
     result = kotlin_Any_(array)
     i = 0
     while jsNot(jsEqeqeq(i, jsArrayLength(result))):
-        jsArraySet(result, i, invoke(i))
+        jsArraySet(result, i, init.invoke(i))
         i = jsBitOr(jsPlus(i, 1), 0)
         Unit_getInstance()
     
     return result
 
 def arrayIterator(array):
-    return _init_(array)
+    return _no_name_provided_(array)
 
 def booleanArrayIterator(array):
-    return _init_(array)
+    return _no_name_provided_(array)
 
 def charArrayIterator(array):
-    return _init_(array)
+    return _no_name_provided_(array)
 
 def byteArrayIterator(array):
-    return _init_(array)
+    return _no_name_provided_(array)
 
 def shortArrayIterator(array):
-    return _init_(array)
+    return _no_name_provided_(array)
 
 def intArrayIterator(array):
-    return _init_(array)
+    return _no_name_provided_(array)
 
 def floatArrayIterator(array):
-    return _init_(array)
+    return _no_name_provided_(array)
 
 def longArrayIterator(array):
-    return _init_(array)
+    return _no_name_provided_(array)
 
 def doubleArrayIterator(array):
-    return _init_(array)
+    return _no_name_provided_(array)
 
 def booleanArray(size):
     tmp0_withType_0 = 'BooleanArray'
     tmp1_withType_0 = fillArrayVal(Array(size), False)
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4682b468
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1b3a25b9
     tmp2_unsafeCast_0 = tmp1_withType_0
     return kotlin_Any_(tmp2_unsafeCast_0)
 
 def charArray(size):
     tmp0_withType_0 = 'CharArray'
-    tmp1_withType_0 = fillArrayVal(Array(size), _init_(0))
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_428ff618
+    tmp1_withType_0 = fillArrayVal(Array(size), Char(0))
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_16a7b925
     tmp2_unsafeCast_0 = tmp1_withType_0
     return kotlin_Any_(tmp2_unsafeCast_0)
 
 def longArray(size):
     tmp0_withType_0 = 'LongArray'
-    tmp1_withType_0 = fillArrayVal(Array(size), _init_(0, 0))
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_31cc510d
+    tmp1_withType_0 = fillArrayVal(Array(size), Long(0, 0))
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_323fdbf0
     tmp2_unsafeCast_0 = tmp1_withType_0
     return kotlin_Any_(tmp2_unsafeCast_0)
 
 def booleanArrayOf(arr):
     tmp0_withType_0 = 'BooleanArray'
-    tmp1_withType_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2c34c819
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_75a9add6
+    tmp1_withType_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_586be63c
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_53348b2d
     tmp2_unsafeCast_0 = tmp1_withType_0
     return kotlin_Any_(tmp2_unsafeCast_0)
 
 def charArrayOf(arr):
     tmp0_withType_0 = 'CharArray'
-    tmp1_withType_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5fc3333f
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5849ffdb
+    tmp1_withType_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2295535f
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_480318c2
     tmp2_unsafeCast_0 = tmp1_withType_0
     return kotlin_Any_(tmp2_unsafeCast_0)
 
 def longArrayOf(arr):
     tmp0_withType_0 = 'LongArray'
-    tmp1_withType_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_34ef9879
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_983f21e
+    tmp1_withType_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_62a30701
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_74ca0511
     tmp2_unsafeCast_0 = tmp1_withType_0
     return kotlin_Any_(tmp2_unsafeCast_0)
 
 class _no_name_provided_:
     def _init_(_array):
         _this_._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_249c96cf
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_16b48082
         _this_.index = 0
     
-    def _set_index_(_set___):
+    def _set_index_(self, _set___):
         _this_.index = _set___
     
-    def _get_index_():
+    def _get_index_(self):
         return index
     
-    def hasNext():
+    def hasNext(self):
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
-    def next():
+    def next(self):
         tmp
         if jsNot(jsEqeqeq(index, jsArrayLength(_array))):
             tmp0_this = _this_
@@ -11012,36 +11012,36 @@ class _no_name_provided_:
             tmp = jsArrayGet(_array, tmp1)
         
         if True:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_416dd4d8
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_cc655a
         
         return tmp
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class _no_name_provided_:
     def _init_(_array):
         _this_._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_40eb85e9
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7cc7769d
         _this_.index = 0
     
-    def _set_index_(_set___):
+    def _set_index_(self, _set___):
         _this_.index = _set___
     
-    def _get_index_():
+    def _get_index_(self):
         return index
     
-    def hasNext():
+    def hasNext(self):
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
-    def nextBoolean():
+    def nextBoolean(self):
         tmp
         if jsNot(jsEqeqeq(index, jsArrayLength(_array))):
             tmp0_this = _this_
@@ -11050,39 +11050,39 @@ class _no_name_provided_:
             tmp = jsArrayGet(_array, tmp1)
         
         if True:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_1de78f97
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_d0c3793
         
         return tmp
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class _no_name_provided_:
     def _init_(_array):
         _this_._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_554f6e30
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5cdf6bb1
         _this_.index = 0
     
-    def _set_index_(_set___):
+    def _set_index_(self, _set___):
         _this_.index = _set___
     
-    def _get_index_():
+    def _get_index_(self):
         return index
     
-    def hasNext():
+    def hasNext(self):
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
-    def nextChar():
+    def nextChar(self):
         tmp
         if jsNot(jsEqeqeq(index, jsArrayLength(_array))):
             tmp0_this = _this_
@@ -11091,39 +11091,39 @@ class _no_name_provided_:
             tmp = jsArrayGet(_array, tmp1)
         
         if True:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_815e8e3
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_6c5fbe8a
         
         return tmp
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class _no_name_provided_:
     def _init_(_array):
         _this_._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3a837f7
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5bbda8aa
         _this_.index = 0
     
-    def _set_index_(_set___):
+    def _set_index_(self, _set___):
         _this_.index = _set___
     
-    def _get_index_():
+    def _get_index_(self):
         return index
     
-    def hasNext():
+    def hasNext(self):
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
-    def nextByte():
+    def nextByte(self):
         tmp
         if jsNot(jsEqeqeq(index, jsArrayLength(_array))):
             tmp0_this = _this_
@@ -11132,39 +11132,39 @@ class _no_name_provided_:
             tmp = jsArrayGet(_array, tmp1)
         
         if True:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_161138c8
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_58070889
         
         return tmp
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class _no_name_provided_:
     def _init_(_array):
         _this_._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4c006046
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5a7e2f07
         _this_.index = 0
     
-    def _set_index_(_set___):
+    def _set_index_(self, _set___):
         _this_.index = _set___
     
-    def _get_index_():
+    def _get_index_(self):
         return index
     
-    def hasNext():
+    def hasNext(self):
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
-    def nextShort():
+    def nextShort(self):
         tmp
         if jsNot(jsEqeqeq(index, jsArrayLength(_array))):
             tmp0_this = _this_
@@ -11173,39 +11173,39 @@ class _no_name_provided_:
             tmp = jsArrayGet(_array, tmp1)
         
         if True:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_77ec911
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_70f446c
         
         return tmp
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class _no_name_provided_:
     def _init_(_array):
         _this_._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5d7807b0
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2dc0cbbc
         _this_.index = 0
     
-    def _set_index_(_set___):
+    def _set_index_(self, _set___):
         _this_.index = _set___
     
-    def _get_index_():
+    def _get_index_(self):
         return index
     
-    def hasNext():
+    def hasNext(self):
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
-    def nextInt():
+    def nextInt(self):
         tmp
         if jsNot(jsEqeqeq(index, jsArrayLength(_array))):
             tmp0_this = _this_
@@ -11214,39 +11214,39 @@ class _no_name_provided_:
             tmp = jsArrayGet(_array, tmp1)
         
         if True:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_705606ac
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_597050fa
         
         return tmp
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class _no_name_provided_:
     def _init_(_array):
         _this_._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3b07b706
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3579682
         _this_.index = 0
     
-    def _set_index_(_set___):
+    def _set_index_(self, _set___):
         _this_.index = _set___
     
-    def _get_index_():
+    def _get_index_(self):
         return index
     
-    def hasNext():
+    def hasNext(self):
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
-    def nextFloat():
+    def nextFloat(self):
         tmp
         if jsNot(jsEqeqeq(index, jsArrayLength(_array))):
             tmp0_this = _this_
@@ -11255,39 +11255,39 @@ class _no_name_provided_:
             tmp = jsArrayGet(_array, tmp1)
         
         if True:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_27af14bd
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_1cea4fdf
         
         return tmp
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class _no_name_provided_:
     def _init_(_array):
         _this_._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_447522b4
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_70cc0601
         _this_.index = 0
     
-    def _set_index_(_set___):
+    def _set_index_(self, _set___):
         _this_.index = _set___
     
-    def _get_index_():
+    def _get_index_(self):
         return index
     
-    def hasNext():
+    def hasNext(self):
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
-    def nextLong():
+    def nextLong(self):
         tmp
         if jsNot(jsEqeqeq(index, jsArrayLength(_array))):
             tmp0_this = _this_
@@ -11296,39 +11296,39 @@ class _no_name_provided_:
             tmp = jsArrayGet(_array, tmp1)
         
         if True:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_1fb8b89e
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_5bc3c4e5
         
         return tmp
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class _no_name_provided_:
     def _init_(_array):
         _this_._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_77b987f3
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_72a522f1
         _this_.index = 0
     
-    def _set_index_(_set___):
+    def _set_index_(self, _set___):
         _this_.index = _set___
     
-    def _get_index_():
+    def _get_index_(self):
         return index
     
-    def hasNext():
+    def hasNext(self):
         return jsNot(jsEqeqeq(index, jsArrayLength(_array)))
     
-    def nextDouble():
+    def nextDouble(self):
         tmp
         if jsNot(jsEqeqeq(index, jsArrayLength(_array))):
             tmp0_this = _this_
@@ -11337,47 +11337,47 @@ class _no_name_provided_:
             tmp = jsArrayGet(_array, tmp1)
         
         if True:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_5d852761
+            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_2f71bb66
         
         return tmp
     
-    def next():
+    def next(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 def _get_buf_():
     return buf
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5f8a0d7f = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_7469d13a = 0
 def _get_bufFloat64_():
     return bufFloat64
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_3fa13835 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_54832ad9 = 0
 def _get_bufFloat32_():
     return bufFloat32
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_22eccd2c = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2f42f20f = 0
 def _get_bufInt32_():
     return bufInt32
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_280fa441 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_f5475d7 = 0
 def _get_lowIndex_():
     return lowIndex
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_6e5506c9 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_751df26c = 0
 def _get_highIndex_():
     return highIndex
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_4b27a3fc = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_c534814 = 0
 def getNumberHashCode(obj):
     tmp0_unsafeCast_0 = jsBitwiseOr(obj, 0)
     if jsEqeqeq(kotlin_Any_(tmp0_unsafeCast_0), obj):
@@ -11390,43 +11390,43 @@ def getNumberHashCode(obj):
     return jsBitOr(jsPlus(imul(jsArrayGet(bufInt32, highIndex), 31), jsArrayGet(bufInt32, lowIndex)), 0)
 
 def bufFloat64_init_():
-    tmp0_unsafeCast_0 = _init_(buf)
+    tmp0_unsafeCast_0 = Float64Array(buf)
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def bufFloat32_init_():
-    tmp0_unsafeCast_0 = _init_(buf)
+    tmp0_unsafeCast_0 = Float32Array(buf)
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def bufInt32_init_():
-    tmp0_unsafeCast_0 = _init_(buf)
+    tmp0_unsafeCast_0 = Int32Array(buf)
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def lowIndex_init_():
     jsArraySet(bufFloat64, 0, -1.0)
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2b112657
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4798d907
 
 class DoNotIntrinsify:
     def _init_():
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 def charSequenceGet(a, index):
     tmp
     if isString(a):
-        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5bc3c4e5
-        tmp = _init_(kotlin_Any_(tmp0_unsafeCast_0))
+        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_15beb40b
+        tmp = Char(kotlin_Any_(tmp0_unsafeCast_0))
     
     if True:
-        tmp = get(index)
+        tmp = a.get(index)
     
     return tmp
 
@@ -11436,22 +11436,22 @@ def isString(a):
 def charSequenceLength(a):
     tmp
     if isString(a):
-        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_25c5fc41
+        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_7a9df9b2
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
     
     if True:
-        tmp = _get_length_()
+        tmp = a._get_length_()
     
     return tmp
 
 def charSequenceSubSequence(a, startIndex, endIndex):
     tmp
     if isString(a):
-        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4d73b25b
+        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_35007b7a
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
     
     if True:
-        tmp = subSequence(startIndex, endIndex)
+        tmp = a.subSequence(startIndex, endIndex)
     
     return tmp
 
@@ -11460,18 +11460,18 @@ def arrayToString(array):
 
 class _no_name_provided_:
     def _init_():
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4a0bc4cc
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_349cb820
     
-    def invoke(it):
+    def invoke(self, it):
         return toString(it)
     
-    def invoke(p1):
-        return invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6c37a904)
+    def invoke(self, p1):
+        return _this_.invoke(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1a867210)
     
 
 def _no_name_provided__factory():
-    i = _init_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_7548f7cd
+    i = _no_name_provided_()
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl_4d168798
 
 def compareTo(a, b):
     tmp0_subject = jsTypeOf(a)
@@ -11483,7 +11483,7 @@ def compareTo(a, b):
         
         if True:
             if jsInstanceOf(b, jsClass()):
-                tmp = doubleCompareTo(a, toDouble())
+                tmp = doubleCompareTo(a, kotlin_Long(b).toDouble())
             
             if True:
                 if True:
@@ -11493,7 +11493,7 @@ def compareTo(a, b):
         
         tmp = tmp
     
-    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2e5f9491:
+    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_62fd90a2:
         tmp = primitiveCompareTo(a, b)
     
     if True:
@@ -11503,27 +11503,27 @@ def compareTo(a, b):
 
 def doubleCompareTo(a, b):
     tmp
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_c92d694:
+    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_447dec7e:
         tmp = -1
     
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_60adea01:
+    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_335aac7a:
         tmp = 1
     
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_75ba33b8:
+    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_46135aba:
         tmp
-        if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_58da6f7d:
+        if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_227ca700:
             tmp = 0
         
         if True:
             tmp0_asDynamic_0 = 1
-            ia = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2471cfa0
+            ia = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5271c49b
             tmp
             tmp1_asDynamic_0 = 1
-            if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_48ca44cd:
+            if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2c73a332:
                 tmp = 0
             
             if True:
-                if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_62267a22:
+                if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_42e74fa3:
                     tmp = -1
                 
                 if True:
@@ -11536,8 +11536,8 @@ def doubleCompareTo(a, b):
         
         tmp = tmp
     
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_63a9ab7d:
-        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6e0d30e4
+    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_282fabe9:
+        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2431682d
     
     if True:
         tmp = -1
@@ -11545,58 +11545,58 @@ def doubleCompareTo(a, b):
     return tmp
 
 def primitiveCompareTo(a, b):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_14d2b5bf
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6657c199
 
 def compareToDoNotIntrinsicify(a, b):
-    return compareTo(b)
+    return a.compareTo(b)
 
 def construct(constructorType, resultType, args):
-    return kotlin_Any(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4cef1ea6)
+    return kotlin_Any(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1f3b8bfe)
 
 def identityHashCode(obj):
     return getObjectHashCode(obj)
 
 def getObjectHashCode(obj):
     if jsNot(jsIn('kotlinHashCodeValue$', kotlin_Any(obj))):
-        hash = jsBitwiseOr(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1dbb3001, 0)
+        hash = jsBitwiseOr(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_243deb3f, 0)
         descriptor = js('new Object()')
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_23591a2c
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4de3a1ca
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1f953e51
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_40977fab
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2c63f1fe
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_83b0d9f
     
-    tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_72cbe3b6
+    tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_25e60726
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def _get_OBJECT_HASH_CODE_PROPERTY_NAME_():
     return OBJECT_HASH_CODE_PROPERTY_NAME
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_1df1bd44 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2d8a45a = 0
 def _get_POW_2_32_():
     return POW_2_32
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_7b80be13 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_1b856d2a = 0
 def toString(o):
     tmp
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_46a6b8d6:
+    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4d768435:
         tmp = 'null'
     
     if isArrayish(o):
         tmp = '[...]'
     
     if True:
-        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_17b3b021
+        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1475cdbb
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
     
     return tmp
 
 def hashCode(obj):
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_3af30ab8:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_1a5b8f77
+    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4f549906:
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_65dce54c
     
     tmp0_subject = jsTypeOf(obj)
     tmp
     if jsEqeqeq(tmp0_subject, 'object'):
-        tmp = kotlin_Int(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4b74fb68)
+        tmp = kotlin_Int(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2a590e2f)
     
     if jsEqeqeq(tmp0_subject, 'function'):
         tmp = getObjectHashCode(obj)
@@ -11627,38 +11627,38 @@ def getStringHashCode(str):
     inductionVariable = 0
     last = jsBitOr(jsMinus(length, 1), 0)
     if jsLtEq(inductionVariable, last):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_7991726b
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_6acc72c7
     
     return hash
 
 def anyToString(o):
-    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_227ca700)
+    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_e8acdfc)
 
 def equals(obj1, obj2):
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_c4ba591:
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5a4929f5
+    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1f94df5:
+        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1b74dd88
     
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_42e74fa3:
+    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_720bf74d:
         return False
     
-    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_62ae5e9:
-        return kotlin_Boolean(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_3d3362f5)
+    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_78db6b8e:
+        return kotlin_Boolean(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_16a4d5a9)
     
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_338f96f5:
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_7431f4b8
+    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_664e8bb7:
+        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_16adf66f
     
-    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_636a9d18:
+    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_191a957:
         tmp
-        if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1ae3d0a8:
+        if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_763b279:
             tmp
-            if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_7de1cc9f:
+            if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1aa9635c:
                 tmp = True
             
             if True:
                 tmp0_asDynamic_0 = 1
-                tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_334c80be
+                tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_42eb459d
                 tmp1_asDynamic_0 = 1
-                tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_7a506493
+                tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2027e9f9
             
             tmp = tmp
         
@@ -11667,22 +11667,22 @@ def equals(obj1, obj2):
         
         return tmp
     
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_63eebb56
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_3015fc1b
 
 def boxIntrinsic(x):
     tmp0_error_0 = 'Should be lowered'
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_378ffded
+    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_290aabc9
 
 def unboxIntrinsic(x):
     tmp0_error_0 = 'Should be lowered'
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_21dcd0b5
+    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7bed9e3
 
 def captureStack(instance, constructorFunction):
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_83b0d9f:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_303c195f
+    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_9d7d83d:
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_68754439
     
     if True:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_568cc1c5
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_34dcd7a1
     
 
 def newThrowable(message, cause):
@@ -11695,25 +11695,25 @@ def newThrowable(message, cause):
         
         if True:
             tmp0_safe_receiver = cause
-            tmp1_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6bc0b35c
-            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_337b9526
+            tmp1_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2c297832
+            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2ab0ee54
         
         tmp = tmp
     
     if True:
         tmp2_elvis_lhs = message
-        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_34545f5f
+        tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2dc59d
     
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4fc50fee
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5e18309e
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_26c09f3f
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_9eaaecf
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2bbc6496
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1e512b3
     return kotlin_Any_(throwable)
 
 def isUndefined(value):
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_31360632
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_70a7ebc9
 
 def extendThrowable(this_, message, cause):
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_75922191
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4f34f451
     setPropertiesToThrowableInstance(this_, message, cause)
 
 def setPropertiesToThrowableInstance(this_, message, cause):
@@ -11723,8 +11723,8 @@ def setPropertiesToThrowableInstance(this_, message, cause):
             tmp
             if jsNot(jsEqeqeq(message, None)):
                 tmp0_safe_receiver = cause
-                tmp1_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_670df518
-                tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_96c36db
+                tmp1_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_65420507
+                tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_62e6f2db
             
             if True:
                 tmp = _get_undefined_()
@@ -11734,28 +11734,28 @@ def setPropertiesToThrowableInstance(this_, message, cause):
         if True:
             tmp = message
         
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_33c9910e
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_732d2b59
     
     if jsNot(hasOwnPrototypeProperty(kotlin_Any(this_), 'cause')):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_19146ad8
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5d81bc79
     
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1bbbede1
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_70a8d2e1
 
 def hasOwnPrototypeProperty(o, name):
-    tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_56803e70
+    tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2703fabd
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def getContinuation():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7324d83
+    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_77070012
 
 def returnIfSuspended(argument):
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_49925329
+    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_41a56594
 
 def suspendCoroutineUninterceptedOrReturnJS(block):
-    return invoke(getContinuation())
+    return block.invoke(getContinuation())
 
 def getCoroutineContext():
-    return _get_context_()
+    return getContinuation()._get_context_()
 
 def ensureNotNull(v):
     tmp
@@ -11768,267 +11768,267 @@ def ensureNotNull(v):
     return tmp
 
 def THROW_NPE():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_661fe6c4
+    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_29f0e941
 
 def noWhenBranchMatchedException():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_793c2cde
+    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_4817bd3
 
 def THROW_CCE():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_6022cf7e
+    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_35b799c0
 
 def throwUninitializedPropertyAccessException(name):
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7f83cc90
+    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_6ca6a1a6
 
 def throwKotlinNothingValueException():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_6895b608
+    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_22351330
 
 def THROW_ISE():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_ed37f28
+    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7414167a
 
 def THROW_IAE(msg):
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_3be94b12
+    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_79b07ccd
 
 def emptyArray():
     return kotlin_Array_T_(js('[]'))
 
 def enumValueOfIntrinsic(name):
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_44bd11a2
+    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_618cfd1
 
 def enumValuesIntrinsic():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7959d16a
+    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_153f6a67
 
 class Companion:
     def _init_():
         Companion_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_274d10aa
-        _this_.MIN_VALUE = _init_(0, -2147483648)
-        _this_.MAX_VALUE = _init_(-1, 2147483647)
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6b50017c
+        _this_.MIN_VALUE = Long(0, -2147483648)
+        _this_.MAX_VALUE = Long(-1, 2147483647)
         _this_.SIZE_BYTES = 8
         _this_.SIZE_BITS = 64
     
-    def _get_MIN_VALUE_():
+    def _get_MIN_VALUE_(self):
         return MIN_VALUE
     
-    def _get_MAX_VALUE_():
+    def _get_MAX_VALUE_(self):
         return MAX_VALUE
     
-    def _get_SIZE_BYTES_():
+    def _get_SIZE_BYTES_(self):
         return SIZE_BYTES
     
-    def _get_SIZE_BITS_():
+    def _get_SIZE_BITS_(self):
         return SIZE_BITS
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_19d6bb0c = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_1df41490 = 0
 def Companion_getInstance():
     if jsEqeq(Companion_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_70ce5a0a
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_7b116131
     
     return Companion_instance
 
 class Long:
     def _init_(low, high):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5a558335
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_497746ea
         _this_.low = low
         _this_.high = high
     
-    def _get_low_():
+    def _get_low_(self):
         return low
     
-    def _get_high_():
+    def _get_high_(self):
         return high
     
-    def compareTo(other):
-        return compareTo(toLong(other))
+    def compareTo(self, other):
+        return _this_.compareTo(toLong(other))
     
-    def compareTo(other):
-        return compareTo(toLong(other))
+    def compareTo(self, other):
+        return _this_.compareTo(toLong(other))
     
-    def compareTo(other):
-        return compareTo(toLong(other))
+    def compareTo(self, other):
+        return _this_.compareTo(toLong(other))
     
-    def compareTo(other):
+    def compareTo(self, other):
         return compare(other)
     
-    def compareTo(other):
-        return compareTo(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5071a1c5)
+    def compareTo(self, other):
+        return _this_.compareTo(visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_fc2d07f)
     
-    def compareTo(other):
-        return compareTo(toFloat(), other)
+    def compareTo(self, other):
+        return compareTo(_this_.toFloat(), other)
     
-    def compareTo(other):
-        return compareTo(toDouble(), other)
+    def compareTo(self, other):
+        return compareTo(_this_.toDouble(), other)
     
-    def plus(other):
-        return plus(toLong(other))
+    def plus(self, other):
+        return _this_.plus(toLong(other))
     
-    def plus(other):
-        return plus(toLong(other))
+    def plus(self, other):
+        return _this_.plus(toLong(other))
     
-    def plus(other):
-        return plus(toLong(other))
+    def plus(self, other):
+        return _this_.plus(toLong(other))
     
-    def plus(other):
+    def plus(self, other):
         return add(other)
     
-    def plus(other):
-        return jsPlus(toFloat(), other)
+    def plus(self, other):
+        return jsPlus(_this_.toFloat(), other)
     
-    def plus(other):
-        return jsPlus(toDouble(), other)
+    def plus(self, other):
+        return jsPlus(_this_.toDouble(), other)
     
-    def minus(other):
-        return minus(toLong(other))
+    def minus(self, other):
+        return _this_.minus(toLong(other))
     
-    def minus(other):
-        return minus(toLong(other))
+    def minus(self, other):
+        return _this_.minus(toLong(other))
     
-    def minus(other):
-        return minus(toLong(other))
+    def minus(self, other):
+        return _this_.minus(toLong(other))
     
-    def minus(other):
+    def minus(self, other):
         return subtract(other)
     
-    def minus(other):
-        return jsMinus(toFloat(), other)
+    def minus(self, other):
+        return jsMinus(_this_.toFloat(), other)
     
-    def minus(other):
-        return jsMinus(toDouble(), other)
+    def minus(self, other):
+        return jsMinus(_this_.toDouble(), other)
     
-    def times(other):
-        return times(toLong(other))
+    def times(self, other):
+        return _this_.times(toLong(other))
     
-    def times(other):
-        return times(toLong(other))
+    def times(self, other):
+        return _this_.times(toLong(other))
     
-    def times(other):
-        return times(toLong(other))
+    def times(self, other):
+        return _this_.times(toLong(other))
     
-    def times(other):
+    def times(self, other):
         return multiply(other)
     
-    def times(other):
-        return jsMult(toFloat(), other)
+    def times(self, other):
+        return jsMult(_this_.toFloat(), other)
     
-    def times(other):
-        return jsMult(toDouble(), other)
+    def times(self, other):
+        return jsMult(_this_.toDouble(), other)
     
-    def div(other):
-        return div(toLong(other))
+    def div(self, other):
+        return _this_.div(toLong(other))
     
-    def div(other):
-        return div(toLong(other))
+    def div(self, other):
+        return _this_.div(toLong(other))
     
-    def div(other):
-        return div(toLong(other))
+    def div(self, other):
+        return _this_.div(toLong(other))
     
-    def div(other):
+    def div(self, other):
         return divide(other)
     
-    def div(other):
-        return jsDiv(toFloat(), other)
+    def div(self, other):
+        return jsDiv(_this_.toFloat(), other)
     
-    def div(other):
-        return jsDiv(toDouble(), other)
+    def div(self, other):
+        return jsDiv(_this_.toDouble(), other)
     
-    def rem(other):
-        return rem(toLong(other))
+    def rem(self, other):
+        return _this_.rem(toLong(other))
     
-    def rem(other):
-        return rem(toLong(other))
+    def rem(self, other):
+        return _this_.rem(toLong(other))
     
-    def rem(other):
-        return rem(toLong(other))
+    def rem(self, other):
+        return _this_.rem(toLong(other))
     
-    def rem(other):
+    def rem(self, other):
         return modulo(other)
     
-    def rem(other):
-        return jsMod(toFloat(), other)
+    def rem(self, other):
+        return jsMod(_this_.toFloat(), other)
     
-    def rem(other):
-        return jsMod(toDouble(), other)
+    def rem(self, other):
+        return jsMod(_this_.toDouble(), other)
     
-    def inc():
-        return plus(_init_(1, 0))
+    def inc(self):
+        return _this_.plus(Long(1, 0))
     
-    def dec():
-        return minus(_init_(1, 0))
+    def dec(self):
+        return _this_.minus(Long(1, 0))
     
-    def unaryPlus():
+    def unaryPlus(self):
         return _this_
     
-    def unaryMinus():
-        return plus(_init_(1, 0))
+    def unaryMinus(self):
+        return _this_.inv().plus(Long(1, 0))
     
-    def rangeTo(other):
-        return rangeTo(toLong(other))
+    def rangeTo(self, other):
+        return _this_.rangeTo(toLong(other))
     
-    def rangeTo(other):
-        return rangeTo(toLong(other))
+    def rangeTo(self, other):
+        return _this_.rangeTo(toLong(other))
     
-    def rangeTo(other):
-        return rangeTo(toLong(other))
+    def rangeTo(self, other):
+        return _this_.rangeTo(toLong(other))
     
-    def rangeTo(other):
-        return _init_(_this_, other)
+    def rangeTo(self, other):
+        return LongRange(_this_, other)
     
-    def shl(bitCount):
+    def shl(self, bitCount):
         return shiftLeft(bitCount)
     
-    def shr(bitCount):
+    def shr(self, bitCount):
         return shiftRight(bitCount)
     
-    def ushr(bitCount):
+    def ushr(self, bitCount):
         return shiftRightUnsigned(bitCount)
     
-    def _and(other):
-        return _init_(jsBitAnd(low, low), jsBitAnd(high, high))
+    def _and(self, other):
+        return Long(jsBitAnd(low, low), jsBitAnd(high, high))
     
-    def _or(other):
-        return _init_(jsBitOr(low, low), jsBitOr(high, high))
+    def _or(self, other):
+        return Long(jsBitOr(low, low), jsBitOr(high, high))
     
-    def xor(other):
-        return _init_(jsBitXor(low, low), jsBitXor(high, high))
+    def xor(self, other):
+        return Long(jsBitXor(low, low), jsBitXor(high, high))
     
-    def inv():
-        return _init_(jsBitNot(low), jsBitNot(high))
+    def inv(self):
+        return Long(jsBitNot(low), jsBitNot(high))
     
-    def toByte():
+    def toByte(self):
         return toByte(low)
     
-    def toChar():
+    def toChar(self):
         return numberToChar(low)
     
-    def toShort():
+    def toShort(self):
         return toShort(low)
     
-    def toInt():
+    def toInt(self):
         return low
     
-    def toLong():
+    def toLong(self):
         return _this_
     
-    def toFloat():
-        return kotlin_Float(toDouble())
+    def toFloat(self):
+        return kotlin_Float(_this_.toDouble())
     
-    def toDouble():
+    def toDouble(self):
         return toNumber()
     
-    def valueOf():
-        return toDouble()
+    def valueOf(self):
+        return _this_.toDouble()
     
-    def equals(other):
+    def equals(self, other):
         tmp
         if jsInstanceOf(other, jsClass()):
             tmp = equalsLong(kotlin_Long(other))
@@ -12040,44 +12040,44 @@ class Long:
         
         return tmp
     
-    def hashCode():
+    def hashCode(self):
         return hashCode(_this_)
     
-    def toString():
+    def toString(self):
         return toStringImpl(10)
     
 
 def _get_ZERO_():
     return ZERO
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_7f951dd2 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_1fe275d8 = 0
 def _get_ONE_():
     return ONE
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_a426150 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_734990c1 = 0
 def _get_NEG_ONE_():
     return NEG_ONE
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_3f32c65f = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_6870f52a = 0
 def _get_MAX_VALUE_():
     return MAX_VALUE
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2921aa59 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5dca1c50 = 0
 def _get_MIN_VALUE_():
     return MIN_VALUE
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_3bb04b53 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5a487b86 = 0
 def _get_TWO_PWR_24__():
     return TWO_PWR_24_
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_882c166 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_62c4ad40 = 0
 def compare(other):
     if equalsLong(other):
         return 0
     
     thisNeg = isNegative()
     otherNeg = isNegative()
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7168741f
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2ebc4fc
 
 def add(other):
     a48 = jsBitShiftRU(high, 16)
@@ -12103,10 +12103,10 @@ def add(other):
     c32 = jsBitAnd(c32, 65535)
     c48 = jsBitOr(jsPlus(c48, jsBitOr(jsPlus(a48, b48), 0)), 0)
     c48 = jsBitAnd(c48, 65535)
-    return _init_(jsBitOr(jsBitShiftL(c16, 16), c00), jsBitOr(jsBitShiftL(c48, 16), c32))
+    return Long(jsBitOr(jsBitShiftL(c16, 16), c00), jsBitOr(jsBitShiftL(c48, 16), c32))
 
 def subtract(other):
-    return add(unaryMinus())
+    return add(other.unaryMinus())
 
 def multiply(other):
     if isZero():
@@ -12116,10 +12116,10 @@ def multiply(other):
         return ZERO
     
     if equalsLong(MIN_VALUE):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2881c04a
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_384f8455
     
     if equalsLong(MIN_VALUE):
-        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6d31bae5
+        return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_eba9ab4
     
     if isNegative():
         tmp
@@ -12134,7 +12134,7 @@ def multiply(other):
     if isNegative():
         return negate()
     
-    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_28a9f772:
+    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_66c3c813:
         return fromNumber(jsMult(toNumber(), toNumber()))
     
     a48 = jsBitShiftRU(high, 16)
@@ -12169,17 +12169,17 @@ def multiply(other):
     c32 = jsBitAnd(c32, 65535)
     c48 = jsBitOr(jsPlus(c48, jsBitOr(jsPlus(jsBitOr(jsPlus(jsBitOr(jsPlus(imul(a48, b00), imul(a32, b16)), 0), imul(a16, b32)), 0), imul(a00, b48)), 0)), 0)
     c48 = jsBitAnd(c48, 65535)
-    return _init_(jsBitOr(jsBitShiftL(c16, 16), c00), jsBitOr(jsBitShiftL(c48, 16), c32))
+    return Long(jsBitOr(jsBitShiftL(c16, 16), c00), jsBitOr(jsBitShiftL(c48, 16), c32))
 
 def divide(other):
     if isZero():
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_f7b6b9e
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7308c29a
     
     if isZero():
         return ZERO
     
     if equalsLong(MIN_VALUE):
-        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6c101a64:
+        if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_228af76e:
             return MIN_VALUE
         
         if equalsLong(MIN_VALUE):
@@ -12189,11 +12189,11 @@ def divide(other):
             halfThis = shiftRight(1)
             approx = shiftLeft(1)
             if equalsLong(ZERO):
-                return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3b9a82bc
+                return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3609424e
             
             if True:
                 rem = subtract(multiply(approx))
-                return add(div(other))
+                return add(rem.div(other))
             
         
     
@@ -12203,7 +12203,7 @@ def divide(other):
     if isNegative():
         tmp
         if isNegative():
-            tmp = div(negate())
+            tmp = negate().div(negate())
         
         if True:
             tmp = negate()
@@ -12217,12 +12217,12 @@ def divide(other):
     rem = _this_
     while greaterThanOrEqual(other):
         approxDouble = jsDiv(toNumber(), toNumber())
-        approx2 = max(1.0, floor(approxDouble))
-        log2 = ceil(jsDiv(log(approx2), _get_LN2_()))
-        delta = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5442accb
+        approx2 = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl_47ce44ab.max(1.0, visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl_26562718.floor(approxDouble))
+        log2 = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl_6ef7e510.ceil(jsDiv(visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl_76145ef9.log(approx2), visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl_5b0af511._get_LN2_()))
+        delta = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_780e214b
         approxRes = fromNumber(approx2)
         approxRem = multiply(other)
-        while visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2ed8882e:
+        while visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2aaa635d:
             approx2 = jsMinus(approx2, delta)
             approxRes = fromNumber(approx2)
             approxRem = multiply(other)
@@ -12245,10 +12245,10 @@ def shiftLeft(numBits):
     
     if True:
         if jsLt(numBits, 32):
-            return _init_(jsBitShiftL(low, numBits), jsBitOr(jsBitShiftL(high, numBits), jsBitShiftRU(low, jsBitOr(jsMinus(32, numBits), 0))))
+            return Long(jsBitShiftL(low, numBits), jsBitOr(jsBitShiftL(high, numBits), jsBitShiftRU(low, jsBitOr(jsMinus(32, numBits), 0))))
         
         if True:
-            return _init_(0, jsBitShiftL(low, jsBitOr(jsMinus(numBits, 32), 0)))
+            return Long(0, jsBitShiftL(low, jsBitOr(jsMinus(numBits, 32), 0)))
         
     
 
@@ -12259,10 +12259,10 @@ def shiftRight(numBits):
     
     if True:
         if jsLt(numBits, 32):
-            return _init_(jsBitOr(jsBitShiftRU(low, numBits), jsBitShiftL(high, jsBitOr(jsMinus(32, numBits), 0))), jsBitShiftR(high, numBits))
+            return Long(jsBitOr(jsBitShiftRU(low, numBits), jsBitShiftL(high, jsBitOr(jsMinus(32, numBits), 0))), jsBitShiftR(high, numBits))
         
         if True:
-            return _init_(jsBitShiftR(high, jsBitOr(jsMinus(numBits, 32), 0)), visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5632369f)
+            return Long(jsBitShiftR(high, jsBitOr(jsMinus(numBits, 32), 0)), visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7a8bda44)
         
     
 
@@ -12273,10 +12273,10 @@ def shiftRightUnsigned(numBits):
     
     if True:
         if jsLt(numBits, 32):
-            return _init_(jsBitOr(jsBitShiftRU(low, numBits), jsBitShiftL(high, jsBitOr(jsMinus(32, numBits), 0))), jsBitShiftRU(high, numBits))
+            return Long(jsBitOr(jsBitShiftRU(low, numBits), jsBitShiftL(high, jsBitOr(jsMinus(32, numBits), 0))), jsBitShiftRU(high, numBits))
         
         if True:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_582e8393
+            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl_270706e3
         
     
 
@@ -12284,14 +12284,14 @@ def toNumber():
     return jsPlus(jsMult(high, 4.294967296E9), getLowBitsUnsigned())
 
 def equalsLong(other):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4cd451fb
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_481bd693
 
 def hashCode(l):
     return jsBitXor(low, high)
 
 def toStringImpl(radix):
-    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_365d1cbf:
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_11f633f
+    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_320d4122:
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_4d05b931
     
     if isZero():
         return '0'
@@ -12299,23 +12299,23 @@ def toStringImpl(radix):
     if isNegative():
         if equalsLong(MIN_VALUE):
             radixLong = fromInt(radix)
-            div = div(radixLong)
-            rem = toInt()
+            div = _this_.div(radixLong)
+            rem = subtract(_this_).toInt()
             tmp = toStringImpl(radix)
-            tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_7ff167c4
+            tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_70e966a5
             return jsPlus(tmp, kotlin_Any_(tmp0_unsafeCast_0))
         
         if True:
-            return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_eba9ab4
+            return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl_706b5d5e
         
     
-    radixToPower = fromNumber(pow(kotlin_Double(radix), 6.0))
+    radixToPower = fromNumber(visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl_54b2416d.pow(kotlin_Double(radix), 6.0))
     rem = _this_
     result = ''
     while True:
-        remDiv = div(radixToPower)
-        intval = toInt()
-        tmp1_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2b82254b
+        remDiv = rem.div(radixToPower)
+        intval = subtract(multiply(radixToPower)).toInt()
+        tmp1_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_27868127
         digits = kotlin_Any_(tmp1_unsafeCast_0)
         rem = remDiv
         if isZero():
@@ -12330,19 +12330,19 @@ def toStringImpl(radix):
     
 
 def fromInt(value):
-    return _init_(value, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_577017c6)
+    return Long(value, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4d2eafc5)
 
 def isNegative():
     return jsLt(high, 0)
 
 def isZero():
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_52fec246
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5a209683
 
 def isOdd():
     return jsEqeqeq(jsBitAnd(low, 1), 1)
 
 def negate():
-    return unaryMinus()
+    return _this_.unaryMinus()
 
 def lessThan(other):
     return jsLt(compare(other), 0)
@@ -12362,7 +12362,7 @@ def fromNumber(value):
     
     if True:
         twoPwr32 = 4.294967296E9
-        return _init_(jsBitwiseOr(jsMod(value, twoPwr32), 0), jsBitwiseOr(jsDiv(value, twoPwr32), 0))
+        return Long(jsBitwiseOr(jsMod(value, twoPwr32), 0), jsBitwiseOr(jsDiv(value, twoPwr32), 0))
     
 
 def greaterThan(other):
@@ -12372,23 +12372,23 @@ def greaterThanOrEqual(other):
     return jsGtEq(compare(other), 0)
 
 def getLowBitsUnsigned():
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2e2d04d7
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_698dd40c
 
 def _get_TWO_PWR_32_DBL__():
     return TWO_PWR_32_DBL_
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_6dbf203c = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_5fd40d2e = 0
 def _get_TWO_PWR_63_DBL__():
     return TWO_PWR_63_DBL_
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_698d07ac = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_2463a9ec = 0
 def imul(a_local, b_local):
     lhs = jsMult(kotlin_Double(jsBitwiseAnd(a_local, js('0xffff0000'))), kotlin_Double(jsBitwiseAnd(b_local, 65535)))
     rhs = jsMult(kotlin_Double(jsBitwiseAnd(a_local, 65535)), kotlin_Double(b_local))
     return jsBitwiseOr(jsPlus(lhs, rhs), 0)
 
 def withType(type, array):
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_6014b386
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_700735e2
     return array
 
 def arrayConcat(args):
@@ -12398,23 +12398,23 @@ def arrayConcat(args):
     inductionVariable = 0
     last = jsBitOr(jsMinus(len, 1), 0)
     if jsLtEq(inductionVariable, last):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_7ab63914
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_6e42970a
     
-    return T(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1e954b94)
+    return T(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_38c6f088)
 
 def primitiveArrayConcat(args):
     size_local = 0
     inductionVariable = 0
     last = jsBitOr(jsMinus(jsArrayLength(args), 1), 0)
     if jsLtEq(inductionVariable, last):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_3609424e
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_60a38548
     
     a = jsArrayGet(args, 0)
     tmp1_unsafeCast_0 = js('new a.constructor(size_local)')
     result = kotlin_Any_(tmp1_unsafeCast_0)
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_6ebdd981:
-        tmp2_withType_0 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_35a7c2cc)
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2cc42eef
+    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1f3bd40a:
+        tmp2_withType_0 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_4e42beba)
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_28f9873c
     
     if True:
         pass
@@ -12423,13 +12423,13 @@ def primitiveArrayConcat(args):
     inductionVariable = 0
     last = jsBitOr(jsMinus(jsArrayLength(args), 1), 0)
     if jsLtEq(inductionVariable, last):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_6bf552d2
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl_16ce05de
     
     return kotlin_Any_(result)
 
 def taggedArrayCopy(array):
-    res = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4eeda18f
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_60ccf498
+    res = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_7adde112
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_12cb9eda
     return kotlin_Any_(res)
 
 def numberToByte(a):
@@ -12442,7 +12442,7 @@ def toByte(a):
 def numberToInt(a):
     tmp
     if jsInstanceOf(a, jsClass()):
-        tmp = toInt()
+        tmp = kotlin_Long(a).toInt()
     
     if True:
         if True:
@@ -12452,7 +12452,7 @@ def numberToInt(a):
     return tmp
 
 def doubleToInt(a):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_226ddb69
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_36ed075b
 
 def numberToDouble(a):
     tmp0_unsafeCast_0 = js('+a')
@@ -12478,56 +12478,56 @@ def numberToLong(a):
     return tmp
 
 def numberToChar(a):
-    return _init_(jsBitAnd(numberToInt(a), 65535))
+    return Char(jsBitAnd(numberToInt(a), 65535))
 
 def toLong(a):
     return fromInt(kotlin_Int(a))
 
 def numberRangeToNumber(start, endInclusive):
-    return _init_(kotlin_Int(start), kotlin_Int(endInclusive))
+    return IntRange(kotlin_Int(start), kotlin_Int(endInclusive))
 
 def numberRangeToLong(start, endInclusive):
-    return _init_(numberToLong(start), kotlin_Long(endInclusive))
+    return LongRange(numberToLong(start), kotlin_Long(endInclusive))
 
 def _get_propertyRefClassMetadataCache_():
     return propertyRefClassMetadataCache
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_3c20af2 = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_56059cf1 = 0
 def metadataObject():
     return js('{ kind: \'class\', interfaces: [] }')
 
 def getPropertyCallableRef(name, paramCount, type, getter, setter):
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_7f1f6c22
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_6bcc277a
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_6e9d60e1
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1b5496fd
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_56b972a8
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_16db70a0
     tmp0_unsafeCast_0 = getPropertyRefClass(getter, getKPropMetadata(paramCount, setter, type))
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def getPropertyRefClass(obj, metadata):
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_44d51c85
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_68b2ce71
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_64bf60c7
+    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_150f3678
     return obj
 
 def getKPropMetadata(paramCount, setter, type):
-    mdata = jsArrayGet(jsArrayGet(propertyRefClassMetadataCache, paramCount), visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_71efa55d)
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_6bc72ab6:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2b0061b7
+    mdata = jsArrayGet(jsArrayGet(propertyRefClassMetadataCache, paramCount), visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_562c6d5c)
+    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_700e3b73:
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_7a2c95e2
     
     return mdata
 
 def getLocalDelegateReference(name, type, mutable, _lambda):
-    return getPropertyCallableRef(name, 0, type, _lambda, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7dcbb6e5)
+    return getPropertyCallableRef(name, 0, type, _lambda, visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_720574a4)
 
 def propertyRefClassMetadataCache_init_():
     tmp = js('{ kind: \'class\', interfaces: [] }')
-    tmp0_arrayOf_0 = arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_29a3e9e8)
+    tmp0_arrayOf_0 = arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_2348e36)
     tmp = kotlin_Any_(tmp0_arrayOf_0)
     tmp = js('{ kind: \'class\', interfaces: [] }')
-    tmp1_arrayOf_0 = arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_784ceacb)
+    tmp1_arrayOf_0 = arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_134d8f2b)
     tmp = kotlin_Any_(tmp1_arrayOf_0)
     tmp = js('{ kind: \'class\', interfaces: [] }')
-    tmp2_arrayOf_0 = arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_bd3df07)
-    tmp3_arrayOf_0 = arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_57eab3f5)
+    tmp2_arrayOf_0 = arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_698ba673)
+    tmp3_arrayOf_0 = arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_6f8fe7e8)
     return kotlin_Any_(tmp3_arrayOf_0)
 
 def isArrayish(o):
@@ -12536,17 +12536,17 @@ def isArrayish(o):
         tmp = True
     
     if True:
-        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4064cd60
+        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_24cb530d
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
     
     return tmp
 
 def isJsArray(obj):
-    tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4fb56bdf
+    tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_3c6c7782
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def isInterface(obj, iface):
-    tmp0_elvis_lhs = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_70b38e0
+    tmp0_elvis_lhs = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_749aa36f
     tmp
     if jsEqeq(tmp0_elvis_lhs, None):
         return False
@@ -12559,11 +12559,11 @@ def isInterface(obj, iface):
 
 def isInterfaceImpl(ctor, iface):
     if jsEqeqeq(ctor, iface):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_7d3405c0
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl_295692fd
     
-    metadata = _get__metadata__()
+    metadata = ctor._get__metadata__()
     if jsNot(jsEqeq(metadata, None)):
-        interfaces = _get_interfaces_()
+        interfaces = metadata._get_interfaces_()
         indexedObject = interfaces
         inductionVariable = 0
         last = jsArrayLength(indexedObject)
@@ -12575,14 +12575,14 @@ def isInterfaceImpl(ctor, iface):
             
         
     
-    superPrototype = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2204dff6
-    superConstructor = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_27ed234f
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_10130823
+    superPrototype = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2d583f20
+    superConstructor = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_15210484
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_76a89ffa
 
 def isArray(obj):
     tmp
     if isJsArray(obj):
-        tmp = kotlin_Boolean(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_35e59c13)
+        tmp = kotlin_Boolean(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_17746fcb)
     
     if True:
         tmp = False
@@ -12592,11 +12592,11 @@ def isArray(obj):
 def isObject(obj):
     objTypeOf = jsTypeOf(obj)
     tmp0_subject = objTypeOf
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4b26a938
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_33032086
 
 def isSuspendFunction(obj, arity):
     if jsEqeqeq(jsTypeOf(obj), 'function'):
-        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_4dd94931
+        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_508b9c16
         return jsEqeqeq(kotlin_Any_(tmp0_unsafeCast_0), arity)
     
     return False
@@ -12613,13 +12613,13 @@ def isNumber(a):
 
 def isComparable(value):
     type = jsTypeOf(value)
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_56f809e5
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_451dfee3
 
 def isCharSequence(value):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_23e892d3
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3ec05c9b
 
 def isBooleanArray(a):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_106f7ddd
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_a3f7621
 
 def isByteArray(a):
     return jsInstanceOf(a, js('Int8Array'))
@@ -12628,7 +12628,7 @@ def isShortArray(a):
     return jsInstanceOf(a, js('Int16Array'))
 
 def isCharArray(a):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6a554ba0
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_641ff891
 
 def isIntArray(a):
     return jsInstanceOf(a, js('Int32Array'))
@@ -12637,54 +12637,54 @@ def isFloatArray(a):
     return jsInstanceOf(a, js('Float32Array'))
 
 def isLongArray(a):
-    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_a8af0a3
+    return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_316eb9b8
 
 def isDoubleArray(a):
     return jsInstanceOf(a, js('Float64Array'))
 
 def jsIsType(obj, jsClass):
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_6f54a7be:
+    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_7772549d:
         return isObject(obj)
     
-    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3e914e4b:
+    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_7646c16:
         return False
     
-    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4e01cf43:
+    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_51a6748f:
         return True
     
     proto = jsGetPrototypeOf(jsClass)
     tmp0_safe_receiver = proto
-    constructor = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_c2622f8
-    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5ec32f69:
-        metadata = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_46c8a8e0
-        if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1844e563:
-            return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5f0d1a0d
+    constructor = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6b5af92
+    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_66a7e65:
+        metadata = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_21b298de
+        if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_42b2a977:
+            return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_6fec6b75
         
     
-    klassMetadata = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_160ecb8f
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1bff5ad0:
+    klassMetadata = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_293918f9
+    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_7d968ec1:
         return jsInstanceOf(obj, jsClass)
     
-    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_380f934e:
-        return isInterfaceImpl(kotlin_js_Ctor(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_4306191), jsClass)
+    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4821b5f9:
+        return isInterfaceImpl(kotlin_js_Ctor(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_2907f58d), jsClass)
     
     return False
 
 def jsGetPrototypeOf(jsClass):
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_7b255b15
+    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_79a81557
 
 def asList():
-    return _init_(kotlin_Any_(_this_))
+    return ArrayList(kotlin_Any_(_this_))
 
 def plus(elements):
-    return kotlin_Array_T_(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_20c8457f)
+    return kotlin_Array_T_(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_6263089d)
 
 def copyOfRange(fromIndex, toIndex):
-    checkRangeIndexes(fromIndex, toIndex, jsArrayLength(_this_))
-    return kotlin_Array_T_(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_7b9866c6)
+    Companion_getInstance().checkRangeIndexes(fromIndex, toIndex, jsArrayLength(_this_))
+    return kotlin_Array_T_(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4041b733)
 
 def minOf(a, b):
-    return min(int32ArrayOf(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_164ee145))
+    return visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl_5b0b7fd7.min(int32ArrayOf(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_3b342b4d))
 
 def _get_resultContinuation_(_this):
     return resultContinuation
@@ -12700,14 +12700,14 @@ def _get_intercepted__(_this):
 
 def releaseIntercepted(_this):
     intercepted = intercepted_
-    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3ae8394:
-        releaseInterceptedContinuation(intercepted)
+    if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_b889306:
+        ensureNotNull(_this._get_context_().get(Key_getInstance())).releaseInterceptedContinuation(intercepted)
     
     _this.intercepted_ = CompletedContinuation_getInstance()
 
 class CoroutineImpl:
     def _init_(resultContinuation):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3f937c0e
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3e706fc2
         _this_.resultContinuation = resultContinuation
         _this_.state = 0
         _this_.exceptionState = 0
@@ -12716,49 +12716,49 @@ class CoroutineImpl:
         _this_.finallyPath = None
         tmp = _this_
         tmp0_safe_receiver = resultContinuation
-        tmp._context = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_60509848
+        tmp._context = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2aaa4574
         _this_.intercepted_ = None
     
-    def _set_state_(_set___):
+    def _set_state_(self, _set___):
         _this_.state = _set___
     
-    def _get_state_():
+    def _get_state_(self):
         return state
     
-    def _set_exceptionState_(_set___):
+    def _set_exceptionState_(self, _set___):
         _this_.exceptionState = _set___
     
-    def _get_exceptionState_():
+    def _get_exceptionState_(self):
         return exceptionState
     
-    def _set_result_(_set___):
+    def _set_result_(self, _set___):
         _this_.result = _set___
     
-    def _get_result_():
+    def _get_result_(self):
         return result
     
-    def _set_exception_(_set___):
+    def _set_exception_(self, _set___):
         _this_.exception = _set___
     
-    def _get_exception_():
+    def _get_exception_(self):
         return exception
     
-    def _set_finallyPath_(_set___):
+    def _set_finallyPath_(self, _set___):
         _this_.finallyPath = _set___
     
-    def _get_finallyPath_():
+    def _get_finallyPath_(self):
         return finallyPath
     
-    def _get_context_():
+    def _get_context_(self):
         return ensureNotNull(_context)
     
-    def intercepted():
+    def intercepted(self):
         tmp2_elvis_lhs = intercepted_
         tmp
         if jsEqeq(tmp2_elvis_lhs, None):
-            tmp0_safe_receiver = get(Key_getInstance())
-            tmp1_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5c6d1a38
-            tmp0_also_0 = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_27c5fba0
+            tmp0_safe_receiver = _this_._get_context_().get(Key_getInstance())
+            tmp1_elvis_lhs = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2de55285
+            tmp0_also_0 = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_498bcd33
             _this_.intercepted_ = tmp0_also_0
             tmp = tmp0_also_0
         
@@ -12767,7 +12767,7 @@ class CoroutineImpl:
         
         return tmp
     
-    def resumeWith(result):
+    def resumeWith(self, result):
         current = _this_
         tmp
         if _Result___get_isFailure__impl_(result):
@@ -12775,7 +12775,7 @@ class CoroutineImpl:
         
         if True:
             tmp = _Result___get_value__impl_(result)
-            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_30183725
+            tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_33aa4a3a
         
         currentResult = tmp
         currentException = Result__exceptionOrNull_impl(result)
@@ -12788,7 +12788,7 @@ class CoroutineImpl:
                 tmp0_with_0.state = exceptionState
                 tmp0_with_0.exception = currentException
             
-            visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl_f23b785
+            visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl_25c7c446
             releaseIntercepted(tmp0_with_0)
             completion_4 = ensureNotNull(resultContinuation)
             if jsInstanceOf(completion_4, jsClass()):
@@ -12799,711 +12799,711 @@ class CoroutineImpl:
                     if jsNot(jsEqeq(currentException, None)):
                         tmp0_resumeWithException_0_5 = ensureNotNull(currentException)
                         tmp0_failure_0_1_6 = Companion_getInstance()
-                        resumeWith(_init_(createFailure(tmp0_resumeWithException_0_5)))
+                        completion_4.resumeWith(Result(createFailure(tmp0_resumeWithException_0_5)))
                     
                     if True:
                         tmp1_resume_0_7 = currentResult
                         tmp0_success_0_1_8 = Companion_getInstance()
-                        resumeWith(_init_(tmp1_resume_0_7))
+                        completion_4.resumeWith(Result(tmp1_resume_0_7))
                     
                     return Unit_getInstance()
                 
             
         
     
-    def resumeWith(result):
-        return resumeWith(result)
+    def resumeWith(self, result):
+        return _this_.resumeWith(result)
     
-    def doResume():
+    def doResume(self):
         pass
     
-    def create(completion):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_a0c027a
+    def create(self, completion):
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_156b3428
     
-    def create(value, completion):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_1f878eed
+    def create(self, value, completion):
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_7e3cea61
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
 
 class CompletedContinuation:
     def _init_():
         CompletedContinuation_instance = _this_
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3815c525
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4f2e6db7
     
-    def _get_context_():
+    def _get_context_(self):
         tmp0_error_0 = 'This continuation is already complete'
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_5c181a62
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_42ad9160
     
-    def resumeWith(result):
+    def resumeWith(self, result):
         tmp0_error_0 = 'This continuation is already complete'
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_395272b8
+        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_64a17bcc
     
-    def resumeWith(result):
-        return resumeWith(result)
+    def resumeWith(self, result):
+        return _this_.resumeWith(result)
     
-    def toString():
+    def toString(self):
         return 'This continuation is already complete'
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_6a89d89b = 0
+visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_45f4a0ee = 0
 def CompletedContinuation_getInstance():
     if jsEqeq(CompletedContinuation_instance, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_39ca785e
+        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl_e7906af
     
     return CompletedContinuation_instance
 
 def Exception_init__Init_(_this):
     extendThrowable(_this, _undefined(), _undefined())
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1fa3c4f7
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_703c6519
     return _this
 
 def Exception_init__Create_():
     tmp = Exception_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_39d0670c)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_428ebfde)
     return tmp
 
 def Exception_init__Init_(message, _this):
     extendThrowable(_this, message, _undefined())
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_77e7be90
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6d7b4edf
     return _this
 
 def Exception_init__Create_(message):
     tmp = Exception_init__Init_(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_2dff4ef9)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_2993c168)
     return tmp
 
 def Exception_init__Init_(message, cause, _this):
     extendThrowable(_this, message, cause)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1e3d7df9
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1af83b4b
     return _this
 
 def Exception_init__Create_(message, cause):
     tmp = Exception_init__Init_(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_298e95ed)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_168dc9c3)
     return tmp
 
 def Exception_init__Init_(cause, _this):
     extendThrowable(_this, _undefined(), cause)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_15d5761d
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2e4e175
     return _this
 
 def Exception_init__Create_(cause):
     tmp = Exception_init__Init_(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_38cde4f2)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_698e4e6c)
     return tmp
 
 class Exception:
-    def _get_message_():
+    def _get_message_(self):
         pass
     
-    def _get_cause_():
+    def _get_cause_(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
     def _init_():
-        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_7537f673)
+        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_78a47ca8)
     
 
 def Error_init__Init_(_this):
     extendThrowable(_this, _undefined(), _undefined())
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_290b031e
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1d4c39c2
     return _this
 
 def Error_init__Create_():
     tmp = Error_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_9385016)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_2b2415a7)
     return tmp
 
 def Error_init__Init_(message, _this):
     extendThrowable(_this, message, _undefined())
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_34a174f8
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_26bddc84
     return _this
 
 def Error_init__Create_(message):
     tmp = Error_init__Init_(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_1fafb2ae)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_151b7c03)
     return tmp
 
 def Error_init__Init_(message, cause, _this):
     extendThrowable(_this, message, cause)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_77f965a0
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5387e079
     return _this
 
 def Error_init__Create_(message, cause):
     tmp = Error_init__Init_(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_18db7998)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_5fe11c40)
     return tmp
 
 def Error_init__Init_(cause, _this):
     extendThrowable(_this, _undefined(), cause)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_aeb6d4d
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_55f00c43
     return _this
 
 def Error_init__Create_(cause):
     tmp = Error_init__Init_(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_63b66b0f)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_334e5403)
     return tmp
 
 class Error:
-    def _get_message_():
+    def _get_message_(self):
         pass
     
-    def _get_cause_():
+    def _get_cause_(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
     def _init_():
-        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_7b2196d4)
+        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_b022ec3)
     
 
 def IllegalArgumentException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2306d66c
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_747f6990
     return _this
 
 def IllegalArgumentException_init__Create_():
     tmp = IllegalArgumentException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_31fc2a08)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_30df4a72)
     return tmp
 
 def IllegalArgumentException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_25329370
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_72ddbe12
     return _this
 
 def IllegalArgumentException_init__Create_(message):
     tmp = IllegalArgumentException_init__Init_(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_63822d44)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_27f546)
     return tmp
 
 def IllegalArgumentException_init__Init_(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_ca160e0
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_222303b9
     return _this
 
 def IllegalArgumentException_init__Create_(message, cause):
     tmp = IllegalArgumentException_init__Init_(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_b889306)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_6c7114db)
     return tmp
 
 def IllegalArgumentException_init__Init_(cause, _this):
     RuntimeException_init__Init_(cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_40aabc7b
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4388206e
     return _this
 
 def IllegalArgumentException_init__Create_(cause):
     tmp = IllegalArgumentException_init__Init_(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_50d8c98c)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_4e3db1c6)
     return tmp
 
 class IllegalArgumentException:
-    def _get_message_():
+    def _get_message_(self):
         pass
     
-    def _get_cause_():
+    def _get_cause_(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
     def _init_():
-        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_42ad9160)
+        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_2c33bc4)
     
 
 def RuntimeException_init__Init_(_this):
     Exception_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3160fef3
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_672bc69a
     return _this
 
 def RuntimeException_init__Create_():
     tmp = RuntimeException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_45f4a0ee)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_786d9f87)
     return tmp
 
 def RuntimeException_init__Init_(message, _this):
     Exception_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_60b7f05c
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2e3991bd
     return _this
 
 def RuntimeException_init__Create_(message):
     tmp = RuntimeException_init__Init_(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_6ffa30e3)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_414331e4)
     return tmp
 
 def RuntimeException_init__Init_(message, cause, _this):
     Exception_init__Init_(message, cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1dd241a0
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_60f9d3e1
     return _this
 
 def RuntimeException_init__Create_(message, cause):
     tmp = RuntimeException_init__Init_(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_42178353)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_71e67dd6)
     return tmp
 
 def RuntimeException_init__Init_(cause, _this):
     Exception_init__Init_(cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_70c825c9
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6b2ac950
     return _this
 
 def RuntimeException_init__Create_(cause):
     tmp = RuntimeException_init__Init_(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_39c1ba8b)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_7fa817ba)
     return tmp
 
 class RuntimeException:
-    def _get_message_():
+    def _get_message_(self):
         pass
     
-    def _get_cause_():
+    def _get_cause_(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
     def _init_():
-        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_145a0fd0)
+        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_7b66c7e9)
     
 
 def NoSuchElementException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_129d65a0
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3472f880
     return _this
 
 def NoSuchElementException_init__Create_():
     tmp = NoSuchElementException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_496e5047)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_7588d46f)
     return tmp
 
 def NoSuchElementException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4e492d18
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_226451a2
     return _this
 
 def NoSuchElementException_init__Create_(message):
     tmp = NoSuchElementException_init__Init_(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_1d4c39c2)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_649e1f4c)
     return tmp
 
 class NoSuchElementException:
-    def _get_message_():
+    def _get_message_(self):
         pass
     
-    def _get_cause_():
+    def _get_cause_(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
     def _init_():
-        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_21302fe7)
+        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_52c2906e)
     
 
 def IllegalStateException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7d686953
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6c20dae4
     return _this
 
 def IllegalStateException_init__Create_():
     tmp = IllegalStateException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_6fd46b61)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_b7694aa)
     return tmp
 
 def IllegalStateException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_247f60a3
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7cba7745
     return _this
 
 def IllegalStateException_init__Create_(message):
     tmp = IllegalStateException_init__Init_(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_474b3a3d)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_3ca962eb)
     return tmp
 
 def IllegalStateException_init__Init_(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_35ae4079
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2a6a0343
     return _this
 
 def IllegalStateException_init__Create_(message, cause):
     tmp = IllegalStateException_init__Init_(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_55f00c43)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_70c969a7)
     return tmp
 
 def IllegalStateException_init__Init_(cause, _this):
     RuntimeException_init__Init_(cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1ab1e83a
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_18495d2c
     return _this
 
 def IllegalStateException_init__Create_(cause):
     tmp = IllegalStateException_init__Init_(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_2c9a5a1b)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_888925d)
     return tmp
 
 class IllegalStateException:
-    def _get_message_():
+    def _get_message_(self):
         pass
     
-    def _get_cause_():
+    def _get_cause_(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
     def _init_():
-        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_68e9c1d8)
+        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_37fec49c)
     
 
 def IndexOutOfBoundsException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_30df4a72
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2ed33e81
     return _this
 
 def IndexOutOfBoundsException_init__Create_():
     tmp = IndexOutOfBoundsException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_72ddbe12)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_777f58c3)
     return tmp
 
 def IndexOutOfBoundsException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_25539a73
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_46a2f032
     return _this
 
 def IndexOutOfBoundsException_init__Create_(message):
     tmp = IndexOutOfBoundsException_init__Init_(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_77bb51e3)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_d78dd7f)
     return tmp
 
 class IndexOutOfBoundsException:
-    def _get_message_():
+    def _get_message_(self):
         pass
     
-    def _get_cause_():
+    def _get_cause_(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
     def _init_():
-        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_7b21879f)
+        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_6acb0d0d)
     
 
 def UnsupportedOperationException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6048cacf
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5d2ded
     return _this
 
 def UnsupportedOperationException_init__Create_():
     tmp = UnsupportedOperationException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_6147ff01)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_9f36eeb)
     return tmp
 
 def UnsupportedOperationException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_38407b0e
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_39794db6
     return _this
 
 def UnsupportedOperationException_init__Create_(message):
     tmp = UnsupportedOperationException_init__Init_(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_2c33bc4)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_5d9d1953)
     return tmp
 
 def UnsupportedOperationException_init__Init_(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_66d2ed64
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_67c9d537
     return _this
 
 def UnsupportedOperationException_init__Create_(message, cause):
     tmp = UnsupportedOperationException_init__Init_(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_2e3991bd)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_39487f70)
     return tmp
 
 def UnsupportedOperationException_init__Init_(cause, _this):
     RuntimeException_init__Init_(cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_798673ea
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6ea248fd
     return _this
 
 def UnsupportedOperationException_init__Create_(cause):
     tmp = UnsupportedOperationException_init__Init_(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_30625f51)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_17675c2f)
     return tmp
 
 class UnsupportedOperationException:
-    def _get_message_():
+    def _get_message_(self):
         pass
     
-    def _get_cause_():
+    def _get_cause_(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
     def _init_():
-        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_5706f658)
+        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_169f4020)
     
 
 def NullPointerException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5cba45e8
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_70c81870
     return _this
 
 def NullPointerException_init__Create_():
     tmp = NullPointerException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_7b58475e)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_5204a284)
     return tmp
 
 def NullPointerException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2034e91c
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_26f44b4a
     return _this
 
 def NullPointerException_init__Create_(message):
     tmp = NullPointerException_init__Init_(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_7b66c7e9)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_4f7e0ea7)
     return tmp
 
 class NullPointerException:
-    def _get_message_():
+    def _get_message_(self):
         pass
     
-    def _get_cause_():
+    def _get_cause_(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
     def _init_():
-        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_3472f880)
+        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_92b6b6f)
     
 
 def NoWhenBranchMatchedException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5ca758b9
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_42306a87
     return _this
 
 def NoWhenBranchMatchedException_init__Create_():
     tmp = NoWhenBranchMatchedException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_2b1d39b2)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_41acbb51)
     return tmp
 
 def NoWhenBranchMatchedException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_56a11071
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_69d58b75
     return _this
 
 def NoWhenBranchMatchedException_init__Create_(message):
     tmp = NoWhenBranchMatchedException_init__Init_(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_52c2906e)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_20286a6b)
     return tmp
 
 def NoWhenBranchMatchedException_init__Init_(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_49c96044
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2b648329
     return _this
 
 def NoWhenBranchMatchedException_init__Create_(message, cause):
     tmp = NoWhenBranchMatchedException_init__Init_(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_7cba7745)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_3c9e7377)
     return tmp
 
 def NoWhenBranchMatchedException_init__Init_(cause, _this):
     RuntimeException_init__Init_(cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_38daeeff
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5244b461
     return _this
 
 def NoWhenBranchMatchedException_init__Create_(cause):
     tmp = NoWhenBranchMatchedException_init__Init_(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_69faffba)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_5aff837f)
     return tmp
 
 class NoWhenBranchMatchedException:
-    def _get_message_():
+    def _get_message_(self):
         pass
     
-    def _get_cause_():
+    def _get_cause_(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
     def _init_():
-        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_6cb48bf4)
+        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_10c4eb9a)
     
 
 def ClassCastException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_689719ee
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_54a0f09d
     return _this
 
 def ClassCastException_init__Create_():
     tmp = ClassCastException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_430a748)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_53162e9c)
     return tmp
 
 def ClassCastException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_39b525a2
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2749980a
     return _this
 
 def ClassCastException_init__Create_(message):
     tmp = ClassCastException_init__Init_(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_37fec49c)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_50829172)
     return tmp
 
 class ClassCastException:
-    def _get_message_():
+    def _get_message_(self):
         pass
     
-    def _get_cause_():
+    def _get_cause_(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
     def _init_():
-        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_2ed33e81)
+        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_5c273b3e)
     
 
 def UninitializedPropertyAccessException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_66c755cc
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_d9d2c3e
     return _this
 
 def UninitializedPropertyAccessException_init__Create_():
     tmp = UninitializedPropertyAccessException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_645e2cfe)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_b28fd1)
     return tmp
 
 def UninitializedPropertyAccessException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_57543d4c
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_626a4cfa
     return _this
 
 def UninitializedPropertyAccessException_init__Create_(message):
     tmp = UninitializedPropertyAccessException_init__Init_(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_6acb0d0d)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_2d6ddf48)
     return tmp
 
 def UninitializedPropertyAccessException_init__Init_(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3cd38685
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7c4dd006
     return _this
 
 def UninitializedPropertyAccessException_init__Create_(message, cause):
     tmp = UninitializedPropertyAccessException_init__Init_(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_39794db6)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_56598806)
     return tmp
 
 def UninitializedPropertyAccessException_init__Init_(cause, _this):
     RuntimeException_init__Init_(cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_533167f0
+    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4e80e1b5
     return _this
 
 def UninitializedPropertyAccessException_init__Create_(cause):
     tmp = UninitializedPropertyAccessException_init__Init_(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_1d067bce)
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_71a7ce25)
     return tmp
 
 class UninitializedPropertyAccessException:
-    def _get_message_():
+    def _get_message_(self):
         pass
     
-    def _get_cause_():
+    def _get_cause_(self):
         pass
     
-    def toString():
+    def toString(self):
         pass
     
-    def equals(other):
+    def equals(self, other):
         pass
     
-    def hashCode():
+    def hashCode(self):
         pass
     
     def _init_():
-        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_61ffe4cf)
+        captureStack(_this_, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl_252d7bcf)
     
 
 def jsIn(lhs_hack, rhs_hack):
@@ -13533,12 +13533,33 @@ def pythonTest():
     println('Hello world')
 
 def exampleFromAstTest():
-    fruits = listOf(arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_4f347dbe))
-    tmp0_iterator = iterator()
-    while hasNext():
-        x = next()
+    fruits = listOf(arrayLiteral(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrVarargImpl_3f832bd))
+    tmp0_iterator = fruits.iterator()
+    while tmp0_iterator.hasNext():
+        x = tmp0_iterator.next()
         println(x)
+    
+
+class TestClass:
+    def _init_():
+        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3c74aa0d
+    
+    def getSomeString(self):
+        return 'Hello from Kotlin class!'
+    
+    def equals(self, other):
+        pass
+    
+    def hashCode(self):
+        pass
+    
+    def toString(self):
+        pass
     
 
 def returnString():
     return 'Hello from Kotlin!'
+
+def returnStringFromClass():
+    testClass = TestClass()
+    return testClass.getSomeString()
