@@ -355,7 +355,7 @@ def getOrElse(index, defaultValue):
 
 def KotlinNothingValueException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4a5939cb = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4a5939cb
     return _this
 
 def KotlinNothingValueException_init__Create_():
@@ -365,7 +365,7 @@ def KotlinNothingValueException_init__Create_():
 
 def KotlinNothingValueException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_249334b9 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_249334b9
     return _this
 
 def KotlinNothingValueException_init__Create_(message):
@@ -375,7 +375,7 @@ def KotlinNothingValueException_init__Create_(message):
 
 def KotlinNothingValueException_init__Init_(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1e31cf9b = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1e31cf9b
     return _this
 
 def KotlinNothingValueException_init__Create_(message, cause):
@@ -385,7 +385,7 @@ def KotlinNothingValueException_init__Create_(message, cause):
 
 def KotlinNothingValueException_init__Init_(cause, _this):
     RuntimeException_init__Init_(cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3a4af228 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3a4af228
     return _this
 
 def KotlinNothingValueException_init__Create_(cause):
@@ -434,7 +434,7 @@ def Experimental_init__Init_(level, _mask0, _marker, _this):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 1), 0)):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_6a670dcc
     
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4cfc4eb2 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4cfc4eb2
     return _this
 
 def Experimental_init__Create_(level, _mask0, _marker):
@@ -442,7 +442,7 @@ def Experimental_init__Create_(level, _mask0, _marker):
 
 class Level:
     def __init__(self, name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3b5cf4c6 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3b5cf4c6
     
     def _get_name_(self):
         pass
@@ -571,7 +571,7 @@ def RequiresOptIn_init__Init_(message, level, _mask0, _marker, _this):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 2), 0)):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_1201d134
     
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3178f903 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3178f903
     return _this
 
 def RequiresOptIn_init__Create_(message, level, _mask0, _marker):
@@ -579,7 +579,7 @@ def RequiresOptIn_init__Create_(message, level, _mask0, _marker):
 
 class Level:
     def __init__(self, name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2ddc5c07 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2ddc5c07
     
     def _get_name_(self):
         pass
@@ -649,7 +649,6 @@ class OptIn:
 class _no_name_provided_:
     def __init__(self, this_0):
         self.this_0 = this_0
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_451a5843 = 0
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_78cbb140
@@ -660,7 +659,7 @@ class _no_name_provided_:
 
 class AbstractCollection:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3c74d846 = 0
+        pass
     
     def _get_size_(self):
         pass
@@ -715,7 +714,7 @@ def _get__size_(_this):
 
 class SubList:
     def __init__(self, list, fromIndex, toIndex):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5f877009 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5f877009
         self.list = list
         self.fromIndex = fromIndex
         self._size = 0
@@ -775,7 +774,6 @@ class SubList:
 class IteratorImpl:
     def __init__(self, _outer):
         self._this = _outer
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5f8d4b51 = 0
         self.index = 0
     
     def _set_index_(self, _set___):
@@ -809,7 +807,7 @@ class IteratorImpl:
 class ListIteratorImpl:
     def __init__(self, _outer, index):
         self._this = _outer
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_403e8b5 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_403e8b5
         Companion_getInstance().checkPositionIndex(index, self._this._get_size_())
         self._set_index_(index)
     
@@ -855,7 +853,6 @@ class ListIteratorImpl:
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5b74bb75 = 0
     
     def checkElementIndex(self, index, size):
         if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_62c95d73:
@@ -930,7 +927,7 @@ def Companion_getInstance():
 class AbstractList:
     def __init__(self):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_79c2bc34 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_79c2bc34
     
     def _get_size_(self):
         pass
@@ -1009,7 +1006,6 @@ def readResolve(_this):
 class EmptyList:
     def __init__(self):
         EmptyList_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_43312512 = 0
         self.serialVersionUID = Long(-1478467534, -1720727600)
     
     def equals(self, other):
@@ -1137,7 +1133,6 @@ def EmptyList_getInstance():
 class EmptyIterator:
     def __init__(self):
         EmptyIterator_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_61d24347 = 0
     
     def hasNext(self):
         return False
@@ -1293,7 +1288,7 @@ def InvocationKind_initEntries():
 
 class InvocationKind:
     def __init__(self, name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3f11add1 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3f11add1
     
     def _get_name_(self):
         pass
@@ -1475,7 +1470,6 @@ class _no_name_provided_:
     def __init__(self, _context, _resumeWith):
         self._context = _context
         self._resumeWith = _resumeWith
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_36d476c2 = 0
     
     def _get_context_(self):
         return self._context
@@ -1496,7 +1490,6 @@ class _no_name_provided_:
 class Key:
     def __init__(self):
         Key_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_43b3b1b0 = 0
     
     def equals(self, other):
         pass
@@ -1629,7 +1622,7 @@ class Element:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6c525ee2 = 0
+        pass
     
     def invoke(self, acc, element):
         removed = acc.minusKey(element._get_key_())
@@ -1702,7 +1695,6 @@ def readResolve(_this):
 class EmptyCoroutineContext:
     def __init__(self):
         EmptyCoroutineContext_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_102f3f05 = 0
         self.serialVersionUID = Long(0, 0)
     
     def get(self, key):
@@ -1740,7 +1732,6 @@ def _get_serialVersionUID_(_this):
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_48a38a12 = 0
         self.serialVersionUID = Long(0, 0)
     
     def equals(self, other):
@@ -1834,7 +1825,6 @@ def writeReplace(_this):
 class Serialized:
     def __init__(self, elements):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_33622388 = 0
         self.elements = elements
     
     def _get_elements_(self):
@@ -1852,7 +1842,7 @@ class Serialized:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_30e4cf5e = 0
+        pass
     
     def invoke(self, acc, element):
         tmp
@@ -1875,7 +1865,6 @@ class _no_name_provided_:
     def __init__(self, _elements, _index):
         self._elements = _elements
         self._index = _index
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_457af059 = 0
     
     def invoke(self, _anonymous_parameter_0_, element):
         tmp0 = _sharedBox_read(self._index)
@@ -1890,7 +1879,6 @@ class _no_name_provided_:
 
 class CombinedContext:
     def __init__(self, left, element):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3777fc44 = 0
         self.left = left
         self.element = element
     
@@ -1977,7 +1965,6 @@ def _get_topmostKey_(_this):
 
 class AbstractCoroutineContextKey:
     def __init__(self, baseKey, safeCast):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_f245168 = 0
         self.safeCast = safeCast
         tmp = self
         tmp
@@ -2039,7 +2026,7 @@ def CoroutineSingletons_initEntries():
 
 class CoroutineSingletons:
     def __init__(self, name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_78519d63 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_78519d63
     
     def _get_name_(self):
         pass
@@ -2123,7 +2110,7 @@ def RequireKotlin_init__Init_(version, message, level, versionKind, errorCode, _
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 16), 0)):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_406ba622
     
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_f157271 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_f157271
     return _this
 
 def RequireKotlin_init__Create_(version, message, level, versionKind, errorCode, _mask0, _marker):
@@ -2183,7 +2170,7 @@ def RequireKotlinVersionKind_initEntries():
 
 class RequireKotlinVersionKind:
     def __init__(self, name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5e231326 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5e231326
     
     def _get_name_(self):
         pass
@@ -2329,7 +2316,6 @@ class KTypeParameter:
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6b35b0f4 = 0
         self.star = KTypeProjection(None, None)
     
     def _get_star_(self):
@@ -2367,7 +2353,6 @@ def Companion_getInstance():
 class KTypeProjection:
     def __init__(self, variance, type):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2e667e95 = 0
         self.variance = variance
         self.type = type
         tmp0_require_0 = jsEqeqeq(jsEqeq(self.variance, None), jsEqeq(self.type, None))
@@ -2466,7 +2451,7 @@ def KVariance_initEntries():
 
 class KVariance:
     def __init__(self, name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_35e50381 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_35e50381
     
     def _get_name_(self):
         pass
@@ -2606,7 +2591,6 @@ def Result__toString_impl(this):
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_71e55e48 = 0
     
     def success(self, value):
         return Result(value)
@@ -2633,7 +2617,6 @@ def Companion_getInstance():
 
 class Failure:
     def __init__(self, exception):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_17554316 = 0
         self.exception = exception
     
     def _get_exception_(self):
@@ -2677,7 +2660,6 @@ def Result__equals_impl(this, other):
 class Result:
     def __init__(self, value):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5cff6d1d = 0
         self.value = value
     
     def toString(self):
@@ -2717,7 +2699,7 @@ def NotImplementedError_init__Init_(message, _mask0, _marker, _this):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 1), 0)):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_6c8eab63
     
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3dd3f237 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3dd3f237
     return _this
 
 def NotImplementedError_init__Create_(message, _mask0, _marker):
@@ -2775,7 +2757,6 @@ def _UByte___get_data__impl_(this):
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_530a46f4 = 0
         self.MIN_VALUE = UByte(visitConst_other_Byte)
         self.MAX_VALUE = UByte(visitConst_other_Byte)
         self.SIZE_BYTES = 1
@@ -3005,7 +2986,6 @@ def UByte__equals_impl(this, other):
 class UByte:
     def __init__(self, data):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7528089c = 0
         self.data = data
     
     def compareTo(self, other):
@@ -3068,7 +3048,7 @@ def UByteArray__iterator_impl(this):
 
 class Iterator:
     def __init__(self, array):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5058fefb = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5058fefb
         self.array = array
         self.index = 0
     
@@ -3155,7 +3135,6 @@ def UByteArray__equals_impl(this, other):
 
 class UByteArray:
     def __init__(self, storage):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_593e594f = 0
         self.storage = storage
     
     def _get_size_(self):
@@ -3195,7 +3174,6 @@ def _UInt___get_data__impl_(this):
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3338d29d = 0
         self.MIN_VALUE = UInt(0)
         self.MAX_VALUE = UInt(-1)
         self.SIZE_BYTES = 4
@@ -3405,7 +3383,6 @@ def UInt__equals_impl(this, other):
 class UInt:
     def __init__(self, data):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4a00d591 = 0
         self.data = data
     
     def compareTo(self, other):
@@ -3474,7 +3451,7 @@ def UIntArray__iterator_impl(this):
 
 class Iterator:
     def __init__(self, array):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_15324f25 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_15324f25
         self.array = array
         self.index = 0
     
@@ -3561,7 +3538,6 @@ def UIntArray__equals_impl(this, other):
 
 class UIntArray:
     def __init__(self, storage):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7e916dc2 = 0
         self.storage = storage
     
     def _get_size_(self):
@@ -3598,7 +3574,6 @@ class UIntArray:
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_615b1baf = 0
         self.EMPTY = UIntRange(UInt(-1), UInt(0))
     
     def _get_EMPTY_(self):
@@ -3624,7 +3599,7 @@ def Companion_getInstance():
 class UIntRange:
     def __init__(self, start, endInclusive):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_46e38c28 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_46e38c28
     
     def _get_start_(self):
         return self._get_first_()
@@ -3704,7 +3679,6 @@ class UIntRange:
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_27260f9c = 0
     
     def fromClosedRange(self, rangeStart, rangeEnd, step):
         return UIntProgression(rangeStart, rangeEnd, step)
@@ -3729,7 +3703,6 @@ def Companion_getInstance():
 class UIntProgression:
     def __init__(self, start, endInclusive, step):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_62966c9f = 0
         if jsEqeqeq(step, 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_10d0ca5a
         
@@ -3815,7 +3788,7 @@ def _get_next_(_this):
 
 class UIntProgressionIterator:
     def __init__(self, first, last, step):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7860a014 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7860a014
         self.finalElement = last
         tmp = self
         tmp
@@ -3865,7 +3838,7 @@ class UIntProgressionIterator:
 
 class UIntIterator:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7bfedfb7 = 0
+        pass
     
     def next(self):
         return self.nextUInt()
@@ -3891,7 +3864,7 @@ class UIntIterator:
 
 class ULongIterator:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_195d4780 = 0
+        pass
     
     def next(self):
         return self.nextULong()
@@ -3917,7 +3890,7 @@ class ULongIterator:
 
 class UByteIterator:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1fd4850b = 0
+        pass
     
     def next(self):
         return self.nextUByte()
@@ -3943,7 +3916,7 @@ class UByteIterator:
 
 class UShortIterator:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_94b5fe3 = 0
+        pass
     
     def next(self):
         return self.nextUShort()
@@ -3973,7 +3946,6 @@ def _ULong___get_data__impl_(this):
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1bd53c5c = 0
         self.MIN_VALUE = ULong(Long(0, 0))
         self.MAX_VALUE = ULong(Long(-1, -1))
         self.SIZE_BYTES = 8
@@ -4184,7 +4156,6 @@ def ULong__equals_impl(this, other):
 class ULong:
     def __init__(self, data):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_650a0b50 = 0
         self.data = data
     
     def compareTo(self, other):
@@ -4253,7 +4224,7 @@ def ULongArray__iterator_impl(this):
 
 class Iterator:
     def __init__(self, array):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_73c6ebec = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_73c6ebec
         self.array = array
         self.index = 0
     
@@ -4340,7 +4311,6 @@ def ULongArray__equals_impl(this, other):
 
 class ULongArray:
     def __init__(self, storage):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2a23c061 = 0
         self.storage = storage
     
     def _get_size_(self):
@@ -4377,7 +4347,6 @@ class ULongArray:
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2b71a12e = 0
         self.EMPTY = ULongRange(ULong(Long(-1, -1)), ULong(Long(0, 0)))
     
     def _get_EMPTY_(self):
@@ -4403,7 +4372,7 @@ def Companion_getInstance():
 class ULongRange:
     def __init__(self, start, endInclusive):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_65013d71 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_65013d71
     
     def _get_start_(self):
         return self._get_first_()
@@ -4491,7 +4460,6 @@ class ULongRange:
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_79c4454 = 0
     
     def fromClosedRange(self, rangeStart, rangeEnd, step):
         return ULongProgression(rangeStart, rangeEnd, step)
@@ -4516,7 +4484,6 @@ def Companion_getInstance():
 class ULongProgression:
     def __init__(self, start, endInclusive, step):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_68a1bb31 = 0
         if step.equals(Long(0, 0)):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_17cc72cb
         
@@ -4610,7 +4577,7 @@ def _get_next_(_this):
 
 class ULongProgressionIterator:
     def __init__(self, first, last, step):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_147203c2 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_147203c2
         self.finalElement = last
         tmp = self
         tmp
@@ -4762,7 +4729,6 @@ def _UShort___get_data__impl_(this):
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4690a37e = 0
         self.MIN_VALUE = UShort(visitConst_other_Short)
         self.MAX_VALUE = UShort(visitConst_other_Short)
         self.SIZE_BYTES = 2
@@ -4989,7 +4955,6 @@ def UShort__equals_impl(this, other):
 class UShort:
     def __init__(self, data):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4af0ae2c = 0
         self.data = data
     
     def compareTo(self, other):
@@ -5049,7 +5014,7 @@ def UShortArray__iterator_impl(this):
 
 class Iterator:
     def __init__(self, array):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_541d8a9e = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_541d8a9e
         self.array = array
         self.index = 0
     
@@ -5136,7 +5101,6 @@ def UShortArray__equals_impl(this, other):
 
 class UShortArray:
     def __init__(self, storage):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1c294a17 = 0
         self.storage = storage
     
     def _get_size_(self):
@@ -5532,7 +5496,7 @@ class MutableListIterator:
 
 class Number:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_178f5b5b = 0
+        pass
     
     def toDouble(self):
         pass
@@ -5620,7 +5584,7 @@ def DeprecationLevel_initEntries():
 
 class DeprecationLevel:
     def __init__(self, name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2203ee34 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2203ee34
     
     def _get_name_(self):
         pass
@@ -5679,7 +5643,7 @@ def Deprecated_init__Init_(message, replaceWith, level, _mask0, _marker, _this):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 4), 0)):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_6b00dec8
     
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_10544888 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_10544888
     return _this
 
 def Deprecated_init__Create_(message, replaceWith, level, _mask0, _marker):
@@ -5773,7 +5737,7 @@ def DeprecationLevel_HIDDEN_getInstance():
 
 class ByteIterator:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_362fbd98 = 0
+        pass
     
     def next(self):
         return self.nextByte()
@@ -5796,7 +5760,7 @@ class ByteIterator:
 
 class IntIterator:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_45b37003 = 0
+        pass
     
     def next(self):
         return self.nextInt()
@@ -5819,7 +5783,7 @@ class IntIterator:
 
 class DoubleIterator:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_45594dfe = 0
+        pass
     
     def next(self):
         return self.nextDouble()
@@ -5842,7 +5806,7 @@ class DoubleIterator:
 
 class FloatIterator:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7b1a9ab3 = 0
+        pass
     
     def next(self):
         return self.nextFloat()
@@ -5865,7 +5829,7 @@ class FloatIterator:
 
 class LongIterator:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_258f97f8 = 0
+        pass
     
     def next(self):
         return self.nextLong()
@@ -5888,7 +5852,7 @@ class LongIterator:
 
 class CharIterator:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_354ed5c4 = 0
+        pass
     
     def next(self):
         return self.nextChar()
@@ -5911,7 +5875,7 @@ class CharIterator:
 
 class BooleanIterator:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5295a774 = 0
+        pass
     
     def next(self):
         return self.nextBoolean()
@@ -5934,7 +5898,7 @@ class BooleanIterator:
 
 class ShortIterator:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4c140b12 = 0
+        pass
     
     def next(self):
         return self.nextShort()
@@ -5972,7 +5936,7 @@ def _get_next_(_this):
 
 class IntProgressionIterator:
     def __init__(self, first, last, step):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_bedebe9 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_bedebe9
         self.step = step
         self.finalElement = last
         self.hasNext = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_609b91b4
@@ -6028,7 +5992,7 @@ def _get_next_(_this):
 
 class LongProgressionIterator:
     def __init__(self, first, last, step):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_56511eda = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_56511eda
         self.step = step
         self.finalElement = last
         self.hasNext = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2228082d
@@ -6084,7 +6048,7 @@ def _get_next_(_this):
 
 class CharProgressionIterator:
     def __init__(self, first, last, step):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6f5df147 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6f5df147
         self.step = step
         self.finalElement = last.toInt()
         self.hasNext = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_b6ae271
@@ -6126,7 +6090,6 @@ class CharProgressionIterator:
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2c64ee53 = 0
     
     def fromClosedRange(self, rangeStart, rangeEnd, step):
         return IntProgression(rangeStart, rangeEnd, step)
@@ -6151,7 +6114,6 @@ def Companion_getInstance():
 class IntProgression:
     def __init__(self, start, endInclusive, step):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_43e9eddf = 0
         if jsEqeqeq(step, 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_762deb10
         
@@ -6199,7 +6161,6 @@ class IntProgression:
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5a63de07 = 0
     
     def fromClosedRange(self, rangeStart, rangeEnd, step):
         return LongProgression(rangeStart, rangeEnd, step)
@@ -6224,7 +6185,6 @@ def Companion_getInstance():
 class LongProgression:
     def __init__(self, start, endInclusive, step):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6eaa8abf = 0
         if step.equals(Long(0, 0)):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_6256d908
         
@@ -6272,7 +6232,6 @@ class LongProgression:
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_42626e86 = 0
     
     def fromClosedRange(self, rangeStart, rangeEnd, step):
         return CharProgression(rangeStart, rangeEnd, step)
@@ -6297,7 +6256,6 @@ def Companion_getInstance():
 class CharProgression:
     def __init__(self, start, endInclusive, step):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_529cd3ba = 0
         if jsEqeqeq(step, 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl_1ee7a438
         
@@ -6371,7 +6329,6 @@ class ClosedRange:
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_44eda25b = 0
         self.EMPTY = IntRange(1, 0)
     
     def _get_EMPTY_(self):
@@ -6397,7 +6354,7 @@ def Companion_getInstance():
 class IntRange:
     def __init__(self, start, endInclusive):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5b256ab5 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5b256ab5
     
     def _get_start_(self):
         return self._get_first_()
@@ -6448,7 +6405,6 @@ class IntRange:
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_17596317 = 0
         self.EMPTY = LongRange(Long(1, 0), Long(0, 0))
     
     def _get_EMPTY_(self):
@@ -6474,7 +6430,7 @@ def Companion_getInstance():
 class LongRange:
     def __init__(self, start, endInclusive):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5a90ea5c = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5a90ea5c
     
     def _get_start_(self):
         return self._get_first_()
@@ -6525,7 +6481,6 @@ class LongRange:
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2d05d022 = 0
         self.EMPTY = CharRange(Char(1), Char(0))
     
     def _get_EMPTY_(self):
@@ -6551,7 +6506,7 @@ def Companion_getInstance():
 class CharRange:
     def __init__(self, start, endInclusive):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_19070326 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_19070326
     
     def _get_start_(self):
         return self._get_first_()
@@ -6602,7 +6557,6 @@ class CharRange:
 class Unit:
     def __init__(self):
         Unit_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_47e02a89 = 0
     
     def toString(self):
         return 'kotlin.Unit'
@@ -6683,7 +6637,7 @@ def AnnotationTarget_initEntries():
 
 class AnnotationTarget:
     def __init__(self, name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_39785b39 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_39785b39
     
     def _get_name_(self):
         pass
@@ -6722,7 +6676,7 @@ def Retention_init__Init_(value, _mask0, _marker, _this):
     if jsNot(jsEqeqeq(jsBitAnd(_mask0, 1), 0)):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl_2793fafa
     
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6aa70f5b = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6aa70f5b
     return _this
 
 def Retention_init__Create_(value, _mask0, _marker):
@@ -6766,7 +6720,7 @@ def AnnotationRetention_initEntries():
 
 class AnnotationRetention:
     def __init__(self, name, ordinal):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6c26f80e = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6c26f80e
     
     def _get_name_(self):
         pass
@@ -6916,7 +6870,6 @@ def mod(a, b):
 class ByteCompanionObject:
     def __init__(self):
         ByteCompanionObject_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_465a121d = 0
         self.MIN_VALUE = visitConst_other_Byte
         self.MAX_VALUE = visitConst_other_Byte
         self.SIZE_BYTES = 1
@@ -6954,7 +6907,6 @@ def ByteCompanionObject_getInstance():
 class ShortCompanionObject:
     def __init__(self):
         ShortCompanionObject_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7a3c541e = 0
         self.MIN_VALUE = visitConst_other_Short
         self.MAX_VALUE = visitConst_other_Short
         self.SIZE_BYTES = 2
@@ -6992,7 +6944,6 @@ def ShortCompanionObject_getInstance():
 class IntCompanionObject:
     def __init__(self):
         IntCompanionObject_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_e36a4c1 = 0
         self.MIN_VALUE = -2147483648
         self.MAX_VALUE = 2147483647
         self.SIZE_BYTES = 4
@@ -7030,7 +6981,6 @@ def IntCompanionObject_getInstance():
 class FloatCompanionObject:
     def __init__(self):
         FloatCompanionObject_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_43f4621b = 0
         self.MIN_VALUE = visitConst_other_Float
         self.MAX_VALUE = visitConst_other_Float
         self.POSITIVE_INFINITY = visitConst_other_Float
@@ -7080,7 +7030,6 @@ def FloatCompanionObject_getInstance():
 class DoubleCompanionObject:
     def __init__(self):
         DoubleCompanionObject_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_dcc7d1c = 0
         self.MIN_VALUE = 4.9E-324
         self.MAX_VALUE = 1.7976931348623157E308
         self.POSITIVE_INFINITY = Infinity
@@ -7130,7 +7079,6 @@ def DoubleCompanionObject_getInstance():
 class StringCompanionObject:
     def __init__(self):
         StringCompanionObject_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_34c79268 = 0
     
     def equals(self, other):
         pass
@@ -7152,7 +7100,6 @@ def StringCompanionObject_getInstance():
 class BooleanCompanionObject:
     def __init__(self):
         BooleanCompanionObject_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4f61c7e1 = 0
     
     def equals(self, other):
         pass
@@ -7252,7 +7199,6 @@ def copyToArrayImpl(collection, array):
 class _no_name_provided_:
     def __init__(self, _elements):
         self._elements = _elements
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7baae2db = 0
     
     def invoke(self, it):
         return self._elements.contains(it)
@@ -7264,7 +7210,6 @@ class _no_name_provided_:
 class _no_name_provided_:
     def __init__(self, _elements):
         self._elements = _elements
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_61284400 = 0
     
     def invoke(self, it):
         return jsNot(self._elements.contains(it))
@@ -7275,7 +7220,7 @@ class _no_name_provided_:
 
 class AbstractMutableCollection:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_61ee9672 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_61ee9672
     
     def add(self, element):
         pass
@@ -7382,7 +7327,6 @@ def _get__size_(_this):
 class IteratorImpl:
     def __init__(self, _outer):
         self._this = _outer
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_30dbcffd = 0
         self.index = 0
         self.last = -1
     
@@ -7436,7 +7380,7 @@ class IteratorImpl:
 class ListIteratorImpl:
     def __init__(self, _outer, index):
         self._this = _outer
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_77073238 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_77073238
         Companion_getInstance().checkPositionIndex(index, self._this._get_size_())
         self._set_index_(index)
     
@@ -7514,7 +7458,7 @@ class ListIteratorImpl:
 
 class SubList:
     def __init__(self, list, fromIndex, toIndex):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_33903444 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_33903444
         self.list = list
         self.fromIndex = fromIndex
         self._size = 0
@@ -7631,7 +7575,6 @@ class SubList:
 class _no_name_provided_:
     def __init__(self, _elements):
         self._elements = _elements
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_27241127 = 0
     
     def invoke(self, it):
         return self._elements.contains(it)
@@ -7643,7 +7586,6 @@ class _no_name_provided_:
 class _no_name_provided_:
     def __init__(self, _elements):
         self._elements = _elements
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7fe915ca = 0
     
     def invoke(self, it):
         return jsNot(self._elements.contains(it))
@@ -7654,7 +7596,7 @@ class _no_name_provided_:
 
 class AbstractMutableList:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_27a717a7 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_27a717a7
         self.modCount = 0
     
     def _set_modCount_(self, _set___):
@@ -7811,14 +7753,14 @@ def _get_isReadOnly_(_this):
     return _this.isReadOnly
 
 def ArrayList_init__Init_(_this):
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_36b3240f = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_36b3240f
     return _this
 
 def ArrayList_init__Create_():
     return ArrayList_init__Init_(Object_create())
 
 def ArrayList_init__Init_(initialCapacity, _this):
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_12b0b36 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_12b0b36
     return _this
 
 def ArrayList_init__Create_(initialCapacity):
@@ -7835,7 +7777,7 @@ def ArrayList_init__Create_(initialCapacity, _mask0, _marker):
     return ArrayList_init__Init_(initialCapacity, _mask0, _marker, Object_create())
 
 def ArrayList_init__Init_(elements, _this):
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_19544c36 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_19544c36
     return _this
 
 def ArrayList_init__Create_(elements):
@@ -7851,7 +7793,7 @@ def insertionRangeCheck(_this, index):
 
 class ArrayList:
     def __init__(self, array):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3787eac3 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3787eac3
         self.array = array
         self.isReadOnly = False
     
@@ -8085,7 +8027,7 @@ def _get_output_():
 visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_18e4bbec = 0
 class BaseOutput:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_793577e0 = 0
+        pass
     
     def println(self):
         self.print('\n')
@@ -8112,7 +8054,7 @@ class BaseOutput:
 
 class NodeJsOutput:
     def __init__(self, outputStream):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_708378cc = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_708378cc
         self.outputStream = outputStream
     
     def _get_outputStream_(self):
@@ -8143,7 +8085,7 @@ class NodeJsOutput:
 
 class BufferedOutputToConsoleLog:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4951c45f = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4951c45f
     
     def print(self, message):
         s = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1a9d5a73)
@@ -8196,7 +8138,7 @@ def String(value):
 
 class BufferedOutput:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6c39ba30 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6c39ba30
         self.buffer = ''
     
     def _set_buffer_(self, _set___):
@@ -8244,7 +8186,6 @@ visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_1f0
 class _no_name_provided__1:
     def __init__(self, _tmp0_Continuation_0):
         self._tmp0_Continuation_0 = _tmp0_Continuation_0
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_74d294f4 = 0
     
     def _get_context__2(self):
         return self._tmp0_Continuation_0
@@ -8372,7 +8313,6 @@ class KClass:
 
 class KClassImpl:
     def __init__(self, jClass):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6298dafb = 0
         self.jClass = jClass
     
     def _get_jClass_(self):
@@ -8416,7 +8356,7 @@ def _get_isInstanceFunction_(_this):
 
 class PrimitiveKClassImpl:
     def __init__(self, jClass, givenSimpleName, isInstanceFunction):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4d53dfb7 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4d53dfb7
         self.givenSimpleName = givenSimpleName
         self.isInstanceFunction = isInstanceFunction
     
@@ -8451,7 +8391,7 @@ class PrimitiveKClassImpl:
 class NothingKClassImpl:
     def __init__(self):
         NothingKClassImpl_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_49afaf65 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_49afaf65
         self.simpleName = 'Nothing'
     
     def _get_simpleName_(self):
@@ -8485,7 +8425,7 @@ def NothingKClassImpl_getInstance():
 
 class ErrorKClass:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3c51dec5 = 0
+        pass
     
     def _get_simpleName_(self):
         tmp0_error_0 = 'Unknown simpleName for ErrorKClass'
@@ -8511,7 +8451,7 @@ class ErrorKClass:
 
 class SimpleKClassImpl:
     def __init__(self, jClass):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_9124278 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_9124278
         tmp = self
         tmp0_safe_receiver = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_48c5e6fb
         tmp0_unsafeCast_0 = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_39b266b2
@@ -8792,7 +8732,6 @@ def asString(_this):
 class _no_name_provided_:
     def __init__(self, this_0):
         self.this_0 = this_0
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7cdbc04 = 0
     
     def invoke(self, it):
         return asString(self.this_0)
@@ -8803,7 +8742,6 @@ class _no_name_provided_:
 
 class KTypeImpl:
     def __init__(self, classifier, arguments, isMarkedNullable):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1e8f20bf = 0
         self.classifier = classifier
         self.arguments = arguments
         self.isMarkedNullable = isMarkedNullable
@@ -8886,7 +8824,6 @@ def prefixString():
 class DynamicKType:
     def __init__(self):
         DynamicKType_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5f83b506 = 0
         self.classifier = None
         self.arguments = emptyList()
         self.isMarkedNullable = False
@@ -8923,7 +8860,6 @@ def _no_name_provided__factory(this_0):
 
 class KTypeParameterImpl:
     def __init__(self, name, upperBounds, variance, isReified):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5aeb2c8a = 0
         self.name = name
         self.upperBounds = upperBounds
         self.variance = variance
@@ -9013,7 +8949,7 @@ def _get_functionClasses_():
 visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_aad1270 = 0
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_64acc538 = 0
+        pass
     
     def invoke(self, it):
         return isObject(it)
@@ -9024,7 +8960,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_14992832 = 0
+        pass
     
     def invoke(self, it):
         return isNumber(it)
@@ -9035,7 +8971,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2d83ea1b = 0
+        pass
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6d0c8cd0
@@ -9046,7 +8982,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3b8bb9a0 = 0
+        pass
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_65a9e8d7
@@ -9057,7 +8993,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_45ca5faf = 0
+        pass
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_d5fd167
@@ -9068,7 +9004,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7d5dfca7 = 0
+        pass
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5ed5ac49
@@ -9079,7 +9015,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5f049fa = 0
+        pass
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_61db65ae
@@ -9090,7 +9026,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_35e246b2 = 0
+        pass
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_70c3b62b
@@ -9101,7 +9037,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_17774484 = 0
+        pass
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_2c69eec5
@@ -9112,7 +9048,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3411ba50 = 0
+        pass
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6fac8b24
@@ -9123,7 +9059,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_25d18a01 = 0
+        pass
     
     def invoke(self, it):
         return jsInstanceOf(it, jsClass())
@@ -9134,7 +9070,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_343047c = 0
+        pass
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_291be813
@@ -9145,7 +9081,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_153daff = 0
+        pass
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6c56e004
@@ -9156,7 +9092,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2d991631 = 0
+        pass
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_452811e3
@@ -9167,7 +9103,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_77ce24c7 = 0
+        pass
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_1daf016d
@@ -9178,7 +9114,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3fdefb7b = 0
+        pass
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_6160ae57
@@ -9189,7 +9125,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6b65653e = 0
+        pass
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_3a5aa359
@@ -9200,7 +9136,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1f4fe0de = 0
+        pass
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_c77f6b0
@@ -9211,7 +9147,7 @@ class _no_name_provided_:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3b782329 = 0
+        pass
     
     def invoke(self, it):
         return visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_4608590d
@@ -9223,7 +9159,6 @@ class _no_name_provided_:
 class _no_name_provided_:
     def __init__(self, _arity):
         self._arity = _arity
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5c333991 = 0
     
     def invoke(self, it):
         tmp
@@ -9242,7 +9177,6 @@ class _no_name_provided_:
 class PrimitiveClasses:
     def __init__(self):
         PrimitiveClasses_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_30a34f07 = 0
         tmp = self
         tmp0_unsafeCast_0 = js('Object')
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
@@ -9677,14 +9611,14 @@ def StringBuilder_init__Create_(capacity):
     return StringBuilder_init__Init_(capacity, Object_create())
 
 def StringBuilder_init__Init_(content, _this):
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3a35e669 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3a35e669
     return _this
 
 def StringBuilder_init__Create_(content):
     return StringBuilder_init__Init_(content, Object_create())
 
 def StringBuilder_init__Init_(_this):
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2c861fc2 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2c861fc2
     return _this
 
 def StringBuilder_init__Create_():
@@ -9706,7 +9640,6 @@ def checkReplaceRange(_this, startIndex, endIndex, length):
 
 class StringBuilder:
     def __init__(self, content):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_251ed676 = 0
         self.string = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5f3e12fc
     
     def _get_length_(self):
@@ -10153,7 +10086,6 @@ def concatToString_default(startIndex, endIndex, _mask0, _handler):
 
 class sam_kotlin_Comparator_0:
     def __init__(self, function):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1bb3448d = 0
         self.function = function
     
     def compare(self, a, b):
@@ -10174,7 +10106,7 @@ class sam_kotlin_Comparator_0:
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_21fdc052 = 0
+        pass
     
     def invoke(self, a, b):
         return compareTo(b, True)
@@ -10206,7 +10138,6 @@ def _get_value_(_this):
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_b917b5e = 0
         self.MIN_VALUE = Char(0)
         self.MAX_VALUE = Char(65535)
         self.MIN_HIGH_SURROGATE = Char(55296)
@@ -10268,7 +10199,6 @@ def Companion_getInstance():
 class Char:
     def __init__(self, value):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_ace45e9 = 0
         self.value = value
     
     def compareTo(self, other):
@@ -10780,7 +10710,6 @@ class MutableMap:
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_34207fde = 0
     
     def equals(self, other):
         pass
@@ -10802,7 +10731,6 @@ def Companion_getInstance():
 class Enum:
     def __init__(self, name, ordinal):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_294ffc88 = 0
         self.name = name
         self.ordinal = ordinal
     
@@ -10871,7 +10799,6 @@ def doubleArrayOf(elements):
 class DefaultConstructorMarker:
     def __init__(self):
         DefaultConstructorMarker_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_224855fe = 0
     
     def equals(self, other):
         pass
@@ -10991,7 +10918,6 @@ def longArrayOf(arr):
 class _no_name_provided_:
     def __init__(self, _array):
         self._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_81cba04 = 0
         self.index = 0
     
     def _set_index_(self, _set___):
@@ -11029,7 +10955,7 @@ class _no_name_provided_:
 class _no_name_provided_:
     def __init__(self, _array):
         self._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3b76dfa6 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3b76dfa6
         self.index = 0
     
     def _set_index_(self, _set___):
@@ -11070,7 +10996,7 @@ class _no_name_provided_:
 class _no_name_provided_:
     def __init__(self, _array):
         self._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3569f0f1 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3569f0f1
         self.index = 0
     
     def _set_index_(self, _set___):
@@ -11111,7 +11037,7 @@ class _no_name_provided_:
 class _no_name_provided_:
     def __init__(self, _array):
         self._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_46791608 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_46791608
         self.index = 0
     
     def _set_index_(self, _set___):
@@ -11152,7 +11078,7 @@ class _no_name_provided_:
 class _no_name_provided_:
     def __init__(self, _array):
         self._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_50ca509b = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_50ca509b
         self.index = 0
     
     def _set_index_(self, _set___):
@@ -11193,7 +11119,7 @@ class _no_name_provided_:
 class _no_name_provided_:
     def __init__(self, _array):
         self._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5d39797a = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5d39797a
         self.index = 0
     
     def _set_index_(self, _set___):
@@ -11234,7 +11160,7 @@ class _no_name_provided_:
 class _no_name_provided_:
     def __init__(self, _array):
         self._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_14d9d042 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_14d9d042
         self.index = 0
     
     def _set_index_(self, _set___):
@@ -11275,7 +11201,7 @@ class _no_name_provided_:
 class _no_name_provided_:
     def __init__(self, _array):
         self._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4a3b0387 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4a3b0387
         self.index = 0
     
     def _set_index_(self, _set___):
@@ -11316,7 +11242,7 @@ class _no_name_provided_:
 class _no_name_provided_:
     def __init__(self, _array):
         self._array = _array
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_15d844b2 = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_15d844b2
         self.index = 0
     
     def _set_index_(self, _set___):
@@ -11460,7 +11386,7 @@ def arrayToString(array):
 
 class _no_name_provided_:
     def __init__(self):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_19d6bb0c = 0
+        pass
     
     def invoke(self, it):
         return toString(it)
@@ -11800,7 +11726,6 @@ def enumValuesIntrinsic():
 class Companion:
     def __init__(self):
         Companion_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_620bab73 = 0
         self.MIN_VALUE = Long(0, -2147483648)
         self.MAX_VALUE = Long(-1, 2147483647)
         self.SIZE_BYTES = 8
@@ -11838,7 +11763,7 @@ def Companion_getInstance():
 class Long:
     def __init__(self, low, high):
         Companion_getInstance()
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2f062dbc = 0
+        visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2f062dbc
         self.low = low
         self.high = high
     
@@ -12707,7 +12632,6 @@ def releaseIntercepted(_this):
 
 class CoroutineImpl:
     def __init__(self, resultContinuation):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1b0947c3 = 0
         self.resultContinuation = resultContinuation
         self.state = 0
         self.exceptionState = 0
@@ -12836,7 +12760,6 @@ class CoroutineImpl:
 class CompletedContinuation:
     def __init__(self):
         CompletedContinuation_instance = self
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_428b852b = 0
     
     def _get_context_(self):
         tmp0_error_0 = 'This continuation is already complete'
@@ -12868,7 +12791,7 @@ def CompletedContinuation_getInstance():
 
 def Exception_init__Init_(_this):
     extendThrowable(_this, _undefined(), _undefined())
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5387e079 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5387e079
     return _this
 
 def Exception_init__Create_():
@@ -12878,7 +12801,7 @@ def Exception_init__Create_():
 
 def Exception_init__Init_(message, _this):
     extendThrowable(_this, message, _undefined())
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_fc5f2a9 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_fc5f2a9
     return _this
 
 def Exception_init__Create_(message):
@@ -12888,7 +12811,7 @@ def Exception_init__Create_(message):
 
 def Exception_init__Init_(message, cause, _this):
     extendThrowable(_this, message, cause)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3772b95a = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3772b95a
     return _this
 
 def Exception_init__Create_(message, cause):
@@ -12898,7 +12821,7 @@ def Exception_init__Create_(message, cause):
 
 def Exception_init__Init_(cause, _this):
     extendThrowable(_this, _undefined(), cause)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_428d5eb8 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_428d5eb8
     return _this
 
 def Exception_init__Create_(cause):
@@ -12928,7 +12851,7 @@ class Exception:
 
 def Error_init__Init_(_this):
     extendThrowable(_this, _undefined(), _undefined())
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_41a56ad9 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_41a56ad9
     return _this
 
 def Error_init__Create_():
@@ -12938,7 +12861,7 @@ def Error_init__Create_():
 
 def Error_init__Init_(message, _this):
     extendThrowable(_this, message, _undefined())
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4388206e = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4388206e
     return _this
 
 def Error_init__Create_(message):
@@ -12948,7 +12871,7 @@ def Error_init__Create_(message):
 
 def Error_init__Init_(message, cause, _this):
     extendThrowable(_this, message, cause)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_672bc69a = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_672bc69a
     return _this
 
 def Error_init__Create_(message, cause):
@@ -12958,7 +12881,7 @@ def Error_init__Create_(message, cause):
 
 def Error_init__Init_(cause, _this):
     extendThrowable(_this, _undefined(), cause)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_475c02b5 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_475c02b5
     return _this
 
 def Error_init__Create_(cause):
@@ -12988,7 +12911,7 @@ class Error:
 
 def IllegalArgumentException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5ea231be = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5ea231be
     return _this
 
 def IllegalArgumentException_init__Create_():
@@ -12998,7 +12921,7 @@ def IllegalArgumentException_init__Create_():
 
 def IllegalArgumentException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5569ea9e = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5569ea9e
     return _this
 
 def IllegalArgumentException_init__Create_(message):
@@ -13008,7 +12931,7 @@ def IllegalArgumentException_init__Create_(message):
 
 def IllegalArgumentException_init__Init_(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_23701ff5 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_23701ff5
     return _this
 
 def IllegalArgumentException_init__Create_(message, cause):
@@ -13018,7 +12941,7 @@ def IllegalArgumentException_init__Create_(message, cause):
 
 def IllegalArgumentException_init__Init_(cause, _this):
     RuntimeException_init__Init_(cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4246aa06 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_4246aa06
     return _this
 
 def IllegalArgumentException_init__Create_(cause):
@@ -13048,7 +12971,7 @@ class IllegalArgumentException:
 
 def RuntimeException_init__Init_(_this):
     Exception_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_c59c954 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_c59c954
     return _this
 
 def RuntimeException_init__Create_():
@@ -13058,7 +12981,7 @@ def RuntimeException_init__Create_():
 
 def RuntimeException_init__Init_(message, _this):
     Exception_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_74f41fd2 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_74f41fd2
     return _this
 
 def RuntimeException_init__Create_(message):
@@ -13068,7 +12991,7 @@ def RuntimeException_init__Create_(message):
 
 def RuntimeException_init__Init_(message, cause, _this):
     Exception_init__Init_(message, cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1ab3f085 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_1ab3f085
     return _this
 
 def RuntimeException_init__Create_(message, cause):
@@ -13078,7 +13001,7 @@ def RuntimeException_init__Create_(message, cause):
 
 def RuntimeException_init__Init_(cause, _this):
     Exception_init__Init_(cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_198d6bc7 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_198d6bc7
     return _this
 
 def RuntimeException_init__Create_(cause):
@@ -13108,7 +13031,7 @@ class RuntimeException:
 
 def NoSuchElementException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_109d51e8 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_109d51e8
     return _this
 
 def NoSuchElementException_init__Create_():
@@ -13118,7 +13041,7 @@ def NoSuchElementException_init__Create_():
 
 def NoSuchElementException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_31f656e6 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_31f656e6
     return _this
 
 def NoSuchElementException_init__Create_(message):
@@ -13148,7 +13071,7 @@ class NoSuchElementException:
 
 def IllegalStateException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_13a68fb7 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_13a68fb7
     return _this
 
 def IllegalStateException_init__Create_():
@@ -13158,7 +13081,7 @@ def IllegalStateException_init__Create_():
 
 def IllegalStateException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2d921c9 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2d921c9
     return _this
 
 def IllegalStateException_init__Create_(message):
@@ -13168,7 +13091,7 @@ def IllegalStateException_init__Create_(message):
 
 def IllegalStateException_init__Init_(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_194a8a09 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_194a8a09
     return _this
 
 def IllegalStateException_init__Create_(message, cause):
@@ -13178,7 +13101,7 @@ def IllegalStateException_init__Create_(message, cause):
 
 def IllegalStateException_init__Init_(cause, _this):
     RuntimeException_init__Init_(cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_612bfb57 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_612bfb57
     return _this
 
 def IllegalStateException_init__Create_(cause):
@@ -13208,7 +13131,7 @@ class IllegalStateException:
 
 def IndexOutOfBoundsException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2c7e1fce = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2c7e1fce
     return _this
 
 def IndexOutOfBoundsException_init__Create_():
@@ -13218,7 +13141,7 @@ def IndexOutOfBoundsException_init__Create_():
 
 def IndexOutOfBoundsException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_728dfa37 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_728dfa37
     return _this
 
 def IndexOutOfBoundsException_init__Create_(message):
@@ -13248,7 +13171,7 @@ class IndexOutOfBoundsException:
 
 def UnsupportedOperationException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_713c4d95 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_713c4d95
     return _this
 
 def UnsupportedOperationException_init__Create_():
@@ -13258,7 +13181,7 @@ def UnsupportedOperationException_init__Create_():
 
 def UnsupportedOperationException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7a217059 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7a217059
     return _this
 
 def UnsupportedOperationException_init__Create_(message):
@@ -13268,7 +13191,7 @@ def UnsupportedOperationException_init__Create_(message):
 
 def UnsupportedOperationException_init__Init_(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2f6b2a01 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2f6b2a01
     return _this
 
 def UnsupportedOperationException_init__Create_(message, cause):
@@ -13278,7 +13201,7 @@ def UnsupportedOperationException_init__Create_(message, cause):
 
 def UnsupportedOperationException_init__Init_(cause, _this):
     RuntimeException_init__Init_(cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2e365bd3 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2e365bd3
     return _this
 
 def UnsupportedOperationException_init__Create_(cause):
@@ -13308,7 +13231,7 @@ class UnsupportedOperationException:
 
 def NullPointerException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_47f309d8 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_47f309d8
     return _this
 
 def NullPointerException_init__Create_():
@@ -13318,7 +13241,7 @@ def NullPointerException_init__Create_():
 
 def NullPointerException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7577843e = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7577843e
     return _this
 
 def NullPointerException_init__Create_(message):
@@ -13348,7 +13271,7 @@ class NullPointerException:
 
 def NoWhenBranchMatchedException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_552f3c3b = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_552f3c3b
     return _this
 
 def NoWhenBranchMatchedException_init__Create_():
@@ -13358,7 +13281,7 @@ def NoWhenBranchMatchedException_init__Create_():
 
 def NoWhenBranchMatchedException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_11fe2600 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_11fe2600
     return _this
 
 def NoWhenBranchMatchedException_init__Create_(message):
@@ -13368,7 +13291,7 @@ def NoWhenBranchMatchedException_init__Create_(message):
 
 def NoWhenBranchMatchedException_init__Init_(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7c77f8a9 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_7c77f8a9
     return _this
 
 def NoWhenBranchMatchedException_init__Create_(message, cause):
@@ -13378,7 +13301,7 @@ def NoWhenBranchMatchedException_init__Create_(message, cause):
 
 def NoWhenBranchMatchedException_init__Init_(cause, _this):
     RuntimeException_init__Init_(cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2ae1e7e0 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2ae1e7e0
     return _this
 
 def NoWhenBranchMatchedException_init__Create_(cause):
@@ -13408,7 +13331,7 @@ class NoWhenBranchMatchedException:
 
 def ClassCastException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_315441a6 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_315441a6
     return _this
 
 def ClassCastException_init__Create_():
@@ -13418,7 +13341,7 @@ def ClassCastException_init__Create_():
 
 def ClassCastException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3e4c4911 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3e4c4911
     return _this
 
 def ClassCastException_init__Create_(message):
@@ -13448,7 +13371,7 @@ class ClassCastException:
 
 def UninitializedPropertyAccessException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_44e8d9dc = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_44e8d9dc
     return _this
 
 def UninitializedPropertyAccessException_init__Create_():
@@ -13458,7 +13381,7 @@ def UninitializedPropertyAccessException_init__Create_():
 
 def UninitializedPropertyAccessException_init__Init_(message, _this):
     RuntimeException_init__Init_(message, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2d6911a9 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_2d6911a9
     return _this
 
 def UninitializedPropertyAccessException_init__Create_(message):
@@ -13468,7 +13391,7 @@ def UninitializedPropertyAccessException_init__Create_(message):
 
 def UninitializedPropertyAccessException_init__Init_(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5acf7f12 = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_5acf7f12
     return _this
 
 def UninitializedPropertyAccessException_init__Create_(message, cause):
@@ -13478,7 +13401,7 @@ def UninitializedPropertyAccessException_init__Create_(message, cause):
 
 def UninitializedPropertyAccessException_init__Init_(cause, _this):
     RuntimeException_init__Init_(cause, _this)
-    visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6603902b = 0
+    visitDelegatingConstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_6603902b
     return _this
 
 def UninitializedPropertyAccessException_init__Create_(cause):
@@ -13542,7 +13465,6 @@ def exampleFromAstTest():
 
 class TestClass:
     def __init__(self, classParameter):
-        visitDelegatingCOnstructorCall_org_jetbrains_kotlin_ir_expressions_impl_IrDelegatingConstructorCallImpl_3291b443 = 0
         self.classParameter = classParameter
     
     def _get_classParameter_(self):

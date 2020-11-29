@@ -10,6 +10,8 @@ import org.jetbrains.kotlin.ir.backend.js.utils.JsGenerationContext
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.expressions.*
+import org.jetbrains.kotlin.ir.types.isAny
+import org.jetbrains.kotlin.ir.util.constructedClassType
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<stmt>, JsGenerationContext> {
@@ -110,11 +112,11 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitDelegatingConstructorCall(expression: IrDelegatingConstructorCall, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(Assign(
-            targets = listOf(Name(id = identifier("visitDelegatingCOnstructorCall $expression".toValidPythonSymbol()), ctx = Store)),
-            value = Constant(value = constant("0"), kind = null),
-            type_comment = null,
-        ))
+        if (expression.symbol.owner.constructedClassType.isAny()) {
+            return listOf()
+        }
+        val expressions: List<expr> = expression.accept(IrElementToPyExpressionTransformer(), context)
+        return expressions.map { Expr(value = it) }
     }
 
     override fun visitCall(expression: IrCall, data: JsGenerationContext): List<stmt> {
