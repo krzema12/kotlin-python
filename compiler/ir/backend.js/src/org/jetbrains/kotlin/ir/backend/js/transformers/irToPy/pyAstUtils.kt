@@ -7,11 +7,13 @@ package org.jetbrains.kotlin.ir.backend.js.transformers.irToPy
 
 import generated.Python.*
 import org.jetbrains.kotlin.ir.backend.js.utils.JsGenerationContext
+import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.expressions.IrCall
 
 fun translateFunction(declaration: IrFunction, context: JsGenerationContext): FunctionDef {
     val isClassMethod = declaration.dispatchReceiverParameter != null
+    val isConstructor = declaration is IrConstructor
     val body = declaration.body?.accept(IrElementToPyStatementTransformer(), context) ?: listOf(Pass)
     val args = declaration.valueParameters.map { valueParameter ->
         argImpl(
@@ -27,10 +29,10 @@ fun translateFunction(declaration: IrFunction, context: JsGenerationContext): Fu
     )
 
     return FunctionDef(
-        name = identifier(declaration.name.asString().toValidPythonSymbol()),
+        name = identifier(if (isConstructor) "__init__" else declaration.name.asString().toValidPythonSymbol()),
         args = argumentsImpl(
             posonlyargs = emptyList(),
-            args = if (isClassMethod) { listOf(selfArg) + args } else args,
+            args = if (isClassMethod || isConstructor) { listOf(selfArg) + args } else args,
             vararg = null,
             kwonlyargs = emptyList(),
             kw_defaults = emptyList(),

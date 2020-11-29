@@ -88,13 +88,19 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
     override fun visitGetField(expression: IrGetField, context: JsGenerationContext): List<expr> {
         // TODO
         val field = expression.symbol.owner
-        return listOf(Name(id = identifier(field.name.asString().toValidPythonSymbol()), ctx = Load))
+        val receiverExpression = expression.receiver?.accept(this, context)?.get(0)
+
+        return listOf(if (receiverExpression != null) {
+            Attribute(value = receiverExpression, attr = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Store)
+        } else {
+            Name(id = identifier(field.name.asString().toValidPythonSymbol()), ctx = Load)
+        })
     }
 
     override fun visitGetValue(expression: IrGetValue, context: JsGenerationContext): List<expr> {
         // TODO
         return listOf(when (val owner = expression.symbol.owner) {
-            is IrValueParameter, is IrVariable -> Name(id = identifier(owner.name.asString().toValidPythonSymbol()), ctx = Load)
+            is IrValueParameter, is IrVariable -> Name(id = identifier(owner.name.asString().toValidPythonSymbol().toPythonSpecific()), ctx = Load)
             else -> Name(id = identifier("visitGetValue_other $owner".toValidPythonSymbol()), ctx = Load)
         })
     }

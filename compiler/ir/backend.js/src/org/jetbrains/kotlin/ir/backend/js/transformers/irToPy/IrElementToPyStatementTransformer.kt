@@ -110,7 +110,11 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitDelegatingConstructorCall(expression: IrDelegatingConstructorCall, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(Expr(value = Name(id = identifier("visitDelegatingCOnstructorCall $expression".toValidPythonSymbol()), ctx = Load)))
+        return listOf(Assign(
+            targets = listOf(Name(id = identifier("visitDelegatingCOnstructorCall $expression".toValidPythonSymbol()), ctx = Store)),
+            value = Constant(value = constant("0"), kind = null),
+            type_comment = null,
+        ))
     }
 
     override fun visitCall(expression: IrCall, data: JsGenerationContext): List<stmt> {

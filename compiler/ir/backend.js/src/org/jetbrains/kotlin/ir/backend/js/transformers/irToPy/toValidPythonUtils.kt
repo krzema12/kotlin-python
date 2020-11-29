@@ -17,3 +17,6 @@ fun String.toValidPythonSymbol() =
         .replace(Regex("^from$"), "_from")
         .replace(Regex("^assert$"), "_assert")
         .replace(Regex("^yield$"), "_yield")
+
+fun String.toPythonSpecific() =
+    replace(Regex("^_this_$"), "self")

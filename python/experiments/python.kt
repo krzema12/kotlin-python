@@ -12,13 +12,19 @@ fun exampleFromAstTest() {
     }
 }
 
-class TestClass {
+class TestClass(val classParameter: String) {
     fun getSomeString() = "Hello from Kotlin class!"
+
+    fun functionReturningClassParameter() = classParameter
 }
 
 fun returnString() = "Hello from Kotlin!"
 
 fun returnStringFromClass(): String {
-    val testClass = TestClass()
+    val testClass = TestClass("paramVal")
     return testClass.getSomeString()
+}
+
+fun returnParameterFromClass(): String {
+    return TestClass("paramVal").functionReturningClassParameter()
 }
