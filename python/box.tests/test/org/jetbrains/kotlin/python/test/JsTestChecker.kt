@@ -12,6 +12,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.concurrent.TimeUnit
 
 fun createScriptEngine(): ScriptEngine {
     return ScriptEngineNashorn()
@@ -104,9 +105,9 @@ object PythonTestChecker : AbstractJsTestChecker() {
 
     private fun runPython(scriptPath: String): String {
         val process = Runtime.getRuntime().exec("python3.8 $scriptPath")
-        val exitCode = process.waitFor()
+        process.waitFor(10, TimeUnit.SECONDS)
 
-        if (exitCode == 0) {
+        if (process.exitValue() == 0) {
             val stdoutReader = BufferedReader(InputStreamReader(process.inputStream))
             return stdoutReader.lineSequence().joinToString("\n")
         } else {
