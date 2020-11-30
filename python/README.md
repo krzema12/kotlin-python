@@ -39,9 +39,11 @@ less tests-out.txt | grep "FAILED" | grep "Codegen" | sort > python/experiments/
 
 ### Test stats
 
-Current status: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=18&leftFill=) (**967**/5368 passed)
+Current status: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=19&leftFill=) (**1042**/5368 passed)
 
 ### History (newest on top)
+
+* after supporting some constructors, some inheritance...: **1042**/5368 passed (+75)
 
 * after adding support for class methods: **967**/5368 passed (+28)
 
