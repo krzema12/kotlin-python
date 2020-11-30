@@ -122,7 +122,20 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
 
     override fun visitDelegatingConstructorCall(expression: IrDelegatingConstructorCall, context: JsGenerationContext): List<expr> {
         // TODO
-        return listOf(Name(id = identifier("visitDelegatingConstructorCall $expression".toValidPythonSymbol()), ctx = Load))
+        val noOfArguments = expression.valueArgumentsCount
+
+        val arguments = (0 until noOfArguments).mapNotNull { argIndex ->
+            val valueArgument: IrExpression? = expression.getValueArgument(argIndex)
+            valueArgument?.let {
+                IrElementToPyExpressionTransformer().visitExpression(it, context)
+            }
+        }.flatten()
+
+        return listOf(Call(
+            func = Name(id = identifier("super"), ctx = Load),
+            args = arguments,
+            keywords = emptyList(),
+        ))
     }
 
     override fun visitConstructorCall(expression: IrConstructorCall, context: JsGenerationContext): List<expr> {

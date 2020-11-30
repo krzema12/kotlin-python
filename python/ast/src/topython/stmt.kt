@@ -62,4 +62,4 @@ fun If.toPython() =
     "if ${test.toPython()}:\n${(if (body.isNotEmpty()) body.toPython() else "pass").indent()}\n${if (orelse.isNotEmpty()) "else:\n${orelse.toPython().indent()}\n" else ""}"
 
 fun ClassDef.toPython() =
-    "class ${name.name}:\n${(if (body.isNotEmpty()) body.toPython() else "pass").indent()}\n"
+    "${if (bases.isNotEmpty()) bases.joinToString { "class ${it.toPython()}:\n${"pass".indent()}\n\n" } else ""}class ${name.name}${if (bases.isNotEmpty()) "(${bases.joinToString(", ") { it.toPython() }})" else ""}:\n${(if (body.isNotEmpty()) body.toPython() else "pass").indent()}\n"
