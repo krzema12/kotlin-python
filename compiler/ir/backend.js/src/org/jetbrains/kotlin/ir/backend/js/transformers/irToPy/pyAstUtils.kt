@@ -10,18 +10,21 @@ import org.jetbrains.kotlin.ir.backend.js.utils.JsGenerationContext
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.expressions.IrCall
+import org.jetbrains.kotlin.ir.util.isVararg
 
 fun translateFunction(declaration: IrFunction, context: JsGenerationContext): FunctionDef {
     val isClassMethod = declaration.dispatchReceiverParameter != null
     val isConstructor = declaration is IrConstructor
     val body = declaration.body?.accept(IrElementToPyStatementTransformer(), context) ?: listOf(Pass)
-    val args = declaration.valueParameters.map { valueParameter ->
-        argImpl(
-            arg = identifier(valueParameter.name.asString().toValidPythonSymbol()),
-            annotation = null,
-            type_comment = null,
-        )
-    }
+    val args = declaration.valueParameters
+        .filter { !it.isVararg }
+        .map { valueParameter ->
+            argImpl(
+                arg = identifier(valueParameter.name.asString().toValidPythonSymbol()),
+                annotation = null,
+                type_comment = null,
+            )
+        }
     val selfArg = argImpl(
         arg = identifier("self"),
         annotation = null,
@@ -32,8 +35,16 @@ fun translateFunction(declaration: IrFunction, context: JsGenerationContext): Fu
         name = identifier(if (isConstructor) "__init__" else declaration.name.asString().toValidPythonSymbol()),
         args = argumentsImpl(
             posonlyargs = emptyList(),
-            args = if (isClassMethod || isConstructor) { listOf(selfArg) + args } else args,
-            vararg = null,
+            args = if (isClassMethod || isConstructor) {
+                listOf(selfArg) + args
+            } else args,
+            vararg = declaration.valueParameters.firstOrNull { it.isVararg }?.let {
+                argImpl(
+                    arg = identifier(it.name.asString().toValidPythonSymbol()),
+                    annotation = null,
+                    type_comment = null,
+                )
+            },
             kwonlyargs = emptyList(),
             kw_defaults = emptyList(),
             kwarg = null,

@@ -15,4 +15,5 @@ fun arguments.toPython(): String {
 }
 
 fun argumentsImpl.toPython() =
-    args.joinToString(", ") { it.toPython() }
+    (args.map { it.toPython() } + vararg?.let { listOf("*${it.toPython()}") }.orEmpty())
+        .joinToString(", ")

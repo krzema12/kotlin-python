@@ -17,8 +17,7 @@ import org.jetbrains.kotlin.ir.util.parentAsClass
 class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List<expr>, JsGenerationContext> {
 
     override fun visitVararg(expression: IrVararg, context: JsGenerationContext): List<expr> {
-        // TODO
-        return listOf(Name(id = identifier("visitVararg"), ctx = Load))
+        return expression.elements.flatMap { it.accept(this, context) }
     }
 
     override fun visitExpression(expression: IrExpression, data: JsGenerationContext): List<expr> {
@@ -34,6 +33,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
             is IrConstructorCall -> visitConstructorCall(expression, data)
             is IrTypeOperatorCall -> visitTypeOperator(expression, data)
 //            is IrBlock -> visitBlock(expression, data)
+            is IrVararg -> visitVararg(expression, data)
             else -> listOf(Name(id = identifier("visitExpression-other $expression".toValidPythonSymbol()), ctx = Load))
         }
     }

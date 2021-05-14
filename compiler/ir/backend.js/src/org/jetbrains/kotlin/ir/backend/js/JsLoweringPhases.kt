@@ -740,7 +740,7 @@ val loweringList = listOf<Lowering>(
     throwableSuccessorsLoweringPhase,
     es6AddInternalParametersToConstructorPhase,
     es6ConstructorLowering,
-    varargLoweringPhase,
+//    varargLoweringPhase,
     multipleCatchesLoweringPhase,
     errorExpressionLoweringPhase,
     errorDeclarationLoweringPhase,
