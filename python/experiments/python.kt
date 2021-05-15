@@ -12,6 +12,22 @@ fun exampleFromAstTest() {
     }
 }
 
+fun a(a1: Int, vararg a2: Int) {
+
+}
+
+fun b() {
+    a(1, 2, 3)
+}
+
+fun newCode() {
+    listOf("apple", "banana", "cherry")
+        .map { it.toUpperCase() }
+        .forEach { x ->
+        println(x)
+    }
+}
+
 class TestClass(val classParameter: String) {
     fun getSomeString() = "Hello from Kotlin class!"
 
