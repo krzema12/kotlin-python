@@ -13,7 +13,7 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.languageVersionSettings
 import org.jetbrains.kotlin.ir.backend.js.lower.generateTests
 import org.jetbrains.kotlin.ir.backend.js.lower.moveBodilessDeclarationsToSeparatePlace
-import org.jetbrains.kotlin.ir.backend.js.transformers.irToPy.IrModuleToPyTransformer
+import org.jetbrains.kotlin.ir.backend.js.transformers.irToJs.IrModuleToJsTransformer
 import org.jetbrains.kotlin.ir.backend.js.utils.NameTables
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.StageController
@@ -89,8 +89,7 @@ fun compile(
         // TODO investigate whether this is needed anymore
         stageController = StageController(controller.currentStage)
 
-        // TODO temporarily changing IrModuleToJsTransformer to IrModuleToPyTransformer to experiment with Python backend
-        val transformer = IrModuleToPyTransformer(
+        val transformer = IrModuleToJsTransformer(
             context,
             mainArguments,
             fullJs = true,
@@ -101,8 +100,7 @@ fun compile(
         return transformer.generateModule(allModules)
     } else {
         jsPhases.invokeToplevel(phaseConfig, context, allModules)
-        // TODO temporarily changing IrModuleToJsTransformer to IrModuleToPyTransformer to experiment with Python backend
-        val transformer = IrModuleToPyTransformer(
+        val transformer = IrModuleToJsTransformer(
             context,
             mainArguments,
             fullJs = generateFullJs,
@@ -122,7 +120,6 @@ fun generateJsCode(
     moveBodilessDeclarationsToSeparatePlace(context, moduleFragment)
     jsPhases.invokeToplevel(PhaseConfig(jsPhases), context, listOf(moduleFragment))
 
-    // TODO temporarily changing IrModuleToJsTransformer to IrModuleToPyTransformer to experiment with Python backend
-    val transformer = IrModuleToPyTransformer(context, null, true, nameTables)
+    val transformer = IrModuleToJsTransformer(context, null, true, nameTables)
     return transformer.generateModule(listOf(moduleFragment)).jsCode!!.mainModule
 }

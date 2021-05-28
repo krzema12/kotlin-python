@@ -87,7 +87,8 @@ abstract class BasicBoxTest(
     protected open val testChecker get() = PythonTestChecker
 
     fun doTest(filePath: String) {
-        doTest(filePath, "OK", MainCallParameters.noCall())
+        val pars = MainCallParameters.noCall()
+        doTest(filePath, "OK", pars)
     }
 
     fun doTestWithCoroutinesPackageReplacement(filePath: String, coroutinesPackage: String) {
@@ -854,8 +855,8 @@ abstract class BasicBoxTest(
             }
         }
 
-        const val TEST_DATA_DIR_PATH = "js/js.translator/testData/"
-        const val DIST_DIR_JS_PATH = "dist/js/"
+        const val TEST_DATA_DIR_PATH = "python/py.translator/testData/"
+        const val DIST_DIR_JS_PATH = "dist/py/"
 
         private const val COMMON_FILES_NAME = "_common"
         private const val COMMON_FILES_DIR = "_commonFiles/"

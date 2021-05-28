@@ -40,9 +40,9 @@ dependencies {
         testCompileOnly(intellijDep()) { includeJars("openapi", rootProject = rootProject) }
     }
     testCompileOnly(intellijDep()) { includeJars("idea", "idea_rt", "util") }
-    testCompile(project(":compiler:backend.js"))
+    testCompile(project(":compiler:backend.py"))
     testCompile(project(":compiler:backend.wasm"))
-    testCompile(project(":js:js.translator"))
+    testCompile(project(":python:py.translator"))
     testCompile(project(":js:js.serializer"))
     testCompile(project(":js:js.dce"))
     testCompile(project(":js:js.engines"))
@@ -152,7 +152,7 @@ projectTest("pythonTest", true) {
 testsJar {}
 
 val generateTests by generator("org.jetbrains.kotlin.generators.tests.GenerateJsTestsKt")
-val testDataDir = project(":js:js.translator").projectDir.resolve("testData")
+val testDataDir = project(":python:py.translator").projectDir.resolve("testData")
 
 extensions.getByType(NodeExtension::class.java).nodeModulesDir = testDataDir
 
