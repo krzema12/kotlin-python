@@ -128,7 +128,7 @@ object ModuleWrapperTranslation {
         val moduleRef = makePlainModuleRef(module, program)
         val moduleExistsCond = JsAstUtils.typeOfIs(moduleRef, JsStringLiteral("undefined"))
         val moduleNotFoundMessage = JsStringLiteral(
-            "krzema12 IR mod: Error loading module '" + currentModuleId + "'. Its dependency '" + module.externalName + "' was not found. " +
+            "Error loading module '" + currentModuleId + "'. Its dependency '" + module.externalName + "' was not found. " +
                     "Please, check whether '" + module.externalName + "' is loaded prior to '" + currentModuleId + "'.")
         val moduleNotFoundThrow = JsThrow(JsNew(JsNameRef("Error"), listOf<JsExpression>(moduleNotFoundMessage)))
         return JsIf(moduleExistsCond, JsBlock(moduleNotFoundThrow))

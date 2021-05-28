@@ -19,6 +19,9 @@ workspace.xml
 /js/js.translator/testData/out/
 /js/js.translator/testData/out-min/
 /js/js.translator/testData/out-pir/
+/python/py.translator/testData/out/
+/python/py.translator/testData/out-min/
+/python/py.translator/testData/out-pir/
 .gradle/
 build/
 !**/src/**/build
