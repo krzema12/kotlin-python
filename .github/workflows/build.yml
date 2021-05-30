@@ -1,0 +1,16 @@
+name: Build
+
+on:
+  push:
+    branches: [ python-backend ]
+  pull_request:
+    branches: [ python-backend ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+         export JDK_9="$JAVA_HOME"
+         ./gradlew dist
