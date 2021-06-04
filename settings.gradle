@@ -114,6 +114,7 @@ include ":benchmarks",
         ":compiler:cli",
         ":compiler:cli-js",
         ":compiler:cli-js-klib",
+        ":compiler:cli-py",
         ":compiler:incremental-compilation-impl",
         ":compiler:android-tests",
         ":compiler:tests-common",
@@ -460,6 +461,7 @@ project(':kotlin-build-common').projectDir = "$rootDir/build-common" as File
 project(':compiler:cli-common').projectDir = "$rootDir/compiler/cli/cli-common" as File
 project(':compiler:cli-js').projectDir = "$rootDir/compiler/cli/cli-js" as File
 project(':compiler:cli-js-klib').projectDir = "$rootDir/compiler/cli/cli-js-klib" as File
+project(':compiler:cli-py').projectDir = "$rootDir/compiler/cli/cli-py" as File
 project(':kotlin-runner').projectDir = "$rootDir/compiler/cli/cli-runner" as File
 project(':kotlin-daemon').projectDir = "$rootDir/compiler/daemon" as File
 project(':daemon-common').projectDir = "$rootDir/compiler/daemon/daemon-common" as File

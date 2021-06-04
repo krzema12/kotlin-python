@@ -17,7 +17,7 @@ import org.jetbrains.kotlin.js.analyze.TopDownAnalyzerFacadeForJS
 import org.jetbrains.kotlin.js.config.JSConfigurationKeys
 import org.jetbrains.kotlin.js.config.JsConfig
 import org.jetbrains.kotlin.js.facade.K2JSTranslator
-import org.jetbrains.kotlin.js.facade.MainCallParameters
+import org.jetbrains.kotlin.py.facade.MainCallParameters
 import org.jetbrains.kotlin.js.facade.TranslationResult
 import org.jetbrains.kotlin.js.resolve.JsPlatformAnalyzerServices
 import org.jetbrains.kotlin.name.Name
@@ -47,7 +47,7 @@ class JsVersionRequirementTest : AbstractVersionRequirementTest() {
         trace.clearDiagnostics()
 
         val result = K2JSTranslator(JsConfig(environment.project, environment.configuration)).translate(
-            object : JsConfig.Reporter() {}, ktFiles, MainCallParameters.noCall(), analysisResult
+            object : JsConfig.Reporter() {}, ktFiles, _root_ide_package_.org.jetbrains.kotlin.py.facade.MainCallParameters.noCall(), analysisResult
         ) as TranslationResult.Success
         result.getOutputFiles(File(outputDirectory, "lib.js"), null, null).writeAllTo(outputDirectory)
     }
