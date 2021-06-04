@@ -69,6 +69,7 @@ val distCommonContents by configurations.creating
 val distStdlibMinimalForTests by configurations.creating
 val buildNumber by configurations.creating
 val distJSContents by configurations.creating
+val distPyContents by configurations.creating
 
 val compilerBaseName = name
 
@@ -374,6 +375,11 @@ val distJs = distTask<Sync>("distJs") {
     from(distJSContents)
 }
 
+val distPy = distTask<Sync>("distPy") {
+    destinationDir = File("$distDir/py")
+    from(distPyContents)
+}
+
 distTask<Copy>("dist") {
     destinationDir = File(distDir)
 
@@ -381,6 +387,7 @@ distTask<Copy>("dist") {
     dependsOn(distCommon)
     dependsOn(distMaven)
     dependsOn(distJs)
+    dependsOn(distPy)
 
     from(buildNumber)
     from(distStdlibMinimalForTests)

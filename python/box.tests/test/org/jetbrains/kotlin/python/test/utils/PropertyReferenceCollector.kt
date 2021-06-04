@@ -20,7 +20,7 @@ import org.jetbrains.kotlin.js.backend.ast.JsBinaryOperation
 import org.jetbrains.kotlin.js.backend.ast.JsNameRef
 import org.jetbrains.kotlin.js.backend.ast.JsNode
 import org.jetbrains.kotlin.js.backend.ast.RecursiveJsVisitor
-import org.jetbrains.kotlin.js.translate.utils.JsAstUtils
+import org.jetbrains.kotlin.py.translate.utils.JsAstUtils
 
 class PropertyReferenceCollector : RecursiveJsVisitor() {
 
