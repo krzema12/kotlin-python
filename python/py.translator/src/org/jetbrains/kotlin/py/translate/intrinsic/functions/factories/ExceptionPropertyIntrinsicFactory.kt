@@ -19,8 +19,7 @@ import org.jetbrains.kotlin.resolve.scopes.DescriptorKindFilter
 import org.jetbrains.kotlin.resolve.scopes.receivers.SuperCallReceiverValue
 import org.jetbrains.kotlin.types.typeUtil.isNotNullThrowable
 
-object ExceptionPropertyIntrinsicFactory :
-    FunctionIntrinsicFactory {
+object ExceptionPropertyIntrinsicFactory : FunctionIntrinsicFactory {
     override fun getIntrinsic(descriptor: FunctionDescriptor, context: TranslationContext): FunctionIntrinsic? {
         if (descriptor !is PropertyGetterDescriptor) return null
         val classDescriptor = descriptor.correspondingProperty.containingDeclaration as? ClassDescriptor ?: return null

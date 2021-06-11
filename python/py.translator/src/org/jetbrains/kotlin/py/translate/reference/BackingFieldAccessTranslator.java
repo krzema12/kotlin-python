@@ -30,7 +30,7 @@ public final class BackingFieldAccessTranslator extends AbstractTranslator imple
     public static BackingFieldAccessTranslator newInstance(@NotNull KtSimpleNameExpression expression,
                                                     @NotNull TranslationContext context) {
         PropertyDescriptor referencedProperty = SyntheticFieldDescriptorKt.getReferencedProperty(
-                BindingUtils.getDescriptorForReferenceExpression(context.bindingContext(), expression)
+                getDescriptorForReferenceExpression(context.bindingContext(), expression)
         );
         assert referencedProperty != null;
         return new BackingFieldAccessTranslator(referencedProperty, context);
@@ -44,13 +44,13 @@ public final class BackingFieldAccessTranslator extends AbstractTranslator imple
     @NotNull
     @Override
     public JsExpression translateAsGet() {
-        return TranslationUtils.backingFieldReference(context(), descriptor);
+        return backingFieldReference(context(), descriptor);
     }
 
     @NotNull
     @Override
     public JsExpression translateAsSet(@NotNull JsExpression setTo) {
-        return TranslationUtils.assignmentToBackingField(context(), descriptor, setTo);
+        return assignmentToBackingField(context(), descriptor, setTo);
     }
 
     @NotNull

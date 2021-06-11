@@ -72,9 +72,9 @@ class CatchTranslator(
     }
 
     private fun translateCatches(
-        context: TranslationContext,
-        initialCatchParameterRef: JsNameRef,
-        catches: Iterator<KtCatchClause>
+            context: TranslationContext,
+            initialCatchParameterRef: JsNameRef,
+            catches: Iterator<KtCatchClause>
     ): JsStatement {
         if (!catches.hasNext()) {
             return JsThrow(initialCatchParameterRef).apply { source = psi }

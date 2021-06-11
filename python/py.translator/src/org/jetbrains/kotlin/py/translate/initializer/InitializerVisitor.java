@@ -51,11 +51,11 @@ public final class InitializerVisitor extends TranslatorVisitor<Void> {
                               descriptor.getType() :
                               TranslationUtils.getReturnTypeForCoercion(descriptor);
             value = TranslationUtils.coerce(context, value, type);
-            statement = InitializerUtils.generateInitializerForProperty(context, descriptor, value);
+            statement = generateInitializerForProperty(context, descriptor, value);
         }
         else if (delegate != null) {
             assert value != null;
-            statement = InitializerUtils.generateInitializerForDelegate(context, descriptor, value);
+            statement = generateInitializerForDelegate(context, descriptor, value);
         }
         else if (Boolean.TRUE.equals(context.bindingContext().get(BindingContext.BACKING_FIELD_REQUIRED, descriptor))) {
             JsNameRef backingFieldReference = TranslationUtils.backingFieldReference(context, descriptor);
@@ -101,7 +101,7 @@ public final class InitializerVisitor extends TranslatorVisitor<Void> {
         KtExpression initializerBody = initializer.getBody();
         if (initializerBody != null) {
             context.addStatementsToCurrentBlock(JsAstUtils.flattenStatement(
-                    Translation.translateAsStatementAndMergeInBlockIfNeeded(initializerBody, context)));
+                    translateAsStatementAndMergeInBlockIfNeeded(initializerBody, context)));
         }
         return null;
     }

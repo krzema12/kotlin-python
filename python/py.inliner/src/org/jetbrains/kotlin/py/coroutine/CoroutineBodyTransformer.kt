@@ -14,19 +14,19 @@ import org.jetbrains.kotlin.py.inline.util.collectBreakContinueTargets
 import org.jetbrains.kotlin.py.translate.utils.JsAstUtils
 import org.jetbrains.kotlin.utils.DFS
 
-class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coroutine.CoroutineTransformationContext) : RecursiveJsVisitor() {
+class CoroutineBodyTransformer(private val context: CoroutineTransformationContext) : RecursiveJsVisitor() {
     private val entryBlock = context.entryBlock
     private val globalCatchBlock = context.globalCatchBlock
     private var currentBlock = entryBlock
     private val currentStatements: MutableList<JsStatement>
         get() = currentBlock.statements
     private val breakContinueTargetStatements = mutableMapOf<JsContinue, JsStatement>()
-    private val breakTargets = mutableMapOf<JsStatement, org.jetbrains.kotlin.py.coroutine.CoroutineBodyTransformer.JumpTarget>()
-    private val continueTargets = mutableMapOf<JsStatement, org.jetbrains.kotlin.py.coroutine.CoroutineBodyTransformer.JumpTarget>()
-    private val referencedBlocks = mutableSetOf<org.jetbrains.kotlin.py.coroutine.CoroutineBlock>()
+    private val breakTargets = mutableMapOf<JsStatement, JumpTarget>()
+    private val continueTargets = mutableMapOf<JsStatement, JumpTarget>()
+    private val referencedBlocks = mutableSetOf<CoroutineBlock>()
     private lateinit var nodesToSplit: Set<JsNode>
     private var currentCatchBlock = globalCatchBlock
-    private val tryStack = mutableListOf(org.jetbrains.kotlin.py.coroutine.CoroutineBodyTransformer.TryBlock(globalCatchBlock, null))
+    private val tryStack = mutableListOf(TryBlock(globalCatchBlock, null))
 
     var hasFinallyBlocks = false
         get
@@ -40,7 +40,7 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
         nodesToSplit = node.collectNodesToSplit(breakContinueTargetStatements)
     }
 
-    fun postProcess(): List<org.jetbrains.kotlin.py.coroutine.CoroutineBlock> {
+    fun postProcess(): List<CoroutineBlock> {
         currentBlock.statements += JsReturn()
         val graph = entryBlock.buildGraph(globalCatchBlock)
         val orderedBlocks = DFS.topologicalOrder(listOf(entryBlock)) { graph[it].orEmpty() }
@@ -57,12 +57,12 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
     override fun visitIf(x: JsIf) = splitIfNecessary(x) {
         val ifBlock = currentBlock
 
-        val thenEntryBlock = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
+        val thenEntryBlock = CoroutineBlock()
         currentBlock = thenEntryBlock
         x.thenStatement.accept(this)
         val thenExitBlock = currentBlock
 
-        val elseEntryBlock = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
+        val elseEntryBlock = CoroutineBlock()
         currentBlock = elseEntryBlock
         x.elseStatement?.accept(this)
         val elseExitBlock = currentBlock
@@ -71,7 +71,7 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
         x.elseStatement = JsBlock(elseEntryBlock.statements)
         ifBlock.statements += x
 
-        val jointBlock = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
+        val jointBlock = CoroutineBlock()
         thenExitBlock.statements += stateAndJump(jointBlock, x)
         elseExitBlock.statements += stateAndJump(jointBlock, x)
         currentBlock = jointBlock
@@ -79,11 +79,11 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
 
     override fun visit(x: JsSwitch) = splitIfNecessary(x) {
         val switchBlock = currentBlock
-        val jointBlock = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
+        val jointBlock = CoroutineBlock()
 
         withBreakAndContinue(x, jointBlock, null) {
             for (jsCase in x.cases) {
-                val caseBlock = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
+                val caseBlock = CoroutineBlock()
                 currentBlock = caseBlock
 
                 jsCase.statements.forEach { accept(it) }
@@ -111,7 +111,7 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
             }
 
             else -> splitIfNecessary(x) {
-                val successor = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
+                val successor = CoroutineBlock()
                 withBreakAndContinue(x.statement, successor, null) {
                     accept(inner)
                 }
@@ -124,8 +124,8 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
     }
 
     override fun visitWhile(x: JsWhile) = splitIfNecessary(x) {
-        val successor = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
-        val bodyEntryBlock = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
+        val successor = CoroutineBlock()
+        val bodyEntryBlock = CoroutineBlock()
         currentStatements += stateAndJump(bodyEntryBlock, x)
 
         currentBlock = bodyEntryBlock
@@ -142,8 +142,8 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
     }
 
     override fun visitDoWhile(x: JsDoWhile) = splitIfNecessary(x) {
-        val successor = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
-        val bodyEntryBlock = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
+        val successor = CoroutineBlock()
+        val bodyEntryBlock = CoroutineBlock()
         currentStatements += stateAndJump(bodyEntryBlock, x)
 
         currentBlock = bodyEntryBlock
@@ -170,9 +170,9 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
             }
         }
 
-        val increment = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
-        val successor = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
-        val bodyEntryBlock = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
+        val increment = CoroutineBlock()
+        val successor = CoroutineBlock()
+        val bodyEntryBlock = CoroutineBlock()
         currentStatements += stateAndJump(bodyEntryBlock, x)
 
         currentBlock = bodyEntryBlock
@@ -213,7 +213,7 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
      * When we perform break, continue or return, we can leave try blocks, so we should update $exceptionHandler correspondingly.
      * Also, these try blocks can contain finally clauses, therefore we need to update $finallyPath as well.
      */
-    private fun jumpWithFinally(targetTryDepth: Int, successor: org.jetbrains.kotlin.py.coroutine.CoroutineBlock, fromNode: JsNode) {
+    private fun jumpWithFinally(targetTryDepth: Int, successor: CoroutineBlock, fromNode: JsNode) {
         if (targetTryDepth < tryStack.size) {
             val tryBlock = tryStack[targetTryDepth]
             currentStatements += exceptionState(tryBlock.catchBlock, fromNode)
@@ -230,15 +230,12 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
     override fun visitTry(x: JsTry) = splitIfNecessary(x) {
         val catchNode = x.catches.firstOrNull()
         val finallyNode = x.finallyBlock
-        val successor = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
+        val successor = CoroutineBlock()
 
-        val catchBlock = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
-        val finallyBlock = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
+        val catchBlock = CoroutineBlock()
+        val finallyBlock = CoroutineBlock()
 
-        tryStack += org.jetbrains.kotlin.py.coroutine.CoroutineBodyTransformer.TryBlock(
-            catchBlock,
-            if (finallyNode != null) finallyBlock else null
-        )
+        tryStack += TryBlock(catchBlock, if (finallyNode != null) finallyBlock else null)
 
         val oldCatchBlock = currentCatchBlock
         currentCatchBlock = catchBlock
@@ -325,7 +322,7 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
     override fun visitReturn(x: JsReturn) {
         val isInFinally = hasEnclosingFinallyBlock()
         if (isInFinally) {
-            val returnBlock = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
+            val returnBlock = CoroutineBlock()
             jumpWithFinally(0, returnBlock, x)
             val returnExpression = x.expression
             val returnFieldRef = if (returnExpression != null) {
@@ -373,7 +370,7 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
     private fun handleSuspend(invocation: JsExpression, sourceNode: JsExpression) {
         val psi = sourceNode.source ?: invocation.source
 
-        val nextBlock = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
+        val nextBlock = CoroutineBlock()
         currentStatements += state(nextBlock, invocation)
 
         val resultRef = JsNameRef(context.metadata.resultName, JsAstUtils.stateMachineReceiver()).apply {
@@ -386,7 +383,7 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
         currentBlock = nextBlock
     }
 
-    private fun state(target: org.jetbrains.kotlin.py.coroutine.CoroutineBlock, fromExpression: JsNode): List<JsStatement> {
+    private fun state(target: CoroutineBlock, fromExpression: JsNode): List<JsStatement> {
         val placeholder = JsDebugger()
         placeholder.targetBlock = target
         placeholder.source = fromExpression.source
@@ -396,11 +393,11 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
 
     private fun jump() = JsContinue()
 
-    private fun stateAndJump(target: org.jetbrains.kotlin.py.coroutine.CoroutineBlock, fromNode: JsNode): List<JsStatement> {
+    private fun stateAndJump(target: CoroutineBlock, fromNode: JsNode): List<JsStatement> {
         return state(target, fromNode) + jump()
     }
 
-    private fun exceptionState(target: org.jetbrains.kotlin.py.coroutine.CoroutineBlock, fromNode: JsNode): List<JsStatement> {
+    private fun exceptionState(target: CoroutineBlock, fromNode: JsNode): List<JsStatement> {
         val placeholder = JsDebugger()
         placeholder.targetExceptionBlock = target
         placeholder.source = fromNode
@@ -408,7 +405,7 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
         return listOf(placeholder)
     }
 
-    private fun updateFinallyPath(path: List<org.jetbrains.kotlin.py.coroutine.CoroutineBlock>): List<JsStatement> {
+    private fun updateFinallyPath(path: List<CoroutineBlock>): List<JsStatement> {
         val placeholder = JsDebugger()
         placeholder.finallyPath = path
         return listOf(placeholder)
@@ -424,15 +421,14 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
     }
 
     private fun withBreakAndContinue(
-        statement: JsStatement,
-        breakBlock: org.jetbrains.kotlin.py.coroutine.CoroutineBlock,
-        continueBlock: org.jetbrains.kotlin.py.coroutine.CoroutineBlock? = null,
-        action: () -> Unit
+            statement: JsStatement,
+            breakBlock: CoroutineBlock,
+            continueBlock: CoroutineBlock? = null,
+            action: () -> Unit
     ) {
-        breakTargets[statement] = org.jetbrains.kotlin.py.coroutine.CoroutineBodyTransformer.JumpTarget(breakBlock, currentTryDepth)
+        breakTargets[statement] = JumpTarget(breakBlock, currentTryDepth)
         if (continueBlock != null) {
-            continueTargets[statement] =
-                org.jetbrains.kotlin.py.coroutine.CoroutineBodyTransformer.JumpTarget(continueBlock, currentTryDepth)
+            continueTargets[statement] = JumpTarget(continueBlock, currentTryDepth)
         }
 
         action()
@@ -448,7 +444,7 @@ class CoroutineBodyTransformer(private val context: org.jetbrains.kotlin.py.coro
 
     private fun hasEnclosingFinallyBlock() = tryStack.any { it.finallyBlock != null }
 
-    private data class JumpTarget(val block: org.jetbrains.kotlin.py.coroutine.CoroutineBlock, val tryDepth: Int)
+    private data class JumpTarget(val block: CoroutineBlock, val tryDepth: Int)
 
-    private class TryBlock(val catchBlock: org.jetbrains.kotlin.py.coroutine.CoroutineBlock, val finallyBlock: org.jetbrains.kotlin.py.coroutine.CoroutineBlock?)
+    private class TryBlock(val catchBlock: CoroutineBlock, val finallyBlock: CoroutineBlock?)
 }

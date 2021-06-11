@@ -91,12 +91,12 @@ public final class FunctionBodyTranslator extends AbstractTranslator {
 
             // parameterName = defaultValue
             PsiElement psi = KotlinSourceElementKt.getPsi(valueParameter.getSource());
-            JsStatement assignStatement = JsAstUtils.assignment(jsNameRef, defaultValue).source(psi).makeStmt();
+            JsStatement assignStatement = assignment(jsNameRef, defaultValue).source(psi).makeStmt();
 
             JsStatement thenStatement = JsAstUtils.mergeStatementInBlockIfNeeded(assignStatement, defaultArgBlock);
 
             // parameterName === undefined
-            JsBinaryOperation checkArgIsUndefined = JsAstUtils.equality(jsNameRef, Namer.getUndefinedExpression());
+            JsBinaryOperation checkArgIsUndefined = equality(jsNameRef, Namer.getUndefinedExpression());
             checkArgIsUndefined.source(psi);
 
             // if (parameterName === undefined) {
@@ -148,9 +148,9 @@ public final class FunctionBodyTranslator extends AbstractTranslator {
     @NotNull
     private JsBlock mayBeWrapWithReturn(@NotNull JsNode body) {
         if (!mustAddReturnToGeneratedFunctionBody()) {
-            return JsAstUtils.convertToBlock(body);
+            return convertToBlock(body);
         }
-        return JsAstUtils.convertToBlock(lastExpressionReturned(body));
+        return convertToBlock(lastExpressionReturned(body));
     }
 
     private boolean mustAddReturnToGeneratedFunctionBody() {

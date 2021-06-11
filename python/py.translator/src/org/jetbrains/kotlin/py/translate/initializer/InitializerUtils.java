@@ -30,7 +30,7 @@ public final class InitializerUtils {
             @NotNull PropertyDescriptor descriptor,
             @NotNull JsExpression value
     ) {
-        JsExpression assignment = TranslationUtils.assignmentToBackingField(context, descriptor, value);
+        JsExpression assignment = assignmentToBackingField(context, descriptor, value);
         assignment.setSource(KotlinSourceElementKt.getPsi(descriptor.getSource()));
         return assignment.makeStmt();
     }

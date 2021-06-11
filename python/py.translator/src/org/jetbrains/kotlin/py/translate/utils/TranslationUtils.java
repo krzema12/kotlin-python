@@ -112,7 +112,7 @@ public final class TranslationUtils {
     @NotNull
     private static JsPropertyInitializer translateExtensionFunctionAsEcma5DataDescriptor(@NotNull JsExpression functionExpression,
             @NotNull FunctionDescriptor descriptor, @NotNull TranslationContext context) {
-        JsObjectLiteral meta = JsAstUtils.createDataDescriptor(functionExpression, ModalityUtilsKt.isOverridable(descriptor), false);
+        JsObjectLiteral meta = createDataDescriptor(functionExpression, ModalityUtilsKt.isOverridable(descriptor), false);
         return new JsPropertyInitializer(context.getNameForDescriptor(descriptor).makeRef(), meta);
     }
 
@@ -254,7 +254,7 @@ public final class TranslationUtils {
             @NotNull PropertyDescriptor descriptor,
             @NotNull JsExpression assignTo) {
         JsNameRef backingFieldReference = backingFieldReference(context, descriptor);
-        return JsAstUtils.assignment(backingFieldReference, assignTo);
+        return assignment(backingFieldReference, assignTo);
     }
 
     @Nullable
@@ -291,8 +291,7 @@ public final class TranslationUtils {
 
     public static boolean hasCorrespondingFunctionIntrinsic(@NotNull TranslationContext context,
             @NotNull KtOperationExpression expression) {
-        CallableDescriptor operationDescriptor = BindingUtils
-                .getCallableDescriptorForOperationExpression(context.bindingContext(), expression);
+        CallableDescriptor operationDescriptor = getCallableDescriptorForOperationExpression(context.bindingContext(), expression);
 
         if (operationDescriptor == null || !(operationDescriptor instanceof FunctionDescriptor)) return true;
 
@@ -639,7 +638,7 @@ public final class TranslationUtils {
             @NotNull SpecialFunction function, @NotNull JsExpression... arguments
     ) {
         JsName name = context.getNameForSpecialFunction(function);
-        return new JsInvocation(JsAstUtils.pureFqn(name, null), arguments);
+        return new JsInvocation(pureFqn(name, null), arguments);
     }
 
     @NotNull
@@ -649,9 +648,9 @@ public final class TranslationUtils {
 
     @NotNull
     public static JsExpression getIntrinsicFqn(@NotNull String name) {
-        JsExpression fqn = JsAstUtils.pureFqn(Namer.KOTLIN_NAME, null);
+        JsExpression fqn = pureFqn(Namer.KOTLIN_NAME, null);
         for (String part : StringUtil.split(name, ".")) {
-            fqn = JsAstUtils.pureFqn(part, fqn);
+            fqn = pureFqn(part, fqn);
         }
         return fqn;
     }

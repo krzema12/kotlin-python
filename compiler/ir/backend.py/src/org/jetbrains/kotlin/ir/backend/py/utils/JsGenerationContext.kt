@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.ir.backend.py.utils
 
 import org.jetbrains.kotlin.ir.declarations.IrFunction
+import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
 import org.jetbrains.kotlin.ir.util.isSuspend
 import org.jetbrains.kotlin.js.backend.ast.JsName
@@ -22,12 +23,12 @@ val emptyScope: JsScope
 
 class JsGenerationContext(
     val currentFunction: IrFunction?,
-    private val irNamer: IrNamer,
-) : IrNamer by irNamer {
+    val staticContext: JsStaticContext
+): IrNamer by staticContext {
     fun newDeclaration(func: IrFunction? = null): JsGenerationContext {
         return JsGenerationContext(
             currentFunction = func,
-            irNamer = irNamer,
+            staticContext = staticContext
         )
     }
 
@@ -43,12 +44,11 @@ class JsGenerationContext(
         }
 
     private fun isCoroutineDoResume(): Boolean {
-        return false
-//        val overriddenSymbols = (currentFunction as? IrSimpleFunction)?.overriddenSymbols ?: return false
-//        return overriddenSymbols.any {
-//            it.owner.name.asString() == "doResume" && it.owner.parent == staticContext.coroutineImplDeclaration
-//        }
+        val overriddenSymbols = (currentFunction as? IrSimpleFunction)?.overriddenSymbols ?: return false
+        return overriddenSymbols.any {
+            it.owner.name.asString() == "doResume" && it.owner.parent == staticContext.coroutineImplDeclaration
+        }
     }
 
-    fun checkIfJsCode(symbol: IrFunctionSymbol): Boolean = false //symbol == staticContext.backendContext.intrinsics.jsCode
+    fun checkIfJsCode(symbol: IrFunctionSymbol): Boolean = symbol == staticContext.backendContext.intrinsics.jsCode
 }

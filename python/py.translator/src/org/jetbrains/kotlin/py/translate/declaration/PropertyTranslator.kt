@@ -72,9 +72,9 @@ fun MutableList<JsPropertyInitializer>.addGetterAndSetter(
 }
 
 class DefaultPropertyTranslator(
-    val descriptor: VariableDescriptorWithAccessors,
-    context: TranslationContext,
-    val delegateReference: JsExpression
+        val descriptor: VariableDescriptorWithAccessors,
+        context: TranslationContext,
+        val delegateReference: JsExpression
 ) : AbstractTranslator(context) {
     fun generateDefaultGetterFunction(getterDescriptor: VariableAccessorDescriptor, function: JsFunction) {
         val delegatedCall = bindingContext()[BindingContext.DELEGATED_PROPERTY_RESOLVED_CALL, getterDescriptor]
@@ -139,7 +139,7 @@ class DefaultPropertyTranslator(
                 type = TranslationUtils.getReturnTypeForCoercion(setterDescriptor.correspondingVariable)
             }
             value = TranslationUtils.coerce(
-                context(), value, TranslationUtils.getReturnTypeForCoercion(setterDescriptor.correspondingVariable, true))
+                    context(), value, TranslationUtils.getReturnTypeForCoercion(setterDescriptor.correspondingVariable, true))
             val assignment = assignmentToBackingField(withAliased, descriptor as PropertyDescriptor, value)
             function.addStatement(assignment.apply { source = descriptor.source.getPsi() }.makeStmt())
         }

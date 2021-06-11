@@ -38,9 +38,8 @@ object ModuleWrapperTranslation {
         adapter.parameters += JsParameter(rootName)
         adapter.parameters += JsParameter(factoryName)
 
-        val amdTest = JsAstUtils.and(
-            JsAstUtils.typeOfIs(defineName.makeRef(), JsStringLiteral("function")),
-            JsNameRef("amd", defineName.makeRef()))
+        val amdTest = JsAstUtils.and(JsAstUtils.typeOfIs(defineName.makeRef(), JsStringLiteral("function")),
+                                     JsNameRef("amd", defineName.makeRef()))
         val commonJsTest = JsAstUtils.typeOfIs(exportsName.makeRef(), JsStringLiteral("object"))
 
         val amdBody = JsBlock(wrapAmd(factoryName.makeRef(), importedModules, program))

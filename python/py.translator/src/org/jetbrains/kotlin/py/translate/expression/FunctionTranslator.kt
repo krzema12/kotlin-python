@@ -88,8 +88,8 @@ fun TranslationContext.translateFunction(declaration: KtDeclarationWithBody, fun
 }
 
 fun TranslationContext.wrapWithInlineMetadata(
-    outerContext: TranslationContext,
-    function: JsFunction, descriptor: FunctionDescriptor
+        outerContext: TranslationContext,
+        function: JsFunction, descriptor: FunctionDescriptor
 ): JsExpression {
     val sourceInfo = descriptor.source.getPsi()
     return if (descriptor.isInline) {

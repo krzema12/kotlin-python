@@ -34,7 +34,7 @@ class CoroutineFunctionTransformer(private val function: JsFunction, name: Strin
         }
 
         val context = CoroutineTransformationContext(function.scope, function)
-        val bodyTransformer = org.jetbrains.kotlin.py.coroutine.CoroutineBodyTransformer(context)
+        val bodyTransformer = CoroutineBodyTransformer(context)
         bodyTransformer.preProcess(body)
         body.statements.forEach { it.accept(bodyTransformer) }
         val coroutineBlocks = bodyTransformer.postProcess()
@@ -188,9 +188,9 @@ class CoroutineFunctionTransformer(private val function: JsFunction, name: Strin
     }
 
     private fun generateDoResume(
-        coroutineBlocks: List<org.jetbrains.kotlin.py.coroutine.CoroutineBlock>,
-        context: CoroutineTransformationContext,
-        statements: MutableList<JsStatement>
+            coroutineBlocks: List<CoroutineBlock>,
+            context: CoroutineTransformationContext,
+            statements: MutableList<JsStatement>
     ) {
         val resumeFunction = JsFunction(function.scope.parent, JsBlock(), "resume function")
         val psi = context.metadata.psiElement
@@ -244,7 +244,7 @@ class CoroutineFunctionTransformer(private val function: JsFunction, name: Strin
 
     private fun generateCoroutineBody(
             context: CoroutineTransformationContext,
-            blocks: List<org.jetbrains.kotlin.py.coroutine.CoroutineBlock>
+            blocks: List<CoroutineBlock>
     ): List<JsStatement> {
         val indexOfGlobalCatch = blocks.indexOf(context.globalCatchBlock)
         val stateRef = JsNameRef(context.metadata.stateName, JsThisRef())

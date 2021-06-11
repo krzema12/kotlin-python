@@ -39,7 +39,7 @@ public final class QualifiedExpressionTranslator {
             receiver = context.defineTemporary(receiver);
         }
 
-        KtExpression selector = PsiUtils.getSelector(expression);
+        KtExpression selector = getSelector(expression);
         if (selector instanceof KtSimpleNameExpression) {
             return VariableAccessTranslator.newInstance(context, (KtSimpleNameExpression) selector, receiver);
         }
@@ -60,7 +60,7 @@ public final class QualifiedExpressionTranslator {
         if (call != null) {
             receiver = translateReceiver(expression, context);
         }
-        KtExpression selector = PsiUtils.getSelector(expression);
+        KtExpression selector = getSelector(expression);
         return dispatchToCorrectTranslator(receiver, selector, context);
     }
 
@@ -104,7 +104,7 @@ public final class QualifiedExpressionTranslator {
         if (isFullQualifierForExpression(receiverExpression, context)) {
             return null;
         }
-        return Translation.translateAsExpression(receiverExpression, context);
+        return translateAsExpression(receiverExpression, context);
     }
 
     //TODO: prove correctness
@@ -114,7 +114,7 @@ public final class QualifiedExpressionTranslator {
         }
         if (receiverExpression instanceof KtReferenceExpression) {
             DeclarationDescriptor descriptorForReferenceExpression =
-                BindingUtils.getDescriptorForReferenceExpression(context.bindingContext(), (KtReferenceExpression)receiverExpression);
+                getDescriptorForReferenceExpression(context.bindingContext(), (KtReferenceExpression)receiverExpression);
             if (descriptorForReferenceExpression instanceof PackageViewDescriptor) {
                 return true;
             }

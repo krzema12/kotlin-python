@@ -74,13 +74,7 @@ private fun mergeStdlibParts(outputFile: File, wrapperFile: File, baseDir: File,
     val sourceMapFile = File(outputFile.parentFile, outputFile.name + ".map")
     val textOutput = TextOutputImpl()
     val sourceMapBuilder = SourceMap3Builder(outputFile, textOutput, "")
-    val consumer = SourceMapBuilderConsumer(
-        File("."),
-        sourceMapBuilder,
-        SourceFilePathResolver(mutableListOf()),
-        true,
-        true
-    )
+    val consumer = SourceMapBuilderConsumer(File("."), sourceMapBuilder, SourceFilePathResolver(mutableListOf()), true, true)
     program.globalBlock.accept(JsToStringGenerationVisitor(textOutput, consumer))
     val sourceMapContent = sourceMapBuilder.build()
 

@@ -19,9 +19,9 @@ import org.jetbrains.kotlin.py.translate.utils.JsDescriptorUtils.getSupertypesWi
 import org.jetbrains.kotlin.psi.*
 
 class DeclarationBodyVisitor(
-    private val containingClass: ClassDescriptor,
-    private val context: TranslationContext,
-    private val enumInitializer: JsFunction?
+        private val containingClass: ClassDescriptor,
+        private val context: TranslationContext,
+        private val enumInitializer: JsFunction?
 ) : AbstractDeclarationVisitor() {
     private var enumEntryOrdinal: Int = 0
     val initializerStatements = mutableListOf<JsStatement>()

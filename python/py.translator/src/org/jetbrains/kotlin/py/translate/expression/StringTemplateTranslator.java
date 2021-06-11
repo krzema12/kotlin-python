@@ -46,7 +46,7 @@ public final class StringTemplateTranslator extends AbstractTranslator {
         super(context);
 
         expressionEntries = expression.getEntries();
-        assert expressionEntries.length != 0 : ErrorReportingUtils.message(expression, "String template must have one or more entries.");
+        assert expressionEntries.length != 0 : message(expression, "String template must have one or more entries.");
     }
 
     @NotNull
@@ -68,7 +68,7 @@ public final class StringTemplateTranslator extends AbstractTranslator {
                 resultingExpression = expression;
             }
             else {
-                resultingExpression = JsAstUtils.sum(resultingExpression, expression);
+                resultingExpression = sum(resultingExpression, expression);
             }
         }
 

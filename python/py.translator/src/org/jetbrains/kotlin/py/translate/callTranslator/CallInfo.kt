@@ -200,8 +200,7 @@ private fun TranslationContext.createCallInfo(
                 val rhsOriginal = coroutineResult.deepCopy().apply { type = resolvedCall.getReturnType() }
                 val rhs = TranslationUtils.coerce(thenContext, rhsOriginal, resolvedCall.getReturnType().makeNullable())
                 if (rhs != rhsOriginal) {
-                    thenBlock.statements += JsAstUtils.asSyntheticStatement(
-                        JsAstUtils.assignment(lhs, rhs).source(callElement))
+                    thenBlock.statements += JsAstUtils.asSyntheticStatement(JsAstUtils.assignment(lhs, rhs).source(callElement))
                 }
 
                 val thenStatement = if (thenBlock.statements.size == 1) thenBlock.statements.first() else thenBlock
