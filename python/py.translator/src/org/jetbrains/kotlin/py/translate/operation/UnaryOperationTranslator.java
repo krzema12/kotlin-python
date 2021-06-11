@@ -44,7 +44,7 @@ public final class UnaryOperationTranslator {
         IElementType operationToken = expression.getOperationReference().getReferencedNameElementType();
         if (operationToken == KtTokens.EXCLEXCL) {
             KtExpression baseExpression = getBaseExpression(expression);
-            JsExpression translatedExpression = Translation.translateAsExpression(baseExpression, context);
+            JsExpression translatedExpression = translateAsExpression(baseExpression, context);
             return sure(baseExpression, translatedExpression, context);
         }
 

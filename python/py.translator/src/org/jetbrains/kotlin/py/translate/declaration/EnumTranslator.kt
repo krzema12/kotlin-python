@@ -18,10 +18,10 @@ import org.jetbrains.kotlin.resolve.DescriptorUtils
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 
 class EnumTranslator(
-    context: TranslationContext,
-    val descriptor: ClassDescriptor,
-    val entries: List<ClassDescriptor>,
-    private val psi: PsiElement
+        context: TranslationContext,
+        val descriptor: ClassDescriptor,
+        val entries: List<ClassDescriptor>,
+        private val psi: PsiElement
 ) : AbstractTranslator(context) {
     fun generateStandardMethods() {
         generateValuesFunction()

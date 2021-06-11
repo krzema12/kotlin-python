@@ -51,10 +51,10 @@ import org.jetbrains.kotlin.utils.DFS
  * Generates a definition of a single class.
  */
 class ClassTranslator private constructor(
-    private val classDeclaration: KtPureClassOrObject,
-    context: TranslationContext,
-    private val enumInitializerName: JsName?,
-    private val ordinal: Int?
+        private val classDeclaration: KtPureClassOrObject,
+        context: TranslationContext,
+        private val enumInitializerName: JsName?,
+        private val ordinal: Int?
 ) : AbstractTranslator(context) {
 
     private val descriptor = getClassDescriptor(context.bindingContext(), classDeclaration)
@@ -120,14 +120,8 @@ class ClassTranslator private constructor(
 
         if (classDeclaration is KtClassOrObject) {
             when {
-                descriptor.isData -> JsDataClassGenerator(
-                    classDeclaration,
-                    context
-                ).generate()
-                descriptor.isInline -> JsInlineClassGenerator(
-                    classDeclaration,
-                    context
-                ).generate()
+                descriptor.isData -> JsDataClassGenerator(classDeclaration, context).generate()
+                descriptor.isInline -> JsInlineClassGenerator(classDeclaration, context).generate()
             }
         }
 
@@ -167,20 +161,16 @@ class ClassTranslator private constructor(
         get() = descriptor.containingDeclaration !is ClassOrPackageFragmentDescriptor
 
     private fun translatePrimaryConstructor(
-        constructorFunction: JsFunction,
-        classContext: TranslationContext,
-        delegationTranslator: DelegationTranslator
+            constructorFunction: JsFunction,
+            classContext: TranslationContext,
+            delegationTranslator: DelegationTranslator
     ) {
         if (!isTrait()) {
             val constructorContext = classContext.innerWithUsageTracker(descriptor)
             if (isObjectLike()) {
                 addObjectCache(constructorFunction.body.statements)
             }
-            ClassInitializerTranslator(
-                classDeclaration,
-                constructorContext,
-                constructorFunction
-            ).apply {
+            ClassInitializerTranslator(classDeclaration, constructorContext, constructorFunction).apply {
                 if (ordinal != null) {
                     setOrdinal(ordinal)
                 }
@@ -617,9 +607,9 @@ class ClassTranslator private constructor(
     }
 
     private class ConstructorInfo(
-        val function: JsFunction,
-        val context: TranslationContext,
-        val descriptor: MemberDescriptor,
-        val superCallGenerator: (() -> Unit) = { }
+            val function: JsFunction,
+            val context: TranslationContext,
+            val descriptor: MemberDescriptor,
+            val superCallGenerator: (() -> Unit) = { }
     )
 }

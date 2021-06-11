@@ -15,7 +15,7 @@ import static org.jetbrains.kotlin.py.translate.utils.JsAstUtils.convertToStatem
 
 public final class LastExpressionMutator {
     public static JsStatement mutateLastExpression(@NotNull JsNode node, @NotNull Mutator mutator) {
-        return JsAstUtils.convertToStatement(new LastExpressionMutator(mutator).apply(node));
+        return convertToStatement(new LastExpressionMutator(mutator).apply(node));
     }
 
     @NotNull
@@ -49,15 +49,15 @@ public final class LastExpressionMutator {
 
     @NotNull
     private JsNode applyToStatement(@NotNull JsExpressionStatement node) {
-        return JsAstUtils.convertToStatement(apply(node.getExpression()));
+        return convertToStatement(apply(node.getExpression()));
     }
 
     @NotNull
     private JsNode applyToIf(@NotNull JsIf node) {
-        node.setThenStatement(JsAstUtils.convertToStatement(apply(node.getThenStatement())));
+        node.setThenStatement(convertToStatement(apply(node.getThenStatement())));
         JsStatement elseStmt = node.getElseStatement();
         if (elseStmt != null) {
-            node.setElseStatement(JsAstUtils.convertToStatement(apply(elseStmt)));
+            node.setElseStatement(convertToStatement(apply(elseStmt)));
         }
         return node;
     }
@@ -78,7 +78,7 @@ public final class LastExpressionMutator {
         if (statements.isEmpty()) return node;
 
         int size = statements.size();
-        statements.set(size - 1, JsAstUtils.convertToStatement(apply(statements.get(size - 1))));
+        statements.set(size - 1, convertToStatement(apply(statements.get(size - 1))));
         return node;
     }
 
@@ -91,7 +91,7 @@ public final class LastExpressionMutator {
             JsNode lastStatement = apply(member.getStatements().get(size - 1));
             if (!(lastStatement instanceof JsBreak)) continue;
 
-            member.getStatements().set(size - 2, JsAstUtils.convertToStatement(apply(member.getStatements().get(size - 2))));
+            member.getStatements().set(size - 2, convertToStatement(apply(member.getStatements().get(size - 2))));
         }
 
         return node;

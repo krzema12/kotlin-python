@@ -104,7 +104,7 @@ public final class PatternTranslator extends AbstractTranslator {
 
         JsExpression result = new JsConditional(isCheck, temporary.reference(), onFail);
 
-        KotlinType targetType = BindingUtils.getTypeByReference(bindingContext(), typeReference);
+        KotlinType targetType = getTypeByReference(bindingContext(), typeReference);
         if (isSafeCast(expression)) {
             targetType = targetType.unwrap().makeNullableAsSpecified(true);
         }
@@ -125,14 +125,14 @@ public final class PatternTranslator extends AbstractTranslator {
         if (result == null) return new JsBooleanLiteral(!expression.isNegated());
 
         if (expression.isNegated()) {
-            return JsAstUtils.not(result);
+            return not(result);
         }
         return result;
     }
 
     @Nullable
     public JsExpression translateIsCheck(@NotNull JsExpression subject, @NotNull KtTypeReference targetTypeReference) {
-        KotlinType targetType = BindingUtils.getTypeByReference(bindingContext(), targetTypeReference);
+        KotlinType targetType = getTypeByReference(bindingContext(), targetTypeReference);
 
         JsExpression checkFunReference = doGetIsTypeCheckCallable(targetType);
         if (checkFunReference == null) {
@@ -310,7 +310,7 @@ public final class PatternTranslator extends AbstractTranslator {
         JsExpression expressionToMatchAgainst = TranslationUtils.coerce(context(), translateExpressionForExpressionPattern(patternExpression), actualSubjectType);
 
         if (matchEquality == EqualityType.PRIMITIVE && patternEquality == EqualityType.PRIMITIVE) {
-            return JsAstUtils.equality(expressionToMatch, expressionToMatchAgainst);
+            return equality(expressionToMatch, expressionToMatchAgainst);
         }
         else if (expressionToMatchAgainst instanceof JsNullLiteral) {
             return TranslationUtils.nullCheck(actualSubjectType, expressionToMatch, context(), false);

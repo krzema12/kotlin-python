@@ -29,21 +29,21 @@ object LongOperationFIF : FunctionIntrinsicFactory {
     private val longBinaryIntrinsics =
             (
                     listOf(
-                        "equals" to Namer.EQUALS_METHOD_NAME,
-                        "compareTo" to Namer.COMPARE_TO_METHOD_NAME,
-                        "rangeTo" to "rangeTo",
-                        "plus" to "add",
-                        "minus" to "subtract",
-                        "times" to "multiply",
-                        "div" to "div",
-                        "mod" to "modulo",
-                        "rem" to "modulo",
-                        "shl" to "shiftLeft",
-                        "shr" to "shiftRight",
-                        "ushr" to "shiftRightUnsigned",
-                        "and" to "and",
-                        "or" to "or",
-                        "xor" to "xor"
+                            "equals" to Namer.EQUALS_METHOD_NAME,
+                            "compareTo" to Namer.COMPARE_TO_METHOD_NAME,
+                            "rangeTo" to "rangeTo",
+                            "plus" to "add",
+                            "minus" to "subtract",
+                            "times" to "multiply",
+                            "div" to "div",
+                            "mod" to "modulo",
+                            "rem" to "modulo",
+                            "shl" to "shiftLeft",
+                            "shr" to "shiftRight",
+                            "ushr" to "shiftRightUnsigned",
+                            "and" to "and",
+                            "or" to "or",
+                            "xor" to "xor"
                     ).map { it.first to methodIntrinsic(it.second) }).toMap()
 
     private val floatBinaryIntrinsics: Map<String, BaseBinaryIntrinsic> =

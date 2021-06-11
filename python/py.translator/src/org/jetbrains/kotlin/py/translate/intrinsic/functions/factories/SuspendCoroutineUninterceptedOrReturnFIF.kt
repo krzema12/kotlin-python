@@ -14,8 +14,7 @@ import org.jetbrains.kotlin.py.translate.callTranslator.CallInfo
 import org.jetbrains.kotlin.py.translate.context.TranslationContext
 import org.jetbrains.kotlin.py.translate.intrinsic.functions.basic.FunctionIntrinsic
 
-object SuspendCoroutineUninterceptedOrReturnFIF:
-    FunctionIntrinsicFactory {
+object SuspendCoroutineUninterceptedOrReturnFIF: FunctionIntrinsicFactory {
     override fun getIntrinsic(descriptor: FunctionDescriptor, context: TranslationContext): FunctionIntrinsic? {
         if (!descriptor.isBuiltInSuspendCoroutineUninterceptedOrReturn(context.languageVersionSettings)) return null
         return Intrinsic

@@ -114,10 +114,10 @@ private fun TranslationContext.addFunctionDeclaration(name: JsName, function: Js
 }
 
 fun JsFunction.withCapturedParameters(
-    context: TranslationContext,
-    functionName: JsName,
-    invokingContext: TranslationContext,
-    source: KtDeclaration
+        context: TranslationContext,
+        functionName: JsName,
+        invokingContext: TranslationContext,
+        source: KtDeclaration
 ): JsExpression {
     invokingContext.addFunctionDeclaration(functionName, this, source)
     val ref = JsAstUtils.pureFqn(functionName, null)

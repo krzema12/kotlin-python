@@ -200,7 +200,7 @@ fun translateForExpression(expression: KtForExpression, context: TranslationCont
                         innerBlockContext.addStatementToCurrentBlock(parameterStatement)
                     }
                     DestructuringDeclarationTranslator.translate(
-                        destructuringParameter, JsAstUtils.pureFqn(parameterName, null), innerBlockContext)
+                            destructuringParameter, JsAstUtils.pureFqn(parameterName, null), innerBlockContext)
                 }
             block.statements += currentVarInit
             block.statements += if (realBody is JsBlock) realBody.statements else listOfNotNull(realBody)

@@ -82,7 +82,7 @@ public class DestructuringDeclarationTranslator extends AbstractTranslator {
 
             JsName name = context().getNameForDescriptor(descriptor);
             if (isBoxedLocalCapturedInClosure(context().bindingContext(), descriptor)) {
-                JsNameRef alias = Namer.getCapturedVarAccessor(name.makeRef());
+                JsNameRef alias = getCapturedVarAccessor(name.makeRef());
                 entryInitializer = JsAstUtils.wrapValue(alias, entryInitializer);
             }
 

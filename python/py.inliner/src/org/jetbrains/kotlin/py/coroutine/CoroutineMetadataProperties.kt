@@ -9,9 +9,9 @@ import org.jetbrains.kotlin.js.backend.ast.JsDebugger
 import org.jetbrains.kotlin.js.backend.ast.JsExpressionStatement
 import org.jetbrains.kotlin.js.backend.ast.metadata.MetadataProperty
 
-var JsDebugger.targetBlock: org.jetbrains.kotlin.py.coroutine.CoroutineBlock? by MetadataProperty(default = null)
-var JsDebugger.targetExceptionBlock: org.jetbrains.kotlin.py.coroutine.CoroutineBlock? by MetadataProperty(default = null)
-var JsDebugger.finallyPath: List<org.jetbrains.kotlin.py.coroutine.CoroutineBlock>? by MetadataProperty(default = null)
+var JsDebugger.targetBlock: CoroutineBlock? by MetadataProperty(default = null)
+var JsDebugger.targetExceptionBlock: CoroutineBlock? by MetadataProperty(default = null)
+var JsDebugger.finallyPath: List<CoroutineBlock>? by MetadataProperty(default = null)
 
 var JsExpressionStatement.targetBlock by MetadataProperty(default = false)
 var JsExpressionStatement.targetExceptionBlock by MetadataProperty(default = false)

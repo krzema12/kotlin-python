@@ -171,10 +171,10 @@ object CallableReferenceTranslator {
     }
 
     private fun translateForProperty(
-        descriptor: PropertyDescriptor,
-        context: TranslationContext,
-        expression: KtCallableReferenceExpression,
-        receiver: JsExpression?
+            descriptor: PropertyDescriptor,
+            context: TranslationContext,
+            expression: KtCallableReferenceExpression,
+            receiver: JsExpression?
     ): JsExpression {
         val realCall = expression.callableReference.getPropertyResolvedCallWithAssert(context.bindingContext())
 
@@ -221,13 +221,13 @@ object CallableReferenceTranslator {
     }
 
     private fun translateForPropertyAccessor(
-        call: ResolvedCall<out PropertyDescriptor>,
-        expression: KtExpression,
-        descriptor: PropertyDescriptor,
-        context: TranslationContext,
-        receiver: JsExpression?,
-        isSetter: Boolean,
-        translator: (TranslationContext, ResolvedCall<out PropertyDescriptor>, JsExpression, JsExpression?) -> JsExpression
+            call: ResolvedCall<out PropertyDescriptor>,
+            expression: KtExpression,
+            descriptor: PropertyDescriptor,
+            context: TranslationContext,
+            receiver: JsExpression?,
+            isSetter: Boolean,
+            translator: (TranslationContext, ResolvedCall<out PropertyDescriptor>, JsExpression, JsExpression?) -> JsExpression
     ): JsExpression {
         val accessorFunction = JsFunction(context.scope(), JsBlock(), "")
         accessorFunction.source = expression

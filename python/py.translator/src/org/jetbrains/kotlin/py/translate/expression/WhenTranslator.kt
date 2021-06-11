@@ -269,19 +269,14 @@ private constructor(private val whenExpression: KtWhenExpression, context: Trans
     }
 
     private fun translateEntryExpression(
-        entry: KtWhenEntry,
-        context: TranslationContext,
-        block: JsBlock
+            entry: KtWhenEntry,
+            context: TranslationContext,
+            block: JsBlock
     ): JsStatement {
         val expressionToExecute = entry.expression ?: error("WhenEntry should have whenExpression to execute.")
         val result = Translation.translateAsStatement(expressionToExecute, context, block)
         return if (type != null) {
-            LastExpressionMutator.mutateLastExpression(result,
-                                                                                                                          CoercionMutator(
-                                                                                                                              type,
-                                                                                                                              context
-                                                                                                                          )
-            )
+            LastExpressionMutator.mutateLastExpression(result, CoercionMutator(type, context))
         }
         else {
             result
@@ -311,7 +306,7 @@ private constructor(private val whenExpression: KtWhenExpression, context: Trans
             assert(rightExpression is JsNameRef) { "expected JsNameRef, but: " + rightExpression }
             val result = rightExpression as JsNameRef
             val ifStatement = JsAstUtils.newJsIf(leftExpression, JsAstUtils.assignment(result, JsBooleanLiteral(true)).makeStmt(),
-                                                                                                            rightContext.currentBlock)
+                                                 rightContext.currentBlock)
             ifStatement.source = condition
             context.addStatementToCurrentBlock(ifStatement)
             result
@@ -360,10 +355,8 @@ private constructor(private val whenExpression: KtWhenExpression, context: Trans
         subjectAliases[whenExpression.subjectExpression!!] = expressionToMatch
         val callContext = context.innerContextWithAliasesForExpressions(subjectAliases)
         val negated = condition.operationReference.getReferencedNameElementType() === KtTokens.NOT_IN
-        return InOperationTranslator(
-            callContext, expressionToMatch, condition.rangeExpression!!, condition.operationReference,
-            negated
-        ).translate().source(condition)
+        return InOperationTranslator(callContext, expressionToMatch, condition.rangeExpression!!, condition.operationReference,
+                                     negated).translate().source(condition)
     }
 
     companion object {

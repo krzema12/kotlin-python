@@ -196,8 +196,7 @@ fun JsFunction.fillCoroutineMetadata(
     coroutineMetadata = CoroutineMetadata(
         doResumeName = context.getNameForDescriptor(TranslationUtils.getCoroutineDoResumeFunction(context)),
         suspendObjectRef = suspendObject,
-        baseClassRef = ReferenceTranslator.translateAsTypeReference(
-            TranslationUtils.getCoroutineBaseClass(context), context),
+        baseClassRef = ReferenceTranslator.translateAsTypeReference(TranslationUtils.getCoroutineBaseClass(context), context),
         stateName = getCoroutinePropertyName("state"),
         exceptionStateName = getCoroutinePropertyName("exceptionState"),
         finallyPathName = getCoroutinePropertyName("finallyPath"),

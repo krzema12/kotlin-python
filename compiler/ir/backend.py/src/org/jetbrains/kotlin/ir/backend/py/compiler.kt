@@ -91,7 +91,6 @@ fun compile(
         // TODO investigate whether this is needed anymore
         stageController = StageController(controller.currentStage)
 
-        // TODO temporarily changing IrModuleToJsTransformer to IrModuleToPyTransformer to experiment with Python backend
         val transformer = IrModuleToPyTransformer(
             context,
             mainArguments,
@@ -103,7 +102,6 @@ fun compile(
         return transformer.generateModule(allModules)
     } else {
         jsPhases.invokeToplevel(phaseConfig, context, allModules)
-        // TODO temporarily changing IrModuleToJsTransformer to IrModuleToPyTransformer to experiment with Python backend
         val transformer = IrModuleToPyTransformer(
             context,
             mainArguments,
@@ -124,7 +122,6 @@ fun generateJsCode(
     moveBodilessDeclarationsToSeparatePlace(context, moduleFragment)
     jsPhases.invokeToplevel(PhaseConfig(jsPhases), context, listOf(moduleFragment))
 
-    // TODO temporarily changing IrModuleToJsTransformer to IrModuleToPyTransformer to experiment with Python backend
     val transformer = IrModuleToPyTransformer(context, null, true, nameTables)
     return transformer.generateModule(listOf(moduleFragment)).jsCode!!.mainModule
 }

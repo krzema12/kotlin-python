@@ -104,7 +104,7 @@ fun JsNode.collectNodesToSplit(breakContinueTargets: Map<JsContinue, JsStatement
     return nodes
 }
 
-fun List<org.jetbrains.kotlin.py.coroutine.CoroutineBlock>.replaceCoroutineFlowStatements(context: CoroutineTransformationContext) {
+fun List<CoroutineBlock>.replaceCoroutineFlowStatements(context: CoroutineTransformationContext) {
     val blockIndexes = withIndex().associate { (index, block) -> Pair(block, index) }
 
     val blockReplacementVisitor = object : JsVisitorWithContextImpl() {
@@ -145,13 +145,13 @@ fun List<org.jetbrains.kotlin.py.coroutine.CoroutineBlock>.replaceCoroutineFlowS
     return forEach { blockReplacementVisitor.accept(it.jsBlock) }
 }
 
-fun org.jetbrains.kotlin.py.coroutine.CoroutineBlock.buildGraph(globalCatchBlock: org.jetbrains.kotlin.py.coroutine.CoroutineBlock?): Map<org.jetbrains.kotlin.py.coroutine.CoroutineBlock, Set<org.jetbrains.kotlin.py.coroutine.CoroutineBlock>> {
+fun CoroutineBlock.buildGraph(globalCatchBlock: CoroutineBlock?): Map<CoroutineBlock, Set<CoroutineBlock>> {
     // That's a little more than DFS due to need of tracking finally paths
 
-    val visitedBlocks = mutableSetOf<org.jetbrains.kotlin.py.coroutine.CoroutineBlock>()
-    val graph = mutableMapOf<org.jetbrains.kotlin.py.coroutine.CoroutineBlock, MutableSet<org.jetbrains.kotlin.py.coroutine.CoroutineBlock>>()
+    val visitedBlocks = mutableSetOf<CoroutineBlock>()
+    val graph = mutableMapOf<CoroutineBlock, MutableSet<CoroutineBlock>>()
 
-    fun visitBlock(block: org.jetbrains.kotlin.py.coroutine.CoroutineBlock) {
+    fun visitBlock(block: CoroutineBlock) {
         if (block in visitedBlocks) return
 
         for (finallyPath in block.collectFinallyPaths()) {
@@ -177,8 +177,8 @@ fun org.jetbrains.kotlin.py.coroutine.CoroutineBlock.buildGraph(globalCatchBlock
     return graph
 }
 
-private fun org.jetbrains.kotlin.py.coroutine.CoroutineBlock.collectTargetBlocks(): Set<org.jetbrains.kotlin.py.coroutine.CoroutineBlock> {
-    val targetBlocks = mutableSetOf<org.jetbrains.kotlin.py.coroutine.CoroutineBlock>()
+private fun CoroutineBlock.collectTargetBlocks(): Set<CoroutineBlock> {
+    val targetBlocks = mutableSetOf<CoroutineBlock>()
     jsBlock.accept(object : RecursiveJsVisitor() {
         override fun visitDebugger(x: JsDebugger) {
             targetBlocks += listOfNotNull(x.targetExceptionBlock) + listOfNotNull(x.targetBlock)
@@ -187,8 +187,8 @@ private fun org.jetbrains.kotlin.py.coroutine.CoroutineBlock.collectTargetBlocks
     return targetBlocks
 }
 
-private fun org.jetbrains.kotlin.py.coroutine.CoroutineBlock.collectFinallyPaths(): List<List<org.jetbrains.kotlin.py.coroutine.CoroutineBlock>> {
-    val finallyPaths = mutableListOf<List<org.jetbrains.kotlin.py.coroutine.CoroutineBlock>>()
+private fun CoroutineBlock.collectFinallyPaths(): List<List<CoroutineBlock>> {
+    val finallyPaths = mutableListOf<List<CoroutineBlock>>()
     jsBlock.accept(object : RecursiveJsVisitor() {
         override fun visitDebugger(x: JsDebugger) {
             x.finallyPath?.let { finallyPaths += it }
@@ -255,7 +255,7 @@ fun JsBlock.replaceSpecialReferencesInSimpleFunction(continuationParam: JsParame
     visitor.accept(this)
 }
 
-fun List<org.jetbrains.kotlin.py.coroutine.CoroutineBlock>.collectVariablesSurvivingBetweenBlocks(localVariables: Set<JsName>, parameters: Set<JsName>): Set<JsName> {
+fun List<CoroutineBlock>.collectVariablesSurvivingBetweenBlocks(localVariables: Set<JsName>, parameters: Set<JsName>): Set<JsName> {
     val varDefinedIn = localVariables.associate { it to mutableSetOf<Int>() }
     val varDeclaredIn = localVariables.associate { it to mutableSetOf<Int>() }
     val varUsedIn = localVariables.associate { it to mutableSetOf<Int>() }

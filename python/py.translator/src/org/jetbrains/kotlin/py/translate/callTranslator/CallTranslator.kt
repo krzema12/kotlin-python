@@ -91,9 +91,9 @@ private fun ResolvedCall<out CallableDescriptor>.expectedReceivers(): Boolean {
 }
 
 private fun translateCall(
-    context: TranslationContext,
-    resolvedCall: ResolvedCall<out FunctionDescriptor>,
-    explicitReceivers: ExplicitReceivers
+        context: TranslationContext,
+        resolvedCall: ResolvedCall<out FunctionDescriptor>,
+        explicitReceivers: ExplicitReceivers
 ): JsExpression {
     if (resolvedCall is VariableAsFunctionResolvedCall) {
         assert(explicitReceivers.extensionReceiver == null) { "VariableAsFunctionResolvedCall must have one receiver" }
@@ -126,10 +126,10 @@ private fun translateCall(
 }
 
 private fun translateFunctionCall(
-    context: TranslationContext,
-    resolvedCall: ResolvedCall<out FunctionDescriptor>,
-    inlineResolvedCall: ResolvedCall<out CallableDescriptor>,
-    explicitReceivers: ExplicitReceivers
+        context: TranslationContext,
+        resolvedCall: ResolvedCall<out FunctionDescriptor>,
+        inlineResolvedCall: ResolvedCall<out CallableDescriptor>,
+        explicitReceivers: ExplicitReceivers
 ): JsExpression {
     val rangeCheck = RangeCheckTranslator(context).translateAsRangeCheck(resolvedCall, explicitReceivers)
     if (rangeCheck != null) return rangeCheck
@@ -184,9 +184,9 @@ private val untilFqName = FqName("kotlin.ranges.until")
 fun ResolvedCall<out CallableDescriptor>.getReturnType(): KotlinType = TranslationUtils.getReturnTypeForCoercion(resultingDescriptor)
 
 fun computeExplicitReceiversForInvoke(
-    context: TranslationContext,
-    resolvedCall: ResolvedCall<out FunctionDescriptor>,
-    explicitReceivers: ExplicitReceivers
+        context: TranslationContext,
+        resolvedCall: ResolvedCall<out FunctionDescriptor>,
+        explicitReceivers: ExplicitReceivers
 ): ExplicitReceivers {
     val callElement = resolvedCall.call.callElement
     assert(explicitReceivers.extensionReceiver == null) { "'Invoke' call must have one receiver: $callElement" }

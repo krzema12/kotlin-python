@@ -101,13 +101,11 @@ public final class ExpressionVisitor extends TranslatorVisitor<JsNode> {
     @NotNull
     private static JsNode translateConstantExpression(@NotNull KtConstantExpression expression, @NotNull TranslationContext context) {
         CompileTimeConstant<?> compileTimeValue = ConstantExpressionEvaluator.getConstant(expression, context.bindingContext());
-        assert compileTimeValue != null : ErrorReportingUtils
-                .message(expression, "Expression is not compile time value: " + expression.getText() + " ");
+        assert compileTimeValue != null : message(expression, "Expression is not compile time value: " + expression.getText() + " ");
 
         JsNode result = Translation.translateConstant(compileTimeValue, expression, context);
         if (result == null) {
-            throw new AssertionError(
-                    ErrorReportingUtils.message(expression, "Unsupported constant expression: " + expression.getText() + " "));
+            throw new AssertionError(message(expression, "Unsupported constant expression: " + expression.getText() + " "));
         }
 
         return result;
@@ -120,7 +118,7 @@ public final class ExpressionVisitor extends TranslatorVisitor<JsNode> {
         JsBlock jsBlock = new JsBlock();
         for (KtExpression statement : statements) {
             JsNode jsNode = Translation.translateExpression(statement, context, jsBlock);
-            JsStatement jsStatement = JsAstUtils.convertToStatement(jsNode);
+            JsStatement jsStatement = convertToStatement(jsNode);
             if (!JsAstUtils.isEmptyStatement(jsStatement)) {
                 jsBlock.getStatements().add(jsStatement);
             }
@@ -167,7 +165,7 @@ public final class ExpressionVisitor extends TranslatorVisitor<JsNode> {
             jsReturn = new JsReturn(null);
         }
         else {
-            JsExpression jsReturnExpression = Translation.translateAsExpression(returned, context);
+            JsExpression jsReturnExpression = translateAsExpression(returned, context);
 
             KotlinType returnedType = context.bindingContext().getType(returned);
             assert returnedType != null : "Resolved return expression is expected to have type: " +
@@ -242,7 +240,7 @@ public final class ExpressionVisitor extends TranslatorVisitor<JsNode> {
     public JsNode visitProperty(@NotNull KtProperty expression, @NotNull TranslationContext context) {
         VariableDescriptor descriptor = BindingContextUtils.getNotNull(context.bindingContext(), BindingContext.VARIABLE, expression);
 
-        JsExpression initializer = TranslationUtils.translateInitializerForProperty(expression, context);
+        JsExpression initializer = translateInitializerForProperty(expression, context);
 
         KtExpression delegateExpression = expression.getDelegateExpression();
         JsName name = context.getNameForDescriptor(descriptor);
@@ -251,11 +249,11 @@ public final class ExpressionVisitor extends TranslatorVisitor<JsNode> {
             assert initializer != null : "Initializer must be non-null for property with delegate";
         }
         else if (context.isBoxedLocalCapturedInClosure(descriptor)) {
-            JsNameRef alias = Namer.getCapturedVarAccessor(name.makeRef());
+            JsNameRef alias = getCapturedVarAccessor(name.makeRef());
             initializer = JsAstUtils.wrapValue(alias, initializer == null ? new JsNullLiteral() : initializer);
         }
 
-        return JsAstUtils.newVar(name, initializer).source(expression);
+        return newVar(name, initializer).source(expression);
     }
 
     @Override
@@ -277,7 +275,7 @@ public final class ExpressionVisitor extends TranslatorVisitor<JsNode> {
         ClassifierDescriptor descriptor = lhs.getType().getConstructor().getDeclarationDescriptor();
 
         if (lhs instanceof DoubleColonLHS.Expression && !((DoubleColonLHS.Expression) lhs).isObjectQualifier()) {
-            JsExpression receiver = Translation.translateAsExpression(receiverExpression, context);
+            JsExpression receiver = translateAsExpression(receiverExpression, context);
             receiver = TranslationUtils.coerce(context, receiver, context.getCurrentModule().getBuiltIns().getAnyType());
             if (isPrimitiveClassLiteral(lhs.getType())) {
                 JsExpression primitiveExpression = getPrimitiveClass(context, descriptor);
@@ -285,7 +283,7 @@ public final class ExpressionVisitor extends TranslatorVisitor<JsNode> {
                     return JsAstUtils.newSequence(Arrays.asList(receiver, primitiveExpression));
                 }
             }
-            return new JsInvocation(context.namer().kotlin(Namer.GET_KCLASS_FROM_EXPRESSION), receiver);
+            return new JsInvocation(context.namer().kotlin(GET_KCLASS_FROM_EXPRESSION), receiver);
         }
 
         return getObjectKClass(context, descriptor);
@@ -342,7 +340,7 @@ public final class ExpressionVisitor extends TranslatorVisitor<JsNode> {
                         assert primitivesObject != null;
                         FunctionDescriptor function = DescriptorUtils.getFunctionByName(
                                 primitivesObject.getUnsubstitutedMemberScope(), Name.identifier("functionClass"));
-                        JsExpression functionRef = JsAstUtils.pureFqn(context.getInlineableInnerNameForDescriptor(function), null);
+                        JsExpression functionRef = pureFqn(context.getInlineableInnerNameForDescriptor(function), null);
                         return new JsInvocation(functionRef, new JsIntLiteral(functionClassDescriptor.getArity()));
                     }
                 }
@@ -358,7 +356,7 @@ public final class ExpressionVisitor extends TranslatorVisitor<JsNode> {
         assert primitivesObject != null;
         PropertyDescriptor property = DescriptorUtils.getPropertyByName(
                 primitivesObject.getUnsubstitutedMemberScope(), Name.identifier(name));
-        return JsAstUtils.pureFqn(context.getInlineableInnerNameForDescriptor(property), null);
+        return pureFqn(context.getInlineableInnerNameForDescriptor(property), null);
     }
 
     private static boolean isPrimitiveClassLiteral(@NotNull KotlinType type) {
@@ -458,7 +456,7 @@ public final class ExpressionVisitor extends TranslatorVisitor<JsNode> {
     @Nullable
     private static JsStringLiteral resolveAsStringConstant(@NotNull KtExpression expression,
             @NotNull TranslationContext context) {
-        Object value = BindingUtils.getCompileTimeValue(context.bindingContext(), expression);
+        Object value = getCompileTimeValue(context.bindingContext(), expression);
         if (value == null) {
             return null;
         }
@@ -593,7 +591,7 @@ public final class ExpressionVisitor extends TranslatorVisitor<JsNode> {
     public JsNode visitNamedFunction(@NotNull KtNamedFunction expression, @NotNull TranslationContext context) {
         JsExpression alias = new LiteralFunctionTranslator(context).translate(expression);
 
-        FunctionDescriptor descriptor = BindingUtils.getFunctionDescriptor(context.bindingContext(), expression);
+        FunctionDescriptor descriptor = getFunctionDescriptor(context.bindingContext(), expression);
         JsNameRef nameRef = (JsNameRef) ReferenceTranslator.translateAsValueReference(descriptor, context);
         assert nameRef.getName() != null;
         if (InlineUtil.isInline(descriptor)) {
@@ -610,10 +608,10 @@ public final class ExpressionVisitor extends TranslatorVisitor<JsNode> {
     @NotNull
     public JsNode visitThisExpression(@NotNull KtThisExpression expression, @NotNull TranslationContext context) {
         DeclarationDescriptor thisExpression =
-                BindingUtils.getDescriptorForReferenceExpression(context.bindingContext(), expression.getInstanceReference());
+                getDescriptorForReferenceExpression(context.bindingContext(), expression.getInstanceReference());
         assert thisExpression != null : "This expression must reference a descriptor: " + expression.getText();
 
-        return context.getDispatchReceiver(JsDescriptorUtils.getReceiverParameterForDeclaration(thisExpression)).source(expression);
+        return context.getDispatchReceiver(getReceiverParameterForDeclaration(thisExpression)).source(expression);
     }
 
     @Override
@@ -652,7 +650,7 @@ public final class ExpressionVisitor extends TranslatorVisitor<JsNode> {
             @NotNull TranslationContext context) {
         KtExpression thrownExpression = expression.getThrownExpression();
         assert thrownExpression != null : "Thrown expression must not be null";
-        return new JsThrow(Translation.translateAsExpression(thrownExpression, context)).source(expression);
+        return new JsThrow(translateAsExpression(thrownExpression, context)).source(expression);
     }
 
     @Override

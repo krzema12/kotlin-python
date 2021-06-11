@@ -116,13 +116,12 @@ abstract class JsEqualsHashcodeToStringGenerator extends DataClassMethodGenerato
                 fieldChain = next;
             }
             else {
-                fieldChain = JsAstUtils.and(fieldChain, next);
+                fieldChain = and(fieldChain, next);
             }
         }
         assert fieldChain != null;
 
-        JsExpression returnExpression = JsAstUtils
-                .or(referenceEqual, JsAstUtils.and(isNotNull, JsAstUtils.and(otherIsObject, JsAstUtils.and(prototypeEqual, fieldChain))));
+        JsExpression returnExpression = or(referenceEqual, and(isNotNull, and(otherIsObject, and(prototypeEqual, fieldChain))));
         JsReturn returnStatement = new JsReturn(returnExpression);
         returnStatement.setSource(getDeclaration());
         functionObj.getBody().getStatements().add(returnStatement);

@@ -69,7 +69,7 @@ public final class IntrinsicAssignmentTranslator extends AssignmentTranslator {
 
     @NotNull
     private JsExpression translate() {
-        if (PsiUtils.isAssignment(PsiUtils.getOperationToken(expression))) {
+        if (isAssignment(getOperationToken(expression))) {
             return translateAsPlainAssignment();
         }
         return translateAsAssignmentOperation();
@@ -77,7 +77,7 @@ public final class IntrinsicAssignmentTranslator extends AssignmentTranslator {
 
     @NotNull
     private JsExpression translateAsAssignmentOperation() {
-        if (TranslationUtils.isSimpleNameExpressionNotDelegatedLocalVar(expression.getLeft(), context()) && rightExpressionTrivial) {
+        if (isSimpleNameExpressionNotDelegatedLocalVar(expression.getLeft(), context()) && rightExpressionTrivial) {
             return translateAsPlainAssignmentOperation();
         }
         return translateAsAssignToCounterpart();
@@ -97,7 +97,7 @@ public final class IntrinsicAssignmentTranslator extends AssignmentTranslator {
 
     @NotNull
     private JsBinaryOperator getCounterpartOperator() {
-        KtToken assignmentOperationToken = PsiUtils.getOperationToken(expression);
+        KtToken assignmentOperationToken = getOperationToken(expression);
         assert assignmentOperationToken instanceof KtSingleValueToken;
         assert OperatorConventions.ASSIGNMENT_OPERATIONS.containsKey(assignmentOperationToken);
         KtToken counterpartToken = OperatorConventions.ASSIGNMENT_OPERATION_COUNTERPARTS.get(assignmentOperationToken);
@@ -115,7 +115,7 @@ public final class IntrinsicAssignmentTranslator extends AssignmentTranslator {
 
     @NotNull
     private JsBinaryOperator getAssignmentOperator() {
-        KtToken token = PsiUtils.getOperationToken(expression);
+        KtToken token = getOperationToken(expression);
         assert token instanceof KtSingleValueToken;
         assert OperatorConventions.ASSIGNMENT_OPERATIONS.containsKey(token);
         assert OperatorTable.hasCorrespondingBinaryOperator(token) :

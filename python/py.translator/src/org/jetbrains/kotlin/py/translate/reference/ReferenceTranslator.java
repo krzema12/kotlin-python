@@ -189,7 +189,7 @@ public final class ReferenceTranslator {
     @NotNull
     public static AccessTranslator getAccessTranslator(@NotNull KtSimpleNameExpression referenceExpression,
             @NotNull TranslationContext context) {
-        if (isBackingFieldReference(BindingUtils.getDescriptorForReferenceExpression(context.bindingContext(), referenceExpression))) {
+        if (isBackingFieldReference(getDescriptorForReferenceExpression(context.bindingContext(), referenceExpression))) {
             return BackingFieldAccessTranslator.newInstance(referenceExpression, context);
         }
         if (canBePropertyAccess(referenceExpression, context)) {
@@ -204,7 +204,7 @@ public final class ReferenceTranslator {
     public static boolean canBePropertyAccess(@NotNull KtExpression expression, @NotNull TranslationContext context) {
         KtSimpleNameExpression simpleNameExpression = null;
         if (expression instanceof KtQualifiedExpression) {
-            simpleNameExpression = PsiUtils.getSelectorAsSimpleName((KtQualifiedExpression) expression);
+            simpleNameExpression = getSelectorAsSimpleName((KtQualifiedExpression) expression);
         }
         else if (expression instanceof KtSimpleNameExpression) {
             simpleNameExpression = (KtSimpleNameExpression) expression;
@@ -212,7 +212,7 @@ public final class ReferenceTranslator {
 
         if (simpleNameExpression == null) return false;
 
-        DeclarationDescriptor descriptor = BindingUtils.getDescriptorForReferenceExpression(context.bindingContext(), simpleNameExpression);
+        DeclarationDescriptor descriptor = getDescriptorForReferenceExpression(context.bindingContext(), simpleNameExpression);
 
         // Skip ValueParameterDescriptor because sometime we can miss resolved call for it, e.g. when set something to delegated property.
         return descriptor instanceof VariableDescriptor &&

@@ -47,10 +47,10 @@ class CallArgumentTranslator private constructor(
 ) : AbstractTranslator(context) {
 
     data class ArgumentsInfo(
-        val valueArguments: List<JsExpression>,
-        val hasSpreadOperator: Boolean,
-        val cachedReceiver: TemporaryConstVariable?,
-        val reifiedArguments: List<JsExpression> = listOf()
+            val valueArguments: List<JsExpression>,
+            val hasSpreadOperator: Boolean,
+            val cachedReceiver: TemporaryConstVariable?,
+            val reifiedArguments: List<JsExpression> = listOf()
     ) {
         val translateArguments: List<JsExpression>
             get() = reifiedArguments + valueArguments
@@ -152,7 +152,7 @@ class CallArgumentTranslator private constructor(
             }
             else if (DescriptorUtils.isObject(resolvedCall.resultingDescriptor.containingDeclaration)) {
                 cachedReceiver = context().getOrDeclareTemporaryConstVariable(
-                    ReferenceTranslator.translateAsValueReference(resolvedCall.resultingDescriptor.containingDeclaration, context()))
+                        ReferenceTranslator.translateAsValueReference(resolvedCall.resultingDescriptor.containingDeclaration, context()))
                 result.add(0, cachedReceiver.reference())
             }
             else {
@@ -171,8 +171,8 @@ class CallArgumentTranslator private constructor(
     }
 
     private fun translateUnresolvedArguments(
-        context: TranslationContext,
-        resolvedCall: ResolvedCall<*>
+            context: TranslationContext,
+            resolvedCall: ResolvedCall<*>
     ): Map<ValueArgument, JsExpression> {
         val argsToParameters = resolvedCall.valueArguments
                 .flatMap { (param, args) -> args.arguments.map { param to it } }

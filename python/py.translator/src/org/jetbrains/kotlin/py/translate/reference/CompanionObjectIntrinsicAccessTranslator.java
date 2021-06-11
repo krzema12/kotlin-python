@@ -27,7 +27,7 @@ public class CompanionObjectIntrinsicAccessTranslator extends AbstractTranslator
             @NotNull KtSimpleNameExpression expression,
             @NotNull TranslationContext context
     ) {
-        DeclarationDescriptor referenceDescriptor = BindingUtils.getDescriptorForReferenceExpression(context.bindingContext(), expression);
+        DeclarationDescriptor referenceDescriptor = getDescriptorForReferenceExpression(context.bindingContext(), expression);
         assert referenceDescriptor != null : "JetSimpleName expression must reference a descriptor " + expression.getText();
         return new CompanionObjectIntrinsicAccessTranslator(referenceDescriptor, context);
     }
@@ -36,7 +36,7 @@ public class CompanionObjectIntrinsicAccessTranslator extends AbstractTranslator
             @NotNull KtReferenceExpression expression,
             @NotNull TranslationContext context
     ) {
-        DeclarationDescriptor descriptor = BindingUtils.getDescriptorForReferenceExpression(context.bindingContext(), expression);
+        DeclarationDescriptor descriptor = getDescriptorForReferenceExpression(context.bindingContext(), expression);
         return descriptor instanceof ClassDescriptor && context.intrinsics().getObjectIntrinsic((ClassDescriptor) descriptor) != null;
     }
 

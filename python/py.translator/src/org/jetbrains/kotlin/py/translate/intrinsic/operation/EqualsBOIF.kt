@@ -25,36 +25,17 @@ import org.jetbrains.kotlin.types.isDynamic
 object EqualsBOIF : BinaryOperationIntrinsicFactory {
     override fun getSupportTokens() = OperatorConventions.EQUALS_OPERATIONS!!
 
-    private val equalsNullIntrinsic =
-        BinaryOperationIntrinsic { expression, left, right, context ->
-            val (subject, ktSubject) = if (right is JsNullLiteral) Pair(left, expression.left!!) else Pair(right, expression.right!!)
-            TranslationUtils.nullCheck(
-                ktSubject,
-                subject,
-                context,
-                isNegatedOperation(expression)
-            )
-        }
+    private val equalsNullIntrinsic = BinaryOperationIntrinsic { expression, left, right, context ->
+        val (subject, ktSubject) = if (right is JsNullLiteral) Pair(left, expression.left!!) else Pair(right, expression.right!!)
+        TranslationUtils.nullCheck(ktSubject, subject, context, isNegatedOperation(expression))
+    }
 
-    private val kotlinEqualsIntrinsic =
-        BinaryOperationIntrinsic { expression, left, right, context ->
-            val coercedLeft = TranslationUtils.coerce(
-                context,
-                left,
-                context.currentModule.builtIns.anyType
-            )
-            val coercedRight = TranslationUtils.coerce(
-                context,
-                right,
-                context.currentModule.builtIns.anyType
-            )
-            val result = TopLevelFIF.KOTLIN_EQUALS.apply(
-                coercedLeft,
-                listOf(coercedRight),
-                context
-            )
-            if (isNegatedOperation(expression)) JsAstUtils.not(result) else result
-        }
+    private val kotlinEqualsIntrinsic = BinaryOperationIntrinsic { expression, left, right, context ->
+        val coercedLeft = TranslationUtils.coerce(context, left, context.currentModule.builtIns.anyType)
+        val coercedRight = TranslationUtils.coerce(context, right, context.currentModule.builtIns.anyType)
+        val result = TopLevelFIF.KOTLIN_EQUALS.apply(coercedLeft, listOf(coercedRight), context)
+        if (isNegatedOperation(expression)) JsAstUtils.not(result) else result
+    }
 
     private val refEqSelector: OperatorSelector = { if (isNegatedOperation(it)) JsBinaryOperator.REF_NEQ else JsBinaryOperator.REF_EQ }
 

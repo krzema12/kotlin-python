@@ -124,9 +124,13 @@ class IrModuleToPyTransformer(
             IrNamerImpl(newNameTables = namer),
             modules
         )
+        val staticContext = JsStaticContext(
+            backendContext = backendContext,
+            irNamer = nameGenerator
+        )
         val rootContext = JsGenerationContext(
             currentFunction = null,
-            irNamer = nameGenerator,
+            staticContext = staticContext
         )
 
         val moduleBody = generateModuleBody(modules, rootContext)

@@ -14,8 +14,8 @@ class CoroutineTransformationContext(private val scope: JsScope, function: JsFun
     private val localVariableNameCache = mutableMapOf<JsName, JsName>()
     private val usedLocalVariableIds = mutableSetOf<String>()
 
-    val entryBlock = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
-    val globalCatchBlock = org.jetbrains.kotlin.py.coroutine.CoroutineBlock()
+    val entryBlock = CoroutineBlock()
+    val globalCatchBlock = CoroutineBlock()
     val metadata = function.coroutineMetadata!!
     val controllerFieldName by lazy { scope.declareName("\$controller") }
     val returnValueFieldName by lazy { scope.declareName("\$returnValue") }

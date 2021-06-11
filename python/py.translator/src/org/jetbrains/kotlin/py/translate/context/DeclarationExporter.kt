@@ -79,7 +79,7 @@ internal class DeclarationExporter(val context: StaticContext) {
     private fun exportObject(declaration: ClassDescriptor, qualifier: JsExpression) {
         val name = context.getNameForDescriptor(declaration)
         val expression = JsAstUtils.defineGetter(qualifier, name.ident,
-                                                                                                            context.getNameForObjectInstance(declaration).makeRef())
+                                                 context.getNameForObjectInstance(declaration).makeRef())
         statements += expression.exportStatement(declaration)
     }
 
