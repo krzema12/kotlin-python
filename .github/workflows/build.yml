@@ -14,3 +14,4 @@ jobs:
       - run: |
          export JDK_9="$JAVA_HOME"
          ./gradlew dist
+         ./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated"
