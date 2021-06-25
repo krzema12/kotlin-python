@@ -37,6 +37,18 @@ See discussion at https://discuss.kotlinlang.org/t/idea-python-backend/19852
 less tests-out.txt | grep "FAILED" | grep "Codegen" | sort > python/experiments/failed-tests.txt
 ```
 
+Tips and tricks to speed up tests:
+
+```shell script
+# create ramdisk where temporary test py files are generated extensively (about 15% boost):
+sudo mount -t tmpfs -o size=10G myramdisk python/py.translator/testData
+
+mount | tail -n 1  # check it's mounted successfully
+sudo umount python/py.translator/testData  # unmount
+```
+
+Also, set the number of `maxParallelForks` for `projectTest` in `buildSrc/src/main/kotlin/tasks.kt` to a high number like `CPU_THREADS-1`. This can give a boost too, for example, it gives another 15% boost on 12-thread CPU.
+
 ### Test stats
 
 Current status: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=19&leftFill=) (**1042**/5368 passed)
