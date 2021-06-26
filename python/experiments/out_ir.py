@@ -7209,8 +7209,8 @@ def toTypedArray():
 
 def copyToArray(collection):
     tmp
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
-        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    if EXCLEQEQ(toArray(collection), _get_undefined_()):
+        tmp0_unsafeCast_0 = INVOKE(toArray(collection))
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
     
     if True:
@@ -7904,7 +7904,7 @@ class ArrayList:
         tmp = tmp0_this
         tmp0_plus_0 = tmp0_this.array
         tmp1_plus_0 = copyToArray(elements)
-        tmp.array = kotlin_Array_kotlin_Any__(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+        tmp.array = kotlin_Array_kotlin_Any__(INVOKE(concat(tmp0_plus_0), tmp1_plus_0))
         tmp1_this = self
         tmp2 = tmp1_this._get_modCount_()
         tmp1_this._set_modCount_(jsBitOr(jsPlus(tmp2, 1), 0))
@@ -7948,11 +7948,11 @@ class ArrayList:
         tmp
         if jsEqeqeq(index, _get_lastIndex_()):
             tmp0_asDynamic_0 = self.array
-            tmp = E(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+            tmp = E(INVOKE(pop(tmp0_asDynamic_0)))
         
         if True:
             tmp1_asDynamic_0 = self.array
-            tmp = E(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+            tmp = E(ARRAY_ACCESS(INVOKE(splice(tmp1_asDynamic_0), index, 1), 0))
         
         return tmp
     
@@ -7993,7 +7993,7 @@ class ArrayList:
         return arrayToString(self.array)
     
     def toArray(self):
-        return kotlin_Array_kotlin_Any__(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+        return kotlin_Array_kotlin_Any__(INVOKE(call(slice(js('[]'))), self.array))
     
     def toArray(self):
         return self.toArray()
@@ -8113,7 +8113,7 @@ class NodeJsOutput:
         return self.outputStream
     
     def print(self, message):
-        messageString = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+        messageString = kotlin_String(INVOKE(js('String'), message))
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     
     def println(self):
@@ -8140,21 +8140,21 @@ class BufferedOutputToConsoleLog:
         super()
     
     def print(self, message):
-        s = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+        s = kotlin_String(INVOKE(js('String'), message))
         tmp0_nativeLastIndexOf_0 = s
         tmp1_nativeLastIndexOf_0 = '\n'
         tmp2_nativeLastIndexOf_0 = 0
-        i = kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+        i = kotlin_Int(INVOKE(lastIndexOf(tmp0_nativeLastIndexOf_0), tmp1_nativeLastIndexOf_0, tmp2_nativeLastIndexOf_0))
         if jsGtEq(i, 0):
             tmp0_this = self
             tmp = tmp0_this._get_buffer_()
             tmp3_substring_0 = s
             tmp4_substring_0 = 0
-            tmp0_this._set_buffer_(jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)))
+            tmp0_this._set_buffer_(jsPlus(tmp, kotlin_String(INVOKE(substring(tmp3_substring_0), tmp4_substring_0, i))))
             self.flush()
             tmp5_substring_0 = s
             tmp6_substring_0 = jsBitOr(jsPlus(i, 1), 0)
-            s = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+            s = kotlin_String(INVOKE(substring(tmp5_substring_0), tmp6_substring_0))
         
         tmp1_this = self
         tmp1_this._set_buffer_(jsPlus(tmp1_this._get_buffer_(), s))
@@ -8186,7 +8186,7 @@ class BufferedOutputToConsoleLog:
     
 
 def String(value):
-    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+    return kotlin_String(INVOKE(js('String'), value))
 
 class BufferedOutput:
     def __init__(self):
@@ -8203,7 +8203,7 @@ class BufferedOutput:
         tmp0_this = self
         tmp = tmp0_this
         tmp = tmp0_this.buffer
-        tmp.buffer = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl))
+        tmp.buffer = jsPlus(tmp, kotlin_String(INVOKE(js('String'), message)))
     
     def flush(self):
         self.buffer = ''
@@ -8505,7 +8505,7 @@ class SimpleKClassImpl:
     def __init__(self, jClass):
         super(jClass)
         tmp = self
-        tmp0_safe_receiver = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl
+        tmp0_safe_receiver = _metadata_(jClass)
         tmp0_unsafeCast_0 = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl
         tmp.simpleName = kotlin_Any_(tmp0_unsafeCast_0)
     
@@ -9215,7 +9215,7 @@ class _no_name_provided_:
     def invoke(self, it):
         tmp
         if jsEqeqeq(jsTypeOf(it), 'function'):
-            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_531b77d
+            tmp = EQEQEQ(length(it), self._arity)
         
         if True:
             tmp = False
@@ -9487,7 +9487,7 @@ def functionClasses_init_():
 
 def getKClass(jClass):
     tmp
-    if kotlin_Boolean(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl):
+    if kotlin_Boolean(INVOKE(isArray(js('Array')), jClass)):
         tmp = getKClassM(kotlin_Any_(jClass))
     
     if True:
@@ -9515,17 +9515,17 @@ def getKClass1(jClass):
     if jsEqeqeq(jClass, js('String')):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
     
-    metadata = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl
+    metadata = _metadata_(jClass)
     tmp
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+    if EXCLEQ(metadata, None):
         tmp
-        if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+        if EQEQ(_kClass_(metadata), None):
             kClass = SimpleKClassImpl(jClass)
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
             tmp = kClass
         
         if True:
-            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl
+            tmp = _kClass_(metadata)
         
         tmp = kotlin_reflect_KClass_T_(tmp)
     
@@ -9543,7 +9543,7 @@ def getKClassFromExpression(e):
     if jsEqeqeq(tmp0_subject, 'number'):
         tmp
         tmp0_asDynamic_0 = jsBitwiseOr(e, 0)
-        if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+        if EQEQEQ(tmp0_asDynamic_0, e):
             tmp = PrimitiveClasses_getInstance().intClass
         
         if True:
@@ -9558,7 +9558,7 @@ def getKClassFromExpression(e):
     
     if jsEqeqeq(tmp0_subject, 'function'):
         tmp = PrimitiveClasses_getInstance()
-        tmp = tmp.functionClass(kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl))
+        tmp = tmp.functionClass(kotlin_Int(length(e)))
     
     if True:
         tmp
@@ -9603,12 +9603,12 @@ def getKClassFromExpression(e):
                                             
                                             if True:
                                                 if True:
-                                                    constructor = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl
+                                                    constructor = constructor(INVOKE(getPrototypeOf(js('Object')), e))
                                                     tmp
-                                                    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+                                                    if EQEQEQ(constructor, js('Object')):
                                                         tmp = PrimitiveClasses_getInstance().anyClass
                                                     
-                                                    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+                                                    if EQEQEQ(constructor, js('Error')):
                                                         tmp = PrimitiveClasses_getInstance().throwableClass
                                                     
                                                     if True:
@@ -9696,7 +9696,7 @@ class StringBuilder:
     
     def _get_length_(self):
         tmp0_asDynamic_0 = self.string
-        return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl)
+        return kotlin_Int(length(tmp0_asDynamic_0))
     
     def get(self, index):
         tmp0_getOrElse_0 = self.string
@@ -9711,7 +9711,7 @@ class StringBuilder:
     
     def subSequence(self, startIndex, endIndex):
         tmp0_substring_0 = self.string
-        return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+        return kotlin_String(INVOKE(substring(tmp0_substring_0), startIndex, endIndex))
     
     def append(self, value):
         tmp0_this = self
@@ -9788,15 +9788,15 @@ class StringBuilder:
     
     def indexOf(self, string):
         tmp0_asDynamic_0 = self.string
-        return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+        return kotlin_Int(INVOKE(indexOf(tmp0_asDynamic_0), string))
     
     def indexOf(self, string, startIndex):
         tmp0_asDynamic_0 = self.string
-        return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+        return kotlin_Int(INVOKE(indexOf(tmp0_asDynamic_0), string, startIndex))
     
     def lastIndexOf(self, string):
         tmp0_asDynamic_0 = self.string
-        return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+        return kotlin_Int(INVOKE(lastIndexOf(tmp0_asDynamic_0), string))
     
     def lastIndexOf(self, string, startIndex):
         tmp
@@ -9815,16 +9815,16 @@ class StringBuilder:
             pass
         
         tmp0_asDynamic_0 = self.string
-        return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_b0c4670)
+        return kotlin_Int(INVOKE(lastIndexOf(tmp0_asDynamic_0), string, startIndex))
     
     def insert(self, index, value):
         Companion_getInstance().checkPositionIndex(index, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl), value)
+        tmp = jsPlus(kotlin_String(INVOKE(substring(tmp0_substring_0), tmp1_substring_0, index)), value)
         tmp2_substring_0 = self.string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl))
+        tmp.string = jsPlus(tmp, kotlin_String(INVOKE(substring(tmp2_substring_0), index)))
         return self
     
     def insert(self, index, value):
@@ -9832,9 +9832,9 @@ class StringBuilder:
         tmp = self
         tmp0_substring_0 = self.string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl), value)
+        tmp = jsPlus(kotlin_String(INVOKE(substring(tmp0_substring_0), tmp1_substring_0, index)), value)
         tmp2_substring_0 = self.string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_51a862c))
+        tmp.string = jsPlus(tmp, kotlin_String(INVOKE(substring(tmp2_substring_0), index)))
         return self
     
     def insert(self, index, value):
@@ -9842,9 +9842,9 @@ class StringBuilder:
         tmp = self
         tmp0_substring_0 = self.string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_516beb6), concatToString())
+        tmp = jsPlus(kotlin_String(INVOKE(substring(tmp0_substring_0), tmp1_substring_0, index)), concatToString())
         tmp2_substring_0 = self.string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl))
+        tmp.string = jsPlus(tmp, kotlin_String(INVOKE(substring(tmp2_substring_0), index)))
         return self
     
     def insert(self, index, value):
@@ -9852,9 +9852,9 @@ class StringBuilder:
         tmp = self
         tmp0_substring_0 = self.string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_5612716), toString())
+        tmp = jsPlus(kotlin_String(INVOKE(substring(tmp0_substring_0), tmp1_substring_0, index)), toString())
         tmp2_substring_0 = self.string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl))
+        tmp.string = jsPlus(tmp, kotlin_String(INVOKE(substring(tmp2_substring_0), index)))
         return self
     
     def insert(self, index, value):
@@ -9862,9 +9862,9 @@ class StringBuilder:
         tmp = self
         tmp0_substring_0 = self.string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl), toString())
+        tmp = jsPlus(kotlin_String(INVOKE(substring(tmp0_substring_0), tmp1_substring_0, index)), toString())
         tmp2_substring_0 = self.string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl))
+        tmp.string = jsPlus(tmp, kotlin_String(INVOKE(substring(tmp2_substring_0), index)))
         return self
     
     def insert(self, index, value):
@@ -9877,9 +9877,9 @@ class StringBuilder:
         tmp = self
         tmp0_substring_0 = self.string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl), toInsert)
+        tmp = jsPlus(kotlin_String(INVOKE(substring(tmp0_substring_0), tmp1_substring_0, index)), toInsert)
         tmp2_substring_0 = self.string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl))
+        tmp.string = jsPlus(tmp, kotlin_String(INVOKE(substring(tmp2_substring_0), index)))
         return self
     
     def setLength(self, newLength):
@@ -9890,7 +9890,7 @@ class StringBuilder:
             tmp = self
             tmp0_substring_0 = self.string
             tmp1_substring_0 = 0
-            tmp.string = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+            tmp.string = kotlin_String(INVOKE(substring(tmp0_substring_0), tmp1_substring_0, newLength))
         
         if True:
             inductionVariable = self._get_length_()
@@ -9902,12 +9902,12 @@ class StringBuilder:
     def substring(self, startIndex):
         Companion_getInstance().checkPositionIndex(startIndex, self._get_length_())
         tmp0_substring_0 = self.string
-        return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_804ea79)
+        return kotlin_String(INVOKE(substring(tmp0_substring_0), startIndex))
     
     def substring(self, startIndex, endIndex):
         Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, self._get_length_())
         tmp0_substring_0 = self.string
-        return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+        return kotlin_String(INVOKE(substring(tmp0_substring_0), startIndex, endIndex))
     
     def trimToSize(self):
         pass
@@ -9924,19 +9924,19 @@ class StringBuilder:
         tmp = self
         tmp0_substring_0 = self.string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl), value)
+        tmp = jsPlus(kotlin_String(INVOKE(substring(tmp0_substring_0), tmp1_substring_0, index)), value)
         tmp2_substring_0 = self.string
         tmp3_substring_0 = jsBitOr(jsPlus(index, 1), 0)
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl))
+        tmp.string = jsPlus(tmp, kotlin_String(INVOKE(substring(tmp2_substring_0), tmp3_substring_0)))
     
     def setRange(self, startIndex, endIndex, value):
         checkReplaceRange(self, startIndex, endIndex, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl), value)
+        tmp = jsPlus(kotlin_String(INVOKE(substring(tmp0_substring_0), tmp1_substring_0, startIndex)), value)
         tmp2_substring_0 = self.string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl))
+        tmp.string = jsPlus(tmp, kotlin_String(INVOKE(substring(tmp2_substring_0), endIndex)))
         return self
     
     def deleteAt(self, index):
@@ -9944,10 +9944,10 @@ class StringBuilder:
         tmp = self
         tmp0_substring_0 = self.string
         tmp1_substring_0 = 0
-        tmp = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+        tmp = kotlin_String(INVOKE(substring(tmp0_substring_0), tmp1_substring_0, index))
         tmp2_substring_0 = self.string
         tmp3_substring_0 = jsBitOr(jsPlus(index, 1), 0)
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_461c6f))
+        tmp.string = jsPlus(tmp, kotlin_String(INVOKE(substring(tmp2_substring_0), tmp3_substring_0)))
         return self
     
     def deleteRange(self, startIndex, endIndex):
@@ -9955,9 +9955,9 @@ class StringBuilder:
         tmp = self
         tmp0_substring_0 = self.string
         tmp1_substring_0 = 0
-        tmp = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+        tmp = kotlin_String(INVOKE(substring(tmp0_substring_0), tmp1_substring_0, startIndex))
         tmp2_substring_0 = self.string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl))
+        tmp.string = jsPlus(tmp, kotlin_String(INVOKE(substring(tmp2_substring_0), endIndex)))
         return self
     
     def toCharArray(self, destination, destinationOffset, startIndex, endIndex):
@@ -9992,7 +9992,7 @@ class StringBuilder:
         tmp0_this = self
         tmp = tmp0_this
         tmp = tmp0_this.string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl))
+        tmp.string = jsPlus(tmp, kotlin_String(INVOKE(substring(stringCsq), startIndex, endIndex)))
         return self
     
     def insertRange(self, index, value, startIndex, endIndex):
@@ -10000,9 +10000,9 @@ class StringBuilder:
         tmp = self
         tmp0_substring_0 = self.string
         tmp1_substring_0 = 0
-        tmp = jsPlus(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl), concatToString(startIndex, endIndex))
+        tmp = jsPlus(kotlin_String(INVOKE(substring(tmp0_substring_0), tmp1_substring_0, index)), concatToString(startIndex, endIndex))
         tmp2_substring_0 = self.string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl))
+        tmp.string = jsPlus(tmp, kotlin_String(INVOKE(substring(tmp2_substring_0), index)))
         return self
     
     def insertRange(self, index, value, startIndex, endIndex):
@@ -10012,10 +10012,10 @@ class StringBuilder:
         tmp = self
         tmp0_substring_0 = self.string
         tmp1_substring_0 = 0
-        tmp = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
-        tmp = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl))
+        tmp = kotlin_String(INVOKE(substring(tmp0_substring_0), tmp1_substring_0, index))
+        tmp = jsPlus(tmp, kotlin_String(INVOKE(substring(stringCsq), startIndex, endIndex)))
         tmp2_substring_0 = self.string
-        tmp.string = jsPlus(tmp, kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_58304c4))
+        tmp.string = jsPlus(tmp, kotlin_String(INVOKE(substring(tmp2_substring_0), index)))
         return self
     
     def equals(self, other):
@@ -10044,13 +10044,13 @@ def _get_STRING_CASE_INSENSITIVE_ORDER_():
 
 visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField_c4ef770 = 0
 def nativeLastIndexOf(str, fromIndex):
-    return kotlin_Int(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+    return kotlin_Int(INVOKE(lastIndexOf(self), str, fromIndex))
 
 def substring(startIndex, endIndex):
-    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_4054397)
+    return kotlin_String(INVOKE(substring(self), startIndex, endIndex))
 
 def substring(startIndex):
-    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+    return kotlin_String(INVOKE(substring(self), startIndex))
 
 def compareTo(other, ignoreCase):
     if ignoreCase:
@@ -10065,19 +10065,19 @@ def compareTo(other, ignoreCase):
             tmp0_minOf_0 = jsBitOr(jsPlus(start, 16), 0)
             end = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl_ea4252.min(tmp0_minOf_0, min)
             tmp1_substring_0 = start
-            s1 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+            s1 = kotlin_String(INVOKE(substring(self), tmp1_substring_0, end))
             tmp2_substring_0 = start
-            s2 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+            s2 = kotlin_String(INVOKE(substring(other), tmp2_substring_0, end))
             if jsNot(jsEqeqeq(s1, s2)):
                 tmp3_toUpperCase_0 = s1
-                s1 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_807b29c)
+                s1 = kotlin_String(INVOKE(toUpperCase(tmp3_toUpperCase_0)))
                 tmp4_toUpperCase_0 = s2
-                s2 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+                s2 = kotlin_String(INVOKE(toUpperCase(tmp4_toUpperCase_0)))
                 if jsNot(jsEqeqeq(s1, s2)):
                     tmp5_toLowerCase_0 = s1
-                    s1 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+                    s1 = kotlin_String(INVOKE(toLowerCase(tmp5_toLowerCase_0)))
                     tmp6_toLowerCase_0 = s2
-                    s2 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_ea6601f)
+                    s2 = kotlin_String(INVOKE(toLowerCase(tmp6_toLowerCase_0)))
                     if jsNot(jsEqeqeq(s1, s2)):
                         return compareTo(s1, s2)
                     
@@ -10101,10 +10101,10 @@ def compareTo_default(other, ignoreCase, _mask0, _handler):
     return compareTo(other, ignoreCase)
 
 def toUpperCase():
-    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+    return kotlin_String(INVOKE(toUpperCase(self)))
 
 def toLowerCase():
-    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+    return kotlin_String(INVOKE(toLowerCase(self)))
 
 def concatToString():
     result = ''
@@ -10314,7 +10314,7 @@ class Char:
         return self.value
     
     def toString(self):
-        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        tmp0_unsafeCast_0 = INVOKE(fromCharCode(js('String')), self.value)
         return kotlin_Any_(tmp0_unsafeCast_0)
     
 
@@ -10948,21 +10948,21 @@ def longArray(size):
 
 def booleanArrayOf(arr):
     tmp0_withType_0 = 'BooleanArray'
-    tmp1_withType_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    tmp1_withType_0 = INVOKE(slice(arr))
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     tmp2_unsafeCast_0 = tmp1_withType_0
     return kotlin_Any_(tmp2_unsafeCast_0)
 
 def charArrayOf(arr):
     tmp0_withType_0 = 'CharArray'
-    tmp1_withType_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    tmp1_withType_0 = INVOKE(slice(arr))
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     tmp2_unsafeCast_0 = tmp1_withType_0
     return kotlin_Any_(tmp2_unsafeCast_0)
 
 def longArrayOf(arr):
     tmp0_withType_0 = 'LongArray'
-    tmp1_withType_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_1f410c8
+    tmp1_withType_0 = INVOKE(slice(arr))
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     tmp2_unsafeCast_0 = tmp1_withType_0
     return kotlin_Any_(tmp2_unsafeCast_0)
@@ -11400,7 +11400,7 @@ class DoNotIntrinsify:
 def charSequenceGet(a, index):
     tmp
     if isString(a):
-        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        tmp0_unsafeCast_0 = INVOKE(charCodeAt(a), index)
         tmp = Char(kotlin_Any_(tmp0_unsafeCast_0))
     
     if True:
@@ -11414,7 +11414,7 @@ def isString(a):
 def charSequenceLength(a):
     tmp
     if isString(a):
-        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl
+        tmp0_unsafeCast_0 = length(a)
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
     
     if True:
@@ -11425,7 +11425,7 @@ def charSequenceLength(a):
 def charSequenceSubSequence(a, startIndex, endIndex):
     tmp
     if isString(a):
-        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        tmp0_unsafeCast_0 = INVOKE(substring(a), startIndex, endIndex)
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
     
     if True:
@@ -11481,27 +11481,27 @@ def compareTo(a, b):
 
 def doubleCompareTo(a, b):
     tmp
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+    if LT(a, b):
         tmp = -1
     
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_28d61fc:
+    if GT(a, b):
         tmp = 1
     
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+    if EQEQEQ(a, b):
         tmp
-        if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+        if EXCLEQEQ(a, 0):
             tmp = 0
         
         if True:
             tmp0_asDynamic_0 = 1
-            ia = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+            ia = DIV(tmp0_asDynamic_0, a)
             tmp
             tmp1_asDynamic_0 = 1
-            if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+            if EQEQEQ(ia, DIV(tmp1_asDynamic_0, b)):
                 tmp = 0
             
             if True:
-                if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+                if LT(ia, 0):
                     tmp = -1
                 
                 if True:
@@ -11514,7 +11514,7 @@ def doubleCompareTo(a, b):
         
         tmp = tmp
     
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+    if EXCLEQEQ(a, a):
         tmp = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl
     
     if True:
@@ -11529,20 +11529,20 @@ def compareToDoNotIntrinsicify(a, b):
     return a.compareTo(b)
 
 def construct(constructorType, resultType, *args):
-    return kotlin_Any(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+    return kotlin_Any(INVOKE(construct(js('Reflect')), constructorType, args, resultType))
 
 def identityHashCode(obj):
     return getObjectHashCode(obj)
 
 def getObjectHashCode(obj):
     if jsNot(jsIn('kotlinHashCodeValue$', kotlin_Any(obj))):
-        hash = jsBitwiseOr(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl, 0)
+        hash = jsBitwiseOr(MUL(INVOKE(random(js('Math'))), 4.294967296E9), 0)
         descriptor = js('new Object()')
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     
-    tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    tmp0_unsafeCast_0 = ARRAY_ACCESS(obj, 'kotlinHashCodeValue$')
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def _get_OBJECT_HASH_CODE_PROPERTY_NAME_():
@@ -11555,20 +11555,20 @@ def _get_POW_2_32_():
 visitField_org_jetbrains_kotlin_ir_declarations_persistent_PersistentIrField = 0
 def toString(o):
     tmp
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+    if EQEQ(o, None):
         tmp = 'null'
     
     if isArrayish(o):
         tmp = '[...]'
     
     if True:
-        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        tmp0_unsafeCast_0 = INVOKE(toString(o))
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
     
     return tmp
 
 def hashCode(obj):
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+    if EQEQ(obj, None):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
     
     tmp0_subject = jsTypeOf(obj)
@@ -11610,33 +11610,33 @@ def getStringHashCode(str):
     return hash
 
 def anyToString(o):
-    return kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+    return kotlin_String(INVOKE(call(toString(prototype(js('Object')))), o))
 
 def equals(obj1, obj2):
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_fbb39ea:
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    if EQEQ(obj1, None):
+        return EQEQ(obj2, None)
     
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+    if EQEQ(obj2, None):
         return False
     
     if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_d576e3:
-        return kotlin_Boolean(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+        return kotlin_Boolean(INVOKE(equals(obj1), obj2))
     
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    if EXCLEQEQ(obj1, obj1):
+        return EXCLEQEQ(obj2, obj2)
     
     if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl:
         tmp
-        if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+        if EQEQEQ(obj1, obj2):
             tmp
-            if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+            if EXCLEQEQ(obj1, 0):
                 tmp = True
             
             if True:
                 tmp0_asDynamic_0 = 1
-                tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+                tmp = DIV(tmp0_asDynamic_0, obj1)
                 tmp1_asDynamic_0 = 1
-                tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_f7b6b9e
+                tmp = EQEQEQ(tmp, DIV(tmp1_asDynamic_0, obj2))
             
             tmp = tmp
         
@@ -11645,7 +11645,7 @@ def equals(obj1, obj2):
         
         return tmp
     
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    return EQEQEQ(obj1, obj2)
 
 def boxIntrinsic(x):
     tmp0_error_0 = 'Should be lowered'
@@ -11656,7 +11656,7 @@ def unboxIntrinsic(x):
     visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
 
 def captureStack(instance, constructorFunction):
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+    if EXCLEQ(captureStackTrace(js('Error')), None):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     
     if True:
@@ -11688,7 +11688,7 @@ def newThrowable(message, cause):
     return kotlin_Any_(throwable)
 
 def isUndefined(value):
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    return EQEQEQ(value, _get_undefined_())
 
 def extendThrowable(this_, message, cause):
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
@@ -11720,7 +11720,7 @@ def setPropertiesToThrowableInstance(this_, message, cause):
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_fafbc63
 
 def hasOwnPrototypeProperty(o, name):
-    tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    tmp0_unsafeCast_0 = INVOKE(hasOwnProperty(visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.getPrototypeOf(o)), name)
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def getContinuation():
@@ -12279,7 +12279,7 @@ def toStringImpl(radix):
             div = self.div(radixLong)
             rem = subtract(self).toInt()
             tmp = toStringImpl(radix)
-            tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+            tmp0_unsafeCast_0 = INVOKE(toString(rem), radix)
             return jsPlus(tmp, kotlin_Any_(tmp0_unsafeCast_0))
         
         if True:
@@ -12292,7 +12292,7 @@ def toStringImpl(radix):
     while True:
         remDiv = rem.div(radixToPower)
         intval = subtract(multiply(radixToPower)).toInt()
-        tmp1_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        tmp1_unsafeCast_0 = INVOKE(toString(intval), radix)
         digits = kotlin_Any_(tmp1_unsafeCast_0)
         rem = remDiv
         if isZero():
@@ -12377,7 +12377,7 @@ def arrayConcat(*args):
     if jsLtEq(inductionVariable, last):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
     
-    return T(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+    return T(INVOKE(apply(concat(js('[]'))), js('[]'), typed))
 
 def primitiveArrayConcat(*args):
     size_local = 0
@@ -12389,8 +12389,8 @@ def primitiveArrayConcat(*args):
     a = jsArrayGet(args, 0)
     tmp1_unsafeCast_0 = js('new a.constructor(size_local)')
     result = kotlin_Any_(tmp1_unsafeCast_0)
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
-        tmp2_withType_0 = kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl)
+    if EXCLEQ(_type_(a), None):
+        tmp2_withType_0 = kotlin_String(_type_(a))
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     
     if True:
@@ -12405,7 +12405,7 @@ def primitiveArrayConcat(*args):
     return kotlin_Any_(result)
 
 def taggedArrayCopy(array):
-    res = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    res = INVOKE(slice(array))
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_f67053
     return kotlin_Any_(res)
 
@@ -12487,7 +12487,7 @@ def getPropertyRefClass(obj, metadata):
 
 def getKPropMetadata(paramCount, setter, type):
     mdata = jsArrayGet(jsArrayGet(propertyRefClassMetadataCache, paramCount), visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl_5861c89)
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+    if EQEQ(length(interfaces(mdata)), 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     
     return mdata
@@ -12513,17 +12513,17 @@ def isArrayish(o):
         tmp = True
     
     if True:
-        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        tmp0_unsafeCast_0 = INVOKE(isView(js('ArrayBuffer')), o)
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
     
     return tmp
 
 def isJsArray(obj):
-    tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    tmp0_unsafeCast_0 = INVOKE(isArray(js('Array')), obj)
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def isInterface(obj, iface):
-    tmp0_elvis_lhs = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl
+    tmp0_elvis_lhs = constructor(obj)
     tmp
     if jsEqeq(tmp0_elvis_lhs, None):
         return False
@@ -12559,7 +12559,7 @@ def isInterfaceImpl(ctor, iface):
 def isArray(obj):
     tmp
     if isJsArray(obj):
-        tmp = kotlin_Boolean(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_2618343)
+        tmp = kotlin_Boolean(EXCL(_type_(obj)))
     
     if True:
         tmp = False
@@ -12573,7 +12573,7 @@ def isObject(obj):
 
 def isSuspendFunction(obj, arity):
     if jsEqeqeq(jsTypeOf(obj), 'function'):
-        tmp0_unsafeCast_0 = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl
+        tmp0_unsafeCast_0 = _arity(obj)
         return jsEqeqeq(kotlin_Any_(tmp0_unsafeCast_0), arity)
     
     return False
@@ -12620,7 +12620,7 @@ def isDoubleArray(a):
     return jsInstanceOf(a, js('Float64Array'))
 
 def jsIsType(obj, jsClass):
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_f563fc1:
+    if EQEQEQ(jsClass, js('Object')):
         return isObject(obj)
     
     if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl:
@@ -12633,32 +12633,32 @@ def jsIsType(obj, jsClass):
     tmp0_safe_receiver = proto
     constructor = visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl
     if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl:
-        metadata = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl
-        if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
-            return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        metadata = _metadata_(constructor)
+        if EQEQEQ(kind(metadata), 'object'):
+            return EQEQEQ(obj, jsClass)
         
     
-    klassMetadata = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl
-    if visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl:
+    klassMetadata = _metadata_(jsClass)
+    if EQEQ(klassMetadata, None):
         return jsInstanceOf(obj, jsClass)
     
     if visitWhen_inToByExpressionTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl:
-        return isInterfaceImpl(kotlin_js_Ctor(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicMemberExpressionImpl_4d2af40), jsClass)
+        return isInterfaceImpl(kotlin_js_Ctor(constructor(obj)), jsClass)
     
     return False
 
 def jsGetPrototypeOf(jsClass):
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    return INVOKE(getPrototypeOf(js('Object')), jsClass)
 
 def asList():
     return ArrayList(kotlin_Any_(self))
 
 def plus(elements):
-    return kotlin_Array_T_(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl)
+    return kotlin_Array_T_(INVOKE(concat(self), elements))
 
 def copyOfRange(fromIndex, toIndex):
     Companion_getInstance().checkRangeIndexes(fromIndex, toIndex, jsArrayLength(self))
-    return kotlin_Array_T_(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl_b6d5ccc)
+    return kotlin_Array_T_(INVOKE(slice(self), fromIndex, toIndex))
 
 def minOf(a, b):
     return visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.min(a, b)
@@ -13527,7 +13527,7 @@ def newCode():
     tmp0_iterator_1_2 = tmp0_map_0.iterator()
     while tmp0_iterator_1_2.hasNext():
         item_2_3 = tmp0_iterator_1_2.next()
-        tmp0_mapTo_0_1.add(kotlin_String(visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl))
+        tmp0_mapTo_0_1.add(kotlin_String(INVOKE(toUpperCase(item_2_3))))
         Unit_getInstance()
     
     tmp1_forEach_0 = tmp0_mapTo_0_1
