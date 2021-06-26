@@ -12,9 +12,7 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v2
-      - name: Prepare environment
-        run: export JDK_9="$JAVA_HOME"
       - name: Build
-        run: ./gradlew dist
+        run: JDK_9="$JAVA_HOME" ./gradlew dist
       - name: Run box tests (succeed even if they fail)
-        run: ./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated" || true
+        run: JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated" || true
