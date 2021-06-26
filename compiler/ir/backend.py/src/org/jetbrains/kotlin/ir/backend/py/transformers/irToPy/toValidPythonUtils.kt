@@ -17,6 +17,9 @@ fun String.toValidPythonSymbol() =
         .replace(Regex("^from$"), "_from")
         .replace(Regex("^assert$"), "_assert")
         .replace(Regex("^yield$"), "_yield")
+        // It turns out that a sequence fulfilling this patter is so rare that it's pretty safe to remove it, at least for preview
+        // work-in-progress purposes.
+        .replace(Regex("_[a-f0-9]{8}"), "")
 
 fun String.toPythonSpecific() =
     replace(Regex("^_this_$"), "self")
