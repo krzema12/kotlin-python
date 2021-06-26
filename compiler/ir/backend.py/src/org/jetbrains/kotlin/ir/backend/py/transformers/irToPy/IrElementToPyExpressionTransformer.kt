@@ -34,6 +34,8 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
             is IrTypeOperatorCall -> visitTypeOperator(expression, data)
 //            is IrBlock -> visitBlock(expression, data)
             is IrVararg -> visitVararg(expression, data)
+            is IrDynamicOperatorExpression -> visitDynamicOperatorExpression(expression, data)
+            is IrDynamicMemberExpression -> visitDynamicMemberExpression(expression, data)
             else -> listOf(Name(id = identifier("visitExpression-other $expression".toValidPythonSymbol()), ctx = Load))
         }
     }
@@ -211,12 +213,24 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
 
     override fun visitDynamicMemberExpression(expression: IrDynamicMemberExpression, data: JsGenerationContext): List<expr> {
         // TODO
-        return listOf(Name(id = identifier("visitDynamicMemberExpression $expression".toValidPythonSymbol()), ctx = Load))
+        return listOf(
+            Call(
+                func = Name(id = identifier(expression.memberName.toValidPythonSymbol()), ctx = Load),
+                args = visitExpression(expression.receiver, data),
+                keywords = emptyList(),
+            )
+        )
     }
 
     override fun visitDynamicOperatorExpression(expression: IrDynamicOperatorExpression, data: JsGenerationContext): List<expr> {
         // TODO
-        return listOf(Name(id = identifier("visitVararg $expression".toValidPythonSymbol()), ctx = Load))
+        return listOf(
+            Call(
+                func = Name(id = identifier(expression.operator.toString().toValidPythonSymbol()), ctx = Load),
+                args = visitExpression(expression.receiver, data) + expression.arguments.flatMap { visitExpression(it, data) },
+                keywords = emptyList(),
+            )
+        )
     }
 
     override fun visitComposite(expression: IrComposite, data: JsGenerationContext): List<expr> {
