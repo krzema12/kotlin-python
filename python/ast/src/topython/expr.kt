@@ -27,7 +27,7 @@ fun expr.toPython(): String {
         is Await -> TODO()
         is Yield -> TODO()
         is YieldFrom -> TODO()
-        is Compare -> TODO()
+        is Compare -> toPython()
         is Call -> toPython()
         is FormattedValue -> TODO()
         is JoinedStr -> TODO()
@@ -51,6 +51,9 @@ fun List.toPython() =
 
 fun Constant.toPython() =
     value.value.replace("\n", "\\n")
+
+fun Compare.toPython() =
+    "${left.toPython()}${ops.zip(comparators).joinToString("") { (op, c) -> " ${op.toPython()} ${c.toPython()}" }}"
 
 fun Call.toPython() =
     "${func.toPython()}(${args.joinToString(", ") { it.toPython() }})"
