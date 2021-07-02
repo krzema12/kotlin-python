@@ -96,18 +96,15 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitVariable(declaration: IrVariable, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(declaration.initializer?.let { initializer ->
+        return declaration.initializer?.let { initializer ->
             Assign(
                 targets = listOf(Name(id = identifier(declaration.name.identifier.toValidPythonSymbol()), ctx = Store)),
                 value = IrElementToPyExpressionTransformer().visitExpression(initializer, context).first(),
                 type_comment = null,
             )
-        } ?: Expr(
-            value = Name(
-                id = identifier(declaration.name.identifier.toValidPythonSymbol()),
-                ctx = Load,
-            ),
-        ))
+        }
+            ?.let(::listOf)
+            ?: emptyList()
     }
 
     override fun visitDelegatingConstructorCall(expression: IrDelegatingConstructorCall, context: JsGenerationContext): List<stmt> {
