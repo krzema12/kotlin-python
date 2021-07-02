@@ -54,10 +54,12 @@ Setting `maxParallelForks` isn't required anymore since now Gradle parallelism i
 
 ### Test stats
 
-Current status: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=18&leftFill=) (**1068**/5787 passed)
+Current status: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=19&leftFill=) (**1071**/5787 passed)
 
 ### History (newest on top)
 
+* after removing empty variable declaration: **1071**/5787 passed (+3)
+  
 * after supporting comparison: **1068**/5787 passed (+7)
 
 * after updating to Kotlin 1.5.21: **1061**/5787 (incomparable)
