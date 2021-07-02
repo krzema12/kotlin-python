@@ -6,6 +6,7 @@
 package python.ast
 
 import examplePythonCodeAst
+import generated.Python.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import topython.toPython
@@ -21,5 +22,21 @@ class PythonAstTest {
         """.trimIndent()
 
         assertEquals(expected, examplePythonCodeAst.toPython())
+    }
+
+    @Test
+    fun testCompareToPython() {
+        val expected = "1 <= a < 10"
+        val initial = Compare(
+            left = Constant(constant("1"), null),
+            ops = listOf(LtE, Lt),
+            comparators = listOf(
+                Name(identifier("a"), Load),
+                Constant(constant("10"), null),
+            ),
+        )
+        val actual = initial.toPython()
+
+        assertEquals(expected, actual)
     }
 }

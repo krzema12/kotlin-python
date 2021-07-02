@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 import generated.Python.*
 import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
 import org.jetbrains.kotlin.ir.backend.py.utils.asString
+import org.jetbrains.kotlin.ir.backend.py.utils.realOverrideTarget
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.expressions.*
@@ -160,6 +161,12 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
 
     override fun visitCall(expression: IrCall, context: JsGenerationContext): List<expr> {
         // TODO
+        val function = expression.symbol.owner.realOverrideTarget
+
+        context.staticContext.intrinsics[function.symbol]?.let {
+            return it(expression, context)
+        }
+
         val noOfArguments = expression.valueArgumentsCount
 
         val arguments = (0 until noOfArguments).mapNotNull { argIndex ->

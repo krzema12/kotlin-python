@@ -9,7 +9,7 @@ import generated.Python.*
 import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.declarations.IrFunction
-import org.jetbrains.kotlin.ir.expressions.IrCall
+import org.jetbrains.kotlin.ir.expressions.IrMemberAccessExpression
 import org.jetbrains.kotlin.ir.util.isVararg
 
 fun translateFunction(declaration: IrFunction, context: JsGenerationContext): FunctionDef {
@@ -57,10 +57,24 @@ fun translateFunction(declaration: IrFunction, context: JsGenerationContext): Fu
     )
 }
 
-fun translateCall(
-    expression: IrCall,
-    context: JsGenerationContext,
-    transformer: IrElementToPyExpressionTransformer
-): List<expr> {
-    return transformer.visitCall(expression, context)
+fun translateCallArguments(expression: IrMemberAccessExpression<*>, context: JsGenerationContext, transformer: IrElementToPyExpressionTransformer): List<expr> {
+    val size = expression.valueArgumentsCount
+
+    val arguments = (0 until size).mapTo(ArrayList(size)) { index ->
+        val argument = expression.getValueArgument(index)
+        val result = argument?.accept(transformer, context)
+        if (result == null) {
+            emptyList()  // todo
+//            if (context.staticContext.backendContext.es6mode) return@mapTo JsPrefixOperation(JsUnaryOperator.VOID, JsIntLiteral(2))
+//
+//            assert(expression is IrFunctionAccessExpression && expression.symbol.owner.isExternalOrInheritedFromExternal())
+//            JsPrefixOperation(JsUnaryOperator.VOID, JsIntLiteral(1))
+        } else
+            result
+    }
+
+//    return if (expression.symbol.isSuspend) {
+//        arguments + context.continuation
+//    } else arguments
+    return arguments.flatten()  // todo
 }

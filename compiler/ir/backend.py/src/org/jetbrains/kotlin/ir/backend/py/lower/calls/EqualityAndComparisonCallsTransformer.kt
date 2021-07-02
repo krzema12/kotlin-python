@@ -8,7 +8,10 @@ package org.jetbrains.kotlin.ir.backend.py.lower.calls
 import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.backend.py.utils.isEqualsInheritedFromAny
-import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.declarations.IrClass
+import org.jetbrains.kotlin.ir.declarations.IrFunction
+import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
+import org.jetbrains.kotlin.ir.declarations.isStaticMethodOfClass
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrFunctionAccessExpression
@@ -105,10 +108,11 @@ class EqualityAndComparisonCallsTransformer(context: JsIrBackendContext) : Calls
     }
 
     private fun chooseEqualityOperatorForPrimitiveTypes(call: IrFunctionAccessExpression): IrExpression = when {
+        // todo
         call.allValueArgumentsAreNullable() ->
             irCall(call, intrinsics.jsEqeq)
         else ->
-            irCall(call, intrinsics.jsEqeqeq)
+            irCall(call, intrinsics.jsEqeq)
     }
 
     private fun IrFunctionAccessExpression.allValueArgumentsAreNullable() =
