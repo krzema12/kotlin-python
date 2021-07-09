@@ -59,7 +59,7 @@ fun While.toPython() =
     "while ${test.toPython()}:\n${body.toPython().indent()}\n"
 
 fun If.toPython() =
-    "if ${test.toPython()}:\n${(if (body.isNotEmpty()) body.toPython() else "pass").indent()}\n${if (orelse.isNotEmpty()) "else:\n${orelse.toPython().indent()}\n" else ""}"
+    "if ${test.toPython()}:\n${(if (body.isNotEmpty()) body.toPython() else "pass").indent()}\n${if (orelse.isNotEmpty()) "else:\n${orelse.toPython().indent()}\n" else ""}"  // todo: for optimization need to support elif
 
 fun ClassDef.toPython() =
     "${if (bases.isNotEmpty()) bases.joinToString("") { "class ${it.toPython()}:\n${"pass".indent()}\n\n" } else ""}class ${name.name}${if (bases.isNotEmpty()) "(${bases.joinToString(", ") { it.toPython() }})" else ""}:\n${(if (body.isNotEmpty()) body.toPython() else "pass").indent()}\n"

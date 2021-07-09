@@ -133,15 +133,24 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     }
 
     override fun visitWhen(expression: IrWhen, context: JsGenerationContext): List<stmt> {
-        return expression.branches.map { branch ->
-            If(
-                test = IrElementToPyExpressionTransformer().visitExpression(branch.condition, context).first(),
-                body = IrElementToPyStatementTransformer().visitExpression(branch.result, context),
-                orelse = emptyList(), // TODO
-            )
-        }
-        // TODO
-//        return listOf(Expr(value = Name(id = identifier("visitWhen-inToPyStatementTransformer $expression"), ctx = Load)))
+        return listOf(
+            expression
+                .branches
+                .map { branch ->
+                    If(
+                        test = IrElementToPyExpressionTransformer().visitExpression(branch.condition, context).first(),
+                        body = IrElementToPyStatementTransformer().visitExpression(branch.result, context),
+                        orelse = emptyList(),
+                    )
+                }
+                .reduceRight { iff, acc ->
+                    If(
+                        test = iff.test,
+                        body = iff.body,
+                        orelse = listOf(acc),
+                    )
+                }
+        )
     }
 
     override fun visitWhileLoop(loop: IrWhileLoop, context: JsGenerationContext): List<stmt> {
