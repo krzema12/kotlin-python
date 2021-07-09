@@ -202,8 +202,24 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
     }
 
     override fun visitWhen(expression: IrWhen, context: JsGenerationContext): List<expr> {
-        // TODO
-        return listOf(Name(id = identifier("visitWhen-inToByExpressionTransformer $expression".toValidPythonSymbol()), ctx = Load))
+        return listOf(
+            expression
+                .branches
+                .map { branch ->
+                    IfExp(
+                        test = IrElementToPyExpressionTransformer().visitExpression(branch.condition, context).first(),
+                        body = IrElementToPyExpressionTransformer().visitExpression(branch.result, context).first(),
+                        orelse = Name(id = identifier("dummyBranch"), ctx = Load),
+                    )
+                }
+                .reduceRight { iff, acc ->
+                    IfExp(
+                        test = iff.test,
+                        body = iff.body,
+                        orelse = acc,
+                    )
+                }
+        )
     }
 
     override fun visitTypeOperator(expression: IrTypeOperatorCall, data: JsGenerationContext): List<expr> {

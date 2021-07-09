@@ -17,7 +17,7 @@ fun expr.toPython(): String {
         is BinOp -> TODO()
         is UnaryOp -> TODO()
         is Lambda -> TODO()
-        is IfExp -> TODO()
+        is IfExp -> toPython()
         is Dict -> TODO()
         is Set -> TODO()
         is ListComp -> TODO()
@@ -43,6 +43,9 @@ fun expr.toPython(): String {
 
 fun Name.toPython() =
     id.name
+
+fun IfExp.toPython() =
+    "(${body.toPython()}) if (${test.toPython()}) else (${orelse.toPython()})"
 
 fun List.toPython() =
     elts.joinToString(separator = ", ", prefix = "[", postfix = "]") {
