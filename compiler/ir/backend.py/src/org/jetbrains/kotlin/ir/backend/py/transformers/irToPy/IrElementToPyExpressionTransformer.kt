@@ -213,11 +213,22 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
                     )
                 }
                 .reduceRight { iff, acc ->
-                    IfExp(
-                        test = iff.test,
-                        body = iff.body,
-                        orelse = acc,
-                    )
+                    val accTest = acc.test
+
+                    if (accTest is Constant && accTest.value.value == "True") {
+                        // optimization
+                        IfExp(
+                            test = iff.test,
+                            body = iff.body,
+                            orelse = acc.body,
+                        )
+                    } else {
+                        IfExp(
+                            test = iff.test,
+                            body = iff.body,
+                            orelse = acc,
+                        )
+                    }
                 }
         )
     }
