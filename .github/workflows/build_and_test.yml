@@ -15,4 +15,8 @@ jobs:
       - name: Build
         run: JDK_9="$JAVA_HOME" ./gradlew dist
       - name: Run box tests (succeed even if they fail)
-        run: JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated" || true
+        run: (JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated" || true) | tee tests-out.txt
+      - name: Generate failed-tests.txt
+        run: less tests-out.txt | grep "FAILED" | grep "Codegen" | sort > failed-tests.txt
+      - name: Compare failed-tests.txt
+        run: diff failed-tests.txt python/experiments/failed-tests.txt
