@@ -24,3 +24,7 @@ jobs:
         run: dist/kotlinc/bin/kotlinc-py -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -output out_ir.py python/experiments/python.kt
       - name: Compare out_ir.py
         run: diff out_ir.py python/experiments/out_ir.py
+      - name: Generate stats about missing IR mapping
+        run: less python/experiments/out_ir.py  | grep -Po "visit[a-zA-Z0-9_]+" | sort | uniq -c | sort -nr > missing.txt
+      - name: Compare out_ir.py
+        run: diff missing.txt python/experiments/missing.txt
