@@ -28,7 +28,6 @@ import org.jetbrains.kotlin.fir.session.FirSessionFactory
 import org.jetbrains.kotlin.fir.types.FirTypeProjection
 import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.types.isExtensionFunctionAnnotationCall
-import org.jetbrains.kotlin.fir.visitors.CompositeTransformResult
 import org.jetbrains.kotlin.fir.visitors.FirTransformer
 import org.jetbrains.kotlin.fir.visitors.FirVisitorVoid
 import org.jetbrains.kotlin.parsing.KotlinParserDefinition
@@ -36,6 +35,7 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.test.KotlinTestUtils
 import org.jetbrains.kotlin.test.testFramework.KtParsingTestCase
+import org.jetbrains.kotlin.test.util.KtTestUtil
 import java.io.File
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
@@ -45,7 +45,7 @@ abstract class AbstractRawFirBuilderTestCase : KtParsingTestCase(
     "kt",
     KotlinParserDefinition()
 ) {
-    override fun getTestDataPath() = KotlinTestUtils.getHomeDirectory()
+    override fun getTestDataPath() = KtTestUtil.getHomeDirectory()
 
     private fun createFile(filePath: String, fileType: IElementType): PsiFile {
         val psiFactory = KtPsiFactory(myProject)
@@ -62,7 +62,7 @@ abstract class AbstractRawFirBuilderTestCase : KtParsingTestCase(
     protected open fun doRawFirTest(filePath: String) {
         val file = createKtFile(filePath)
         val firFile = file.toFirFile(RawFirBuilderMode.NORMAL)
-        val firFileDump = StringBuilder().also { FirRenderer(it).visitFile(firFile) }.toString()
+        val firFileDump = StringBuilder().also { FirRenderer(it, mode = FirRenderer.RenderMode.WithDeclarationAttributes).visitFile(firFile) }.toString()
         val expectedPath = filePath.replace(".kt", ".txt")
         KotlinTestUtils.assertEqualsToFile(File(expectedPath), firFileDump)
     }
@@ -147,13 +147,13 @@ abstract class AbstractRawFirBuilderTestCase : KtParsingTestCase(
     private class ConsistencyTransformer : FirTransformer<Unit>() {
         var result = hashSetOf<FirElement>()
 
-        override fun <E : FirElement> transformElement(element: E, data: Unit): CompositeTransformResult<E> {
+        override fun <E : FirElement> transformElement(element: E, data: Unit): E {
             if (!result.add(element)) {
                 throwTwiceVisitingError(element)
             } else {
                 element.transformChildren(this, Unit)
             }
-            return CompositeTransformResult.single(element)
+            return element
         }
     }
 

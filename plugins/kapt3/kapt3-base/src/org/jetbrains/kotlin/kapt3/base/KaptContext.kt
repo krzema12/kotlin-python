@@ -60,10 +60,16 @@ open class KaptContext(val options: KaptOptions, val withJdk: Boolean, val logge
             JavaClassCacheManager(it)
         }
         if (options.flags[KaptFlag.INCREMENTAL_APT]) {
-            sourcesToReprocess =
+            sourcesToReprocess = run {
+                val start = System.currentTimeMillis()
                 cacheManager?.invalidateAndGetDirtyFiles(
                     options.changedFiles, options.classpathChanges
-                ) ?: SourcesToReprocess.FullRebuild
+                ).also {
+                    if (logger.isVerbose) {
+                        logger.info("Computing sources to reprocess took ${System.currentTimeMillis() - start}[ms].")
+                    }
+                }
+            }?: SourcesToReprocess.FullRebuild
 
             if (sourcesToReprocess == SourcesToReprocess.FullRebuild) {
                 // remove all generated sources and classes
@@ -111,15 +117,13 @@ open class KaptContext(val options: KaptOptions, val withJdk: Boolean, val logge
             val compileClasspath = if (sourcesToReprocess is SourcesToReprocess.FullRebuild) {
                 options.compileClasspath
             } else {
-                options.compileClasspath + options.compiledSources
+                options.compileClasspath + options.compiledSources + options.classesOutputDir
             }
 
-            putJavacOption("CLASSPATH", "CLASS_PATH",
-                           compileClasspath.joinToString(File.pathSeparator) { it.canonicalPath })
+            putJavacOption("CLASSPATH", "CLASS_PATH", compileClasspath.makePathsString())
 
             @Suppress("SpellCheckingInspection")
-            putJavacOption("PROCESSORPATH", "PROCESSOR_PATH",
-                           options.processingClasspath.joinToString(File.pathSeparator) { it.canonicalPath })
+            putJavacOption("PROCESSORPATH", "PROCESSOR_PATH", options.processingClasspath.makePathsString())
 
             put(Option.S, options.sourcesOutputDir.canonicalPath)
             put(Option.D, options.classesOutputDir.canonicalPath)
@@ -144,7 +148,9 @@ open class KaptContext(val options: KaptOptions, val withJdk: Boolean, val logge
         }
 
         compiler = JavaCompiler.instance(context) as KaptJavaCompiler
-        compiler.keepComments = true
+        if (options.flags[KaptFlag.KEEP_KDOC_COMMENTS_IN_STUBS]) {
+            compiler.keepComments = true
+        }
 
         ClassReader.instance(context).saveParameterNames = true
 
@@ -155,5 +161,11 @@ open class KaptContext(val options: KaptOptions, val withJdk: Boolean, val logge
         cacheManager?.close()
         compiler.close()
         fileManager.close()
+    }
+
+    companion object {
+        const val MODULE_INFO_FILE = "module-info.java"
+
+        private fun Iterable<File>.makePathsString(): String = joinToString(File.pathSeparator) { it.canonicalPath }
     }
 }

@@ -18,13 +18,13 @@ import org.jetbrains.kotlin.js.config.JSConfigurationKeys
 import org.jetbrains.kotlin.js.config.JsConfig
 import org.jetbrains.kotlin.js.patterns.NamePredicate
 import org.jetbrains.kotlin.js.patterns.PatternBuilder.pattern
+import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.py.translate.callTranslator.CallInfo
 import org.jetbrains.kotlin.py.translate.context.Namer
 import org.jetbrains.kotlin.py.translate.context.TranslationContext
 import org.jetbrains.kotlin.py.translate.intrinsic.functions.basic.BuiltInPropertyIntrinsic
 import org.jetbrains.kotlin.py.translate.intrinsic.functions.basic.FunctionIntrinsic
 import org.jetbrains.kotlin.py.translate.utils.JsAstUtils
-import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.resolve.isInlineClassType
 import org.jetbrains.kotlin.types.KotlinType
 import java.util.*
@@ -98,7 +98,7 @@ object ArrayFIF : CompositeFIF() {
     }
 
     private val PrimitiveType.lowerCaseName
-        get() = typeName.asString().toLowerCase()
+        get() = typeName.asString().lowercase()
 
     fun getTag(descriptor: CallableDescriptor, config: JsConfig): String? {
         if (descriptor !is ConstructorDescriptor) return null

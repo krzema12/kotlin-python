@@ -81,10 +81,8 @@ val distLibraryProjects = listOfNotNull(
     ":kotlin-annotation-processing",
     ":kotlin-annotation-processing-cli",
     ":kotlin-annotation-processing-runtime",
-    ":kotlin-annotations-android",
     ":kotlin-annotations-jvm",
     ":kotlin-ant",
-    ":kotlin-coroutines-experimental-compat",
     ":kotlin-daemon",
     ":kotlin-daemon-client",
     // TODO: uncomment when new daemon will be put back into dist
@@ -117,12 +115,12 @@ val distCompilerPluginProjects = listOf(
     ":plugins:parcelize:parcelize-runtime",
     ":kotlin-noarg-compiler-plugin",
     ":kotlin-sam-with-receiver-compiler-plugin",
-    ":kotlinx-serialization-compiler-plugin"
+    ":kotlinx-serialization-compiler-plugin",
+    ":plugins:lombok:lombok-compiler-plugin"
 )
 
 val distSourcesProjects = listOfNotNull(
     ":kotlin-annotations-jvm",
-    ":kotlin-coroutines-experimental-compat",
     ":kotlin-script-runtime",
     ":kotlin-test:kotlin-test-js".takeIf { !kotlinBuildProperties.isInJpsBuildIdeaSync },
     ":kotlin-test:kotlin-test-junit",
@@ -337,24 +335,32 @@ val distKotlinc = distTask<Sync>("distKotlinc") {
 
     from(buildNumber)
 
+    val binFiles = files("$rootDir/compiler/cli/bin")
     into("bin") {
-        from(files("$rootDir/compiler/cli/bin"))
+        from(binFiles)
     }
 
+    val licenseFiles = files("$rootDir/license")
     into("license") {
-        from(files("$rootDir/license"))
+        from(licenseFiles)
     }
 
+    val compilerBaseName = compilerBaseName
+    val jarFiles = files(jar)
+    val librariesFiles = files(libraries)
+    val librariesStripVersionFiles = files(librariesStripVersion)
+    val sourcesFiles = files(sources)
+    val compilerPluginsFiles = files(compilerPlugins)
     into("lib") {
-        from(jar) { rename { "$compilerBaseName.jar" } }
-        from(libraries)
-        from(librariesStripVersion) {
+        from(jarFiles) { rename { "$compilerBaseName.jar" } }
+        from(librariesFiles)
+        from(librariesStripVersionFiles) {
             rename {
                 it.replace(Regex("-\\d.*\\.jar\$"), ".jar")
             }
         }
-        from(sources)
-        from(compilerPlugins) {
+        from(sourcesFiles)
+        from(compilerPluginsFiles) {
             rename { it.removePrefix("kotlin-") }
         }
     }

@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.fir.resolve.ScopeSession
 import org.jetbrains.kotlin.fir.scopes.FirScope
 import org.jetbrains.kotlin.fir.scopes.FirScopeProvider
 import org.jetbrains.kotlin.fir.scopes.FirTypeScope
+import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.psi.KtFunction
 import org.jetbrains.kotlin.psi.KtTypeReference
@@ -29,7 +30,7 @@ object KtDeclarationAndFirDeclarationEqualityChecker {
             && !isTheSameTypes(
                 psi.receiverTypeReference!!,
                 fir.receiverTypeRef!!,
-                fir.session,
+                fir.declarationSiteSession,
                 isVararg = false
             )
         ) {
@@ -43,7 +44,7 @@ object KtDeclarationAndFirDeclarationEqualityChecker {
             if (!isTheSameTypes(
                     candidateParameterType,
                     expectedParameter.returnTypeRef,
-                    fir.session,
+                    fir.declarationSiteSession,
                     isVararg = expectedParameter.isVararg
                 )
             ) {
@@ -89,11 +90,26 @@ object KtDeclarationAndFirDeclarationEqualityChecker {
             else -> error("Invalid type reference $this")
         }
         return if (isVararg) {
-            "kotlin.Array<out $rendered>"
+            rendered.asArrayType()
         } else {
             rendered
         }
     }
+
+    private fun String.asArrayType(): String {
+        classIdToName[this]?.let { return it }
+        return "kotlin.Array<out $this>"
+    }
+
+    @OptIn(ExperimentalStdlibApi::class)
+    private val classIdToName: Map<String, String> = buildList {
+        StandardClassIds.primitiveArrayTypeByElementType.mapTo(this) { (classId, arrayClassId) ->
+            classId.asString().replace('/', '.') to arrayClassId.asString().replace('/', '.')
+        }
+        StandardClassIds.unsignedArrayTypeByElementType.mapTo(this) { (classId, arrayClassId) ->
+            classId.asString().replace('/', '.') to arrayClassId.asString().replace('/', '.')
+        }
+    }.toMap()
 
     private fun FirTypeProjection.renderTypeAsKotlinType() = when (this) {
         is FirStarProjection -> "*"

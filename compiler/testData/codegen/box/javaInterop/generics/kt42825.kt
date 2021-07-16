@@ -1,5 +1,9 @@
 // TODO: muted for Python because it was muted for JS. Once Python doesn't piggy-back on JS, investigate if it can be re-enabled for Python.
 // IGNORE_BACKEND: PYTHON
+// DONT_TARGET_EXACT_BACKEND: WASM
+// IGNORE_BACKEND: JS
+// IGNORE_BACKEND: JS_IR
+// IGNORE_BACKEND: NATIVE
 // FILE: Processor.java
 
 public interface Processor<T> {
@@ -7,9 +11,6 @@ public interface Processor<T> {
 }
 
 // FILE: test.kt
-// DONT_TARGET_EXACT_BACKEND: WASM
-// IGNORE_BACKEND: JS
-// IGNORE_BACKEND: JS_IR
 
 interface PsiModifierListOwner
 interface KtClassOrObject {

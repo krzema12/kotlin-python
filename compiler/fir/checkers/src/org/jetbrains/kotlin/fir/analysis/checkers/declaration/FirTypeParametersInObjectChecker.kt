@@ -6,25 +6,20 @@
 package org.jetbrains.kotlin.fir.analysis.checkers.declaration
 
 import org.jetbrains.kotlin.descriptors.ClassKind
-import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors
-import org.jetbrains.kotlin.fir.declarations.FirDeclaration
+import org.jetbrains.kotlin.fir.analysis.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.declarations.FirRegularClass
 
-object FirTypeParametersInObjectChecker : FirBasicDeclarationChecker() {
-    override fun check(declaration: FirDeclaration, context: CheckerContext, reporter: DiagnosticReporter) {
-        if (declaration !is FirRegularClass || declaration.classKind != ClassKind.OBJECT) {
+object FirTypeParametersInObjectChecker : FirRegularClassChecker() {
+    override fun check(declaration: FirRegularClass, context: CheckerContext, reporter: DiagnosticReporter) {
+        if (declaration.classKind != ClassKind.OBJECT) {
             return
         }
 
         if (declaration.typeParameters.isNotEmpty()) {
-            reporter.report(declaration.source)
+            reporter.reportOn(declaration.source, FirErrors.TYPE_PARAMETERS_IN_OBJECT, context)
         }
-    }
-
-    private fun DiagnosticReporter.report(source: FirSourceElement?) {
-        source?.let { report(FirErrors.TYPE_PARAMETERS_IN_OBJECT.on(it)) }
     }
 }

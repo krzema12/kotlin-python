@@ -1,5 +1,5 @@
-// !LANGUAGE: +InlineClasses
-// JAVAC_SKIP
+// !LANGUAGE: +InlineClasses, -JvmInlineValueClasses
+// SKIP_JAVAC
 
 // FILE: uint.kt
 

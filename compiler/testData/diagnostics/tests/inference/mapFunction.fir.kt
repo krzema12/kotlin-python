@@ -4,6 +4,7 @@ package a
 
 //+JDK
 import java.util.*
+import checkSubtype
 
 fun foo() {
     val v = array(1, 2, 3)
@@ -19,8 +20,8 @@ fun foo() {
     checkSubtype<List<Int>>(b)
 
     //check for non-error types
-    <!INAPPLICABLE_CANDIDATE!>checkSubtype<!><String>(u)
-    <!INAPPLICABLE_CANDIDATE!>checkSubtype<!><String>(b)
+    checkSubtype<String>(<!ARGUMENT_TYPE_MISMATCH!>u<!>)
+    checkSubtype<String>(<!ARGUMENT_TYPE_MISMATCH!>b<!>)
 }
 
 

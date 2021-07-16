@@ -5,11 +5,15 @@
 
 package org.jetbrains.kotlin.fir.types
 
+import org.jetbrains.kotlin.builtins.functions.FunctionClassKind
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
-import org.jetbrains.kotlin.fir.expressions.FirConstKind
-import org.jetbrains.kotlin.fir.symbols.StandardClassIds
+import org.jetbrains.kotlin.fir.expressions.FirConstExpression
+import org.jetbrains.kotlin.fir.expressions.FirExpression
+import org.jetbrains.kotlin.fir.render
+import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.fir.types.impl.FirImplicitBuiltinTypeRef
 import org.jetbrains.kotlin.name.ClassId
+import org.jetbrains.kotlin.types.ConstantValueKind
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -23,7 +27,9 @@ inline fun <reified T : ConeKotlinType> FirTypeRef.coneTypeSafe(): T? {
     return (this as? FirResolvedTypeRef)?.type as? T
 }
 
-inline val FirTypeRef.coneType: ConeKotlinType get() = coneTypeUnsafe()
+val FirTypeRef.coneType: ConeKotlinType
+    get() = coneTypeSafe()
+        ?: error("Expected FirResolvedTypeRef with ConeKotlinType but was ${this::class.simpleName} ${render()}")
 
 val FirTypeRef.isAny: Boolean get() = isBuiltinType(StandardClassIds.Any, false)
 val FirTypeRef.isNullableAny: Boolean get() = isBuiltinType(StandardClassIds.Any, true)
@@ -36,6 +42,12 @@ val FirTypeRef.isArrayType: Boolean
     get() =
         isBuiltinType(StandardClassIds.Array, false) ||
                 StandardClassIds.primitiveArrayTypeByElementType.values.any { isBuiltinType(it, false) }
+
+val FirExpression.isNullLiteral: Boolean
+    get() = this is FirConstExpression<*> &&
+            this.kind == ConstantValueKind.Null &&
+            this.value == null &&
+            this.source != null
 
 private val FirTypeRef.classLikeTypeOrNull: ConeClassLikeType?
     get() = when (this) {
@@ -74,16 +86,16 @@ fun List<FirAnnotationCall>.dropExtensionFunctionAnnotation(): List<FirAnnotatio
     return filterNot { it.isExtensionFunctionAnnotationCall }
 }
 
-fun ConeClassLikeType.toConstKind(): FirConstKind<*>? = when (lookupTag.classId) {
-    StandardClassIds.Byte -> FirConstKind.Byte
-    StandardClassIds.Short -> FirConstKind.Short
-    StandardClassIds.Int -> FirConstKind.Int
-    StandardClassIds.Long -> FirConstKind.Long
+fun ConeClassLikeType.toConstKind(): ConstantValueKind<*>? = when (lookupTag.classId) {
+    StandardClassIds.Byte -> ConstantValueKind.Byte
+    StandardClassIds.Short -> ConstantValueKind.Short
+    StandardClassIds.Int -> ConstantValueKind.Int
+    StandardClassIds.Long -> ConstantValueKind.Long
 
-    StandardClassIds.UInt -> FirConstKind.UnsignedInt
-    StandardClassIds.ULong -> FirConstKind.UnsignedLong
-    StandardClassIds.UShort -> FirConstKind.UnsignedShort
-    StandardClassIds.UByte -> FirConstKind.UnsignedByte
+    StandardClassIds.UInt -> ConstantValueKind.UnsignedInt
+    StandardClassIds.ULong -> ConstantValueKind.UnsignedLong
+    StandardClassIds.UShort -> ConstantValueKind.UnsignedShort
+    StandardClassIds.UByte -> ConstantValueKind.UnsignedByte
     else -> null
 }
 
@@ -92,6 +104,7 @@ fun List<FirAnnotationCall>.computeTypeAttributes(
 ): ConeAttributes {
     if (this.isEmpty()) return ConeAttributes.Empty
     val attributes = mutableListOf<ConeAttribute<*>>()
+    val customAnnotations = mutableListOf<FirAnnotationCall>()
     for (annotation in this) {
         val type = annotation.annotationTypeRef.coneTypeSafe<ConeClassLikeType>() ?: continue
         when (val classId = type.lookupTag.classId) {
@@ -99,8 +112,17 @@ fun List<FirAnnotationCall>.computeTypeAttributes(
             CompilerConeAttributes.NoInfer.ANNOTATION_CLASS_ID -> attributes += CompilerConeAttributes.NoInfer
             CompilerConeAttributes.ExtensionFunctionType.ANNOTATION_CLASS_ID -> attributes += CompilerConeAttributes.ExtensionFunctionType
             CompilerConeAttributes.UnsafeVariance.ANNOTATION_CLASS_ID -> attributes += CompilerConeAttributes.UnsafeVariance
-            else -> additionalProcessor.invoke(attributes, classId)
+            else -> {
+                if (classId.startsWith(StandardClassIds.BASE_KOTLIN_PACKAGE.shortName())) {
+                    // The check ^ is intended to leave only annotations which may be important for BE
+                    customAnnotations += annotation
+                }
+                additionalProcessor.invoke(attributes, classId)
+            }
         }
+    }
+    if (customAnnotations.isNotEmpty()) {
+        attributes += CustomAnnotationTypeAttribute(customAnnotations)
     }
     return ConeAttributes.create(attributes)
 }
@@ -138,3 +160,32 @@ private fun ConeTypeParameterType.hasNotNullUpperBound(): Boolean {
         }
     }
 }
+
+val FirTypeRef.canBeNull: Boolean
+    // TODO: replace with coneType (for some reason, implicit type still can arise here)
+    get() = coneTypeSafe<ConeKotlinType>()?.canBeNull == true
+
+val ConeKotlinType.canBeNull: Boolean
+    get() {
+        if (isMarkedNullable) {
+            return true
+        }
+        return when (this) {
+            is ConeFlexibleType -> upperBound.canBeNull
+            is ConeDefinitelyNotNullType -> false
+            is ConeTypeParameterType -> this.lookupTag.typeParameterSymbol.fir.bounds.all { it.coneType.canBeNull }
+            is ConeIntersectionType -> intersectedTypes.all { it.canBeNull }
+            else -> isNullable
+        }
+    }
+
+val ConeKotlinType?.functionTypeKind: FunctionClassKind?
+    get() {
+        val classId = (this as? ConeClassLikeType)?.lookupTag?.classId ?: return null
+        return FunctionClassKind.getFunctionalClassKind(
+            classId.shortClassName.asString(), classId.packageFqName
+        )
+    }
+
+val FirResolvedTypeRef.functionTypeKind: FunctionClassKind?
+    get() = type.functionTypeKind

@@ -34,7 +34,7 @@ import org.jetbrains.kotlin.load.java.SpecialBuiltinMembers;
 import org.jetbrains.kotlin.load.java.descriptors.JavaClassDescriptor;
 import org.jetbrains.kotlin.psi.*;
 import org.jetbrains.kotlin.resolve.*;
-import org.jetbrains.kotlin.resolve.annotations.AnnotationUtilKt;
+import org.jetbrains.kotlin.resolve.annotations.ThrowUtilKt;
 import org.jetbrains.kotlin.resolve.calls.util.UnderscoreUtilKt;
 import org.jetbrains.kotlin.resolve.constants.ArrayValue;
 import org.jetbrains.kotlin.resolve.constants.ConstantValue;
@@ -1105,7 +1105,7 @@ public class FunctionCodegen {
             return Collections.emptyList();
         }
 
-        AnnotationDescriptor annotation = function.getAnnotations().findAnnotation(AnnotationUtilKt.JVM_THROWS_ANNOTATION_FQ_NAME);
+        AnnotationDescriptor annotation = function.getAnnotations().findAnnotation(ThrowUtilKt.JVM_THROWS_ANNOTATION_FQ_NAME);
         if (annotation == null) return Collections.emptyList();
 
         Collection<ConstantValue<?>> values = annotation.getAllValueArguments().values();
@@ -1152,8 +1152,10 @@ public class FunctionCodegen {
 
         // $default methods are never private to be accessible from other class files (e.g. inner) without the need of synthetic accessors
         // $default methods are never protected to be accessible from subclass nested classes
+        // TODO: maybe best to generate private default in interface as private
         int visibilityFlag =
-                DescriptorVisibilities.isPrivate(functionDescriptor.getVisibility()) || isInlineOnlyPrivateInBytecode(functionDescriptor)
+                (!isInterface(functionDescriptor.getContainingDeclaration()) || kind == OwnerKind.DEFAULT_IMPLS) &&
+                (DescriptorVisibilities.isPrivate(functionDescriptor.getVisibility()) || isInlineOnlyPrivateInBytecode(functionDescriptor))
                 ? AsmUtil.NO_FLAG_PACKAGE_PRIVATE : Opcodes.ACC_PUBLIC;
         int flags = visibilityFlag | getDeprecatedAccessFlag(functionDescriptor) | ACC_SYNTHETIC;
         if (!(functionDescriptor instanceof ConstructorDescriptor &&
@@ -1221,7 +1223,12 @@ public class FunctionCodegen {
 
         // 'null' because the "could not find expected declaration" error has been already reported in isDefaultNeeded earlier
         List<ValueParameterDescriptor> valueParameters =
-                CodegenUtil.getFunctionParametersForDefaultValueGeneration(functionDescriptor, null);
+                functionDescriptor.isSuspend()
+                ? CollectionsKt.plus(
+                    CodegenUtil.getFunctionParametersForDefaultValueGeneration(
+                            CoroutineCodegenUtilKt.unwrapInitialDescriptorForSuspendFunction(functionDescriptor), null),
+                    CollectionsKt.last(functionDescriptor.getValueParameters()))
+                : CodegenUtil.getFunctionParametersForDefaultValueGeneration(functionDescriptor, null);
 
         boolean isStatic = isStaticMethod(methodContext.getContextKind(), functionDescriptor);
         FrameMap frameMap = createFrameMap(state, signature, functionDescriptor.getExtensionReceiverParameter(), valueParameters, isStatic);
@@ -1589,7 +1596,7 @@ public class FunctionCodegen {
 
                         // When delegating to inline class, we invoke static implementation method
                         // that takes inline class underlying value as 1st argument.
-                        int toArgsShift = toClass.isInline() ? 1 : 0;
+                        int toArgsShift = InlineClassesUtilsKt.isInlineClass(toClass) ? 1 : 0;
 
                         int reg = 1;
                         for (int i = 0; i < argTypes.length; ++i) {
@@ -1609,7 +1616,7 @@ public class FunctionCodegen {
                         if (toClass.getKind() == ClassKind.INTERFACE) {
                             iv.invokeinterface(internalName, delegateToMethod.getName(), delegateToMethod.getDescriptor());
                         }
-                        else if (toClass.isInline()) {
+                        else if (InlineClassesUtilsKt.isInlineClass(toClass)) {
                             iv.invokestatic(internalName, delegateToMethod.getName(), delegateToMethod.getDescriptor(), false);
                         }
                         else {
@@ -1680,10 +1687,11 @@ public class FunctionCodegen {
 
         // Fake overrides in interfaces should be expanded to implementation to make proper default check
         if (JvmAnnotationUtilKt.checkIsImplementationCompiledToJvmDefault(memberDescriptor, mode)) {
-            return (kind != OwnerKind.DEFAULT_IMPLS && !isSynthetic) ||
+            boolean isSyntheticInCompatibilityOrJvmDefault = isSynthetic && (mode.isCompatibility() || mode == JvmDefaultMode.ENABLE);
+            return (kind != OwnerKind.DEFAULT_IMPLS && !isSyntheticInCompatibilityOrJvmDefault) ||
                    (kind == OwnerKind.DEFAULT_IMPLS &&
-                    (isSynthetic || //TODO: move synthetic method generation into interface
-                     (mode.isCompatibility() && !JvmAnnotationUtilKt.hasJvmDefaultNoCompatibilityAnnotation(containingDeclaration))));
+                    (isSyntheticInCompatibilityOrJvmDefault ||
+                     (mode.isCompatibility() && !JvmAnnotationUtilKt.hasJvmDefaultNoCompatibilityAnnotation(containingDeclaration))) && !DescriptorVisibilities.isPrivate(memberDescriptor.getVisibility()));
         } else {
             switch (kind) {
                 case DEFAULT_IMPLS: return true;

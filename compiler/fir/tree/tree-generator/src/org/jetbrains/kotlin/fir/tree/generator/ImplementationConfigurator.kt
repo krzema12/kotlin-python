@@ -87,10 +87,6 @@ object ImplementationConfigurator : AbstractFirTreeImplementationConfigurator() 
         impl(doWhileLoop)
 
         impl(delegatedConstructorCall) {
-            default(
-                "calleeReference",
-                "if (isThis) FirExplicitThisReference(source, null) else FirExplicitSuperReference(source, null, constructedTypeRef)"
-            )
             default("isSuper") {
                 value = "!isThis"
                 withGetter = true
@@ -132,7 +128,7 @@ object ImplementationConfigurator : AbstractFirTreeImplementationConfigurator() 
 
         impl(errorLoop) {
             default("block", "FirEmptyExpressionBlock()")
-            default("condition", "FirErrorExpressionImpl(source, ConeStubDiagnostic(diagnostic))")
+            default("condition", "FirErrorExpressionImpl(source, mutableListOf(), ConeStubDiagnostic(diagnostic))")
             useTypes(emptyExpressionBlock, coneStubDiagnosticType)
         }
 
@@ -170,12 +166,11 @@ object ImplementationConfigurator : AbstractFirTreeImplementationConfigurator() 
 
         val errorTypeRefImpl = impl(errorTypeRef) {
             default("type", "ConeClassErrorType(diagnostic)")
-            default("delegatedTypeRef") {
-                value = "null"
-                withGetter = true
-            }
             default("annotations", "mutableListOf()")
             useTypes(coneClassErrorTypeType)
+            default("delegatedTypeRef") {
+                needAcceptAndTransform = false
+            }
         }
 
 
@@ -201,7 +196,7 @@ object ImplementationConfigurator : AbstractFirTreeImplementationConfigurator() 
                 "getter", "setter",
                 withGetter = true
             )
-            default("returnTypeRef", "FirErrorTypeRefImpl(null, diagnostic)")
+            default("returnTypeRef", "FirErrorTypeRefImpl(null, null, diagnostic)")
             useTypes(errorTypeRefImpl)
         }
 
@@ -210,8 +205,9 @@ object ImplementationConfigurator : AbstractFirTreeImplementationConfigurator() 
                 value = "!isVar"
                 withGetter = true
             }
+            publicImplementation()
 
-            defaultNull("delegateFieldSymbol", "receiverTypeRef", "initializer", "delegate", "getter", "setter", withGetter = true)
+            defaultNull("delegateFieldSymbol", "receiverTypeRef", "delegate", "getter", "setter", withGetter = true)
         }
 
         impl(enumEntry) {
@@ -392,17 +388,19 @@ object ImplementationConfigurator : AbstractFirTreeImplementationConfigurator() 
 
         impl(resolvedTypeRef) {
             publicImplementation()
+            default("delegatedTypeRef") {
+                needAcceptAndTransform = false
+            }
         }
 
         impl(errorExpression) {
-            defaultEmptyList("annotations")
-            default("typeRef", "FirErrorTypeRefImpl(source, ConeStubDiagnostic(diagnostic))")
+            default("typeRef", "FirErrorTypeRefImpl(source, null, ConeStubDiagnostic(diagnostic))")
             useTypes(errorTypeRefImpl, coneStubDiagnosticType)
         }
 
         impl(errorFunction) {
             defaultNull("receiverTypeRef", "body", withGetter = true)
-            default("returnTypeRef", "FirErrorTypeRefImpl(null, diagnostic)")
+            default("returnTypeRef", "FirErrorTypeRefImpl(null, null, diagnostic)")
             useTypes(errorTypeRefImpl)
         }
 
@@ -410,8 +408,6 @@ object ImplementationConfigurator : AbstractFirTreeImplementationConfigurator() 
         impl(implicitTypeRef) {
             defaultEmptyList("annotations")
         }
-
-        impl(composedSuperTypeRef)
 
         impl(reference, "FirStubReference") {
             default("source") {
@@ -423,7 +419,6 @@ object ImplementationConfigurator : AbstractFirTreeImplementationConfigurator() 
 
         impl(errorNamedReference) {
             default("name", "Name.special(\"<\${diagnostic.reason}>\")")
-            defaultNull("candidateSymbol", withGetter = true)
         }
 
         impl(typeProjection, "FirTypePlaceholderProjection") {
@@ -442,7 +437,6 @@ object ImplementationConfigurator : AbstractFirTreeImplementationConfigurator() 
         }
 
         impl(valueParameter) {
-            kind = OpenClass
             defaultTrue("isVal", withGetter = true)
             defaultFalse("isVar", withGetter = true)
             defaultNull("getter", "setter", "initializer", "delegate", "receiverTypeRef", "delegateFieldSymbol", withGetter = true)
@@ -452,9 +446,7 @@ object ImplementationConfigurator : AbstractFirTreeImplementationConfigurator() 
             default("name", "Name.identifier(\"value\")")
         }
 
-        impl(simpleFunction) {
-            kind = OpenClass
-        }
+        impl(simpleFunction)
 
         impl(safeCallExpression) {
             useTypes(safeCallCheckedSubjectType)

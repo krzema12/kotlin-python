@@ -70,7 +70,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
                 kind = null,
             )
             is IrConstKind.Boolean -> Constant(
-                value = constant(value = "${kind.valueOf(expression)}".capitalize()),
+                value = constant(value = "${kind.valueOf(expression)}".replaceFirstChar { it.uppercase() }),
                 kind = null,
             )
             is IrConstKind.Null -> Constant(

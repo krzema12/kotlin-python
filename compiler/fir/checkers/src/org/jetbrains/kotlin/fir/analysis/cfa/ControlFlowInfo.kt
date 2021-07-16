@@ -13,6 +13,8 @@ abstract class ControlFlowInfo<S : ControlFlowInfo<S, K, V>, K : Any, V : Any> p
 
     protected abstract val constructor: (PersistentMap<K, V>) -> S
 
+    protected abstract val empty: () -> S
+
     override fun equals(other: Any?): Boolean {
         return map == (other as? ControlFlowInfo<*, *, *>)?.map
     }
@@ -28,4 +30,10 @@ abstract class ControlFlowInfo<S : ControlFlowInfo<S, K, V>, K : Any, V : Any> p
     override fun put(key: K, value: V): S {
         return constructor(map.put(key, value))
     }
+
+    override fun remove(key: K): S {
+        return constructor(map.remove(key))
+    }
+
+    abstract fun merge(other: S): S
 }

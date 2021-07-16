@@ -1,11 +1,14 @@
+// FIR_IDENTICAL
 // !CHECK_TYPE
 // FILE: a.kt
 
 package first
 
+import checkSubtype
+
 class A {
     fun foo() {}
-    fun bar(<!UNUSED_PARAMETER!>x<!>: Int) {}
+    fun bar(x: Int) {}
     fun baz() = "OK"
 }
 
@@ -14,7 +17,7 @@ class A {
 package other
 
 import kotlin.reflect.*
-
+import checkSubtype
 import first.A
 
 fun main() {

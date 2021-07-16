@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirFakeSourceElementKind
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
-import org.jetbrains.kotlin.fir.symbols.StandardClassIds
+import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.fir.symbols.impl.ConeClassLikeLookupTagImpl
 import org.jetbrains.kotlin.fir.types.ConeClassLikeType
 import org.jetbrains.kotlin.fir.types.ConeTypeProjection
@@ -109,6 +109,10 @@ class FirImplicitStringTypeRef(
     source: FirSourceElement?
 ) : FirImplicitBuiltinTypeRef(source, StandardClassIds.String)
 
+class FirImplicitThrowableTypeRef(
+    source: FirSourceElement?
+) : FirImplicitBuiltinTypeRef(source, StandardClassIds.Throwable)
+
 class FirImplicitKPropertyTypeRef(
     source: FirSourceElement?,
     typeArgument: ConeTypeProjection
@@ -177,6 +181,7 @@ fun FirImplicitBuiltinTypeRef.withFakeSource(kind: FirFakeSourceElementKind): Fi
         is FirImplicitNullableNothingTypeRef -> FirImplicitNullableNothingTypeRef(newSource)
         is FirImplicitCharTypeRef -> FirImplicitCharTypeRef(newSource)
         is FirImplicitStringTypeRef -> FirImplicitStringTypeRef(newSource)
+        is FirImplicitThrowableTypeRef -> FirImplicitThrowableTypeRef(newSource)
         is FirImplicitKPropertyTypeRef -> FirImplicitKPropertyTypeRef(
             newSource,
             typeArgument = type.typeArguments[0]

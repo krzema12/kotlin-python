@@ -20,8 +20,8 @@ class Outer {
 }
 
 fun foo() {
-    Outer.<!INAPPLICABLE_CANDIDATE!>Inner<!>()
-    Outer.<!INAPPLICABLE_CANDIDATE!>Inner<!>(1)
+    Outer.Inner(<!NO_VALUE_FOR_PARAMETER!>)<!>
+    Outer.Inner(<!ARGUMENT_TYPE_MISMATCH!>1<!>)
     Outer.Inner("")
 }
 

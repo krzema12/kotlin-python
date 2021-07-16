@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.fir.java
 
+import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.Modality
@@ -21,16 +22,20 @@ import org.jetbrains.kotlin.fir.java.enhancement.readOnlyToMutable
 import org.jetbrains.kotlin.fir.references.builder.buildErrorNamedReference
 import org.jetbrains.kotlin.fir.references.builder.buildResolvedNamedReference
 import org.jetbrains.kotlin.fir.references.impl.FirReferencePlaceholderForResolvedAnnotations
+import org.jetbrains.kotlin.fir.resolve.bindSymbolToLookupTag
 import org.jetbrains.kotlin.fir.resolve.defaultType
-import org.jetbrains.kotlin.fir.resolve.firSymbolProvider
-import org.jetbrains.kotlin.fir.resolve.providers.getClassDeclaredCallableSymbols
+import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeUnresolvedReferenceError
+import org.jetbrains.kotlin.fir.resolve.providers.getClassDeclaredPropertySymbols
+import org.jetbrains.kotlin.fir.resolve.symbolProvider
 import org.jetbrains.kotlin.fir.resolve.toSymbol
 import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.expectedConeType
 import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.firUnsafe
-import org.jetbrains.kotlin.fir.symbols.StandardClassIds
+import org.jetbrains.kotlin.fir.symbols.ConeClassLikeLookupTag
+import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.fir.symbols.impl.ConeClassLikeLookupTagImpl
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
 import org.jetbrains.kotlin.fir.types.*
+import org.jetbrains.kotlin.fir.types.builder.buildErrorTypeRef
 import org.jetbrains.kotlin.fir.types.builder.buildResolvedTypeRef
 import org.jetbrains.kotlin.fir.types.impl.ConeClassLikeTypeImpl
 import org.jetbrains.kotlin.fir.types.impl.ConeTypeParameterTypeImpl
@@ -40,12 +45,28 @@ import org.jetbrains.kotlin.load.java.structure.*
 import org.jetbrains.kotlin.load.java.structure.impl.JavaElementImpl
 import org.jetbrains.kotlin.load.java.typeEnhancement.TypeComponentPosition
 import org.jetbrains.kotlin.name.ClassId
+import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.types.ConstantValueKind
 import org.jetbrains.kotlin.types.Variance.*
+import org.jetbrains.kotlin.util.capitalizeDecapitalize.capitalizeAsciiOnly
 import org.jetbrains.kotlin.utils.addToStdlib.runIf
+import java.lang.Deprecated
+import java.lang.annotation.Documented
+import java.lang.annotation.Retention
+import java.lang.annotation.Target
+import java.util.*
 
 internal val JavaModifierListOwner.modality: Modality
     get() = when {
+        isAbstract -> Modality.ABSTRACT
+        isFinal -> Modality.FINAL
+        else -> Modality.OPEN
+    }
+
+internal val JavaClass.modality: Modality
+    get() = when {
+        isSealed -> Modality.SEALED
         isAbstract -> Modality.ABSTRACT
         isFinal -> Modality.FINAL
         else -> Modality.OPEN
@@ -59,13 +80,16 @@ internal val JavaClass.classKind: ClassKind
         else -> ClassKind.CLASS
     }
 
+internal fun ClassId.toLookupTag(): ConeClassLikeLookupTag {
+    return ConeClassLikeLookupTagImpl(this)
+}
+
 internal fun ClassId.toConeKotlinType(
     typeArguments: Array<ConeTypeProjection>,
     isNullable: Boolean,
     attributes: ConeAttributes = ConeAttributes.Empty
 ): ConeLookupTagBasedType {
-    val lookupTag = ConeClassLikeLookupTagImpl(this)
-    return ConeClassLikeTypeImpl(lookupTag, typeArguments, isNullable, attributes)
+    return ConeClassLikeTypeImpl(toLookupTag(), typeArguments, isNullable, attributes)
 }
 
 internal fun FirTypeRef.toConeKotlinTypeProbablyFlexible(
@@ -82,9 +106,12 @@ internal fun FirTypeRef.toConeKotlinTypeProbablyFlexible(
     }
 
 internal fun JavaType.toFirJavaTypeRef(session: FirSession, javaTypeParameterStack: JavaTypeParameterStack): FirJavaTypeRef {
-    val annotations = (this as? JavaClassifierType)?.annotations.orEmpty()
     return buildJavaTypeRef {
-        annotations.mapTo(this.annotations) { it.toFirAnnotationCall(session, javaTypeParameterStack) }
+        annotationBuilder = {
+            (this@toFirJavaTypeRef as? JavaClassifierType)?.annotations.orEmpty().map {
+                it.toFirAnnotationCall(session, javaTypeParameterStack)
+            }
+        }
         type = this@toFirJavaTypeRef
     }
 }
@@ -110,7 +137,7 @@ internal fun JavaClassifierType.toFirResolvedTypeRef(
 internal fun JavaType?.toConeKotlinTypeWithoutEnhancement(
     session: FirSession,
     javaTypeParameterStack: JavaTypeParameterStack,
-    forAnnotationValueParameter: Boolean = false,
+    forAnnotationMember: Boolean = false,
     isForSupertypes: Boolean = false,
     attributes: ConeAttributes = ConeAttributes.Empty
 ): ConeKotlinType {
@@ -119,7 +146,7 @@ internal fun JavaType?.toConeKotlinTypeWithoutEnhancement(
             toConeKotlinTypeWithoutEnhancement(
                 session,
                 javaTypeParameterStack,
-                forAnnotationValueParameter = forAnnotationValueParameter,
+                forAnnotationMember = forAnnotationMember,
                 attributes = attributes
             )
         }
@@ -127,7 +154,7 @@ internal fun JavaType?.toConeKotlinTypeWithoutEnhancement(
             val primitiveType = type
             val kotlinPrimitiveName = when (val javaName = primitiveType?.typeName?.asString()) {
                 null -> "Unit"
-                else -> javaName.capitalize()
+                else -> javaName.capitalizeAsciiOnly()
             }
 
             val classId = StandardClassIds.byName(kotlinPrimitiveName)
@@ -137,7 +164,7 @@ internal fun JavaType?.toConeKotlinTypeWithoutEnhancement(
             toConeKotlinTypeWithoutEnhancement(
                 session,
                 javaTypeParameterStack,
-                forAnnotationValueParameter,
+                forAnnotationMember,
                 isForSupertypes,
                 attributes = attributes
             )
@@ -181,7 +208,7 @@ private fun JavaArrayType.toConeKotlinTypeWithoutEnhancement(
             )
         }
     } else {
-        val javaComponentName = componentType.type?.typeName?.asString()?.capitalize() ?: error("Array of voids")
+        val javaComponentName = componentType.type?.typeName?.asString()?.capitalizeAsciiOnly() ?: error("Array of voids")
         val classId = StandardClassIds.byName(javaComponentName + "Array")
 
         if (forAnnotationValueParameter) {
@@ -197,7 +224,11 @@ private fun ClassId.toConeFlexibleType(
     typeArgumentsForUpper: Array<ConeTypeProjection> = typeArguments,
     attributes: ConeAttributes = ConeAttributes.Empty
 ) = ConeFlexibleType(
-    toConeKotlinType(typeArguments, isNullable = false, attributes),
+    toConeKotlinType(
+        typeArguments,
+        isNullable = false,
+        attributes
+    ),
     toConeKotlinType(typeArgumentsForUpper, isNullable = true, attributes)
 )
 
@@ -206,7 +237,7 @@ private fun JavaClassifierType.toConeKotlinTypeWithoutEnhancement(
     javaTypeParameterStack: JavaTypeParameterStack,
     forTypeParameterBounds: Boolean = false,
     isForSupertypes: Boolean = false,
-    forAnnotationValueParameter: Boolean = false,
+    forAnnotationMember: Boolean = false,
     attributes: ConeAttributes = ConeAttributes.Empty
 ): ConeKotlinType {
     val lowerBound = toConeKotlinTypeForFlexibleBound(
@@ -215,10 +246,10 @@ private fun JavaClassifierType.toConeKotlinTypeWithoutEnhancement(
         isLowerBound = true,
         forTypeParameterBounds,
         isForSupertypes,
-        forAnnotationValueParameter = forAnnotationValueParameter,
+        forAnnotationMember = forAnnotationMember,
         attributes = attributes
     )
-    if (forAnnotationValueParameter) {
+    if (forAnnotationMember) {
         return lowerBound
     }
     val upperBound =
@@ -229,11 +260,14 @@ private fun JavaClassifierType.toConeKotlinTypeWithoutEnhancement(
             forTypeParameterBounds,
             isForSupertypes,
             lowerBound,
-            forAnnotationValueParameter = forAnnotationValueParameter,
+            forAnnotationMember = forAnnotationMember,
             attributes = attributes
         )
 
-    return if (isRaw) ConeRawType(lowerBound, upperBound) else ConeFlexibleType(lowerBound, upperBound)
+    return if (isRaw)
+        ConeRawType(lowerBound, upperBound)
+    else
+        ConeFlexibleType(lowerBound, upperBound)
 }
 
 private fun computeRawProjection(
@@ -333,13 +367,13 @@ private fun JavaClassifierType.toConeKotlinTypeForFlexibleBound(
     forTypeParameterBounds: Boolean,
     isForSupertypes: Boolean,
     lowerBound: ConeLookupTagBasedType? = null,
-    forAnnotationValueParameter: Boolean = false,
+    forAnnotationMember: Boolean = false,
     attributes: ConeAttributes = ConeAttributes.Empty
 ): ConeLookupTagBasedType {
     return when (val classifier = classifier) {
         is JavaClass -> {
             //val classId = classifier.classId!!
-            var classId = if (forAnnotationValueParameter) {
+            var classId = if (forAnnotationMember) {
                 JavaToKotlinClassMap.mapJavaToKotlinIncludingClassMapping(classifier.fqName!!)
             } else {
                 JavaToKotlinClassMap.mapJavaToKotlin(classifier.fqName!!)
@@ -356,7 +390,7 @@ private fun JavaClassifierType.toConeKotlinTypeForFlexibleBound(
                 )
             }
 
-            val classSymbol = session.firSymbolProvider.getClassLikeSymbolByFqName(classId) as? FirRegularClassSymbol
+            val classSymbol = session.symbolProvider.getClassLikeSymbolByFqName(classId) as? FirRegularClassSymbol
 
             val mappedTypeArguments = if (isRaw) {
                 val defaultArgs = (1..classifier.typeParameters.size).map { ConeStarProjection }
@@ -368,7 +402,7 @@ private fun JavaClassifierType.toConeKotlinTypeForFlexibleBound(
                 } else {
                     val position = if (isLowerBound) TypeComponentPosition.FLEXIBLE_LOWER else TypeComponentPosition.FLEXIBLE_UPPER
 
-                    classSymbol?.fir?.createRawArguments(defaultArgs, position) ?: defaultArgs
+                    classSymbol?.fir?.createRawArguments(session, defaultArgs, position) ?: defaultArgs
                 }
             } else {
                 val typeParameters = runIf(!forTypeParameterBounds && !isForSupertypes) { classSymbol?.fir?.typeParameters } ?: emptyList()
@@ -395,25 +429,132 @@ private fun JavaClassifierType.toConeKotlinTypeForFlexibleBound(
 }
 
 private fun FirRegularClass.createRawArguments(
+    session: FirSession,
     defaultArgs: List<ConeStarProjection>,
     position: TypeComponentPosition
-) = typeParameters.filterIsInstance<FirTypeParameter>().map { typeParameter ->
+): List<ConeTypeProjection> = typeParameters.filterIsInstance<FirTypeParameter>().map { typeParameter ->
     val erasedUpperBound = typeParameter.getErasedUpperBound {
         defaultType().withArguments(defaultArgs.toTypedArray())
     }
     computeRawProjection(session, typeParameter, position, erasedUpperBound)
 }
 
+private fun buildEnumCall(session: FirSession, classId: ClassId?, entryName: Name?) =
+    buildFunctionCall {
+        val calleeReference = if (classId != null && entryName != null) {
+            session.symbolProvider.getClassDeclaredPropertySymbols(classId, entryName)
+                .firstOrNull()?.let { propertySymbol ->
+                    buildResolvedNamedReference {
+                        name = entryName
+                        resolvedSymbol = propertySymbol
+                    }
+                }
+        } else {
+            null
+        }
+        this.calleeReference = calleeReference
+            ?: buildErrorNamedReference {
+                diagnostic = ConeSimpleDiagnostic("Strange Java enum value: $classId.$entryName", DiagnosticKind.Java)
+            }
+    }
+
+private val JAVA_TARGET_CLASS_ID = ClassId.topLevel(FqName(Target::class.java.canonicalName))
+private val JAVA_RETENTION_CLASS_ID = ClassId.topLevel(FqName(Retention::class.java.canonicalName))
+private val JAVA_DEPRECATED_CLASS_ID = ClassId.topLevel(FqName(Deprecated::class.java.canonicalName))
+private val JAVA_DOCUMENTED_CLASS_ID = ClassId.topLevel(FqName(Documented::class.java.canonicalName))
+private val JAVA_REPEATABLE_CLASS_ID = ClassId.topLevel(FqName("java.lang.annotation.Repeatable")) // since Java 8
+
+private val JAVA_TARGETS_TO_KOTLIN = mapOf(
+    "TYPE" to EnumSet.of(AnnotationTarget.CLASS, AnnotationTarget.FILE),
+    "ANNOTATION_TYPE" to EnumSet.of(AnnotationTarget.ANNOTATION_CLASS),
+    "TYPE_PARAMETER" to EnumSet.of(AnnotationTarget.TYPE_PARAMETER),
+    "FIELD" to EnumSet.of(AnnotationTarget.FIELD),
+    "LOCAL_VARIABLE" to EnumSet.of(AnnotationTarget.LOCAL_VARIABLE),
+    "PARAMETER" to EnumSet.of(AnnotationTarget.VALUE_PARAMETER),
+    "CONSTRUCTOR" to EnumSet.of(AnnotationTarget.CONSTRUCTOR),
+    "METHOD" to EnumSet.of(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER),
+    "TYPE_USE" to EnumSet.of(AnnotationTarget.TYPE)
+)
+
+private fun List<JavaAnnotationArgument>.mapJavaTargetArguments(session: FirSession): FirExpression? =
+    buildArrayOfCall {
+        argumentList = buildArgumentList {
+            val resultSet = EnumSet.noneOf(AnnotationTarget::class.java)
+            for (target in this@mapJavaTargetArguments) {
+                if (target !is JavaEnumValueAnnotationArgument) return null
+                resultSet.addAll(JAVA_TARGETS_TO_KOTLIN[target.entryName?.asString()] ?: continue)
+            }
+            val classId = ClassId.topLevel(StandardNames.FqNames.annotationTarget)
+            resultSet.mapTo(arguments) { buildEnumCall(session, classId, Name.identifier(it.name)) }
+        }
+    }
+
+private val JAVA_RETENTION_TO_KOTLIN = mapOf(
+    "RUNTIME" to AnnotationRetention.RUNTIME,
+    "CLASS" to AnnotationRetention.BINARY,
+    "SOURCE" to AnnotationRetention.SOURCE
+)
+
+private fun JavaAnnotationArgument.mapJavaRetentionArgument(session: FirSession): FirExpression? =
+    JAVA_RETENTION_TO_KOTLIN[(this as? JavaEnumValueAnnotationArgument)?.entryName?.asString()]?.let {
+        buildEnumCall(session, ClassId.topLevel(StandardNames.FqNames.annotationRetention), Name.identifier(it.name))
+    }
+
+private fun buildArgumentMapping(
+    session: FirSession,
+    javaTypeParameterStack: JavaTypeParameterStack,
+    lookupTag: ConeClassLikeLookupTagImpl,
+    annotationArguments: Collection<JavaAnnotationArgument>
+): FirArgumentList? {
+    if (annotationArguments.none { it.name != null }) {
+        return null
+    }
+    val annotationClassSymbol = session.symbolProvider.getClassLikeSymbolByFqName(lookupTag.classId).also {
+        lookupTag.bindSymbolToLookupTag(session, it)
+    } ?: return null
+    val annotationConstructor =
+        (annotationClassSymbol.fir as FirRegularClass).declarations.filterIsInstance<FirConstructor>().first()
+    val mapping = annotationArguments.associateTo(linkedMapOf()) { argument ->
+        val parameter = annotationConstructor.valueParameters.find { it.name == (argument.name ?: JavaSymbolProvider.VALUE_METHOD_NAME) }
+            ?: return null
+        argument.toFirExpression(session, javaTypeParameterStack, parameter.returnTypeRef) to parameter
+    }
+    return buildResolvedArgumentList(mapping)
+}
+
 internal fun JavaAnnotation.toFirAnnotationCall(
     session: FirSession, javaTypeParameterStack: JavaTypeParameterStack
 ): FirAnnotationCall {
     return buildAnnotationCall {
-        annotationTypeRef = buildResolvedTypeRef {
-            type = ConeClassLikeTypeImpl(FirRegularClassSymbol(classId!!).toLookupTag(), emptyArray(), isNullable = false)
+        val lookupTag = when (classId) {
+            JAVA_TARGET_CLASS_ID -> ClassId.topLevel(StandardNames.FqNames.target)
+            JAVA_RETENTION_CLASS_ID -> ClassId.topLevel(StandardNames.FqNames.retention)
+            JAVA_REPEATABLE_CLASS_ID -> ClassId.topLevel(StandardNames.FqNames.repeatable)
+            JAVA_DOCUMENTED_CLASS_ID -> ClassId.topLevel(StandardNames.FqNames.mustBeDocumented)
+            JAVA_DEPRECATED_CLASS_ID -> ClassId.topLevel(StandardNames.FqNames.deprecated)
+            else -> classId
+        }?.let(::ConeClassLikeLookupTagImpl)
+        annotationTypeRef = if (lookupTag != null) {
+            buildResolvedTypeRef {
+                type = ConeClassLikeTypeImpl(lookupTag, emptyArray(), isNullable = false)
+            }
+        } else {
+            buildErrorTypeRef { diagnostic = ConeUnresolvedReferenceError() }
         }
-        argumentList = buildArgumentList {
-            for (argument in this@toFirAnnotationCall.arguments) {
-                arguments += argument.toFirExpression(session, javaTypeParameterStack)
+        argumentList = when (classId) {
+            JAVA_TARGET_CLASS_ID -> when (val argument = arguments.singleOrNull()) {
+                is JavaArrayAnnotationArgument -> argument.getElements().mapJavaTargetArguments(session)?.let(::buildUnaryArgumentList)
+                is JavaEnumValueAnnotationArgument -> listOf(argument).mapJavaTargetArguments(session)?.let(::buildUnaryArgumentList)
+                else -> null
+            }
+            JAVA_RETENTION_CLASS_ID -> arguments.singleOrNull()?.mapJavaRetentionArgument(session)?.let(::buildUnaryArgumentList)
+            JAVA_DEPRECATED_CLASS_ID ->
+                buildUnaryArgumentList(buildConstExpression(null, ConstantValueKind.String, "Deprecated in Java").setProperType(session))
+            null -> null
+            else -> buildArgumentMapping(session, javaTypeParameterStack, lookupTag!!, arguments)
+        } ?: buildArgumentList {
+            this@toFirAnnotationCall.arguments.mapTo(arguments) {
+                it.toFirExpression(session, javaTypeParameterStack, null)
             }
         }
         calleeReference = FirReferencePlaceholderForResolvedAnnotations
@@ -433,14 +574,12 @@ internal fun FirJavaClass.addAnnotationsFrom(
     annotations.addAnnotationsFrom(session, javaAnnotationOwner, javaTypeParameterStack)
 }
 
-private fun MutableList<FirAnnotationCall>.addAnnotationsFrom(
+internal fun MutableList<FirAnnotationCall>.addAnnotationsFrom(
     session: FirSession,
     javaAnnotationOwner: JavaAnnotationOwner,
     javaTypeParameterStack: JavaTypeParameterStack
 ) {
-    for (annotation in javaAnnotationOwner.annotations) {
-        this += annotation.toFirAnnotationCall(session, javaTypeParameterStack)
-    }
+    javaAnnotationOwner.annotations.mapTo(this) { it.toFirAnnotationCall(session, javaTypeParameterStack) }
 }
 
 internal fun JavaValueParameter.toFirValueParameter(
@@ -448,11 +587,11 @@ internal fun JavaValueParameter.toFirValueParameter(
 ): FirValueParameter {
     return buildJavaValueParameter {
         source = (this@toFirValueParameter as? JavaElementImpl<*>)?.psi?.toFirPsiSourceElement()
-        this.session = session
+        declarationSiteSession = session
         name = this@toFirValueParameter.name ?: Name.identifier("p$index")
         returnTypeRef = type.toFirJavaTypeRef(session, javaTypeParameterStack)
         isVararg = this@toFirValueParameter.isVararg
-        addAnnotationsFrom(session, this@toFirValueParameter, javaTypeParameterStack)
+        annotationBuilder = { annotations.map { it.toFirAnnotationCall(session, javaTypeParameterStack) }}
     }
 }
 
@@ -479,55 +618,34 @@ private fun JavaType?.toConeProjectionWithoutEnhancement(
                 }
             }
         }
-        is JavaClassifierType -> toConeKotlinTypeWithoutEnhancement(session, javaTypeParameterStack, isForSupertypes)
+        is JavaClassifierType -> toConeKotlinTypeWithoutEnhancement(session, javaTypeParameterStack, isForSupertypes = isForSupertypes)
         is JavaArrayType -> toConeKotlinTypeWithoutEnhancement(session, javaTypeParameterStack, isForSupertypes = isForSupertypes)
         else -> ConeClassErrorType(ConeSimpleDiagnostic("Unexpected type argument: $this", DiagnosticKind.Java))
     }
 }
 
-private fun JavaAnnotationArgument.toFirExpression(
-    session: FirSession, javaTypeParameterStack: JavaTypeParameterStack
+internal fun JavaAnnotationArgument.toFirExpression(
+    session: FirSession, javaTypeParameterStack: JavaTypeParameterStack, expectedTypeRef: FirTypeRef?
 ): FirExpression {
-    // TODO: this.name
     return when (this) {
-        is JavaLiteralAnnotationArgument -> {
-            value.createConstantOrError(session)
-        }
+        is JavaLiteralAnnotationArgument -> value.createConstantOrError(session)
         is JavaArrayAnnotationArgument -> buildArrayOfCall {
+            val argumentTypeRef = expectedTypeRef?.let {
+                typeRef = it
+                buildResolvedTypeRef {
+                    type = it.coneTypeSafe<ConeKotlinType>()?.lowerBoundIfFlexible()?.arrayElementType()
+                        ?: ConeClassErrorType(ConeSimpleDiagnostic("expected type is not array type"))
+                }
+            }
             argumentList = buildArgumentList {
-                for (element in getElements()) {
-                    arguments += element.toFirExpression(session, javaTypeParameterStack)
-                }
+                getElements().mapTo(arguments) { it.toFirExpression(session, javaTypeParameterStack, argumentTypeRef) }
             }
         }
-        is JavaEnumValueAnnotationArgument -> {
-            buildFunctionCall {
-                val classId = this@toFirExpression.enumClassId
-                val entryName = this@toFirExpression.entryName
-                val calleeReference = if (classId != null && entryName != null) {
-                    val callableSymbol = session.firSymbolProvider.getClassDeclaredCallableSymbols(
-                        classId, entryName
-                    ).firstOrNull()
-                    callableSymbol?.let {
-                        buildResolvedNamedReference {
-                            name = entryName
-                            resolvedSymbol = it
-                        }
-                    }
-                } else {
-                    null
-                }
-                this.calleeReference = calleeReference
-                    ?: buildErrorNamedReference {
-                        diagnostic = ConeSimpleDiagnostic("Strange Java enum value: $classId.$entryName", DiagnosticKind.Java)
-                    }
-            }
-        }
+        is JavaEnumValueAnnotationArgument -> buildEnumCall(session, enumClassId, entryName)
         is JavaClassObjectAnnotationArgument -> buildGetClassCall {
-            val referencedType = getReferencedType()
             argumentList = buildUnaryArgumentList(
                 buildClassReferenceExpression {
-                    classTypeRef = referencedType.toFirResolvedTypeRef(session, javaTypeParameterStack)
+                    classTypeRef = getReferencedType().toFirResolvedTypeRef(session, javaTypeParameterStack)
                 }
             )
         }
@@ -539,7 +657,7 @@ private fun JavaAnnotationArgument.toFirExpression(
 }
 
 // TODO: use kind here
-private fun <T> List<T>.createArrayOfCall(session: FirSession, @Suppress("UNUSED_PARAMETER") kind: FirConstKind<T>): FirArrayOfCall {
+private fun <T> List<T>.createArrayOfCall(session: FirSession, @Suppress("UNUSED_PARAMETER") kind: ConstantValueKind<T>): FirArrayOfCall {
     return buildArrayOfCall {
         argumentList = buildArgumentList {
             for (element in this@createArrayOfCall) {
@@ -560,24 +678,24 @@ internal fun Any?.createConstantOrError(session: FirSession): FirExpression {
 
 internal fun Any?.createConstantIfAny(session: FirSession): FirExpression? {
     return when (this) {
-        is Byte -> buildConstExpression(null, FirConstKind.Byte, this).setProperType(session)
-        is Short -> buildConstExpression(null, FirConstKind.Short, this).setProperType(session)
-        is Int -> buildConstExpression(null, FirConstKind.Int, this).setProperType(session)
-        is Long -> buildConstExpression(null, FirConstKind.Long, this).setProperType(session)
-        is Char -> buildConstExpression(null, FirConstKind.Char, this).setProperType(session)
-        is Float -> buildConstExpression(null, FirConstKind.Float, this).setProperType(session)
-        is Double -> buildConstExpression(null, FirConstKind.Double, this).setProperType(session)
-        is Boolean -> buildConstExpression(null, FirConstKind.Boolean, this).setProperType(session)
-        is String -> buildConstExpression(null, FirConstKind.String, this).setProperType(session)
-        is ByteArray -> toList().createArrayOfCall(session, FirConstKind.Byte)
-        is ShortArray -> toList().createArrayOfCall(session, FirConstKind.Short)
-        is IntArray -> toList().createArrayOfCall(session, FirConstKind.Int)
-        is LongArray -> toList().createArrayOfCall(session, FirConstKind.Long)
-        is CharArray -> toList().createArrayOfCall(session, FirConstKind.Char)
-        is FloatArray -> toList().createArrayOfCall(session, FirConstKind.Float)
-        is DoubleArray -> toList().createArrayOfCall(session, FirConstKind.Double)
-        is BooleanArray -> toList().createArrayOfCall(session, FirConstKind.Boolean)
-        null -> buildConstExpression(null, FirConstKind.Null, null).setProperType(session)
+        is Byte -> buildConstExpression(null, ConstantValueKind.Byte, this).setProperType(session)
+        is Short -> buildConstExpression(null, ConstantValueKind.Short, this).setProperType(session)
+        is Int -> buildConstExpression(null, ConstantValueKind.Int, this).setProperType(session)
+        is Long -> buildConstExpression(null, ConstantValueKind.Long, this).setProperType(session)
+        is Char -> buildConstExpression(null, ConstantValueKind.Char, this).setProperType(session)
+        is Float -> buildConstExpression(null, ConstantValueKind.Float, this).setProperType(session)
+        is Double -> buildConstExpression(null, ConstantValueKind.Double, this).setProperType(session)
+        is Boolean -> buildConstExpression(null, ConstantValueKind.Boolean, this).setProperType(session)
+        is String -> buildConstExpression(null, ConstantValueKind.String, this).setProperType(session)
+        is ByteArray -> toList().createArrayOfCall(session, ConstantValueKind.Byte)
+        is ShortArray -> toList().createArrayOfCall(session, ConstantValueKind.Short)
+        is IntArray -> toList().createArrayOfCall(session, ConstantValueKind.Int)
+        is LongArray -> toList().createArrayOfCall(session, ConstantValueKind.Long)
+        is CharArray -> toList().createArrayOfCall(session, ConstantValueKind.Char)
+        is FloatArray -> toList().createArrayOfCall(session, ConstantValueKind.Float)
+        is DoubleArray -> toList().createArrayOfCall(session, ConstantValueKind.Double)
+        is BooleanArray -> toList().createArrayOfCall(session, ConstantValueKind.Boolean)
+        null -> buildConstExpression(null, ConstantValueKind.Null, null).setProperType(session)
 
         else -> null
     }
@@ -588,6 +706,7 @@ private fun FirConstExpression<*>.setProperType(session: FirSession): FirConstEx
         type = kind.expectedConeType(session)
     }
     replaceTypeRef(typeRef)
+    session.lookupTracker?.recordTypeResolveAsLookup(typeRef, source, null)
     return this
 }
 

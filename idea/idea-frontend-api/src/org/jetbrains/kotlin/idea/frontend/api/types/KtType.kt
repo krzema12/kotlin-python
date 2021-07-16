@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.idea.frontend.api.types
 
+import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.idea.frontend.api.KtTypeArgument
 import org.jetbrains.kotlin.idea.frontend.api.ValidityTokenOwner
 import org.jetbrains.kotlin.idea.frontend.api.symbols.KtClassLikeSymbol
@@ -13,11 +14,6 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.Name
 
 interface KtType : ValidityTokenOwner {
-    fun isEqualTo(other: KtType): Boolean
-    fun isSubTypeOf(superType: KtType): Boolean
-
-    val isBuiltInFunctionalType: Boolean
-
     fun asStringForDebugging(): String
 }
 
@@ -37,11 +33,21 @@ sealed class KtDenotableType : KtType {
     abstract fun asString(): String
 }
 
-abstract class KtClassType : KtDenotableType(), KtTypeWithNullability {
+sealed class KtClassType : KtDenotableType(), KtTypeWithNullability {
     abstract val classId: ClassId
     abstract val classSymbol: KtClassLikeSymbol
     abstract val typeArguments: List<KtTypeArgument>
 }
+
+abstract class KtFunctionalType : KtClassType() {
+    abstract val isSuspend: Boolean
+    abstract val arity: Int
+    abstract val receiverType: KtType?
+    abstract val parameterTypes: List<KtType>
+    abstract val returnType: KtType
+}
+
+abstract class KtUsualClassType : KtClassType()
 
 abstract class KtErrorType : KtType {
     abstract val error: String

@@ -5,16 +5,21 @@
 
 package org.jetbrains.kotlin.idea.frontend.api
 
+import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
+import org.jetbrains.kotlin.idea.frontend.api.tokens.assertIsValidAndAccessible
+
 interface ValidityTokenOwner {
     val token: ValidityToken
 }
 
+fun ValidityTokenOwner.isValid(): Boolean = token.isValid()
+
 @Suppress("NOTHING_TO_INLINE")
-inline fun ValidityTokenOwner.assertIsValid() {
-    token.assertIsValid()
+inline fun ValidityTokenOwner.assertIsValidAndAccessible() {
+    token.assertIsValidAndAccessible()
 }
 
 inline fun <R> ValidityTokenOwner.withValidityAssertion(action: () -> R): R {
-    assertIsValid()
+    assertIsValidAndAccessible()
     return action()
 }

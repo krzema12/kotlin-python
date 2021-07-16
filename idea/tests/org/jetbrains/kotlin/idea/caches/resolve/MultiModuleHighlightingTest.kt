@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.idea.caches.resolve
 
 import com.intellij.facet.FacetManager
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.projectRoots.Sdk
@@ -20,15 +21,13 @@ import org.jetbrains.kotlin.analyzer.ResolverForModuleComputationTracker
 import org.jetbrains.kotlin.cli.common.arguments.K2JSCompilerArguments
 import org.jetbrains.kotlin.cli.common.arguments.K2JVMCompilerArguments
 import org.jetbrains.kotlin.codegen.forTestCompile.ForTestCompileRuntime
-import org.jetbrains.kotlin.config.LanguageFeature
 import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.idea.caches.project.ModuleSourceInfo
 import org.jetbrains.kotlin.idea.caches.project.SdkInfo
 import org.jetbrains.kotlin.idea.caches.trackers.KotlinCodeBlockModificationListener
 import org.jetbrains.kotlin.idea.caches.trackers.KotlinModuleOutOfCodeBlockModificationTracker
-import org.jetbrains.kotlin.idea.compiler.configuration.KotlinCommonCompilerArgumentsHolder
-import org.jetbrains.kotlin.idea.compiler.configuration.KotlinCompilerSettings
 import org.jetbrains.kotlin.idea.completion.test.withServiceRegistered
+import org.jetbrains.kotlin.idea.core.util.toPsiFile
 import org.jetbrains.kotlin.idea.facet.KotlinFacetConfiguration
 import org.jetbrains.kotlin.idea.facet.KotlinFacetType
 import org.jetbrains.kotlin.idea.framework.JSLibraryKind
@@ -37,15 +36,17 @@ import org.jetbrains.kotlin.idea.test.allKotlinFiles
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.idea.util.application.runWriteAction
 import org.jetbrains.kotlin.idea.util.projectStructure.sdk
+import org.jetbrains.kotlin.idea.util.sourceRoots
+import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.samWithReceiver.SamWithReceiverCommandLineProcessor.Companion.ANNOTATION_OPTION
 import org.jetbrains.kotlin.samWithReceiver.SamWithReceiverCommandLineProcessor.Companion.PLUGIN_ID
-import org.jetbrains.kotlin.test.JUnit3WithIdeaConfigurationRunner
-import org.jetbrains.kotlin.test.MockLibraryUtil
+import org.jetbrains.kotlin.test.*
 import org.jetbrains.kotlin.test.TestJdkKind.FULL_JDK
-import org.jetbrains.kotlin.test.WithMutedInDatabaseRunTest
-import org.jetbrains.kotlin.test.runTest
 import org.junit.Assert.assertNotEquals
 import org.junit.runner.RunWith
+import java.util.concurrent.ThreadLocalRandom
+import kotlin.math.absoluteValue
 
 @WithMutedInDatabaseRunTest
 @RunWith(JUnit3WithIdeaConfigurationRunner::class)
@@ -233,7 +234,7 @@ open class MultiModuleHighlightingTest : AbstractMultiModuleHighlightingTest() {
     }
 
     fun testJvmExperimentalLibrary() {
-        val lib = MockLibraryUtil.compileJvmLibraryToJar(
+        val lib = MockLibraryUtilExt.compileJvmLibraryToJar(
             testDataPath + "${getTestName(true)}/lib", "lib",
             extraOptions = listOf(
                 "-Xopt-in=kotlin.RequiresOptIn",
@@ -261,43 +262,47 @@ open class MultiModuleHighlightingTest : AbstractMultiModuleHighlightingTest() {
         checkHighlightingInProject()
     }
 
-    fun testCoroutineMixedReleaseStatus() {
-        KotlinCommonCompilerArgumentsHolder.getInstance(project).update { skipMetadataVersionCheck = true }
-        KotlinCompilerSettings.getInstance(project).update { additionalArguments = "-Xskip-metadata-version-check" }
-
-        val libOld = MockLibraryUtil.compileJvmLibraryToJar(
-            testDataPath + "${getTestName(true)}/libOld", "libOld",
-            extraOptions = listOf("-language-version", "1.2", "-api-version", "1.2")
+    fun testResolutionAnchorsAndBuiltins() {
+        val jarForCompositeLibrary = MockLibraryUtilExt.compileJvmLibraryToJar(
+            sourcesPath = "$testDataPath${getTestName(true)}/compositeLibraryPart",
+            jarName = "compositeLibraryPart"
+        )
+        val stdlibJarForCompositeLibrary = ForTestCompileRuntime.runtimeJarForTests()
+        val jarForSourceDependentLibrary = MockLibraryUtilExt.compileJvmLibraryToJar(
+            sourcesPath = "$testDataPath${getTestName(true)}/sourceDependentLibrary",
+            jarName = "sourceDependentLibrary"
         )
 
-        val libNew = MockLibraryUtil.compileJvmLibraryToJar(
-            testDataPath + "${getTestName(true)}/libNew", "libNew",
-            extraOptions = listOf("-language-version", "1.3", "-api-version", "1.3")
-        )
+        val dependencyModule = module("dependencyModule")
+        val anchorModule = module("anchor")
+        val sourceModule = module("sourceModule")
 
-        val moduleNew = module("moduleNew").setupKotlinFacet {
-            settings.coroutineSupport = LanguageFeature.State.ENABLED
-            settings.languageLevel = LanguageVersion.KOTLIN_1_3
-            settings.apiLevel = LanguageVersion.KOTLIN_1_3
+        val sourceDependentLibraryName = "sourceDependentLibrary"
+        sourceModule.addMultiJarLibrary(listOf(stdlibJarForCompositeLibrary, jarForCompositeLibrary), "compositeLibrary")
+        sourceModule.addLibrary(jarForSourceDependentLibrary, sourceDependentLibraryName)
+        anchorModule.addDependency(dependencyModule)
+
+        val anchorMapping = mapOf(sourceDependentLibraryName to anchorModule.name)
+
+        withResolutionAnchors(anchorMapping) {
+            checkHighlightingInProject()
+            dependencyModule.modifyTheOnlySourceFile()
+            checkHighlightingInProject()
         }
+    }
 
-        val moduleOld = module("moduleOld").setupKotlinFacet {
-            settings.coroutineSupport = LanguageFeature.State.ENABLED
-            settings.languageLevel = LanguageVersion.KOTLIN_1_2
-            settings.apiLevel = LanguageVersion.KOTLIN_1_2
+    private fun Module.modifyTheOnlySourceFile() {
+        val sourceRoot = sourceRoots.singleOrNull() ?: error("Expected single source root in a test module")
+        assert(sourceRoot.isDirectory) { "Source root of a test module is not a directory" }
+        val ktFile = sourceRoot.children.singleOrNull()?.toPsiFile(project) as? KtFile
+            ?: error("Expected single .kt file in a test source module")
+
+        val stubFunctionName = "fn${System.currentTimeMillis()}_${ThreadLocalRandom.current().nextInt().toLong().absoluteValue}"
+        WriteCommandAction.runWriteCommandAction(project) {
+            ktFile.add(
+                KtPsiFactory(project).createFunction("fun $stubFunctionName() {}")
+            )
         }
-
-        moduleNew.addLibrary(libOld)
-        moduleNew.addLibrary(libNew)
-        moduleNew.addLibrary(ForTestCompileRuntime.runtimeJarForTests())
-
-        moduleOld.addLibrary(libNew)
-        moduleOld.addLibrary(libOld)
-        moduleOld.addLibrary(ForTestCompileRuntime.runtimeJarForTests())
-
-        moduleNew.addDependency(moduleOld)
-
-        checkHighlightingInProject()
     }
 
     private fun Module.setupKotlinFacet(configure: KotlinFacetConfiguration.() -> Unit) = apply {

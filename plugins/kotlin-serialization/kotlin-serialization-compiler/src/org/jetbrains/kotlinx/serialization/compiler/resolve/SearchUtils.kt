@@ -69,6 +69,14 @@ internal fun ClassDescriptor.getKSerializerConstructorMarker(): ClassDescriptor 
         )
     )!!
 
+internal fun ClassDescriptor.getKSerializer(): ClassDescriptor =
+    module.findClassAcrossModuleDependencies(
+        ClassId(
+            SerializationPackages.packageFqName,
+            SerialEntityNames.KSERIALIZER_NAME
+        )
+    )!!
+
 internal fun getInternalPackageFqn(classSimpleName: String): FqName =
     SerializationPackages.internalPackageFqName.child(Name.identifier(classSimpleName))
 
@@ -81,6 +89,16 @@ internal fun ModuleDescriptor.getClassFromInternalSerializationPackage(classSimp
             )
         )
     ) { "Can't locate class $classSimpleName from package ${SerializationPackages.internalPackageFqName}" }
+
+internal fun ModuleDescriptor.getClassFromSerializationDescriptorsPackage(classSimpleName: String) =
+    requireNotNull(
+        findClassAcrossModuleDependencies(
+            ClassId(
+                SerializationPackages.descriptorsPackageFqName,
+                Name.identifier(classSimpleName)
+            )
+        )
+    ) { "Can't locate class $classSimpleName from package ${SerializationPackages.descriptorsPackageFqName}" }
 
 internal fun getSerializationPackageFqn(classSimpleName: String): FqName =
     SerializationPackages.packageFqName.child(Name.identifier(classSimpleName))

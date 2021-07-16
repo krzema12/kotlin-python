@@ -3,8 +3,9 @@
 //import kotlin.browser.window
 //import kotlinx.cinterop.CPointed
 //
-fun jvmSpecific() {
+fun jvmSpecific(args: Array<String>) {
     val x: Cloneable? = null
+    args.<!MISSING_DEPENDENCY_SUPERCLASS!>clone<!>()
 }
 
 //fun nativeSpecific() {

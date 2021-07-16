@@ -10,9 +10,15 @@ import org.jetbrains.kotlin.fir.session.FirSessionFactory
 fun FirSessionFactory.FirSessionConfigurator.registerCommonCheckers() {
     useCheckers(CommonDeclarationCheckers)
     useCheckers(CommonExpressionCheckers)
+    useCheckers(CommonTypeCheckers)
 }
 
 fun FirSessionFactory.FirSessionConfigurator.registerExtendedCommonCheckers() {
     useCheckers(ExtendedExpressionCheckers)
     useCheckers(ExtendedDeclarationCheckers)
+}
+
+// TODO: Move this to different, JVM-specific module?
+fun FirSessionFactory.FirSessionConfigurator.registerJvmCheckers() {
+    useCheckers(JvmDeclarationCheckers)
 }

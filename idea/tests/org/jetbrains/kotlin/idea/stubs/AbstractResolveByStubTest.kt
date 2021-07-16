@@ -11,12 +11,14 @@ import org.jetbrains.kotlin.idea.caches.resolve.findModuleDescriptor
 import org.jetbrains.kotlin.idea.test.AstAccessControl
 import org.jetbrains.kotlin.idea.test.KotlinLightCodeInsightFixtureTestCase
 import org.jetbrains.kotlin.idea.test.KotlinWithJdkAndRuntimeLightProjectDescriptor
+import org.jetbrains.kotlin.idea.test.withCustomCompilerOptions
 import org.jetbrains.kotlin.load.java.descriptors.PossiblyExternalAnnotationDescriptor
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.test.InTextDirectivesUtils
 import org.jetbrains.kotlin.test.util.DescriptorValidator.ValidationVisitor.errorTypesForbidden
 import org.jetbrains.kotlin.test.util.RecursiveDescriptorComparator
+import org.jetbrains.kotlin.test.util.RecursiveDescriptorComparatorAdaptor
 import org.junit.Assert
 import java.io.File
 
@@ -32,7 +34,10 @@ abstract class AbstractResolveByStubTest : KotlinLightCodeInsightFixtureTestCase
         myFixture.configureByFile(fileName)
         val shouldFail = getTestName(false) == "ClassWithConstVal"
         AstAccessControl.testWithControlledAccessToAst(shouldFail, project, testRootDisposable) {
-            performTest(testPath())
+            val path = testPath()
+            withCustomCompilerOptions(File(path).readText(), project, module) {
+                performTest(path)
+            }
         }
     }
 
@@ -46,7 +51,7 @@ abstract class AbstractResolveByStubTest : KotlinLightCodeInsightFixtureTestCase
 
         val fileToCompareTo = File(FileUtil.getNameWithoutExtension(path) + ".txt")
 
-        RecursiveDescriptorComparator.validateAndCompareDescriptorWithFile(
+        RecursiveDescriptorComparatorAdaptor.validateAndCompareDescriptorWithFile(
             packageViewDescriptor,
             RecursiveDescriptorComparator.DONT_INCLUDE_METHODS_OF_OBJECT
                 .filterRecursion(RecursiveDescriptorComparator.SKIP_BUILT_INS_PACKAGES)

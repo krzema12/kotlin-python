@@ -17,11 +17,26 @@ import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.declarations.IrValueDeclaration
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.types.isUnit
-import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.ir.util.isEffectivelyExternal
+import org.jetbrains.kotlin.ir.util.isEnumClass
+import org.jetbrains.kotlin.ir.util.parentAsClass
+import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.js.backend.ast.*
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 class IrElementToJsExpressionTransformer : BaseIrElementToJsNodeTransformer<JsExpression, JsGenerationContext> {
+
+    override fun visitComposite(expression: IrComposite, data: JsGenerationContext): JsExpression {
+        val size = expression.statements.size
+        if (size == 0) TODO("Empty IrComposite is not supported")
+
+        val first = expression.statements[0].accept(this, data)
+        if (size == 1) return first
+
+        return expression.statements.fold(first) { left, right ->
+            JsBinaryOperation(JsBinaryOperator.COMMA, left, right.accept(this, data))
+        }
+    }
 
     override fun visitVararg(expression: IrVararg, context: JsGenerationContext): JsExpression {
         assert(expression.elements.none { it is IrSpreadElement })
@@ -99,13 +114,6 @@ class IrElementToJsExpressionTransformer : BaseIrElementToJsNodeTransformer<JsEx
         assert(obj.kind == ClassKind.OBJECT)
         assert(obj.isEffectivelyExternal()) { "Non external IrGetObjectValue must be lowered" }
 
-        // External interfaces cannot normally have companion objects.
-        // However, stdlib uses them to simulate string literal unions
-        // TODO: Stop abusing this tech
-        if (obj.isCompanion && obj.parentAsClass.isInterface) {
-            return JsNullLiteral()
-        }
-
         return context.getRefForExternalClass(obj)
     }
 
@@ -149,27 +157,45 @@ class IrElementToJsExpressionTransformer : BaseIrElementToJsNodeTransformer<JsEx
         val function = expression.symbol.owner
         val arguments = translateCallArguments(expression, context, this)
         val klass = function.parentAsClass
-        return if (klass.isInline) {
-            assert(function.isPrimary) {
-                "Inline class secondary constructors must be lowered into static methods"
-            }
-            // Argument value constructs unboxed inline class instance
-            arguments.single()
-        } else {
-            val ref = when {
-                klass.isEffectivelyExternal() ->
-                    context.getRefForExternalClass(klass)
 
-                else ->
-                    context.getNameForClass(klass).makeRef()
+        require(!klass.isInline) {
+            "All inline class constructor calls must be lowered to static function calls"
+        }
+
+        return when {
+            klass.isEffectivelyExternal() -> {
+                val refForExternalClass = context.getRefForExternalClass(klass)
+                val varargParameterIndex = expression.symbol.owner.varargParameterIndex()
+                if (varargParameterIndex == -1) {
+                    JsNew(refForExternalClass, arguments)
+                } else {
+                    val argumentsAsSingleArray = argumentsWithVarargAsSingleArray(
+                        expression,
+                        context,
+                        JsNullLiteral(),
+                        arguments,
+                        varargParameterIndex
+                    )
+                    JsNew(
+                        JsInvocation(
+                            JsNameRef("apply", JsNameRef("bind", JsNameRef("Function"))),
+                            refForExternalClass,
+                            argumentsAsSingleArray
+                        ),
+                        emptyList()
+                    )
+                }
             }
-            JsNew(ref, arguments)
+            else -> {
+                val ref = context.getNameForClass(klass).makeRef()
+                JsNew(ref, arguments)
+            }
         }
     }
 
     override fun visitCall(expression: IrCall, context: JsGenerationContext): JsExpression {
         if (context.checkIfJsCode(expression.symbol)) {
-            val statements = translateJsCodeIntoStatementList(expression.getValueArgument(0) ?: error("JsCode is expected"))
+            val statements = translateJsCodeIntoStatementList(expression.getValueArgument(0) ?: error("JsCode is expected"))!!
             if (statements.isEmpty()) return JsPrefixOperation(JsUnaryOperator.VOID, JsIntLiteral(3)) // TODO: report warning or even error
 
             val lastStatement = statements.last()

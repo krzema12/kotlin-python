@@ -5,16 +5,19 @@
 
 package org.jetbrains.kotlin.fir.scopes.impl
 
+import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.resolve.substitution.ConeSubstitutor
+import org.jetbrains.kotlin.fir.resolve.transformers.ensureResolved
+import org.jetbrains.kotlin.fir.resolve.transformers.ensureResolvedTypeDeclaration
 import org.jetbrains.kotlin.fir.typeContext
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.types.AbstractTypeChecker
 import org.jetbrains.kotlin.types.model.KotlinTypeMarker
 import org.jetbrains.kotlin.types.model.SimpleTypeMarker
 
-class FirStandardOverrideChecker(session: FirSession) : FirAbstractOverrideChecker() {
+class FirStandardOverrideChecker(private val session: FirSession) : FirAbstractOverrideChecker() {
     private val context: ConeTypeContext = session.typeContext
 
     private fun isEqualTypes(substitutedCandidateType: ConeKotlinType, substitutedBaseType: ConeKotlinType): Boolean {
@@ -51,8 +54,11 @@ class FirStandardOverrideChecker(session: FirSession) : FirAbstractOverrideCheck
         else -> this
     }
 
-    fun isEqualTypes(candidateTypeRef: FirTypeRef, baseTypeRef: FirTypeRef, substitutor: ConeSubstitutor) =
-        isEqualTypes(candidateTypeRef.coneType, baseTypeRef.coneType, substitutor)
+    fun isEqualTypes(candidateTypeRef: FirTypeRef, baseTypeRef: FirTypeRef, substitutor: ConeSubstitutor): Boolean {
+        candidateTypeRef.ensureResolvedTypeDeclaration(session, requiredPhase = FirResolvePhase.TYPES)
+        baseTypeRef.ensureResolvedTypeDeclaration(session, requiredPhase = FirResolvePhase.TYPES)
+        return isEqualTypes(candidateTypeRef.coneType, baseTypeRef.coneType, substitutor)
+    }
 
 
     /**
@@ -91,7 +97,7 @@ class FirStandardOverrideChecker(session: FirSession) : FirAbstractOverrideCheck
         overrideCandidate: FirCallableMemberDeclaration<*>,
         baseDeclaration: FirCallableMemberDeclaration<*>
     ): ConeSubstitutor? {
-        val substitutor = buildSubstitutorForOverridesCheck(overrideCandidate, baseDeclaration) ?: return null
+        val substitutor = buildSubstitutorForOverridesCheck(overrideCandidate, baseDeclaration, session) ?: return null
         if (
             overrideCandidate.typeParameters.isNotEmpty() &&
             overrideCandidate.typeParameters.zip(baseDeclaration.typeParameters).any { (override, base) ->
@@ -109,9 +115,14 @@ class FirStandardOverrideChecker(session: FirSession) : FirAbstractOverrideCheck
     }
 
     override fun isOverriddenFunction(overrideCandidate: FirSimpleFunction, baseDeclaration: FirSimpleFunction): Boolean {
+        if (Visibilities.isPrivate(baseDeclaration.visibility)) return false
+
         if (overrideCandidate.valueParameters.size != baseDeclaration.valueParameters.size) return false
 
         val substitutor = buildTypeParametersSubstitutorIfCompatible(overrideCandidate, baseDeclaration) ?: return false
+
+        overrideCandidate.ensureResolved(FirResolvePhase.TYPES, useSiteSession = session)
+        baseDeclaration.ensureResolved(FirResolvePhase.TYPES, useSiteSession = session)
 
         if (!isEqualReceiverTypes(overrideCandidate.receiverTypeRef, baseDeclaration.receiverTypeRef, substitutor)) return false
 
@@ -124,6 +135,8 @@ class FirStandardOverrideChecker(session: FirSession) : FirAbstractOverrideCheck
         overrideCandidate: FirCallableMemberDeclaration<*>,
         baseDeclaration: FirProperty
     ): Boolean {
+        if (Visibilities.isPrivate(baseDeclaration.visibility)) return false
+
         if (overrideCandidate !is FirProperty) return false
         val substitutor = buildTypeParametersSubstitutorIfCompatible(overrideCandidate, baseDeclaration) ?: return false
         return isEqualReceiverTypes(overrideCandidate.receiverTypeRef, baseDeclaration.receiverTypeRef, substitutor)

@@ -7,8 +7,11 @@ package org.jetbrains.kotlin.codegen.inline
 
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.kotlin.builtins.KotlinBuiltIns
-import org.jetbrains.kotlin.codegen.*
+import org.jetbrains.kotlin.codegen.ASSERTIONS_DISABLED_FIELD_NAME
+import org.jetbrains.kotlin.codegen.AsmUtil
+import org.jetbrains.kotlin.codegen.BaseExpressionCodegen
 import org.jetbrains.kotlin.codegen.SamWrapperCodegen.SAM_WRAPPER_SUFFIX
+import org.jetbrains.kotlin.codegen.StackValue
 import org.jetbrains.kotlin.codegen.`when`.WhenByEnumsMapping
 import org.jetbrains.kotlin.codegen.binding.CodegenBinding
 import org.jetbrains.kotlin.codegen.context.CodegenContext
@@ -22,6 +25,7 @@ import org.jetbrains.kotlin.codegen.optimization.common.asSequence
 import org.jetbrains.kotlin.codegen.optimization.common.intConstant
 import org.jetbrains.kotlin.codegen.state.GenerationState
 import org.jetbrains.kotlin.codegen.state.KotlinTypeMapper
+import org.jetbrains.kotlin.codegen.state.KotlinTypeMapperBase
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.fileClasses.JvmFileClassUtil
 import org.jetbrains.kotlin.load.java.JvmAbi
@@ -32,9 +36,9 @@ import org.jetbrains.kotlin.resolve.DescriptorToSourceUtils
 import org.jetbrains.kotlin.resolve.calls.model.ResolvedCall
 import org.jetbrains.kotlin.resolve.jvm.AsmTypes
 import org.jetbrains.kotlin.resolve.jvm.JvmClassName
-import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.TypeProjectionImpl
 import org.jetbrains.kotlin.types.TypeSubstitutor
+import org.jetbrains.kotlin.types.model.KotlinTypeMarker
 import org.jetbrains.kotlin.util.OperatorNameConventions
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 import org.jetbrains.org.objectweb.asm.*
@@ -346,16 +350,16 @@ internal val AbstractInsnNode?.insnText: String
 internal val AbstractInsnNode?.insnOpcodeText: String
     get() = if (this == null) "null" else Printer.OPCODES[opcode]
 
-internal fun buildClassReaderByInternalName(state: GenerationState, internalName: String): ClassReader {
+internal fun loadClassBytesByInternalName(state: GenerationState, internalName: String): ByteArray {
     //try to find just compiled classes then in dependencies
-    val outputFile = state.factory.get(internalName + ".class")
+    val outputFile = state.factory.get("$internalName.class")
     if (outputFile != null) {
-        return ClassReader(outputFile.asByteArray())
+        return outputFile.asByteArray()
     }
 
-    val file = findVirtualFileImprecise(state, internalName) ?: throw RuntimeException("Couldn't find virtual file for " + internalName)
+    val file = findVirtualFileImprecise(state, internalName) ?: throw RuntimeException("Couldn't find virtual file for $internalName")
 
-    return ClassReader(file.contentsToByteArray())
+    return file.contentsToByteArray()
 }
 
 fun generateFinallyMarker(v: InstructionAdapter, depth: Int, start: Boolean) {
@@ -415,13 +419,13 @@ fun addInlineMarker(v: InstructionAdapter, isStartNotEnd: Boolean) {
 internal fun addUnboxInlineClassMarkersIfNeeded(v: InstructionAdapter, descriptor: CallableDescriptor, typeMapper: KotlinTypeMapper) {
     val inlineClass = (descriptor as? FunctionDescriptor)?.originalReturnTypeOfSuspendFunctionReturningUnboxedInlineClass(typeMapper)
     if (inlineClass != null) {
-        generateResumePathUnboxing(v, inlineClass)
+        generateResumePathUnboxing(v, inlineClass, typeMapper)
     }
 }
 
-fun generateResumePathUnboxing(v: InstructionAdapter, inlineClass: KotlinType) {
+fun generateResumePathUnboxing(v: InstructionAdapter, inlineClass: KotlinTypeMarker, typeMapper: KotlinTypeMapperBase) {
     addBeforeUnboxInlineClassMarker(v)
-    StackValue.unboxInlineClass(AsmTypes.OBJECT_TYPE, inlineClass, v)
+    StackValue.unboxInlineClass(AsmTypes.OBJECT_TYPE, inlineClass, v, typeMapper)
     // Suspend functions always returns Any?, but the unboxing disrupts type analysis of the bytecode.
     // For example, if the underlying type is String, CHECKCAST String is removed.
     // However, the unboxing is moved to the resume path, the direct path still has Any?, but now, without the CHECKCAST.
@@ -575,8 +579,8 @@ class InlineOnlySmapSkipper(codegen: BaseExpressionCodegen) {
         const val LOCAL_VARIABLE_INLINE_ARGUMENT_SYNTHETIC_LINE_NUMBER = 1
     }
 
-    fun onInlineLambdaStart(mv: MethodVisitor, info: LambdaInfo, smap: SourceMapper) {
-        val firstLine = info.node.node.instructions.asSequence().mapNotNull { it as? LineNumberNode }.firstOrNull()?.line ?: -1
+    fun onInlineLambdaStart(mv: MethodVisitor, lambda: MethodNode, smap: SourceMapper) {
+        val firstLine = lambda.instructions.asSequence().mapNotNull { it as? LineNumberNode }.firstOrNull()?.line ?: -1
         if (callLineNumber >= 0 && firstLine == callLineNumber) {
             // We want the debugger to be able to break both on the inline call itself, plus on each
             // invocation of the inline lambda passed to it. For that to happen there needs to be at least
@@ -623,5 +627,15 @@ fun MethodNode.preprocessSuspendMarkers(forInline: Boolean, keepFakeContinuation
             val newId = if (isBeforeInlineSuspendMarker(insn)) INLINE_MARKER_BEFORE_SUSPEND_ID else INLINE_MARKER_AFTER_SUSPEND_ID
             instructions.set(insn.previous, InsnNode(Opcodes.ICONST_0 + newId))
         }
+    }
+}
+
+fun cloneMethodNode(methodNode: MethodNode): MethodNode {
+    synchronized(methodNode) {
+        methodNode.instructions.resetLabels()
+        return MethodNode(
+            Opcodes.API_VERSION, methodNode.access, methodNode.name, methodNode.desc, methodNode.signature,
+            methodNode.exceptions.toTypedArray()
+        ).also(methodNode::accept)
     }
 }

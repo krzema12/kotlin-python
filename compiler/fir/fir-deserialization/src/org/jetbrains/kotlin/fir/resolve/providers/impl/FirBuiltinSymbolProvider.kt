@@ -7,10 +7,7 @@ package org.jetbrains.kotlin.fir.resolve.providers.impl
 
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.builtins.functions.FunctionClassKind
-import org.jetbrains.kotlin.descriptors.ClassKind
-import org.jetbrains.kotlin.descriptors.Modality
-import org.jetbrains.kotlin.descriptors.SourceElement
-import org.jetbrains.kotlin.descriptors.Visibilities
+import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.fir.*
 import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.declarations.builder.buildRegularClass
@@ -26,8 +23,7 @@ import org.jetbrains.kotlin.fir.resolve.defaultType
 import org.jetbrains.kotlin.fir.resolve.providers.FirSymbolProvider
 import org.jetbrains.kotlin.fir.resolve.providers.FirSymbolProviderInternals
 import org.jetbrains.kotlin.fir.scopes.KotlinScopeProvider
-import org.jetbrains.kotlin.fir.symbols.CallableId
-import org.jetbrains.kotlin.fir.symbols.StandardClassIds
+import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.FirResolvedTypeRef
 import org.jetbrains.kotlin.fir.types.builder.buildResolvedTypeRef
@@ -36,6 +32,7 @@ import org.jetbrains.kotlin.fir.types.impl.ConeTypeParameterTypeImpl
 import org.jetbrains.kotlin.metadata.ProtoBuf
 import org.jetbrains.kotlin.metadata.builtins.BuiltInsBinaryVersion
 import org.jetbrains.kotlin.metadata.deserialization.NameResolverImpl
+import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
@@ -48,8 +45,9 @@ import org.jetbrains.kotlin.utils.addToStdlib.firstNotNullResult
 import org.jetbrains.kotlin.utils.addToStdlib.getOrPut
 import java.io.InputStream
 
-@NoMutableState
-class FirBuiltinSymbolProvider(session: FirSession, val kotlinScopeProvider: KotlinScopeProvider) : FirSymbolProvider(session) {
+//TODO make thread safe
+@ThreadSafeMutableState
+open class FirBuiltinSymbolProvider(session: FirSession, val kotlinScopeProvider: KotlinScopeProvider) : FirSymbolProvider(session) {
 
     private data class SyntheticFunctionalInterfaceSymbolKey(val kind: FunctionClassKind, val arity: Int)
 
@@ -88,12 +86,13 @@ class FirBuiltinSymbolProvider(session: FirSession, val kotlinScopeProvider: Kot
             syntheticFunctionalInterfaceSymbols.getOrPut(SyntheticFunctionalInterfaceSymbolKey(kind, arity)) {
                 FirRegularClassSymbol(this).apply symbol@{
                     buildRegularClass klass@{
-                        session = this@FirBuiltinSymbolProvider.session
-                        origin = FirDeclarationOrigin.Synthetic
+                        declarationSiteSession = session
+                        origin = FirDeclarationOrigin.BuiltIns
                         name = relativeClassName.shortName()
                         status = FirResolvedDeclarationStatusImpl(
                             Visibilities.Public,
-                            Modality.ABSTRACT
+                            Modality.ABSTRACT,
+                            EffectiveVisibility.Public
                         ).apply {
                             isExpect = false
                             isActual = false
@@ -109,8 +108,9 @@ class FirBuiltinSymbolProvider(session: FirSession, val kotlinScopeProvider: Kot
                         typeParameters.addAll(
                             (1..arity).map {
                                 buildTypeParameter {
-                                    session = this@FirBuiltinSymbolProvider.session
-                                    origin = FirDeclarationOrigin.Synthetic
+                                    declarationSiteSession = session
+                                    resolvePhase = FirResolvePhase.ANALYZED_DEPENDENCIES
+                                    origin = FirDeclarationOrigin.BuiltIns
                                     name = Name.identifier("P$it")
                                     symbol = FirTypeParameterSymbol()
                                     variance = Variance.IN_VARIANCE
@@ -121,8 +121,9 @@ class FirBuiltinSymbolProvider(session: FirSession, val kotlinScopeProvider: Kot
                         )
                         typeParameters.add(
                             buildTypeParameter {
-                                session = this@FirBuiltinSymbolProvider.session
-                                origin = FirDeclarationOrigin.Synthetic
+                                declarationSiteSession = session
+                                resolvePhase = FirResolvePhase.ANALYZED_DEPENDENCIES
+                                origin = FirDeclarationOrigin.BuiltIns
                                 name = Name.identifier("R")
                                 symbol = FirTypeParameterSymbol()
                                 variance = Variance.OUT_VARIANCE
@@ -133,7 +134,8 @@ class FirBuiltinSymbolProvider(session: FirSession, val kotlinScopeProvider: Kot
                         val name = OperatorNameConventions.INVOKE
                         val functionStatus = FirResolvedDeclarationStatusImpl(
                             Visibilities.Public,
-                            Modality.ABSTRACT
+                            Modality.ABSTRACT,
+                            EffectiveVisibility.Public
                         ).apply {
                             isExpect = false
                             isActual = false
@@ -195,8 +197,9 @@ class FirBuiltinSymbolProvider(session: FirSession, val kotlinScopeProvider: Kot
                         }
                         addDeclaration(
                             buildSimpleFunction {
-                                session = this@FirBuiltinSymbolProvider.session
-                                origin = FirDeclarationOrigin.Synthetic
+                                declarationSiteSession = session
+                                resolvePhase = FirResolvePhase.ANALYZED_DEPENDENCIES
+                                origin = FirDeclarationOrigin.BuiltIns
                                 returnTypeRef = typeArguments.last()
                                 this.name = name
                                 status = functionStatus
@@ -207,8 +210,8 @@ class FirBuiltinSymbolProvider(session: FirSession, val kotlinScopeProvider: Kot
                                 valueParameters += typeArguments.dropLast(1).mapIndexed { index, typeArgument ->
                                     val parameterName = Name.identifier("p${index + 1}")
                                     buildValueParameter {
-                                        session = this@FirBuiltinSymbolProvider.session
-                                        origin = FirDeclarationOrigin.Synthetic
+                                        declarationSiteSession = session
+                                        origin = FirDeclarationOrigin.BuiltIns
                                         resolvePhase = FirResolvePhase.ANALYZED_DEPENDENCIES
                                         returnTypeRef = typeArgument
                                         this.name = parameterName
@@ -219,21 +222,13 @@ class FirBuiltinSymbolProvider(session: FirSession, val kotlinScopeProvider: Kot
                                         isVararg = false
                                     }
                                 }
-                                dispatchReceiverType = classId.defaultType(typeParameters.map { it.symbol })
+                                dispatchReceiverType = classId.defaultType(this@klass.typeParameters.map { it.symbol })
                             }
                         )
                     }
                 }
             }
         }
-    }
-
-    // Find the symbol for "invoke" in the function class
-    private fun FunctionClassKind.getInvoke(arity: Int): FirNamedFunctionSymbol? {
-        val functionClass = getClassLikeSymbolByFqName(classId(arity)) ?: return null
-        val invoke =
-            functionClass.fir.declarations.find { it is FirSimpleFunction && it.name == OperatorNameConventions.INVOKE } ?: return null
-        return (invoke as FirSimpleFunction).symbol as? FirNamedFunctionSymbol
     }
 
     private fun FunctionClassKind.classId(arity: Int) = ClassId(packageFqName, numberedClassName(arity))
@@ -243,6 +238,21 @@ class FirBuiltinSymbolProvider(session: FirSession, val kotlinScopeProvider: Kot
         allPackageFragments[packageFqName]?.flatMapTo(destination) {
             it.getTopLevelCallableSymbols(name)
         }
+    }
+
+    @FirSymbolProviderInternals
+    override fun getTopLevelFunctionSymbolsTo(destination: MutableList<FirNamedFunctionSymbol>, packageFqName: FqName, name: Name) {
+        getTopLevelFunctionSymbolsToByPackageFragments(destination, packageFqName, name)
+    }
+
+    protected fun getTopLevelFunctionSymbolsToByPackageFragments(destination: MutableList<FirNamedFunctionSymbol>, packageFqName: FqName, name: Name) {
+        allPackageFragments[packageFqName]?.flatMapTo(destination) {
+            it.getTopLevelFunctionSymbols(name)
+        }
+    }
+
+    @FirSymbolProviderInternals
+    override fun getTopLevelPropertySymbolsTo(destination: MutableList<FirPropertySymbol>, packageFqName: FqName, name: Name) {
     }
 
     private class BuiltInsPackageFragment(
@@ -299,23 +309,20 @@ class FirBuiltinSymbolProvider(session: FirSession, val kotlinScopeProvider: Kot
                     classId, classProto, symbol, nameResolver, session,
                     null, kotlinScopeProvider, parentContext,
                     null,
+                    origin = FirDeclarationOrigin.BuiltIns,
                     this::findAndDeserializeClass,
                 )
             }
         }
 
         fun getTopLevelCallableSymbols(name: Name): List<FirCallableSymbol<*>> {
+            return getTopLevelFunctionSymbols(name)
+        }
+
+        fun getTopLevelFunctionSymbols(name: Name): List<FirNamedFunctionSymbol> {
             return packageProto.`package`.functionList.filter { nameResolver.getName(it.name) == name }.map {
                 memberDeserializer.loadFunction(it).symbol
             }
-        }
-
-        fun getAllCallableNames(): Set<Name> {
-            return packageProto.`package`.functionList.mapTo(mutableSetOf()) { nameResolver.getName(it.name) }
-        }
-
-        fun getAllClassNames(): Set<Name> {
-            return classDataFinder.allClassIds.mapTo(mutableSetOf()) { it.shortClassName }
         }
     }
 }

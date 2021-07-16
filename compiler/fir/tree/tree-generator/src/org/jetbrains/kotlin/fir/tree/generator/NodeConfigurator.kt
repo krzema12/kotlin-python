@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.fir.tree.generator.FieldSets.calleeReference
 import org.jetbrains.kotlin.fir.tree.generator.FieldSets.classKind
 import org.jetbrains.kotlin.fir.tree.generator.FieldSets.controlFlowGraphReferenceField
 import org.jetbrains.kotlin.fir.tree.generator.FieldSets.declarations
+import org.jetbrains.kotlin.fir.tree.generator.FieldSets.effectiveVisibility
 import org.jetbrains.kotlin.fir.tree.generator.FieldSets.initializer
 import org.jetbrains.kotlin.fir.tree.generator.FieldSets.modality
 import org.jetbrains.kotlin.fir.tree.generator.FieldSets.name
@@ -74,7 +75,7 @@ object NodeConfigurator : AbstractFieldConfigurator<FirTreeBuilder>(FirTreeBuild
         }
 
         declaration.configure {
-            +field("session", firSessionType)
+            +field("declarationSiteSession", firSessionType)
             +field("resolvePhase", resolvePhaseType, withReplace = true).apply { isMutable = true }
             +field("origin", declarationOriginType)
             +field("attributes", declarationAttributesType)
@@ -195,6 +196,7 @@ object NodeConfigurator : AbstractFieldConfigurator<FirTreeBuilder>(FirTreeBuild
         qualifiedAccess.configure {
             +typeArguments.withTransform()
             +receivers
+            +field("source", sourceElementType, nullable = true, withReplace = true)
         }
 
         constExpression.configure {
@@ -270,7 +272,7 @@ object NodeConfigurator : AbstractFieldConfigurator<FirTreeBuilder>(FirTreeBuild
             parentArg(classLikeDeclaration, "F", typeAlias)
             +name
             +symbol("FirTypeAliasSymbol")
-            +field("expandedTypeRef", typeRef, withReplace = true)
+            +field("expandedTypeRef", typeRef, withReplace = true).withTransform()
             +annotations
         }
 
@@ -279,6 +281,9 @@ object NodeConfigurator : AbstractFieldConfigurator<FirTreeBuilder>(FirTreeBuild
             +symbol("FirAnonymousFunctionSymbol")
             +field(label, nullable = true)
             +field("invocationKind", eventOccurrencesRangeType, nullable = true, withReplace = true).apply {
+                isMutable = true
+            }
+            +field("inlineStatus", inlineStatusType, withReplace = true).apply {
                 isMutable = true
             }
             +booleanField("isLambda")
@@ -299,7 +304,7 @@ object NodeConfigurator : AbstractFieldConfigurator<FirTreeBuilder>(FirTreeBuild
             parentArg(function, "F", simpleFunction)
             parentArg(callableMemberDeclaration, "F", simpleFunction)
             +name
-            +symbol("FirFunctionSymbol<FirSimpleFunction>")
+            +symbol("FirNamedFunctionSymbol")
             +annotations
             +typeParameters
         }
@@ -338,6 +343,7 @@ object NodeConfigurator : AbstractFieldConfigurator<FirTreeBuilder>(FirTreeBuild
         }
 
         resolvedDeclarationStatus.configure {
+            +effectiveVisibility
             shouldBeAnInterface()
         }
 
@@ -535,6 +541,7 @@ object NodeConfigurator : AbstractFieldConfigurator<FirTreeBuilder>(FirTreeBuild
 
         resolvedCallableReference.configure {
             +fieldList("inferredTypeArguments", coneKotlinTypeType)
+            +field("mappedArguments", callableReferenceMappedArgumentsType)
         }
 
         delegateFieldReference.configure {
@@ -570,6 +577,7 @@ object NodeConfigurator : AbstractFieldConfigurator<FirTreeBuilder>(FirTreeBuild
 
         userTypeRef.configure {
             +fieldList("qualifier", firQualifierPartType)
+            +booleanField("customRenderer")
         }
 
         functionTypeRef.configure {
@@ -577,10 +585,6 @@ object NodeConfigurator : AbstractFieldConfigurator<FirTreeBuilder>(FirTreeBuild
             +valueParameters
             +returnTypeRef
             +booleanField("isSuspend")
-        }
-
-        composedSuperTypeRef.configure {
-            +fieldList("superTypeRefs", resolvedTypeRef)
         }
 
         thisReceiverExpression.configure {
@@ -591,7 +595,8 @@ object NodeConfigurator : AbstractFieldConfigurator<FirTreeBuilder>(FirTreeBuild
             +field("subject", expression, nullable = true).withTransform()
             +field("subjectVariable", variable.withArgs("F" to "*"), nullable = true)
             +fieldList("branches", whenBranch).withTransform()
-            +booleanField("isExhaustive", withReplace = true)
+            +field("exhaustivenessStatus", exhaustivenessStatusType, nullable = true, withReplace = true)
+            +booleanField("usedAsExpression")
             needTransformOtherChildren()
         }
 

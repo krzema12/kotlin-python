@@ -32,6 +32,7 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.test.KotlinBaseTest.TestFile
 import org.jetbrains.kotlin.test.MockLibraryUtil
 import org.jetbrains.kotlin.test.testFramework.KtUsefulTestCase
+import org.jetbrains.kotlin.test.util.JUnit4Assertions
 import java.io.File
 
 class DebuggerTestCompilerFacility(
@@ -91,8 +92,8 @@ class DebuggerTestCompilerFacility(
 
         val options = mutableListOf("-jvm-target", jvmTarget.description)
 
-        if (useIrBackend) {
-            options.add("-Xuse-ir")
+        if (!useIrBackend) {
+            options.add("-Xuse-old-backend")
         }
 
         if (kotlin.isNotEmpty()) {
@@ -109,7 +110,8 @@ class DebuggerTestCompilerFacility(
                 java.map { File(srcDir, it.name).absolutePath },
                 mavenArtifacts + classesDir.absolutePath,
                 listOf("-g"),
-                classesDir
+                classesDir,
+                JUnit4Assertions
             )
         }
     }
@@ -152,7 +154,8 @@ class DebuggerTestCompilerFacility(
                 java.map { File(srcDir, it.name).absolutePath },
                 getClasspath(module) + listOf(classesDir.absolutePath),
                 listOf("-g"),
-                classesDir
+                classesDir,
+                JUnit4Assertions
             )
         }
 

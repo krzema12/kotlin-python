@@ -37,6 +37,7 @@ dependencies {
     compileOnly(intellijPluginDep("java"))
 
     testRuntimeOnly(toolsJar())
+    testRuntimeOnly(project(":kotlin-gradle-statistics"))
     testRuntime(project(":kotlin-reflect"))
     testRuntime(project(":idea:idea-jvm"))
     testRuntime(project(":idea:idea-android"))
@@ -49,6 +50,7 @@ dependencies {
     testRuntime(project(":kotlin-scripting-idea"))
     testRuntime(project(":plugins:parcelize:parcelize-ide"))
     testRuntime(project(":kotlinx-serialization-ide-plugin"))
+    testRuntime(project(":plugins:lombok:lombok-ide-plugin"))
     // TODO: the order of the plugins matters here, consider avoiding order-dependency
     Platform[192].orHigher {
         testRuntime(intellijPluginDep("java"))

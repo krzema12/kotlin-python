@@ -4,6 +4,7 @@ package a
 
 //+JDK
 import java.util.*
+import checkSubtype
 
 fun foo() {
     val v = array(1, 2, 3)
@@ -30,6 +31,6 @@ fun foo() {
 @Suppress("UNCHECKED_CAST")
 fun <T> array(vararg t : T) : Array<T> = t as Array<T>
 
-infix fun <T, R> Array<T>.map(<!UNUSED_PARAMETER!>transform<!> : (T) -> R) : List<R> {<!NO_RETURN_IN_FUNCTION_WITH_BLOCK_BODY!>}<!>
+infix fun <T, R> Array<T>.map(transform : (T) -> R) : List<R> {<!NO_RETURN_IN_FUNCTION_WITH_BLOCK_BODY!>}<!>
 
-infix fun <T, R> Iterable<T>.map(<!UNUSED_PARAMETER!>transform<!> : (T) -> R) : List<R> {<!NO_RETURN_IN_FUNCTION_WITH_BLOCK_BODY!>}<!>
+infix fun <T, R> Iterable<T>.map(transform : (T) -> R) : List<R> {<!NO_RETURN_IN_FUNCTION_WITH_BLOCK_BODY!>}<!>

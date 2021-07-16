@@ -7,7 +7,7 @@ import org.gradle.api.tasks.compile.AbstractCompile
 import org.gradle.api.tasks.compile.JavaCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.logging.kotlinDebug
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractKotlinNativeCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinWithJavaCompilation
@@ -22,8 +22,9 @@ class SubpluginEnvironment(
     private val kotlinPluginVersion: String
 ) {
     companion object {
-        fun loadSubplugins(project: Project, kotlinPluginVersion: String): SubpluginEnvironment =
-            try {
+        fun loadSubplugins(project: Project): SubpluginEnvironment {
+            val kotlinPluginVersion = project.getKotlinPluginVersion()
+            return try {
                 @Suppress("DEPRECATION") // support for the deprecated plugin API
                 val klass = KotlinGradleSubplugin::class.java
                 val buildscriptClassloader = project.buildscript.classLoader
@@ -53,6 +54,7 @@ class SubpluginEnvironment(
                 project.logger.error("Could not load subplugins", e)
                 SubpluginEnvironment(listOf(), kotlinPluginVersion)
             }
+        }
     }
 
     fun addSubpluginOptions(
@@ -66,12 +68,13 @@ class SubpluginEnvironment(
             val pluginId = subplugin.getCompilerPluginId()
             project.logger.kotlinDebug { "Loading subplugin $pluginId" }
 
-            subplugin.getPluginArtifact().let { artifact ->
-                project.addMavenDependency(PLUGIN_CLASSPATH_CONFIGURATION_NAME, artifact)
-            }
 
-            subplugin.getPluginArtifactForNative()?.let { artifact ->
-                project.addMavenDependency(NATIVE_COMPILER_PLUGIN_CLASSPATH_CONFIGURATION_NAME, artifact)
+            if (kotlinCompilation is AbstractKotlinNativeCompilation) {
+                subplugin.getPluginArtifactForNative()?.let { artifact ->
+                    project.addMavenDependency(kotlinCompilation.pluginConfigurationName, artifact)
+                }
+            } else {
+                project.addMavenDependency(kotlinCompilation.pluginConfigurationName, subplugin.getPluginArtifact())
             }
 
             val subpluginOptionsProvider = subplugin.applyToCompilation(kotlinCompilation)
@@ -115,7 +118,7 @@ class SubpluginEnvironment(
 internal fun addCompilationSourcesToExternalCompileTask(compilation: KotlinCompilation<*>, task: TaskProvider<out AbstractCompile>) {
     if (compilation is KotlinJvmAndroidCompilation) {
         compilation.androidVariant.forEachKotlinSourceSet { sourceSet -> task.configure { it.source(sourceSet.kotlin) } }
-        compilation.androidVariant.forEachJavaSourceDir { sources -> task.configure { it.source(sources) } }
+        compilation.androidVariant.forEachJavaSourceDir { sources -> task.configure { it.source(sources.dir) } }
     } else {
         task.configure { taskInstance ->
             compilation.allKotlinSourceSets.forEach { sourceSet -> taskInstance.source(sourceSet.kotlin) }
@@ -126,7 +129,7 @@ internal fun addCompilationSourcesToExternalCompileTask(compilation: KotlinCompi
 internal class LegacyKotlinCompilerPluginSupportPlugin(
     @Suppress("deprecation") // support for deprecated API
     val oldPlugin: KotlinGradleSubplugin<AbstractCompile>
-): KotlinCompilerPluginSupportPlugin {
+) : KotlinCompilerPluginSupportPlugin {
     override fun isApplicable(kotlinCompilation: KotlinCompilation<*>): Boolean =
         oldPlugin.isApplicable(kotlinCompilation.target.project, kotlinCompilation.compileKotlinTaskProvider.get() as AbstractCompile)
 
@@ -135,11 +138,8 @@ internal class LegacyKotlinCompilerPluginSupportPlugin(
     ): Provider<List<SubpluginOption>> {
         val project = kotlinCompilation.target.project
 
-        val androidProjectHandlerOrNull: AbstractAndroidProjectHandler? = if (kotlinCompilation is KotlinJvmAndroidCompilation)
-            KotlinAndroidPlugin.androidTargetHandler(
-                checkNotNull(project.getKotlinPluginVersion()),
-                kotlinCompilation.target as KotlinAndroidTarget
-            ) else null
+        val androidProjectHandlerOrNull: AbstractAndroidProjectHandler? =
+            if (kotlinCompilation is KotlinJvmAndroidCompilation) KotlinAndroidPlugin.androidTargetHandler() else null
 
         val variantData = (kotlinCompilation as? KotlinJvmAndroidCompilation)?.androidVariant
 

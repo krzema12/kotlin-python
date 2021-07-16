@@ -5,7 +5,6 @@
 
 package org.jetbrains.kotlin.fir
 
-import com.intellij.openapi.project.Project
 import org.jetbrains.kotlin.analyzer.ModuleInfo
 import org.jetbrains.kotlin.fir.types.impl.*
 import org.jetbrains.kotlin.fir.utils.ArrayMapAccessor
@@ -13,7 +12,6 @@ import org.jetbrains.kotlin.fir.utils.ComponentArrayOwner
 import org.jetbrains.kotlin.fir.utils.NullableArrayMapAccessor
 import org.jetbrains.kotlin.fir.utils.TypeRegistry
 import org.jetbrains.kotlin.utils.JavaTypeEnhancementState
-import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KClass
 
 interface FirSessionComponent
@@ -44,8 +42,6 @@ abstract class FirSession @PrivateSessionConstructor constructor(val sessionProv
 }
 
 interface FirSessionProvider {
-    val project: Project
-
     fun getSession(moduleInfo: ModuleInfo): FirSession?
 }
 
@@ -66,4 +62,5 @@ class BuiltinTypes {
     val nullableNothingType: FirImplicitBuiltinTypeRef = FirImplicitNullableNothingTypeRef(null)
     val charType: FirImplicitBuiltinTypeRef = FirImplicitCharTypeRef(null)
     val stringType: FirImplicitBuiltinTypeRef = FirImplicitStringTypeRef(null)
+    val throwableType: FirImplicitThrowableTypeRef = FirImplicitThrowableTypeRef(null)
 }

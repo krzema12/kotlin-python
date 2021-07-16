@@ -18,6 +18,7 @@ package org.jetbrains.kotlin.psi2ir.generators
 
 import org.jetbrains.kotlin.backend.common.CodegenUtil
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
+import org.jetbrains.kotlin.ir.PsiIrFileEntry
 import org.jetbrains.kotlin.ir.declarations.DescriptorMetadataSource
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.impl.IrFileImpl
@@ -27,7 +28,6 @@ import org.jetbrains.kotlin.ir.linkage.IrProvider
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
 import org.jetbrains.kotlin.ir.util.ExternalDependenciesGenerator
 import org.jetbrains.kotlin.ir.util.StubGeneratorExtensions
-import org.jetbrains.kotlin.ir.util.generateTypicalIrProviderList
 import org.jetbrains.kotlin.ir.util.patchDeclarationParents
 import org.jetbrains.kotlin.ir.visitors.acceptChildrenVoid
 import org.jetbrains.kotlin.ir.visitors.acceptVoid
@@ -46,8 +46,8 @@ class ModuleGenerator(
     fun generateModuleFragment(ktFiles: Collection<KtFile>): IrModuleFragment =
         IrModuleFragmentImpl(context.moduleDescriptor, context.irBuiltIns).also { irModule ->
             val irDeclarationGenerator = DeclarationGenerator(context)
-            ktFiles.mapTo(irModule.files) { ktFile ->
-                generateSingleFile(irDeclarationGenerator, ktFile)
+            ktFiles.toSet().mapTo(irModule.files) { ktFile ->
+                generateSingleFile(irDeclarationGenerator, ktFile, irModule)
             }
         }
 
@@ -60,17 +60,17 @@ class ModuleGenerator(
             irModule.descriptor, context.irBuiltIns, context.symbolTable, deserializer,
             extensions
         )
-        ExternalDependenciesGenerator(context.symbolTable, fullIrProvidersList, context.languageVersionSettings)
+        ExternalDependenciesGenerator(context.symbolTable, fullIrProvidersList)
             .generateUnboundSymbolsAsDependencies()
     }
 
     fun generateUnboundSymbolsAsDependencies(irProviders: List<IrProvider>) {
-        ExternalDependenciesGenerator(context.symbolTable, irProviders, context.languageVersionSettings)
+        ExternalDependenciesGenerator(context.symbolTable, irProviders)
             .generateUnboundSymbolsAsDependencies()
     }
 
-    private fun generateSingleFile(irDeclarationGenerator: DeclarationGenerator, ktFile: KtFile): IrFileImpl {
-        val irFile = createEmptyIrFile(ktFile)
+    private fun generateSingleFile(irDeclarationGenerator: DeclarationGenerator, ktFile: KtFile, module: IrModuleFragment): IrFileImpl {
+        val irFile = createEmptyIrFile(ktFile, module)
 
         for (ktAnnotationEntry in ktFile.annotationEntries) {
             val annotationDescriptor = getOrFail(BindingContext.ANNOTATION, ktAnnotationEntry)
@@ -101,13 +101,11 @@ class ModuleGenerator(
         return irFile
     }
 
-    private fun createEmptyIrFile(ktFile: KtFile): IrFileImpl {
-        val fileEntry = context.sourceManager.getOrCreateFileEntry(ktFile)
+    private fun createEmptyIrFile(ktFile: KtFile, module: IrModuleFragment): IrFileImpl {
+        val fileEntry = PsiIrFileEntry(ktFile)
         val packageFragmentDescriptor = context.moduleDescriptor.findPackageFragmentForFile(ktFile)!!
-        val irFile = IrFileImpl(fileEntry, packageFragmentDescriptor).apply {
+        return IrFileImpl(fileEntry, packageFragmentDescriptor, module).apply {
             metadata = DescriptorMetadataSource.File(CodegenUtil.getMemberDescriptorsToGenerate(ktFile, context.bindingContext))
         }
-        context.sourceManager.putFileEntry(irFile, fileEntry)
-        return irFile
     }
 }

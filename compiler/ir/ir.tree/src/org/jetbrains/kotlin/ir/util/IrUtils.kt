@@ -12,14 +12,9 @@ import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.descriptors.IrBuiltIns
 import org.jetbrains.kotlin.ir.expressions.*
-import org.jetbrains.kotlin.ir.expressions.impl.IrCallImpl
-import org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl
-import org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl
+import org.jetbrains.kotlin.ir.expressions.impl.*
 import org.jetbrains.kotlin.ir.symbols.*
-import org.jetbrains.kotlin.ir.types.IrSimpleType
-import org.jetbrains.kotlin.ir.types.IrType
-import org.jetbrains.kotlin.ir.types.isAny
-import org.jetbrains.kotlin.ir.types.isSubtypeOf
+import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.utils.DFS
@@ -253,8 +248,6 @@ fun IrSimpleFunction.findInterfaceImplementation(): IrSimpleFunction? {
     return resolveFakeOverride()?.run { if (parentAsClass.isInterface) this else null }
 }
 
-fun IrProperty.resolveFakeOverride(): IrProperty? = getter?.resolveFakeOverride()?.correspondingPropertySymbol?.owner
-
 val IrClass.isAnnotationClass get() = kind == ClassKind.ANNOTATION_CLASS
 val IrClass.isEnumClass get() = kind == ClassKind.ENUM_CLASS
 val IrClass.isEnumEntry get() = kind == ClassKind.ENUM_ENTRY
@@ -262,6 +255,7 @@ val IrClass.isInterface get() = kind == ClassKind.INTERFACE
 val IrClass.isClass get() = kind == ClassKind.CLASS
 val IrClass.isObject get() = kind == ClassKind.OBJECT
 val IrClass.isAnonymousObject get() = isClass && name == SpecialNames.NO_NAME_PROVIDED
+val IrClass.isNonCompanionObject: Boolean get() = isObject && !isCompanion
 val IrDeclarationWithName.fqNameWhenAvailable: FqName?
     get() = when (val parent = parent) {
         is IrDeclarationWithName -> parent.fqNameWhenAvailable?.child(name)
@@ -281,10 +275,10 @@ tailrec fun IrElement.getPackageFragment(): IrPackageFragment? {
     }
 }
 
+fun IrConstructorCall.isAnnotation(name: FqName) = symbol.owner.parentAsClass.fqNameWhenAvailable == name
+
 fun IrAnnotationContainer.getAnnotation(name: FqName): IrConstructorCall? =
-    annotations.find {
-        it.symbol.owner.parentAsClass.fqNameWhenAvailable == name
-    }
+    annotations.find { it.isAnnotation(name) }
 
 fun IrAnnotationContainer.hasAnnotation(name: FqName) =
     annotations.any {
@@ -315,23 +309,12 @@ fun IrCall.isSuperToAny() = superQualifierSymbol?.let { this.symbol.owner.isFake
 fun IrDeclaration.hasInterfaceParent() =
     parent.safeAs<IrClass>()?.isInterface == true
 
-fun IrDeclaration.isEffectivelyExternal(): Boolean {
 
-    fun IrFunction.effectiveParentDeclaration(): IrDeclaration? =
-        when (this) {
-            is IrSimpleFunction -> correspondingPropertySymbol?.owner ?: parent as? IrDeclaration
-            else -> parent as? IrDeclaration
-        }
+fun IrPossiblyExternalDeclaration.isEffectivelyExternal(): Boolean =
+    this.isExternal
 
-    val parent = parent
-    return when (this) {
-        is IrFunction -> isExternal || (effectiveParentDeclaration()?.isEffectivelyExternal() ?: false)
-        is IrField -> isExternal || parent is IrDeclaration && parent.isEffectivelyExternal()
-        is IrProperty -> isExternal || parent is IrDeclaration && parent.isEffectivelyExternal()
-        is IrClass -> isExternal || parent is IrDeclaration && parent.isEffectivelyExternal()
-        else -> false
-    }
-}
+fun IrDeclaration.isEffectivelyExternal(): Boolean =
+    this is IrPossiblyExternalDeclaration && this.isExternal
 
 fun IrFunction.isExternalOrInheritedFromExternal(): Boolean {
     fun isExternalOrInheritedFromExternalImpl(f: IrSimpleFunction): Boolean =
@@ -353,6 +336,8 @@ fun ReferenceSymbolTable.referenceClassifier(classifier: ClassifierDescriptor): 
     when (classifier) {
         is TypeParameterDescriptor ->
             referenceTypeParameter(classifier)
+        is ScriptDescriptor ->
+            referenceScript(classifier)
         is ClassDescriptor ->
             referenceClass(classifier)
         else ->
@@ -518,9 +503,33 @@ val IrFunction.allTypeParameters: List<IrTypeParameter>
     else
         typeParameters
 
+
 fun IrMemberAccessExpression<*>.getTypeSubstitutionMap(irFunction: IrFunction): Map<IrTypeParameterSymbol, IrType> {
     val typeParameters = irFunction.allTypeParameters
-    return if (typeParameters.isEmpty()) emptyMap() else typeParameters.withIndex().associate {
+    val dispatchReceiverTypeArguments = (dispatchReceiver?.type as? IrSimpleType)?.arguments ?: emptyList()
+    if (typeParameters.isEmpty() && dispatchReceiverTypeArguments.isEmpty()) {
+        return emptyMap()
+    }
+
+    val result = mutableMapOf<IrTypeParameterSymbol, IrType>()
+    if (dispatchReceiverTypeArguments.isNotEmpty()) {
+        val parentTypeParameters =
+            if (irFunction is IrConstructor) {
+                val constructedClass = irFunction.parentAsClass
+                if (!constructedClass.isInner && dispatchReceiver != null) {
+                    throw AssertionError("Non-inner class constructor reference with dispatch receiver:\n${this.dump()}")
+                }
+                extractTypeParameters(constructedClass.parent as IrClass)
+            } else {
+                extractTypeParameters(irFunction.parentClassOrNull!!)
+            }
+        parentTypeParameters.withIndex().forEach { (index, typeParam) ->
+            dispatchReceiverTypeArguments[index].typeOrNull?.let {
+                result[typeParam.symbol] = it
+            }
+        }
+    }
+    return typeParameters.withIndex().associateTo(result) {
         it.value.symbol to getTypeArgument(it.index)!!
     }
 }
@@ -548,3 +557,49 @@ val IrFunction.originalFunction: IrFunction
 
 val IrProperty.originalProperty: IrProperty
     get() = attributeOwnerId as? IrProperty ?: this
+
+fun IrExpression.isTrivial() =
+    this is IrConst<*> ||
+            this is IrGetValue ||
+            this is IrGetObjectValue ||
+            this is IrErrorExpressionImpl
+
+fun IrExpression.shallowCopy(): IrExpression =
+    shallowCopyOrNull()
+        ?: error("Not a copyable expression: ${render()}")
+
+fun IrExpression.shallowCopyOrNull(): IrExpression? =
+    when (this) {
+        is IrConst<*> -> shallowCopy()
+        is IrGetObjectValue ->
+            IrGetObjectValueImpl(
+                startOffset,
+                endOffset,
+                type,
+                symbol
+            )
+        is IrGetValueImpl ->
+            IrGetValueImpl(
+                startOffset,
+                endOffset,
+                type,
+                symbol,
+                origin
+            )
+        is IrErrorExpressionImpl ->
+            IrErrorExpressionImpl(
+                startOffset,
+                endOffset,
+                type,
+                description
+            )
+        else -> null
+    }
+
+internal fun <T> IrConst<T>.shallowCopy() = IrConstImpl(
+    startOffset,
+    endOffset,
+    type,
+    kind,
+    value
+)

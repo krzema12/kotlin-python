@@ -13,6 +13,13 @@ import org.jetbrains.kotlin.js.backend.ast.*
 import org.jetbrains.kotlin.js.backend.ast.metadata.forcedReturnVariable
 import org.jetbrains.kotlin.js.descriptorUtils.hasPrimaryConstructor
 import org.jetbrains.kotlin.js.translate.utils.AnnotationsUtils
+import org.jetbrains.kotlin.js.translate.utils.jsAstUtils.toInvocationWith
+import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.psi.KtClassOrObject
+import org.jetbrains.kotlin.psi.KtEnumEntry
+import org.jetbrains.kotlin.psi.KtPureClassOrObject
+import org.jetbrains.kotlin.psi.KtSecondaryConstructor
+import org.jetbrains.kotlin.psi.synthetics.SyntheticClassOrObjectDescriptor
 import org.jetbrains.kotlin.py.translate.callTranslator.CallTranslator
 import org.jetbrains.kotlin.py.translate.context.*
 import org.jetbrains.kotlin.py.translate.expression.translateAndAliasParameters
@@ -27,13 +34,6 @@ import org.jetbrains.kotlin.py.translate.utils.BindingUtils.getPropertyDescripto
 import org.jetbrains.kotlin.py.translate.utils.JsAstUtils.pureFqn
 import org.jetbrains.kotlin.py.translate.utils.JsDescriptorUtils.getSupertypesWithoutFakes
 import org.jetbrains.kotlin.py.translate.utils.PsiUtils.getPrimaryConstructorParameters
-import org.jetbrains.kotlin.js.translate.utils.jsAstUtils.toInvocationWith
-import org.jetbrains.kotlin.name.Name
-import org.jetbrains.kotlin.psi.KtClassOrObject
-import org.jetbrains.kotlin.psi.KtEnumEntry
-import org.jetbrains.kotlin.psi.KtPureClassOrObject
-import org.jetbrains.kotlin.psi.KtSecondaryConstructor
-import org.jetbrains.kotlin.psi.synthetics.SyntheticClassOrObjectDescriptor
 import org.jetbrains.kotlin.resolve.BindingContextUtils
 import org.jetbrains.kotlin.resolve.DescriptorUtils
 import org.jetbrains.kotlin.resolve.DescriptorUtils.getClassDescriptorForType
@@ -121,7 +121,7 @@ class ClassTranslator private constructor(
         if (classDeclaration is KtClassOrObject) {
             when {
                 descriptor.isData -> JsDataClassGenerator(classDeclaration, context).generate()
-                descriptor.isInline -> JsInlineClassGenerator(classDeclaration, context).generate()
+                descriptor.isInline || descriptor.isValue -> JsInlineClassGenerator(classDeclaration, context).generate()
             }
         }
 

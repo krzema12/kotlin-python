@@ -18,6 +18,7 @@ val embeddableTestRuntime by configurations.creating {
 
 dependencies {
     allTestsRuntime(commonDep("junit"))
+    testCompile(kotlinStdlib("jdk8"))
     testCompile(project(":kotlin-scripting-ide-services-unshaded"))
     testCompile(project(":kotlin-scripting-compiler"))
     testCompile(project(":kotlin-scripting-dependencies"))
@@ -33,6 +34,7 @@ dependencies {
     embeddableTestRuntime(project(":kotlin-scripting-dependencies", configuration="runtimeElements"))
     // For tests with IvyResolver
     embeddableTestRuntime(project(":kotlin-main-kts"))
+    embeddableTestRuntime(kotlinStdlib("jdk8"))
     embeddableTestRuntime(testSourceSet.output)
 }
 

@@ -91,6 +91,7 @@ class KotlinUastElementFactory(project: Project) : UastElementFactory {
         return createQualifiedReference(qualifiedName, context?.sourcePsi)
     }
 
+    @Suppress("UNUSED_PARAMETER")
     /*override*/ fun createQualifiedReference(qualifiedName: String, context: PsiElement?): UQualifiedReferenceExpression? {
         return psiFactory.createExpression(qualifiedName).let {
             when (it) {
@@ -149,10 +150,11 @@ class KotlinUastElementFactory(project: Project) : UastElementFactory {
         return KotlinStringULiteralExpression(psiFactory.createExpression(StringUtil.wrapWithDoubleQuote(text)), null)
     }
 
-    /*override*/ fun createNullLiteral(context: PsiElement?): ULiteralExpression {
+    override fun createNullLiteral(context: PsiElement?): ULiteralExpression {
         return psiFactory.createExpression("null").toUElementOfType<ULiteralExpression>()!!
     }
 
+    @Suppress("UNUSED_PARAMETER")
     /*override*/ fun createIntLiteral(value: Int, context: PsiElement?): ULiteralExpression {
         return psiFactory.createExpression(value.toString()).toUElementOfType<ULiteralExpression>()!!
     }
@@ -167,12 +169,12 @@ class KotlinUastElementFactory(project: Project) : UastElementFactory {
     }
 
     @Deprecated("use version with context parameter")
-    override fun createIfExpression(condition: UExpression, thenBranch: UExpression, elseBranch: UExpression?): UIfExpression? {
+    fun createIfExpression(condition: UExpression, thenBranch: UExpression, elseBranch: UExpression?): UIfExpression? {
         logger<KotlinUastElementFactory>().error("Please switch caller to the version with a context parameter")
         return createIfExpression(condition, thenBranch, elseBranch, null)
     }
 
-    /*override*/ fun createIfExpression(
+    override fun createIfExpression(
         condition: UExpression,
         thenBranch: UExpression,
         elseBranch: UExpression?,
@@ -186,44 +188,44 @@ class KotlinUastElementFactory(project: Project) : UastElementFactory {
     }
 
     @Deprecated("use version with context parameter")
-    override fun createParenthesizedExpression(expression: UExpression): UParenthesizedExpression? {
+    fun createParenthesizedExpression(expression: UExpression): UParenthesizedExpression? {
         logger<KotlinUastElementFactory>().error("Please switch caller to the version with a context parameter")
         return createParenthesizedExpression(expression, null)
     }
 
-    /*override*/ fun createParenthesizedExpression(expression: UExpression, context: PsiElement?): UParenthesizedExpression? {
+    override fun createParenthesizedExpression(expression: UExpression, context: PsiElement?): UParenthesizedExpression? {
         val source = expression.sourcePsi ?: return null
         val parenthesized = psiFactory.createExpression("(${source.text})") as? KtParenthesizedExpression ?: return null
         return KotlinUParenthesizedExpression(parenthesized, null)
     }
 
     @Deprecated("use version with context parameter")
-    override fun createSimpleReference(name: String): USimpleNameReferenceExpression? {
+    fun createSimpleReference(name: String): USimpleNameReferenceExpression? {
         logger<KotlinUastElementFactory>().error("Please switch caller to the version with a context parameter")
         return createSimpleReference(name, null)
     }
 
-    /*override*/ fun createSimpleReference(name: String, context: PsiElement?): USimpleNameReferenceExpression? {
+    override fun createSimpleReference(name: String, context: PsiElement?): USimpleNameReferenceExpression? {
         return KotlinUSimpleReferenceExpression(psiFactory.createSimpleName(name), null)
     }
 
     @Deprecated("use version with context parameter")
-    override fun createSimpleReference(variable: UVariable): USimpleNameReferenceExpression? {
+    fun createSimpleReference(variable: UVariable): USimpleNameReferenceExpression? {
         logger<KotlinUastElementFactory>().error("Please switch caller to the version with a context parameter")
         return createSimpleReference(variable, null)
     }
 
-    /*override*/ fun createSimpleReference(variable: UVariable, context: PsiElement?): USimpleNameReferenceExpression? {
+    override fun createSimpleReference(variable: UVariable, context: PsiElement?): USimpleNameReferenceExpression? {
         return createSimpleReference(variable.name ?: return null, context)
     }
 
     @Deprecated("use version with context parameter")
-    override fun createReturnExpresion(expression: UExpression?, inLambda: Boolean): UReturnExpression? {
+    fun createReturnExpresion(expression: UExpression?, inLambda: Boolean): UReturnExpression? {
         logger<KotlinUastElementFactory>().error("Please switch caller to the version with a context parameter")
         return createReturnExpresion(expression, inLambda, null)
     }
 
-    /*override*/ fun createReturnExpresion(expression: UExpression?, inLambda: Boolean, context: PsiElement?): UReturnExpression? {
+    override fun createReturnExpresion(expression: UExpression?, inLambda: Boolean, context: PsiElement?): UReturnExpression? {
         val label = if (inLambda && context != null) getParentLambdaLabelName(context)?.let { "@$it" } ?: "" else ""
         val returnExpression = psiFactory.createExpression("return$label 1") as KtReturnExpression
         val sourcePsi = expression?.sourcePsi
@@ -246,7 +248,7 @@ class KotlinUastElementFactory(project: Project) : UastElementFactory {
     }
 
     @Deprecated("use version with context parameter")
-    override fun createBinaryExpression(
+    fun createBinaryExpression(
         leftOperand: UExpression,
         rightOperand: UExpression,
         operator: UastBinaryOperator
@@ -255,7 +257,7 @@ class KotlinUastElementFactory(project: Project) : UastElementFactory {
         return createBinaryExpression(leftOperand, rightOperand, operator, null)
     }
 
-    /*override*/ fun createBinaryExpression(
+    override fun createBinaryExpression(
         leftOperand: UExpression,
         rightOperand: UExpression,
         operator: UastBinaryOperator,
@@ -280,7 +282,7 @@ class KotlinUastElementFactory(project: Project) : UastElementFactory {
     }
 
     @Deprecated("use version with context parameter")
-    override fun createFlatBinaryExpression(
+    fun createFlatBinaryExpression(
         leftOperand: UExpression,
         rightOperand: UExpression,
         operator: UastBinaryOperator
@@ -289,7 +291,7 @@ class KotlinUastElementFactory(project: Project) : UastElementFactory {
         return createFlatBinaryExpression(leftOperand, rightOperand, operator, null)
     }
 
-    /*override*/ fun createFlatBinaryExpression(
+    override fun createFlatBinaryExpression(
         leftOperand: UExpression,
         rightOperand: UExpression,
         operator: UastBinaryOperator,
@@ -310,12 +312,12 @@ class KotlinUastElementFactory(project: Project) : UastElementFactory {
     }
 
     @Deprecated("use version with context parameter")
-    override fun createBlockExpression(expressions: List<UExpression>): UBlockExpression? {
+    fun createBlockExpression(expressions: List<UExpression>): UBlockExpression? {
         logger<KotlinUastElementFactory>().error("Please switch caller to the version with a context parameter")
         return createBlockExpression(expressions, null)
     }
 
-    /*override*/ fun createBlockExpression(expressions: List<UExpression>, context: PsiElement?): UBlockExpression? {
+    override fun createBlockExpression(expressions: List<UExpression>, context: PsiElement?): UBlockExpression? {
         val sourceExpressions = expressions.flatMap { it.toSourcePsiFakeAware() }
         val block = psiFactory.createBlock(
             sourceExpressions.joinToString(separator = "\n") { "println()" }
@@ -327,19 +329,19 @@ class KotlinUastElementFactory(project: Project) : UastElementFactory {
     }
 
     @Deprecated("use version with context parameter")
-    override fun createDeclarationExpression(declarations: List<UDeclaration>): UDeclarationsExpression? {
+    fun createDeclarationExpression(declarations: List<UDeclaration>): UDeclarationsExpression? {
         logger<KotlinUastElementFactory>().error("Please switch caller to the version with a context parameter")
         return createDeclarationExpression(declarations, null)
     }
 
-    /*override*/ fun createDeclarationExpression(declarations: List<UDeclaration>, context: PsiElement?): UDeclarationsExpression? {
+    override fun createDeclarationExpression(declarations: List<UDeclaration>, context: PsiElement?): UDeclarationsExpression? {
         return object : KotlinUDeclarationsExpression(null), KotlinFakeUElement {
             override var declarations: List<UDeclaration> = declarations
             override fun unwrapToSourcePsi(): List<PsiElement> = declarations.flatMap { it.toSourcePsiFakeAware() }
         }
     }
 
-    /*override*/  fun createLambdaExpression(
+    override fun createLambdaExpression(
         parameters: List<UParameterInfo>,
         body: UExpression,
         context: PsiElement?
@@ -377,12 +379,12 @@ class KotlinUastElementFactory(project: Project) : UastElementFactory {
     }
 
     @Deprecated("use version with context parameter")
-    override fun createLambdaExpression(parameters: List<UParameterInfo>, body: UExpression): ULambdaExpression? {
+    fun createLambdaExpression(parameters: List<UParameterInfo>, body: UExpression): ULambdaExpression? {
         logger<KotlinUastElementFactory>().error("Please switch caller to the version with a context parameter")
         return createLambdaExpression(parameters, body, null)
     }
 
-    /*override*/ fun createLocalVariable(
+    override fun createLocalVariable(
         suggestedName: String?,
         type: PsiType?,
         initializer: UExpression,
@@ -412,7 +414,7 @@ class KotlinUastElementFactory(project: Project) : UastElementFactory {
     }
 
     @Deprecated("use version with context parameter")
-    override fun createLocalVariable(
+    fun createLocalVariable(
         suggestedName: String?,
         type: PsiType?,
         initializer: UExpression,

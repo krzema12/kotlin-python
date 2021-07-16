@@ -5,16 +5,14 @@
 
 package org.jetbrains.kotlin.load.kotlin.header
 
-import org.jetbrains.kotlin.load.java.JvmAnnotationNames
+import org.jetbrains.kotlin.load.java.JvmAnnotationNames.*
 import org.jetbrains.kotlin.load.kotlin.header.KotlinClassHeader.MultifileClassKind.DELEGATING
 import org.jetbrains.kotlin.load.kotlin.header.KotlinClassHeader.MultifileClassKind.INHERITING
-import org.jetbrains.kotlin.metadata.jvm.deserialization.JvmBytecodeBinaryVersion
 import org.jetbrains.kotlin.metadata.jvm.deserialization.JvmMetadataVersion
 
 class KotlinClassHeader(
     val kind: Kind,
     val metadataVersion: JvmMetadataVersion,
-    val bytecodeVersion: JvmBytecodeBinaryVersion,
     val data: Array<String>?,
     val incompatibleData: Array<String>?,
     val strings: Array<String>?,
@@ -54,21 +52,25 @@ class KotlinClassHeader(
     @Suppress("unused")
     val multifileClassKind: MultifileClassKind?
         get() = if (kind == Kind.MULTIFILE_CLASS || kind == Kind.MULTIFILE_CLASS_PART) {
-            if ((extraInt and JvmAnnotationNames.METADATA_MULTIFILE_PARTS_INHERIT_FLAG) != 0)
+            if (extraInt.has(METADATA_MULTIFILE_PARTS_INHERIT_FLAG))
                 INHERITING
             else
                 DELEGATING
         } else null
 
     val isUnstableJvmIrBinary: Boolean
-        get() = (extraInt and JvmAnnotationNames.METADATA_JVM_IR_FLAG) != 0 &&
-                (extraInt and JvmAnnotationNames.METADATA_JVM_IR_STABLE_ABI_FLAG == 0)
+        get() = extraInt.has(METADATA_JVM_IR_FLAG) && !extraInt.has(METADATA_JVM_IR_STABLE_ABI_FLAG)
+
+    val isUnstableFirBinary: Boolean
+        get() = extraInt.has(METADATA_FIR_FLAG) && !extraInt.has(METADATA_JVM_IR_STABLE_ABI_FLAG)
 
     val isPreRelease: Boolean
-        get() = (extraInt and JvmAnnotationNames.METADATA_PRE_RELEASE_FLAG) != 0
+        get() = extraInt.has(METADATA_PRE_RELEASE_FLAG)
 
     val isScript: Boolean
-        get() = (extraInt and JvmAnnotationNames.METADATA_SCRIPT_FLAG) != 0
+        get() = extraInt.has(METADATA_SCRIPT_FLAG)
 
     override fun toString() = "$kind version=$metadataVersion"
+
+    private fun Int.has(flag: Int): Boolean = (this and flag) != 0
 }

@@ -1,3 +1,4 @@
+@kotlin.jvm.JvmInline
 @kotlin.Metadata
 public final class A {
     // source: 'kt42879.kt'
@@ -19,7 +20,7 @@ public final class A {
 @kotlin.Metadata
 public interface I {
     // source: 'kt42879.kt'
-    public abstract method compute-GKOAj6k(p0: int): int
+    public abstract method compute-p71pxCs(p0: int): int
 }
 
 @kotlin.Metadata
@@ -30,7 +31,7 @@ final class Kt42879Kt$g$1 {
     inner (anonymous) class Kt42879Kt$g$1
     static method <clinit>(): void
     method <init>(): void
-    public final method compute-GKOAj6k(p0: int): int
+    public final method compute-p71pxCs(p0: int): int
 }
 
 @kotlin.Metadata

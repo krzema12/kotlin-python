@@ -215,8 +215,8 @@ fun writeProperty(
             t.flags = flags
         }
         // TODO: do not write getterFlags/setterFlags if not needed
-        t.getterFlags = getterFlags
-        t.setterFlags = setterFlags
+        if (Flag.Property.HAS_GETTER(flags)) t.getterFlags = getterFlags
+        if (Flag.Property.HAS_SETTER(flags)) t.setterFlags = setterFlags
         output(t)
     }
 }
@@ -456,6 +456,13 @@ open class ClassWriter(stringTable: StringTable, contextExtensions: List<WriteCo
     override fun visitSealedSubclass(name: ClassName) {
         t.addSealedSubclassFqName(c.getClassName(name))
     }
+
+    override fun visitInlineClassUnderlyingPropertyName(name: String) {
+        t.inlineClassUnderlyingPropertyName = c[name]
+    }
+
+    override fun visitInlineClassUnderlyingType(flags: Flags): KmTypeVisitor? =
+        writeType(c, flags) { t.inlineClassUnderlyingType = it.build() }
 
     override fun visitVersionRequirement(): KmVersionRequirementVisitor? =
         writeVersionRequirement(c) { t.addVersionRequirement(it) }

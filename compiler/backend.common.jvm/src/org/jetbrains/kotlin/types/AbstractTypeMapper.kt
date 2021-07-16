@@ -18,6 +18,7 @@ interface TypeMappingContext<Writer : JvmDescriptorTypeWriter<Type>> {
     val typeContext: TypeSystemCommonBackendContextForTypeMapping
 
     fun getClassInternalName(typeConstructor: TypeConstructorMarker): String
+    fun getScriptInternalName(typeConstructor: TypeConstructorMarker): String
     fun Writer.writeGenericType(type: SimpleTypeMarker, asmType: Type, mode: TypeMappingMode)
 }
 
@@ -114,6 +115,10 @@ object AbstractTypeMapper {
 
                 with(context) { sw?.writeGenericType(type, asmType, mode) }
                 return asmType
+            }
+
+            typeConstructor.isScript() -> {
+                return Type.getObjectType(context.getScriptInternalName(typeConstructor))
             }
 
             typeConstructor.isTypeParameter() -> {

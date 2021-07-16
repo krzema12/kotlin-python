@@ -20,6 +20,7 @@ import org.jetbrains.kotlin.konan.MetaVersion
 import org.jetbrains.kotlin.konan.target.HostManager
 import org.jetbrains.kotlin.konan.util.DependencyDirectories
 import java.io.File
+import java.nio.file.Files
 
 class NativeCompilerDownloader(
     val project: Project,
@@ -96,10 +97,18 @@ class NativeCompilerDownloader(
     }
 
     private fun downloadAndExtract() {
+        // For release branch we have numeration like 1.5.20-256 and compilerVersion.toString() returns 1.5.20 and meta is RELEASE
+        // TODO: fix that in 1.5.30 release, but for now this workaround could be ok
+        val compilerVersionWorkaround =
+            if (compilerVersion.build != -1 && compilerVersion.meta == MetaVersion.RELEASE)
+                "$compilerVersion-${compilerVersion.build}"
+            else
+                "$compilerVersion"
+
         val repoUrl = buildString {
             append("$BASE_DOWNLOAD_URL/")
             append(if (compilerVersion.meta == MetaVersion.DEV) "dev/" else "releases/")
-            append("$compilerVersion/")
+            append("$compilerVersionWorkaround/")
             append(simpleOsName)
         }
         val dependencyUrl = "$repoUrl/$dependencyFileName"
@@ -127,9 +136,24 @@ class NativeCompilerDownloader(
 
         logger.lifecycle("Unpack Kotlin/Native compiler to $compilerDirectory")
         logger.lifecycleWithDuration("Unpack Kotlin/Native compiler to $compilerDirectory finished,") {
-            project.copy {
-                it.from(archiveFileTree(archive))
-                it.into(DependencyDirectories.localKonanDir)
+            val kotlinNativeDir = compilerDirectory.parentFile.also { it.mkdirs() }
+            val tmpDir = Files.createTempDirectory(kotlinNativeDir.toPath(), "compiler-").toFile()
+            try {
+                logger.debug("Unpacking Kotlin/Native compiler to tmp directory $tmpDir")
+                project.copy {
+                    it.from(archiveFileTree(archive))
+                    it.into(tmpDir)
+                }
+                val compilerTmp = tmpDir.resolve(dependencyNameWithVersion)
+                if (!compilerTmp.renameTo(compilerDirectory)) {
+                    project.copy {
+                        it.from(compilerTmp)
+                        it.into(compilerDirectory)
+                    }
+                }
+                logger.debug("Moved Kotlin/Native compiler from $tmpDir to $compilerDirectory")
+            } finally {
+                tmpDir.deleteRecursively()
             }
         }
 

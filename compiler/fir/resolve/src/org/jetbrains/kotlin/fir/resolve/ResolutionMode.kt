@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.fir.types.builder.buildResolvedTypeRef
 
 sealed class ResolutionMode {
     object ContextDependent : ResolutionMode()
+    object ContextDependentDelegate : ResolutionMode()
     object ContextIndependent : ResolutionMode()
     // TODO: it's better not to use WithExpectedType(FirImplicitTypeRef)
     class WithExpectedType(val expectedTypeRef: FirTypeRef) : ResolutionMode()
@@ -24,6 +25,11 @@ sealed class ResolutionMode {
 
 fun withExpectedType(expectedTypeRef: FirTypeRef?): ResolutionMode =
     expectedTypeRef?.let { ResolutionMode.WithExpectedType(it) } ?: ResolutionMode.ContextDependent
+
+@JvmName("withExpectedTypeNullable")
+fun withExpectedType(coneType: ConeKotlinType?): ResolutionMode {
+    return coneType?.let { withExpectedType(it) } ?: ResolutionMode.ContextDependent
+}
 
 fun withExpectedType(coneType: ConeKotlinType): ResolutionMode {
     val typeRef = buildResolvedTypeRef {

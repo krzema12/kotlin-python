@@ -59,9 +59,18 @@ class ClasspathExtractionException(message: String) : Exception(message)
 fun classpathFromClassloader(currentClassLoader: ClassLoader, unpackJarCollections: Boolean = false): List<File>? {
     val processedJars = hashSetOf<File>()
     val unpackJarCollectionsDir by lazy {
-        createTempDir("unpackedJarCollections").canonicalFile.also {
+        File.createTempFile("unpackedJarCollections", null).canonicalFile.apply {
+            delete()
+            mkdir()
+            setReadable(false, false)
+            setWritable(false, false)
+            setExecutable(false, false)
+            setReadable(true, true)
+            setWritable(true, true)
+            setExecutable(true, true)
+
             Runtime.getRuntime().addShutdownHook(Thread {
-                it.deleteRecursively()
+                deleteRecursively()
             })
         }
     }
@@ -144,8 +153,12 @@ fun ClassLoader.classPathFromTypicalResourceUrls(): Sequence<File> =
         .distinct()
         .filter { it.isValidClasspathFile() }
 
-private fun File.unpackJarCollection(rootTempDir: File?): Sequence<File> {
-    val targetDir = createTempDir(nameWithoutExtension, directory = rootTempDir)
+private fun File.unpackJarCollection(rootTempDir: File): Sequence<File> {
+    val targetDir = File.createTempFile(nameWithoutExtension, null, rootTempDir).apply {
+        delete()
+        mkdir()
+    }
+
     return try {
         ArrayList<File>().apply {
             JarInputStream(FileInputStream(this@unpackJarCollection)).use { jarInputStream ->
@@ -218,11 +231,7 @@ private fun allRelatedClassLoaders(clsLoader: ClassLoader, visited: MutableSet<C
         return sequenceOf(singleParent).flatMap { allRelatedClassLoaders(it, visited) } + clsLoader
 
     return try {
-        val field = clsLoader.javaClass.getDeclaredField("myParents") // com.intellij.ide.plugins.cl.PluginClassLoader
-        field.isAccessible = true
-
-        @Suppress("UNCHECKED_CAST")
-        val arrayOfClassLoaders = field.get(clsLoader) as Array<ClassLoader>
+        val arrayOfClassLoaders = getParentClassLoaders(clsLoader)
         // TODO: PluginClassLoader uses filtering (mustBeLoadedByPlatform), consider using the same logic, if possible
         // (untill proper compiling from classloader instead of classpath is implemented)
         arrayOfClassLoaders.asSequence().flatMap { allRelatedClassLoaders(it, visited) } + clsLoader
@@ -231,6 +240,38 @@ private fun allRelatedClassLoaders(clsLoader: ClassLoader, visited: MutableSet<C
     }
 }
 
+private fun getParentClassLoaders(clsLoader: ClassLoader): Array<ClassLoader> {
+    return try {
+        getParentsForNewClassLoader(clsLoader)
+    } catch (exception: NoSuchMethodException) {
+        try {
+            getParentsForOldClassLoader(clsLoader)
+        } catch (exception: NoSuchFieldException) {
+            // Possibly idea sources and kotlin compiler had diverged
+            emptyArray()
+        }
+    }
+}
+
+@Throws(NoSuchFieldException::class)
+private fun getParentsForOldClassLoader(clsLoader: ClassLoader): Array<ClassLoader> {
+    // Correct way of getting parents in com.intellij.ide.plugins.cl.PluginClassLoader from IDEA 202 and earlier
+    val field = clsLoader.javaClass.getDeclaredField("myParents") // com.intellij.ide.plugins.cl.PluginClassLoader
+    field.isAccessible = true
+
+    @Suppress("UNCHECKED_CAST")
+    return field.get(clsLoader) as Array<ClassLoader>
+}
+
+@Throws(NoSuchMethodException::class)
+private fun getParentsForNewClassLoader(clsLoader: ClassLoader): Array<ClassLoader> {
+    // Correct way of getting parents in com.intellij.ide.plugins.cl.PluginClassLoader from IDEA 203+
+    val method = clsLoader.javaClass.getDeclaredMethod("getAllParents")
+    method.isAccessible = true
+
+    @Suppress("UNCHECKED_CAST")
+    return method.invoke(clsLoader) as Array<ClassLoader>
+}
 
 internal fun List<File>.takeIfContainsAll(vararg keyNames: String): List<File>? =
     takeIf { classpath ->

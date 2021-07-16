@@ -5,33 +5,49 @@
 
 package org.jetbrains.kotlin.idea.frontend.api.fir.components
 
-import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
-import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.fir.expressions.FirExpressionWithSmartcast
-import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
-import org.jetbrains.kotlin.fir.types.coneType
-import org.jetbrains.kotlin.idea.fir.low.level.api.api.getOrBuildFirOfType
-import org.jetbrains.kotlin.idea.frontend.api.ImplicitReceiverSmartCast
-import org.jetbrains.kotlin.idea.frontend.api.ImplicitReceiverSmartcastKind
-import org.jetbrains.kotlin.idea.frontend.api.ValidityToken
-import org.jetbrains.kotlin.idea.frontend.api.components.KtSmartCastProvider
+import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
+import org.jetbrains.kotlin.fir.types.impl.ConeClassLikeTypeImpl
+import org.jetbrains.kotlin.fir.types.impl.ConeTypeParameterTypeImpl
+import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
+import org.jetbrains.kotlin.idea.frontend.api.components.KtBuiltinTypes
 import org.jetbrains.kotlin.idea.frontend.api.components.KtTypeProvider
 import org.jetbrains.kotlin.idea.frontend.api.fir.KtFirAnalysisSession
+import org.jetbrains.kotlin.idea.frontend.api.fir.symbols.KtFirNamedClassOrObjectSymbol
+import org.jetbrains.kotlin.idea.frontend.api.fir.types.KtFirType
+import org.jetbrains.kotlin.idea.frontend.api.fir.types.PublicTypeApproximator
+import org.jetbrains.kotlin.idea.frontend.api.symbols.KtClassOrObjectSymbol
+import org.jetbrains.kotlin.idea.frontend.api.symbols.KtNamedClassOrObjectSymbol
 import org.jetbrains.kotlin.idea.frontend.api.types.KtType
-import org.jetbrains.kotlin.idea.frontend.api.withValidityAssertion
-import org.jetbrains.kotlin.psi.KtDeclaration
-import org.jetbrains.kotlin.psi.KtExpression
 
 internal class KtFirTypeProvider(
     override val analysisSession: KtFirAnalysisSession,
     override val token: ValidityToken,
 ) : KtTypeProvider(), KtFirAnalysisSessionComponent {
-    override fun getReturnTypeForKtDeclaration(declaration: KtDeclaration): KtType = withValidityAssertion {
-        val firDeclaration = declaration.getOrBuildFirOfType<FirCallableDeclaration<*>>(firResolveState)
-        firDeclaration.returnTypeRef.coneType.asKtType()
+    override val builtinTypes: KtBuiltinTypes =
+        KtFirBuiltInTypes(analysisSession.firResolveState.rootModuleSession.builtinTypes, analysisSession.firSymbolBuilder, token)
+
+    override fun approximateToSuperPublicDenotableType(type: KtType): KtType? {
+        require(type is KtFirType)
+        val coneType = type.coneType
+        val approximatedConeType = PublicTypeApproximator.approximateTypeToPublicDenotable(
+            coneType,
+            rootModuleSession
+        )
+
+        return approximatedConeType?.asKtType()
     }
 
-    override fun getKtExpressionType(expression: KtExpression): KtType = withValidityAssertion {
-        expression.getOrBuildFirOfType<FirExpression>(firResolveState).typeRef.coneType.asKtType()
+
+    override fun buildSelfClassType(symbol: KtNamedClassOrObjectSymbol): KtType {
+        require(symbol is KtFirNamedClassOrObjectSymbol)
+        val type = symbol.firRef.withFir(FirResolvePhase.SUPER_TYPES) { firClass ->
+            ConeClassLikeTypeImpl(
+                firClass.symbol.toLookupTag(),
+                firClass.typeParameters.map { ConeTypeParameterTypeImpl(it.symbol.toLookupTag(), isNullable = false) }.toTypedArray(),
+                isNullable = false
+            )
+        }
+        return type.asKtType()
     }
 }
+

@@ -6,11 +6,11 @@
 package org.jetbrains.kotlin.backend.jvm.lower
 
 import org.jetbrains.kotlin.backend.common.ClassLoweringPass
+import org.jetbrains.kotlin.backend.common.ir.isFromJava
 import org.jetbrains.kotlin.backend.common.lower.createIrBuilder
 import org.jetbrains.kotlin.backend.common.phaser.makeIrFilePhase
 import org.jetbrains.kotlin.backend.jvm.JvmBackendContext
 import org.jetbrains.kotlin.backend.jvm.codegen.isJvmInterface
-import org.jetbrains.kotlin.backend.jvm.ir.isFromJava
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
 import org.jetbrains.kotlin.ir.builders.declarations.buildValueParameter
@@ -29,6 +29,7 @@ import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.types.AbstractTypeChecker
 import org.jetbrains.kotlin.types.AbstractTypeCheckerContext
 import org.jetbrains.kotlin.utils.addToStdlib.cast
+import java.util.concurrent.ConcurrentHashMap
 
 internal val collectionStubMethodLowering = makeIrFilePhase(
     ::CollectionStubMethodLowering,
@@ -229,7 +230,13 @@ internal class CollectionStubMethodLowering(val context: JvmBackendContext) : Cl
     }
 
     private fun createTypeChecker(overrideFun: IrSimpleFunction, parentFun: IrSimpleFunction): AbstractTypeCheckerContext =
-        IrTypeCheckerContextWithAdditionalAxioms(context.irBuiltIns, overrideFun.typeParameters, parentFun.typeParameters)
+        IrTypeCheckerContext(
+            IrTypeSystemContextWithAdditionalAxioms(
+                context.irBuiltIns,
+                overrideFun.typeParameters,
+                parentFun.typeParameters
+            )
+        )
 
     private fun areTypeParametersEquivalent(
         overrideFun: IrSimpleFunction,
@@ -313,7 +320,10 @@ internal class CollectionStubMethodLowering(val context: JvmBackendContext) : Cl
             .flatMap { createStubFuns(irClass, it) }
             .mapTo(HashSet()) { it.toJvmSignature() }
 
-        return classStubFuns.filter { it.toJvmSignature() !in superClassStubSignatures }
+        return classStubFuns
+            .filter { it.toJvmSignature() !in superClassStubSignatures }
+            .associateBy { it.toJvmSignature() }
+            .values.toList()
     }
 
     private fun createStubFuns(irClass: IrClass, stubs: StubsForCollectionClass): List<IrSimpleFunction> {
@@ -460,7 +470,7 @@ internal class CollectionStubComputer(val context: JvmBackendContext) {
         }
     }
 
-    private val stubsCache = mutableMapOf<IrClass, List<StubsForCollectionClass>>()
+    private val stubsCache = ConcurrentHashMap<IrClass, List<StubsForCollectionClass>>()
 
     fun stubsForCollectionClasses(irClass: IrClass): List<StubsForCollectionClass> =
         stubsCache.getOrPut(irClass) {

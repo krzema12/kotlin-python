@@ -27,11 +27,13 @@ import org.jetbrains.kotlin.fir.visitors.*
 @FirBuilderDsl
 class FirErrorExpressionBuilder : FirAnnotationContainerBuilder, FirExpressionBuilder {
     override var source: FirSourceElement? = null
+    override val annotations: MutableList<FirAnnotationCall> = mutableListOf()
     lateinit var diagnostic: ConeDiagnostic
 
     override fun build(): FirErrorExpression {
         return FirErrorExpressionImpl(
             source,
+            annotations,
             diagnostic,
         )
     }
@@ -40,12 +42,9 @@ class FirErrorExpressionBuilder : FirAnnotationContainerBuilder, FirExpressionBu
     @Deprecated("Modification of 'typeRef' has no impact for FirErrorExpressionBuilder", level = DeprecationLevel.HIDDEN)
     override var typeRef: FirTypeRef
         get() = throw IllegalStateException()
-        set(value) {
+        set(_) {
             throw IllegalStateException()
         }
-
-    @Deprecated("Modification of 'annotations' has no impact for FirErrorExpressionBuilder", level = DeprecationLevel.HIDDEN)
-    override val annotations: MutableList<FirAnnotationCall> = mutableListOf()
 }
 
 @OptIn(ExperimentalContracts::class)

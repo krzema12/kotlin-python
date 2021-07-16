@@ -12,19 +12,22 @@ import org.jetbrains.kotlin.fir.resolve.substitution.AbstractConeSubstitutor
 import org.jetbrains.kotlin.fir.symbols.impl.FirTypeAliasSymbol
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.fir.types.impl.ConeClassLikeTypeImpl
+import org.jetbrains.kotlin.fir.utils.WeakPair
+import org.jetbrains.kotlin.fir.utils.component1
+import org.jetbrains.kotlin.fir.utils.component2
 
 fun ConeClassLikeType.fullyExpandedType(
     useSiteSession: FirSession,
     expandedConeType: (FirTypeAlias) -> ConeClassLikeType? = FirTypeAlias::expandedConeType,
 ): ConeClassLikeType {
     if (this is ConeClassLikeTypeImpl) {
-        val expandedTypeAndSession = cachedExpandedType
-        if (expandedTypeAndSession != null && expandedTypeAndSession.first === useSiteSession) {
-            return expandedTypeAndSession.second
+        val (cachedSession, cachedExpandedType) = cachedExpandedType
+        if (cachedSession === useSiteSession && cachedExpandedType != null) {
+            return cachedExpandedType
         }
 
         val computedExpandedType = fullyExpandedTypeNoCache(useSiteSession, expandedConeType)
-        cachedExpandedType = Pair(useSiteSession, computedExpandedType)
+        this.cachedExpandedType = WeakPair(useSiteSession, computedExpandedType)
         return computedExpandedType
     }
 
@@ -85,11 +88,10 @@ private fun mapTypeAliasArguments(
             val type = (projection as? ConeKotlinTypeProjection)?.type ?: return null
             val symbol = (type as? ConeTypeParameterType)?.lookupTag?.symbol ?: return super.substituteArgument(projection)
             val mappedProjection = typeAliasMap[symbol] ?: return super.substituteArgument(projection)
-            val mappedType = (mappedProjection as? ConeKotlinTypeProjection)?.type ?: return mappedProjection
+            val mappedType = (mappedProjection as? ConeKotlinTypeProjection)?.type.updateNullabilityIfNeeded(type)
+                ?: return mappedProjection
 
-            @Suppress("MoveVariableDeclarationIntoWhen")
-            val resultingKind = mappedProjection.kind + projection.kind
-            return when (resultingKind) {
+            return when (mappedProjection.kind + projection.kind) {
                 ProjectionKind.STAR -> ConeStarProjection
                 ProjectionKind.IN -> ConeKotlinTypeProjectionIn(mappedType)
                 ProjectionKind.OUT -> ConeKotlinTypeProjectionOut(mappedType)

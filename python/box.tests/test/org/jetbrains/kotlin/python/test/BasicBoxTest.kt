@@ -25,26 +25,35 @@ import org.jetbrains.kotlin.incremental.js.IncrementalDataProviderImpl
 import org.jetbrains.kotlin.incremental.js.IncrementalResultsConsumerImpl
 import org.jetbrains.kotlin.incremental.js.TranslationResultValue
 import org.jetbrains.kotlin.js.JavaScript
-import org.jetbrains.kotlin.js.backend.ast.*
+import org.jetbrains.kotlin.js.backend.ast.JsBlock
+import org.jetbrains.kotlin.js.backend.ast.JsProgram
+import org.jetbrains.kotlin.js.backend.ast.RecursiveJsVisitor
 import org.jetbrains.kotlin.js.config.*
 import org.jetbrains.kotlin.js.dce.DeadCodeElimination
 import org.jetbrains.kotlin.js.dce.InputFile
 import org.jetbrains.kotlin.js.dce.InputResource
 import org.jetbrains.kotlin.js.engine.ScriptEngineNashorn
-import org.jetbrains.kotlin.js.engine.ScriptEngineV8Lazy
-import org.jetbrains.kotlin.js.facade.*
+import org.jetbrains.kotlin.js.facade.K2JSTranslator
+import org.jetbrains.kotlin.js.facade.MainCallParameters
+import org.jetbrains.kotlin.js.facade.TranslationResult
+import org.jetbrains.kotlin.js.facade.TranslationUnit
 import org.jetbrains.kotlin.js.parser.sourcemaps.SourceMapParser
 import org.jetbrains.kotlin.js.parser.sourcemaps.SourceMapSuccess
 import org.jetbrains.kotlin.metadata.DebugProtoBuf
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtPsiFactory
-import org.jetbrains.kotlin.python.test.utils.*
+import org.jetbrains.kotlin.python.test.utils.DirectiveTestUtils
+import org.jetbrains.kotlin.python.test.utils.ExceptionThrowingReporter
+import org.jetbrains.kotlin.python.test.utils.JsTestUtils
+import org.jetbrains.kotlin.python.test.utils.verifyAst
+import org.jetbrains.kotlin.resolve.CompilerEnvironment
 import org.jetbrains.kotlin.serialization.js.JsModuleDescriptor
 import org.jetbrains.kotlin.serialization.js.JsSerializerProtocol
 import org.jetbrains.kotlin.serialization.js.KotlinJavascriptSerializationUtil
 import org.jetbrains.kotlin.serialization.js.ModuleKind
 import org.jetbrains.kotlin.test.*
+import org.jetbrains.kotlin.test.util.KtTestUtil
 import org.jetbrains.kotlin.utils.DFS
 import org.jetbrains.kotlin.utils.JsMetadataVersion
 import org.jetbrains.kotlin.utils.KotlinJavascriptMetadata
@@ -92,20 +101,18 @@ abstract class BasicBoxTest(
     }
 
     fun doTestWithCoroutinesPackageReplacement(filePath: String, coroutinesPackage: String) {
-        doTest(filePath, "OK", MainCallParameters.noCall(), coroutinesPackage)
+        TODO()
+//        doTest(filePath, "OK", MainCallParameters.noCall(), coroutinesPackage)
     }
 
     open fun dontRunOnSpecificPlatform(targetBackend: TargetBackend): Boolean = false
 
-    open fun doTest(filePath: String, expectedResult: String, mainCallParameters: MainCallParameters, coroutinesPackage: String = "") {
+    open fun doTest(filePath: String, expectedResult: String, mainCallParameters: MainCallParameters) {
         val file = File(filePath)
         val outputDir = getOutputDir(file)
         val dceOutputDir = getOutputDir(file, testGroupOutputDirForMinification)
         val pirOutputDir = getOutputDir(file, testGroupOutputDirForPir)
-        var fileContent = KotlinTestUtils.doLoadFile(file)
-        if (coroutinesPackage.isNotEmpty()) {
-            fileContent = fileContent.replace("COROUTINES_PACKAGE", coroutinesPackage)
-        }
+        val fileContent = KtTestUtil.doLoadFile(file)
 
         val needsFullIrRuntime = KJS_WITH_FULL_RUNTIME.matcher(fileContent).find()
 
@@ -124,13 +131,14 @@ abstract class BasicBoxTest(
         val skipDceDriven = SKIP_DCE_DRIVEN.matcher(fileContent).find()
         val splitPerModule = SPLIT_PER_MODULE.matcher(fileContent).find()
 
-        TestFileFactoryImpl(coroutinesPackage).use { testFactory ->
+        val propertyLazyInitialization = PROPERTY_LAZY_INITIALIZATION.matcher(fileContent).find()
+
+        TestFileFactoryImpl().use { testFactory ->
             val inputFiles = TestFiles.createTestFiles(
                 file.name,
                 fileContent,
                 testFactory,
-                true,
-                coroutinesPackage
+                true
             )
             val modules = inputFiles
                     .map { it.module }.distinct()
@@ -167,7 +175,8 @@ abstract class BasicBoxTest(
                     testFactory.tmpDir,
                     file.parent, module, outputFileName, dceOutputFileName, pirOutputFileName, dependencies, allDependencies, friends, modules.size > 1,
                     !SKIP_SOURCEMAP_REMAPPING.matcher(fileContent).find(), outputPrefixFile, outputPostfixFile,
-                    actualMainCallParameters, testPackage, testFunction, needsFullIrRuntime, isMainModule, expectActualLinker, skipDceDriven, splitPerModule, errorPolicy
+                    actualMainCallParameters, testPackage, testFunction, needsFullIrRuntime, isMainModule, expectActualLinker, skipDceDriven, splitPerModule, errorPolicy,
+                    propertyLazyInitialization
                 )
 
                 when {
@@ -392,7 +401,8 @@ abstract class BasicBoxTest(
         expectActualLinker: Boolean,
         skipDceDriven: Boolean,
         splitPerModule: Boolean,
-        errorIgnorancePolicy: ErrorTolerancePolicy
+        errorIgnorancePolicy: ErrorTolerancePolicy,
+        propertyLazyInitialization: Boolean,
     ) {
         val kotlinFiles =  module.files.filter { it.fileName.endsWith(".kt") }
         val testFiles = kotlinFiles.map { it.fileName }
@@ -416,7 +426,8 @@ abstract class BasicBoxTest(
         val incrementalData = IncrementalData()
         translateFiles(
             psiFiles.map(TranslationUnit::SourceFile), outputFile, dceOutputFile, pirOutputFile, config, outputPrefixFile, outputPostfixFile,
-            mainCallParameters, incrementalData, remap, testPackage, testFunction, needsFullIrRuntime, isMainModule, skipDceDriven, splitPerModule
+            mainCallParameters, incrementalData, remap, testPackage, testFunction, needsFullIrRuntime, isMainModule, skipDceDriven, splitPerModule,
+            propertyLazyInitialization,
         )
 
         if (incrementalCompilationChecksEnabled && module.hasFilesToRecompile) {
@@ -468,7 +479,8 @@ abstract class BasicBoxTest(
 
         translateFiles(
             translationUnits, recompiledOutputFile, recompiledOutputFile, recompiledOutputFile, recompiledConfig, outputPrefixFile, outputPostfixFile,
-            mainCallParameters, incrementalData, remap, testPackage, testFunction, needsFullIrRuntime, false, true, false
+            mainCallParameters, incrementalData, remap, testPackage, testFunction, needsFullIrRuntime, false, true, false,
+            propertyLazyInitialization = false,
         )
 
         val originalOutput = FileUtil.loadFile(outputFile)
@@ -542,7 +554,8 @@ abstract class BasicBoxTest(
         needsFullIrRuntime: Boolean,
         isMainModule: Boolean,
         skipDceDriven: Boolean,
-        splitPerModule: Boolean
+        splitPerModule: Boolean,
+        propertyLazyInitialization: Boolean,
     ) {
         val translator = K2JSTranslator(config, false)
         val translationResult = translator.translateUnits(ExceptionThrowingReporter, units, mainCallParameters)
@@ -693,7 +706,7 @@ abstract class BasicBoxTest(
 
         configuration.put(CommonConfigurationKeys.EXPECT_ACTUAL_LINKER, expectActualLinker)
 
-        return JsConfig(project, configuration, METADATA_CACHE, (JsConfig.JS_STDLIB + JsConfig.JS_KOTLIN_TEST).toSet())
+        return JsConfig(project, configuration, CompilerEnvironment, METADATA_CACHE, (JsConfig.JS_STDLIB + JsConfig.JS_KOTLIN_TEST).toSet())
     }
 
     private fun minifyAndRun(
@@ -721,7 +734,7 @@ abstract class BasicBoxTest(
                 "kotlin-test.kotlin.test.DefaultAsserter"
         )
         val allFilesToMinify = filesToMinify.values + kotlinJsInputFile + kotlinTestJsInputFile
-        val dceResult = DeadCodeElimination.run(allFilesToMinify, additionalReachableNodes) { _, _ -> }
+        val dceResult = DeadCodeElimination.run(allFilesToMinify, additionalReachableNodes, true) { _, _ -> }
 
         val reachableNodes = dceResult.reachableNodes
         minificationThresholdChecker(reachableNodes.count { it.reachable })
@@ -740,9 +753,9 @@ abstract class BasicBoxTest(
         TestCase.assertEquals(expectedResult, result)
     }
 
-    private inner class TestFileFactoryImpl(val coroutinesPackage: String) : TestFiles.TestFileFactory<TestModule, TestFile>, Closeable {
+    private inner class TestFileFactoryImpl : TestFiles.TestFileFactory<TestModule, TestFile>, Closeable {
         var testPackage: String? = null
-        val tmpDir = KotlinTestUtils.tmpDir("js-tests")
+        val tmpDir = KtTestUtil.tmpDir("js-tests")
         val defaultModule = TestModule(TEST_MODULE, emptyList(), emptyList())
         var languageVersionSettings: LanguageVersionSettings? = null
 
@@ -768,7 +781,7 @@ abstract class BasicBoxTest(
             }
 
             val temporaryFile = File(tmpDir, "${currentModule.name}/$fileName")
-            KotlinTestUtils.mkdirs(temporaryFile.parentFile)
+            KtTestUtil.mkdirs(temporaryFile.parentFile)
             temporaryFile.writeText(text, Charsets.UTF_8)
 
             // TODO Deduplicate logic copied from CodegenTestCase.updateConfigurationByDirectivesInTestFiles
@@ -786,16 +799,6 @@ abstract class BasicBoxTest(
             }
             InTextDirectivesUtils.findStringWithPrefixes(text, "// LANGUAGE_VERSION:")?.let {
                 LanguageVersion.fromVersionString(it)?.toSettings()?.trySet()
-            }
-            if (!InTextDirectivesUtils.findLinesWithPrefixesRemoved(text, "// COMMON_COROUTINES_TEST").isEmpty()) {
-                assert(!text.contains("COROUTINES_PACKAGE")) { "Must replace COROUTINES_PACKAGE prior to tests compilation" }
-                if (!coroutinesPackage.isEmpty()) {
-                    if (coroutinesPackage == "kotlin.coroutines.experimental") {
-                        LanguageVersion.KOTLIN_1_2.toSettings().trySet()
-                    } else {
-                        LanguageVersion.KOTLIN_1_3.toSettings().trySet()
-                    }
-                }
             }
 
             parseLanguageVersionSettings(directives)?.trySet()
@@ -889,6 +892,8 @@ abstract class BasicBoxTest(
 
         private val ERROR_POLICY_PATTERN = Pattern.compile("^// *ERROR_POLICY: *(.+)$", Pattern.MULTILINE)
 
+        private val PROPERTY_LAZY_INITIALIZATION = Pattern.compile("^// *PROPERTY_LAZY_INITIALIZATION *$", Pattern.MULTILINE)
+
         @JvmStatic
         protected val runTestInNashorn = getBoolean("kotlin.js.useNashorn")
 
@@ -898,9 +903,7 @@ abstract class BasicBoxTest(
         private val OLD_MODULE_SUFFIX = "-old"
 
         const val KOTLIN_TEST_INTERNAL = "\$kotlin_test_internal\$"
-        private val engineForMinifier =
-            if (runTestInNashorn) ScriptEngineNashorn()
-            else ScriptEngineV8Lazy(KotlinTestUtils.tmpDirForReusableFolder("j2v8_library_path").path)
+        private val engineForMinifier = ScriptEngineNashorn()
     }
 }
 

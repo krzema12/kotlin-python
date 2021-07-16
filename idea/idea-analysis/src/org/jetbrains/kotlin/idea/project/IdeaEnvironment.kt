@@ -16,9 +16,12 @@
 
 package org.jetbrains.kotlin.idea.project
 
+import org.jetbrains.kotlin.cfg.ControlFlowInformationProviderImpl
 import org.jetbrains.kotlin.container.StorageComponentContainer
 import org.jetbrains.kotlin.container.useImpl
+import org.jetbrains.kotlin.container.useInstance
 import org.jetbrains.kotlin.idea.caches.lightClasses.LazyLightClassDataHolder
+import org.jetbrains.kotlin.idea.compiler.IdeMainFunctionDetectorFactory
 import org.jetbrains.kotlin.resolve.TargetEnvironment
 
 object IdeaEnvironment : TargetEnvironment("Idea") {
@@ -28,5 +31,7 @@ object IdeaEnvironment : TargetEnvironment("Idea") {
         container.useImpl<IdeaAbsentDescriptorHandler>()
         container.useImpl<LazyLightClassDataHolder.DiagnosticsHolder>()
         container.useImpl<IdeaModuleStructureOracle>()
+        container.useImpl<IdeMainFunctionDetectorFactory>()
+        container.useInstance(ControlFlowInformationProviderImpl.Factory)
     }
 }

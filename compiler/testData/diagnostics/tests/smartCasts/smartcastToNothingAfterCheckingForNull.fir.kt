@@ -23,7 +23,7 @@ fun g(x: B<Int>) {
     }
 
     if (y is Nothing?) {
-        <!AMBIGUITY!>f<!>(y)
-        <!AMBIGUITY!>g<!>(y)
+        f(y)
+        <!NONE_APPLICABLE!>g<!>(y)
     }
 }

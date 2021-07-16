@@ -1,8 +1,10 @@
+// FIR_IDENTICAL
 // !CHECK_TYPE
 
 package h
 //+JDK
 import java.util.*
+import checkSubtype
 
 fun <T> id(t: T) : T = t
 
@@ -10,9 +12,9 @@ fun <T> id1(t: T) = t
 
 fun <R> elem(t: List<R>): R = t.get(0)
 
-fun <R> elemAndList(<!UNUSED_PARAMETER!>r<!>: R, t: List<R>): R = t.get(0)
+fun <R> elemAndList(r: R, t: List<R>): R = t.get(0)
 
-fun <T> both(t1: T, <!UNUSED_PARAMETER!>t2<!>: T) : T = t1
+fun <T> both(t1: T, t2: T) : T = t1
 
 fun test1() {
     val a = elem(list(2))

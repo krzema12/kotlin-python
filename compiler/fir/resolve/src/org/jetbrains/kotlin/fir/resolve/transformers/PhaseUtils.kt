@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.fir.resolve.transformers
 
 import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.FirSymbolOwner
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
 import org.jetbrains.kotlin.fir.resolve.fullyExpandedType
@@ -22,13 +23,16 @@ fun AbstractFirBasedSymbol<*>.ensureResolved(
     // TODO: Decide which one session should be used and probably get rid of the parameter if use-site session is not needed
     @Suppress("UNUSED_PARAMETER") useSiteSession: FirSession,
 ) {
-    val fir = fir as FirDeclaration
-    val availablePhase = fir.resolvePhase
-    if (availablePhase >= requiredPhase) return
-    val resolver = fir.session.phaseManager
-        ?: error("phaseManager should be defined when working with FIR in phased mode")
+    val session = (fir as FirDeclaration).declarationSiteSession
+    val phaseManager = session.phaseManager
+    phaseManager.ensureResolved(this, requiredPhase)
+}
 
-    resolver.ensureResolved(this, requiredPhase)
+fun FirSymbolOwner<*>.ensureResolved(
+    requiredPhase: FirResolvePhase,
+    useSiteSession: FirSession,
+) {
+    symbol.ensureResolved(requiredPhase, useSiteSession)
 }
 
 fun AbstractFirBasedSymbol<*>.ensureResolvedForCalls(
@@ -56,15 +60,17 @@ fun AbstractFirBasedSymbol<*>.ensureResolvedForCalls(
 
 fun ConeKotlinType.ensureResolvedTypeDeclaration(
     useSiteSession: FirSession,
+    requiredPhase: FirResolvePhase = FirResolvePhase.DECLARATIONS,
 ) {
     if (this !is ConeClassLikeType) return
 
-    lookupTag.toSymbol(useSiteSession)?.ensureResolved(FirResolvePhase.DECLARATIONS, useSiteSession)
-    fullyExpandedType(useSiteSession).lookupTag.toSymbol(useSiteSession)?.ensureResolved(FirResolvePhase.DECLARATIONS, useSiteSession)
+    lookupTag.toSymbol(useSiteSession)?.ensureResolved(requiredPhase, useSiteSession)
+    fullyExpandedType(useSiteSession).lookupTag.toSymbol(useSiteSession)?.ensureResolved(requiredPhase, useSiteSession)
 }
 
 fun FirTypeRef.ensureResolvedTypeDeclaration(
     useSiteSession: FirSession,
+    requiredPhase: FirResolvePhase = FirResolvePhase.DECLARATIONS,
 ) {
-    coneTypeSafe<ConeKotlinType>()?.ensureResolvedTypeDeclaration(useSiteSession)
+    coneTypeSafe<ConeKotlinType>()?.ensureResolvedTypeDeclaration(useSiteSession, requiredPhase)
 }

@@ -80,6 +80,7 @@ class ControlFlowGraph(val declaration: FirDeclaration?, val name: String, val k
         AnonymousFunction(withBody = true),
         ClassInitializer(withBody = true),
         PropertyInitializer(withBody = true),
+        FieldInitializer(withBody = true),
         TopLevel(withBody = false),
         AnnotationCall(withBody = true),
         DefaultArgument(withBody = false),
@@ -132,6 +133,11 @@ object NormalPath : EdgeLabel(label = null) {
         get() = true
 }
 
+object LoopBackPath : EdgeLabel(label = null) {
+    override val isNormal: Boolean
+        get() = true
+}
+
 object UncaughtExceptionPath : EdgeLabel(label = "onUncaughtException")
 
 // TODO: Label `return`ing edge with this.
@@ -155,19 +161,17 @@ enum class EdgeKind(
 
 @OptIn(ExperimentalStdlibApi::class)
 private fun ControlFlowGraph.orderNodes(): LinkedHashSet<CFGNode<*>> {
-    val visitedNodes = LinkedHashSet<CFGNode<*>>()
+    val visitedNodes = linkedSetOf<CFGNode<*>>()
     /*
      * [delayedNodes] is needed to accomplish next order contract:
      *   for each node all previous node lays before it
      */
-    val delayedNodes = LinkedHashSet<CFGNode<*>>()
     val stack = ArrayDeque<CFGNode<*>>()
     stack.addFirst(enterNode)
     while (stack.isNotEmpty()) {
         val node = stack.removeFirst()
         val previousNodes = node.previousNodes
         if (previousNodes.any { it !in visitedNodes && it.owner == this && !node.incomingEdges.getValue(it).kind.isBack }) {
-            delayedNodes.add(node)
             stack.addLast(node)
             continue
         }

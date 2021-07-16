@@ -1,35 +1,33 @@
 /*
- * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
 package plugins
 
+import PublishToMavenLocalSerializable
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.attributes.Usage
-import org.gradle.api.component.AdhocComponentWithVariants
 import org.gradle.api.component.SoftwareComponentFactory
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
+import org.gradle.api.publish.maven.tasks.PublishToMavenLocal
 import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.*
-import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.SigningExtension
 import org.gradle.plugins.signing.SigningPlugin
 import java.util.*
 import javax.inject.Inject
-
 
 class KotlinBuildPublishingPlugin @Inject constructor(
     private val componentFactory: SoftwareComponentFactory
 ) : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
         apply<MavenPublishPlugin>()
-        apply<SigningPlugin>()
 
         val publishedRuntime = configurations.maybeCreate(RUNTIME_CONFIGURATION).apply {
             isCanBeConsumed = false
@@ -47,7 +45,7 @@ class KotlinBuildPublishingPlugin @Inject constructor(
             }
         }
 
-        val kotlinLibraryComponent = componentFactory.adhoc(ADHOC_COMPONENT_NAME) as AdhocComponentWithVariants
+        val kotlinLibraryComponent = componentFactory.adhoc(ADHOC_COMPONENT_NAME)
         components.add(kotlinLibraryComponent)
         kotlinLibraryComponent.addVariantsFromConfiguration(publishedCompile) { mapToMavenScope("compile") }
         kotlinLibraryComponent.addVariantsFromConfiguration(publishedRuntime) { mapToMavenScope("runtime") }
@@ -73,62 +71,11 @@ class KotlinBuildPublishingPlugin @Inject constructor(
                 create<MavenPublication>(PUBLICATION_NAME) {
                     from(kotlinLibraryComponent)
 
-                    pom {
-                        packaging = "jar"
-                        name.set(humanReadableName(project))
-                        description.set(project.description ?: humanReadableName(project))
-                        url.set("https://kotlinlang.org/")
-                        licenses {
-                            license {
-                                name.set("The Apache License, Version 2.0")
-                                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                            }
-                        }
-                        scm {
-                            url.set("https://github.com/JetBrains/kotlin")
-                            connection.set("scm:git:https://github.com/JetBrains/kotlin.git")
-                            developerConnection.set("scm:git:https://github.com/JetBrains/kotlin.git")
-                        }
-                        developers {
-                            developer {
-                                name.set("Kotlin Team")
-                                organization.set("JetBrains")
-                                organizationUrl.set("https://www.jetbrains.com")
-                            }
-                        }
-                    }
-                }
-            }
-
-            repositories {
-                maven {
-                    name = REPOSITORY_NAME
-                    url = file("${project.rootDir}/build/repo").toURI()
+                    configureKotlinPomAttributes(project)
                 }
             }
         }
-
-        val signingRequired = provider {
-            project.findProperty("signingRequired")?.toString()?.toBoolean()
-                ?: project.property("isSonatypeRelease") as Boolean
-        }
-
-        configure<SigningExtension> {
-            setRequired(signingRequired)
-            sign(extensions.getByType<PublishingExtension>().publications[PUBLICATION_NAME])
-            useGpgCmd()
-        }
-
-        tasks.withType<Sign>().configureEach {
-            setOnlyIf { signingRequired.get() }
-        }
-
-        tasks.register("install") {
-            dependsOn(tasks.named("publishToMavenLocal"))
-        }
-
-        tasks.named<PublishToMavenRepository>("publish${PUBLICATION_NAME}PublicationTo${REPOSITORY_NAME}Repository")
-            .configureRepository()
+        configureDefaultPublishing()
     }
 
     companion object {
@@ -139,13 +86,92 @@ class KotlinBuildPublishingPlugin @Inject constructor(
         const val COMPILE_CONFIGURATION = "publishedCompile"
         const val RUNTIME_CONFIGURATION = "publishedRuntime"
 
-        @UseExperimental(ExperimentalStdlibApi::class)
-        fun humanReadableName(project: Project) =
-            project.name.split("-").joinToString(separator = " ") { it.capitalize(Locale.ROOT) }
     }
 }
 
-fun TaskProvider<PublishToMavenRepository>.configureRepository() = configure {
+@OptIn(ExperimentalStdlibApi::class)
+private fun humanReadableName(name: String) =
+    name.split("-").joinToString(separator = " ") { it.capitalize(Locale.ROOT) }
+
+fun MavenPublication.configureKotlinPomAttributes(project: Project, explicitDescription: String? = null) {
+    val publication = this
+    pom {
+        packaging = "jar"
+        name.set(humanReadableName(publication.artifactId))
+        description.set(explicitDescription ?: project.description ?: humanReadableName(publication.artifactId))
+        url.set("https://kotlinlang.org/")
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
+        }
+        scm {
+            url.set("https://github.com/JetBrains/kotlin")
+            connection.set("scm:git:https://github.com/JetBrains/kotlin.git")
+            developerConnection.set("scm:git:https://github.com/JetBrains/kotlin.git")
+        }
+        developers {
+            developer {
+                name.set("Kotlin Team")
+                organization.set("JetBrains")
+                organizationUrl.set("https://www.jetbrains.com")
+            }
+        }
+    }
+}
+
+
+fun Project.configureDefaultPublishing() {
+    configure<PublishingExtension> {
+        repositories {
+            maven {
+                name = KotlinBuildPublishingPlugin.REPOSITORY_NAME
+                url = file("${project.rootDir}/build/repo").toURI()
+            }
+        }
+    }
+
+    val signingRequired = project.providers.gradleProperty("signingRequired").forUseAtConfigurationTime().orNull?.toBoolean()
+        ?: project.providers.gradleProperty("isSonatypeRelease").forUseAtConfigurationTime().orNull?.toBoolean() ?: false
+
+    if (signingRequired) {
+        apply<SigningPlugin>()
+        configureSigning()
+    }
+
+    tasks.register("install") {
+        dependsOn(tasks.named("publishToMavenLocal"))
+    }
+
+    // workaround for Gradle configuration cache
+    // TODO: remove it when https://github.com/gradle/gradle/pull/16945 merged into used in build Gradle version
+    tasks.withType(PublishToMavenLocal::class.java) {
+        val originalTask = this
+        val serializablePublishTask =
+            tasks.register(originalTask.name + "Serializable", PublishToMavenLocalSerializable::class.java) {
+                publication = originalTask.publication
+            }
+        originalTask.onlyIf { false }
+        originalTask.dependsOn(serializablePublishTask)
+    }
+
+    tasks.withType<PublishToMavenRepository>()
+        .matching { it.name.endsWith("PublicationTo${KotlinBuildPublishingPlugin.REPOSITORY_NAME}Repository") }
+        .all { configureRepository() }
+}
+
+private fun Project.configureSigning() {
+    configure<SigningExtension> {
+        sign(extensions.getByType<PublishingExtension>().publications) // all publications
+        useGpgCmd()
+    }
+}
+
+fun TaskProvider<PublishToMavenRepository>.configureRepository() =
+    configure { configureRepository() }
+
+private fun PublishToMavenRepository.configureRepository() {
     dependsOn(project.rootProject.tasks.named("preparePublication"))
     doFirst {
         val preparePublication = project.rootProject.tasks.named("preparePublication").get()

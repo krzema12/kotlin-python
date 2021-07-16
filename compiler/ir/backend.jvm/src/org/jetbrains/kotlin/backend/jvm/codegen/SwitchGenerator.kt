@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.dump
 import org.jetbrains.kotlin.ir.util.isTrueConst
 import org.jetbrains.org.objectweb.asm.Label
+import org.jetbrains.org.objectweb.asm.Type
 import java.util.*
 
 // TODO: eliminate the temporary variable
@@ -236,11 +237,13 @@ class SwitchGenerator(private val expression: IrWhen, private val data: BlockInf
     //     action
     // }
     //
+    // fir2ir lowers the same to an or sequence:
+    //
+    // if (((subject == a) || (subject == b)) || (subject = c)) action
+    //
     // @return true if the conditions are equality checks of constants.
     private fun matchConditions(condition: IrExpression): ArrayList<IrCall>? {
-        if (condition is IrCall) {
-            return arrayListOf(condition)
-        } else if (condition is IrWhen && condition.origin == IrStatementOrigin.WHEN_COMMA) {
+        if (condition is IrWhen && condition.origin == IrStatementOrigin.WHEN_COMMA) {
             assert(condition.type.isBoolean()) { "WHEN_COMMA should always be a Boolean: ${condition.dump()}" }
 
             val candidates = ArrayList<IrCall>()
@@ -267,6 +270,15 @@ class SwitchGenerator(private val expression: IrWhen, private val data: BlockInf
             }
 
             return if (candidates.isNotEmpty()) candidates else return null
+        } else if (condition is IrCall && condition.symbol == codegen.context.irBuiltIns.ororSymbol) {
+            val candidates = ArrayList<IrCall>()
+            for (i in 0 until condition.valueArgumentsCount) {
+                val argument = condition.getValueArgument(i)!!
+                candidates += matchConditions(argument) ?: return null
+            }
+            return if (candidates.isNotEmpty()) candidates else return null
+        } else if (condition is IrCall) {
+            return arrayListOf(condition)
         }
 
         return null
@@ -367,7 +379,8 @@ class SwitchGenerator(private val expression: IrWhen, private val data: BlockInf
             // information for the subject as the `when` line number has already been
             // emitted.
             codegen.noLineNumberScope {
-                subject.accept(codegen, data).materialize()
+                val subjectValue = subject.accept(codegen, data)
+                subjectValue.materializeAt(Type.INT_TYPE, subjectValue.irType)
             }
             genIntSwitch(cases)
         }

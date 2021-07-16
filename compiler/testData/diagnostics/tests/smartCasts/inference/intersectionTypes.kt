@@ -3,11 +3,13 @@
 
 package a
 
+import checkSubtype
+
 fun <T> id(t: T): T = t
 
-fun <T> two(u: T, <!UNUSED_PARAMETER!>v<!>: T): T = u
+fun <T> two(u: T, v: T): T = u
 
-fun <T> three(<!UNUSED_PARAMETER!>a<!>: T, <!UNUSED_PARAMETER!>b<!>: T, c: T): T = c
+fun <T> three(a: T, b: T, c: T): T = c
 
 interface A
 interface B: A
@@ -15,7 +17,7 @@ interface C: A
 
 fun test(a: A, b: B, c: C) {
     if (a is B && a is C) {
-        val d: C = id(<!OI;DEBUG_INFO_SMARTCAST!>a<!>)
+        val d: C = id(<!DEBUG_INFO_SMARTCAST{OI}!>a<!>)
         val e: Any = id(a)
         val f = id(a)
         checkSubtype<A>(f)
@@ -29,21 +31,21 @@ fun test(a: A, b: B, c: C) {
         val k = three(a, b, c)
         checkSubtype<A>(k)
         checkSubtype<B>(<!TYPE_MISMATCH!>k<!>)
-        val l: Int = <!NI;TYPE_MISMATCH, NI;TYPE_MISMATCH, NI;TYPE_MISMATCH, NI;TYPE_MISMATCH, OI;TYPE_INFERENCE_EXPECTED_TYPE_MISMATCH!>three(a, b, c)<!>
-        
+        val l: Int = <!TYPE_INFERENCE_EXPECTED_TYPE_MISMATCH{OI}, TYPE_MISMATCH{NI}, TYPE_MISMATCH{NI}, TYPE_MISMATCH{NI}, TYPE_MISMATCH{NI}!>three(a, b, c)<!>
+
         use(d, e, f, g, h, k, l)
     }
 }
 
-fun <T> foo(t: T, <!UNUSED_PARAMETER!>l<!>: MutableList<T>): T = t
+fun <T> foo(t: T, l: MutableList<T>): T = t
 
 fun testErrorMessages(a: A, ml: MutableList<String>) {
     if (a is B && a is C) {
-        <!OI;TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS!>foo<!>(a, <!NI;TYPE_MISMATCH!>ml<!>)
+        <!TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS{OI}!>foo<!>(a, <!TYPE_MISMATCH{NI}!>ml<!>)
     }
 
     if(a is C) {
-        <!OI;TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS!>foo<!>(a, <!NI;TYPE_MISMATCH!>ml<!>)
+        <!TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS{OI}!>foo<!>(a, <!TYPE_MISMATCH{NI}!>ml<!>)
     }
 }
 
@@ -56,6 +58,6 @@ fun rr(s: String?) {
 }
 
 //from library
-fun <T> arrayListOf(vararg <!UNUSED_PARAMETER!>values<!>: T): MutableList<T> = throw Exception()
+fun <T> arrayListOf(vararg values: T): MutableList<T> = throw Exception()
 
 fun use(vararg a: Any) = a

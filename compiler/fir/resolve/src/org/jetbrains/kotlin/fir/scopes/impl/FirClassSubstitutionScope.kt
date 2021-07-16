@@ -8,7 +8,6 @@ package org.jetbrains.kotlin.fir.scopes.impl
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.*
 import org.jetbrains.kotlin.fir.declarations.*
-import org.jetbrains.kotlin.fir.declarations.builder.*
 import org.jetbrains.kotlin.fir.declarations.synthetic.FirSyntheticProperty
 import org.jetbrains.kotlin.fir.resolve.substitution.ConeSubstitutor
 import org.jetbrains.kotlin.fir.resolve.substitution.chain
@@ -29,13 +28,13 @@ class FirClassSubstitutionScope(
     private val makeExpect: Boolean = false
 ) : FirTypeScope() {
 
-    private val substitutionOverrideFunctions = mutableMapOf<FirFunctionSymbol<*>, FirFunctionSymbol<*>>()
+    private val substitutionOverrideFunctions = mutableMapOf<FirNamedFunctionSymbol, FirNamedFunctionSymbol>()
     private val substitutionOverrideConstructors = mutableMapOf<FirConstructorSymbol, FirConstructorSymbol>()
     private val substitutionOverrideVariables = mutableMapOf<FirVariableSymbol<*>, FirVariableSymbol<*>>()
 
     private val newOwnerClassId = dispatchReceiverTypeForSubstitutedMembers.lookupTag.classId
 
-    override fun processFunctionsByName(name: Name, processor: (FirFunctionSymbol<*>) -> Unit) {
+    override fun processFunctionsByName(name: Name, processor: (FirNamedFunctionSymbol) -> Unit) {
         useSiteMemberScope.processFunctionsByName(name) process@{ original ->
             val function = substitutionOverrideFunctions.getOrPut(original) { createSubstitutionOverrideFunction(original) }
             processor(function)
@@ -45,8 +44,8 @@ class FirClassSubstitutionScope(
     }
 
     override fun processDirectOverriddenFunctionsWithBaseScope(
-        functionSymbol: FirFunctionSymbol<*>,
-        processor: (FirFunctionSymbol<*>, FirTypeScope) -> ProcessorAction
+        functionSymbol: FirNamedFunctionSymbol,
+        processor: (FirNamedFunctionSymbol, FirTypeScope) -> ProcessorAction
     ): ProcessorAction =
         processDirectOverriddenWithBaseScope(
             functionSymbol, processor, FirTypeScope::processDirectOverriddenFunctionsWithBaseScope, substitutionOverrideFunctions
@@ -111,13 +110,9 @@ class FirClassSubstitutionScope(
         return substitutor.substituteOrNull(this)
     }
 
-    private fun createSubstitutionOverrideFunction(original: FirFunctionSymbol<*>): FirFunctionSymbol<*> {
+    private fun createSubstitutionOverrideFunction(original: FirNamedFunctionSymbol): FirNamedFunctionSymbol {
         if (substitutor == ConeSubstitutor.Empty) return original
-        val member = when (original) {
-            is FirNamedFunctionSymbol -> original.fir
-            is FirConstructorSymbol -> return original
-            else -> throw AssertionError("Should not be here")
-        }
+        val member = original.fir
         if (skipPrivateMembers && member.visibility == Visibilities.Private) return original
 
         val (newTypeParameters, newReceiverType, newReturnType, newSubstitutor, fakeOverrideSubstitution) = createSubstitutedData(member)
@@ -126,7 +121,8 @@ class FirClassSubstitutionScope(
         }
 
         if (newReceiverType == null && newReturnType == null && newParameterTypes.all { it == null } &&
-            newTypeParameters === member.typeParameters && fakeOverrideSubstitution == null) {
+            newTypeParameters === member.typeParameters && fakeOverrideSubstitution == null
+        ) {
             return original
         }
 
@@ -162,6 +158,7 @@ class FirClassSubstitutionScope(
         if (newReturnType == null && newParameterTypes.all { it == null } && newTypeParameters === constructor.typeParameters) {
             return original
         }
+
         return FirFakeOverrideGenerator.createSubstitutionOverrideConstructor(
             FirConstructorSymbol(original.callableId),
             session, constructor, dispatchReceiverTypeForSubstitutedMembers,
@@ -175,8 +172,9 @@ class FirClassSubstitutionScope(
         if (skipPrivateMembers && member.visibility == Visibilities.Private) return original
 
         val (newTypeParameters, newReceiverType, newReturnType, _, fakeOverrideSubstitution) = createSubstitutedData(member)
-        if (newReceiverType == null &&
-            newReturnType == null && newTypeParameters === member.typeParameters
+
+        if (newReceiverType == null && newReturnType == null &&
+            newTypeParameters === member.typeParameters && fakeOverrideSubstitution == null
         ) {
             return original
         }
@@ -206,6 +204,7 @@ class FirClassSubstitutionScope(
 
     private fun createSubstitutedData(member: FirCallableMemberDeclaration<*>): SubstitutedData {
         val (newTypeParameters, substitutor) = FirFakeOverrideGenerator.createNewTypeParametersAndSubstitutor(
+            session,
             member as FirTypeParameterRefsOwner,
             substitutor,
             forceTypeParametersRecreation = dispatchReceiverTypeForSubstitutedMembers.lookupTag != member.dispatchReceiverClassOrNull()
@@ -241,21 +240,28 @@ class FirClassSubstitutionScope(
         val fakeOverrideSubstitution = runIf(returnType == null) { FakeOverrideSubstitution(substitutor, original) }
         val newReturnType = returnType?.substitute()
 
-        val newParameterTypes = member.getter.valueParameters.map {
+        val newGetterParameterTypes = member.getter.valueParameters.map {
             it.returnTypeRef.coneType.substitute()
         }
+        val newSetterParameterTypes = member.setter?.valueParameters?.map {
+            it.returnTypeRef.coneType.substitute()
+        }.orEmpty()
 
-        if (newReturnType == null && newParameterTypes.all { it == null }) {
+        if (newReturnType == null &&
+            newGetterParameterTypes.all { it == null } &&
+            newSetterParameterTypes.all { it == null }
+        ) {
             return original
         }
 
-        return FirFakeOverrideGenerator.createFakeOverrideAccessor(
+        return FirFakeOverrideGenerator.createSubstitutionOverrideAccessor(
             session,
             member,
             original,
             dispatchReceiverTypeForSubstitutedMembers,
             newReturnType,
-            newParameterTypes,
+            newGetterParameterTypes,
+            newSetterParameterTypes,
             fakeOverrideSubstitution
         )
     }

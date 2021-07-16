@@ -15,12 +15,12 @@ abstract class AbstractConfigureKotlinInTempDirTest : AbstractConfigureKotlinTes
     override fun getProjectDirOrFile(): Path {
         val tempDir = FileUtil.generateRandomTemporaryPath()
         FileUtil.createTempDirectory("temp", null)
-        myFilesToDelete.add(tempDir)
+        myFilesToDelete.add(tempDir.toPath())
 
         FileUtil.copyDir(File(projectRoot), tempDir)
 
         val kotlinRuntime = File(tempDir, "lib/kotlin-stdlib.jar")
-        if (getTestName(true).toLowerCase().contains("latestruntime") && kotlinRuntime.exists()) {
+        if (getTestName(true).lowercase().contains("latestruntime") && kotlinRuntime.exists()) {
             ForTestCompileRuntime.runtimeJarForTests().copyTo(kotlinRuntime, overwrite = true)
         }
 

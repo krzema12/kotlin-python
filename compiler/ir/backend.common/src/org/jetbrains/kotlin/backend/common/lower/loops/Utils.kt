@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.ir.types.getClass
 import org.jetbrains.kotlin.ir.types.isNothing
 import org.jetbrains.kotlin.ir.util.defaultType
 import org.jetbrains.kotlin.ir.util.functions
+import org.jetbrains.kotlin.ir.util.isTrivial
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.util.OperatorNameConventions
 
@@ -70,17 +71,14 @@ internal fun IrExpression.decrement(): IrExpression {
 }
 
 internal val IrExpression.canHaveSideEffects: Boolean
-    get() = this !is IrExpressionWithCopy
+    get() = !isTrivial()
 
 private fun Any?.toLong(): Long? =
     when (this) {
         is Number -> toLong()
-        is Char -> toLong()
+        is Char -> code.toLong()
         else -> null
     }
-
-internal val IrExpressionWithCopy.constLongValue: Long?
-    get() = if (this is IrConst<*>) value.toLong() else null
 
 internal val IrExpression.constLongValue: Long?
     get() = if (this is IrConst<*>) value.toLong() else null
@@ -94,8 +92,8 @@ internal val IrExpression.constLongValue: Long?
 internal fun DeclarationIrBuilder.createTemporaryVariableIfNecessary(
     expression: IrExpression, nameHint: String? = null,
     irType: IrType? = null, isMutable: Boolean = false
-): Pair<IrVariable?, IrExpressionWithCopy> =
-    if (expression !is IrExpressionWithCopy) {
+): Pair<IrVariable?, IrExpression> =
+    if (expression.canHaveSideEffects) {
         scope.createTmpVariable(expression, nameHint = nameHint, irType = irType, isMutable = isMutable).let { Pair(it, irGet(it)) }
     } else {
         Pair(null, expression)

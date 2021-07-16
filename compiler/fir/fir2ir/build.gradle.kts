@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.ideaExt.idea
+
 plugins {
     kotlin("jvm")
     id("jps-compatible")
@@ -19,28 +21,46 @@ dependencies {
 
     testRuntimeOnly(intellijDep())
 
-    testApi(commonDep("junit:junit"))
     testCompileOnly(project(":kotlin-test:kotlin-test-jvm"))
     testCompileOnly(project(":kotlin-test:kotlin-test-junit"))
-    testApi(projectTests(":compiler:tests-common"))
+    testApi(projectTests(":compiler:test-infrastructure"))
+    testApi(projectTests(":compiler:test-infrastructure-utils"))
+    testApi(projectTests(":compiler:tests-compiler-utils"))
+    testApi(projectTests(":compiler:tests-common-new"))
     testApi(projectTests(":compiler:fir:analysis-tests"))
-    testApi(project(":compiler:resolution.common"))
+    testApi(project(":compiler:fir:fir-serialization"))
+
+    testApiJUnit5()
 
     testCompileOnly(project(":kotlin-reflect-api"))
     testRuntimeOnly(project(":kotlin-reflect"))
     testRuntimeOnly(project(":core:descriptors.runtime"))
+    testRuntimeOnly(project(":compiler:fir:fir2ir:jvm-backend"))
 
     testCompileOnly(intellijCoreDep()) { includeJars("intellij-core") }
     testRuntimeOnly(intellijCoreDep()) { includeJars("intellij-core") }
 }
 
+val generationRoot = projectDir.resolve("tests-gen")
+
 sourceSets {
     "main" { projectDefault() }
-    "test" { projectDefault() }
+    "test" {
+        projectDefault()
+        this.java.srcDir(generationRoot.name)
+    }
 }
 
-projectTest(parallel = true) {
+if (kotlinBuildProperties.isInJpsBuildIdeaSync) {
+    apply(plugin = "idea")
+    idea {
+        this.module.generatedSourceDirs.add(generationRoot)
+    }
+}
+
+projectTest(jUnit5Enabled = true) {
     workingDir = rootDir
+    useJUnitPlatform()
 }
 
 testsJar()

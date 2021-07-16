@@ -32,10 +32,12 @@ typealias R = Function<C> // something complex
 
 // Type aliases converted to expect classes:
 typealias S = String
+
 expect class T
 
 // Nullability:
 typealias U = A // same nullability of the RHS class
+
 expect class V // different nullability of the RHS class
 typealias W = A // same nullability of the RHS TA
 typealias Y = V // TA at the RHS with the different nullability of own RHS
@@ -43,8 +45,7 @@ typealias Y = V // TA at the RHS with the different nullability of own RHS
 // Supertypes:
 expect class FILE : kotlinx.cinterop.CStructVar
 
-typealias uuid_t = kotlinx.cinterop.CPointer<kotlinx.cinterop.UByteVarOf<kotlinx.cinterop.UByte>>
-//                                  ^^^ TODO: ideally, it should be CArrayPointer<UByteVar>
+typealias uuid_t = kotlinx.cinterop.CArrayPointer<kotlinx.cinterop.UByteVar>
 typealias __darwin_uuid_t = kotlinx.cinterop.CArrayPointer<kotlinx.cinterop.UByteVar>
 
 expect val uuid: uuid_t

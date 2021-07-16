@@ -8,7 +8,7 @@ class DerivedOuter<G> : SuperOuter<G>() {
 
 fun bare(x: SuperOuter<*>.SuperInner<*>, y: Any?) {
     if (x is SuperOuter.SuperInner) return
-    if (y is SuperOuter.SuperInner) {
+    if (y is <!NO_TYPE_ARGUMENTS_ON_RHS!>SuperOuter.SuperInner<!>) {
         return
     }
 }

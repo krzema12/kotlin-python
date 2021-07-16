@@ -40,11 +40,37 @@ class ResultTypeResolver(
         findResultIfThereIsEqualsConstraint(c, variableWithConstraints)?.let { return it }
 
         val subType = c.findSubType(variableWithConstraints)
-        val superType = c.findSuperType(variableWithConstraints)
+        // Super type should be the most flexible, sub type should be the least one
+        val superType = c.findSuperType(variableWithConstraints).makeFlexibleIfNecessary(c, variableWithConstraints.constraints)
+
         return if (direction == ResolveDirection.TO_SUBTYPE || direction == ResolveDirection.UNKNOWN) {
             c.resultType(subType, superType, variableWithConstraints)
         } else {
             c.resultType(superType, subType, variableWithConstraints)
+        }
+    }
+
+    /*
+     * We propagate nullness flexibility into the result type from type variables in other constraints
+     * to prevent variable fixation into less flexible type.
+     *  Constraints:
+     *      UPPER(TypeVariable(T)..TypeVariable(T)?)
+     *      UPPER(Foo?)
+     *  Result type = makeFlexibleIfNecessary(Foo?) = Foo!
+     *
+     * We don't propagate nullness flexibility in depth as it's non-determined for now (see KT-35534):
+     *  CST(Bar<Foo>, Bar<Foo!>) = Bar<Foo!>
+     *  CST(Bar<Foo!>, Bar<Foo>) = Bar<Foo>
+     * But: CST(Foo, Foo!) = CST(Foo!, Foo) = Foo!
+     */
+    private fun KotlinTypeMarker?.makeFlexibleIfNecessary(c: Context, constraints: List<Constraint>) = with(c) {
+        when (val type = this@makeFlexibleIfNecessary) {
+            is SimpleTypeMarker -> {
+                if (constraints.any { it.type.typeConstructor().isTypeVariable() && it.type.hasFlexibleNullability() }) {
+                    createFlexibleType(type.makeSimpleTypeDefinitelyNotNullOrNotNull(), type.withNullability(true))
+                } else type
+            }
+            else -> type
         }
     }
 
@@ -189,7 +215,28 @@ class ResultTypeResolver(
         val upperConstraints =
             variableWithConstraints.constraints.filter { it.kind == ConstraintKind.UPPER && this@findSuperType.isProperTypeForFixation(it.type) }
         if (upperConstraints.isNotEmpty()) {
-            val upperType = intersectTypes(upperConstraints.map { it.type })
+            val intersectionUpperType = intersectTypes(upperConstraints.map { it.type })
+            val resultIsActuallyIntersection = intersectionUpperType.typeConstructor().isIntersection()
+
+            val isThereUnwantedIntersectedTypes = if (resultIsActuallyIntersection) {
+                val intersectionSupertypes = intersectionUpperType.typeConstructor().supertypes()
+                val intersectionClasses = intersectionSupertypes.count {
+                    it.typeConstructor().isClassTypeConstructor() && !it.typeConstructor().isInterface()
+                }
+                val areThereIntersectionFinalClasses = intersectionSupertypes.any { it.typeConstructor().isCommonFinalClassConstructor() }
+                intersectionClasses > 1 || areThereIntersectionFinalClasses
+            } else false
+
+            val upperType = if (isThereUnwantedIntersectedTypes) {
+                /*
+                 * We shouldn't infer a type variable into the intersection type if there is an explicit expected type,
+                 * otherwise it can lead to something like this:
+                 *
+                 * fun <T : String> materialize(): T = null as T
+                 * val bar: Int = materialize() // no errors, T is inferred into String & Int
+                 */
+                intersectTypes(upperConstraints.filterNot { it.isExpectedTypePosition() }.map { it.type })
+            } else intersectionUpperType
 
             return typeApproximator.approximateToSubType(
                 upperType,

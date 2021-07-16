@@ -6,7 +6,6 @@
 package org.jetbrains.kotlin.fir.declarations.builder
 
 import kotlin.contracts.*
-import org.jetbrains.kotlin.fir.FirImplementationDetail
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.builder.FirAnnotationContainerBuilder
@@ -34,7 +33,7 @@ import org.jetbrains.kotlin.name.Name
 @FirBuilderDsl
 open class FirValueParameterBuilder : FirAnnotationContainerBuilder {
     override var source: FirSourceElement? = null
-    open lateinit var session: FirSession
+    open lateinit var declarationSiteSession: FirSession
     open var resolvePhase: FirResolvePhase = FirResolvePhase.RAW_FIR
     open lateinit var origin: FirDeclarationOrigin
     open var attributes: FirDeclarationAttributes = FirDeclarationAttributes()
@@ -47,11 +46,10 @@ open class FirValueParameterBuilder : FirAnnotationContainerBuilder {
     open var isNoinline: Boolean by kotlin.properties.Delegates.notNull<Boolean>()
     open var isVararg: Boolean by kotlin.properties.Delegates.notNull<Boolean>()
 
-    @OptIn(FirImplementationDetail::class)
     override fun build(): FirValueParameter {
         return FirValueParameterImpl(
             source,
-            session,
+            declarationSiteSession,
             resolvePhase,
             origin,
             attributes,
@@ -83,7 +81,7 @@ inline fun buildValueParameterCopy(original: FirValueParameter, init: FirValuePa
     }
     val copyBuilder = FirValueParameterBuilder()
     copyBuilder.source = original.source
-    copyBuilder.session = original.session
+    copyBuilder.declarationSiteSession = original.declarationSiteSession
     copyBuilder.resolvePhase = original.resolvePhase
     copyBuilder.origin = original.origin
     copyBuilder.attributes = original.attributes.copy()

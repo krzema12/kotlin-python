@@ -138,6 +138,28 @@ abstract class AbstractVersionRequirementTest : TestCaseWithTmpdir() {
         )
     }
 
+    fun testDefinitelyNotNull() {
+        doTest(
+            VersionRequirement.Version(1, 6), DeprecationLevel.ERROR, null, ProtoBuf.VersionRequirement.VersionKind.LANGUAGE_VERSION, null,
+            customLanguageVersion = LanguageVersion.KOTLIN_1_6,
+            fqNamesWithRequirements = listOf(
+                "test.A.foo",
+                "test.A.w",
+                "test.B.<init>",
+                "test.bar1",
+                "test.bar2",
+                "test.nn",
+                "test.Outer.R1",
+                "test.Outer.R2",
+                "test.Alias",
+            ),
+            fqNamesWithoutRequirement = listOf(
+                "test.Outer",
+                "test.Outer.W",
+            ),
+        )
+    }
+
     fun testLanguageVersionViaAnnotation() {
         doTest(
             VersionRequirement.Version(1, 1), DeprecationLevel.WARNING, "message",
@@ -203,7 +225,7 @@ abstract class AbstractVersionRequirementTest : TestCaseWithTmpdir() {
         )
     }
 
-    fun testInlineClassesAndRelevantDeclarations() {
+    fun testInlineClassesAndRelevantDeclarations13() {
         doTest(
             VersionRequirement.Version(1, 3), DeprecationLevel.ERROR, null, ProtoBuf.VersionRequirement.VersionKind.LANGUAGE_VERSION, null,
             fqNamesWithRequirements = listOf(
@@ -215,7 +237,8 @@ abstract class AbstractVersionRequirementTest : TestCaseWithTmpdir() {
                 "test.result",
                 "test.Foo",
                 "test.Bar"
-            )
+            ),
+            shouldBeSingleRequirement = false
         )
     }
 }

@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
 import org.jetbrains.kotlin.gradle.plugin.statistics.KotlinBuildStatsService
 import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
 import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinNativeCompile
+import org.jetbrains.kotlin.project.model.LanguageSettings
 import org.jetbrains.kotlin.statistics.metrics.BooleanMetrics
 import org.jetbrains.kotlin.statistics.metrics.StringMetrics
 
@@ -98,7 +99,7 @@ internal class DefaultLanguageSettingsBuilder : LanguageSettingsBuilder {
 }
 
 internal fun applyLanguageSettingsToKotlinOptions(
-    languageSettingsBuilder: LanguageSettingsBuilder,
+    languageSettingsBuilder: LanguageSettings,
     kotlinOptions: KotlinCommonOptions
 ) = with(kotlinOptions) {
     languageVersion = languageVersion ?: languageSettingsBuilder.languageVersion
@@ -131,7 +132,16 @@ internal fun applyLanguageSettingsToKotlinOptions(
     }
 }
 
-private val apiVersionValues = ApiVersion.run { listOf(KOTLIN_1_0, KOTLIN_1_1, KOTLIN_1_2, KOTLIN_1_3, KOTLIN_1_4) }
+private val apiVersionValues = ApiVersion.run {
+    listOf(
+        KOTLIN_1_0,
+        KOTLIN_1_1,
+        KOTLIN_1_2,
+        KOTLIN_1_3,
+        KOTLIN_1_4,
+        KOTLIN_1_5
+    )
+}
 
 internal fun parseLanguageVersionSetting(versionString: String) = LanguageVersion.fromVersionString(versionString)
 internal fun parseApiVersionSettings(versionString: String) = apiVersionValues.find { it.versionString == versionString }

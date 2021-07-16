@@ -5,8 +5,10 @@
 
 package org.jetbrains.kotlin.fir.expressions
 
+import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.types.FirTypeRef
+import org.jetbrains.kotlin.types.ConstantValueKind
 import org.jetbrains.kotlin.fir.visitors.*
 
 /*
@@ -18,14 +20,18 @@ abstract class FirConstExpression<T> : FirExpression() {
     abstract override val source: FirSourceElement?
     abstract override val typeRef: FirTypeRef
     abstract override val annotations: List<FirAnnotationCall>
-    abstract val kind: FirConstKind<T>
+    abstract val kind: ConstantValueKind<T>
     abstract val value: T
 
     override fun <R, D> accept(visitor: FirVisitor<R, D>, data: D): R = visitor.visitConstExpression(this, data)
 
+    @Suppress("UNCHECKED_CAST")
+    override fun <E: FirElement, D> transform(transformer: FirTransformer<D>, data: D): E = 
+        transformer.transformConstExpression(this, data) as E
+
     abstract override fun replaceTypeRef(newTypeRef: FirTypeRef)
 
-    abstract fun replaceKind(newKind: FirConstKind<T>)
+    abstract fun replaceKind(newKind: ConstantValueKind<T>)
 
     abstract override fun <D> transformAnnotations(transformer: FirTransformer<D>, data: D): FirConstExpression<T>
 }

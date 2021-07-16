@@ -21,6 +21,7 @@ import org.jetbrains.kotlin.descriptors.CallableMemberDescriptor
 import org.jetbrains.kotlin.descriptors.ValueParameterDescriptor
 import org.jetbrains.kotlin.resolve.calls.components.CallableReferenceCandidate
 import org.jetbrains.kotlin.resolve.calls.inference.model.ConstraintSystemError
+import org.jetbrains.kotlin.resolve.calls.inference.model.NewConstraintWarning
 import org.jetbrains.kotlin.resolve.calls.tower.CandidateApplicability
 import org.jetbrains.kotlin.resolve.calls.tower.CandidateApplicability.*
 import org.jetbrains.kotlin.types.TypeConstructor
@@ -170,7 +171,7 @@ class UnstableSmartCastDiagnosticError(
 class UnsafeCallError(
     val receiver: SimpleKotlinCallArgument,
     val isForImplicitInvoke: Boolean = false
-) : KotlinCallDiagnostic(MAY_THROW_RUNTIME_ERROR) {
+) : KotlinCallDiagnostic(UNSAFE_CALL) {
     override fun report(reporter: DiagnosticReporter) = reporter.onCallReceiver(receiver, this)
 }
 
@@ -279,3 +280,6 @@ val KotlinCallDiagnostic.constraintSystemError: ConstraintSystemError?
 
 fun ConstraintSystemError.asDiagnostic(): KotlinConstraintSystemDiagnostic = KotlinConstraintSystemDiagnostic(this)
 fun Collection<ConstraintSystemError>.asDiagnostics(): List<KotlinConstraintSystemDiagnostic> = map(ConstraintSystemError::asDiagnostic)
+
+fun List<KotlinCallDiagnostic>.filterErrorDiagnostics() =
+    filter { it !is KotlinConstraintSystemDiagnostic || it.error !is NewConstraintWarning }

@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.resolve.calls.callResolverUtil
 
 import com.google.common.collect.Lists
+import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.builtins.KotlinBuiltIns
 import org.jetbrains.kotlin.builtins.ReflectionTypes
 import org.jetbrains.kotlin.builtins.isSuspendFunctionType
@@ -39,6 +40,7 @@ import org.jetbrains.kotlin.types.checker.KotlinTypeChecker
 import org.jetbrains.kotlin.types.expressions.OperatorConventions
 import org.jetbrains.kotlin.types.typeUtil.contains
 import org.jetbrains.kotlin.utils.SmartList
+import kotlin.math.exp
 
 enum class ResolveArgumentsMode {
     RESOLVE_FUNCTION_ARGUMENTS,
@@ -322,6 +324,8 @@ fun createResolutionCandidatesForConstructors(
     }
 }
 
-internal fun KtConstructorDelegationCall.reportOnElement() = if (this.isImplicit) {
-    this.getStrictParentOfType<KtSecondaryConstructor>()!!
-} else this
+internal fun PsiElement.reportOnElement() =
+    (this as? KtConstructorDelegationCall)
+        ?.takeIf { isImplicit }
+        ?.let { getStrictParentOfType<KtSecondaryConstructor>()!! }
+        ?: this

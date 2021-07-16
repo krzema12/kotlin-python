@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.fir.extensions.predicate.under
 import org.jetbrains.kotlin.fir.plugin.AllOpenPluginKey
 import org.jetbrains.kotlin.fir.plugin.fqn
 import org.jetbrains.kotlin.fir.resolve.transformers.plugin.GeneratedClass
-import org.jetbrains.kotlin.fir.symbols.CallableId
+import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.fir.symbols.impl.FirNamedFunctionSymbol
 import org.jetbrains.kotlin.name.Name
 
@@ -40,12 +40,12 @@ class AllOpenMemberGenerator(session: FirSession) : FirDeclarationGenerationExte
         val owner = owners.last() as? FirRegularClass ?: return emptyList()
         val propertyName = annotatedDeclaration.name.identifier
         val function = buildSimpleFunction {
-            session = this@AllOpenMemberGenerator.session
+            declarationSiteSession = session
             resolvePhase = FirResolvePhase.ANALYZED_DEPENDENCIES
             origin = FirDeclarationOrigin.Plugin(key)
             returnTypeRef = annotatedDeclaration.returnTypeRef
             status = annotatedDeclaration.status
-            name = Name.identifier("hello${propertyName.capitalize()}")
+            name = Name.identifier("hello${propertyName.replaceFirstChar(Char::uppercaseChar)}")
             symbol = FirNamedFunctionSymbol(CallableId(owner.classId, name))
         }
         return listOf(GeneratedDeclaration(function, owner))

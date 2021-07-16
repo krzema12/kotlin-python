@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -16,12 +16,22 @@ object SerializationPluginErrorsRendering : DefaultErrorMessages.Extension {
     init {
         MAP.put(
             SerializationErrors.INLINE_CLASSES_NOT_SUPPORTED,
-            "Inline classes are not supported by kotlinx.serialization yet"
+            "Inline classes require runtime serialization library version at least {0}, while your classpath has {1}.",
+            Renderers.STRING,
+            Renderers.STRING,
         )
         MAP.put(
             SerializationErrors.PLUGIN_IS_NOT_ENABLED,
             "kotlinx.serialization compiler plugin is not applied to the module, so this annotation would not be processed. " +
                     "Make sure that you've setup your buildscript correctly and re-import project."
+        )
+        MAP.put(
+            SerializationErrors.LOCAL_CLASSES_NOT_SUPPORTED,
+            "Local classes and anonymous objects can not be serializable."
+        )
+        MAP.put(
+            SerializationErrors.INNER_CLASSES_NOT_SUPPORTED,
+            "Inner (with reference to outer this) serializable classes are not supported. Remove @Serializable annotation or 'inner' keyword."
         )
         MAP.put(
             SerializationErrors.EXPLICIT_SERIALIZABLE_IS_REQUIRED,
@@ -71,6 +81,14 @@ object SerializationPluginErrorsRendering : DefaultErrorMessages.Extension {
         MAP.put(
             SerializationErrors.TRANSIENT_IS_REDUNDANT,
             "Property does not have backing field which makes it non-serializable and therefore @Transient is redundant"
+        )
+        MAP.put(
+            SerializationErrors.JSON_FORMAT_REDUNDANT_DEFAULT,
+            "Redundant creation of Json default format. Creating instances for each usage can be slow."
+        )
+        MAP.put(
+            SerializationErrors.JSON_FORMAT_REDUNDANT,
+            "Redundant creation of Json format. Creating instances for each usage can be slow."
         )
         MAP.put(
             SerializationErrors.INCORRECT_TRANSIENT,

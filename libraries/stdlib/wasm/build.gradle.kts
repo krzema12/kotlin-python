@@ -5,6 +5,8 @@ plugins {
     kotlin("multiplatform")
 }
 
+description = "Kotlin Standard Library for experimental WebAssembly platform"
+
 val unimplementedNativeBuiltIns =
     (file("$rootDir/core/builtins/native/kotlin/").list().toSortedSet() - file("$rootDir/libraries/stdlib/wasm/builtins/kotlin/").list())
         .map { "core/builtins/native/kotlin/$it" }
@@ -66,6 +68,9 @@ kotlin {
 }
 
 tasks.withType<KotlinCompile<*>>().configureEach {
+    // TODO: fix all warnings, enable explicit API mode and -Werror
+    kotlinOptions.suppressWarnings = true
+
     kotlinOptions.freeCompilerArgs += listOf(
         "-Xallow-kotlin-package",
         "-Xallow-result-return-type",
@@ -75,8 +80,7 @@ tasks.withType<KotlinCompile<*>>().configureEach {
         "-Xinline-classes",
         "-Xopt-in=kotlin.RequiresOptIn",
         "-Xopt-in=kotlin.ExperimentalUnsignedTypes",
-        "-Xopt-in=kotlin.ExperimentalStdlibApi",
-        "-Xexplicit-api=warning"
+        "-Xopt-in=kotlin.ExperimentalStdlibApi"
     )
 }
 
@@ -85,3 +89,36 @@ tasks.named("compileKotlinJs") {
     dependsOn(commonMainSources)
     dependsOn(builtInsSources)
 }
+
+val runtimeElements by configurations.creating {}
+val apiElements by configurations.creating {}
+
+publish {
+    pom.packaging = "klib"
+    artifact(tasks.named("jsJar")) {
+        extension = "klib"
+    }
+}
+
+afterEvaluate {
+    // cleanup default publications
+    // TODO: remove after mpp plugin allows avoiding their creation at all, KT-29273
+    publishing {
+        publications.removeAll { it.name != "Main" }
+    }
+
+    tasks.withType<AbstractPublishToMaven> {
+        if (publication.name != "Main") this.enabled = false
+    }
+
+    tasks.named("publish") {
+        doFirst {
+            publishing.publications {
+                if (singleOrNull()?.name != "Main") {
+                    throw GradleException("kotlin-stdlib-wasm should have only one publication, found $size: ${joinToString { it.name }}")
+                }
+            }
+        }
+    }
+}
+

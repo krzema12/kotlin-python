@@ -114,11 +114,17 @@ public class JVMConfigurationKeys {
     public static final CompilerConfigurationKey<JvmStringConcat> STRING_CONCAT =
             CompilerConfigurationKey.create("Specifies string concatenation scheme");
 
+    public static final CompilerConfigurationKey<JvmClosureGenerationScheme> SAM_CONVERSIONS =
+            CompilerConfigurationKey.create("SAM conversions code generation scheme");
+
+    public static final CompilerConfigurationKey<JvmClosureGenerationScheme> LAMBDAS =
+            CompilerConfigurationKey.create("Lambdas code generation scheme");
+
     public static final CompilerConfigurationKey<List<String>> KLIB_PATHS =
             CompilerConfigurationKey.create("Paths to .klib libraries");
 
-    public static final CompilerConfigurationKey<Boolean> IS_IR_WITH_STABLE_ABI =
-            CompilerConfigurationKey.create("Is IR with stable ABI");
+    public static final CompilerConfigurationKey<JvmAbiStability> ABI_STABILITY =
+            CompilerConfigurationKey.create("ABI stability of class files produced by JVM IR and/or FIR");
 
     public static final CompilerConfigurationKey<Boolean> DO_NOT_CLEAR_BINDING_CONTEXT =
             CompilerConfigurationKey.create("When using the IR backend, do not clear BindingContext between psi2ir and lowerings");
@@ -129,9 +135,21 @@ public class JVMConfigurationKeys {
     public static final CompilerConfigurationKey<Boolean> NO_KOTLIN_NOTHING_VALUE_EXCEPTION =
             CompilerConfigurationKey.create("Do not use KotlinNothingValueException available since 1.4");
 
+    public static final CompilerConfigurationKey<Boolean> NO_RESET_JAR_TIMESTAMPS =
+            CompilerConfigurationKey.create("Do not reset timestamps in jar entries");
+
     public static final CompilerConfigurationKey<Boolean> NO_UNIFIED_NULL_CHECKS =
             CompilerConfigurationKey.create("Use pre-1.4 exception types in null checks instead of java.lang.NPE");
 
     public static final CompilerConfigurationKey<Boolean> USE_OLD_SPILLED_VAR_TYPE_ANALYSIS =
             CompilerConfigurationKey.create("Use old, SourceInterpreter-based analysis for fields, used for spilled variables in coroutines");
+
+    public static final CompilerConfigurationKey<Boolean> USE_OLD_INLINE_CLASSES_MANGLING_SCHEME =
+            CompilerConfigurationKey.create("Use old, 1.4 version of inline classes mangling scheme");
+
+    public static final CompilerConfigurationKey<Boolean> ENABLE_JVM_PREVIEW =
+            CompilerConfigurationKey.create("Enable Java language preview features");
+
+    public static final CompilerConfigurationKey<Boolean> NO_REFLECT =
+            CompilerConfigurationKey.create("Don't automatically include kotlin-reflect.jar into the output if the output is a jar");
 }

@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.fir.declarations.builder.buildSimpleFunctionCopy
 import org.jetbrains.kotlin.fir.scopes.FirContainingNamesAwareScope
 import org.jetbrains.kotlin.fir.scopes.FirScope
 import org.jetbrains.kotlin.fir.scopes.FirTypeScope
-import org.jetbrains.kotlin.fir.symbols.CallableId
+import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.Name
@@ -20,12 +20,8 @@ class FirObjectImportedCallableScope(
     private val importedClassId: ClassId,
     private val objectUseSiteScope: FirTypeScope
 ) : FirScope(), FirContainingNamesAwareScope {
-    override fun processFunctionsByName(name: Name, processor: (FirFunctionSymbol<*>) -> Unit) {
+    override fun processFunctionsByName(name: Name, processor: (FirNamedFunctionSymbol) -> Unit) {
         objectUseSiteScope.processFunctionsByName(name) wrapper@{ symbol ->
-            if (symbol !is FirNamedFunctionSymbol) {
-                processor(symbol)
-                return@wrapper
-            }
             val function = symbol.fir
             val syntheticFunction = buildSimpleFunctionCopy(function) {
                 origin = FirDeclarationOrigin.ImportedFromObject

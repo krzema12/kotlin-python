@@ -10,18 +10,13 @@ import org.gradle.api.file.FileCollection
 import org.jetbrains.kotlin.compilerRunner.konanHome
 import org.jetbrains.kotlin.gradle.dsl.multiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.multiplatformExtensionOrNull
-import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
-import org.jetbrains.kotlin.gradle.plugin.PropertiesProvider
+import org.jetbrains.kotlin.gradle.plugin.*
 import org.jetbrains.kotlin.gradle.plugin.PropertiesProvider.Companion.KOTLIN_NATIVE_HOME
-import org.jetbrains.kotlin.gradle.plugin.compareVersionNumbers
-import org.jetbrains.kotlin.gradle.plugin.getKotlinPluginVersion
 import org.jetbrains.kotlin.gradle.plugin.mpp.CompilationSourceSetUtil
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation
 import org.jetbrains.kotlin.gradle.targets.metadata.getMetadataCompilationForSourceSet
 import org.jetbrains.kotlin.gradle.targets.metadata.isKotlinGranularMetadataEnabled
 import org.jetbrains.kotlin.gradle.targets.native.internal.NativePlatformDependency.*
-import org.jetbrains.kotlin.gradle.tasks.registerTask
 import org.jetbrains.kotlin.gradle.utils.SingleWarningPerBuild
 import org.jetbrains.kotlin.konan.library.*
 import org.jetbrains.kotlin.konan.target.KonanTarget
@@ -52,11 +47,13 @@ internal fun Project.setUpKotlinNativePlatformDependencies() {
         // not a multiplatform project, nothing to set up
         return
     }
-
     val kotlinVersion = getKotlinPluginVersion()!!
     val allowCommonizer = isAllowCommonizer(kotlinVersion)
-    val dependencyResolver = NativePlatformDependencyResolver(this, kotlinVersion)
+    if (allowCommonizer && isHierarchicalCommonizationEnabled) {
+        return setUpHierarchicalKotlinNativePlatformDependencies()
+    }
 
+    val dependencyResolver = NativePlatformDependencyResolver(this, kotlinVersion)
     findSourceSetsToAddDependencies(allowCommonizer).forEach { (sourceSet: KotlinSourceSet, sourceSetDeps: Set<NativePlatformDependency>) ->
         sourceSetDeps.forEach { sourceSetDep: NativePlatformDependency ->
             dependencyResolver.addForResolve(sourceSetDep) { resolvedFiles: FileCollection ->
@@ -104,24 +101,9 @@ private class NativePlatformDependencyResolver(val project: Project, val kotlinV
         check(!alreadyResolved)
         alreadyResolved = true
 
-        val targetGroups: List<CommonizedCommon> = dependencies.keys.filterIsInstance<CommonizedCommon>()
-
-        val commonizerTaskParams = CommonizerTaskParams.build(
-            kotlinVersion,
-            targetGroups.map { it.targets },
-            distributionDir,
-            distributionDir.resolve(KONAN_DISTRIBUTION_KLIB_DIR).resolve(KONAN_DISTRIBUTION_COMMONIZED_LIBS_DIR)
-        )
-
-        val commonizerTaskProvider = project.registerTask(
-            COMMONIZER_TASK_NAME,
-            CommonizerTask::class.java,
-            listOf(commonizerTaskParams)
-        ) {}
-
-        val commonizedLibsDirs: Map<CommonizedCommon, File> = commonizerTaskParams.subtasks.mapIndexed { index, subtask ->
-            targetGroups[index] to subtask.destinationDir
-        }.toMap()
+        project.commonizeNativeDistributionTask?.configure { commonizerTask ->
+            commonizerTask.targetGroups = dependencies.keys.filterIsInstance<CommonizedCommon>().map { it.targets }.toSet()
+        }
 
         // then, resolve dependencies one by one
         dependencies.forEach { (dependency, actions) ->
@@ -149,19 +131,19 @@ private class NativePlatformDependencyResolver(val project: Project, val kotlinV
 
                 is CommonizedCommon -> {
                     /* commonized platform libs with expect declarations */
-                    val commonizedLibsDir = commonizedLibsDirs.getValue(dependency)
+                    val commonizedLibsDir = project.nativeDistributionCommonizerOutputDirectory(dependency.targets)
                     project.files(Callable {
                         libsInCommonDir(commonizedLibsDir)
-                    }).builtBy(commonizerTaskProvider)
+                    }).builtBy(project.commonizeNativeDistributionTask)
 
                 }
 
                 is CommonizedPlatform -> {
                     /* commonized platform libs with actual declarations */
-                    val commonizedLibsDir = commonizedLibsDirs.getValue(dependency.common)
+                    val commonizedLibsDir = project.nativeDistributionCommonizerOutputDirectory(dependency.common.targets)
                     project.files(Callable {
                         libsInPlatformDir(commonizedLibsDir, dependency.target) + libsInCommonDir(commonizedLibsDir)
-                    }).builtBy(commonizerTaskProvider)
+                    }).builtBy(project.commonizeNativeDistributionTask)
                 }
             }
 
@@ -285,16 +267,16 @@ private fun Project.findSourceSetsToAddCommonizedPlatformDependencies(): Map<Kot
                  * Why? Consider this example: There is `watchos()` shortcut in Gradle DSL that creates few native targets
                  * in HMPP project with the corresponding source set hierarchy:
                  *
-                 *                    watchosMain [commonized targets: watchosX86, watchosArm32, watchosArm64]
+                 *                    watchosMain [commonized targets: watchosX64, watchosArm32, watchosArm64]
                  *                   /           \
-                 *     watchosX86Main             watchosDeviceMain [commonized targets: watchosArm32, watchosArm64]
+                 *     watchosX64Main             watchosDeviceMain [commonized targets: watchosArm32, watchosArm64]
                  *                               /                 \
                  *               watchosArm32Main                   watchosArm64Main
                  *
                  * There are two common native source sets that participate in commonization process:
                  *
                  * 1. `watchosMain`. This source set is included into three native compilations for different native targets.
-                 *    Thus, it has three commonized targets: watchosX86, watchosArm32 and watchosArm64.
+                 *    Thus, it has three commonized targets: watchosX64, watchosArm32 and watchosArm64.
                  *
                  * 2. `watchosDeviceMain`. Two native compilations -> two commonized targets: watchosArm32 and watchosArm64.
                  *
@@ -302,7 +284,7 @@ private fun Project.findSourceSetsToAddCommonizedPlatformDependencies(): Map<Kot
                  *
                  * - When `watchosArm64Main` is processed with `watchosMain`, the dependencies are evaluated from `watchosMain`
                  *   viewpoint. This means the following: the leaf source set should get the libraries with `actual` declarations
-                 *   produced as a result of commonization of the three targets: watchosX86, watchosArm32 and watchosArm64.
+                 *   produced as a result of commonization of the three targets: watchosX64, watchosArm32 and watchosArm64.
                  *
                  * - When `watchosArm64Main` is processed with `watchosDeviceMain`, which is immediate parent according to the hierarchy,
                  *   the dependencies are evaluated from `watchosDeviceMain` viewpoint. Assuming libraries with `actual` declarations

@@ -4,6 +4,7 @@ version '1.0-SNAPSHOT'
 buildscript {
     repositories {
         mavenCentral()
+        mavenLocal()
     }
 
     dependencies {
@@ -15,7 +16,6 @@ apply plugin: 'kotlin'
 
 repositories {
     mavenCentral()
-    maven { url "https://kotlin.bintray.com/kotlinx" }
 }
 
 dependencies {

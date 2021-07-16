@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2019 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -9,10 +9,11 @@ import org.jetbrains.kotlin.backend.common.FileLoweringPass
 import org.jetbrains.kotlin.backend.common.lower.*
 import org.jetbrains.kotlin.backend.common.lower.inline.FunctionInlining
 import org.jetbrains.kotlin.backend.common.lower.loops.ForLoopsLowering
+import org.jetbrains.kotlin.backend.common.lower.optimizations.PropertyAccessorInlineLowering
 import org.jetbrains.kotlin.backend.common.phaser.*
 import org.jetbrains.kotlin.backend.wasm.lower.*
 import org.jetbrains.kotlin.ir.backend.js.lower.*
-import org.jetbrains.kotlin.ir.backend.js.lower.inline.RemoveInlineFunctionsWithReifiedTypeParametersLowering
+import org.jetbrains.kotlin.ir.backend.js.lower.inline.RemoveInlineDeclarationsWithReifiedTypeParametersLowering
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.util.patchDeclarationParents
 
@@ -96,8 +97,8 @@ private val functionInliningPhase = makeCustomWasmModulePhase(
     prerequisite = setOf(expectDeclarationsRemovingPhase)
 )
 
-private val removeInlineFunctionsWithReifiedTypeParametersLoweringPhase = makeWasmModulePhase(
-    { RemoveInlineFunctionsWithReifiedTypeParametersLowering() },
+private val removeInlineDeclarationsWithReifiedTypeParametersLoweringPhase = makeWasmModulePhase(
+    { RemoveInlineDeclarationsWithReifiedTypeParametersLowering() },
     name = "RemoveInlineFunctionsWithReifiedTypeParametersLowering",
     description = "Remove Inline functions with reified parameters from context",
     prerequisite = setOf(functionInliningPhase)
@@ -154,7 +155,7 @@ private val enumSyntheticFunsLoweringPhase = makeWasmModulePhase(
     ::EnumSyntheticFunctionsLowering,
     name = "EnumSyntheticFunctionsLowering",
     description = "Implement `valueOf` and `values`",
-    prerequisite = setOf(enumClassConstructorLoweringPhase)
+    prerequisite = setOf(enumClassConstructorLoweringPhase, enumClassCreateInitializerLoweringPhase)
 )
 
 private val enumUsageLoweringPhase = makeWasmModulePhase(
@@ -406,6 +407,12 @@ private val forLoopsLoweringPhase = makeWasmModulePhase(
     description = "[Optimization] For loops lowering"
 )
 
+private val propertyAccessorInlinerLoweringPhase = makeWasmModulePhase(
+    ::PropertyAccessorInlineLowering,
+    name = "PropertyAccessorInlineLowering",
+    description = "[Optimization] Inline property accessors"
+)
+
 val wasmPhases = NamedCompilerPhase(
     name = "IrModuleLowering",
     description = "IR module lowering",
@@ -456,12 +463,13 @@ val wasmPhases = NamedCompilerPhase(
             returnableBlockLoweringPhase then
 
             forLoopsLoweringPhase then
+            propertyAccessorInlinerLoweringPhase then
 
             defaultArgumentStubGeneratorPhase then
             defaultArgumentPatchOverridesPhase then
             defaultParameterInjectorPhase then
             defaultParameterCleanerPhase then
-            removeInlineFunctionsWithReifiedTypeParametersLoweringPhase then
+            removeInlineDeclarationsWithReifiedTypeParametersLoweringPhase then
 
 //            TODO:
 //            multipleCatchesLoweringPhase then

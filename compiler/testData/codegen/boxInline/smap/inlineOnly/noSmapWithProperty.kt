@@ -1,7 +1,8 @@
-// FILE: 1.kt
 // WITH_RUNTIME
+// FILE: 1.kt
 
 package test
+
 inline fun stub() {
 
 }
@@ -16,5 +17,3 @@ import test.*
 fun box(): String {
     return prop
 }
-
-// FILE: 2.smap

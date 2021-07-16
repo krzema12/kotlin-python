@@ -117,6 +117,7 @@ class Kapt3CommandLineProcessor : CommandLineProcessor {
             INFO_AS_WARNINGS_OPTION -> setFlag(KaptFlag.INFO_AS_WARNINGS, value)
             STRICT_MODE_OPTION -> setFlag(KaptFlag.STRICT, value)
             STRIP_METADATA_OPTION -> setFlag(KaptFlag.STRIP_METADATA, value)
+            KEEP_KDOC_COMMENTS_IN_STUBS -> setFlag(KaptFlag.KEEP_KDOC_COMMENTS_IN_STUBS, value)
             SHOW_PROCESSOR_TIMINGS -> setFlag(KaptFlag.SHOW_PROCESSOR_TIMINGS, value)
             INCLUDE_COMPILE_CLASSPATH -> setFlag(KaptFlag.INCLUDE_COMPILE_CLASSPATH, value)
 
@@ -208,6 +209,7 @@ class Kapt3ComponentRegistrar : ComponentRegistrar {
         if (processingClasspath.isEmpty()) {
             // Skip annotation processing if no annotation processors were provided
             if (mode != AptMode.WITH_COMPILATION) {
+                logger.info("No annotation processors provided. Skip KAPT processing.")
                 abortAnalysis()
             }
             return false

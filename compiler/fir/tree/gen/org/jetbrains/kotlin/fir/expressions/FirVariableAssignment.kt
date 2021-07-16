@@ -5,11 +5,13 @@
 
 package org.jetbrains.kotlin.fir.expressions
 
+import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirPureAbstractElement
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.references.FirReference
 import org.jetbrains.kotlin.fir.types.FirTypeProjection
 import org.jetbrains.kotlin.fir.visitors.*
+import org.jetbrains.kotlin.fir.FirImplementationDetail
 
 /*
  * This file was generated automatically
@@ -17,23 +19,30 @@ import org.jetbrains.kotlin.fir.visitors.*
  */
 
 abstract class FirVariableAssignment : FirPureAbstractElement(), FirQualifiedAccess {
-    abstract override val source: FirSourceElement?
     abstract override val calleeReference: FirReference
     abstract override val annotations: List<FirAnnotationCall>
     abstract override val typeArguments: List<FirTypeProjection>
     abstract override val explicitReceiver: FirExpression?
     abstract override val dispatchReceiver: FirExpression
     abstract override val extensionReceiver: FirExpression
+    abstract override val source: FirSourceElement?
     abstract val lValue: FirReference
     abstract val rValue: FirExpression
 
     override fun <R, D> accept(visitor: FirVisitor<R, D>, data: D): R = visitor.visitVariableAssignment(this, data)
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <E: FirElement, D> transform(transformer: FirTransformer<D>, data: D): E = 
+        transformer.transformVariableAssignment(this, data) as E
 
     abstract override fun replaceCalleeReference(newCalleeReference: FirReference)
 
     abstract override fun replaceTypeArguments(newTypeArguments: List<FirTypeProjection>)
 
     abstract override fun replaceExplicitReceiver(newExplicitReceiver: FirExpression?)
+
+    @FirImplementationDetail
+    abstract override fun replaceSource(newSource: FirSourceElement?)
 
     abstract override fun <D> transformCalleeReference(transformer: FirTransformer<D>, data: D): FirVariableAssignment
 

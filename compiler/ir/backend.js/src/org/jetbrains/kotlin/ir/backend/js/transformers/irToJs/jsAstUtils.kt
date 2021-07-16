@@ -12,9 +12,13 @@ import org.jetbrains.kotlin.ir.backend.js.utils.*
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.*
+import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
 import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.ir.visitors.acceptChildrenVoid
+import org.jetbrains.kotlin.ir.visitors.acceptVoid
 import org.jetbrains.kotlin.js.backend.ast.*
 import org.jetbrains.kotlin.util.OperatorNameConventions
+import org.jetbrains.kotlin.utils.addIfNotNull
 
 fun jsVar(name: JsName, initializer: IrExpression?, context: JsGenerationContext): JsVars {
     val jsInitializer = initializer?.accept(IrElementToJsExpressionTransformer(), context)
@@ -41,7 +45,22 @@ fun jsAssignment(left: JsExpression, right: JsExpression) = JsBinaryOperation(Js
 fun prototypeOf(classNameRef: JsExpression) = JsNameRef(Namer.PROTOTYPE_NAME, classNameRef)
 
 fun translateFunction(declaration: IrFunction, name: JsName?, context: JsGenerationContext): JsFunction {
-    val functionContext = context.newDeclaration(declaration)
+    val jsFun = declaration.getJsFunAnnotation()
+    if (jsFun != null) {
+        // JsFun internal annotation must have string containing valid function expression
+        val function = (parseJsCode(jsFun)!!.single() as JsExpressionStatement).expression as JsFunction
+        function.name = name
+        return function
+    }
+
+    val localNameGenerator = context.localNames
+        ?: LocalNameGenerator(context.staticContext.globalNameScope).also {
+            declaration.acceptChildrenVoid(it)
+            declaration.parentClassOrNull?.thisReceiver?.acceptVoid(it)
+        }
+
+    val functionContext = context.newDeclaration(declaration, localNameGenerator)
+
     val functionParams = declaration.valueParameters.map { functionContext.getNameForValueDeclaration(it) }
     val body = declaration.body?.accept(IrElementToJsStatementTransformer(), functionContext) as? JsBlock ?: JsBlock()
 
@@ -120,7 +139,7 @@ fun translateCall(
         return JsInvocation(callRef, jsDispatchReceiver?.let { receiver -> listOf(receiver) + arguments } ?: arguments)
     }
 
-    val varargParameterIndex = function.valueParameters.indexOfFirst { it.varargElementType != null }
+    val varargParameterIndex = function.varargParameterIndex()
     val isExternalVararg = function.isEffectivelyExternal() && varargParameterIndex != -1
 
     val symbolName = when (jsDispatchReceiver) {
@@ -134,89 +153,192 @@ fun translateCall(
     }
 
     return if (isExternalVararg) {
-
-        // External vararg arguments should be represented in JS as multiple "plain" arguments (opposed to arrays in Kotlin)
-        // We are using `Function.prototype.apply` function to pass all arguments as a single array.
-        // For this purpose are concatenating non-vararg arguments with vararg.
         // TODO: Don't use `Function.prototype.apply` when number of arguments is known at compile time (e.g. there are no spread operators)
-        val arrayConcat = JsNameRef("concat", JsArrayLiteral())
-        val arraySliceCall = JsNameRef("call", JsNameRef("slice", JsArrayLiteral()))
 
-        val argumentsAsSingleArray = JsInvocation(
-            arrayConcat,
-            listOfNotNull(jsExtensionReceiver) + arguments.mapIndexed { index, argument ->
-                when (index) {
-
-                    // Call `Array.prototype.slice` on vararg arguments in order to convert array-like objects into proper arrays
-                    // TODO: Optimize for proper arrays
-                    varargParameterIndex -> JsInvocation(arraySliceCall, argument)
-
-                    // TODO: Don't wrap non-array-like arguments with array literal
-                    // TODO: Wrap adjacent non-vararg arguments in a single array literal
-                    else -> JsArrayLiteral(listOf(argument))
-                }
-            }
+        val argumentsAsSingleArray = argumentsWithVarargAsSingleArray(
+            expression,
+            context,
+            jsExtensionReceiver,
+            arguments,
+            varargParameterIndex
         )
 
         if (jsDispatchReceiver != null) {
-            // TODO: Do not create IIFE when receiver expression is simple or has no side effects
-            // TODO: Do not create IIFE at all? (Currently there is no reliable way to create temporary variable in current scope)
-            val receiverName = JsName("\$externalVarargReceiverTmp")
-            val receiverRef = receiverName.makeRef()
-            JsInvocation(
-                // Create scope for temporary variable holding dispatch receiver
-                // It is used both during method reference and passing `this` value to `apply` function.
-                JsNameRef(
-                    "call",
-                    JsFunction(
-                        emptyScope,
-                        JsBlock(
-                            JsVars(JsVars.JsVar(receiverName, jsDispatchReceiver)),
-                            JsReturn(
-                                JsInvocation(
-                                    JsNameRef("apply", JsNameRef(symbolName, receiverRef)),
-                                    listOf(
-                                        receiverRef,
-                                        argumentsAsSingleArray
-                                    )
+            if (argumentsAsSingleArray is JsArrayLiteral) {
+                JsInvocation(
+                    JsNameRef(symbolName, jsDispatchReceiver),
+                    argumentsAsSingleArray.expressions
+                )
+            } else {
+                // TODO: Do not create IIFE at all? (Currently there is no reliable way to create temporary variable in current scope)
+                val receiverName = JsName("\$externalVarargReceiverTmp")
+                val receiverRef = receiverName.makeRef()
+
+                val iifeFun = JsFunction(
+                    emptyScope,
+                    JsBlock(
+                        JsVars(JsVars.JsVar(receiverName, jsDispatchReceiver)),
+                        JsReturn(
+                            JsInvocation(
+                                JsNameRef("apply", JsNameRef(symbolName, receiverRef)),
+                                listOf(
+                                    receiverRef,
+                                    argumentsAsSingleArray
                                 )
                             )
+                        )
+                    ),
+                    "VarargIIFE"
+                )
+
+                val iifeFunHasContext = (jsDispatchReceiver as? JsNameRef)?.qualifier is JsThisRef
+                if (iifeFunHasContext) {
+                    JsInvocation(
+                        // Create scope for temporary variable holding dispatch receiver
+                        // It is used both during method reference and passing `this` value to `apply` function.
+                        JsNameRef(
+                            "call",
+                            iifeFun
                         ),
-                        "VarargIIFE"
+                        JsThisRef()
                     )
-                ),
-                JsThisRef()
-            )
+                } else {
+                    JsInvocation(iifeFun)
+                }
+            }
         } else {
-            JsInvocation(
-                JsNameRef("apply", JsNameRef(symbolName)),
-                listOf(JsNullLiteral(), argumentsAsSingleArray)
-            )
+            if (argumentsAsSingleArray is JsArrayLiteral) {
+                JsInvocation(
+                    JsNameRef(symbolName),
+                    argumentsAsSingleArray.expressions
+                )
+            } else {
+                JsInvocation(
+                    JsNameRef("apply", JsNameRef(symbolName)),
+                    listOf(JsNullLiteral(), argumentsAsSingleArray)
+                )
+            }
         }
     } else {
         JsInvocation(ref, listOfNotNull(jsExtensionReceiver) + arguments)
     }
 }
 
-fun translateCallArguments(expression: IrMemberAccessExpression<*>, context: JsGenerationContext, transformer: IrElementToJsExpressionTransformer): List<JsExpression> {
+fun argumentsWithVarargAsSingleArray(
+    expression: IrFunctionAccessExpression,
+    context: JsGenerationContext,
+    additionalReceiver: JsExpression?,
+    arguments: List<JsExpression>,
+    varargParameterIndex: Int,
+): JsExpression {
+    // External vararg arguments should be represented in JS as multiple "plain" arguments (opposed to arrays in Kotlin)
+    // We are using `Function.prototype.apply` function to pass all arguments as a single array.
+    // For this purpose are concatenating non-vararg arguments with vararg.
+    var arraysForConcat = mutableListOf<JsExpression>()
+    arraysForConcat.addIfNotNull(additionalReceiver)
+
+    val concatElements = mutableListOf<JsExpression>()
+
+    arguments
+        .forEachIndexed { index, argument ->
+            when (index) {
+
+                // Call `Array.prototype.slice` on vararg arguments in order to convert array-like objects into proper arrays
+                varargParameterIndex -> {
+                    val valueArgument = expression.getValueArgument(varargParameterIndex)
+
+                    if (arraysForConcat.isNotEmpty()) {
+                        concatElements.add(JsArrayLiteral(arraysForConcat))
+                    }
+                    arraysForConcat = mutableListOf()
+
+                    val varargArgument = when (argument) {
+                        is JsArrayLiteral -> argument
+                        is JsNew -> argument.arguments.firstOrNull() as? JsArrayLiteral
+                        else -> null
+                    } ?: if (valueArgument is IrCall && valueArgument.symbol == context.staticContext.backendContext.intrinsics.arrayConcat)
+                        argument
+                    else
+                        JsInvocation(JsNameRef("call", JsNameRef("slice", JsArrayLiteral())), argument)
+
+                    concatElements.add(varargArgument)
+                }
+
+                else -> {
+                    arraysForConcat.add(argument)
+                }
+            }
+        }
+
+    if (arraysForConcat.isNotEmpty()) {
+        concatElements.add(JsArrayLiteral(arraysForConcat))
+    }
+
+    if (concatElements.isEmpty()) {
+        return JsArrayLiteral()
+    }
+
+    if (concatElements.all { it is JsArrayLiteral }) {
+        return concatElements
+            .fold(mutableListOf<JsExpression>()) { aggregatedArrayExpressions, arrayLiteral ->
+                arrayLiteral as JsArrayLiteral
+                aggregatedArrayExpressions.addAll(arrayLiteral.expressions)
+                aggregatedArrayExpressions
+            }
+            .let { JsArrayLiteral(it) }
+    }
+
+    return when (concatElements.size) {
+        1 -> concatElements[0]
+        else -> JsInvocation(
+            JsNameRef("concat", concatElements.first()),
+            concatElements.drop(1)
+        )
+    }
+}
+
+fun IrFunction.varargParameterIndex() = valueParameters.indexOfFirst { it.varargElementType != null }
+
+fun translateCallArguments(
+    expression: IrMemberAccessExpression<IrFunctionSymbol>,
+    context: JsGenerationContext,
+    transformer: IrElementToJsExpressionTransformer,
+): List<JsExpression> {
     val size = expression.valueArgumentsCount
 
-    val arguments = (0 until size).mapTo(ArrayList(size)) { index ->
-        val argument = expression.getValueArgument(index)
-        val result = argument?.accept(transformer, context)
-        if (result == null) {
-            if (context.staticContext.backendContext.es6mode) return@mapTo JsPrefixOperation(JsUnaryOperator.VOID, JsIntLiteral(2))
+    val varargParameterIndex = expression.symbol.owner.realOverrideTarget.varargParameterIndex()
 
-            assert(expression is IrFunctionAccessExpression && expression.symbol.owner.isExternalOrInheritedFromExternal())
-            JsPrefixOperation(JsUnaryOperator.VOID, JsIntLiteral(1))
-        } else
-            result
-    }
+    val validWithNullArgs = expression.validWithNullArgs()
+    val arguments = (0 until size)
+        .mapTo(ArrayList(size)) { index ->
+            val argument = expression.getValueArgument(index)
+            argument?.accept(transformer, context)
+        }
+        .onEach { result ->
+            if (result == null) {
+                assert(validWithNullArgs)
+            }
+        }
+        .mapIndexed { index, result ->
+            val isEmptyExternalVararg = validWithNullArgs &&
+                    varargParameterIndex == index &&
+                    result is JsArrayLiteral &&
+                    result.expressions.isEmpty()
+
+            if (isEmptyExternalVararg && index == size - 1) {
+                null
+            } else result
+        }
+        .dropLastWhile { it == null }
+        .map { it ?: JsPrefixOperation(JsUnaryOperator.VOID, JsIntLiteral(1)) }
 
     return if (expression.symbol.isSuspend) {
         arguments + context.continuation
     } else arguments
 }
+
+private fun IrMemberAccessExpression<*>.validWithNullArgs() =
+    this is IrFunctionAccessExpression && symbol.owner.isExternalOrInheritedFromExternal()
 
 fun JsStatement.asBlock() = this as? JsBlock ?: JsBlock(this)
 

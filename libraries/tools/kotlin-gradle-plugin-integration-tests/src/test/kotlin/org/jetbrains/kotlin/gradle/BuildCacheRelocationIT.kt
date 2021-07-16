@@ -17,27 +17,22 @@
 package org.jetbrains.kotlin.gradle
 
 import org.jetbrains.kotlin.gradle.util.AGPVersion
+import org.jetbrains.kotlin.gradle.util.createTempDir
 import org.jetbrains.kotlin.gradle.util.modify
-import org.jetbrains.kotlin.test.KotlinTestUtils
+import org.jetbrains.kotlin.test.util.KtTestUtil
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import java.io.File
 import kotlin.test.assertEquals
 
-private val DEFAULT_GRADLE_VERSION = GradleVersionRequired.AtLeast("5.6.4")
-
 @RunWith(Parameterized::class)
 class BuildCacheRelocationIT : BaseGradleIT() {
-
-    override val defaultGradleVersion: GradleVersionRequired
-        get() = DEFAULT_GRADLE_VERSION
 
     override fun defaultBuildOptions(): BuildOptions =
         super.defaultBuildOptions().copy(
             withBuildCache = true,
-            androidGradlePluginVersion = AGPVersion.v3_6_0,
-            androidHome = KotlinTestUtils.findAndroidSdk()
+            androidHome = KtTestUtil.findAndroidSdk()
         )
 
     @Parameterized.Parameter
@@ -53,7 +48,11 @@ class BuildCacheRelocationIT : BaseGradleIT() {
 
         val (firstProject, secondProject) = (0..1).map { id ->
             workingDir = workingDirs[id]
-            Project(projectName, directoryPrefix = projectDirectoryPrefix, gradleVersionRequirement = gradleVersionRequired).apply {
+            Project(
+                projectName,
+                directoryPrefix = projectDirectoryPrefix,
+                gradleVersionRequirement = gradleVersionRequirement
+            ).apply {
                 setupWorkingDir()
                 initProject()
                 prepareLocalBuildCache(localBuildCacheDirectory)
@@ -64,7 +63,10 @@ class BuildCacheRelocationIT : BaseGradleIT() {
             lateinit var firstOutputHashes: List<Pair<File, Int>>
 
             workingDir = workingDirs[0]
-            firstProject.build(*testCase.taskToExecute) {
+            firstProject.build(
+                *testCase.taskToExecute,
+                options = defaultBuildOptions().copy(androidGradlePluginVersion = testCase.androidGradlePluginVersion)
+            ) {
                 assertSuccessful()
                 firstOutputHashes = hashOutputFiles(outputRoots)
                 cacheableTaskNames.forEach { assertTaskPackedToCache(":$it") }
@@ -73,9 +75,10 @@ class BuildCacheRelocationIT : BaseGradleIT() {
             workingDir = workingDirs[1]
             val alternateBuildEnvOptions = if (withAnotherGradleHome) {
                 val alternateGradleHome = File(firstProject.projectDir.parentFile, "gradleUserHome")
-                defaultBuildOptions().copy(gradleUserHome = alternateGradleHome)
+                defaultBuildOptions().copy(
+                    gradleUserHome = alternateGradleHome, androidGradlePluginVersion = testCase.androidGradlePluginVersion)
             } else {
-                defaultBuildOptions()
+                defaultBuildOptions().copy(androidGradlePluginVersion = testCase.androidGradlePluginVersion)
             }
             secondProject.build(*testCase.taskToExecute, options = alternateBuildEnvOptions) {
                 assertSuccessful()
@@ -91,13 +94,14 @@ class BuildCacheRelocationIT : BaseGradleIT() {
 
     class TestCase(
         val projectName: String,
+        val gradleVersionRequirement: GradleVersionRequired = GradleVersionRequired.None,
         val cacheableTaskNames: List<String>,
         val projectDirectoryPrefix: String? = null,
         val outputRootPaths: List<String> = listOf("build"),
         val initProject: Project.() -> Unit = {},
         val taskToExecute: Array<String>,
         val withAnotherGradleHome: Boolean = false,
-        val gradleVersionRequired: GradleVersionRequired = DEFAULT_GRADLE_VERSION
+        val androidGradlePluginVersion: AGPVersion? = null
     ) {
 
         override fun toString(): String = (projectDirectoryPrefix?.plus("/") ?: "") + projectName
@@ -123,7 +127,8 @@ class BuildCacheRelocationIT : BaseGradleIT() {
                      cacheableTaskNames = listOf(
                          "kaptKotlin", "kaptGenerateStubsKotlin", "compileKotlin", "compileTestKotlin", "compileJava"
                      ),
-                     initProject = { File(projectDir, "build.gradle").appendText("\nkapt.useBuildCache = true") }
+                     initProject = { File(projectDir, "build.gradle").appendText("\nkapt.useBuildCache = true") },
+                     withAnotherGradleHome = true
             ),
             TestCase("kotlin2JsDceProject",
                      taskToExecute = arrayOf("assemble", "runDceKotlinJs"),
@@ -148,6 +153,7 @@ class BuildCacheRelocationIT : BaseGradleIT() {
                      outputRootPaths = listOf("lib", "libJvm", "libJs").map { "$it/build" }
             ),
             TestCase("AndroidProject",
+                     gradleVersionRequirement = GradleVersionRequired.AtLeast("6.6.1"),
                      taskToExecute = arrayOf("assembleDebug"),
                      cacheableTaskNames = listOf("Lib", "Android").flatMap { module ->
                          listOf("Flavor1", "Flavor2").flatMap { flavor ->
@@ -156,9 +162,11 @@ class BuildCacheRelocationIT : BaseGradleIT() {
                              }
                          }
                      },
-                     outputRootPaths = listOf("Lib", "Android", "Test").map { "$it/build" }
+                     outputRootPaths = listOf("Lib", "Android", "Test").map { "$it/build" },
+                     androidGradlePluginVersion = AGPVersion.v4_2_0
             ),
             TestCase("android-dagger",
+                     gradleVersionRequirement = GradleVersionRequired.AtLeast("6.6.1"),
                      taskToExecute = arrayOf("assembleDebug"),
                      projectDirectoryPrefix = "kapt2",
                      cacheableTaskNames = listOf("Debug").flatMap { buildType ->
@@ -167,7 +175,8 @@ class BuildCacheRelocationIT : BaseGradleIT() {
                          }
                      },
                      outputRootPaths = listOf("app/build"),
-                     initProject = { File(projectDir, "app/build.gradle").appendText("\nkapt.useBuildCache = true") }
+                     initProject = { File(projectDir, "app/build.gradle").appendText("\nkapt.useBuildCache = true") },
+                     androidGradlePluginVersion = AGPVersion.v4_2_0
             ),
             TestCase("native-build-cache",
                      taskToExecute = arrayOf("build-cache-lib:publish", "build-cache-app:assemble"),
@@ -183,8 +192,7 @@ class BuildCacheRelocationIT : BaseGradleIT() {
                          buildKtsApp.modify(::transformBuildScriptWithPluginsDsl)
                          buildKtsLib.modify(::transformBuildScriptWithPluginsDsl)
                      },
-                     withAnotherGradleHome = true,
-                     gradleVersionRequired = GradleVersionRequired.FOR_MPP_SUPPORT
+                     withAnotherGradleHome = true
             ),
         ).map { arrayOf(it) }
     }

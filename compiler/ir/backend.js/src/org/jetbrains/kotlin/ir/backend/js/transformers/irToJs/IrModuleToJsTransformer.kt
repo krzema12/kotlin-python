@@ -27,7 +27,7 @@ class IrModuleToJsTransformer(
     private val backendContext: JsIrBackendContext,
     private val mainArguments: List<String>?,
     private val generateScriptModule: Boolean = false,
-    var namer: NameTables = NameTables(emptyList()),
+    var namer: NameTables = NameTables(emptyList(), context = backendContext),
     private val fullJs: Boolean = true,
     private val dceJs: Boolean = false,
     private val multiModule: Boolean = false,
@@ -64,7 +64,7 @@ class IrModuleToJsTransformer(
             eliminateDeadDeclarations(modules, backendContext)
             // Use a fresh namer for DCE so that we could compare the result with DCE-driven
             // TODO: is this mode relevant for scripting? If yes, refactor so that the external name tables are used here when needed.
-            val namer = NameTables(emptyList())
+            val namer = NameTables(emptyList(), context = backendContext)
             namer.merge(modules.flatMap { it.files }, additionalPackages)
             generateWrappedModuleBody(modules, exportedModule, namer)
         } else null
@@ -127,16 +127,18 @@ class IrModuleToJsTransformer(
     ): String {
 
         val nameGenerator = refInfo.withReferenceTracking(
-            IrNamerImpl(newNameTables = namer),
+            IrNamerImpl(newNameTables = namer, backendContext),
             modules
         )
         val staticContext = JsStaticContext(
             backendContext = backendContext,
-            irNamer = nameGenerator
+            irNamer = nameGenerator,
+            globalNameScope = namer.globalNames
         )
         val rootContext = JsGenerationContext(
             currentFunction = null,
-            staticContext = staticContext
+            staticContext = staticContext,
+            localNames = LocalNameGenerator(NameScope.EmptyScope)
         )
 
         val (importStatements, importedJsModules) =
@@ -303,8 +305,10 @@ class IrModuleToJsTransformer(
             if (mainFunction.valueParameters.isNotEmpty()) JsArrayLiteral(mainArguments.map { JsStringLiteral(it) }) else null
 
         val continuation = if (mainFunction.isSuspend) {
-            val emptyContinuationField = backendContext.coroutineEmptyContinuation.owner.backingField!!
-            rootContext.getNameForField(emptyContinuationField).makeRef()
+            backendContext.coroutineEmptyContinuation.owner
+                .let { it.getter!! }
+                .let { rootContext.getNameForStaticFunction(it) }
+                .let { JsInvocation(it.makeRef()) }
         } else null
 
         return listOfNotNull(mainArgumentsArray, continuation)
@@ -361,7 +365,7 @@ class IrModuleToJsTransformer(
                 .forEach { declaration ->
                     val declName = getNameForExternalDeclaration(declaration)
                     importStatements.add(
-                        JsVars(JsVars.JsVar(declName, JsNameRef(declName, qualifiedReference)))
+                        JsVars(JsVars.JsVar(declName, JsNameRef(declaration.getJsNameOrKotlinName().identifier, qualifiedReference)))
                     )
                 }
         }

@@ -52,7 +52,7 @@ import org.jetbrains.kotlin.resolve.calls.smartcasts.DataFlowValueFactoryImpl
 import org.jetbrains.kotlin.test.Directives
 import org.jetbrains.kotlin.test.InTextDirectivesUtils.isDirectiveDefined
 import org.jetbrains.kotlin.test.KotlinBaseTest
-import org.jetbrains.kotlin.test.KotlinTestUtils
+import org.jetbrains.kotlin.test.util.KtTestUtil
 import org.jetbrains.kotlin.utils.addIfNotNull
 import org.junit.Assert
 import java.io.File
@@ -86,9 +86,12 @@ abstract class BaseDiagnosticsTest : KotlinMultiFileTestWithJava<TestModule, Tes
     fun doMultiFileTest(
         wholeFile: File,
         files: List<TestFile>,
-        additionalClasspath: File? = null
+        additionalClasspath: File? = null,
+        usePsiClassFilesReading: Boolean = true,
+        excludeNonTypeUseJetbrainsAnnotations: Boolean = false
     ) {
-        environment = createEnvironment(wholeFile, files, additionalClasspath)
+        environment =
+            createEnvironment(wholeFile, files, additionalClasspath, usePsiClassFilesReading, excludeNonTypeUseJetbrainsAnnotations)
         //after environment initialization cause of `tearDown` logic, maybe it's obsolete
         if (shouldSkipTest(wholeFile, files)) {
             println("${wholeFile.name} test is skipped")
@@ -118,12 +121,24 @@ abstract class BaseDiagnosticsTest : KotlinMultiFileTestWithJava<TestModule, Tes
 
         if (includeExtras) {
             if (declareFlexibleType) {
-                ktFiles.add(KotlinTestUtils.createFile("EXPLICIT_FLEXIBLE_TYPES.kt", EXPLICIT_FLEXIBLE_TYPES_DECLARATIONS, project))
+                ktFiles.add(
+                    KtTestUtil.createFile(
+                        "EXPLICIT_FLEXIBLE_TYPES.kt",
+                        EXPLICIT_FLEXIBLE_TYPES_DECLARATIONS,
+                        project
+                    )
+                )
             }
             if (declareCheckType) {
                 val checkTypeDeclarations = File("$HELPERS_PATH/types/checkType.kt").readText()
 
-                ktFiles.add(KotlinTestUtils.createFile("CHECK_TYPE.kt", checkTypeDeclarations, project))
+                ktFiles.add(
+                    KtTestUtil.createFile(
+                        "CHECK_TYPE.kt",
+                        checkTypeDeclarations,
+                        project
+                    )
+                )
             }
         }
 
@@ -190,9 +205,6 @@ abstract class BaseDiagnosticsTest : KotlinMultiFileTestWithJava<TestModule, Tes
         private val imports: String
             get() = buildString {
                 // Line separator is "\n" intentionally here (see DocumentImpl.assertValidSeparators)
-                if (declareCheckType) {
-                    append(CHECK_TYPE_IMPORT + "\n")
-                }
                 if (declareFlexibleType) {
                     append(EXPLICIT_FLEXIBLE_TYPES_IMPORT + "\n")
                 }
@@ -403,8 +415,6 @@ abstract class BaseDiagnosticsTest : KotlinMultiFileTestWithJava<TestModule, Tes
         )
 
         val CHECK_TYPE_DIRECTIVE = "CHECK_TYPE"
-        val CHECK_TYPE_PACKAGE = "tests._checkType"
-        val CHECK_TYPE_IMPORT = "import $CHECK_TYPE_PACKAGE.*"
 
         val EXPLICIT_FLEXIBLE_TYPES_DIRECTIVE = "EXPLICIT_FLEXIBLE_TYPES"
         val EXPLICIT_FLEXIBLE_PACKAGE = InternalFlexibleTypeTransformer.FLEXIBLE_TYPE_CLASSIFIER.packageFqName.asString()
@@ -526,7 +536,7 @@ abstract class BaseDiagnosticsTest : KotlinMultiFileTestWithJava<TestModule, Tes
     private fun parseJvmTarget(directiveMap: Directives) = directiveMap[JVM_TARGET]?.let { JvmTarget.fromString(it) }
 
     protected fun parseModulePlatformByName(moduleName: String): TargetPlatform? {
-        val nameSuffix = moduleName.substringAfterLast("-", "").toUpperCase()
+        val nameSuffix = moduleName.substringAfterLast("-", "").uppercase()
         return when {
             nameSuffix == "COMMON" -> CommonPlatforms.defaultCommonPlatform
             nameSuffix == "JVM" -> JvmPlatforms.unspecifiedJvmPlatform // TODO(dsavvinov): determine JvmTarget precisely

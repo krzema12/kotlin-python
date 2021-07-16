@@ -6,51 +6,95 @@
 package org.jetbrains.kotlin.fir.scopes.jvm
 
 import org.jetbrains.kotlin.builtins.jvm.JvmBuiltInsSignatures
+import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.declarations.FirClass
 import org.jetbrains.kotlin.fir.declarations.FirRegularClass
+import org.jetbrains.kotlin.fir.declarations.classId
+import org.jetbrains.kotlin.fir.resolve.defaultType
 import org.jetbrains.kotlin.fir.resolve.substitution.ConeSubstitutor
+import org.jetbrains.kotlin.fir.resolve.substitution.ConeSubstitutorByMap
 import org.jetbrains.kotlin.fir.scopes.*
+import org.jetbrains.kotlin.fir.scopes.impl.FirFakeOverrideGenerator
+import org.jetbrains.kotlin.fir.symbols.ConeTypeParameterLookupTag
 import org.jetbrains.kotlin.fir.symbols.impl.*
+import org.jetbrains.kotlin.fir.types.coneType
+import org.jetbrains.kotlin.fir.types.impl.ConeTypeParameterTypeImpl
+import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.Name
-import org.jetbrains.kotlin.utils.addIfNotNull
 
 class JvmMappedScope(
+    private val session: FirSession,
+    private val firKotlinClass: FirClass<*>,
+    private val firJavaClass: FirRegularClass,
     private val declaredMemberScope: FirScope,
-    private val javaMappedClassUseSiteScope: FirScope,
+    private val javaMappedClassUseSiteScope: FirTypeScope,
     private val signatures: Signatures
 ) : FirTypeScope() {
+    private val functionsCache = mutableMapOf<FirNamedFunctionSymbol, FirNamedFunctionSymbol>()
 
-    override fun processFunctionsByName(name: Name, processor: (FirFunctionSymbol<*>) -> Unit) {
+    private val substitutor = ConeSubstitutorByMap(
+        firJavaClass.typeParameters.zip(firKotlinClass.typeParameters).map { (javaParameter, kotlinParameter) ->
+            javaParameter.symbol to ConeTypeParameterTypeImpl(ConeTypeParameterLookupTag(kotlinParameter.symbol), isNullable = false)
+        }.toMap(),
+        session
+    )
+    private val kotlinDispatchReceiverType = firKotlinClass.defaultType()
+
+    override fun processFunctionsByName(name: Name, processor: (FirNamedFunctionSymbol) -> Unit) {
         val visibleMethods = signatures.visibleMethodSignaturesByName[name]
             ?: return declaredMemberScope.processFunctionsByName(name, processor)
 
         val declared = mutableListOf<FirNamedFunctionSymbol>()
         declaredMemberScope.processFunctionsByName(name) { symbol ->
-            declared.addIfNotNull(symbol as FirNamedFunctionSymbol)
+            declared += symbol
             processor(symbol)
         }
 
         val declaredSignatures by lazy {
-            declared.mapTo(mutableSetOf()) { it.fir.computeJvmDescriptorReplacingKotlinToJava() }
+            declared.mapTo(mutableSetOf()) { it.fir.computeJvmDescriptor() }
         }
 
         javaMappedClassUseSiteScope.processFunctionsByName(name) { symbol ->
-            val jvmSignature = symbol.fir.computeJvmDescriptorReplacingKotlinToJava()
+            val newSymbol = getOrCreateSubstitutedCopy(symbol)
+
+            val jvmSignature = newSymbol.fir.computeJvmDescriptor()
             if (jvmSignature in visibleMethods && jvmSignature !in declaredSignatures) {
-                processor(symbol)
+                processor(newSymbol)
             }
         }
     }
 
+    override fun processPropertiesByName(name: Name, processor: (FirVariableSymbol<*>) -> Unit) {
+        declaredMemberScope.processPropertiesByName(name, processor)
+    }
+
+    private fun getOrCreateSubstitutedCopy(symbol: FirNamedFunctionSymbol): FirNamedFunctionSymbol {
+        return functionsCache.getOrPut(symbol) {
+            val oldFunction = symbol.fir
+            val newSymbol = FirNamedFunctionSymbol(CallableId(firKotlinClass.classId, symbol.callableId.callableName))
+            FirFakeOverrideGenerator.createCopyForFirFunction(
+                newSymbol,
+                baseFunction = symbol.fir,
+                session,
+                symbol.fir.origin,
+                newDispatchReceiverType = kotlinDispatchReceiverType,
+                newParameterTypes = oldFunction.valueParameters.map { substitutor.substituteOrSelf(it.returnTypeRef.coneType) },
+                newReturnType = substitutor.substituteOrSelf(oldFunction.returnTypeRef.coneType)
+            )
+            newSymbol
+        }
+    }
+
     override fun processDirectOverriddenFunctionsWithBaseScope(
-        functionSymbol: FirFunctionSymbol<*>,
-        processor: (FirFunctionSymbol<*>, FirTypeScope) -> ProcessorAction
+        functionSymbol: FirNamedFunctionSymbol,
+        processor: (FirNamedFunctionSymbol, FirTypeScope) -> ProcessorAction
     ) = ProcessorAction.NONE
 
     override fun processDeclaredConstructors(processor: (FirConstructorSymbol) -> Unit) {
         val hiddenConstructors = signatures.hiddenConstructors
         if (hiddenConstructors.isNotEmpty()) {
             javaMappedClassUseSiteScope.processDeclaredConstructors { symbol ->
-                val jvmSignature = symbol.fir.computeJvmDescriptorReplacingKotlinToJava()
+                val jvmSignature = symbol.fir.computeJvmDescriptor()
                 if (jvmSignature !in hiddenConstructors) {
                     processor(symbol)
                 }
@@ -60,10 +104,6 @@ class JvmMappedScope(
         }
 
         declaredMemberScope.processDeclaredConstructors(processor)
-    }
-
-    override fun processPropertiesByName(name: Name, processor: (FirVariableSymbol<*>) -> Unit) {
-        declaredMemberScope.processPropertiesByName(name, processor)
     }
 
     override fun processDirectOverriddenPropertiesWithBaseScope(
@@ -76,7 +116,7 @@ class JvmMappedScope(
     }
 
     override fun getCallableNames(): Set<Name> {
-        return declaredMemberScope.getContainingCallableNamesIfPresent()
+        return declaredMemberScope.getContainingCallableNamesIfPresent() + signatures.visibleMethodSignaturesByName.keys
     }
 
     override fun getClassifierNames(): Set<Name> {
@@ -91,7 +131,7 @@ class JvmMappedScope(
 
         // NOTE: No-arg constructors
         @OptIn(ExperimentalStdlibApi::class)
-        private val additionalHiddenConstructors = buildSet<String> {
+        private val additionalHiddenConstructors = buildSet {
             // kotlin.text.String pseudo-constructors should be used instead of java.lang.String constructors
             listOf(
                 "",

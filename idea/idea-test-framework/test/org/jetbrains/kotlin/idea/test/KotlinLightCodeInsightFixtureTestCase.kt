@@ -24,7 +24,6 @@ import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.newvfs.impl.VfsRootAccess
 import com.intellij.pom.java.LanguageLevel
 import com.intellij.psi.PsiClassOwner
-import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiJavaFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.codeStyle.CodeStyleSettings
@@ -47,14 +46,17 @@ import org.jetbrains.kotlin.idea.inspections.UnusedSymbolInspection
 import org.jetbrains.kotlin.idea.test.CompilerTestDirectives.COMPILER_ARGUMENTS_DIRECTIVE
 import org.jetbrains.kotlin.idea.test.CompilerTestDirectives.JVM_TARGET_DIRECTIVE
 import org.jetbrains.kotlin.idea.test.CompilerTestDirectives.LANGUAGE_VERSION_DIRECTIVE
+import org.jetbrains.kotlin.idea.test.CompilerTestDirectives.API_VERSION_DIRECTIVE
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.test.InTextDirectivesUtils
 import org.jetbrains.kotlin.test.KotlinTestUtils
 import org.jetbrains.kotlin.test.TestMetadata
+import org.jetbrains.kotlin.test.util.KtTestUtil
 import org.jetbrains.kotlin.utils.addIfNotNull
 import org.jetbrains.kotlin.utils.rethrow
 import java.io.File
 import java.io.IOException
+import java.nio.file.Path
 import java.util.*
 import kotlin.reflect.full.findAnnotation
 
@@ -67,6 +69,8 @@ abstract class KotlinLightCodeInsightFixtureTestCase : KotlinLightCodeInsightFix
     protected fun testDataFile(fileName: String): File = File(testDataPath, fileName)
 
     protected fun testDataFile(): File = testDataFile(fileName())
+
+    protected fun testDataFilePath(): Path = testDataFile().toPath()
 
     protected fun testPath(fileName: String = fileName()): String = testDataFile(fileName).toString()
 
@@ -91,8 +95,7 @@ abstract class KotlinLightCodeInsightFixtureTestCase : KotlinLightCodeInsightFix
         }
 
 
-        runPostStartupActivitiesOnce(project)
-        VfsRootAccess.allowRootAccess(project, KotlinTestUtils.getHomeDirectory())
+        VfsRootAccess.allowRootAccess(project, KtTestUtil.getHomeDirectory())
 
         EditorTracker.getInstance(project)
 
@@ -242,6 +245,7 @@ abstract class KotlinLightCodeInsightFixtureTestCase : KotlinLightCodeInsightFix
 
 object CompilerTestDirectives {
     const val LANGUAGE_VERSION_DIRECTIVE = "LANGUAGE_VERSION:"
+    const val API_VERSION_DIRECTIVE = "API_VERSION:"
     const val JVM_TARGET_DIRECTIVE = "JVM_TARGET:"
     const val COMPILER_ARGUMENTS_DIRECTIVE = "COMPILER_ARGUMENTS:"
 
@@ -262,6 +266,7 @@ fun <T> withCustomCompilerOptions(fileText: String, project: Project, module: Mo
 
 private fun configureCompilerOptions(fileText: String, project: Project, module: Module): Boolean {
     val version = InTextDirectivesUtils.findStringWithPrefixes(fileText, "// $LANGUAGE_VERSION_DIRECTIVE ")
+    val apiVersion = InTextDirectivesUtils.findStringWithPrefixes(fileText, "// $API_VERSION_DIRECTIVE ")
     val jvmTarget = InTextDirectivesUtils.findStringWithPrefixes(fileText, "// $JVM_TARGET_DIRECTIVE ")
     // We can have several such directives in quickFixMultiFile tests
     // TODO: refactor such tests or add sophisticated check for the directive
@@ -271,7 +276,7 @@ private fun configureCompilerOptions(fileText: String, project: Project, module:
         configureLanguageAndApiVersion(
             project, module,
             version ?: LanguageVersion.LATEST_STABLE.versionString,
-            null
+            apiVersion
         )
 
         val facetSettings = KotlinFacet.get(module)!!.configuration.settings
@@ -403,7 +408,7 @@ private fun configureLanguageAndApiVersion(
             compilerArguments.apiVersion = null
         }
 
-        facet.configureFacet(languageVersion, LanguageFeature.State.DISABLED, null, modelsProvider)
+        facet.configureFacet(languageVersion, null, modelsProvider)
         if (apiVersion != null) {
             facet.configuration.settings.apiLevel = LanguageVersion.fromVersionString(apiVersion)
         }

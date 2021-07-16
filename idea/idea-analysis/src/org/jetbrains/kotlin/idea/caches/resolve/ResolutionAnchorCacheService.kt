@@ -13,6 +13,7 @@ import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.project.Project
 import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.xmlb.XmlSerializerUtil
+import org.jetbrains.annotations.TestOnly
 import org.jetbrains.kotlin.analyzer.ModuleInfo
 import org.jetbrains.kotlin.caches.project.cacheByClassInvalidatingOnRootModifications
 import org.jetbrains.kotlin.idea.caches.project.LibraryDependenciesCache
@@ -50,8 +51,6 @@ class ResolutionAnchorCacheServiceImpl(val project: Project) :
         var moduleNameToAnchorName: Map<String, String> = emptyMap()
     )
 
-    private val logger = logger<ResolutionAnchorCacheServiceImpl>()
-
     @JvmField
     @Volatile
     var myState: State = State()
@@ -62,17 +61,21 @@ class ResolutionAnchorCacheServiceImpl(val project: Project) :
         XmlSerializerUtil.copyBean(state, myState)
     }
 
+    @TestOnly
+    fun setAnchors(mapping: Map<String, String>) {
+        myState = State(mapping)
+    }
+
     object ResolutionAnchorMappingCacheKey
     object ResolutionAnchorDependenciesCacheKey
 
-    override val resolutionAnchorsForLibraries: Map<LibraryInfo, ModuleSourceInfo> by lazy {
-        project.cacheByClassInvalidatingOnRootModifications(ResolutionAnchorMappingCacheKey::class.java) {
+    override val resolutionAnchorsForLibraries: Map<LibraryInfo, ModuleSourceInfo>
+        get() = project.cacheByClassInvalidatingOnRootModifications(ResolutionAnchorMappingCacheKey::class.java) {
             mapResolutionAnchorForLibraries()
         }
-    }
 
-    private val resolutionAnchorDependenciesCache: MutableMap<LibraryInfo, Set<ModuleSourceInfo>> =
-        project.cacheByClassInvalidatingOnRootModifications(ResolutionAnchorDependenciesCacheKey::class.java) {
+    private val resolutionAnchorDependenciesCache: MutableMap<LibraryInfo, Set<ModuleSourceInfo>>
+        get() = project.cacheByClassInvalidatingOnRootModifications(ResolutionAnchorDependenciesCacheKey::class.java) {
             ContainerUtil.createConcurrentWeakMap()
         }
 
@@ -117,5 +120,9 @@ class ResolutionAnchorCacheServiceImpl(val project: Project) :
 
             library to anchor
         }.toMap()
+    }
+
+    companion object {
+        private val logger = logger<ResolutionAnchorCacheServiceImpl>()
     }
 }

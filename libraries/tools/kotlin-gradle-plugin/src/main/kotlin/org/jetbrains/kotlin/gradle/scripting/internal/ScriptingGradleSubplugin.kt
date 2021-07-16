@@ -15,6 +15,7 @@ import org.gradle.api.artifacts.transform.TransformAction
 import org.gradle.api.artifacts.transform.TransformOutputs
 import org.gradle.api.artifacts.transform.TransformParameters
 import org.gradle.api.attributes.Attribute
+import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.compile.AbstractCompile
@@ -61,7 +62,7 @@ class ScriptingGradleSubplugin : Plugin<Project> {
                     if (task !is KaptGenerateStubsTask) {
 
                         try {
-                            val discoveryClasspathConfigurationName = getDiscoveryClasspathConfigurationName(task.sourceSetName)
+                            val discoveryClasspathConfigurationName = getDiscoveryClasspathConfigurationName(task.sourceSetName.get())
                             val discoveryClasspathConfiguration = project.configurations.findByName(discoveryClasspathConfigurationName)
                             when {
                                 discoveryClasspathConfiguration == null ->
@@ -69,7 +70,7 @@ class ScriptingGradleSubplugin : Plugin<Project> {
                                 discoveryClasspathConfiguration.allDependencies.isEmpty() -> {
                                     // skip further checks - user did not configured any discovery sources
                                 }
-                                else -> configureScriptsExtensions(project, javaPluginConvention, task.sourceSetName)
+                                else -> configureScriptsExtensions(project, javaPluginConvention, task.sourceSetName.get())
                             }
                         } catch (e: IllegalStateException) {
                             project.logger.warn("$SCRIPTING_LOG_PREFIX applied in the non-supported environment (error received: ${e.message})")
@@ -153,10 +154,10 @@ private fun configureDiscoveryTransformation(
 
 internal abstract class DiscoverScriptExtensionsTransformAction : TransformAction<TransformParameters.None> {
     @get:InputArtifact
-    abstract val inputArtifact: File
+    abstract val inputArtifact: Provider<FileSystemLocation>
 
     override fun transform(outputs: TransformOutputs) {
-        val input = inputArtifact
+        val input = inputArtifact.get().asFile
 
         val definitions =
             ScriptDefinitionsFromClasspathDiscoverySource(

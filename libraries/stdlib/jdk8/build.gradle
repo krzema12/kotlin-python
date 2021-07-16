@@ -14,7 +14,6 @@ dependencies {
     compile project(':kotlin-stdlib')
     compile project(':kotlin-stdlib-jdk7')
     testCompile project(':kotlin-test:kotlin-test-junit')
-    testCompile project(':kotlin-coroutines-experimental-compat')
 }
 
 sourceSets {
@@ -82,6 +81,7 @@ compileTestKotlin {
             "-Xopt-in=kotlin.ExperimentalUnsignedTypes",
             "-Xopt-in=kotlin.ExperimentalStdlibApi",
             "-Xopt-in=kotlin.io.path.ExperimentalPathApi",
+            "-Xcommon-sources=${fileTree('../test').join(',')}",
     ]
 }
 

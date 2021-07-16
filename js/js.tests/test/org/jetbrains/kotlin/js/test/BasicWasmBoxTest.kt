@@ -6,10 +6,6 @@
 package org.jetbrains.kotlin.js.test
 
 import com.intellij.openapi.util.io.FileUtil
-import com.intellij.openapi.vfs.StandardFileSystems
-import com.intellij.openapi.vfs.VirtualFileManager
-import com.intellij.psi.PsiManager
-import junit.framework.TestCase
 import org.jetbrains.kotlin.backend.common.phaser.PhaseConfig
 import org.jetbrains.kotlin.backend.common.phaser.toPhaseMap
 import org.jetbrains.kotlin.backend.wasm.compileWasm
@@ -21,6 +17,7 @@ import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.config.*
 import org.jetbrains.kotlin.ir.backend.js.MainModule
 import org.jetbrains.kotlin.ir.backend.js.loadKlib
+import org.jetbrains.kotlin.ir.declarations.impl.IrFactoryImpl
 import org.jetbrains.kotlin.js.config.JsConfig
 import org.jetbrains.kotlin.js.facade.TranslationUnit
 import org.jetbrains.kotlin.js.test.engines.ExternalTool
@@ -28,14 +25,13 @@ import org.jetbrains.kotlin.js.test.engines.SpiderMonkeyEngine
 import org.jetbrains.kotlin.library.resolver.impl.KotlinLibraryResolverResultImpl
 import org.jetbrains.kotlin.library.resolver.impl.KotlinResolvedLibraryImpl
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtPsiFactory
-import org.jetbrains.kotlin.test.InTextDirectivesUtils
+import org.jetbrains.kotlin.resolve.CompilerEnvironment
 import org.jetbrains.kotlin.test.Directives
-import org.jetbrains.kotlin.test.KotlinTestUtils
 import org.jetbrains.kotlin.test.KotlinTestWithEnvironment
-import org.jetbrains.kotlin.test.*
+import org.jetbrains.kotlin.test.TestFiles
+import org.jetbrains.kotlin.test.util.KtTestUtil
 import java.io.Closeable
 import java.io.File
 import java.lang.Boolean.getBoolean
@@ -60,10 +56,10 @@ abstract class BasicWasmBoxTest(
         val file = File(filePath)
 
         val outputDir = getOutputDir(file)
-        val fileContent = KotlinTestUtils.doLoadFile(file)
+        val fileContent = KtTestUtil.doLoadFile(file)
 
         TestFileFactoryImpl().use { testFactory ->
-            val inputFiles: MutableList<TestFile> = TestFiles.createTestFiles(file.name, fileContent, testFactory, true, "")
+            val inputFiles: MutableList<TestFile> = TestFiles.createTestFiles(file.name, fileContent, testFactory, true)
             val testPackage = testFactory.testPackage
             val outputFileBase = outputDir.absolutePath + "/" + getTestName(true)
             val outputWatFile = outputFileBase + ".wat"
@@ -142,6 +138,7 @@ abstract class BasicWasmBoxTest(
             analyzer = AnalyzerWithCompilerReport(config.configuration),
             configuration = config.configuration,
             phaseConfig = phaseConfig,
+            irFactory = IrFactoryImpl,
             // TODO: Bypass the resolver fow wasm.
             allDependencies = KotlinLibraryResolverResultImpl(listOf(KotlinResolvedLibraryImpl(wasmRuntimeKlib))),
             friendDependencies = emptyList(),
@@ -168,8 +165,9 @@ abstract class BasicWasmBoxTest(
     private fun createConfig(languageVersionSettings: LanguageVersionSettings?): JsConfig {
         val configuration = environment.configuration.copy()
         configuration.put(CommonConfigurationKeys.MODULE_NAME, TEST_MODULE)
-        configuration.languageVersionSettings = languageVersionSettings ?: LanguageVersionSettingsImpl(LanguageVersion.LATEST_STABLE, ApiVersion.LATEST_STABLE)
-        return JsConfig(project, configuration, null, null)
+        configuration.languageVersionSettings = languageVersionSettings
+            ?: LanguageVersionSettingsImpl(LanguageVersion.LATEST_STABLE, ApiVersion.LATEST_STABLE)
+        return JsConfig(project, configuration, CompilerEnvironment, null, null)
     }
 
     private inner class TestFileFactoryImpl : TestFiles.TestFileFactoryNoModules<TestFile>(), Closeable {
@@ -186,14 +184,14 @@ abstract class BasicWasmBoxTest(
             val languageVersionSettings = parseLanguageVersionSettings(directives)
 
             val temporaryFile = File(tmpDir, "WASM_TEST/$fileName")
-            KotlinTestUtils.mkdirs(temporaryFile.parentFile)
+            KtTestUtil.mkdirs(temporaryFile.parentFile)
             temporaryFile.writeText(text, Charsets.UTF_8)
 
             return TestFile(temporaryFile.absolutePath, languageVersionSettings)
         }
 
         var testPackage: String? = null
-        val tmpDir = KotlinTestUtils.tmpDir("wasm-tests")
+        val tmpDir = KtTestUtil.tmpDir("wasm-tests")
 
         override fun close() {
             FileUtil.delete(tmpDir)

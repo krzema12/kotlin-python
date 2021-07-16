@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.fir.declarations.impl
 
+import org.jetbrains.kotlin.descriptors.EffectiveVisibility
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.Visibility
 import org.jetbrains.kotlin.fir.FirImplementationDetail
@@ -17,7 +18,7 @@ import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
 import org.jetbrains.kotlin.fir.declarations.FirValueParameter
 import org.jetbrains.kotlin.fir.declarations.builder.buildDefaultSetterValueParameter
 import org.jetbrains.kotlin.fir.expressions.FirBlock
-import org.jetbrains.kotlin.fir.symbols.CallableId
+import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertyAccessorSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.types.FirTypeRef
@@ -34,17 +35,21 @@ abstract class FirDefaultPropertyAccessor(
     valueParameters: MutableList<FirValueParameter>,
     isGetter: Boolean,
     visibility: Visibility,
+    effectiveVisibility: EffectiveVisibility? = null,
     symbol: FirPropertyAccessorSymbol
 ) : FirPropertyAccessorImpl(
     source,
     session,
-    resolvePhase = FirResolvePhase.RAW_FIR,
+    resolvePhase = FirResolvePhase.BODY_RESOLVE,
     origin,
     FirDeclarationAttributes(),
     propertyTypeRef,
     valueParameters,
     body = null,
-    FirDeclarationStatusImpl(visibility, Modality.FINAL),
+    status = if (effectiveVisibility == null)
+        FirDeclarationStatusImpl(visibility, Modality.FINAL)
+    else
+        FirResolvedDeclarationStatusImpl(visibility, Modality.FINAL, effectiveVisibility),
     containerSource = null,
     dispatchReceiverType = null,
     contractDescription = FirEmptyContractDescription,
@@ -53,7 +58,9 @@ abstract class FirDefaultPropertyAccessor(
     annotations = mutableListOf(),
     typeParameters = mutableListOf(),
 ) {
-    override var resolvePhase = FirResolvePhase.BODY_RESOLVE
+    override var resolvePhase
+        get() = FirResolvePhase.BODY_RESOLVE
+        set(_) {}
 
     final override var body: FirBlock?
         get() = null
@@ -83,6 +90,7 @@ class FirDefaultPropertyGetter(
     origin: FirDeclarationOrigin,
     propertyTypeRef: FirTypeRef,
     visibility: Visibility,
+    effectiveVisibility: EffectiveVisibility? = null,
     symbol: FirPropertyAccessorSymbol = FirPropertyAccessorSymbol()
 ) : FirDefaultPropertyAccessor(
     source,
@@ -92,6 +100,7 @@ class FirDefaultPropertyGetter(
     valueParameters = mutableListOf(),
     isGetter = true,
     visibility = visibility,
+    effectiveVisibility = effectiveVisibility,
     symbol = symbol
 )
 
@@ -101,6 +110,7 @@ class FirDefaultPropertySetter(
     origin: FirDeclarationOrigin,
     propertyTypeRef: FirTypeRef,
     visibility: Visibility,
+    effectiveVisibility: EffectiveVisibility? = null,
     symbol: FirPropertyAccessorSymbol = FirPropertyAccessorSymbol()
 ) : FirDefaultPropertyAccessor(
     source,
@@ -110,7 +120,7 @@ class FirDefaultPropertySetter(
     valueParameters = mutableListOf(
         buildDefaultSetterValueParameter builder@{
             this@builder.source = source
-            this@builder.session = session
+            this@builder.declarationSiteSession = session
             this@builder.origin = origin
             this@builder.returnTypeRef = propertyTypeRef
             this@builder.symbol = FirVariableSymbol(CallableId(FqName.ROOT, Name.special("<default-setter-parameter>")))
@@ -118,5 +128,6 @@ class FirDefaultPropertySetter(
     ),
     isGetter = false,
     visibility,
+    effectiveVisibility,
     symbol
 )

@@ -123,7 +123,7 @@ abstract class KotlinJsIrSubTarget(
                 project.layout.file(
                     binary.linkSyncTask.map {
                         it.destinationDir
-                            .resolve(binary.linkTask.get().outputFile.name)
+                            .resolve(binary.linkTask.get().outputFileProperty.get().name)
                     }
                 )
             )
@@ -195,8 +195,6 @@ abstract class KotlinJsIrSubTarget(
 
     protected open fun configureLibrary(compilation: KotlinJsIrCompilation) {
         val project = compilation.target.project
-
-        val processResourcesTask = target.project.tasks.named(compilation.processResourcesTaskName)
 
         val assembleTaskProvider = project.tasks.named(LifecycleBasePlugin.ASSEMBLE_TASK_NAME)
 

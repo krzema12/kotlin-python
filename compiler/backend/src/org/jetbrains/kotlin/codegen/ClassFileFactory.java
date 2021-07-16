@@ -52,13 +52,14 @@ import org.jetbrains.org.objectweb.asm.Type;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.jetbrains.kotlin.codegen.JvmCodegenUtil.getMappingFileName;
 
 public class ClassFileFactory implements OutputFileCollection {
     private final GenerationState state;
     private final ClassBuilderFactory builderFactory;
-    private final Map<String, OutAndSourceFileList> generators = new LinkedHashMap<>();
+    private final Map<String, OutAndSourceFileList> generators = Collections.synchronizedMap(new LinkedHashMap<>());
 
     private boolean isDone = false;
 
@@ -264,7 +265,7 @@ public class ClassFileFactory implements OutputFileCollection {
         return new MultifileClassCodegenImpl(state, files, facadeFqName);
     }
 
-    private void registerSourceFiles(Collection<KtFile> files) {
+    public void registerSourceFiles(@NotNull Collection<KtFile> files) {
         sourceFiles.addAll(toIoFilesIgnoringNonPhysical(files));
     }
 
@@ -272,6 +273,7 @@ public class ClassFileFactory implements OutputFileCollection {
     private static List<File> toIoFilesIgnoringNonPhysical(@NotNull Collection<? extends PsiFile> psiFiles) {
         List<File> result = new ArrayList<>(psiFiles.size());
         for (PsiFile psiFile : psiFiles) {
+            if (psiFile == null) continue;
             VirtualFile virtualFile = psiFile.getVirtualFile();
             // We ignore non-physical files here, because this code is needed to tell the make what inputs affect which outputs
             // a non-physical file cannot be processed by make
@@ -345,7 +347,9 @@ public class ClassFileFactory implements OutputFileCollection {
 
         @Override
         public byte[] asBytes(ClassBuilderFactory factory) {
-            return factory.asBytes(classBuilder);
+            synchronized(this) {
+                return factory.asBytes(classBuilder);
+            }
         }
 
         @Override

@@ -25,11 +25,11 @@ import com.intellij.ide.highlighter.JavaFileType
 import com.intellij.lang.java.JavaParserDefinition
 import com.intellij.mock.MockProject
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.TransactionGuard
 import com.intellij.openapi.application.TransactionGuardImpl
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.diagnostic.Logger
-import com.intellij.openapi.extensions.Extensions
 import com.intellij.openapi.extensions.ExtensionsArea
 import com.intellij.openapi.fileTypes.PlainTextFileType
 import com.intellij.openapi.project.DumbUtil
@@ -78,10 +78,7 @@ import org.jetbrains.kotlin.cli.jvm.modules.CoreJrtFileSystem
 import org.jetbrains.kotlin.codegen.extensions.ClassBuilderInterceptorExtension
 import org.jetbrains.kotlin.codegen.extensions.ExpressionCodegenExtension
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
-import org.jetbrains.kotlin.config.APPEND_JAVA_SOURCE_ROOTS_HANDLER_KEY
-import org.jetbrains.kotlin.config.CompilerConfiguration
-import org.jetbrains.kotlin.config.JVMConfigurationKeys
-import org.jetbrains.kotlin.config.languageVersionSettings
+import org.jetbrains.kotlin.config.*
 import org.jetbrains.kotlin.extensions.*
 import org.jetbrains.kotlin.extensions.internal.CandidateInterceptor
 import org.jetbrains.kotlin.extensions.internal.TypeResolutionInterceptor
@@ -96,6 +93,7 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.CodeAnalyzerInitializer
 import org.jetbrains.kotlin.resolve.ModuleAnnotationsResolver
 import org.jetbrains.kotlin.resolve.extensions.ExtraImportsProviderExtension
+import org.jetbrains.kotlin.resolve.jvm.extensions.SyntheticJavaResolveExtension
 import org.jetbrains.kotlin.resolve.extensions.SyntheticResolveExtension
 import org.jetbrains.kotlin.resolve.jvm.KotlinJavaPsiFacade
 import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
@@ -123,7 +121,7 @@ class KotlinCoreEnvironment private constructor(
         private var extensionRegistered = false
 
         override fun preregisterServices() {
-            registerProjectExtensionPoints(Extensions.getArea(project))
+            registerProjectExtensionPoints(project.extensionArea)
         }
 
         fun registerExtensionsFromPlugins(configuration: CompilerConfiguration) {
@@ -192,11 +190,16 @@ class KotlinCoreEnvironment private constructor(
 
         sourceFiles.sortBy { it.virtualFile.path }
 
+        val javaFileManager = ServiceManager.getService(project, CoreJavaFileManager::class.java) as KotlinCliJavaFileManagerImpl
+
         val jdkHome = configuration.get(JVMConfigurationKeys.JDK_HOME)
         val jrtFileSystem = VirtualFileManager.getInstance().getFileSystem(StandardFileSystems.JRT_PROTOCOL)
-        val javaModuleFinder = CliJavaModuleFinder(jdkHome?.path?.let { path ->
-            jrtFileSystem?.findFileByPath(path + URLUtil.JAR_SEPARATOR)
-        })
+        val javaModuleFinder = CliJavaModuleFinder(
+            jdkHome?.path?.let { path ->
+                jrtFileSystem?.findFileByPath(path + URLUtil.JAR_SEPARATOR)
+            },
+            javaFileManager
+        )
 
         val outputDirectory =
             configuration.get(JVMConfigurationKeys.MODULES)?.singleOrNull()?.getOutputDirectory()
@@ -209,7 +212,8 @@ class KotlinCoreEnvironment private constructor(
             this::contentRootToVirtualFile,
             javaModuleFinder,
             !configuration.getBoolean(CLIConfigurationKeys.ALLOW_KOTLIN_PACKAGE),
-            outputDirectory?.let(this::findLocalFile)
+            outputDirectory?.let(this::findLocalFile),
+            javaFileManager
         )
 
         val (initialRoots, javaModules) =
@@ -233,7 +237,7 @@ class KotlinCoreEnvironment private constructor(
             updateClasspathFromRootsIndex(this)
         }
 
-        (ServiceManager.getService(project, CoreJavaFileManager::class.java) as KotlinCliJavaFileManagerImpl).initialize(
+        javaFileManager.initialize(
             rootsIndex,
             packagePartProviders,
             SingleJavaFileRootsIndex(singleJavaFileRoots),
@@ -242,7 +246,7 @@ class KotlinCoreEnvironment private constructor(
 
         project.registerService(
             JavaModuleResolver::class.java,
-            CliJavaModuleResolver(classpathRootsResolver.javaModuleGraph, javaModules, javaModuleFinder.systemModules.toList())
+            CliJavaModuleResolver(classpathRootsResolver.javaModuleGraph, javaModules, javaModuleFinder.systemModules.toList(), project)
         )
 
         val finderFactory = CliVirtualFileFinderFactory(rootsIndex)
@@ -456,16 +460,38 @@ class KotlinCoreEnvironment private constructor(
             return KotlinCoreEnvironment(projectEnv, configuration, extensionConfigs)
         }
 
+        @TestOnly
+        @JvmStatic
+        fun createForTests(
+            projectEnvironment: ProjectEnvironment, initialConfiguration: CompilerConfiguration, extensionConfigs: EnvironmentConfigFiles
+        ): KotlinCoreEnvironment {
+            return KotlinCoreEnvironment(projectEnvironment, initialConfiguration, extensionConfigs)
+        }
+
+        @TestOnly
+        fun createProjectEnvironmentForTests(parentDisposable: Disposable, configuration: CompilerConfiguration): ProjectEnvironment {
+            val appEnv = createApplicationEnvironment(parentDisposable, configuration, unitTestMode = true)
+            return ProjectEnvironment(parentDisposable, appEnv)
+        }
+
         // used in the daemon for jar cache cleanup
         val applicationEnvironment: KotlinCoreApplicationEnvironment? get() = ourApplicationEnvironment
 
         fun getOrCreateApplicationEnvironmentForProduction(
             parentDisposable: Disposable, configuration: CompilerConfiguration
+        ): KotlinCoreApplicationEnvironment = getOrCreateApplicationEnvironment(parentDisposable, configuration, unitTestMode = false)
+
+        fun getOrCreateApplicationEnvironmentForTests(
+            parentDisposable: Disposable, configuration: CompilerConfiguration
+        ): KotlinCoreApplicationEnvironment = getOrCreateApplicationEnvironment(parentDisposable, configuration, unitTestMode = true)
+
+        private fun getOrCreateApplicationEnvironment(
+            parentDisposable: Disposable, configuration: CompilerConfiguration, unitTestMode: Boolean
         ): KotlinCoreApplicationEnvironment {
             synchronized(APPLICATION_LOCK) {
                 if (ourApplicationEnvironment == null) {
                     val disposable = Disposer.newDisposable()
-                    ourApplicationEnvironment = createApplicationEnvironment(disposable, configuration, unitTestMode = false)
+                    ourApplicationEnvironment = createApplicationEnvironment(disposable, configuration, unitTestMode)
                     ourProjectCount = 0
                     Disposer.register(disposable, Disposable {
                         synchronized(APPLICATION_LOCK) {
@@ -538,7 +564,7 @@ class KotlinCoreEnvironment private constructor(
             CoreApplicationEnvironment.registerExtensionPointAndExtensions(
                 FileSystems.getDefault().getPath(pluginRoot.path),
                 configFilePath,
-                Extensions.getRootArea()
+                ApplicationManager.getApplication().extensionArea
             )
         }
 
@@ -547,6 +573,7 @@ class KotlinCoreEnvironment private constructor(
         fun registerPluginExtensionPoints(project: MockProject) {
             ExpressionCodegenExtension.registerExtensionPoint(project)
             SyntheticResolveExtension.registerExtensionPoint(project)
+            SyntheticJavaResolveExtension.registerExtensionPoint(project)
             ClassBuilderInterceptorExtension.registerExtensionPoint(project)
             AnalysisHandlerExtension.registerExtensionPoint(project)
             PackageFragmentProviderExtension.registerExtensionPoint(project)
@@ -607,9 +634,9 @@ class KotlinCoreEnvironment private constructor(
         @JvmStatic
         fun registerProjectExtensionPoints(area: ExtensionsArea) {
             CoreApplicationEnvironment.registerExtensionPoint(
-                area, PsiTreeChangePreprocessor.EP_NAME, PsiTreeChangePreprocessor::class.java
+                area, PsiTreeChangePreprocessor.EP.name, PsiTreeChangePreprocessor::class.java
             )
-            CoreApplicationEnvironment.registerExtensionPoint(area, PsiElementFinder.EP_NAME, PsiElementFinder::class.java)
+            CoreApplicationEnvironment.registerExtensionPoint(area, PsiElementFinder.EP.name, PsiElementFinder::class.java)
 
             IdeaExtensionPoints.registerVersionSpecificProjectExtensionPoints(area)
         }
@@ -617,7 +644,10 @@ class KotlinCoreEnvironment private constructor(
         // made public for Upsource
         @JvmStatic
         @Deprecated("Use registerProjectServices(project) instead.", ReplaceWith("registerProjectServices(projectEnvironment.project)"))
-        fun registerProjectServices(projectEnvironment: JavaCoreProjectEnvironment, messageCollector: MessageCollector?) {
+        fun registerProjectServices(
+            projectEnvironment: JavaCoreProjectEnvironment,
+            @Suppress("UNUSED_PARAMETER") messageCollector: MessageCollector?
+        ) {
             registerProjectServices(projectEnvironment.project)
         }
 
@@ -652,12 +682,15 @@ class KotlinCoreEnvironment private constructor(
                 @Suppress("UnstableApiUsage")
                 registerService(DumbUtil::class.java, KotlinCoreDumbUtil())
 
-                val area = Extensions.getArea(this)
-
-                area.getExtensionPoint(PsiElementFinder.EP_NAME).registerExtension(JavaElementFinder(this, kotlinAsJavaSupport))
-                area.getExtensionPoint(PsiElementFinder.EP_NAME).registerExtension(
-                    PsiElementFinderImpl(this, ServiceManager.getService(this, JavaFileManager::class.java))
-                )
+                // We don't pass Disposable because in some tests, we manually unregister these extensions, and that leads to LOG.error
+                // exception from `ExtensionPointImpl.doRegisterExtension`, because the registered extension can no longer be found
+                // when the project is being disposed.
+                // For example, see the `unregisterExtension` call in `GenerationUtils.compileFilesUsingFrontendIR`.
+                // TODO: refactor this to avoid registering unneeded extensions in the first place, and avoid using deprecated API.
+                @Suppress("DEPRECATION")
+                PsiElementFinder.EP.getPoint(project).registerExtension(JavaElementFinder(this))
+                @Suppress("DEPRECATION")
+                PsiElementFinder.EP.getPoint(project).registerExtension(PsiElementFinderImpl(this))
             }
         }
 

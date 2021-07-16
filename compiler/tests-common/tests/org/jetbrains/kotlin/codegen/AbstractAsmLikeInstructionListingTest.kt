@@ -24,7 +24,15 @@ abstract class AbstractAsmLikeInstructionListingTest : CodegenTestCase() {
     private companion object {
         const val CURIOUS_ABOUT_DIRECTIVE = "// CURIOUS_ABOUT "
         const val LOCAL_VARIABLE_TABLE_DIRECTIVE = "// LOCAL_VARIABLE_TABLE"
-        const val TYPE_ANNOTATIONS_DIRECTIVE = "// TYPE_ANNOTATIONS"
+        const val RENDER_ANNOTATIONS_DIRECTIVE = "// RENDER_ANNOTATIONS"
+
+        val IGNORED_CLASS_VISIBLE_ANNOTATIONS = setOf(
+            "Lkotlin/Metadata;",
+            "Lkotlin/annotation/Target;",
+            "Lkotlin/annotation/Retention;",
+            "Ljava/lang/annotation/Retention;",
+            "Ljava/lang/annotation/Target;"
+        )
     }
 
     override fun doMultiFileTest(wholeFile: File, files: List<TestFile>) {
@@ -44,10 +52,10 @@ abstract class AbstractAsmLikeInstructionListingTest : CodegenTestCase() {
                 .flatMap { it.split(',').map { it.trim() } }
 
         val showLocalVariables = testFileLines.any { it.trim() == LOCAL_VARIABLE_TABLE_DIRECTIVE }
-        val showTypeAnnotations = testFileLines.any { it.trim() == TYPE_ANNOTATIONS_DIRECTIVE }
+        val renderAnnotations = testFileLines.any { it.trim() == RENDER_ANNOTATIONS_DIRECTIVE }
 
         KotlinTestUtils.assertEqualsToFile(txtFile, classes.joinToString(LINE_SEPARATOR.repeat(2)) {
-            renderClassNode(it, printBytecodeForTheseMethods, showLocalVariables, showTypeAnnotations)
+            renderClassNode(it, printBytecodeForTheseMethods, showLocalVariables, renderAnnotations)
         })
     }
 
@@ -57,7 +65,7 @@ abstract class AbstractAsmLikeInstructionListingTest : CodegenTestCase() {
         clazz: ClassNode,
         showBytecodeForTheseMethods: List<String>,
         showLocalVariables: Boolean,
-        showTypeAnnotations: Boolean
+        renderAnnotations: Boolean
     ): String {
         val fields = (clazz.fields ?: emptyList()).sortedBy { it.name }
         val methods = (clazz.methods ?: emptyList()).sortedBy { it.name }
@@ -65,6 +73,11 @@ abstract class AbstractAsmLikeInstructionListingTest : CodegenTestCase() {
         val superTypes = (listOf(clazz.superName) + clazz.interfaces).filterNotNull()
 
         return buildString {
+            if (renderAnnotations) {
+                clazz.signature?.let {
+                    append(it).append("\n")
+                }
+            }
             renderVisibilityModifiers(clazz.access)
             renderModalityModifiers(clazz.access)
             append(if ((clazz.access and ACC_INTERFACE) != 0) "interface " else "class ")
@@ -76,7 +89,33 @@ abstract class AbstractAsmLikeInstructionListingTest : CodegenTestCase() {
 
             appendLine(" {")
 
-            fields.joinTo(this, LINE_SEPARATOR.repeat(2)) { renderField(it, showTypeAnnotations).withMargin() }
+            if (renderAnnotations) {
+                val textifier = Textifier()
+                val visitor = TraceMethodVisitor(textifier)
+
+                clazz.visibleAnnotations?.forEach {
+                    if (it.desc !in IGNORED_CLASS_VISIBLE_ANNOTATIONS) {
+                        it.accept(visitor.visitAnnotation(it.desc, true))
+                    }
+                }
+                clazz.invisibleAnnotations?.forEach {
+                    it.accept(visitor.visitAnnotation(it.desc, false))
+                }
+
+                clazz.visibleTypeAnnotations?.forEach {
+                    it.accept(visitor.visitTypeAnnotation(it.typeRef, it.typePath, it.desc, true))
+                }
+                clazz.invisibleTypeAnnotations?.forEach {
+                    it.accept(visitor.visitTypeAnnotation(it.typeRef, it.typePath, it.desc, false))
+                }
+
+                textifier.getText().takeIf { it.isNotEmpty() }?.let {
+                    appendLine(textifier.getText().joinToString("").trimEnd())
+                    appendLine("")
+                }
+            }
+
+            fields.joinTo(this, LINE_SEPARATOR.repeat(2)) { renderField(it, renderAnnotations).withMargin() }
 
             if (fields.isNotEmpty()) {
                 appendLine().appendLine()
@@ -84,22 +123,35 @@ abstract class AbstractAsmLikeInstructionListingTest : CodegenTestCase() {
 
             methods.joinTo(this, LINE_SEPARATOR.repeat(2)) {
                 val showBytecode = showBytecodeForTheseMethods.contains(it.name)
-                renderMethod(it, showBytecode, showLocalVariables, showTypeAnnotations).withMargin()
+                renderMethod(it, showBytecode, showLocalVariables, renderAnnotations).withMargin()
             }
 
             appendLine().append("}")
         }
     }
 
-    private fun renderField(field: FieldNode, showTypeAnnotations: Boolean) = buildString {
+    private fun renderField(field: FieldNode, renderAnnotations: Boolean) = buildString {
+        if (renderAnnotations) {
+            field.signature?.let {
+                append(it).append("\n")
+            }
+        }
         renderVisibilityModifiers(field.access)
         renderModalityModifiers(field.access)
         append(Type.getType(field.desc).className).append(' ')
         append(field.name)
 
-        if (showTypeAnnotations) {
+        if (renderAnnotations) {
             val textifier = Textifier()
             val visitor = TraceFieldVisitor(textifier)
+
+            field.visibleAnnotations?.forEach {
+                it.accept(visitor.visitAnnotation(it.desc, true))
+            }
+            field.invisibleAnnotations?.forEach {
+                it.accept(visitor.visitAnnotation(it.desc, false))
+            }
+
             field.visibleTypeAnnotations?.forEach {
                 it.accept(visitor.visitTypeAnnotation(it.typeRef, it.typePath, it.desc, true))
             }
@@ -116,8 +168,14 @@ abstract class AbstractAsmLikeInstructionListingTest : CodegenTestCase() {
         method: MethodNode,
         showBytecode: Boolean,
         showLocalVariables: Boolean,
-        showTypeAnnotations: Boolean
+        renderAnnotations: Boolean
     ) = buildString {
+        if (renderAnnotations) {
+            method.signature?.let {
+                append(it).append("\n")
+            }
+        }
+
         renderVisibilityModifiers(method.access)
         renderModalityModifiers(method.access)
         val (returnType, parameterTypes) = with(Type.getMethodType(method.desc)) { returnType to argumentTypes }
@@ -129,14 +187,45 @@ abstract class AbstractAsmLikeInstructionListingTest : CodegenTestCase() {
             "${type.className} $name"
         }.joinTo(this, prefix = "(", postfix = ")")
 
-        if (showTypeAnnotations) {
+        if (renderAnnotations) {
             val textifier = Textifier()
             val visitor = TraceMethodVisitor(textifier)
+
+            method.visibleAnnotations?.forEach {
+                it.accept(visitor.visitAnnotation(it.desc, true))
+            }
+            method.invisibleAnnotations?.forEach {
+                it.accept(visitor.visitAnnotation(it.desc, false))
+            }
+
             method.visibleTypeAnnotations?.forEach {
                 it.accept(visitor.visitTypeAnnotation(it.typeRef, it.typePath, it.desc, true))
             }
             method.invisibleTypeAnnotations?.forEach {
                 it.accept(visitor.visitTypeAnnotation(it.typeRef, it.typePath, it.desc, false))
+            }
+
+            method.visibleParameterAnnotations?.forEachIndexed { index, parameterAnnotations: MutableList<AnnotationNode>? ->
+                parameterAnnotations?.forEach {
+                    it.accept(
+                        visitor.visitParameterAnnotation(
+                            index,
+                            it.desc,
+                            true
+                        )
+                    )
+                }
+            }
+            method.invisibleParameterAnnotations?.forEachIndexed { index, parameterAnnotations: MutableList<AnnotationNode>? ->
+                parameterAnnotations?.forEach {
+                    it.accept(
+                        visitor.visitParameterAnnotation(
+                            index,
+                            it.desc,
+                            false
+                        )
+                    )
+                }
             }
             textifier.getText().takeIf { it.isNotEmpty() }?.let {
                 append("\n${textifier.getText().joinToString("").trimEnd()}")
@@ -171,7 +260,7 @@ abstract class AbstractAsmLikeInstructionListingTest : CodegenTestCase() {
 
     private fun getParameterName(index: Int, method: MethodNode): String {
         val localVariableIndexOffset = when {
-            (method.access and Opcodes.ACC_STATIC) != 0 -> 0
+            (method.access and ACC_STATIC) != 0 -> 0
             method.isJvmOverloadsGenerated() -> 0
             else -> 1
         }

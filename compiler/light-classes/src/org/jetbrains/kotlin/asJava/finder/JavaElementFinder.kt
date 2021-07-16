@@ -26,7 +26,6 @@ import com.intellij.psi.util.PsiUtilCore
 import com.intellij.util.SmartList
 import com.intellij.util.containers.ContainerUtil
 import org.jetbrains.kotlin.asJava.KotlinAsJavaSupport
-import org.jetbrains.kotlin.asJava.toLightClass
 import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.isValidJavaFqName
@@ -40,9 +39,9 @@ import java.util.*
 
 class JavaElementFinder(
     private val project: Project,
-    private val kotlinAsJavaSupport: KotlinAsJavaSupport
 ) : PsiElementFinder(), KotlinFinderMarker {
     private val psiManager = PsiManager.getInstance(project)
+    private val kotlinAsJavaSupport = KotlinAsJavaSupport.getInstance(project)
 
     override fun findClass(qualifiedName: String, scope: GlobalSearchScope) = findClasses(qualifiedName, scope).firstOrNull()
 
@@ -73,7 +72,7 @@ class JavaElementFinder(
 
         for (declaration in classOrObjectDeclarations) {
             if (declaration !is KtEnumEntry) {
-                val lightClass = declaration.toLightClass()
+                val lightClass = kotlinAsJavaSupport.getLightClass(declaration)
                 if (lightClass != null) {
                     answer.add(lightClass)
                 }
@@ -90,7 +89,7 @@ class JavaElementFinder(
             ProgressIndicatorAndCompilationCanceledStatus.checkCanceled()
             //NOTE: can't filter out more interfaces right away because decompiled declarations do not have member bodies
             if (classOrObject is KtClass && classOrObject.isInterface()) {
-                val interfaceClass = classOrObject.toLightClass() ?: continue
+                val interfaceClass = kotlinAsJavaSupport.getLightClass(classOrObject) ?: continue
                 val implsClass = interfaceClass.findInnerClassByName(JvmAbi.DEFAULT_IMPLS_CLASS_NAME, false) ?: continue
                 answer.add(implsClass)
             }
@@ -141,7 +140,7 @@ class JavaElementFinder(
 
         val declarations = kotlinAsJavaSupport.findClassOrObjectDeclarationsInPackage(packageFQN, scope)
         for (declaration in declarations) {
-            val aClass = declaration.toLightClass() ?: continue
+            val aClass = kotlinAsJavaSupport.getLightClass(declaration) ?: continue
             answer.add(aClass)
         }
 

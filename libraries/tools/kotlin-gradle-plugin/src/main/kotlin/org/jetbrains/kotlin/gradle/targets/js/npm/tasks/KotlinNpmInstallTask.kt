@@ -9,9 +9,10 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
-import org.jetbrains.kotlin.gradle.utils.disableTaskOnConfigurationCacheBuild
 import java.io.File
 
 open class KotlinNpmInstallTask : DefaultTask() {
@@ -25,40 +26,44 @@ open class KotlinNpmInstallTask : DefaultTask() {
         }
     }
 
+    @Transient
     private val nodeJs = NodeJsRootPlugin.apply(project.rootProject)
-    private val resolutionManager get() = nodeJs.npmResolutionManager
-
-    init {
-        // TODO: temporary workaround for configuration cache enabled builds
-        disableTaskOnConfigurationCacheBuild { resolutionManager.toString() }
-    }
+    private val resolutionManager = nodeJs.npmResolutionManager
 
     @Input
     val args: MutableList<String> = mutableListOf()
 
     @Suppress("unused")
+    @get:PathSensitive(PathSensitivity.ABSOLUTE)
     @get:InputFiles
     val packageJsonFiles: Collection<File> by lazy {
         resolutionManager.packageJsonFiles
     }
 
+    @get:PathSensitive(PathSensitivity.ABSOLUTE)
     @get:InputFiles
     val preparedFiles: Collection<File> by lazy {
-        nodeJs.packageManager.preparedFiles(project)
+        nodeJs.packageManager.preparedFiles(nodeJs)
     }
 
     // avoid using node_modules as output directory, as it is significantly slows down build
     @get:OutputFile
-    val nodeModulesState: File
-        get() = nodeJs.rootNodeModulesStateFile
+    val nodeModulesState: File by lazy {
+        nodeJs.rootNodeModulesStateFile
+    }
 
     @get:OutputFile
-    val yarnLock: File
-        get() = nodeJs.rootPackageDir.resolve("yarn.lock")
+    val yarnLock: File by lazy {
+        nodeJs.rootPackageDir.resolve("yarn.lock")
+    }
 
     @TaskAction
     fun resolve() {
-        resolutionManager.installIfNeeded(args = args)
+        resolutionManager.installIfNeeded(
+            args = args,
+            services = services,
+            logger = logger
+        )
     }
 
     companion object {

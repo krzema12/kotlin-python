@@ -7,7 +7,7 @@ package org.jetbrains.kotlin.fir.resolve.calls
 
 import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.resolve.inference.InferenceComponents
-import org.jetbrains.kotlin.fir.symbols.StandardClassIds
+import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.fir.types.arrayElementType
 import org.jetbrains.kotlin.fir.types.classId
@@ -104,6 +104,7 @@ abstract class AbstractConeCallConflictResolver(
             is FirConstructor -> createFlatSignature(call, declaration)
             is FirVariable<*> -> createFlatSignature(call, declaration)
             is FirClass<*> -> createFlatSignature(call, declaration)
+            is FirTypeAlias -> createFlatSignature(call, declaration)
             else -> error("Not supported: $declaration")
         }
     }
@@ -163,10 +164,10 @@ abstract class AbstractConeCallConflictResolver(
                     ?: call.argumentMapping?.map { it.value.argumentType() }.orEmpty())
     }
 
-    private fun createFlatSignature(call: Candidate, klass: FirClass<*>): FlatSignature<Candidate> {
+    private fun createFlatSignature(call: Candidate, klass: FirClassLikeDeclaration<*>): FlatSignature<Candidate> {
         return FlatSignature(
             call,
-            (klass as? FirRegularClass)?.typeParameters?.map { it.symbol.toLookupTag() }.orEmpty(),
+            (klass as? FirTypeParameterRefsOwner)?.typeParameters?.map { it.symbol.toLookupTag() }.orEmpty(),
             valueParameterTypes = emptyList(),
             hasExtensionReceiver = false,
             hasVarargs = false,
@@ -177,6 +178,6 @@ abstract class AbstractConeCallConflictResolver(
     }
 
     private fun createEmptyConstraintSystem(): SimpleConstraintSystem {
-        return ConeSimpleConstraintSystemImpl(inferenceComponents.createConstraintSystem())
+        return ConeSimpleConstraintSystemImpl(inferenceComponents.createConstraintSystem(), inferenceComponents.session)
     }
 }

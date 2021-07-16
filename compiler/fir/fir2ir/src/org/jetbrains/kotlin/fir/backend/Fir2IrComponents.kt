@@ -6,9 +6,11 @@
 package org.jetbrains.kotlin.fir.backend
 
 import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.backend.generators.AnnotationGenerator
 import org.jetbrains.kotlin.fir.backend.generators.CallAndReferenceGenerator
 import org.jetbrains.kotlin.fir.backend.generators.FakeOverrideGenerator
 import org.jetbrains.kotlin.fir.resolve.ScopeSession
+import org.jetbrains.kotlin.ir.IrLock
 import org.jetbrains.kotlin.ir.declarations.IrFactory
 import org.jetbrains.kotlin.ir.descriptors.IrBuiltIns
 import org.jetbrains.kotlin.ir.util.SymbolTable
@@ -16,15 +18,21 @@ import org.jetbrains.kotlin.ir.util.SymbolTable
 interface Fir2IrComponents {
     val session: FirSession
     val scopeSession: ScopeSession
+
     val symbolTable: SymbolTable
     val irBuiltIns: IrBuiltIns
     val builtIns: Fir2IrBuiltIns
     val irFactory: IrFactory
+    val lock: IrLock
+
     val classifierStorage: Fir2IrClassifierStorage
     val declarationStorage: Fir2IrDeclarationStorage
+
     val typeConverter: Fir2IrTypeConverter
     val signatureComposer: Fir2IrSignatureComposer
+    val visibilityConverter: Fir2IrVisibilityConverter
+
+    val annotationGenerator: AnnotationGenerator
     val callGenerator: CallAndReferenceGenerator
     val fakeOverrideGenerator: FakeOverrideGenerator
-    val visibilityConverter: Fir2IrVisibilityConverter
 }

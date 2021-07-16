@@ -306,9 +306,8 @@ public final class kotlin/UByteArray : java/util/Collection, kotlin/jvm/internal
 	public static fun hashCode-impl ([B)I
 	public fun isEmpty ()Z
 	public static fun isEmpty-impl ([B)Z
-	public synthetic fun iterator ()Ljava/util/Iterator;
-	public fun iterator ()Lkotlin/collections/UByteIterator;
-	public static fun iterator-impl ([B)Lkotlin/collections/UByteIterator;
+	public fun iterator ()Ljava/util/Iterator;
+	public static fun iterator-impl ([B)Ljava/util/Iterator;
 	public fun remove (Ljava/lang/Object;)Z
 	public fun removeAll (Ljava/util/Collection;)Z
 	public fun retainAll (Ljava/util/Collection;)Z
@@ -366,9 +365,8 @@ public final class kotlin/UIntArray : java/util/Collection, kotlin/jvm/internal/
 	public static fun hashCode-impl ([I)I
 	public fun isEmpty ()Z
 	public static fun isEmpty-impl ([I)Z
-	public synthetic fun iterator ()Ljava/util/Iterator;
-	public fun iterator ()Lkotlin/collections/UIntIterator;
-	public static fun iterator-impl ([I)Lkotlin/collections/UIntIterator;
+	public fun iterator ()Ljava/util/Iterator;
+	public static fun iterator-impl ([I)Ljava/util/Iterator;
 	public fun remove (Ljava/lang/Object;)Z
 	public fun removeAll (Ljava/util/Collection;)Z
 	public fun retainAll (Ljava/util/Collection;)Z
@@ -426,9 +424,8 @@ public final class kotlin/ULongArray : java/util/Collection, kotlin/jvm/internal
 	public static fun hashCode-impl ([J)I
 	public fun isEmpty ()Z
 	public static fun isEmpty-impl ([J)Z
-	public synthetic fun iterator ()Ljava/util/Iterator;
-	public fun iterator ()Lkotlin/collections/ULongIterator;
-	public static fun iterator-impl ([J)Lkotlin/collections/ULongIterator;
+	public fun iterator ()Ljava/util/Iterator;
+	public static fun iterator-impl ([J)Ljava/util/Iterator;
 	public fun remove (Ljava/lang/Object;)Z
 	public fun removeAll (Ljava/util/Collection;)Z
 	public fun retainAll (Ljava/util/Collection;)Z
@@ -486,9 +483,8 @@ public final class kotlin/UShortArray : java/util/Collection, kotlin/jvm/interna
 	public static fun hashCode-impl ([S)I
 	public fun isEmpty ()Z
 	public static fun isEmpty-impl ([S)Z
-	public synthetic fun iterator ()Ljava/util/Iterator;
-	public fun iterator ()Lkotlin/collections/UShortIterator;
-	public static fun iterator-impl ([S)Lkotlin/collections/UShortIterator;
+	public fun iterator ()Ljava/util/Iterator;
+	public static fun iterator-impl ([S)Ljava/util/Iterator;
 	public fun remove (Ljava/lang/Object;)Z
 	public fun removeAll (Ljava/util/Collection;)Z
 	public fun retainAll (Ljava/util/Collection;)Z
@@ -727,6 +723,8 @@ public final class kotlin/collections/ArrayDeque : kotlin/collections/AbstractMu
 	public final fun removeLastOrNull ()Ljava/lang/Object;
 	public fun retainAll (Ljava/util/Collection;)Z
 	public fun set (ILjava/lang/Object;)Ljava/lang/Object;
+	public fun toArray ()[Ljava/lang/Object;
+	public fun toArray ([Ljava/lang/Object;)[Ljava/lang/Object;
 }
 
 public final class kotlin/collections/ArraysKt {
@@ -1679,8 +1677,6 @@ public final class kotlin/collections/ArraysKt {
 	public static final fun runningReduceIndexed ([Ljava/lang/Object;Lkotlin/jvm/functions/Function3;)Ljava/util/List;
 	public static final fun scan ([Ljava/lang/Object;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
 	public static final fun scanIndexed ([Ljava/lang/Object;Ljava/lang/Object;Lkotlin/jvm/functions/Function3;)Ljava/util/List;
-	public static final fun scanReduce ([Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
-	public static final fun scanReduceIndexed ([Ljava/lang/Object;Lkotlin/jvm/functions/Function3;)Ljava/util/List;
 	public static final fun shuffle ([B)V
 	public static final fun shuffle ([BLkotlin/random/Random;)V
 	public static final fun shuffle ([C)V
@@ -2325,8 +2321,6 @@ public final class kotlin/collections/CollectionsKt {
 	public static final fun runningReduceIndexed (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function3;)Ljava/util/List;
 	public static final fun scan (Ljava/lang/Iterable;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
 	public static final fun scanIndexed (Ljava/lang/Iterable;Ljava/lang/Object;Lkotlin/jvm/functions/Function3;)Ljava/util/List;
-	public static final fun scanReduce (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
-	public static final fun scanReduceIndexed (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function3;)Ljava/util/List;
 	public static final fun shuffle (Ljava/util/List;Lkotlin/random/Random;)V
 	public static final fun shuffled (Ljava/lang/Iterable;)Ljava/util/List;
 	public static final fun shuffled (Ljava/lang/Iterable;Ljava/util/Random;)Ljava/util/List;
@@ -3237,6 +3231,9 @@ public abstract interface annotation class kotlin/jvm/JvmDefaultWithoutCompatibi
 public abstract interface annotation class kotlin/jvm/JvmField : java/lang/annotation/Annotation {
 }
 
+public abstract interface annotation class kotlin/jvm/JvmInline : java/lang/annotation/Annotation {
+}
+
 public abstract interface annotation class kotlin/jvm/JvmMultifileClass : java/lang/annotation/Annotation {
 }
 
@@ -3245,6 +3242,9 @@ public abstract interface annotation class kotlin/jvm/JvmName : java/lang/annota
 }
 
 public abstract interface annotation class kotlin/jvm/JvmOverloads : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class kotlin/jvm/JvmRecord : java/lang/annotation/Annotation {
 }
 
 public abstract interface annotation class kotlin/jvm/JvmStatic : java/lang/annotation/Annotation {
@@ -3513,6 +3513,7 @@ public final class kotlin/jvm/internal/ClassReference : kotlin/jvm/internal/Clas
 	public fun isInstance (Ljava/lang/Object;)Z
 	public fun isOpen ()Z
 	public fun isSealed ()Z
+	public fun isValue ()Z
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -3525,6 +3526,9 @@ public final class kotlin/jvm/internal/ClassReference$Companion {
 public final class kotlin/jvm/internal/CollectionToArray {
 	public static final fun toArray (Ljava/util/Collection;)[Ljava/lang/Object;
 	public static final fun toArray (Ljava/util/Collection;[Ljava/lang/Object;)[Ljava/lang/Object;
+}
+
+public final class kotlin/jvm/internal/DefaultConstructorMarker {
 }
 
 public final class kotlin/jvm/internal/DoubleCompanionObject {
@@ -4226,7 +4230,7 @@ public abstract class kotlin/random/Random {
 	public fun nextLong (JJ)J
 }
 
-public final class kotlin/random/Random$Default : kotlin/random/Random {
+public final class kotlin/random/Random$Default : kotlin/random/Random, java/io/Serializable {
 	public fun nextBits (I)I
 	public fun nextBoolean ()Z
 	public fun nextBytes (I)[B
@@ -4398,8 +4402,8 @@ public final class kotlin/ranges/LongRange$Companion {
 }
 
 public final class kotlin/ranges/RangesKt {
-	public static final fun byteRangeContains (Lkotlin/ranges/ClosedRange;D)Z
-	public static final fun byteRangeContains (Lkotlin/ranges/ClosedRange;F)Z
+	public static final synthetic fun byteRangeContains (Lkotlin/ranges/ClosedRange;D)Z
+	public static final synthetic fun byteRangeContains (Lkotlin/ranges/ClosedRange;F)Z
 	public static final fun byteRangeContains (Lkotlin/ranges/ClosedRange;I)Z
 	public static final fun byteRangeContains (Lkotlin/ranges/ClosedRange;J)Z
 	public static final fun byteRangeContains (Lkotlin/ranges/ClosedRange;S)Z
@@ -4428,11 +4432,11 @@ public final class kotlin/ranges/RangesKt {
 	public static final fun coerceIn (Ljava/lang/Comparable;Lkotlin/ranges/ClosedFloatingPointRange;)Ljava/lang/Comparable;
 	public static final fun coerceIn (Ljava/lang/Comparable;Lkotlin/ranges/ClosedRange;)Ljava/lang/Comparable;
 	public static final fun coerceIn (SSS)S
-	public static final fun doubleRangeContains (Lkotlin/ranges/ClosedRange;B)Z
+	public static final synthetic fun doubleRangeContains (Lkotlin/ranges/ClosedRange;B)Z
 	public static final fun doubleRangeContains (Lkotlin/ranges/ClosedRange;F)Z
-	public static final fun doubleRangeContains (Lkotlin/ranges/ClosedRange;I)Z
-	public static final fun doubleRangeContains (Lkotlin/ranges/ClosedRange;J)Z
-	public static final fun doubleRangeContains (Lkotlin/ranges/ClosedRange;S)Z
+	public static final synthetic fun doubleRangeContains (Lkotlin/ranges/ClosedRange;I)Z
+	public static final synthetic fun doubleRangeContains (Lkotlin/ranges/ClosedRange;J)Z
+	public static final synthetic fun doubleRangeContains (Lkotlin/ranges/ClosedRange;S)Z
 	public static final fun downTo (BB)Lkotlin/ranges/IntProgression;
 	public static final fun downTo (BI)Lkotlin/ranges/IntProgression;
 	public static final fun downTo (BJ)Lkotlin/ranges/LongProgression;
@@ -4450,19 +4454,19 @@ public final class kotlin/ranges/RangesKt {
 	public static final fun downTo (SI)Lkotlin/ranges/IntProgression;
 	public static final fun downTo (SJ)Lkotlin/ranges/LongProgression;
 	public static final fun downTo (SS)Lkotlin/ranges/IntProgression;
-	public static final fun floatRangeContains (Lkotlin/ranges/ClosedRange;B)Z
+	public static final synthetic fun floatRangeContains (Lkotlin/ranges/ClosedRange;B)Z
 	public static final fun floatRangeContains (Lkotlin/ranges/ClosedRange;D)Z
-	public static final fun floatRangeContains (Lkotlin/ranges/ClosedRange;I)Z
-	public static final fun floatRangeContains (Lkotlin/ranges/ClosedRange;J)Z
-	public static final fun floatRangeContains (Lkotlin/ranges/ClosedRange;S)Z
+	public static final synthetic fun floatRangeContains (Lkotlin/ranges/ClosedRange;I)Z
+	public static final synthetic fun floatRangeContains (Lkotlin/ranges/ClosedRange;J)Z
+	public static final synthetic fun floatRangeContains (Lkotlin/ranges/ClosedRange;S)Z
 	public static final fun intRangeContains (Lkotlin/ranges/ClosedRange;B)Z
-	public static final fun intRangeContains (Lkotlin/ranges/ClosedRange;D)Z
-	public static final fun intRangeContains (Lkotlin/ranges/ClosedRange;F)Z
+	public static final synthetic fun intRangeContains (Lkotlin/ranges/ClosedRange;D)Z
+	public static final synthetic fun intRangeContains (Lkotlin/ranges/ClosedRange;F)Z
 	public static final fun intRangeContains (Lkotlin/ranges/ClosedRange;J)Z
 	public static final fun intRangeContains (Lkotlin/ranges/ClosedRange;S)Z
 	public static final fun longRangeContains (Lkotlin/ranges/ClosedRange;B)Z
-	public static final fun longRangeContains (Lkotlin/ranges/ClosedRange;D)Z
-	public static final fun longRangeContains (Lkotlin/ranges/ClosedRange;F)Z
+	public static final synthetic fun longRangeContains (Lkotlin/ranges/ClosedRange;D)Z
+	public static final synthetic fun longRangeContains (Lkotlin/ranges/ClosedRange;F)Z
 	public static final fun longRangeContains (Lkotlin/ranges/ClosedRange;I)Z
 	public static final fun longRangeContains (Lkotlin/ranges/ClosedRange;S)Z
 	public static final fun random (Lkotlin/ranges/CharRange;Lkotlin/random/Random;)C
@@ -4478,8 +4482,8 @@ public final class kotlin/ranges/RangesKt {
 	public static final fun reversed (Lkotlin/ranges/IntProgression;)Lkotlin/ranges/IntProgression;
 	public static final fun reversed (Lkotlin/ranges/LongProgression;)Lkotlin/ranges/LongProgression;
 	public static final fun shortRangeContains (Lkotlin/ranges/ClosedRange;B)Z
-	public static final fun shortRangeContains (Lkotlin/ranges/ClosedRange;D)Z
-	public static final fun shortRangeContains (Lkotlin/ranges/ClosedRange;F)Z
+	public static final synthetic fun shortRangeContains (Lkotlin/ranges/ClosedRange;D)Z
+	public static final synthetic fun shortRangeContains (Lkotlin/ranges/ClosedRange;F)Z
 	public static final fun shortRangeContains (Lkotlin/ranges/ClosedRange;I)Z
 	public static final fun shortRangeContains (Lkotlin/ranges/ClosedRange;J)Z
 	public static final fun step (Lkotlin/ranges/CharProgression;I)Lkotlin/ranges/CharProgression;
@@ -4512,8 +4516,7 @@ public class kotlin/ranges/UIntProgression : java/lang/Iterable, kotlin/jvm/inte
 	public final fun getStep ()I
 	public fun hashCode ()I
 	public fun isEmpty ()Z
-	public synthetic fun iterator ()Ljava/util/Iterator;
-	public fun iterator ()Lkotlin/collections/UIntIterator;
+	public final fun iterator ()Ljava/util/Iterator;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -4548,8 +4551,7 @@ public class kotlin/ranges/ULongProgression : java/lang/Iterable, kotlin/jvm/int
 	public final fun getStep ()J
 	public fun hashCode ()I
 	public fun isEmpty ()Z
-	public synthetic fun iterator ()Ljava/util/Iterator;
-	public fun iterator ()Lkotlin/collections/ULongIterator;
+	public final fun iterator ()Ljava/util/Iterator;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -4655,6 +4657,7 @@ public abstract interface class kotlin/reflect/KClass : kotlin/reflect/KAnnotate
 	public abstract fun isInstance (Ljava/lang/Object;)Z
 	public abstract fun isOpen ()Z
 	public abstract fun isSealed ()Z
+	public abstract fun isValue ()Z
 }
 
 public final class kotlin/reflect/KClasses {
@@ -4968,8 +4971,6 @@ public final class kotlin/sequences/SequencesKt {
 	public static final fun runningReduceIndexed (Lkotlin/sequences/Sequence;Lkotlin/jvm/functions/Function3;)Lkotlin/sequences/Sequence;
 	public static final fun scan (Lkotlin/sequences/Sequence;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Lkotlin/sequences/Sequence;
 	public static final fun scanIndexed (Lkotlin/sequences/Sequence;Ljava/lang/Object;Lkotlin/jvm/functions/Function3;)Lkotlin/sequences/Sequence;
-	public static final fun scanReduce (Lkotlin/sequences/Sequence;Lkotlin/jvm/functions/Function2;)Lkotlin/sequences/Sequence;
-	public static final fun scanReduceIndexed (Lkotlin/sequences/Sequence;Lkotlin/jvm/functions/Function3;)Lkotlin/sequences/Sequence;
 	public static final fun sequence (Lkotlin/jvm/functions/Function2;)Lkotlin/sequences/Sequence;
 	public static final fun sequenceOf ([Ljava/lang/Object;)Lkotlin/sequences/Sequence;
 	public static final fun shuffled (Lkotlin/sequences/Sequence;)Lkotlin/sequences/Sequence;
@@ -5101,12 +5102,22 @@ public final class kotlin/text/CharDirectionality$Companion {
 
 public final class kotlin/text/CharsKt {
 	public static final fun checkRadix (I)I
+	public static final fun digitToChar (I)C
+	public static final fun digitToChar (II)C
+	public static final fun digitToInt (C)I
+	public static final fun digitToInt (CI)I
+	public static final fun digitToIntOrNull (C)Ljava/lang/Integer;
+	public static final fun digitToIntOrNull (CI)Ljava/lang/Integer;
 	public static final fun equals (CCZ)Z
 	public static synthetic fun equals$default (CCZILjava/lang/Object;)Z
 	public static final fun getCategory (C)Lkotlin/text/CharCategory;
 	public static final fun getDirectionality (C)Lkotlin/text/CharDirectionality;
 	public static final fun isSurrogate (C)Z
 	public static final fun isWhitespace (C)Z
+	public static final fun lowercase (CLjava/util/Locale;)Ljava/lang/String;
+	public static final fun titlecase (C)Ljava/lang/String;
+	public static final fun titlecase (CLjava/util/Locale;)Ljava/lang/String;
+	public static final fun uppercase (CLjava/util/Locale;)Ljava/lang/String;
 }
 
 public final class kotlin/text/Charsets {
@@ -5245,6 +5256,8 @@ public final class kotlin/text/StringsKt {
 	public static final fun contains (Ljava/lang/CharSequence;Ljava/lang/CharSequence;Z)Z
 	public static synthetic fun contains$default (Ljava/lang/CharSequence;CZILjava/lang/Object;)Z
 	public static synthetic fun contains$default (Ljava/lang/CharSequence;Ljava/lang/CharSequence;ZILjava/lang/Object;)Z
+	public static final fun contentEquals (Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Z
+	public static final fun contentEquals (Ljava/lang/CharSequence;Ljava/lang/CharSequence;Z)Z
 	public static final fun count (Ljava/lang/CharSequence;Lkotlin/jvm/functions/Function1;)I
 	public static final fun decapitalize (Ljava/lang/String;)Ljava/lang/String;
 	public static final fun decapitalize (Ljava/lang/String;Ljava/util/Locale;)Ljava/lang/String;
@@ -5429,8 +5442,6 @@ public final class kotlin/text/StringsKt {
 	public static final fun runningReduceIndexed (Ljava/lang/CharSequence;Lkotlin/jvm/functions/Function3;)Ljava/util/List;
 	public static final fun scan (Ljava/lang/CharSequence;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
 	public static final fun scanIndexed (Ljava/lang/CharSequence;Ljava/lang/Object;Lkotlin/jvm/functions/Function3;)Ljava/util/List;
-	public static final fun scanReduce (Ljava/lang/CharSequence;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
-	public static final fun scanReduceIndexed (Ljava/lang/CharSequence;Lkotlin/jvm/functions/Function3;)Ljava/util/List;
 	public static final fun single (Ljava/lang/CharSequence;)C
 	public static final fun single (Ljava/lang/CharSequence;Lkotlin/jvm/functions/Function1;)C
 	public static final fun singleOrNull (Ljava/lang/CharSequence;)Ljava/lang/Character;
@@ -5491,6 +5502,8 @@ public final class kotlin/text/StringsKt {
 	public static final fun toBigDecimalOrNull (Ljava/lang/String;Ljava/math/MathContext;)Ljava/math/BigDecimal;
 	public static final fun toBigIntegerOrNull (Ljava/lang/String;)Ljava/math/BigInteger;
 	public static final fun toBigIntegerOrNull (Ljava/lang/String;I)Ljava/math/BigInteger;
+	public static final fun toBooleanStrict (Ljava/lang/String;)Z
+	public static final fun toBooleanStrictOrNull (Ljava/lang/String;)Ljava/lang/Boolean;
 	public static final fun toByteOrNull (Ljava/lang/String;)Ljava/lang/Byte;
 	public static final fun toByteOrNull (Ljava/lang/String;I)Ljava/lang/Byte;
 	public static final fun toCharArray (Ljava/lang/String;II)[C
@@ -5624,107 +5637,135 @@ public abstract class kotlin/time/AbstractLongTimeSource : kotlin/time/TimeSourc
 
 public final class kotlin/time/Duration : java/lang/Comparable {
 	public static final field Companion Lkotlin/time/Duration$Companion;
-	public static final synthetic fun box-impl (D)Lkotlin/time/Duration;
+	public static final synthetic fun box-impl (J)Lkotlin/time/Duration;
 	public synthetic fun compareTo (Ljava/lang/Object;)I
-	public fun compareTo-LRDsOJo (D)I
-	public static fun compareTo-LRDsOJo (DD)I
-	public static final fun div-LRDsOJo (DD)D
-	public static final fun div-UwyO8pc (DD)D
-	public static final fun div-UwyO8pc (DI)D
+	public fun compareTo-LRDsOJo (J)I
+	public static fun compareTo-LRDsOJo (JJ)I
+	public static final fun div-LRDsOJo (JJ)D
+	public static final fun div-UwyO8pc (JD)J
+	public static final fun div-UwyO8pc (JI)J
 	public fun equals (Ljava/lang/Object;)Z
-	public static fun equals-impl (DLjava/lang/Object;)Z
-	public static final fun equals-impl0 (DD)Z
-	public static final fun getAbsoluteValue-UwyO8pc (D)D
-	public static final fun getInDays-impl (D)D
-	public static final fun getInHours-impl (D)D
-	public static final fun getInMicroseconds-impl (D)D
-	public static final fun getInMilliseconds-impl (D)D
-	public static final fun getInMinutes-impl (D)D
-	public static final fun getInNanoseconds-impl (D)D
-	public static final fun getInSeconds-impl (D)D
+	public static fun equals-impl (JLjava/lang/Object;)Z
+	public static final fun equals-impl0 (JJ)Z
+	public static final fun getAbsoluteValue-UwyO8pc (J)J
+	public static final fun getInDays-impl (J)D
+	public static final fun getInHours-impl (J)D
+	public static final fun getInMicroseconds-impl (J)D
+	public static final fun getInMilliseconds-impl (J)D
+	public static final fun getInMinutes-impl (J)D
+	public static final fun getInNanoseconds-impl (J)D
+	public static final fun getInSeconds-impl (J)D
+	public static final fun getInWholeDays-impl (J)J
+	public static final fun getInWholeHours-impl (J)J
+	public static final fun getInWholeMicroseconds-impl (J)J
+	public static final fun getInWholeMilliseconds-impl (J)J
+	public static final fun getInWholeMinutes-impl (J)J
+	public static final fun getInWholeNanoseconds-impl (J)J
+	public static final fun getInWholeSeconds-impl (J)J
 	public fun hashCode ()I
-	public static fun hashCode-impl (D)I
-	public static final fun isFinite-impl (D)Z
-	public static final fun isInfinite-impl (D)Z
-	public static final fun isNegative-impl (D)Z
-	public static final fun isPositive-impl (D)Z
-	public static final fun minus-LRDsOJo (DD)D
-	public static final fun plus-LRDsOJo (DD)D
-	public static final fun times-UwyO8pc (DD)D
-	public static final fun times-UwyO8pc (DI)D
-	public static final fun toComponents-impl (DLkotlin/jvm/functions/Function2;)Ljava/lang/Object;
-	public static final fun toComponents-impl (DLkotlin/jvm/functions/Function3;)Ljava/lang/Object;
-	public static final fun toComponents-impl (DLkotlin/jvm/functions/Function4;)Ljava/lang/Object;
-	public static final fun toComponents-impl (DLkotlin/jvm/functions/Function5;)Ljava/lang/Object;
-	public static final fun toDouble-impl (DLjava/util/concurrent/TimeUnit;)D
-	public static final fun toInt-impl (DLjava/util/concurrent/TimeUnit;)I
-	public static final fun toIsoString-impl (D)Ljava/lang/String;
-	public static final fun toLong-impl (DLjava/util/concurrent/TimeUnit;)J
-	public static final fun toLongMilliseconds-impl (D)J
-	public static final fun toLongNanoseconds-impl (D)J
+	public static fun hashCode-impl (J)I
+	public static final fun isFinite-impl (J)Z
+	public static final fun isInfinite-impl (J)Z
+	public static final fun isNegative-impl (J)Z
+	public static final fun isPositive-impl (J)Z
+	public static final fun minus-LRDsOJo (JJ)J
+	public static final fun plus-LRDsOJo (JJ)J
+	public static final fun times-UwyO8pc (JD)J
+	public static final fun times-UwyO8pc (JI)J
+	public static final fun toComponents-impl (JLkotlin/jvm/functions/Function2;)Ljava/lang/Object;
+	public static final fun toComponents-impl (JLkotlin/jvm/functions/Function3;)Ljava/lang/Object;
+	public static final fun toComponents-impl (JLkotlin/jvm/functions/Function4;)Ljava/lang/Object;
+	public static final fun toComponents-impl (JLkotlin/jvm/functions/Function5;)Ljava/lang/Object;
+	public static final fun toDouble-impl (JLjava/util/concurrent/TimeUnit;)D
+	public static final fun toInt-impl (JLjava/util/concurrent/TimeUnit;)I
+	public static final fun toIsoString-impl (J)Ljava/lang/String;
+	public static final fun toLong-impl (JLjava/util/concurrent/TimeUnit;)J
+	public static final fun toLongMilliseconds-impl (J)J
+	public static final fun toLongNanoseconds-impl (J)J
 	public fun toString ()Ljava/lang/String;
-	public static fun toString-impl (D)Ljava/lang/String;
-	public static final fun toString-impl (DLjava/util/concurrent/TimeUnit;I)Ljava/lang/String;
-	public static synthetic fun toString-impl$default (DLjava/util/concurrent/TimeUnit;IILjava/lang/Object;)Ljava/lang/String;
-	public static final fun unaryMinus-UwyO8pc (D)D
-	public final synthetic fun unbox-impl ()D
+	public static fun toString-impl (J)Ljava/lang/String;
+	public static final fun toString-impl (JLjava/util/concurrent/TimeUnit;I)Ljava/lang/String;
+	public static synthetic fun toString-impl$default (JLjava/util/concurrent/TimeUnit;IILjava/lang/Object;)Ljava/lang/String;
+	public static final fun unaryMinus-UwyO8pc (J)J
+	public final synthetic fun unbox-impl ()J
 }
 
 public final class kotlin/time/Duration$Companion {
 	public final fun convert (DLjava/util/concurrent/TimeUnit;Ljava/util/concurrent/TimeUnit;)D
-	public final fun getINFINITE-UwyO8pc ()D
-	public final fun getZERO-UwyO8pc ()D
+	public final fun days-UwyO8pc (D)J
+	public final fun days-UwyO8pc (I)J
+	public final fun days-UwyO8pc (J)J
+	public final fun getINFINITE-UwyO8pc ()J
+	public final fun getZERO-UwyO8pc ()J
+	public final fun hours-UwyO8pc (D)J
+	public final fun hours-UwyO8pc (I)J
+	public final fun hours-UwyO8pc (J)J
+	public final fun microseconds-UwyO8pc (D)J
+	public final fun microseconds-UwyO8pc (I)J
+	public final fun microseconds-UwyO8pc (J)J
+	public final fun milliseconds-UwyO8pc (D)J
+	public final fun milliseconds-UwyO8pc (I)J
+	public final fun milliseconds-UwyO8pc (J)J
+	public final fun minutes-UwyO8pc (D)J
+	public final fun minutes-UwyO8pc (I)J
+	public final fun minutes-UwyO8pc (J)J
+	public final fun nanoseconds-UwyO8pc (D)J
+	public final fun nanoseconds-UwyO8pc (I)J
+	public final fun nanoseconds-UwyO8pc (J)J
+	public final fun seconds-UwyO8pc (D)J
+	public final fun seconds-UwyO8pc (I)J
+	public final fun seconds-UwyO8pc (J)J
 }
 
 public final class kotlin/time/DurationKt {
-	public static final fun getDays (D)D
-	public static final fun getDays (I)D
-	public static final fun getDays (J)D
-	public static final fun getHours (D)D
-	public static final fun getHours (I)D
-	public static final fun getHours (J)D
-	public static final fun getMicroseconds (D)D
-	public static final fun getMicroseconds (I)D
-	public static final fun getMicroseconds (J)D
-	public static final fun getMilliseconds (D)D
-	public static final fun getMilliseconds (I)D
-	public static final fun getMilliseconds (J)D
-	public static final fun getMinutes (D)D
-	public static final fun getMinutes (I)D
-	public static final fun getMinutes (J)D
-	public static final fun getNanoseconds (D)D
-	public static final fun getNanoseconds (I)D
-	public static final fun getNanoseconds (J)D
-	public static final fun getSeconds (D)D
-	public static final fun getSeconds (I)D
-	public static final fun getSeconds (J)D
-	public static final fun toDuration (DLjava/util/concurrent/TimeUnit;)D
-	public static final fun toDuration (ILjava/util/concurrent/TimeUnit;)D
-	public static final fun toDuration (JLjava/util/concurrent/TimeUnit;)D
+	public static final fun getDays (D)J
+	public static final fun getDays (I)J
+	public static final fun getDays (J)J
+	public static final fun getHours (D)J
+	public static final fun getHours (I)J
+	public static final fun getHours (J)J
+	public static final fun getMicroseconds (D)J
+	public static final fun getMicroseconds (I)J
+	public static final fun getMicroseconds (J)J
+	public static final fun getMilliseconds (D)J
+	public static final fun getMilliseconds (I)J
+	public static final fun getMilliseconds (J)J
+	public static final fun getMinutes (D)J
+	public static final fun getMinutes (I)J
+	public static final fun getMinutes (J)J
+	public static final fun getNanoseconds (D)J
+	public static final fun getNanoseconds (I)J
+	public static final fun getNanoseconds (J)J
+	public static final fun getSeconds (D)J
+	public static final fun getSeconds (I)J
+	public static final fun getSeconds (J)J
+	public static final fun toDuration (DLjava/util/concurrent/TimeUnit;)J
+	public static final fun toDuration (ILjava/util/concurrent/TimeUnit;)J
+	public static final fun toDuration (JLjava/util/concurrent/TimeUnit;)J
 }
 
 public abstract interface annotation class kotlin/time/ExperimentalTime : java/lang/annotation/Annotation {
 }
 
 public final class kotlin/time/MeasureTimeKt {
-	public static final fun measureTime (Lkotlin/jvm/functions/Function0;)D
-	public static final fun measureTime (Lkotlin/time/TimeSource;Lkotlin/jvm/functions/Function0;)D
+	public static final fun measureTime (Lkotlin/jvm/functions/Function0;)J
+	public static final fun measureTime (Lkotlin/time/TimeSource;Lkotlin/jvm/functions/Function0;)J
 	public static final fun measureTimedValue (Lkotlin/jvm/functions/Function0;)Lkotlin/time/TimedValue;
 	public static final fun measureTimedValue (Lkotlin/time/TimeSource;Lkotlin/jvm/functions/Function0;)Lkotlin/time/TimedValue;
 }
 
 public final class kotlin/time/TestTimeSource : kotlin/time/AbstractLongTimeSource {
 	public fun <init> ()V
-	public final fun plusAssign-LRDsOJo (D)V
+	public final fun plusAssign-LRDsOJo (J)V
 }
 
 public abstract class kotlin/time/TimeMark {
 	public fun <init> ()V
-	public abstract fun elapsedNow-UwyO8pc ()D
+	public abstract fun elapsedNow-UwyO8pc ()J
 	public final fun hasNotPassedNow ()Z
 	public final fun hasPassedNow ()Z
-	public fun minus-LRDsOJo (D)Lkotlin/time/TimeMark;
-	public fun plus-LRDsOJo (D)Lkotlin/time/TimeMark;
+	public fun minus-LRDsOJo (J)Lkotlin/time/TimeMark;
+	public fun plus-LRDsOJo (J)Lkotlin/time/TimeMark;
 }
 
 public abstract interface class kotlin/time/TimeSource {
@@ -5742,13 +5783,13 @@ public final class kotlin/time/TimeSource$Monotonic : kotlin/time/TimeSource {
 }
 
 public final class kotlin/time/TimedValue {
-	public synthetic fun <init> (Ljava/lang/Object;DLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/Object;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/Object;
-	public final fun component2-UwyO8pc ()D
-	public final fun copy-RFiDyg4 (Ljava/lang/Object;D)Lkotlin/time/TimedValue;
-	public static synthetic fun copy-RFiDyg4$default (Lkotlin/time/TimedValue;Ljava/lang/Object;DILjava/lang/Object;)Lkotlin/time/TimedValue;
+	public final fun component2-UwyO8pc ()J
+	public final fun copy-RFiDyg4 (Ljava/lang/Object;J)Lkotlin/time/TimedValue;
+	public static synthetic fun copy-RFiDyg4$default (Lkotlin/time/TimedValue;Ljava/lang/Object;JILjava/lang/Object;)Lkotlin/time/TimedValue;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getDuration-UwyO8pc ()D
+	public final fun getDuration-UwyO8pc ()J
 	public final fun getValue ()Ljava/lang/Object;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;

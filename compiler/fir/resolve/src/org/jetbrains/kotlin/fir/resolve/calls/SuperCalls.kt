@@ -9,7 +9,6 @@ import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.fir.declarations.FirCallableMemberDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirProperty
-import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.modality
 import org.jetbrains.kotlin.fir.dispatchReceiverClassOrNull
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
@@ -19,7 +18,7 @@ import org.jetbrains.kotlin.fir.resolve.BodyResolveComponents
 import org.jetbrains.kotlin.fir.resolve.scope
 import org.jetbrains.kotlin.fir.resolve.toSymbol
 import org.jetbrains.kotlin.fir.scopes.FakeOverrideTypeCalculator
-import org.jetbrains.kotlin.fir.symbols.StandardClassIds
+import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
 import org.jetbrains.kotlin.fir.typeContext
 import org.jetbrains.kotlin.fir.types.ConeClassLikeType
@@ -37,12 +36,13 @@ fun BodyResolveComponents.findTypesForSuperCandidates(
     containingCall: FirQualifiedAccess,
 ): Collection<ConeKotlinType> {
     val supertypes = superTypeRefs.map { (it as FirResolvedTypeRef).type }
-    if (supertypes.size <= 1) return supertypes
+    val isMethodOfAny = containingCall is FirFunctionCall && isCallingMethodOfAny(containingCall)
+    if (supertypes.size <= 1 && !isMethodOfAny) return supertypes
 
     return when (containingCall) {
         is FirFunctionCall -> {
             val calleeName = containingCall.calleeReference.name
-            if (isCallingMethodOfAny(containingCall)) {
+            if (isMethodOfAny) {
                 resolveSupertypesForMethodOfAny(supertypes, calleeName)
             } else {
                 resolveSupertypesByCalleeName(supertypes, calleeName)
@@ -124,7 +124,7 @@ private inline fun BodyResolveComponents.resolveSupertypesByMembers(
 private fun BodyResolveComponents.getFunctionMembers(type: ConeKotlinType, name: Name): Collection<FirCallableMemberDeclaration<*>> =
     buildList {
         type.scope(session, scopeSession, FakeOverrideTypeCalculator.DoNothing)?.processFunctionsByName(name) {
-            addIfNotNull(it.fir as? FirSimpleFunction)
+            add(it.fir)
         }
     }
 

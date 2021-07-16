@@ -1,5 +1,6 @@
 // KJS_WITH_FULL_RUNTIME
 // WITH_RUNTIME
+// USE_OLD_INLINE_CLASSES_MANGLING_SCHEME
 
 fun box(): String {
     val charBound = Char.MIN_VALUE

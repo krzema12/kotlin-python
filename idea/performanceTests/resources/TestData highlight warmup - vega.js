@@ -135,7 +135,7 @@
                   "aggs": {
                     "values": {
                       "auto_date_histogram": {
-                          "buckets": 500,
+                          "buckets": 50,
                           "field": "buildTimestamp",
                           "minimum_interval": "hour"
                       },

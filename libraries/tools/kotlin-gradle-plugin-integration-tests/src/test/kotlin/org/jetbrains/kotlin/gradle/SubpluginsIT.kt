@@ -5,15 +5,21 @@
 
 package org.jetbrains.kotlin.gradle
 
+import org.gradle.api.logging.configuration.WarningMode
 import org.jetbrains.kotlin.gradle.util.AGPVersion
 import org.jetbrains.kotlin.gradle.util.checkBytecodeContains
 import org.jetbrains.kotlin.gradle.util.modify
-import org.jetbrains.kotlin.test.KotlinTestUtils
+import org.jetbrains.kotlin.test.util.KtTestUtil
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertTrue
 
 class SubpluginsIT : BaseGradleIT() {
+
+    override fun defaultBuildOptions(): BuildOptions {
+        return super.defaultBuildOptions().copy(warningMode = WarningMode.Summary)
+    }
+
     @Test
     fun testGradleSubplugin() {
         val project = Project("kotlinGradleSubplugin")
@@ -195,7 +201,13 @@ class SubpluginsIT : BaseGradleIT() {
     }
 
     @Test
-    fun testKotlinVersionDowngradeInSupbrojectKt39809() = with(Project("android-dagger", directoryPrefix = "kapt2")) {
+    fun testKotlinVersionDowngradeInSupbrojectKt39809() = with(
+        Project(
+            "android-dagger",
+            directoryPrefix = "kapt2",
+            gradleVersionRequirement = GradleVersionRequired.AtLeast("6.6.1")
+        )
+    ) {
         setupWorkingDir()
 
         gradleBuildScript("app").modify {
@@ -215,8 +227,8 @@ class SubpluginsIT : BaseGradleIT() {
         build(
             ":app:compileDebugKotlin",
             options = defaultBuildOptions().copy(
-                androidGradlePluginVersion = AGPVersion.v3_4_1,
-                androidHome = KotlinTestUtils.findAndroidSdk()
+                androidGradlePluginVersion = AGPVersion.v4_2_0,
+                androidHome = KtTestUtil.findAndroidSdk()
             )
         ) {
             assertSuccessful()
@@ -256,5 +268,13 @@ class SubpluginsIT : BaseGradleIT() {
                 )
             }
         }
+    }
+
+    @Test
+    fun testLombokPlugin() {
+        Project("lombokProject").build("build") {
+            assertSuccessful()
+        }
+        
     }
 }

@@ -92,7 +92,10 @@ the Kotlin IntelliJ IDEA plugin:
  - Path: wasm/ir/src/org/jetbrains/kotlin/wasm/ir/convertors
       - License: MIT ([license/third_party/asmble_license.txt][asmble])
       - Origin: Copyright (C) 2018 Chad Retz
-      
+
+ - Path: compiler/tests-common/tests/org/jetbrains/kotlin/codegen/ir/ComposeLikeGenerationExtension.kt
+      - License: Apache 2 ([license/third_party/aosp_license.txt][aosp])
+      - Origin: Derived from JetPack Compose compiler plugin code, Copyright 2019 The Android Open Source Project
 
 ## Kotlin Test Data
 
@@ -119,13 +122,21 @@ any distributions of the compiler, libraries or plugin:
       - License: LGPL 2.1 ([license/third_party/testdata/findbugs_license.txt][findbugs])
       - Origin: Bytecode Analysis Framework, Copyright (C) 2005 University of Maryland
 
- - Path: third-party/jdk8-annotations/org/eclipse
+ - Path: third-party/java8-annotations/org/eclipse
       - License: Eclipse Public License v1.0 ([license/third_party/testdata/eclipse_license.txt][eclipse])
       - Origin: Eclipse JDT, Copyright (c) 2011, 2013 Stephan Herrmann and others.
 
  - Path: third-party/annotations/io/reactivex
       - License: Apache 2 ([license/third_party/testdata/rxjava_license.txt][rxjava])
       - Origin: RxJava, Copyright (c) 2016-present, RxJava Contributors
+
+ - Path: third-party/java8-annotations/org/jspecify
+      - License: Apache 2 ([license/third_party/testdata/jspecify_license.txt][jspecify])
+      - Origin: JSpecify, Copyright (C) 2020 The JSpecify Authors
+
+ - Path: third-party/java9-annotations/org/jspecify
+      - License: Apache 2 ([license/third_party/testdata/jspecify_license.txt][jspecify])
+      - Origin: JSpecify, Copyright (C) 2020 The JSpecify Authors
 
  - Path: third-party/annotations/lombok
       - License: MIT ([license/third_party/testdata/lombok_license.txt][lombok])

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -217,6 +217,11 @@ object KSerializerDescriptorResolver {
         }
     }
 
+    fun generateSerializableClassMethods(thisDescriptor: ClassDescriptor, name: Name, result: MutableCollection<SimpleFunctionDescriptor>) {
+        if (thisDescriptor.isInternalSerializable && name == SerialEntityNames.WRITE_SELF_NAME)
+            result.add(createWriteSelfFunctionDescriptor(thisDescriptor))
+    }
+
     private fun createSerializableClassPropertyDescriptor(
         companionDescriptor: ClassDescriptor,
         classDescriptor: ClassDescriptor
@@ -283,6 +288,40 @@ object KSerializerDescriptorResolver {
         )
 
         return functionDescriptor
+    }
+
+    fun createValPropertyDescriptor(
+        name: Name,
+        containingClassDescriptor: ClassDescriptor,
+        type: KotlinType,
+        visibility: DescriptorVisibility = DescriptorVisibilities.PRIVATE,
+        createGetter: Boolean = false
+    ): PropertyDescriptor {
+        val propertyDescriptor = PropertyDescriptorImpl.create(
+            containingClassDescriptor,
+            Annotations.EMPTY, Modality.FINAL, visibility, false, name,
+            CallableMemberDescriptor.Kind.SYNTHESIZED, containingClassDescriptor.source, false, false, false, false, false, false
+        )
+        val extensionReceiverParameter: ReceiverParameterDescriptor? = null // kludge to disambiguate call
+        propertyDescriptor.setType(
+            type,
+            emptyList(), // no need type parameters?
+            containingClassDescriptor.thisAsReceiverParameter,
+            extensionReceiverParameter
+        )
+
+        val propertyGetter: PropertyGetterDescriptorImpl? = if (createGetter) {
+            PropertyGetterDescriptorImpl(
+                propertyDescriptor, Annotations.EMPTY, Modality.FINAL, visibility, false, false, false,
+                CallableMemberDescriptor.Kind.SYNTHESIZED, null, containingClassDescriptor.source
+            ).apply { initialize(type) }
+        } else {
+            null
+        }
+
+        propertyDescriptor.initialize(propertyGetter, null)
+
+        return propertyDescriptor
     }
 
     fun createLoadConstructorDescriptor(
@@ -490,7 +529,7 @@ object KSerializerDescriptorResolver {
         if (KotlinBuiltIns.isPrimitiveType(this)) this
         else this.makeNullable()
 
-    fun createWriteSelfFunctionDescriptor(thisClass: ClassDescriptor): FunctionDescriptor {
+    fun createWriteSelfFunctionDescriptor(thisClass: ClassDescriptor): SimpleFunctionDescriptor {
         val jvmStaticClass = thisClass.module.findClassAcrossModuleDependencies(
             ClassId(
                 FqName("kotlin.jvm"),
@@ -570,7 +609,7 @@ object KSerializerDescriptorResolver {
 
         f.initialize(
             null,
-            thisClass.thisAsReceiverParameter,
+            null,
             typeArgs,
             args,
             returnType,

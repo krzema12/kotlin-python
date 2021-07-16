@@ -1,3 +1,4 @@
+// FIR_IDENTICAL
 // !WITH_NEW_INFERENCE
 class A {
     operator fun component1() : Int = 1
@@ -5,5 +6,5 @@ class A {
 }
 
 fun a(aa : A) {
-    val (<!UNUSED_VARIABLE!>a<!>: String, <!UNUSED_VARIABLE!>b1<!>: String) = <!COMPONENT_FUNCTION_RETURN_TYPE_MISMATCH, COMPONENT_FUNCTION_RETURN_TYPE_MISMATCH!>aa<!>
+    val (a: String, b1: String) = <!COMPONENT_FUNCTION_RETURN_TYPE_MISMATCH, COMPONENT_FUNCTION_RETURN_TYPE_MISMATCH!>aa<!>
 }

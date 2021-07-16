@@ -25,17 +25,22 @@ import org.jetbrains.kotlin.daemon.experimental.CompileServiceServerSideImpl
 import org.jetbrains.kotlin.daemon.loggerCompatiblePath
 import org.jetbrains.kotlin.integration.KotlinIntegrationTestBase
 import org.jetbrains.kotlin.test.IgnoreAll
-import org.jetbrains.kotlin.test.KotlinTestUtils
+import org.jetbrains.kotlin.test.util.KtTestUtil
 import org.junit.runner.RunWith
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.io.PrintStream
+import java.nio.file.Path
 import java.util.*
 import java.util.logging.LogManager
 import java.util.logging.Logger
 import kotlin.concurrent.schedule
+import kotlin.io.path.ExperimentalPathApi
+import kotlin.io.path.createTempFile
+import kotlin.io.path.deleteIfExists
 
+@OptIn(ExperimentalPathApi::class)
 @RunWith(IgnoreAll::class)
 class ConnectionsTest : KotlinIntegrationTestBase() {
 
@@ -247,15 +252,15 @@ class ConnectionsTest : KotlinIntegrationTestBase() {
         extraAction
     )
 
-    private val clientFiles = arrayListOf<File>()
+    private val clientFiles = mutableListOf<Path>()
     private fun generateClient(): String {
         val file = createTempFile(getTestName(true), ".alive")
         clientFiles.add(file)
-        return file.absolutePath
+        return file.toAbsolutePath().toString()
     }
 
     private fun deleteClients() {
-        clientFiles.forEach { it.delete() }
+        clientFiles.forEach { it.deleteIfExists() }
     }
 
     private fun endTest() {
@@ -361,7 +366,7 @@ class ConnectionsTest : KotlinIntegrationTestBase() {
                                 CompileService.NO_SESSION,
                                 arrayOf(
                                     "-include-runtime",
-                                    File(KotlinTestUtils.getTestDataPathBase() + "/integration/smoke/helloApp", "hello.kt").absolutePath,
+                                    File(KtTestUtil.getTestDataPathBase() + "/integration/smoke/helloApp", "hello.kt").absolutePath,
                                     "-d",
                                     jar
                                 ),

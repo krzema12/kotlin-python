@@ -5,9 +5,7 @@
 
 package org.jetbrains.kotlin.fir.backend
 
-import org.jetbrains.kotlin.fir.declarations.FirClass
-import org.jetbrains.kotlin.fir.declarations.FirConstructor
-import org.jetbrains.kotlin.fir.declarations.FirFunction
+import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.util.parentClassOrNull
@@ -61,10 +59,10 @@ class Fir2IrConversionScope {
         return function
     }
 
-    private val propertyStack = mutableListOf<IrProperty>()
+    private val propertyStack = mutableListOf<Pair<IrProperty, FirProperty?>>()
 
-    fun withProperty(property: IrProperty, f: IrProperty.() -> Unit): IrProperty {
-        propertyStack += property
+    fun withProperty(property: IrProperty, firProperty: FirProperty? = null, f: IrProperty.() -> Unit): IrProperty {
+        propertyStack += (property to firProperty)
         property.f()
         propertyStack.removeAt(propertyStack.size - 1)
         return property
@@ -99,10 +97,18 @@ class Fir2IrConversionScope {
     fun returnTarget(expression: FirReturnExpression, declarationStorage: Fir2IrDeclarationStorage): IrFunction {
         val firTarget = expression.target.labeledElement
         val irTarget = (firTarget as? FirFunction)?.let {
-            if (it is FirConstructor) {
-                declarationStorage.getCachedIrConstructor(it)
-            } else {
-                declarationStorage.getCachedIrFunction(it)
+            when (it) {
+                is FirConstructor -> declarationStorage.getCachedIrConstructor(it)
+                is FirPropertyAccessor -> {
+                    for ((property, firProperty) in propertyStack.asReversed()) {
+                        if (firProperty?.getter === firTarget) {
+                            return@let property.getter
+                        } else if (firProperty?.setter === firTarget) {
+                            return@let property.setter
+                        }
+                    }
+                }
+                else -> declarationStorage.getCachedIrFunction(it)
             }
         }
         for (potentialTarget in functionStack.asReversed()) {

@@ -5,25 +5,40 @@
 
 package org.jetbrains.kotlin.gradle.targets.js.ir
 
-import org.gradle.api.file.FileCollection
+import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileTree
-import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.*
-import org.gradle.api.tasks.incremental.IncrementalTaskInputs
 import org.jetbrains.kotlin.cli.common.arguments.K2JSCompilerArguments
 import org.jetbrains.kotlin.gradle.dsl.KotlinJsOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinJsOptionsImpl
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.KotlinCompilationData
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsBinaryMode
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsBinaryMode.DEVELOPMENT
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsBinaryMode.PRODUCTION
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
-import org.jetbrains.kotlin.gradle.utils.newFileProperty
-import java.io.File
+import javax.inject.Inject
 
 @CacheableTask
-open class KotlinJsIrLink : Kotlin2JsCompile() {
+abstract class KotlinJsIrLink @Inject constructor(
+    objectFactory: ObjectFactory
+): Kotlin2JsCompile(KotlinJsOptionsImpl(), objectFactory) {
+
+    class Configurator(compilation: KotlinCompilationData<*>): Kotlin2JsCompile.Configurator<KotlinJsIrLink>(compilation) {
+
+        override fun configure(task: KotlinJsIrLink) {
+            super.configure(task)
+
+            task.entryModule.fileProvider(
+                (compilation as KotlinJsIrCompilation).output.classesDirs.elements.map { it.single().asFile }
+            ).disallowChanges()
+            task.destinationDirectory.fileProvider(task.outputFileProperty.map { it.parentFile }).disallowChanges()
+        }
+    }
+
     // Link tasks are not affected by compiler plugin
-    override val pluginClasspath: FileCollection = project.objects.fileCollection()
+    override val pluginClasspath: ConfigurableFileCollection = project.objects.fileCollection()
 
     @Input
     lateinit var mode: KotlinJsBinaryMode
@@ -32,34 +47,13 @@ open class KotlinJsIrLink : Kotlin2JsCompile() {
     @Internal
     override fun getSource(): FileTree = super.getSource()
 
-    override val kotlinOptions: KotlinJsOptions = KotlinJsOptionsImpl()
-
     @get:SkipWhenEmpty
     @get:InputDirectory
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    internal val entryModule: File
-        get() = File(
-            (taskData.compilation as KotlinJsIrCompilation)
-                .output
-                .classesDirs
-                .asPath
-        )
+    internal abstract val entryModule: DirectoryProperty
 
-    override fun skipCondition(inputs: IncrementalTaskInputs): Boolean {
-        return !inputs.isIncremental && !entryModule.exists()
-    }
-
-    override fun getDestinationDir(): File {
-        return if (kotlinOptions.outputFile == null) {
-            super.getDestinationDir()
-        } else {
-            outputFile.parentFile
-        }
-    }
-
-    @OutputFile
-    val outputFileProperty: RegularFileProperty = project.newFileProperty {
-        outputFile
+    override fun skipCondition(): Boolean {
+        return !entryModule.get().asFile.exists()
     }
 
     override fun setupCompilerArgs(args: K2JSCompilerArguments, defaultsOnly: Boolean, ignoreClasspathResolutionErrors: Boolean) {
@@ -77,6 +71,6 @@ open class KotlinJsIrLink : Kotlin2JsCompile() {
     private fun KotlinJsOptions.configureOptions(vararg additionalCompilerArgs: String) {
         freeCompilerArgs += additionalCompilerArgs.toList() +
                 PRODUCE_JS +
-                "$ENTRY_IR_MODULE=${entryModule.canonicalPath}"
+                "$ENTRY_IR_MODULE=${entryModule.get().asFile.canonicalPath}"
     }
 }

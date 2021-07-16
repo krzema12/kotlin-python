@@ -2,8 +2,8 @@
 
 abstract class AbstractClass
 typealias Test1 = AbstractClass
-val test1 = Test1()
-val test1a = AbstractClass()
+val test1 = <!CREATING_AN_INSTANCE_OF_ABSTRACT_CLASS!>Test1()<!>
+val test1a = <!CREATING_AN_INSTANCE_OF_ABSTRACT_CLASS!>AbstractClass()<!>
 
 annotation class AnnotationClass
 typealias Test2 = AnnotationClass
@@ -12,13 +12,13 @@ val test2a = AnnotationClass()
 
 enum class EnumClass { VALUE1, VALUE2 }
 typealias Test3 = EnumClass
-val test3 = <!HIDDEN!>Test3<!>()
-val test3a = <!HIDDEN!>EnumClass<!>()
+val test3 = <!INVISIBLE_REFERENCE!>Test3<!>()
+val test3a = <!INVISIBLE_REFERENCE!>EnumClass<!>()
 
 sealed class SealedClass
 typealias Test4 = SealedClass
-val test4 = <!SEALED_CLASS_CONSTRUCTOR_CALL!>Test4<!>()
-val test4a = <!SEALED_CLASS_CONSTRUCTOR_CALL!>SealedClass<!>()
+val test4 = <!INVISIBLE_REFERENCE!>Test4<!>()
+val test4a = <!INVISIBLE_REFERENCE!>SealedClass<!>()
 
 class Outer {
     inner class Inner

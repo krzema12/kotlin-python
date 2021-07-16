@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.incremental;
 import com.intellij.testFramework.TestDataPath;
 import org.jetbrains.kotlin.test.JUnit3RunnerWithInners;
 import org.jetbrains.kotlin.test.KotlinTestUtils;
+import org.jetbrains.kotlin.test.util.KtTestUtil;
 import org.jetbrains.kotlin.test.TestMetadata;
 import org.junit.runner.RunWith;
 
@@ -62,7 +63,7 @@ public class IncrementalJsKlibCompilerWithScopeExpansionRunnerTestGenerated exte
         }
 
         public void testAllFilesPresentInPureKotlin() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/pureKotlin"), Pattern.compile("^([^\\.]+)$"), null, false);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/pureKotlin"), Pattern.compile("^([^\\.]+)$"), Pattern.compile("^sealed.*"), false);
         }
 
         @TestMetadata("annotations")
@@ -113,6 +114,11 @@ public class IncrementalJsKlibCompilerWithScopeExpansionRunnerTestGenerated exte
         @TestMetadata("classSignatureUnchanged")
         public void testClassSignatureUnchanged() throws Exception {
             runTest("jps-plugin/testData/incremental/pureKotlin/classSignatureUnchanged/");
+        }
+
+        @TestMetadata("companionConstantChanged")
+        public void testCompanionConstantChanged() throws Exception {
+            runTest("jps-plugin/testData/incremental/pureKotlin/companionConstantChanged/");
         }
 
         @TestMetadata("compilationErrorThenFixedOtherPackage")
@@ -440,6 +446,16 @@ public class IncrementalJsKlibCompilerWithScopeExpansionRunnerTestGenerated exte
             runTest("jps-plugin/testData/incremental/pureKotlin/packageRemoved/");
         }
 
+        @TestMetadata("parameterWithDefaultValueAdded")
+        public void testParameterWithDefaultValueAdded() throws Exception {
+            runTest("jps-plugin/testData/incremental/pureKotlin/parameterWithDefaultValueAdded/");
+        }
+
+        @TestMetadata("parameterWithDefaultValueRemoved")
+        public void testParameterWithDefaultValueRemoved() throws Exception {
+            runTest("jps-plugin/testData/incremental/pureKotlin/parameterWithDefaultValueRemoved/");
+        }
+
         @TestMetadata("privateConstantsChanged")
         public void testPrivateConstantsChanged() throws Exception {
             runTest("jps-plugin/testData/incremental/pureKotlin/privateConstantsChanged/");
@@ -635,7 +651,7 @@ public class IncrementalJsKlibCompilerWithScopeExpansionRunnerTestGenerated exte
         }
 
         public void testAllFilesPresentInClassHierarchyAffected() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/classHierarchyAffected"), Pattern.compile("^([^\\.]+)$"), null, false);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/classHierarchyAffected"), Pattern.compile("^([^\\.]+)$"), null, false);
         }
 
         @TestMetadata("annotationFlagRemoved")
@@ -848,7 +864,7 @@ public class IncrementalJsKlibCompilerWithScopeExpansionRunnerTestGenerated exte
         }
 
         public void testAllFilesPresentInJs() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/js"), Pattern.compile("^([^\\.]+)$"), null, true);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/js"), Pattern.compile("^([^\\.]+)$"), null, true);
         }
 
         @TestMetadata("inlineFunctionLocalDeclarationChanges")
@@ -865,7 +881,7 @@ public class IncrementalJsKlibCompilerWithScopeExpansionRunnerTestGenerated exte
             }
 
             public void testAllFilesPresentInFriendsModuleDisabled() throws Exception {
-                KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/js/friendsModuleDisabled"), Pattern.compile("^([^\\.]+)$"), null, true);
+                KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/js/friendsModuleDisabled"), Pattern.compile("^([^\\.]+)$"), null, true);
             }
 
             @TestMetadata("internalInlineFunctionIsChanged")
@@ -882,7 +898,7 @@ public class IncrementalJsKlibCompilerWithScopeExpansionRunnerTestGenerated exte
                 }
 
                 public void testAllFilesPresentInInternalInlineFunctionIsChanged() throws Exception {
-                    KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/js/friendsModuleDisabled/internalInlineFunctionIsChanged"), Pattern.compile("^([^\\.]+)$"), null, true);
+                    KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/js/friendsModuleDisabled/internalInlineFunctionIsChanged"), Pattern.compile("^([^\\.]+)$"), null, true);
                 }
             }
         }
@@ -896,7 +912,7 @@ public class IncrementalJsKlibCompilerWithScopeExpansionRunnerTestGenerated exte
             }
 
             public void testAllFilesPresentInInlineFunctionLocalDeclarationChanges() throws Exception {
-                KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/js/inlineFunctionLocalDeclarationChanges"), Pattern.compile("^([^\\.]+)$"), null, true);
+                KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/js/inlineFunctionLocalDeclarationChanges"), Pattern.compile("^([^\\.]+)$"), null, true);
             }
         }
     }
@@ -910,7 +926,7 @@ public class IncrementalJsKlibCompilerWithScopeExpansionRunnerTestGenerated exte
         }
 
         public void testAllFilesPresentInScopeExpansion() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/scopeExpansion"), Pattern.compile("^([^\\.]+)$"), null, true);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/scopeExpansion"), Pattern.compile("^([^\\.]+)$"), null, true);
         }
 
         @TestMetadata("changeTypeAliasAndUsage")
@@ -932,7 +948,7 @@ public class IncrementalJsKlibCompilerWithScopeExpansionRunnerTestGenerated exte
             }
 
             public void testAllFilesPresentInChangeTypeAliasAndUsage() throws Exception {
-                KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/scopeExpansion/changeTypeAliasAndUsage"), Pattern.compile("^([^\\.]+)$"), null, true);
+                KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/scopeExpansion/changeTypeAliasAndUsage"), Pattern.compile("^([^\\.]+)$"), null, true);
             }
         }
 
@@ -945,7 +961,7 @@ public class IncrementalJsKlibCompilerWithScopeExpansionRunnerTestGenerated exte
             }
 
             public void testAllFilesPresentInProtectedBecomesPublicAccessedTroughChild() throws Exception {
-                KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/scopeExpansion/protectedBecomesPublicAccessedTroughChild"), Pattern.compile("^([^\\.]+)$"), null, true);
+                KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("jps-plugin/testData/incremental/scopeExpansion/protectedBecomesPublicAccessedTroughChild"), Pattern.compile("^([^\\.]+)$"), null, true);
             }
         }
     }

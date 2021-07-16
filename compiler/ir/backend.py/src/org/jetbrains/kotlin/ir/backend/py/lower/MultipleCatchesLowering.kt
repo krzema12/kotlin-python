@@ -10,8 +10,8 @@ import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
-import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationBase
+import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.IrBranchImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrCatchImpl
@@ -81,7 +81,7 @@ class MultipleCatchesLowering(private val context: JsIrBackendContext) : BodyLow
                     }
 
                     val catchBody = catch.result.transform(object : IrElementTransformer<IrValueSymbol> {
-                        override fun visitGetValue(expression: IrGetValue, data: IrValueSymbol) =
+                        override fun visitGetValue(expression: IrGetValue, data: IrValueSymbol): IrExpression =
                             if (expression.symbol == data)
                                 castedPendingException()
                             else

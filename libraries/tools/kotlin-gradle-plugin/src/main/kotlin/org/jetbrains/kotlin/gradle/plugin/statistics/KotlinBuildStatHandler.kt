@@ -69,6 +69,7 @@ class KotlinBuildStatHandler {
     }
 
     internal fun reportGlobalMetrics(gradle: Gradle, sessionLogger: BuildSessionLogger) {
+        sessionLogger.report(StringMetrics.PROJECT_PATH, gradle.rootProject.projectDir.absolutePath)
         System.getProperty("os.name")?.also {
             sessionLogger.report(StringMetrics.OS_TYPE, System.getProperty("os.name"))
         }
@@ -101,7 +102,7 @@ class KotlinBuildStatHandler {
                     when (configurationName) {
                         "kapt" -> {
                             sessionLogger.report(BooleanMetrics.ENABLED_KAPT, true)
-                            dependencies?.forEach { dependency ->
+                            for (dependency in dependencies) {
                                 when (dependency.group) {
                                     "com.google.dagger" -> sessionLogger.report(BooleanMetrics.ENABLED_DAGGER, true)
                                     "com.android.databinding" -> sessionLogger.report(BooleanMetrics.ENABLED_DATABINDING, true)

@@ -91,7 +91,9 @@ class VariableTypeAndInitializerResolver(
                         val initializerType = resolveInitializerType(
                             scopeForInitializer, variable.initializer!!, dataFlowInfo, inferenceSession, trace, local
                         )
-                        transformAnonymousTypeIfNeeded(variableDescriptor, variable, initializerType, trace, anonymousTypeTransformers)
+                        transformAnonymousTypeIfNeeded(
+                            variableDescriptor, variable, initializerType, trace, anonymousTypeTransformers, languageVersionSettings
+                        )
                     }
 
                 else -> resolveInitializerType(scopeForInitializer, variable.initializer!!, dataFlowInfo, inferenceSession, trace, local)
@@ -151,13 +153,15 @@ class VariableTypeAndInitializerResolver(
         )
 
         val getterReturnType = delegatedPropertyResolver.getGetValueMethodReturnType(
-            variableDescriptor, delegateExpression, type, trace, scopeForInitializer, dataFlowInfo
+            variableDescriptor, delegateExpression, type, trace, scopeForInitializer, dataFlowInfo, inferenceSession
         )
 
         val delegatedType = getterReturnType?.let { approximateType(it, local) }
             ?: ErrorUtils.createErrorType("Type from delegate")
 
-        transformAnonymousTypeIfNeeded(variableDescriptor, property, delegatedType, trace, anonymousTypeTransformers)
+        transformAnonymousTypeIfNeeded(
+            variableDescriptor, property, delegatedType, trace, anonymousTypeTransformers, languageVersionSettings
+        )
     }
 
     private fun resolveInitializerType(
@@ -176,5 +180,5 @@ class VariableTypeAndInitializerResolver(
     }
 
     private fun approximateType(type: KotlinType, local: Boolean): UnwrappedType =
-        typeApproximator.approximateDeclarationType(type, local, expressionTypingServices.languageVersionSettings)
+        typeApproximator.approximateDeclarationType(type, local)
 }

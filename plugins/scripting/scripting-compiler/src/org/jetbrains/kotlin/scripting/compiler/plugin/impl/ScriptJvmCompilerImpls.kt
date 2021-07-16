@@ -18,7 +18,6 @@ import org.jetbrains.kotlin.codegen.ClassBuilderFactories
 import org.jetbrains.kotlin.codegen.DefaultCodegenFactory
 import org.jetbrains.kotlin.codegen.KotlinCodegenFacade
 import org.jetbrains.kotlin.codegen.state.GenerationState
-import org.jetbrains.kotlin.config.CommonConfigurationKeys
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.JVMConfigurationKeys
 import org.jetbrains.kotlin.config.languageVersionSettings
@@ -51,7 +50,7 @@ class ScriptJvmCompilerIsolated(val hostConfiguration: ScriptingHostConfiguratio
                     initialConfiguration, hostConfiguration, messageCollector, disposable
                 )
 
-                compileImpl(script, context, messageCollector)
+                compileImpl(script, context, initialConfiguration, messageCollector)
             }
         }
 }
@@ -75,7 +74,7 @@ class ScriptJvmCompilerFromEnvironment(val environment: KotlinCoreEnvironment) :
                 try {
                     environment.configuration.put(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, messageCollector)
 
-                    compileImpl(script, context, messageCollector)
+                    compileImpl(script, context, initialConfiguration, messageCollector)
                 } finally {
                     if (parentMessageCollector != null)
                         environment.configuration.put(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, parentMessageCollector)
@@ -106,6 +105,7 @@ private fun withScriptCompilationCache(
 private fun compileImpl(
     script: SourceCode,
     context: SharedScriptCompilationContext,
+    initialConfiguration: ScriptCompilationConfiguration,
     messageCollector: ScriptDiagnosticsMessageCollector
 ): ResultWithDiagnostics<CompiledScript> {
     val mainKtFile =
@@ -122,6 +122,7 @@ private fun compileImpl(
     val (sourceFiles, sourceDependencies) = collectRefinedSourcesAndUpdateEnvironment(
         context,
         mainKtFile,
+        initialConfiguration,
         messageCollector
     )
 
@@ -235,7 +236,7 @@ private fun generate(
     sourceFiles,
     kotlinCompilerConfiguration
 ).codegenFactory(
-    if (kotlinCompilerConfiguration.getBoolean(JVMConfigurationKeys.IR) || kotlinCompilerConfiguration.getBoolean(CommonConfigurationKeys.USE_FIR))
+    if (kotlinCompilerConfiguration.getBoolean(JVMConfigurationKeys.IR))
         JvmIrCodegenFactory(
             kotlinCompilerConfiguration.get(CLIConfigurationKeys.PHASE_CONFIG) ?: PhaseConfig(jvmPhases)
         ) else DefaultCodegenFactory

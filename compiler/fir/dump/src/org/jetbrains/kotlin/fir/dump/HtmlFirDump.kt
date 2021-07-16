@@ -42,6 +42,7 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.resolve.calls.inference.model.NewConstraintError
 import org.jetbrains.kotlin.types.AbstractStrictEqualityTypeChecker
+import org.jetbrains.kotlin.types.ConstantValueKind
 import org.jetbrains.kotlin.types.Variance
 import java.io.File
 import java.io.Writer
@@ -316,7 +317,7 @@ class MultiModuleHtmlFirDump(private val outputRoot: File) {
         require(inModule)
 
         val dumpOutput = index.files[file] ?: error("No location for ${file.name}")
-        val dumper = HtmlFirDump(LinkResolver(dumpOutput), file.session)
+        val dumper = HtmlFirDump(LinkResolver(dumpOutput), file.declarationSiteSession)
         val builder = StringBuilder()
         dumper.generate(file, builder)
 
@@ -519,7 +520,7 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
 
     private fun FlowContent.modality(modality: Modality?) {
         if (modality == null) return
-        keyword(modality.name.toLowerCase())
+        keyword(modality.name.lowercase())
     }
 
     private fun FlowContent.visibility(visibility: Visibility) {
@@ -761,63 +762,64 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
 
     private fun FlowContent.generate(expression: FirConstExpression<*>) {
         val value = expression.value
-        if (value == null && expression.kind != FirConstKind.Null) {
+        if (value == null && expression.kind != ConstantValueKind.Null) {
             return error {
                 +"null value"
             }
         }
 
+        @OptIn(ExperimentalUnsignedTypes::class)
         when (expression.kind) {
-            FirConstKind.Null -> keyword("null")
-            FirConstKind.Boolean -> keyword(value.toString())
-            FirConstKind.String, FirConstKind.Char ->
+            ConstantValueKind.Null -> keyword("null")
+            ConstantValueKind.Boolean -> keyword(value.toString())
+            ConstantValueKind.String, ConstantValueKind.Char ->
                 stringLiteral(value)
-            FirConstKind.Byte -> {
+            ConstantValueKind.Byte -> {
                 +value.toString()
                 keyword("B")
             }
-            FirConstKind.Short -> {
+            ConstantValueKind.Short -> {
                 +value.toString()
                 keyword("S")
             }
-            FirConstKind.Int -> {
+            ConstantValueKind.Int -> {
                 +value.toString()
                 keyword("I")
             }
-            FirConstKind.Long -> {
+            ConstantValueKind.Long -> {
                 +value.toString()
                 keyword("L")
             }
-            FirConstKind.UnsignedByte -> {
+            ConstantValueKind.UnsignedByte -> {
                 +(value as Long).toUByte().toString()
                 keyword("uB")
             }
-            FirConstKind.UnsignedShort -> {
+            ConstantValueKind.UnsignedShort -> {
                 +(value as Long).toUShort().toString()
                 keyword("uS")
             }
-            FirConstKind.UnsignedInt -> {
+            ConstantValueKind.UnsignedInt -> {
                 +(value as Long).toUInt().toString()
                 keyword("uI")
             }
-            FirConstKind.UnsignedLong -> {
+            ConstantValueKind.UnsignedLong -> {
                 +(value as Long).toULong().toString()
                 keyword("uL")
             }
-            FirConstKind.Float -> {
+            ConstantValueKind.Float -> {
                 +value.toString()
                 keyword("F")
             }
-            FirConstKind.Double -> {
+            ConstantValueKind.Double -> {
                 +value.toString()
                 keyword("D")
             }
-            FirConstKind.IntegerLiteral -> {
+            ConstantValueKind.IntegerLiteral -> {
                 +"IL<"
                 +value.toString()
                 +">"
             }
-            FirConstKind.UnsignedIntegerLiteral -> {
+            ConstantValueKind.UnsignedIntegerLiteral -> {
                 +"UIL<"
                 +value.toString()
                 +">"
@@ -1229,9 +1231,9 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
     private fun FlowContent.generate(diagnostic: ConeDiagnostic) {
         when (diagnostic) {
             is ConeInapplicableCandidateError -> {
-                describeVerbose(diagnostic.candidateSymbol)
+                describeVerbose(diagnostic.candidate.symbol)
                 br
-                diagnostic.errors.forEach { callDiagnostic ->
+                diagnostic.candidate.system.errors.forEach { callDiagnostic ->
                     when (callDiagnostic) {
                         is NewConstraintError -> {
                             ident()
@@ -1256,7 +1258,7 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
                 +"Ambiguity: "
                 br
                 for (candidate in diagnostic.candidates) {
-                    describeVerbose(candidate)
+                    describeVerbose(candidate.symbol)
                     br
                 }
             }

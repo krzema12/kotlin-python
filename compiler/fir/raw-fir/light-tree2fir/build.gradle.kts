@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.ideaExt.idea
+
 plugins {
     kotlin("jvm")
     id("jps-compatible")
@@ -11,7 +13,7 @@ repositories {
     mavenCentral()
     mavenLocal()
     maven { setUrl("https://www.jetbrains.com/intellij-repository/releases") }
-    maven { setUrl("https://jetbrains.bintray.com/intellij-third-party-dependencies") }
+    maven { setUrl("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies") }
 }
 
 dependencies {
@@ -41,9 +43,21 @@ dependencies {
     testRuntimeOnly(intellijCoreDep()) { includeJars("intellij-core") }
 }
 
+val generationRoot = projectDir.resolve("tests-gen")
+
 sourceSets {
     "main" { projectDefault() }
-    "test" { projectDefault() }
+    "test" {
+        projectDefault()
+        this.java.srcDir(generationRoot.name)
+    }
+}
+
+if (kotlinBuildProperties.isInJpsBuildIdeaSync) {
+    apply(plugin = "idea")
+    idea {
+        this.module.generatedSourceDirs.add(generationRoot)
+    }
 }
 
 projectTest {

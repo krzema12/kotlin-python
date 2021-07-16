@@ -1,16 +1,14 @@
 /*
- * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
 package org.jetbrains.kotlin.generators.builtins.unsigned
 
 
-import org.jetbrains.kotlin.generators.builtins.PrimitiveType
-import org.jetbrains.kotlin.generators.builtins.UnsignedType
-import org.jetbrains.kotlin.generators.builtins.convert
+import org.jetbrains.kotlin.generators.builtins.*
 import org.jetbrains.kotlin.generators.builtins.generateBuiltIns.BuiltInsSourceGenerator
-import org.jetbrains.kotlin.generators.builtins.ranges.GeneratePrimitives
+import org.jetbrains.kotlin.generators.builtins.numbers.GeneratePrimitives
 import java.io.File
 import java.io.PrintWriter
 
@@ -37,15 +35,42 @@ class UnsignedTypeGenerator(val type: UnsignedType, out: PrintWriter) : BuiltIns
     val className = type.capitalized
     val storageType = type.asSigned.capitalized
 
+    internal fun binaryOperatorDoc(operator: String, operand1: UnsignedType, operand2: UnsignedType): String = when (operator) {
+        "floorDiv" ->
+            """
+            Divides this value by the other value, flooring the result to an integer that is closer to negative infinity.
+            
+            For unsigned types, the results of flooring division and truncating division are the same.
+            """.trimIndent()
+        "rem" -> {
+            """
+                Calculates the remainder of truncating division of this value by the other value.
+                
+                The result is always less than the divisor.
+                """.trimIndent()
+        }
+        "mod" -> {
+            """
+                Calculates the remainder of flooring division of this value by the other value.
+
+                The result is always less than the divisor.
+                
+                For unsigned types, the remainders of flooring division and truncating division are the same.
+                """.trimIndent()
+        }
+        else -> GeneratePrimitives.binaryOperatorDoc(operator, operand1.asSigned, operand2.asSigned)
+    }
+
     override fun generateBody() {
 
         out.println("import kotlin.experimental.*")
+        out.println("import kotlin.jvm.*")
         out.println()
 
-        out.println("@Suppress(\"NON_PUBLIC_PRIMARY_CONSTRUCTOR_OF_INLINE_CLASS\")")
-        out.println("@SinceKotlin(\"1.3\")")
-        out.println("@ExperimentalUnsignedTypes")
-        out.println("public inline class $className @PublishedApi internal constructor(@PublishedApi internal val data: $storageType) : Comparable<$className> {")
+        out.println("@SinceKotlin(\"1.5\")")
+        out.println("@WasExperimental(ExperimentalUnsignedTypes::class)")
+        out.println("@JvmInline")
+        out.println("public value class $className @PublishedApi internal constructor(@PublishedApi internal val data: $storageType) : Comparable<$className> {")
         out.println()
         out.println("""    companion object {
         /**
@@ -123,16 +148,18 @@ class UnsignedTypeGenerator(val type: UnsignedType, out: PrintWriter) : BuiltIns
     }
 
     private fun generateBinaryOperators() {
-        for ((name, doc) in GeneratePrimitives.binaryOperators) {
-            generateOperator(name, doc)
+        for (name in GeneratePrimitives.binaryOperators) {
+            generateOperator(name)
         }
+        generateFloorDivMod("floorDiv")
+        generateFloorDivMod("mod")
     }
 
-    private fun generateOperator(name: String, doc: String) {
+    private fun generateOperator(name: String) {
         for (otherType in UnsignedType.values()) {
             val returnType = getOperatorReturnType(type, otherType)
 
-            out.println("    /** $doc */")
+            out.printDoc(binaryOperatorDoc(name, type, otherType), "    ")
             out.println("    @kotlin.internal.InlineOnly")
             out.print("    public inline operator fun $name(other: ${otherType.capitalized}): ${returnType.capitalized} = ")
             if (type == otherType && type == returnType) {
@@ -149,16 +176,40 @@ class UnsignedTypeGenerator(val type: UnsignedType, out: PrintWriter) : BuiltIns
         out.println()
     }
 
+    private fun generateFloorDivMod(name: String) {
+        for (otherType in UnsignedType.values()) {
+            val operationType = getOperatorReturnType(type, otherType)
+            val returnType = if (name == "mod") otherType else operationType
 
-    private fun generateUnaryOperators() {
-        for ((name, doc) in GeneratePrimitives.unaryOperators) {
-            if (name in listOf("unaryPlus", "unaryMinus")) continue
-            out.println("    /** $doc */")
+            out.printDoc(binaryOperatorDoc(name, type, otherType), "    ")
             out.println("    @kotlin.internal.InlineOnly")
-            out.println("    public inline operator fun $name(): $className = $className(data.$name())")
-
+            out.print("    public inline fun $name(other: ${otherType.capitalized}): ${returnType.capitalized} = ")
+            if (type == otherType && type == operationType) {
+                when (name) {
+                    "floorDiv" -> out.println("div(other)")
+                    "mod" -> out.println("rem(other)")
+                    else -> error(name)
+                }
+            } else {
+                out.println(
+                    convert(
+                        "${convert("this", type, operationType)}.$name(${convert("other", otherType, operationType)})",
+                        operationType, returnType
+                    )
+                )
+            }
         }
         out.println()
+    }
+
+
+    private fun generateUnaryOperators() {
+        for (name in listOf("inc", "dec")) {
+            out.println(GeneratePrimitives.incDecOperatorsDoc(name).replaceIndent("    "))
+            out.println("    @kotlin.internal.InlineOnly")
+            out.println("    public inline operator fun $name(): $className = $className(data.$name())")
+            out.println()
+        }
     }
 
     private fun generateRangeTo() {
@@ -331,8 +382,8 @@ class UnsignedTypeGenerator(val type: UnsignedType, out: PrintWriter) : BuiltIns
                 }
             }
             out.println(" */")
-            out.println("@SinceKotlin(\"1.3\")")
-            out.println("@ExperimentalUnsignedTypes")
+            out.println("@SinceKotlin(\"1.5\")")
+            out.println("@WasExperimental(ExperimentalUnsignedTypes::class)")
             out.println("@kotlin.internal.InlineOnly")
             out.print("public inline fun $otherSigned.to$className(): $className = ")
             out.println(when {
@@ -358,8 +409,8 @@ class UnsignedTypeGenerator(val type: UnsignedType, out: PrintWriter) : BuiltIns
                  */
                 """.trimIndent()
             )
-            out.println("@SinceKotlin(\"1.3\")")
-            out.println("@ExperimentalUnsignedTypes")
+            out.println("@SinceKotlin(\"1.5\")")
+            out.println("@WasExperimental(ExperimentalUnsignedTypes::class)")
             out.println("@kotlin.internal.InlineOnly")
             out.print("public inline fun $otherName.to$className(): $className = ")
             val conversion = if (otherType == PrimitiveType.DOUBLE) "" else ".toDouble()"
@@ -399,11 +450,10 @@ class UnsignedIteratorsGenerator(out: PrintWriter) : BuiltInsSourceGenerator(out
         for (type in UnsignedType.values()) {
             val s = type.capitalized
             out.println("/** An iterator over a sequence of values of type `$s`. */")
+            out.println("@Deprecated(\"This class is not going to be stabilized and is to be removed soon.\", level = DeprecationLevel.ERROR)")
             out.println("@SinceKotlin(\"1.3\")")
-            out.println("@ExperimentalUnsignedTypes")
             out.println("public abstract class ${s}Iterator : Iterator<$s> {")
-            // TODO: Sort modifiers
-            out.println("    override final fun next() = next$s()")
+            out.println("    final override fun next() = next$s()")
             out.println()
             out.println("    /** Returns the next value in the sequence without boxing. */")
             out.println("    public abstract fun next$s(): $s")
@@ -420,10 +470,13 @@ class UnsignedArrayGenerator(val type: UnsignedType, out: PrintWriter) : BuiltIn
     val storageElementType = type.asSigned.capitalized
     val storageArrayType = storageElementType + "Array"
     override fun generateBody() {
+        out.println("import kotlin.jvm.*")
+        out.println()
+
         out.println("@SinceKotlin(\"1.3\")")
         out.println("@ExperimentalUnsignedTypes")
-        out.println("public inline class $arrayType")
-        out.println("@Suppress(\"NON_PUBLIC_PRIMARY_CONSTRUCTOR_OF_INLINE_CLASS\")")
+        out.println("@JvmInline")
+        out.println("public value class $arrayType")
         out.println("@PublishedApi")
         out.println("internal constructor(@PublishedApi internal val storage: $storageArrayType) : Collection<$elementType> {")
         out.println(
@@ -453,8 +506,9 @@ class UnsignedArrayGenerator(val type: UnsignedType, out: PrintWriter) : BuiltIn
     public override val size: Int get() = storage.size
 
     /** Creates an iterator over the elements of the array. */
-    public override operator fun iterator(): ${elementType}Iterator = Iterator(storage)
+    public override operator fun iterator(): kotlin.collections.Iterator<$elementType> = Iterator(storage)
 
+    @Suppress("DEPRECATION_ERROR")
     private class Iterator(private val array: $storageArrayType) : ${elementType}Iterator() {
         private var index = 0
         override fun hasNext() = index < array.size
@@ -523,14 +577,19 @@ import kotlin.internal.*
 /**
  * A range of values of type `$elementType`.
  */
-@SinceKotlin("1.3")
-@ExperimentalUnsignedTypes
+@SinceKotlin("1.5")
+@WasExperimental(ExperimentalUnsignedTypes::class)
 public class ${elementType}Range(start: $elementType, endInclusive: $elementType) : ${elementType}Progression(start, endInclusive, 1), ClosedRange<${elementType}> {
     override val start: $elementType get() = first
     override val endInclusive: $elementType get() = last
 
     override fun contains(value: $elementType): Boolean = first <= value && value <= last
 
+    /** 
+     * Checks if the range is empty.
+     
+     * The range is empty if its start value is greater than the end value.
+     */
     override fun isEmpty(): Boolean = first > last
 
     override fun equals(other: Any?): Boolean =
@@ -551,8 +610,8 @@ public class ${elementType}Range(start: $elementType, endInclusive: $elementType
 /**
  * A progression of values of type `$elementType`.
  */
-@SinceKotlin("1.3")
-@ExperimentalUnsignedTypes
+@SinceKotlin("1.5")
+@WasExperimental(ExperimentalUnsignedTypes::class)
 public open class ${elementType}Progression
 internal constructor(
     start: $elementType,
@@ -579,9 +638,14 @@ internal constructor(
      */
     public val step: $stepType = step
 
-    override fun iterator(): ${elementType}Iterator = ${elementType}ProgressionIterator(first, last, step)
+    final override fun iterator(): Iterator<$elementType> = ${elementType}ProgressionIterator(first, last, step)
 
-    /** Checks if the progression is empty. */
+    /** 
+     * Checks if the progression is empty.
+     
+     * Progression with a positive step is empty if its first element is greater than the last element.
+     * Progression with a negative step is empty if its first element is less than the last element.
+     */
     public open fun isEmpty(): Boolean = if (step > 0) first > last else first < last
 
     override fun equals(other: Any?): Boolean =
@@ -612,7 +676,7 @@ internal constructor(
  * @property step the number by which the value is incremented on each step.
  */
 @SinceKotlin("1.3")
-@ExperimentalUnsignedTypes
+@Suppress("DEPRECATION_ERROR")
 private class ${elementType}ProgressionIterator(first: $elementType, last: $elementType, step: $stepType) : ${elementType}Iterator() {
     private val finalElement = last
     private var hasNext: Boolean = if (step > 0) first <= last else first >= last

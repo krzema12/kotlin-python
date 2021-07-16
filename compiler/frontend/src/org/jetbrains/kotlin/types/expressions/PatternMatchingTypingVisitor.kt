@@ -60,6 +60,8 @@ class PatternMatchingTypingVisitor internal constructor(facade: ExpressionTyping
             context.trace.record(BindingContext.DATAFLOW_INFO_AFTER_CONDITION, expression, newDataFlowInfo)
         }
 
+        expression.reportDeprecatedDefinitelyNotNullSyntax(expression.typeReference, contextWithExpectedType)
+
         val resultTypeInfo = components.dataFlowAnalyzer.checkType(
             typeInfo.replaceType(components.builtIns.booleanType),
             expression,
@@ -641,6 +643,10 @@ class PatternMatchingTypingVisitor internal constructor(facade: ExpressionTyping
         checkTypeCompatibility(context, targetType, subjectType, typeReferenceAfterIs)
 
         detectRedundantIs(context, subjectType, targetType, isCheck, negated, subjectDataFlowValue)
+
+        if (context.languageVersionSettings.supportsFeature(LanguageFeature.ProperCheckAnnotationsTargetInTypeUsePositions)) {
+            components.annotationChecker.check(typeReferenceAfterIs, context.trace)
+        }
 
         if (CastDiagnosticsUtil.isCastErased(subjectType, targetType, KotlinTypeChecker.DEFAULT)) {
             context.trace.report(Errors.CANNOT_CHECK_FOR_ERASED.on(typeReferenceAfterIs, targetType))

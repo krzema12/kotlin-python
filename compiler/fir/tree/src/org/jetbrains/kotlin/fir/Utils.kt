@@ -8,7 +8,10 @@ package org.jetbrains.kotlin.fir
 import org.jetbrains.kotlin.analyzer.ModuleInfo
 import org.jetbrains.kotlin.fir.expressions.FirBlock
 import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.fir.types.*
+import org.jetbrains.kotlin.fir.types.FirDynamicTypeRef
+import org.jetbrains.kotlin.fir.types.FirErrorTypeRef
+import org.jetbrains.kotlin.fir.types.FirImplicitTypeRef
+import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.types.builder.*
 import org.jetbrains.kotlin.fir.types.impl.*
 
@@ -40,9 +43,6 @@ fun <R : FirTypeRef> R.copyWithNewSourceKind(newKind: FirFakeSourceElementKind):
         is FirImplicitTypeRef -> buildImplicitTypeRefCopy(typeRef) {
             source = newSource
         }
-        is FirComposedSuperTypeRef -> buildComposedSuperTypeRefCopy(typeRef) {
-            source = newSource
-        }
         is FirFunctionTypeRefImpl -> buildFunctionTypeRefCopy(typeRef) {
             source = newSource
         }
@@ -56,3 +56,20 @@ fun <R : FirTypeRef> R.copyWithNewSourceKind(newKind: FirFakeSourceElementKind):
     } as R
 }
 
+/**
+ * Let's take `a.b.c.call()` expression as an example.
+ *
+ * This function allows to transform `SourceElement(psi = 'a')` to `SourceElement(psi = 'a.b.c')`
+ * ([stepsToWholeQualifier] should be = 2 for that).
+ *
+ * @receiver original source element
+ * @param stepsToWholeQualifier distance between the original psi and the whole qualifier psi
+ */
+fun FirSourceElement.getWholeQualifierSourceIfPossible(stepsToWholeQualifier: Int): FirSourceElement {
+    if (this !is FirRealPsiSourceElement<*>) return this
+
+    val qualifiersChain = generateSequence(psi) { it.parent }
+    val wholeQualifier = qualifiersChain.drop(stepsToWholeQualifier).first()
+
+    return wholeQualifier.toFirPsiSourceElement() as FirRealPsiSourceElement
+}

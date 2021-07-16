@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.js.resolve.diagnostics
 
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.builtins.isExtensionFunctionType
+import org.jetbrains.kotlin.config.LanguageFeature
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.diagnostics.DiagnosticFactory0
 import org.jetbrains.kotlin.diagnostics.DiagnosticSink
@@ -44,6 +45,7 @@ object JsExternalChecker : DeclarationChecker {
                 descriptor.isData -> "data class"
                 descriptor.isInner -> "inner class"
                 descriptor.isInline -> "inline class"
+                descriptor.isValue -> "value class"
                 descriptor.isFun -> "fun interface"
                 DescriptorUtils.isAnnotationClass(descriptor) -> "annotation class"
                 else -> null
@@ -118,7 +120,9 @@ object JsExternalChecker : DeclarationChecker {
         }
 
         reportOnParametersAndReturnTypesIf(ErrorsJs.INLINE_CLASS_IN_EXTERNAL_DECLARATION, KotlinType::isInlineClassType)
-        reportOnParametersAndReturnTypesIf(ErrorsJs.EXTENSION_FUNCTION_IN_EXTERNAL_DECLARATION, KotlinType::isExtensionFunctionType)
+        if (!context.languageVersionSettings.supportsFeature(LanguageFeature.JsEnableExtensionFunctionInExternals)) {
+            reportOnParametersAndReturnTypesIf(ErrorsJs.EXTENSION_FUNCTION_IN_EXTERNAL_DECLARATION, KotlinType::isExtensionFunctionType)
+        }
 
         if (descriptor is CallableMemberDescriptor && descriptor.isNonAbstractMemberOfInterface() &&
             !descriptor.isNullableProperty()

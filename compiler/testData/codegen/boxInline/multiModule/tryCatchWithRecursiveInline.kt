@@ -1,7 +1,6 @@
 // TODO: muted for Python because it was muted for JS. Once Python doesn't piggy-back on JS, investigate if it can be re-enabled for Python.
 // IGNORE_BACKEND: PYTHON
 // IGNORE_BACKEND: NATIVE
-// MODULE: lib
 // FILE: lib.kt
 inline fun <T> T.andAlso(block: (T) -> Unit): T {
     block(this)
@@ -16,7 +15,6 @@ inline fun <T> tryCatch(block: () -> T, onSuccess: (T) -> Unit) {
     }.andAlso { onSuccess(it) }
 }
 
-// MODULE: main(lib)
 // FILE: main.kt
 fun box(): String {
     var result = false

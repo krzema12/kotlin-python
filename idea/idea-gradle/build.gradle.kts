@@ -24,7 +24,7 @@ dependencies {
     compileOnly(intellijPluginDep("Groovy"))
     compileOnly(intellijPluginDep("junit"))
     compileOnly(intellijPluginDep("testng"))
-    runtimeOnly(project(":kotlin-coroutines-experimental-compat"))
+    runtimeOnly( "org.jetbrains.kotlin:kotlin-coroutines-experimental-compat:1.4.20")
 
     compileOnly(project(":kotlin-gradle-statistics"))
 
@@ -59,6 +59,7 @@ dependencies {
     testRuntime(project(":kotlin-scripting-idea"))
     testRuntime(project(":kotlinx-serialization-ide-plugin"))
     testRuntime(project(":plugins:parcelize:parcelize-ide"))
+    testRuntime(project(":plugins:lombok:lombok-ide-plugin"))
     testRuntime(project(":kotlin-gradle-statistics"))
     // TODO: the order of the plugins matters here, consider avoiding order-dependency
     testRuntime(intellijPluginDep("junit"))
@@ -78,7 +79,7 @@ dependencies {
     testRuntime(intellijPluginDep("android"))
     testRuntime(intellijPluginDep("smali"))
 
-    if (Ide.AS41.orHigher()) {
+    if (Ide.AS41.orHigher() || Ide.IJ202.orHigher()) {
          testRuntime(intellijPluginDep("platform-images"))
     }
 
@@ -99,21 +100,23 @@ testsJar()
 
 projectTest(parallel = false) {
     dependsOn(":dist")
-    dependsOnKotlinPluginInstall()
+    dependsOnKotlinGradlePluginInstall()
     if (!Ide.AS41.orHigher()) {
         systemProperty("android.studio.sdk.manager.disabled", "true")
     }
     workingDir = rootDir
     useAndroidSdk()
 
-    doFirst {
-        val mainResourceDirPath = File(project.buildDir, "resources/main").absolutePath
-        sourceSets["test"].runtimeClasspath = sourceSets["test"].runtimeClasspath.filter { file ->
-            if (!file.absolutePath.contains(mainResourceDirPath)) {
-                true
-            } else {
-                println("Remove `${file.path}` from the test runtime classpath")
-                false
+    if (kotlinBuildProperties.isJpsBuildEnabled) {
+        doFirst {
+            val mainResourceDirPath = File(project.buildDir, "resources/main").absolutePath
+            sourceSets["test"].runtimeClasspath = sourceSets["test"].runtimeClasspath.filter { file ->
+                if (!file.absolutePath.contains(mainResourceDirPath)) {
+                    true
+                } else {
+                    println("Remove `${file.path}` from the test runtime classpath")
+                    false
+                }
             }
         }
     }

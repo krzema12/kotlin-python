@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.fir.expressions.impl
 
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.declarations.FirVariable
+import org.jetbrains.kotlin.fir.expressions.ExhaustivenessStatus
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirWhenBranch
@@ -28,7 +29,8 @@ internal class FirWhenExpressionImpl(
     override var subject: FirExpression?,
     override var subjectVariable: FirVariable<*>?,
     override val branches: MutableList<FirWhenBranch>,
-    override var isExhaustive: Boolean,
+    override var exhaustivenessStatus: ExhaustivenessStatus?,
+    override val usedAsExpression: Boolean,
 ) : FirWhenExpression() {
     override fun <R, D> acceptChildren(visitor: FirVisitor<R, D>, data: D) {
         typeRef.accept(visitor, data)
@@ -57,16 +59,16 @@ internal class FirWhenExpressionImpl(
     }
 
     override fun <D> transformCalleeReference(transformer: FirTransformer<D>, data: D): FirWhenExpressionImpl {
-        calleeReference = calleeReference.transformSingle(transformer, data)
+        calleeReference = calleeReference.transform(transformer, data)
         return this
     }
 
     override fun <D> transformSubject(transformer: FirTransformer<D>, data: D): FirWhenExpressionImpl {
         if (subjectVariable != null) {
-            subjectVariable = subjectVariable?.transformSingle(transformer, data)
+            subjectVariable = subjectVariable?.transform(transformer, data)
             subject = subjectVariable?.initializer
         } else {
-            subject = subject?.transformSingle(transformer, data)
+            subject = subject?.transform(transformer, data)
         }
         return this
     }
@@ -77,7 +79,7 @@ internal class FirWhenExpressionImpl(
     }
 
     override fun <D> transformOtherChildren(transformer: FirTransformer<D>, data: D): FirWhenExpressionImpl {
-        typeRef = typeRef.transformSingle(transformer, data)
+        typeRef = typeRef.transform(transformer, data)
         transformAnnotations(transformer, data)
         return this
     }
@@ -90,7 +92,7 @@ internal class FirWhenExpressionImpl(
         calleeReference = newCalleeReference
     }
 
-    override fun replaceIsExhaustive(newIsExhaustive: Boolean) {
-        isExhaustive = newIsExhaustive
+    override fun replaceExhaustivenessStatus(newExhaustivenessStatus: ExhaustivenessStatus?) {
+        exhaustivenessStatus = newExhaustivenessStatus
     }
 }

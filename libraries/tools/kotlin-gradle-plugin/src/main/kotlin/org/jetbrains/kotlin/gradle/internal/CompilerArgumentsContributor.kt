@@ -53,15 +53,6 @@ internal open class AbstractKotlinCompileArgumentsContributor<T : CommonCompiler
         args: T,
         flags: Collection<CompilerArgumentsConfigurationFlag>
     ) {
-        args.coroutinesState = when (coroutines.get()) {
-            Coroutines.ENABLE -> CommonCompilerArguments.ENABLE
-            Coroutines.WARN -> CommonCompilerArguments.WARN
-            Coroutines.ERROR -> CommonCompilerArguments.ERROR
-            Coroutines.DEFAULT -> CommonCompilerArguments.DEFAULT
-        }
-
-        logger.kotlinDebug { "args.coroutinesState=${args.coroutinesState}" }
-
         if (logger.isDebugEnabled) {
             args.verbose = true
         }
@@ -112,6 +103,6 @@ internal open class KotlinJvmCompilerArgumentsContributor(
         }
         args.destinationAsFile = destinationDir
 
-        kotlinOptions.forEach { it?.updateArguments(args) }
+        kotlinOptions.forEach { it.updateArguments(args) }
     }
 }

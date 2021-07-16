@@ -33,7 +33,6 @@ dependencies {
     testCompileOnly(project(":compiler:frontend"))
     testCompileOnly(project(":compiler:cli"))
     testCompileOnly(project(":compiler:cli-js"))
-    testCompileOnly(project(":compiler:cli-js-klib"))
     testCompileOnly(project(":compiler:util"))
     testCompileOnly(intellijCoreDep()) { includeJars("intellij-core") }
     Platform[193].orLower {
@@ -62,25 +61,6 @@ dependencies {
         testRuntime(intellijDep()) { includeJars("picocontainer", rootProject = rootProject) }
     }
     testRuntime(intellijDep()) { includeJars("trove4j", "guava", "jdom", rootProject = rootProject) }
-
-
-    val currentOs = OperatingSystem.current()
-
-    val j2v8idString = when {
-        currentOs.isWindows -> {
-            val suffix = if (currentOs.toString().endsWith("64")) "_64" else ""
-            "com.eclipsesource.j2v8:j2v8_win32_x86$suffix:4.6.0"
-        }
-        currentOs.isMacOsX -> "com.eclipsesource.j2v8:j2v8_macosx_x86_64:4.6.0"
-        currentOs.run { isLinux || isUnix } -> "com.eclipsesource.j2v8:j2v8_linux_x86_64:4.8.0"
-        else -> {
-            logger.error("unsupported platform $currentOs - can not compile com.eclipsesource.j2v8 dependency")
-            "j2v8:$currentOs"
-        }
-    }
-
-    testCompileOnly("com.eclipsesource.j2v8:j2v8_linux_x86_64:4.8.0")
-    testRuntimeOnly(j2v8idString)
 
     testRuntime(kotlinStdlib())
     testJsRuntime(kotlinStdlib("js"))

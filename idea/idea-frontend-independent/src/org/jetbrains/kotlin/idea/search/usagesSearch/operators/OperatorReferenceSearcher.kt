@@ -12,18 +12,18 @@ import com.intellij.psi.search.*
 import com.intellij.util.Processor
 import org.jetbrains.kotlin.asJava.elements.KtLightMethod
 import org.jetbrains.kotlin.asJava.namedUnwrappedElement
+import org.jetbrains.kotlin.idea.KotlinBundle
 import org.jetbrains.kotlin.idea.KotlinFileType
-import org.jetbrains.kotlin.idea.KotlinIdeaAnalysisBundleIndependent
 import org.jetbrains.kotlin.idea.search.KotlinSearchUsagesSupport.Companion.forceResolveReferences
 import org.jetbrains.kotlin.idea.search.KotlinSearchUsagesSupport.Companion.getReceiverTypeSearcherInfo
 import org.jetbrains.kotlin.idea.search.ideaExtensions.KotlinReferencesSearchOptions
 import org.jetbrains.kotlin.idea.search.ideaExtensions.KotlinRequestResultProcessor
-import org.jetbrains.kotlin.idea.search.ifTrue
 import org.jetbrains.kotlin.idea.search.restrictToKotlinSources
 import org.jetbrains.kotlin.idea.search.usagesSearch.ExpressionsOfTypeProcessor
 import org.jetbrains.kotlin.idea.search.usagesSearch.ExpressionsOfTypeProcessor.Companion.logPresentation
 import org.jetbrains.kotlin.idea.search.usagesSearch.ExpressionsOfTypeProcessor.Companion.testLog
 import org.jetbrains.kotlin.idea.util.application.runReadAction
+import org.jetbrains.kotlin.idea.util.ifTrue
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.*
@@ -275,7 +275,7 @@ abstract class OperatorReferenceSearcher<TReferenceElement : KtElement>(
                 // we must unwrap progress indicator because ProgressWrapper does not do anything on changing text and fraction
                 val progress = ProgressWrapper.unwrap(ProgressIndicatorProvider.getGlobalProgressIndicator())
                 progress?.pushState()
-                progress?.text = KotlinIdeaAnalysisBundleIndependent.message("searching.for.implicit.usages")
+                progress?.text = KotlinBundle.message("searching.for.implicit.usages")
 
                 try {
                     val files = runReadAction { FileTypeIndex.getFiles(KotlinFileType.INSTANCE, scope) }

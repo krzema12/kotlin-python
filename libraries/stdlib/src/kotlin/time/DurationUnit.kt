@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2019 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -52,9 +52,20 @@ public expect enum class DurationUnit {
 @ExperimentalTime
 internal expect fun convertDurationUnit(value: Double, sourceUnit: DurationUnit, targetUnit: DurationUnit): Double
 
+// overflown result is unspecified
+@SinceKotlin("1.5")
+@ExperimentalTime
+internal expect fun convertDurationUnitOverflow(value: Long, sourceUnit: DurationUnit, targetUnit: DurationUnit): Long
+
+// overflown result is coerced in the Long range boundaries
+@SinceKotlin("1.5")
+@ExperimentalTime
+internal expect fun convertDurationUnit(value: Long, sourceUnit: DurationUnit, targetUnit: DurationUnit): Long
+
 
 @SinceKotlin("1.3")
 @ExperimentalTime
+@Suppress("REDUNDANT_ELSE_IN_WHEN")
 internal fun DurationUnit.shortName(): String = when (this) {
     DurationUnit.NANOSECONDS -> "ns"
     DurationUnit.MICROSECONDS -> "us"
@@ -63,4 +74,5 @@ internal fun DurationUnit.shortName(): String = when (this) {
     DurationUnit.MINUTES -> "m"
     DurationUnit.HOURS -> "h"
     DurationUnit.DAYS -> "d"
+    else -> error("Unknown unit: $this")
 }

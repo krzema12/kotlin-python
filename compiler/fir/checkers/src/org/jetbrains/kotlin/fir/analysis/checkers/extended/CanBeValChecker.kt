@@ -5,26 +5,30 @@
 
 package org.jetbrains.kotlin.fir.analysis.checkers.extended
 
-import com.intellij.lang.LighterASTNode
-import com.intellij.openapi.util.Ref
 import org.jetbrains.kotlin.KtNodeTypes
 import org.jetbrains.kotlin.contracts.description.EventOccurrencesRange
-import org.jetbrains.kotlin.fir.*
-import org.jetbrains.kotlin.fir.analysis.cfa.*
+import org.jetbrains.kotlin.fir.FirFakeSourceElement
+import org.jetbrains.kotlin.fir.FirSourceElement
+import org.jetbrains.kotlin.fir.analysis.cfa.AbstractFirPropertyInitializationChecker
+import org.jetbrains.kotlin.fir.analysis.cfa.PathAwarePropertyInitializationInfo
+import org.jetbrains.kotlin.fir.analysis.cfa.TraverseDirection
+import org.jetbrains.kotlin.fir.analysis.cfa.traverse
+import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
+import org.jetbrains.kotlin.fir.analysis.checkers.getChildren
 import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors
-import org.jetbrains.kotlin.fir.analysis.getChild
+import org.jetbrains.kotlin.fir.analysis.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.references.FirResolvedNamedReference
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.*
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
-import org.jetbrains.kotlin.lexer.KtTokens
 
 object CanBeValChecker : AbstractFirPropertyInitializationChecker() {
     override fun analyze(
         graph: ControlFlowGraph,
         reporter: DiagnosticReporter,
         data: Map<CFGNode<*>, PathAwarePropertyInitializationInfo>,
-        properties: Set<FirPropertySymbol>
+        properties: Set<FirPropertySymbol>,
+        context: CheckerContext
     ) {
         val unprocessedProperties = mutableSetOf<FirPropertySymbol>()
         val propertiesCharacteristics = mutableMapOf<FirPropertySymbol, EventOccurrencesRange>()
@@ -33,8 +37,9 @@ object CanBeValChecker : AbstractFirPropertyInitializationChecker() {
         graph.traverse(TraverseDirection.Forward, reporterVisitor)
 
         for (property in unprocessedProperties) {
-            if (property.fir.source is FirFakeSourceElement<*>) continue
-            if (property.isDestructuring) continue
+            val source = property.fir.source
+            if (source is FirFakeSourceElement<*>) continue
+            if (source?.elementType == KtNodeTypes.DESTRUCTURING_DECLARATION) continue
             propertiesCharacteristics[property] = EventOccurrencesRange.ZERO
         }
 
@@ -43,8 +48,8 @@ object CanBeValChecker : AbstractFirPropertyInitializationChecker() {
         var lastDestructuredVariables = 0
 
         for ((symbol, value) in propertiesCharacteristics) {
-            val source = symbol.fir.source?.getChild(setOf(KtTokens.VAL_KEYWORD, KtTokens.VAR_KEYWORD), depth = 1)
-            if (symbol.isDestructuring) {
+            val source = symbol.fir.source
+            if (source?.elementType == KtNodeTypes.DESTRUCTURING_DECLARATION) {
                 lastDestructuringSource = source
                 lastDestructuredVariables = symbol.getDestructuringChildrenCount() ?: continue
                 destructuringCanBeVal = true
@@ -54,14 +59,14 @@ object CanBeValChecker : AbstractFirPropertyInitializationChecker() {
             if (lastDestructuringSource != null) {
                 // if this is the last variable in destructuring declaration and destructuringCanBeVal == true and it can be val
                 if (lastDestructuredVariables == 1 && destructuringCanBeVal && canBeVal(symbol, value)) {
-                    reporter.report(lastDestructuringSource, FirErrors.CAN_BE_VAL)
+                    reporter.reportOn(lastDestructuringSource, FirErrors.CAN_BE_VAL, context)
                     lastDestructuringSource = null
                 } else if (!canBeVal(symbol, value)) {
                     destructuringCanBeVal = false
                 }
                 lastDestructuredVariables--
             } else if (canBeVal(symbol, value) && symbol.fir.delegate == null) {
-                reporter.report(source, FirErrors.CAN_BE_VAL)
+                reporter.reportOn(source, FirErrors.CAN_BE_VAL, context)
             }
         }
     }
@@ -98,20 +103,12 @@ object CanBeValChecker : AbstractFirPropertyInitializationChecker() {
         }
     }
 
-    private fun FirPropertySymbol.getDestructuringChildrenCount(): Int? = when (fir.source) {
-        is FirPsiSourceElement<*> -> fir.psi?.children?.size?.minus(1) // -1 cuz we don't need expression node after equals operator
-        is FirLightSourceElement -> {
-            val source = fir.source as FirLightSourceElement
-            val tree = (fir.source as FirLightSourceElement).tree
-            val children = Ref<Array<LighterASTNode?>>()
-            tree.getChildren(source.element, children)
-            children.get().filterNotNull().filter { it.tokenType == KtNodeTypes.DESTRUCTURING_DECLARATION_ENTRY }.size
+    private fun FirPropertySymbol.getDestructuringChildrenCount(): Int? {
+        val source = fir.source ?: return null
+        return source.lighterASTNode.getChildren(source.treeStructure).count {
+            it?.tokenType == KtNodeTypes.DESTRUCTURING_DECLARATION_ENTRY
         }
-        else -> null
     }
-
-    private val FirPropertySymbol.isDestructuring
-        get() = callableId.callableName.asString() == "<destruct>"
 
     private val canBeValOccurrenceRanges = setOf(
         EventOccurrencesRange.EXACTLY_ONCE,

@@ -30,8 +30,8 @@ import p.*
 
 fun test(b: B?, c: C) {
     b?.foo(1, 1)
-    c.<!AMBIGUITY!>foo<!>(1, 1)
+    c.<!OVERLOAD_RESOLUTION_AMBIGUITY!>foo<!>(1, 1)
     if (b is C) {
-        b?.<!AMBIGUITY!>foo<!>(1, 1)
+        b<!UNNECESSARY_SAFE_CALL!>?.<!><!OVERLOAD_RESOLUTION_AMBIGUITY!>foo<!>(1, 1)
     }
 }
