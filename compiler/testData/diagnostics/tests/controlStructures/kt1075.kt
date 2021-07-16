@@ -5,8 +5,8 @@ package kt1075
 
 fun foo(b: String) {
     if (<!TYPE_MISMATCH!>b<!> in 1..10) {} //type mismatch
-    when (<!NI;TYPE_MISMATCH!>b<!>) {
-        <!TYPE_MISMATCH_IN_RANGE!>in<!> 1..10 -> <!UNUSED_EXPRESSION!>1<!> //no type mismatch, but it should be here
-        else -> <!UNUSED_EXPRESSION!>2<!>
+    when (<!TYPE_MISMATCH{NI}!>b<!>) {
+        <!TYPE_MISMATCH_IN_RANGE!>in<!> 1..10 -> 1 //no type mismatch, but it should be here
+        else -> 2
     }
 }

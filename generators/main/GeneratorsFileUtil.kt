@@ -8,16 +8,21 @@ import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.util.text.StringUtil
 import java.io.File
 import java.io.IOException
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
+import kotlin.io.path.*
 
 object GeneratorsFileUtil {
+    val isTeamCityBuild: Boolean = System.getenv("TEAMCITY_VERSION") != null
+
+    @OptIn(ExperimentalPathApi::class)
     @JvmStatic
     @JvmOverloads
     @Throws(IOException::class)
-    fun writeFileIfContentChanged(file: File, newText: String, logNotChanged: Boolean = true) {
+    fun writeFileIfContentChanged(file: File, newText: String, logNotChanged: Boolean = true, forbidGenerationOnTeamcity: Boolean = true) {
         val parentFile = file.parentFile
         if (!parentFile.exists()) {
+            if (forbidGenerationOnTeamcity) {
+                if (failOnTeamCity("Create dir `${parentFile.path}`")) return
+            }
             if (parentFile.mkdirs()) {
                 println("Directory created: " + parentFile.absolutePath)
             } else {
@@ -30,16 +35,46 @@ object GeneratorsFileUtil {
             }
             return
         }
+        if (forbidGenerationOnTeamcity) {
+            if (failOnTeamCity("Write file `${file.toPath()}`")) return
+        }
         val useTempFile = !SystemInfo.isWindows
+        val targetFile = file.toPath()
         val tempFile =
-            if (useTempFile) File(createTempDir(file.name), file.name + ".tmp") else file
+            if (useTempFile) createTempDirectory(targetFile.name) / "${targetFile.name}.tmp" else targetFile
         tempFile.writeText(newText, Charsets.UTF_8)
-        println("File written: " + tempFile.absolutePath)
+        println("File written: ${tempFile.toAbsolutePath()}")
         if (useTempFile) {
-            Files.move(tempFile.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING)
-            println("Renamed $tempFile to $file")
+            tempFile.moveTo(targetFile, overwrite = true)
+            println("Renamed $tempFile to $targetFile")
         }
         println()
+    }
+
+    fun failOnTeamCity(message: String): Boolean {
+        if (!isTeamCityBuild) return false
+
+        fun String.escapeForTC(): String = StringBuilder(length).apply {
+            for (char in this@escapeForTC) {
+                append(
+                    when (char) {
+                        '|' -> "||"
+                        '\'' -> "|'"
+                        '\n' -> "|n"
+                        '\r' -> "|r"
+                        '[' -> "|["
+                        ']' -> "|]"
+                        else -> char
+                    }
+                )
+            }
+        }.toString()
+
+        val fullMessage = "[Re-generation needed!] $message\n" +
+                "Run correspondent (check the log above) Gradle task locally and commit changes."
+
+        println("##teamcity[buildProblem description='${fullMessage.escapeForTC()}']")
+        return true
     }
 
     fun isFileContentChangedIgnoringLineSeparators(file: File, content: String): Boolean {

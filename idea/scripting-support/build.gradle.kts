@@ -20,6 +20,7 @@ dependencies {
     testRuntime(project(":noarg-ide-plugin")) { isTransitive = false }
     testRuntime(project(":kotlin-noarg-compiler-plugin"))
     testRuntime(project(":plugins:annotation-based-compiler-plugins-ide-support")) { isTransitive = false }
+    testRuntime(project(":plugins:base-compiler-plugins-ide-support")) { isTransitive = false }
     testRuntime(project(":kotlin-scripting-idea")) { isTransitive = false }
     testRuntime(project(":kotlin-scripting-compiler"))
     testRuntime(project(":kotlin-scripting-compiler-impl"))
@@ -28,6 +29,7 @@ dependencies {
     testRuntime(project(":kotlinx-serialization-ide-plugin")) { isTransitive = false }
     testRuntime(project(":plugins:parcelize:parcelize-compiler"))
     testRuntime(project(":plugins:parcelize:parcelize-ide")) { isTransitive = false }
+    testRuntime(project(":plugins:lombok:lombok-ide-plugin"))
 
     testRuntime(project(":idea:idea-android")) { isTransitive = false }
 

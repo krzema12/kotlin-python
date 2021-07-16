@@ -14,9 +14,7 @@ import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.FirBodyResolve
 import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.FirImplicitTypeBodyResolveProcessor
 import org.jetbrains.kotlin.fir.resolve.transformers.contracts.FirContractResolveProcessor
 import org.jetbrains.kotlin.fir.resolve.transformers.plugin.*
-import org.jetbrains.kotlin.fir.visitors.CompositeTransformResult
 import org.jetbrains.kotlin.fir.visitors.FirTransformer
-import org.jetbrains.kotlin.fir.visitors.compose
 
 fun FirResolvePhase.createCompilerProcessorByPhase(
     session: FirSession,
@@ -40,38 +38,16 @@ fun FirResolvePhase.createCompilerProcessorByPhase(
     }
 }
 
-fun FirResolvePhase.createTransformerBasedProcessorByPhase(
-    session: FirSession,
-    scopeSession: ScopeSession
-): FirTransformerBasedResolveProcessor {
-    return when (this) {
-        RAW_FIR -> throw IllegalStateException("Raw FIR building phase does not have a transformer")
-        ANNOTATIONS_FOR_PLUGINS -> FirPluginAnnotationsResolveProcessor(session, scopeSession)
-        CLASS_GENERATION -> FirDummyTransformerBasedProcessor(session, scopeSession) // TODO: remove
-        IMPORTS -> FirImportResolveProcessor(session, scopeSession)
-        SUPER_TYPES -> FirSupertypeResolverProcessor(session, scopeSession)
-        SEALED_CLASS_INHERITORS -> FirSealedClassInheritorsProcessor(session, scopeSession)
-        TYPES -> FirTypeResolveProcessor(session, scopeSession)
-        ARGUMENTS_OF_PLUGIN_ANNOTATIONS -> FirAnnotationArgumentsResolveProcessor(session, scopeSession)
-        EXTENSION_STATUS_UPDATE -> FirTransformerBasedExtensionStatusProcessor(session, scopeSession)
-        STATUS -> FirStatusResolveProcessor(session, scopeSession)
-        CONTRACTS -> FirContractResolveProcessor(session, scopeSession)
-        NEW_MEMBERS_GENERATION -> FirDummyTransformerBasedProcessor(session, scopeSession) // TODO: remove
-        IMPLICIT_TYPES_BODY_RESOLVE -> FirImplicitTypeBodyResolveProcessor(session, scopeSession)
-        BODY_RESOLVE -> FirBodyResolveProcessor(session, scopeSession)
-    }
-}
-
-private class FirDummyTransformerBasedProcessor(
+class FirDummyTransformerBasedProcessor(
     session: FirSession,
     scopeSession: ScopeSession
 ) : FirTransformerBasedResolveProcessor(session, scopeSession) {
-    override val transformer: FirTransformer<Nothing?>
+    override val transformer: FirTransformer<Any?>
         get() = DummyTransformer
 
-    private object DummyTransformer : FirTransformer<Nothing?>() {
-        override fun <E : FirElement> transformElement(element: E, data: Nothing?): CompositeTransformResult<E> {
-            return element.compose()
+    private object DummyTransformer : FirTransformer<Any?>() {
+        override fun <E : FirElement> transformElement(element: E, data: Any?): E {
+            return element
         }
     }
 }

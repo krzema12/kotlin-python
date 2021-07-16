@@ -19,15 +19,14 @@ package org.jetbrains.kotlin.test.testFramework;
 import com.intellij.codeInsight.CodeInsightSettings;
 import com.intellij.concurrency.IdeaForkJoinWorkerThreadFactory;
 import com.intellij.diagnostic.PerformanceWatcher;
+import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.application.impl.ApplicationInfoImpl;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.JDOMUtil;
@@ -348,7 +347,7 @@ public abstract class KtUsefulTestCase extends TestCase {
                     }
                 })
                 .append(() -> {
-                    currentCodeStyleSettings.getIndentOptions(StdFileTypes.JAVA);
+                    currentCodeStyleSettings.getIndentOptions(JavaFileType.INSTANCE);
                     try {
                         checkCodeStyleSettingsEqual(oldCodeStyleSettings, currentCodeStyleSettings);
                     }
@@ -912,7 +911,7 @@ public abstract class KtUsefulTestCase extends TestCase {
         }
         String expected = StringUtil.convertLineSeparators(trimBeforeComparing ? fileText.trim() : fileText);
         String actual = StringUtil.convertLineSeparators(trimBeforeComparing ? actualText.trim() : actualText);
-        if (!Comparing.equal(expected, actual)) {
+        if (!Objects.equals(expected, actual)) {
             throw new FileComparisonFailure(messageProducer == null ? null : messageProducer.get(), expected, actual, filePath);
         }
     }
@@ -1081,8 +1080,7 @@ public abstract class KtUsefulTestCase extends TestCase {
 
             if (shouldOccur) {
                 wasThrown = true;
-                final String errorMessage = exceptionCase.getAssertionErrorMessage();
-                assertEquals(errorMessage, exceptionCase.getExpectedExceptionClass(), cause.getClass());
+                assertInstanceOf(cause, exceptionCase.getExpectedExceptionClass());
                 if (expectedErrorMsgPart != null) {
                     assertTrue(cause.getMessage(), cause.getMessage().contains(expectedErrorMsgPart));
                 }
@@ -1103,7 +1101,7 @@ public abstract class KtUsefulTestCase extends TestCase {
         }
         finally {
             if (shouldOccur && !wasThrown) {
-                fail(exceptionCase.getAssertionErrorMessage());
+                fail(exceptionCase.getExpectedExceptionClass().getName() + " must be thrown.");
             }
         }
     }

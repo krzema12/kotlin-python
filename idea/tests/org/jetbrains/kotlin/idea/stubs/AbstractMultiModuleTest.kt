@@ -27,15 +27,18 @@ import com.intellij.util.ThrowableRunnable
 import org.jetbrains.kotlin.config.CompilerSettings
 import org.jetbrains.kotlin.config.KotlinFacetSettings
 import org.jetbrains.kotlin.config.KotlinFacetSettingsProvider
-import org.jetbrains.kotlin.config.LanguageFeature
+import org.jetbrains.kotlin.idea.caches.resolve.ResolutionAnchorCacheService
+import org.jetbrains.kotlin.idea.caches.resolve.ResolutionAnchorCacheServiceImpl
 import org.jetbrains.kotlin.idea.facet.getOrCreateFacet
 import org.jetbrains.kotlin.idea.facet.initializeIfNeeded
+import org.jetbrains.kotlin.idea.project.KotlinLibraryToSourceAnalysisComponent
 import org.jetbrains.kotlin.idea.test.*
 import org.jetbrains.kotlin.platform.TargetPlatform
-import org.jetbrains.kotlin.test.KotlinTestUtils
 import org.jetbrains.kotlin.test.TestJdkKind
 import org.jetbrains.kotlin.test.WithMutedInDatabaseRunTest
 import org.jetbrains.kotlin.test.runTest
+import org.jetbrains.kotlin.test.util.KtTestUtil
+import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 import org.junit.Assert
 import java.io.File
 
@@ -47,7 +50,7 @@ abstract class AbstractMultiModuleTest : DaemonAnalyzerTestCase() {
     override fun setUp() {
         super.setUp()
         enableKotlinOfficialCodeStyle(project)
-        VfsRootAccess.allowRootAccess(KotlinTestUtils.getHomeDirectory())
+        VfsRootAccess.allowRootAccess(KtTestUtil.getHomeDirectory())
     }
 
     fun module(name: String, jdk: TestJdkKind = TestJdkKind.MOCK_JDK, hasTestRoot: Boolean = false): Module {
@@ -67,7 +70,7 @@ abstract class AbstractMultiModuleTest : DaemonAnalyzerTestCase() {
     }
 
     override fun tearDown() = runAll(
-        ThrowableRunnable { VfsRootAccess.disallowRootAccess(KotlinTestUtils.getHomeDirectory()) },
+        ThrowableRunnable { VfsRootAccess.disallowRootAccess(KtTestUtil.getHomeDirectory()) },
         ThrowableRunnable { disableKotlinOfficialCodeStyle(project) },
         ThrowableRunnable { super.tearDown() },
     )
@@ -111,10 +114,19 @@ abstract class AbstractMultiModuleTest : DaemonAnalyzerTestCase() {
         jar: File,
         name: String = KotlinJdkAndLibraryProjectDescriptor.LIBRARY_NAME,
         kind: PersistentLibraryKind<*>? = null
+    ) = addMultiJarLibrary(listOf(jar), name, kind)
+
+    fun Module.addMultiJarLibrary(
+        jars: Collection<File>,
+        name: String = KotlinJdkAndLibraryProjectDescriptor.LIBRARY_NAME,
+        kind: PersistentLibraryKind<*>? = null,
     ) {
+        assert(jars.isNotEmpty()) { "No JARs passed for a library" }
         ConfigLibraryUtil.addLibrary(NewLibraryEditor().apply {
             this.name = name
-            addRoot(VfsUtil.getUrlForLibraryRoot(jar), OrderRootType.CLASSES)
+            for (jar in jars) {
+                addRoot(VfsUtil.getUrlForLibraryRoot(jar), OrderRootType.CLASSES)
+            }
         }, this, kind)
     }
 
@@ -135,7 +147,6 @@ abstract class AbstractMultiModuleTest : DaemonAnalyzerTestCase() {
             ?: error("Facet settings are not found")
 
         facetSettings.useProjectSettings = false
-        facetSettings.coroutineSupport = LanguageFeature.State.ENABLED
     }
 
     protected fun checkFiles(
@@ -149,6 +160,26 @@ abstract class AbstractMultiModuleTest : DaemonAnalyzerTestCase() {
             check()
         }
         Assert.assertTrue(atLeastOneFile)
+    }
+
+    protected fun withResolutionAnchors(
+        anchors: Map<String, String>,
+        block: () -> Unit
+    ) {
+        val resolutionAnchorService = ResolutionAnchorCacheService.getInstance(project).safeAs<ResolutionAnchorCacheServiceImpl>()
+            ?: error("Anchor service missing")
+        val oldResolutionAnchorMappingState = resolutionAnchorService.state
+        val oldLibraryToSourceAnalysisState = KotlinLibraryToSourceAnalysisComponent.isEnabled(project)
+
+        resolutionAnchorService.setAnchors(anchors)
+        KotlinLibraryToSourceAnalysisComponent.setState(project, isEnabled = true)
+
+        try {
+            block()
+        } finally {
+            KotlinLibraryToSourceAnalysisComponent.setState(project, isEnabled = oldLibraryToSourceAnalysisState)
+            resolutionAnchorService.loadState(oldResolutionAnchorMappingState)
+        }
     }
 }
 

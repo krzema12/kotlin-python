@@ -1,25 +1,16 @@
 /*
- * Copyright 2010-2016 JetBrains s.r.o.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
 package org.jetbrains.kotlin.daemon
 
+import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.util.io.FileUtilRt
 import junit.framework.TestCase
 import org.jetbrains.kotlin.cli.AbstractCliTest
+import org.jetbrains.kotlin.cli.common.CompilerSystemProperties
 import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
 import org.jetbrains.kotlin.cli.common.messages.PrintingMessageCollector
 import org.jetbrains.kotlin.cli.common.repl.*
@@ -27,7 +18,7 @@ import org.jetbrains.kotlin.daemon.client.*
 import org.jetbrains.kotlin.daemon.common.*
 import org.jetbrains.kotlin.integration.KotlinIntegrationTestBase
 import org.jetbrains.kotlin.progress.CompilationCanceledStatus
-import org.jetbrains.kotlin.test.KotlinTestUtils
+import org.jetbrains.kotlin.test.util.KtTestUtil
 import org.jetbrains.kotlin.utils.KotlinPaths
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -36,10 +27,13 @@ import java.lang.management.ManagementFactory
 import java.net.URL
 import java.net.URLClassLoader
 import java.nio.charset.Charset
+import java.nio.file.Path
 import java.rmi.server.UnicastRemoteObject
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
+import kotlin.io.path.ExperimentalPathApi
+import kotlin.io.path.invariantSeparatorsPathString
 import kotlin.script.dependencies.Environment
 import kotlin.script.dependencies.ScriptContents
 import kotlin.script.experimental.dependencies.DependenciesResolver
@@ -92,8 +86,8 @@ class CompilerDaemonTest : KotlinIntegrationTestBase() {
             assertEquals("build results differ", AbstractCliTest.removePerfOutput(res1.out), AbstractCliTest.removePerfOutput(res2.out))
     }
 
-    private fun getTestBaseDir(): String = KotlinTestUtils.getTestDataPathBase() + "/integration/smoke/" + getTestName(true)
-    private fun getHelloAppBaseDir(): String = KotlinTestUtils.getTestDataPathBase() + "/integration/smoke/helloApp"
+    private fun getTestBaseDir(): String = KtTestUtil.getTestDataPathBase() + "/integration/smoke/" + getTestName(true)
+    private fun getHelloAppBaseDir(): String = KtTestUtil.getTestDataPathBase() + "/integration/smoke/helloApp"
 
     private fun run(logName: String, vararg args: String): Int = runJava(getTestBaseDir(), logName, *args)
 
@@ -106,7 +100,7 @@ class CompilerDaemonTest : KotlinIntegrationTestBase() {
     fun makeTestDaemonJvmOptions(logFile: File? = null, xmx: Int = 384, args: Iterable<String> = listOf()): DaemonJVMOptions {
         val additionalArgs = arrayListOf<String>()
         if (logFile != null) {
-            additionalArgs.add("D$COMPILE_DAEMON_LOG_PATH_PROPERTY=\"${logFile.loggerCompatiblePath}\"")
+            additionalArgs.add("D${CompilerSystemProperties.COMPILE_DAEMON_LOG_PATH_PROPERTY.property}=\"${logFile.loggerCompatiblePath}\"")
         }
         args.forEach { additionalArgs.add(it) }
         val baseOpts = if (xmx > 0) DaemonJVMOptions(maxMemory = "${xmx}m") else DaemonJVMOptions()
@@ -157,16 +151,16 @@ class CompilerDaemonTest : KotlinIntegrationTestBase() {
     }
 
     fun testDaemonJvmOptionsParsing() {
-        val backupJvmOptions = System.getProperty(COMPILE_DAEMON_JVM_OPTIONS_PROPERTY)
+        val backupJvmOptions = System.getProperty(CompilerSystemProperties.COMPILE_DAEMON_JVM_OPTIONS_PROPERTY.property)
         try {
-            System.setProperty(COMPILE_DAEMON_JVM_OPTIONS_PROPERTY, "-aaa,-bbb\\,ccc,-ddd,-Xmx200m,-XX:MaxMetaspaceSize=10k,-XX:ReservedCodeCacheSize=100,-xxx\\,yyy")
+            System.setProperty(CompilerSystemProperties.COMPILE_DAEMON_JVM_OPTIONS_PROPERTY.property, "-aaa,-bbb\\,ccc,-ddd,-Xmx200m,-XX:MaxMetaspaceSize=10k,-XX:ReservedCodeCacheSize=100,-xxx\\,yyy")
             val opts = configureDaemonJVMOptions(inheritMemoryLimits = false, inheritAdditionalProperties = false, inheritOtherJvmOptions = false)
             assertEquals("200m", opts.maxMemory)
             assertEquals("10k", opts.maxMetaspaceSize)
             assertEquals("100", opts.reservedCodeCacheSize)
             assertEquals(arrayListOf("aaa", "bbb,ccc", "ddd", "xxx,yyy", "ea"), opts.jvmParams)
 
-            System.setProperty(COMPILE_DAEMON_JVM_OPTIONS_PROPERTY, "-Xmx300m,-XX:MaxMetaspaceSize=10k,-XX:ReservedCodeCacheSize=100")
+            System.setProperty(CompilerSystemProperties.COMPILE_DAEMON_JVM_OPTIONS_PROPERTY.property, "-Xmx300m,-XX:MaxMetaspaceSize=10k,-XX:ReservedCodeCacheSize=100")
             val opts2 = configureDaemonJVMOptions(inheritMemoryLimits = false, inheritAdditionalProperties = false, inheritOtherJvmOptions = false)
             assertEquals("300m", opts2.maxMemory)
             assertEquals( -1, DaemonJVMOptionsMemoryComparator().compare(opts, opts2))
@@ -175,14 +169,14 @@ class CompilerDaemonTest : KotlinIntegrationTestBase() {
             val myXmxParam = ManagementFactory.getRuntimeMXBean().inputArguments.first { it.startsWith("-Xmx") }
             TestCase.assertNotNull(myXmxParam)
             val myXmxVal = myXmxParam.substring(4)
-            System.clearProperty(COMPILE_DAEMON_JVM_OPTIONS_PROPERTY)
+            System.clearProperty(CompilerSystemProperties.COMPILE_DAEMON_JVM_OPTIONS_PROPERTY.property)
             val opts3 = configureDaemonJVMOptions(inheritMemoryLimits = true,
                                                   inheritOtherJvmOptions = true,
                                                   inheritAdditionalProperties = false)
             assertEquals(myXmxVal, opts3.maxMemory)
         }
         finally {
-            restoreSystemProperty(COMPILE_DAEMON_JVM_OPTIONS_PROPERTY, backupJvmOptions)
+            restoreSystemProperty(CompilerSystemProperties.COMPILE_DAEMON_JVM_OPTIONS_PROPERTY.property, backupJvmOptions)
         }
     }
 
@@ -212,12 +206,12 @@ class CompilerDaemonTest : KotlinIntegrationTestBase() {
     }
 
     private fun withDaemonJvmOptionsSetTo(newValue: String?, fn: () -> Unit) {
-        val backup = getAndSetSystemProperty(COMPILE_DAEMON_JVM_OPTIONS_PROPERTY, newValue)
+        val backup = getAndSetSystemProperty(CompilerSystemProperties.COMPILE_DAEMON_JVM_OPTIONS_PROPERTY.property, newValue)
 
         try {
             fn()
         } finally {
-            getAndSetSystemProperty(COMPILE_DAEMON_JVM_OPTIONS_PROPERTY, backup)
+            getAndSetSystemProperty(CompilerSystemProperties.COMPILE_DAEMON_JVM_OPTIONS_PROPERTY.property, backup)
         }
     }
 
@@ -234,15 +228,15 @@ class CompilerDaemonTest : KotlinIntegrationTestBase() {
     }
 
     fun testDaemonOptionsParsing() {
-        val backupOptions = System.getProperty(COMPILE_DAEMON_OPTIONS_PROPERTY)
+        val backupOptions = System.getProperty(CompilerSystemProperties.COMPILE_DAEMON_OPTIONS_PROPERTY.property)
         try {
-            System.setProperty(COMPILE_DAEMON_OPTIONS_PROPERTY, "runFilesPath=abcd,autoshutdownIdleSeconds=1111")
+            System.setProperty(CompilerSystemProperties.COMPILE_DAEMON_OPTIONS_PROPERTY.property, "runFilesPath=abcd,autoshutdownIdleSeconds=1111")
             val opts = configureDaemonOptions(DaemonOptions(shutdownDelayMilliseconds = 1))
             assertEquals("abcd", opts.runFilesPath)
             assertEquals(1111, opts.autoshutdownIdleSeconds)
         }
         finally {
-            restoreSystemProperty(COMPILE_DAEMON_OPTIONS_PROPERTY, backupOptions)
+            restoreSystemProperty(CompilerSystemProperties.COMPILE_DAEMON_OPTIONS_PROPERTY.property, backupOptions)
         }
     }
 
@@ -279,6 +273,129 @@ class CompilerDaemonTest : KotlinIntegrationTestBase() {
 
                     logFile1.assertLogContainsSequence("Shutdown started")
                     logFile2.assertLogContainsSequence("Shutdown started")
+                }
+            }
+        }
+    }
+
+    private fun getJdk8Location() = System.getenv("JDK_18") ?: System.getenv("JAVA_HOME")
+
+    fun testNewDaemonIsNotStartedForSameJavaExecutable() {
+        withFlagFile(getTestName(true), "-client1.alive") { flagFile1 ->
+            withFlagFile(getTestName(true), "-client2.alive") { flagFile2 ->
+                val daemonOptions = makeTestDaemonOptions(getTestName(true))
+                val compilerIdJdk8 = CompilerId.makeCompilerId(
+                    compilerClassPath +
+                            File(KotlinIntegrationTestBase.getCompilerLib(), "kotlin-compiler-sources.jar"),
+                    File(getJdk8Location()).resolve("bin/java")
+                )
+
+                withLogFile("kotlin-daemon-test-1") { logFile ->
+                    val daemonJVMOptions = makeTestDaemonJvmOptions(logFile)
+                    assertTrue(logFile.length() == 0L)
+
+                    val daemon1 = KotlinCompilerClient.connectToCompileService(
+                        compilerIdJdk8,
+                        flagFile1,
+                        daemonJVMOptions,
+                        daemonOptions,
+                        DaemonReportingTargets(out = System.err),
+                        autostart = true
+                    )
+                    assertNotNull("failed to connect daemon", daemon1)
+                    logFile.assertLogContainsSequence("INFO: starting daemon")
+
+
+                    val daemon2 = KotlinCompilerClient.connectToCompileService(
+                        compilerIdJdk8,
+                        flagFile2,
+                        daemonJVMOptions,
+                        daemonOptions,
+                        DaemonReportingTargets(out = System.err),
+                        autostart = true
+                    )
+                    assertNotNull("failed to connect daemon", daemon2)
+
+                    val logContent = logFile.readText().lines()
+                    assert(
+                        logContent.filter { it.contains("INFO: starting daemon") }.size == 1
+                    ) {
+                        "Second daemon instance was started!"
+                    }
+                    assert(
+                        logContent.filter {
+                            it.contains("INFO: Registered a client alive file: ${flagFile2.absolutePath}")
+                        }.size == 1
+                    ) {
+                        "Second client was not connected to the same instance!"
+                    }
+
+                    KotlinCompilerClient.shutdownCompileService(compilerIdJdk8, daemonOptions)
+
+                    Thread.sleep(100)
+
+                    logFile.assertLogContainsSequence("Shutdown started")
+                }
+            }
+        }
+    }
+
+    // Ignored on Windows OS due to https://bugs.openjdk.java.net/browse/JDK-8189953 bug in JDK 9
+    // Should be unignored once JDK10+ will be available by default on CI agents
+    fun testNewDaemonIsStartedOnJavaExecutableChange() {
+        if (SystemInfo.isWindows) return
+
+        withFlagFile(getTestName(true), "-client1.alive") { flagFile1 ->
+            withFlagFile(getTestName(true), "-client2.alive") { flagFile2 ->
+                val daemonOptions = makeTestDaemonOptions(getTestName(true))
+                val compilerIdJdk8 = CompilerId.makeCompilerId(
+                    compilerClassPath +
+                            File(KotlinIntegrationTestBase.getCompilerLib(), "kotlin-compiler-sources.jar"),
+                    File(getJdk8Location()).resolve("bin/java")
+                )
+                val compilerIdJdk9 = CompilerId.makeCompilerId(
+                    compilerClassPath +
+                            File(KotlinIntegrationTestBase.getCompilerLib(), "kotlin-compiler-sources.jar"),
+                    File(System.getenv("JDK_9")).resolve("bin/java")
+                )
+
+                withLogFile("kotlin-daemon-test-1") { logFile1 ->
+                    withLogFile("kotlin-daemon-test-2") { logFile2 ->
+                        val daemonJdk8JVMOptions = makeTestDaemonJvmOptions(logFile1)
+                        assertTrue(logFile1.length() == 0L)
+                        val daemonJdk9JVMOptions = makeTestDaemonJvmOptions(logFile2)
+                        assertTrue(logFile2.length() == 0L)
+
+                        val daemonJdk7 = KotlinCompilerClient.connectToCompileService(
+                            compilerIdJdk8,
+                            flagFile1,
+                            daemonJdk8JVMOptions,
+                            daemonOptions,
+                            DaemonReportingTargets(out = System.err),
+                            autostart = true
+                        )
+                        assertNotNull("failed to connect daemon", daemonJdk7)
+                        logFile1.assertLogContainsSequence("INFO: starting daemon")
+
+                        val daemonJdk9 = KotlinCompilerClient.connectToCompileService(
+                            compilerIdJdk9,
+                            flagFile2,
+                            daemonJdk9JVMOptions,
+                            daemonOptions,
+                            DaemonReportingTargets(out = System.err),
+                            autostart = true
+                        )
+                        assertNotNull("failed to connect daemon", daemonJdk9)
+                        logFile2.assertLogContainsSequence("INFO: starting daemon")
+
+                        KotlinCompilerClient.shutdownCompileService(compilerIdJdk8, daemonOptions)
+                        KotlinCompilerClient.shutdownCompileService(compilerIdJdk9, daemonOptions)
+
+                        Thread.sleep(100)
+
+                        logFile1.assertLogContainsSequence("Shutdown started")
+                        logFile2.assertLogContainsSequence("Shutdown started")
+                    }
                 }
             }
         }
@@ -515,12 +632,12 @@ class CompilerDaemonTest : KotlinIntegrationTestBase() {
         val daemonOptions = makeTestDaemonOptions(getTestName(true))
         val jar = testTempDir.absolutePath + File.separator + "hello.jar"
         val args = listOf(
-                File(File(System.getProperty("java.home"), "bin"), "java").absolutePath,
-                "-Xmx256m",
-                "-D$COMPILE_DAEMON_VERBOSE_REPORT_PROPERTY",
-                "-cp",
-                daemonClientClassPath.joinToString(File.pathSeparator) { it.absolutePath },
-                KotlinCompilerClient::class.qualifiedName!!) +
+            File(File(System.getProperty("java.home"), "bin"), "java").absolutePath,
+            "-Xmx256m",
+            "-D${CompilerSystemProperties.COMPILE_DAEMON_VERBOSE_REPORT_PROPERTY.property}",
+            "-cp",
+            daemonClientClassPath.joinToString(File.pathSeparator) { it.absolutePath },
+            KotlinCompilerClient::class.qualifiedName!!) +
                    daemonOptions.mappers.flatMap { it.toArgs(COMPILE_DAEMON_CMDLINE_OPTIONS_PREFIX) } +
                    compilerId.mappers.flatMap { it.toArgs(COMPILE_DAEMON_CMDLINE_OPTIONS_PREFIX) } +
                    File(getHelloAppBaseDir(), "hello.kt").absolutePath +
@@ -648,16 +765,16 @@ class CompilerDaemonTest : KotlinIntegrationTestBase() {
             }
         }
 
-        System.setProperty(COMPILE_DAEMON_VERBOSE_REPORT_PROPERTY, "true")
-        System.setProperty(COMPILE_DAEMON_STARTUP_TIMEOUT_PROPERTY, "100000")
+        CompilerSystemProperties.COMPILE_DAEMON_VERBOSE_REPORT_PROPERTY.value = "true"
+        CompilerSystemProperties.COMPILE_DAEMON_STARTUP_TIMEOUT_PROPERTY.value = "100000"
 
         val succeeded = try {
             (1..ParallelStartParams.threads).forEach { connectThread(it - 1) }
             doneLatch.await(PARALLEL_WAIT_TIMEOUT_S, TimeUnit.SECONDS)
         }
         finally {
-            System.clearProperty(COMPILE_DAEMON_STARTUP_TIMEOUT_PROPERTY)
-            System.clearProperty(COMPILE_DAEMON_VERBOSE_REPORT_PROPERTY)
+            CompilerSystemProperties.COMPILE_DAEMON_STARTUP_TIMEOUT_PROPERTY.clear()
+            CompilerSystemProperties.COMPILE_DAEMON_VERBOSE_REPORT_PROPERTY.clear()
         }
 
         Thread.sleep(100) // Wait for processes to finish and close log files
@@ -997,9 +1114,12 @@ internal inline fun withLogFile(prefix: String, suffix: String = ".log", printLo
 // if file path is given in windows form (using backslash as a separator); the reason is unknown
 // this function makes a path with forward slashed, that works on windows too
 internal val File.loggerCompatiblePath: String
-    get() =
-        if (OSKind.current == OSKind.Windows) absolutePath.replace('\\', '/')
-        else absolutePath
+    get() = invariantSeparatorsPath
+
+@OptIn(ExperimentalPathApi::class)
+internal val Path.loggerCompatiblePath: String
+    get() = invariantSeparatorsPathString
+
 
 open class TestKotlinScriptDummyDependenciesResolver : DependenciesResolver {
 

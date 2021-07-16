@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
 import org.jetbrains.kotlin.gradle.dsl.NativeCacheKind
 import org.jetbrains.kotlin.gradle.plugin.PropertiesProvider
 import org.jetbrains.kotlin.gradle.plugin.mpp.isAtLeast
+import org.jetbrains.kotlin.gradle.tasks.CacheBuilder
 import org.jetbrains.kotlin.gradle.utils.NativeCompilerDownloader
 import org.jetbrains.kotlin.konan.CompilerVersion
 import org.jetbrains.kotlin.konan.properties.resolvablePropertyString
@@ -33,8 +34,15 @@ internal val Project.konanVersion: CompilerVersion
     get() = PropertiesProvider(this).nativeVersion?.let { CompilerVersion.fromString(it) }
         ?: NativeCompilerDownloader.DEFAULT_KONAN_VERSION
 
-internal val Project.konanCacheKind: NativeCacheKind
-    get() = PropertiesProvider(this).nativeCacheKind
+internal fun Project.getKonanCacheKind(target: KonanTarget): NativeCacheKind {
+    val commonCacheKind = PropertiesProvider(this).nativeCacheKind
+    val targetCacheKind = PropertiesProvider(this).nativeCacheKindForTarget(target)
+    return when {
+        targetCacheKind != null -> targetCacheKind
+        commonCacheKind != null -> commonCacheKind
+        else -> CacheBuilder.defaultCacheKindForTarget(target)
+    }
+}
 
 internal abstract class KotlinNativeToolRunner(
     protected val toolName: String,
@@ -92,11 +100,13 @@ internal abstract class AbstractKotlinNativeCInteropRunner(toolName: String, pro
     override val mustRunViaExec get() = true
 
     override val execEnvironment by lazy {
-        val llvmExecutablesPath = llvmExecutablesPath
-        if (llvmExecutablesPath != null)
-            super.execEnvironment + ("PATH" to "$llvmExecutablesPath;${System.getenv("PATH")}")
-        else
-            super.execEnvironment
+        val result = mutableMapOf<String, String>()
+        result.putAll(super.execEnvironment)
+        result["LIBCLANG_DISABLE_CRASH_RECOVERY"] = "1"
+        llvmExecutablesPath?.let {
+            result["PATH"] = "$it;${System.getenv("PATH")}"
+        }
+        result
     }
 
     private val llvmExecutablesPath: String? by lazy {

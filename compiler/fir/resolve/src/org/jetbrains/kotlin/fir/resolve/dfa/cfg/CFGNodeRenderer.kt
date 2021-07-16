@@ -60,6 +60,7 @@ fun CFGNode<*>.render(): String =
                 is VariableAssignmentNode -> "Assignment: ${fir.lValue.render(CfgRenderMode)}"
                 is FunctionCallNode -> "Function call: ${fir.render(CfgRenderMode)}"
                 is DelegatedConstructorCallNode -> "Delegated constructor call: ${fir.render(CfgRenderMode)}"
+                is StringConcatenationCallNode -> "String concatenation call: ${fir.render(CfgRenderMode)}"
                 is ThrowExceptionNode -> "Throw: ${fir.render(CfgRenderMode)}"
 
                 is TryExpressionEnterNode -> "Try expression enter"
@@ -85,6 +86,8 @@ fun CFGNode<*>.render(): String =
                 is PartOfClassInitializationNode -> "Part of class initialization"
                 is PropertyInitializerEnterNode -> "Enter property"
                 is PropertyInitializerExitNode -> "Exit property"
+                is FieldInitializerEnterNode -> "Enter field"
+                is FieldInitializerExitNode -> "Exit field"
                 is InitBlockEnterNode -> "Enter init block"
                 is InitBlockExitNode -> "Exit init block"
                 is AnnotationEnterNode -> "Enter annotation"
@@ -116,16 +119,19 @@ fun CFGNode<*>.render(): String =
                 is ElvisRhsEnterNode -> "Enter rhs of ?:"
                 is ElvisExitNode -> "Exit ?:"
 
+                is CallableReferenceNode -> "Callable reference: ${fir.render(CfgRenderMode)}"
+
                 is AbstractBinaryExitNode -> throw IllegalStateException()
             },
         )
     }
 
-private object CfgRenderMode : FirRenderer.RenderMode(
+private val CfgRenderMode = FirRenderer.RenderMode(
     renderLambdaBodies = false,
     renderCallArguments = false,
     renderCallableFqNames = false,
-    renderDeclarationResolvePhase = false
+    renderDeclarationResolvePhase = false,
+    renderAnnotation = false,
 )
 
 private fun FirFunction<*>.name(): String = when (this) {

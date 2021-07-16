@@ -6,12 +6,13 @@
 package org.jetbrains.kotlin.fir
 
 import org.jetbrains.kotlin.contracts.description.EventOccurrencesRange
-import org.jetbrains.kotlin.fir.declarations.FirAnonymousFunction
-import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
-import org.jetbrains.kotlin.fir.declarations.FirTypeParameter
-import org.jetbrains.kotlin.fir.declarations.FirValueParameter
+import org.jetbrains.kotlin.descriptors.EffectiveVisibility
+import org.jetbrains.kotlin.descriptors.Modality
+import org.jetbrains.kotlin.descriptors.Visibility
+import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.declarations.builder.buildAnonymousFunction
 import org.jetbrains.kotlin.fir.declarations.builder.buildTypeParameter
+import org.jetbrains.kotlin.fir.declarations.impl.FirDeclarationStatusImpl
 import org.jetbrains.kotlin.fir.diagnostics.ConeDiagnostic
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.expressions.builder.*
@@ -60,7 +61,7 @@ fun FirFunctionCall.copy(
 fun FirAnonymousFunction.copy(
     receiverTypeRef: FirTypeRef? = this.receiverTypeRef,
     source: FirSourceElement? = this.source,
-    session: FirSession = this.session,
+    session: FirSession = this.declarationSiteSession,
     origin: FirDeclarationOrigin = this.origin,
     returnTypeRef: FirTypeRef = this.returnTypeRef,
     valueParameters: List<FirValueParameter> = this.valueParameters,
@@ -73,7 +74,7 @@ fun FirAnonymousFunction.copy(
 ): FirAnonymousFunction {
     return buildAnonymousFunction {
         this.source = source
-        this.session = session
+        declarationSiteSession = session
         this.origin = origin
         this.returnTypeRef = returnTypeRef
         this.receiverTypeRef = receiverTypeRef
@@ -115,7 +116,7 @@ fun FirTypeParameter.copy(
 ): FirTypeParameter {
     return buildTypeParameter {
         source = this@copy.source
-        session = this@copy.session
+        declarationSiteSession = this@copy.declarationSiteSession
         name = this@copy.name
         symbol = this@copy.symbol
         variance = this@copy.variance
@@ -137,6 +138,8 @@ fun FirWhenExpression.copy(
     branches += this@copy.branches
     typeRef = resultType
     this.annotations += annotations
+    usedAsExpression = this@copy.usedAsExpression
+    exhaustivenessStatus = this@copy.exhaustivenessStatus
 }
 
 fun FirTryExpression.copy(
@@ -163,4 +166,24 @@ fun FirCheckNotNullCall.copy(
     argumentList = this@copy.argumentList
     this.typeRef = resultType
     this.annotations += annotations
+}
+
+fun FirDeclarationStatus.copy(
+    isExpect: Boolean = this.isExpect,
+    newModality: Modality? = null,
+    newVisibility: Visibility? = null,
+    newEffectiveVisibility: EffectiveVisibility? = null
+): FirDeclarationStatus {
+    return if (this.isExpect == isExpect && newModality == null && newVisibility == null) {
+        this
+    } else {
+        require(this is FirDeclarationStatusImpl) { "Unexpected class ${this::class}" }
+        this.resolved(
+            newVisibility ?: visibility,
+            newModality ?: modality!!,
+            newEffectiveVisibility ?: EffectiveVisibility.Public
+        ).apply {
+            this.isExpect = isExpect
+        }
+    }
 }

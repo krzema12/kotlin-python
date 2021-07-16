@@ -19,6 +19,7 @@ import org.jetbrains.kotlin.fir.declarations.builder.buildAnonymousFunction
 import org.jetbrains.kotlin.fir.declarations.builder.buildProperty
 import org.jetbrains.kotlin.fir.declarations.builder.buildValueParameter
 import org.jetbrains.kotlin.fir.declarations.impl.FirDeclarationStatusImpl
+import org.jetbrains.kotlin.fir.diagnostics.ConeNotAnnotationContainer
 import org.jetbrains.kotlin.fir.diagnostics.ConeSimpleDiagnostic
 import org.jetbrains.kotlin.fir.diagnostics.DiagnosticKind
 import org.jetbrains.kotlin.fir.expressions.*
@@ -38,10 +39,9 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.types.FirTypeProjection
 import org.jetbrains.kotlin.fir.types.FirTypeRef
-import org.jetbrains.kotlin.fir.types.builder.buildImplicitTypeRef
 import org.jetbrains.kotlin.lexer.KtTokens.*
-import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.stubs.elements.KtConstantExpressionElementType
+import org.jetbrains.kotlin.types.ConstantValueKind
 import org.jetbrains.kotlin.types.expressions.OperatorConventions
 import org.jetbrains.kotlin.util.OperatorNameConventions
 
@@ -50,15 +50,16 @@ class ExpressionsConverter(
     private val stubMode: Boolean,
     tree: FlyweightCapableTreeStructure<LighterASTNode>,
     private val declarationsConverter: DeclarationsConverter,
-    offset: Int,
     context: Context<LighterASTNode> = Context()
-) : BaseConverter(session, tree, offset, context) {
+) : BaseConverter(session, tree, context) {
+    override val offset: Int
+        get() = declarationsConverter.offset
 
     inline fun <reified R : FirElement> getAsFirExpression(expression: LighterASTNode?, errorReason: String = ""): R {
         return expression?.let {
             convertExpression(it, errorReason)
         } as? R ?: buildErrorExpression(
-            null, ConeSimpleDiagnostic(errorReason, DiagnosticKind.ExpressionRequired)
+            expression?.toFirSourceElement(), ConeSimpleDiagnostic(errorReason, DiagnosticKind.ExpressionExpected)
         ) as R
     }
 
@@ -68,8 +69,10 @@ class ExpressionsConverter(
             return when (expression.tokenType) {
                 LAMBDA_EXPRESSION -> {
                     val lambdaTree = LightTree2Fir.buildLightTreeLambdaExpression(expression.asText)
-                    ExpressionsConverter(baseSession, stubMode, lambdaTree, declarationsConverter, offset, context)
-                        .convertLambdaExpression(lambdaTree.root)
+                    declarationsConverter.withOffset(offset + expression.startOffset) {
+                        ExpressionsConverter(baseSession, stubMode, lambdaTree, declarationsConverter, context)
+                            .convertLambdaExpression(lambdaTree.root)
+                    }
                 }
                 BINARY_EXPRESSION -> convertBinaryExpression(expression)
                 BINARY_WITH_TYPE -> convertBinaryWithTypeRHSExpression(expression) {
@@ -107,7 +110,7 @@ class ExpressionsConverter(
 
                 OBJECT_LITERAL -> declarationsConverter.convertObjectLiteral(expression)
                 FUN -> declarationsConverter.convertFunctionDeclaration(expression)
-                else -> buildErrorExpression(null, ConeSimpleDiagnostic(errorReason, DiagnosticKind.ExpressionRequired))
+                else -> buildErrorExpression(null, ConeSimpleDiagnostic(errorReason, DiagnosticKind.ExpressionExpected))
             }
         }
 
@@ -132,7 +135,7 @@ class ExpressionsConverter(
         val target: FirFunctionTarget
         return buildAnonymousFunction {
             source = expressionSource
-            session = baseSession
+            declarationSiteSession = baseSession
             origin = FirDeclarationOrigin.Source
             returnTypeRef = implicitType
             receiverTypeRef = implicitType
@@ -143,15 +146,16 @@ class ExpressionsConverter(
             }
             target = FirFunctionTarget(labelName = label?.name, isLambda = true)
             context.firFunctionTargets += target
-            var destructuringBlock: FirExpression? = null
+            val destructuringStatements = mutableListOf<FirStatement>()
             for (valueParameter in valueParameterList) {
                 val multiDeclaration = valueParameter.destructuringDeclaration
                 valueParameters += if (multiDeclaration != null) {
-                    val name = Name.special("<destruct>")
+                    val name = DESTRUCTURING_NAME
                     val multiParameter = buildValueParameter {
-                        session = baseSession
+                        source = valueParameter.firValueParameter.source
+                        declarationSiteSession = baseSession
                         origin = FirDeclarationOrigin.Source
-                        returnTypeRef = buildImplicitTypeRef()
+                        returnTypeRef = valueParameter.firValueParameter.returnTypeRef
                         this.name = name
                         symbol = FirVariableSymbol(name)
                         defaultValue = null
@@ -159,12 +163,12 @@ class ExpressionsConverter(
                         isNoinline = false
                         isVararg = false
                     }
-                    destructuringBlock = generateDestructuringBlock(
+                    destructuringStatements += generateDestructuringBlock(
                         this@ExpressionsConverter.baseSession,
                         multiDeclaration,
                         multiParameter,
                         tmpVariable = false
-                    )
+                    ).statements
                     multiParameter
                 } else {
                     valueParameter.firValueParameter
@@ -172,22 +176,22 @@ class ExpressionsConverter(
             }
 
             body = if (block != null) {
-                declarationsConverter.convertBlockExpressionWithoutBuilding(block!!).apply {
-                    if (statements.isEmpty()) {
-                        statements.add(
-                            buildReturnExpression {
-                                source = expressionSource
-                                this.target = target
-                                result = buildUnitExpression { source = expressionSource }
-                            }
-                        )
-                    }
-                    if (destructuringBlock is FirBlock) {
-                        for ((index, statement) in destructuringBlock.statements.withIndex()) {
-                            statements.add(index, statement)
+                declarationsConverter.withOffset(expressionSource.startOffset) {
+                    declarationsConverter.convertBlockExpressionWithoutBuilding(block!!).apply {
+                        if (statements.isEmpty()) {
+                            statements.add(
+                                buildReturnExpression {
+                                    source = expressionSource.fakeElement(FirFakeSourceElementKind.ImplicitReturn)
+                                    this.target = target
+                                    result = buildUnitExpression {
+                                        source = expressionSource.fakeElement(FirFakeSourceElementKind.ImplicitUnit)
+                                    }
+                                }
+                            )
                         }
-                    }
-                }.build()
+                        statements.addAll(0, destructuringStatements)
+                    }.build()
+                }
             } else {
                 buildSingleExpressionBlock(buildErrorExpression(null, ConeSimpleDiagnostic("Lambda has no body", DiagnosticKind.Syntax)))
             }
@@ -258,7 +262,7 @@ class ExpressionsConverter(
             buildFunctionCall {
                 source = binaryExpression.toFirSourceElement()
                 calleeReference = buildSimpleNamedReference {
-                    source = this@buildFunctionCall.source
+                    source = operationReferenceSource ?: this@buildFunctionCall.source
                     name = conventionCallName ?: operationTokenName.nameAsSafeName()
                 }
                 explicitReceiver = leftArgAsFir
@@ -370,14 +374,14 @@ class ExpressionsConverter(
                 }
                 val receiver = getAsFirExpression<FirExpression>(argument, "No operand")
                 if (operationToken == PLUS || operationToken == MINUS) {
-                    if (receiver is FirConstExpression<*> && receiver.kind == FirConstKind.IntegerLiteral) {
+                    if (receiver is FirConstExpression<*> && receiver.kind == ConstantValueKind.IntegerLiteral) {
                         val value = receiver.value as Long
                         val convertedValue = when (operationToken) {
                             MINUS -> -value
                             PLUS -> value
                             else -> error("Should not be here")
                         }
-                        return buildConstExpression(unaryExpression.toFirSourceElement(), FirConstKind.IntegerLiteral, convertedValue)
+                        return buildConstExpression(unaryExpression.toFirSourceElement(), ConstantValueKind.IntegerLiteral, convertedValue)
                     }
                 }
                 buildFunctionCall {
@@ -408,10 +412,10 @@ class ExpressionsConverter(
             }
         }
 
-        return firExpression?.also {
-            require(it is FirAnnotationContainer)
-            (it.annotations as MutableList<FirAnnotationCall>) += firAnnotationList
-        } ?: buildErrorExpression(null, ConeSimpleDiagnostic("Strange annotated expression: ${firExpression?.render()}", DiagnosticKind.Syntax))
+        val result = firExpression ?: buildErrorExpression(null, ConeNotAnnotationContainer(firExpression?.render() ?: "???"))
+        require(result is FirAnnotationContainer)
+        (result.annotations as MutableList<FirAnnotationCall>) += firAnnotationList
+        return result
     }
 
     /**
@@ -488,10 +492,16 @@ class ExpressionsConverter(
 
         (firSelector as? FirQualifiedAccess)?.let {
             if (isSafe) {
-                return it.wrapWithSafeCall(firReceiver!!)
+                return it.wrapWithSafeCall(
+                    firReceiver!!,
+                    dotQualifiedExpression.toFirSourceElement(FirFakeSourceElementKind.DesugaredSafeCallExpression)
+                )
             }
 
             it.replaceExplicitReceiver(firReceiver)
+
+            @OptIn(FirImplementationDetail::class)
+            it.replaceSource(dotQualifiedExpression.toFirSourceElement())
         }
         return firSelector
     }
@@ -539,7 +549,7 @@ class ExpressionsConverter(
         val (calleeReference, explicitReceiver, isImplicitInvoke) = when {
             name != null -> CalleeAndReceiver(
                 buildSimpleNamedReference {
-                    this.source = source
+                    this.source = callSuffix.getFirstChildExpressionUnwrapped()?.toFirSourceElement() ?: source
                     this.name = name.nameAsSafeName()
                 }
             )
@@ -632,7 +642,7 @@ class ExpressionsConverter(
                     buildProperty {
                         source = it.toFirSourceElement()
                         origin = FirDeclarationOrigin.Source
-                        session = baseSession
+                        declarationSiteSession = baseSession
                         returnTypeRef = variable.returnTypeRef
                         name = variable.name
                         initializer = variable.initializer
@@ -659,27 +669,29 @@ class ExpressionsConverter(
             source = whenExpression.toFirSourceElement()
             this.subject = subjectExpression
             this.subjectVariable = subjectVariable
+            usedAsExpression = whenExpression.usedAsExpression
             for (entry in whenEntries) {
                 val branch = entry.firBlock
+                val entrySource = entry.node.toFirSourceElement()
                 branches += if (!entry.isElse) {
                     if (hasSubject) {
                         val firCondition = entry.toFirWhenCondition()
                         buildWhenBranch {
-                            source = branch.source
+                            source = entrySource
                             condition = firCondition
                             result = branch 
                         }
                     } else {
                         val firCondition = entry.toFirWhenConditionWithoutSubject()
                         buildWhenBranch {
-                            source = branch.source
+                            source = entrySource
                             condition = firCondition
                             result = branch
                         }
                     }
                 } else {
                     buildWhenBranch {
-                        source = branch.source
+                        source = entrySource
                         condition = buildElseIfTrueCondition()
                         result = branch
                     }
@@ -711,7 +723,7 @@ class ExpressionsConverter(
             }
         }
 
-        return WhenEntry(conditions, firBlock, isElse)
+        return WhenEntry(conditions, firBlock, whenEntry, isElse)
     }
 
     private fun convertWhenConditionExpression(whenCondition: LighterASTNode, whenRefWithSubject: FirExpressionRef<FirWhenExpression>?): FirExpression {
@@ -747,6 +759,9 @@ class ExpressionsConverter(
                     conditionSource = it.toFirSourceElement()
                     isNegate = true
                 }
+                it.tokenType == OPERATION_REFERENCE -> {
+                    conditionSource = it.toFirSourceElement()
+                }
                 else -> if (it.isExpression()) firExpression = getAsFirExpression(it)
             }
         }
@@ -754,6 +769,7 @@ class ExpressionsConverter(
         val subjectExpression = if (whenRefWithSubject != null) {
             buildWhenSubjectExpression {
                 whenRef = whenRefWithSubject
+                source = whenCondition.toFirSourceElement()
             }
         } else {
             return buildErrorExpression {
@@ -815,10 +831,11 @@ class ExpressionsConverter(
         }
         val getArgument = context.arraySetArgument.remove(arrayAccess)
         return buildFunctionCall {
-            source = arrayAccess.toFirSourceElement()
+            val isGet = getArgument == null
+            source = (if (isGet) arrayAccess else arrayAccess.getParent()!!).toFirSourceElement()
             calleeReference = buildSimpleNamedReference {
-                source = this@buildFunctionCall.source
-                name = if (getArgument == null) OperatorNameConventions.GET else OperatorNameConventions.SET
+                source = arrayAccess.toFirSourceElement().fakeElement(FirFakeSourceElementKind.ArrayAccessNameReference)
+                name = if (isGet) OperatorNameConventions.GET else OperatorNameConventions.SET
             }
             explicitReceiver = firExpression
             argumentList = buildArgumentList {
@@ -877,18 +894,22 @@ class ExpressionsConverter(
      */
     private fun convertDoWhile(doWhileLoop: LighterASTNode): FirElement {
         var block: LighterASTNode? = null
-        var firCondition: FirExpression = buildErrorExpression(null, ConeSimpleDiagnostic("No condition in do-while loop", DiagnosticKind.Syntax))
-        doWhileLoop.forEachChildren {
-            when (it.tokenType) {
-                BODY -> block = it
-                CONDITION -> firCondition = getAsFirExpression(it, "No condition in do-while loop")
-            }
-        }
+        var firCondition: FirExpression =
+            buildErrorExpression(null, ConeSimpleDiagnostic("No condition in do-while loop", DiagnosticKind.Syntax))
 
+        val target: FirLoopTarget
         return FirDoWhileLoopBuilder().apply {
             source = doWhileLoop.toFirSourceElement()
+            // For break/continue in the do-while loop condition, prepare the loop target first so that it can refer to the same loop.
+            target = prepareTarget()
+            doWhileLoop.forEachChildren {
+                when (it.tokenType) {
+                    BODY -> block = it
+                    CONDITION -> firCondition = getAsFirExpression(it, "No condition in do-while loop")
+                }
+            }
             condition = firCondition
-        }.configure { convertLoopBody(block) }
+        }.configure(target) { convertLoopBody(block) }
     }
 
     /**
@@ -905,10 +926,14 @@ class ExpressionsConverter(
             }
         }
 
+        val target: FirLoopTarget
         return FirWhileLoopBuilder().apply {
             source = whileLoop.toFirSourceElement()
             condition = firCondition
-        }.configure { convertLoopBody(block) }
+            // break/continue in the while loop condition will refer to an outer loop if any.
+            // So, prepare the loop target after building the condition.
+            target = prepareTarget()
+        }.configure(target) { convertLoopBody(block) }
     }
 
     /**
@@ -927,37 +952,58 @@ class ExpressionsConverter(
             }
         }
 
+        val fakeSource = forLoop.toFirSourceElement(FirFakeSourceElementKind.DesugaredForLoop)
+        val target: FirLoopTarget
+        // NB: FirForLoopChecker relies on this block existence and structure
         return buildBlock {
-            source = forLoop.toFirSourceElement()
+            source = fakeSource
             val iteratorVal = generateTemporaryVariable(
-                this@ExpressionsConverter.baseSession, null, Name.special("<iterator>"),
+                this@ExpressionsConverter.baseSession,
+                rangeExpression.source?.fakeElement(FirFakeSourceElementKind.DesugaredForLoop),
+                ITERATOR_NAME,
                 buildFunctionCall {
-                    calleeReference = buildSimpleNamedReference { name = Name.identifier("iterator") }
+                    source = fakeSource
+                    calleeReference = buildSimpleNamedReference {
+                        source = fakeSource
+                        name = OperatorNameConventions.ITERATOR
+                    }
                     explicitReceiver = rangeExpression
                 }
             )
             statements += iteratorVal
             statements += FirWhileLoopBuilder().apply {
-                source = forLoop.toFirSourceElement()
+                source = fakeSource
                 condition = buildFunctionCall {
-                    calleeReference = buildSimpleNamedReference { name = Name.identifier("hasNext") }
-                    explicitReceiver = generateResolvedAccessExpression(null, iteratorVal)
+                    source = fakeSource
+                    calleeReference = buildSimpleNamedReference {
+                        source = fakeSource
+                        name = OperatorNameConventions.HAS_NEXT
+                    }
+                    explicitReceiver = generateResolvedAccessExpression(fakeSource, iteratorVal)
                 }
-            }.configure {
+                // break/continue in the for loop condition will refer to an outer loop if any.
+                // So, prepare the loop target after building the condition.
+                target = prepareTarget()
+            }.configure(target) {
                 // NB: just body.toFirBlock() isn't acceptable here because we need to add some statements
                 buildBlock block@{
                     source = blockNode?.toFirSourceElement()
                     statements += convertLoopBody(blockNode).statements
-                    if (parameter == null) return@block
-                    val multiDeclaration = parameter!!.destructuringDeclaration
+                    val valueParameter = parameter ?: return@block
+                    val multiDeclaration = valueParameter.destructuringDeclaration
                     val firLoopParameter = generateTemporaryVariable(
-                        this@ExpressionsConverter.baseSession, null,
-                        if (multiDeclaration != null) Name.special("<destruct>") else parameter!!.firValueParameter.name,
+                        this@ExpressionsConverter.baseSession,
+                        valueParameter.firValueParameter.source,
+                        if (multiDeclaration != null) DESTRUCTURING_NAME else valueParameter.firValueParameter.name,
                         buildFunctionCall {
-                            calleeReference = buildSimpleNamedReference { name = Name.identifier("next") }
-                            explicitReceiver = generateResolvedAccessExpression(null, iteratorVal)
+                            source = fakeSource
+                            calleeReference = buildSimpleNamedReference {
+                                source = fakeSource
+                                name = OperatorNameConventions.NEXT
+                            }
+                            explicitReceiver = generateResolvedAccessExpression(fakeSource, iteratorVal)
                         },
-                        parameter!!.firValueParameter.returnTypeRef
+                        valueParameter.firValueParameter.returnTypeRef
                     )
                     if (multiDeclaration != null) {
                         val destructuringBlock = generateDestructuringBlock(
@@ -966,11 +1012,7 @@ class ExpressionsConverter(
                             firLoopParameter,
                             tmpVariable = true
                         )
-                        if (destructuringBlock is FirBlock) {
-                            for ((index, statement) in destructuringBlock.statements.withIndex()) {
-                                statements.add(index, statement)
-                            }
-                        }
+                        statements.addAll(0, destructuringBlock.statements)
                     } else {
                         statements.add(0, firLoopParameter)
                     }
@@ -1077,6 +1119,7 @@ class ExpressionsConverter(
         }
 
         return buildWhenExpression {
+            source = ifExpression.toFirSourceElement()
             val trueBranch = convertLoopBody(thenBlock)
             branches += buildWhenBranch {
                 source = thenBlock?.toFirSourceElement()
@@ -1090,10 +1133,26 @@ class ExpressionsConverter(
                     condition = buildElseIfTrueCondition()
                     result = elseBranch
                 }
-
             }
+            usedAsExpression = ifExpression.usedAsExpression
         }
     }
+
+    private val LighterASTNode.usedAsExpression: Boolean
+        get() {
+            var parent = getParent() ?: return true
+            if (parent.elementType == ANNOTATED_EXPRESSION) {
+                parent = parent.getParent() ?: return true
+            }
+            val parentTokenType = parent.tokenType
+            if (parentTokenType == BLOCK) return false
+            if (parentTokenType == THEN || parentTokenType == ELSE || parentTokenType == WHEN_ENTRY) {
+                return parent.getParent()?.usedAsExpression ?: true
+            }
+            if (parentTokenType != BODY) return true
+            val type = parent.getParent()?.tokenType ?: return true
+            return !(type == FOR || type == WHILE || type == DO_WHILE)
+        }
 
     /**
      * @see org.jetbrains.kotlin.parsing.KotlinExpressionParsing.parseJump
@@ -1122,7 +1181,9 @@ class ExpressionsConverter(
      */
     private fun convertReturn(returnExpression: LighterASTNode): FirExpression {
         var labelName: String? = null
-        var firExpression: FirExpression = buildUnitExpression()
+        var firExpression: FirExpression = buildUnitExpression {
+            source = returnExpression.toFirSourceElement(FirFakeSourceElementKind.ImplicitUnit)
+        }
         returnExpression.forEachChildren {
             when (it.tokenType) {
                 LABEL_QUALIFIER -> labelName = it.getAsStringWithoutBacktick().replace("@", "")
@@ -1130,7 +1191,11 @@ class ExpressionsConverter(
             }
         }
 
-        return firExpression.toReturn(labelName = labelName)
+        return firExpression.toReturn(
+            baseSource = returnExpression.toFirSourceElement(),
+            labelName = labelName,
+            fromKtReturnExpression = true
+        )
     }
 
     /**

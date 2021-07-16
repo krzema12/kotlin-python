@@ -8,7 +8,6 @@ package org.jetbrains.kotlin.gradle.plugin.sources
 import org.gradle.api.NamedDomainObjectFactory
 import org.gradle.api.Project
 import org.gradle.api.attributes.Usage
-import org.gradle.api.internal.file.FileResolver
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinUsages
@@ -17,7 +16,6 @@ import org.jetbrains.kotlin.gradle.targets.metadata.isKotlinGranularMetadataEnab
 import java.io.File
 
 internal abstract class KotlinSourceSetFactory<T : KotlinSourceSet> internal constructor(
-    protected val fileResolver: FileResolver,
     protected val project: Project
 ) : NamedDomainObjectFactory<KotlinSourceSet> {
 
@@ -29,11 +27,8 @@ internal abstract class KotlinSourceSetFactory<T : KotlinSourceSet> internal con
         return result
     }
 
-    protected open fun defaultSourceLocation(sourceSetName: String): File =
-        project.file("src/$sourceSetName")
-
     protected open fun setUpSourceSetDefaults(sourceSet: T) {
-        sourceSet.kotlin.srcDir(File(defaultSourceLocation(sourceSet.name), "kotlin"))
+        sourceSet.kotlin.srcDir(defaultSourceFolder(project, sourceSet.name, "kotlin"))
         defineSourceSetConfigurations(project, sourceSet)
     }
 
@@ -49,26 +44,37 @@ internal abstract class KotlinSourceSetFactory<T : KotlinSourceSet> internal con
     }
 
     protected abstract fun doCreateSourceSet(name: String): T
+
+    companion object {
+        /**
+         * @return default location of source folders for a kotlin source set
+         * e.g. src/jvmMain/kotlin  (sourceSetName="jvmMain", type="kotlin")
+         */
+        fun defaultSourceFolder(project: Project, sourceSetName: String, type: String): File {
+            return project.file("src/$sourceSetName/$type")
+        }
+    }
 }
 
+
 internal class DefaultKotlinSourceSetFactory(
-    project: Project,
-    fileResolver: FileResolver
-) : KotlinSourceSetFactory<DefaultKotlinSourceSet>(fileResolver, project) {
+    project: Project
+) : KotlinSourceSetFactory<DefaultKotlinSourceSet>(project) {
 
     override val itemClass: Class<DefaultKotlinSourceSet>
         get() = DefaultKotlinSourceSet::class.java
 
     override fun setUpSourceSetDefaults(sourceSet: DefaultKotlinSourceSet) {
         super.setUpSourceSetDefaults(sourceSet)
-        sourceSet.resources.srcDir(File(defaultSourceLocation(sourceSet.name), "resources"))
+        sourceSet.resources.srcDir(defaultSourceFolder(project, sourceSet.name, "resources"))
 
         val dependencyConfigurationWithMetadata = with(sourceSet) {
             listOf(
                 apiConfigurationName to apiMetadataConfigurationName,
                 implementationConfigurationName to implementationMetadataConfigurationName,
                 compileOnlyConfigurationName to compileOnlyMetadataConfigurationName,
-                runtimeOnlyConfigurationName to runtimeOnlyMetadataConfigurationName
+                runtimeOnlyConfigurationName to runtimeOnlyMetadataConfigurationName,
+                null to intransitiveMetadataConfigurationName
             )
         }
 
@@ -78,7 +84,10 @@ internal class DefaultKotlinSourceSetFactory(
                 attributes.attribute(Usage.USAGE_ATTRIBUTE, project.usageByName(KotlinUsages.KOTLIN_API))
                 isVisible = false
                 isCanBeConsumed = false
-                extendsFrom(project.configurations.maybeCreate(configurationName))
+
+                if (configurationName != null) {
+                    extendsFrom(project.configurations.maybeCreate(configurationName))
+                }
 
                 if (project.isKotlinGranularMetadataEnabled) {
                     attributes.attribute(Usage.USAGE_ATTRIBUTE, project.usageByName(KotlinUsages.KOTLIN_METADATA))

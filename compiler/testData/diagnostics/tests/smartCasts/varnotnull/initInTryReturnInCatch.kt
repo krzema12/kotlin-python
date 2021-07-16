@@ -55,7 +55,7 @@ fun test4() {
 fun test5() {
     var a: Int?// = null
     try {
-        <!UNUSED_VALUE!>a =<!> 3
+        a = 3
     }
     catch (e: Exception) {
         return
@@ -68,7 +68,7 @@ fun test5() {
 fun test6() {
     var a: Int?// = null
     try {
-        <!UNUSED_VALUE!>a =<!> 3
+        a = 3
     }
     catch (e: Exception) {
         return
@@ -76,5 +76,5 @@ fun test6() {
     finally {
         a = null
     }
-    <!OI;DEBUG_INFO_CONSTANT!>a<!><!UNSAFE_CALL!>.<!>hashCode() // a is null here
+    <!DEBUG_INFO_CONSTANT{OI}!>a<!><!UNSAFE_CALL!>.<!>hashCode() // a is null here
 }

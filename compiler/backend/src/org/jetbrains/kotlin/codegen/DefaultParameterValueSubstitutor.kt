@@ -27,13 +27,14 @@ import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtPureClassOrObject
 import org.jetbrains.kotlin.psi.KtPureElement
 import org.jetbrains.kotlin.resolve.DescriptorToSourceUtils
-import org.jetbrains.kotlin.resolve.DescriptorUtils.isInterface
+import org.jetbrains.kotlin.resolve.DescriptorUtils
 import org.jetbrains.kotlin.resolve.calls.components.hasDefaultValue
 import org.jetbrains.kotlin.resolve.isInlineClass
 import org.jetbrains.kotlin.resolve.jvm.AsmTypes
 import org.jetbrains.kotlin.resolve.jvm.annotations.findJvmOverloadsAnnotation
 import org.jetbrains.kotlin.resolve.jvm.diagnostics.JvmDeclarationOrigin
 import org.jetbrains.kotlin.resolve.jvm.diagnostics.JvmDeclarationOriginKind
+import org.jetbrains.kotlin.resolve.jvm.shouldHideConstructorDueToInlineClassTypeValueParameters
 import org.jetbrains.org.objectweb.asm.Label
 import org.jetbrains.org.objectweb.asm.Opcodes
 import org.jetbrains.org.objectweb.asm.Type
@@ -267,7 +268,9 @@ class DefaultParameterValueSubstitutor(val state: GenerationState) {
         if (classDescriptor.kind != ClassKind.CLASS) return false
 
         if (classOrObject.isLocal) return false
-        if (classDescriptor.isInline) return false
+        if (classDescriptor.isInlineClass()) return false
+        if (shouldHideConstructorDueToInlineClassTypeValueParameters(constructorDescriptor)) return false
+        if (DescriptorUtils.isSealedClass(classDescriptor)) return false
 
         if (CodegenBinding.canHaveOuter(state.bindingContext, classDescriptor)) return false
 

@@ -1,3 +1,5 @@
+// FIR_IDENTICAL
+
 object A {
     class B
     fun foo() = 1

@@ -20,11 +20,8 @@ import org.jetbrains.kotlin.fir.resolve.constructType
 import org.jetbrains.kotlin.fir.resolve.providers.FirSymbolProvider
 import org.jetbrains.kotlin.fir.resolve.providers.FirSymbolProviderInternals
 import org.jetbrains.kotlin.fir.scopes.FirScopeProvider
-import org.jetbrains.kotlin.fir.symbols.CallableId
-import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
-import org.jetbrains.kotlin.fir.symbols.impl.FirClassLikeSymbol
-import org.jetbrains.kotlin.fir.symbols.impl.FirNamedFunctionSymbol
-import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
+import org.jetbrains.kotlin.name.CallableId
+import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.builder.buildResolvedTypeRef
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
@@ -42,7 +39,7 @@ class FirCloneableSymbolProvider(session: FirSession, scopeProvider: FirScopePro
     private val klass = buildRegularClass {
         resolvePhase = FirResolvePhase.ANALYZED_DEPENDENCIES
         origin = FirDeclarationOrigin.Library
-        this.session = session
+        declarationSiteSession = session
         status = FirDeclarationStatusImpl(
             Visibilities.Public,
             Modality.ABSTRACT
@@ -50,7 +47,7 @@ class FirCloneableSymbolProvider(session: FirSession, scopeProvider: FirScopePro
         classKind = ClassKind.INTERFACE
         symbol = FirRegularClassSymbol(CLONEABLE_CLASS_ID)
         declarations += buildSimpleFunction {
-            this.session = session
+            declarationSiteSession = session
             resolvePhase = FirResolvePhase.ANALYZED_DEPENDENCIES
             origin = FirDeclarationOrigin.Library
             returnTypeRef = buildResolvedTypeRef {
@@ -71,7 +68,16 @@ class FirCloneableSymbolProvider(session: FirSession, scopeProvider: FirScopePro
     }
 
     @FirSymbolProviderInternals
-    override fun getTopLevelCallableSymbolsTo(destination: MutableList<FirCallableSymbol<*>>, packageFqName: FqName, name: Name) {}
+    override fun getTopLevelCallableSymbolsTo(destination: MutableList<FirCallableSymbol<*>>, packageFqName: FqName, name: Name) {
+    }
+
+    @FirSymbolProviderInternals
+    override fun getTopLevelFunctionSymbolsTo(destination: MutableList<FirNamedFunctionSymbol>, packageFqName: FqName, name: Name) {
+    }
+
+    @FirSymbolProviderInternals
+    override fun getTopLevelPropertySymbolsTo(destination: MutableList<FirPropertySymbol>, packageFqName: FqName, name: Name) {
+    }
 
     override fun getPackage(fqName: FqName): FqName? {
         return null

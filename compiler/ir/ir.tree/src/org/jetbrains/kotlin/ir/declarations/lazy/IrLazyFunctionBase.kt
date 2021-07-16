@@ -26,7 +26,7 @@ interface IrLazyFunctionBase : IrLazyDeclarationBase, IrTypeParametersContainer 
         }
 
     fun createValueParameters(): ReadWriteProperty<Any?, List<IrValueParameter>> =
-        lazyVar {
+        lazyVar(stubGenerator.lock) {
             typeTranslator.buildWithScope(this) {
                 descriptor.valueParameters.mapTo(arrayListOf()) {
                     stubGenerator.generateValueParameterStub(it).apply { parent = this@IrLazyFunctionBase }
@@ -34,15 +34,19 @@ interface IrLazyFunctionBase : IrLazyDeclarationBase, IrTypeParametersContainer 
             }
         }
 
-    fun createReceiverParameter(parameter: ReceiverParameterDescriptor?): ReadWriteProperty<Any?, IrValueParameter?> =
-        lazyVar {
-            typeTranslator.buildWithScope(this) {
+    fun createReceiverParameter(
+        parameter: ReceiverParameterDescriptor?,
+        functionDispatchReceiver: Boolean = false,
+    ): ReadWriteProperty<Any?, IrValueParameter?> =
+        lazyVar(stubGenerator.lock) {
+            if (functionDispatchReceiver && stubGenerator.extensions.isStaticFunction(descriptor)) null
+            else typeTranslator.buildWithScope(this) {
                 parameter?.generateReceiverParameterStub()?.also { it.parent = this@IrLazyFunctionBase }
             }
         }
 
     fun createReturnType(): ReadWriteProperty<Any?, IrType> =
-        lazyVar {
+        lazyVar(stubGenerator.lock) {
             typeTranslator.buildWithScope(this) {
                 descriptor.returnType!!.toIrType()
             }

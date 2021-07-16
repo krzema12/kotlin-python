@@ -33,8 +33,6 @@ fun log(s: String): String {
 
 inline fun myRun(f: () -> Unit) = f()
 
-
-// MODULE: main(lib)
 // FILE: main.kt
 
 import utils.*

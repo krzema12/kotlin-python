@@ -4,7 +4,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ *  
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -49,29 +49,30 @@ import org.jetbrains.kotlin.idea.util.getProjectJdkTableSafe
 import org.jetbrains.kotlin.idea.util.projectStructure.allModules
 import org.jetbrains.kotlin.idea.util.projectStructure.sdk
 import org.jetbrains.kotlin.platform.TargetPlatform
-import org.jetbrains.kotlin.platform.js.JsPlatforms
-import org.jetbrains.kotlin.platform.jvm.JvmPlatforms
-import org.jetbrains.kotlin.platform.js.isJs
 import org.jetbrains.kotlin.platform.isCommon
-import org.jetbrains.kotlin.test.KotlinTestUtils
-import org.jetbrains.plugins.gradle.tooling.annotation.TargetVersions
-import org.junit.*
+import org.jetbrains.kotlin.platform.js.JsPlatforms
+import org.jetbrains.kotlin.platform.js.isJs
+import org.jetbrains.kotlin.platform.jvm.JvmPlatforms
+import org.jetbrains.kotlin.test.util.KtTestUtil
+import org.jetbrains.plugins.gradle.tooling.annotation.PluginTargetVersions
+import org.junit.Assert
+import org.junit.Test
 
-internal fun GradleImportingTestCase.facetSettings(moduleName: String) = KotlinFacet.get(getModule(moduleName))!!.configuration.settings
+internal fun MultiplePluginVersionGradleImportingTestCase.facetSettings(moduleName: String) = KotlinFacet.get(getModule(moduleName))!!.configuration.settings
 
-internal val GradleImportingTestCase.facetSettings: KotlinFacetSettings
+internal val MultiplePluginVersionGradleImportingTestCase.facetSettings: KotlinFacetSettings
     get() = facetSettings("project_main")
 
-internal val GradleImportingTestCase.testFacetSettings: KotlinFacetSettings
+internal val MultiplePluginVersionGradleImportingTestCase.testFacetSettings: KotlinFacetSettings
     get() = facetSettings("project_test")
 
-internal fun GradleImportingTestCase.getSourceRootInfos(moduleName: String): List<Pair<String, JpsModuleSourceRootType<*>>> {
+internal fun MultiplePluginVersionGradleImportingTestCase.getSourceRootInfos(moduleName: String): List<Pair<String, JpsModuleSourceRootType<*>>> {
     return ModuleRootManager.getInstance(getModule(moduleName)).contentEntries.flatMap {
         it.sourceFolders.map { it.url.replace(projectPath, "") to it.rootType }
     }
 }
 
-class GradleFacetImportTest : GradleImportingTestCase() {
+class GradleFacetImportTest : MultiplePluginVersionGradleImportingTestCase() {
 
     private fun assertSameKotlinSdks(vararg moduleNames: String) {
         val sdks = moduleNames.map { getModule(it).sdk!! }
@@ -185,26 +186,6 @@ class GradleFacetImportTest : GradleImportingTestCase() {
     }
 
     @Test
-    fun testCoroutineImportByOptions() {
-        configureByFiles()
-        importProject()
-
-        with(facetSettings) {
-            Assert.assertEquals(LanguageFeature.State.ENABLED, coroutineSupport)
-        }
-    }
-
-    @Test
-    fun testCoroutineImportByProperties() {
-        configureByFiles()
-        importProject()
-
-        with(facetSettings) {
-            Assert.assertEquals(LanguageFeature.State.ENABLED, coroutineSupport)
-        }
-    }
-
-    @Test
     fun testJsImport() {
         configureByFiles()
         importProject()
@@ -269,7 +250,7 @@ class GradleFacetImportTest : GradleImportingTestCase() {
     @Test
     fun testJsImportTransitive() {
         configureByFiles()
-        importProject()
+        importProject(false)
 
         with(facetSettings) {
             Assert.assertEquals("1.3", languageLevel!!.versionString)
@@ -425,7 +406,7 @@ class GradleFacetImportTest : GradleImportingTestCase() {
     }
 
     @Test
-    @TargetVersions("4.9")
+    @PluginTargetVersions(gradleVersion = "4.9")
     fun testCommonImportByPlatformPlugin() {
         configureByFiles()
         importProject()
@@ -576,7 +557,7 @@ class GradleFacetImportTest : GradleImportingTestCase() {
         configureByFiles()
         createProjectSubFile(
             "local.properties", """
-            sdk.dir=/${KotlinTestUtils.getAndroidSdkSystemIndependentPath()}
+            sdk.dir=/${KtTestUtil.getAndroidSdkSystemIndependentPath()}
         """
         )
         importProject()
@@ -600,7 +581,7 @@ class GradleFacetImportTest : GradleImportingTestCase() {
         configureByFiles()
         createProjectSubFile(
             "local.properties", """
-            sdk.dir=/${KotlinTestUtils.getAndroidSdkSystemIndependentPath()}
+            sdk.dir=/${KtTestUtil.getAndroidSdkSystemIndependentPath()}
         """
         )
         importProject()
@@ -886,10 +867,14 @@ class GradleFacetImportTest : GradleImportingTestCase() {
     }
 
     override fun importProject() {
+        importProject(true)
+    }
+
+    fun importProject(skipIndexing: Boolean = true) {
         val isCreateEmptyContentRootDirectories = currentExternalProjectSettings.isCreateEmptyContentRootDirectories
         try {
             currentExternalProjectSettings.isCreateEmptyContentRootDirectories = true
-            super.importProject()
+            super.importProject(skipIndexing)
         } finally {
             currentExternalProjectSettings.isCreateEmptyContentRootDirectories = isCreateEmptyContentRootDirectories
         }

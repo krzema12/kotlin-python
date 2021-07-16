@@ -7,117 +7,93 @@ package org.jetbrains.kotlin.fir.analysis.diagnostics
 
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.*
-import org.jetbrains.kotlin.fir.FirSourceElement
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-fun <E : FirSourceElement, P : PsiElement> warning0(): DiagnosticFactory0DelegateProvider<E, P> {
-    return DiagnosticFactory0DelegateProvider(Severity.WARNING, null)
+fun <P : PsiElement> warning0(
+    positioningStrategy: SourceElementPositioningStrategy<P> = SourceElementPositioningStrategy.DEFAULT
+): DiagnosticFactory0DelegateProvider<P> {
+    return DiagnosticFactory0DelegateProvider(Severity.WARNING, positioningStrategy)
 }
 
-fun <E : FirSourceElement, P : PsiElement, A : Any> warning1(): DiagnosticFactory1DelegateProvider<E, P, A> {
-    return DiagnosticFactory1DelegateProvider(Severity.WARNING, null)
+fun <P : PsiElement, A : Any> warning1(
+    positioningStrategy: SourceElementPositioningStrategy<P> = SourceElementPositioningStrategy.DEFAULT
+): DiagnosticFactory1DelegateProvider<P, A> {
+    return DiagnosticFactory1DelegateProvider(Severity.WARNING, positioningStrategy)
 }
 
-fun <E : FirSourceElement, P : PsiElement, A : Any, B : Any> warning2(): DiagnosticFactory2DelegateProvider<E, P, A, B> {
-    return DiagnosticFactory2DelegateProvider(Severity.WARNING, null)
+fun <P : PsiElement, A : Any, B : Any> warning2(
+    positioningStrategy: SourceElementPositioningStrategy<P> = SourceElementPositioningStrategy.DEFAULT
+): DiagnosticFactory2DelegateProvider<P, A, B> {
+    return DiagnosticFactory2DelegateProvider(Severity.WARNING, positioningStrategy)
 }
 
-fun <E : FirSourceElement, P : PsiElement, A : Any, B : Any, C : Any> warning3(): DiagnosticFactory3DelegateProvider<E, P, A, B, C> {
-    return DiagnosticFactory3DelegateProvider(Severity.WARNING, null)
+fun <P : PsiElement, A : Any, B : Any, C : Any> warning3(
+    positioningStrategy: SourceElementPositioningStrategy<P> = SourceElementPositioningStrategy.DEFAULT
+): DiagnosticFactory3DelegateProvider<P, A, B, C> {
+    return DiagnosticFactory3DelegateProvider(Severity.WARNING, positioningStrategy)
 }
 
-fun <E : FirSourceElement, P : PsiElement> error0(): DiagnosticFactory0DelegateProvider<E, P> {
-    return DiagnosticFactory0DelegateProvider(Severity.ERROR, null)
+fun <P : PsiElement> error0(
+    positioningStrategy: SourceElementPositioningStrategy<P> = SourceElementPositioningStrategy.DEFAULT
+): DiagnosticFactory0DelegateProvider<P> {
+    return DiagnosticFactory0DelegateProvider(Severity.ERROR, positioningStrategy)
 }
 
-fun <E : FirSourceElement, P : PsiElement, A : Any> error1(): DiagnosticFactory1DelegateProvider<E, P, A> {
-    return DiagnosticFactory1DelegateProvider(Severity.ERROR, null)
+fun <P : PsiElement, A : Any> error1(
+    positioningStrategy: SourceElementPositioningStrategy<P> = SourceElementPositioningStrategy.DEFAULT
+): DiagnosticFactory1DelegateProvider<P, A> {
+    return DiagnosticFactory1DelegateProvider(Severity.ERROR, positioningStrategy)
 }
 
-fun <E : FirSourceElement, P : PsiElement, A : Any, B : Any> error2(): DiagnosticFactory2DelegateProvider<E, P, A, B> {
-    return DiagnosticFactory2DelegateProvider(Severity.ERROR, null)
+fun <P : PsiElement, A : Any, B : Any> error2(
+    positioningStrategy: SourceElementPositioningStrategy<P> = SourceElementPositioningStrategy.DEFAULT
+): DiagnosticFactory2DelegateProvider<P, A, B> {
+    return DiagnosticFactory2DelegateProvider(Severity.ERROR, positioningStrategy)
 }
 
-fun <E : FirSourceElement, P : PsiElement, A : Any, B : Any, C : Any> error3(): DiagnosticFactory3DelegateProvider<E, P, A, B, C> {
-    return DiagnosticFactory3DelegateProvider(Severity.ERROR, null)
+fun <P : PsiElement, A : Any, B : Any, C : Any> error3(
+    positioningStrategy: SourceElementPositioningStrategy<P> = SourceElementPositioningStrategy.DEFAULT
+): DiagnosticFactory3DelegateProvider<P, A, B, C> {
+    return DiagnosticFactory3DelegateProvider(Severity.ERROR, positioningStrategy)
 }
 
-/**
- * Note that those functions can be applicable only for factories
- *   that takes `PsiElement` as first type parameter
- */
-fun <E : FirSourceElement, P : PsiElement> existing(
-    psiDiagnosticFactory: DiagnosticFactory0<P>
-): DiagnosticFactory0DelegateProvider<E, P> {
-    return DiagnosticFactory0DelegateProvider(Severity.ERROR, psiDiagnosticFactory)
-}
-
-fun <E : FirSourceElement, P : PsiElement, A : Any> existing(
-    psiDiagnosticFactory: DiagnosticFactory1<P, A>
-): DiagnosticFactory1DelegateProvider<E, P, A> {
-    return DiagnosticFactory1DelegateProvider(Severity.ERROR, psiDiagnosticFactory)
-}
-
-fun <E : FirSourceElement, P : PsiElement, A : Any, B : Any> existing(
-    psiDiagnosticFactory: DiagnosticFactory2<P, A, B>
-): DiagnosticFactory2DelegateProvider<E, P, A, B> {
-    return DiagnosticFactory2DelegateProvider(Severity.ERROR, psiDiagnosticFactory)
-}
-
-fun <E : FirSourceElement, P : PsiElement, A : Any, B : Any, C : Any> existing(
-    psiDiagnosticFactory: DiagnosticFactory3<P, A, B, C>
-): DiagnosticFactory3DelegateProvider<E, P, A, B, C> {
-    return DiagnosticFactory3DelegateProvider(Severity.ERROR, psiDiagnosticFactory)
-}
 
 // ------------------------------ Providers ------------------------------
 
-class DiagnosticFactory0DelegateProvider<E : FirSourceElement, P : PsiElement>(
+class DiagnosticFactory0DelegateProvider<P : PsiElement>(
     private val severity: Severity,
-    private val psiDiagnosticFactory: DiagnosticFactory0<P>?
+    private val positioningStrategy: SourceElementPositioningStrategy<P>
 ) {
-    operator fun provideDelegate(thisRef: Any?, prop: KProperty<*>): ReadOnlyProperty<Any?, FirDiagnosticFactory0<E, P>> {
-        val psiFactory = psiDiagnosticFactory ?: DiagnosticFactory0.create<P>(severity).apply {
-            initializeName(prop.name)
-        }
-        return DummyDelegate(FirDiagnosticFactory0(prop.name, severity, psiFactory))
+    operator fun provideDelegate(thisRef: Any?, prop: KProperty<*>): ReadOnlyProperty<Any?, FirDiagnosticFactory0<P>> {
+        return DummyDelegate(FirDiagnosticFactory0(prop.name, severity, positioningStrategy))
     }
 }
 
-class DiagnosticFactory1DelegateProvider<E : FirSourceElement, P : PsiElement, A : Any>(
+class DiagnosticFactory1DelegateProvider<P : PsiElement, A : Any>(
     private val severity: Severity,
-    private val psiDiagnosticFactory: DiagnosticFactory1<P, A>?
+    private val positioningStrategy: SourceElementPositioningStrategy<P>
 ) {
-    operator fun provideDelegate(thisRef: Any?, prop: KProperty<*>): ReadOnlyProperty<Any?, FirDiagnosticFactory1<E, P, A>> {
-        val psiFactory = psiDiagnosticFactory ?: DiagnosticFactory1.create<P, A>(severity).apply {
-            initializeName(prop.name)
-        }
-        return DummyDelegate(FirDiagnosticFactory1(prop.name, severity, psiFactory))
+    operator fun provideDelegate(thisRef: Any?, prop: KProperty<*>): ReadOnlyProperty<Any?, FirDiagnosticFactory1<P, A>> {
+        return DummyDelegate(FirDiagnosticFactory1(prop.name, severity, positioningStrategy))
     }
 }
 
-class DiagnosticFactory2DelegateProvider<E : FirSourceElement, P : PsiElement, A : Any, B : Any>(
+class DiagnosticFactory2DelegateProvider<P : PsiElement, A : Any, B : Any>(
     private val severity: Severity,
-    private val psiDiagnosticFactory: DiagnosticFactory2<P, A, B>?
+    private val positioningStrategy: SourceElementPositioningStrategy<P>
 ) {
-    operator fun provideDelegate(thisRef: Any?, prop: KProperty<*>): ReadOnlyProperty<Any?, FirDiagnosticFactory2<E, P, A, B>> {
-        val psiFactory = psiDiagnosticFactory ?: DiagnosticFactory2.create<P, A, B>(severity).apply {
-            initializeName(prop.name)
-        }
-        return DummyDelegate(FirDiagnosticFactory2(prop.name, severity, psiFactory))
+    operator fun provideDelegate(thisRef: Any?, prop: KProperty<*>): ReadOnlyProperty<Any?, FirDiagnosticFactory2<P, A, B>> {
+        return DummyDelegate(FirDiagnosticFactory2(prop.name, severity, positioningStrategy))
     }
 }
 
-class DiagnosticFactory3DelegateProvider<E : FirSourceElement, P : PsiElement, A : Any, B : Any, C : Any>(
+class DiagnosticFactory3DelegateProvider<P : PsiElement, A : Any, B : Any, C : Any>(
     private val severity: Severity,
-    private val psiDiagnosticFactory: DiagnosticFactory3<P, A, B, C>?
+    private val positioningStrategy: SourceElementPositioningStrategy<P>
 ) {
-    operator fun provideDelegate(thisRef: Any?, prop: KProperty<*>): ReadOnlyProperty<Any?, FirDiagnosticFactory3<E, P, A, B, C>> {
-        val psiFactory = psiDiagnosticFactory ?: DiagnosticFactory3.create<P, A, B, C>(severity).apply {
-            initializeName(prop.name)
-        }
-        return DummyDelegate(FirDiagnosticFactory3(prop.name, severity, psiFactory))
+    operator fun provideDelegate(thisRef: Any?, prop: KProperty<*>): ReadOnlyProperty<Any?, FirDiagnosticFactory3<P, A, B, C>> {
+        return DummyDelegate(FirDiagnosticFactory3(prop.name, severity, positioningStrategy))
     }
 }
 

@@ -45,7 +45,7 @@ internal fun KtWhenCondition.toFirWhenCondition(
             firRange.generateContainsOperation(
                 firSubjectExpression,
                 isNegated,
-                rangeExpression?.toFirPsiSourceElement(FirFakeSourceElementKind.WhenCondition),
+                this@toFirWhenCondition.toFirPsiSourceElement(FirFakeSourceElementKind.WhenCondition),
                 operationReference.toFirPsiSourceElement()
             )
         }
@@ -88,7 +88,7 @@ internal fun generateDestructuringBlock(
     tmpVariable: Boolean,
     extractAnnotationsTo: KtAnnotated.(FirAnnotationContainerBuilder) -> Unit,
     toFirOrImplicitTypeRef: KtTypeReference?.() -> FirTypeRef,
-): FirExpression {
+): FirBlock {
     return buildBlock {
         source = multiDeclaration.toFirPsiSourceElement()
         if (tmpVariable) {
@@ -96,11 +96,12 @@ internal fun generateDestructuringBlock(
         }
         val isVar = multiDeclaration.isVar
         for ((index, entry) in multiDeclaration.entries.withIndex()) {
+            if (entry.nameIdentifier?.text == "_") continue
             val entrySource = entry.toFirPsiSourceElement()
             val name = entry.nameAsSafeName
             statements += buildProperty {
                 source = entrySource
-                this.session = session
+                declarationSiteSession = session
                 origin = FirDeclarationOrigin.Source
                 returnTypeRef = entry.typeReference.toFirOrImplicitTypeRef()
                 this.name = name

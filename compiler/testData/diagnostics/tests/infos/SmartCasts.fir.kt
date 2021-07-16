@@ -89,17 +89,17 @@ fun f13(a : A?) {
   }
   else {
     a?.foo()
-    <!UNRESOLVED_REFERENCE!>c<!>.<!UNRESOLVED_REFERENCE!>bar<!>()
+    <!UNRESOLVED_REFERENCE!>c<!>.bar()
   }
 
   a?.foo()
   if (!(a is B)) {
     a?.foo()
-    <!UNRESOLVED_REFERENCE!>c<!>.<!UNRESOLVED_REFERENCE!>bar<!>()
+    <!UNRESOLVED_REFERENCE!>c<!>.bar()
   }
   else {
     a.foo()
-    <!UNRESOLVED_REFERENCE!>c<!>.<!UNRESOLVED_REFERENCE!>bar<!>()
+    <!UNRESOLVED_REFERENCE!>c<!>.bar()
   }
 
   a?.foo()
@@ -109,7 +109,7 @@ fun f13(a : A?) {
   }
   else {
     a?.foo()
-    <!UNRESOLVED_REFERENCE!>c<!>.<!UNRESOLVED_REFERENCE!>bar<!>()
+    <!UNRESOLVED_REFERENCE!>c<!>.bar()
   }
 
   if (!(a is B) || !(a is C)) {
@@ -142,14 +142,14 @@ fun getStringLength(obj : Any) : Char? {
 }
 
 fun toInt(i: Int?): Int = if (i != null) i else 0
-fun illegalWhenBody(a: Any): Int = when(a) {
+fun illegalWhenBody(a: Any): Int = <!NO_ELSE_IN_WHEN!>when<!>(a) {
     is Int -> a
     is String -> a
 }
 fun illegalWhenBlock(a: Any): Int {
     when(a) {
         is Int -> return a
-        is String -> return a
+        is String -> return <!RETURN_TYPE_MISMATCH!>a<!>
     }
 }
 fun declarations(a: Any?) {
@@ -189,11 +189,11 @@ fun returnFunctionLiteralExpressionBody(a: Any?): Function0<Int> =
 
 fun mergeSmartCasts(a: Any?) {
   if (a is String || a is Int) {
-    a.<!INAPPLICABLE_CANDIDATE!>compareTo<!>("")
+    a.compareTo(<!ARGUMENT_TYPE_MISMATCH!>""<!>)
     a.toString()
   }
   if (a is Int || a is String) {
-    a.<!INAPPLICABLE_CANDIDATE!>compareTo<!>("")
+    a.compareTo(<!ARGUMENT_TYPE_MISMATCH!>""<!>)
   }
   when (a) {
     is String, is Any -> a.<!UNRESOLVED_REFERENCE!>compareTo<!>("")
@@ -222,7 +222,7 @@ fun f(): String {
 fun foo(aa: Any?): Int {
     var a = aa
     if (a is Int?) {
-        return a
+        return <!RETURN_TYPE_MISMATCH!>a<!>
     }
     return 1
 }

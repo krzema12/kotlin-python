@@ -11,12 +11,11 @@ import org.jetbrains.kotlin.fir.declarations.FirFile
 import org.jetbrains.kotlin.fir.declarations.FirImport
 import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
 import org.jetbrains.kotlin.fir.declarations.builder.buildResolvedImport
-import org.jetbrains.kotlin.fir.resolve.providers.FirSymbolProvider
+import org.jetbrains.kotlin.fir.lookupTracker
 import org.jetbrains.kotlin.fir.resolve.ScopeSession
-import org.jetbrains.kotlin.fir.resolve.firSymbolProvider
+import org.jetbrains.kotlin.fir.resolve.providers.FirSymbolProvider
+import org.jetbrains.kotlin.fir.resolve.symbolProvider
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassLikeSymbol
-import org.jetbrains.kotlin.fir.visitors.CompositeTransformResult
-import org.jetbrains.kotlin.fir.visitors.compose
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 
@@ -27,44 +26,57 @@ class FirImportResolveProcessor(session: FirSession, scopeSession: ScopeSession)
 open class FirImportResolveTransformer protected constructor(
     final override val session: FirSession,
     phase: FirResolvePhase
-) : FirAbstractTreeTransformer<Nothing?>(phase) {
-    override fun <E : FirElement> transformElement(element: E, data: Nothing?): CompositeTransformResult<E> {
-        return element.compose()
+) : FirAbstractTreeTransformer<Any?>(phase) {
+    override fun <E : FirElement> transformElement(element: E, data: Any?): E {
+        return element
     }
 
     constructor(session: FirSession) : this(session, FirResolvePhase.IMPORTS)
 
-    private val symbolProvider: FirSymbolProvider = session.firSymbolProvider
+    private val symbolProvider: FirSymbolProvider = session.symbolProvider
 
-    override fun transformFile(file: FirFile, data: Nothing?): CompositeTransformResult<FirFile> {
+    private var currentFile: FirFile? = null
+
+    override fun transformFile(file: FirFile, data: Any?): FirFile {
         checkSessionConsistency(file)
         file.replaceResolvePhase(transformerPhase)
-        return file.also { it.transformChildren(this, null) }.compose()
+        return file.also {
+            val prevValue = currentFile
+            currentFile = file
+            try {
+                it.transformChildren(this, null)
+            } finally {
+                currentFile = prevValue
+            }
+        }
     }
 
-    override fun transformImport(import: FirImport, data: Nothing?): CompositeTransformResult<FirImport> {
-        val fqName = import.importedFqName?.takeUnless { it.isRoot } ?: return import.compose()
+    override fun transformImport(import: FirImport, data: Any?): FirImport {
+        val fqName = import.importedFqName?.takeUnless { it.isRoot } ?: return import
 
-        if (!fqName.isAcceptable) return import.compose()
+        if (!fqName.isAcceptable) return import
 
         if (import.isAllUnder) {
             return transformImportForFqName(fqName, import)
         }
 
         val parentFqName = fqName.parent()
+        currentFile?.let {
+            session.lookupTracker?.recordLookup(fqName.shortName(), parentFqName.asString(), import.source, it.source)
+        }
         return transformImportForFqName(parentFqName, import)
     }
 
     protected open val FqName.isAcceptable: Boolean
         get() = true
 
-    private fun transformImportForFqName(fqName: FqName, delegate: FirImport): CompositeTransformResult<FirImport> {
-        val (packageFqName, relativeClassFqName) = resolveToPackageOrClass(symbolProvider, fqName) ?: return delegate.compose()
+    private fun transformImportForFqName(fqName: FqName, delegate: FirImport): FirImport {
+        val (packageFqName, relativeClassFqName) = resolveToPackageOrClass(symbolProvider, fqName) ?: return delegate
         return buildResolvedImport {
             this.delegate = delegate
             this.packageFqName = packageFqName
             relativeClassName = relativeClassFqName
-        }.compose()
+        }
     }
 }
 

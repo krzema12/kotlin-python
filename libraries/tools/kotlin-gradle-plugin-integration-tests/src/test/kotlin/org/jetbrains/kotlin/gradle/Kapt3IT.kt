@@ -16,13 +16,19 @@
 
 package org.jetbrains.kotlin.gradle
 
+import org.gradle.api.logging.configuration.WarningMode
 import org.jetbrains.kotlin.gradle.tasks.USING_JVM_INCREMENTAL_COMPILATION_MESSAGE
 import org.jetbrains.kotlin.gradle.util.*
 import org.junit.Assert
 import org.junit.Assume
+import org.junit.Ignore
 import org.junit.Test
 import java.io.File
+import java.util.regex.Pattern
 import java.util.zip.ZipFile
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 abstract class Kapt3BaseIT : BaseGradleIT() {
     companion object {
@@ -30,7 +36,7 @@ abstract class Kapt3BaseIT : BaseGradleIT() {
     }
 
     override fun defaultBuildOptions(): BuildOptions =
-        super.defaultBuildOptions().copy(kaptOptions = kaptOptions())
+        super.defaultBuildOptions().copy(kaptOptions = kaptOptions(), warningMode = WarningMode.Summary)
 
     protected open fun kaptOptions(): KaptOptions =
         KaptOptions(verbose = true, useWorkers = false)
@@ -40,7 +46,7 @@ abstract class Kapt3BaseIT : BaseGradleIT() {
     }
 }
 
-class Kapt3WorkersIT : Kapt3IT() {
+open class Kapt3WorkersIT : Kapt3IT() {
     override fun kaptOptions(): KaptOptions =
         super.kaptOptions().copy(useWorkers = true)
 
@@ -50,7 +56,9 @@ class Kapt3WorkersIT : Kapt3IT() {
             Project("javacIsLoadedOnce", directoryPrefix = "kapt2")
         project.build("build") {
             assertSuccessful()
-            assertSubstringCount("Loaded com.sun.tools.javac.util.Context from", 1)
+
+            val loadsCount = Pattern.quote("Loaded com.sun.tools.javac.util.Context from").toRegex().findAll(output).count()
+            assertTrue(loadsCount <= 1, "javac is loaded more than once")
         }
     }
 
@@ -92,9 +100,65 @@ class Kapt3WorkersIT : Kapt3IT() {
     }
 }
 
+class Kapt3ClassLoadersCacheIT : Kapt3WorkersIT() {
+    override fun kaptOptions(): KaptOptions =
+        super.kaptOptions().copy(classLoadersCacheSize = 10, includeCompileClasspath = false)
+
+    @Ignore
+    override fun testDisableDiscoveryInCompileClasspath() {
+        //classloaders cache is incompatible with AP discovery in classpath
+    }
+
+    @Test
+    override fun testAnnotationProcessorAsFqName() {
+        val project = Project("annotationProcessorAsFqName", directoryPrefix = "kapt2").also { it.setupWorkingDir() }
+
+        //classloaders caching is not compatible with includeCompileClasspath
+        project.projectDir.getFileByName("build.gradle").modify {
+            it.addBeforeSubstring(
+                "kapt \"org.jetbrains.kotlin:annotation-processor-example:\$kotlin_version\"\n",
+                "implementation \"org.jetbrains.kotlin:annotation-processor-example"
+            )
+        }
+
+        project.build("build") {
+            assertSuccessful()
+            assertKaptSuccessful()
+            assertTasksExecuted(":compileKotlin", ":compileJava")
+            assertFileExists("build/generated/source/kapt/main/example/TestClassGenerated.java")
+            assertFileExists(kotlinClassesDir() + "example/TestClass.class")
+            assertFileExists(javaClassesDir() + "example/TestClassGenerated.class")
+        }
+    }
+
+    @Test
+    fun testAnnotationProcessorClassIsLoadedOnce() {
+        val project = Project("javacIsLoadedOnce", directoryPrefix = "kapt2")
+
+        fun CompiledProject.classLoadingCount() =
+            Pattern.quote("Loaded example.ExampleAnnotationProcessor from").toRegex().findAll(output).count()
+
+        project.build("build") {
+            assertSuccessful()
+            assertTasksExecuted(":module1:kaptKotlin", ":module2:kaptKotlin")
+            assertTrue(classLoadingCount() <= 1, "AP class is loaded more than once")
+        }
+
+        project.projectDir.getFilesByNames("Module1Class.kt", "Module2Class.kt").forEach {
+            it.appendText("\n fun touch() = null")
+        }
+
+        project.build("build") {
+            assertSuccessful()
+            assertTasksExecuted(":module1:kaptKotlin", ":module2:kaptKotlin")
+            assertTrue(classLoadingCount() == 0, "AP class shouldn't be loaded on the second build")
+        }
+    }
+}
+
 open class Kapt3IT : Kapt3BaseIT() {
     @Test
-    fun testAnnotationProcessorAsFqName() {
+    open fun testAnnotationProcessorAsFqName() {
         val project = Project("annotationProcessorAsFqName", directoryPrefix = "kapt2")
 
         project.build("build") {
@@ -259,7 +323,7 @@ open class Kapt3IT : Kapt3BaseIT() {
     fun testChangeClasspathICRebuild() {
         testICRebuild { project ->
             project.projectFile("build.gradle").modify {
-                "$it\ndependencies { compile 'org.jetbrains.kotlin:kotlin-reflect:' + kotlin_version }"
+                "$it\ndependencies { implementation 'org.jetbrains.kotlin:kotlin-reflect:' + kotlin_version }"
             }
         }
     }
@@ -398,9 +462,9 @@ open class Kapt3IT : Kapt3BaseIT() {
             val actual = getErrorMessages()
             // try as 0 starting lines first, then as 1 starting line
             try {
-                Assert.assertEquals(genJavaErrorString(8, 16), actual)
+                Assert.assertEquals(genJavaErrorString(8, 20), actual)
             } catch (e: AssertionError) {
-                Assert.assertEquals(genJavaErrorString(9, 17), actual)
+                Assert.assertEquals(genJavaErrorString(9, 21), actual)
             }
         }
 
@@ -454,6 +518,20 @@ open class Kapt3IT : Kapt3BaseIT() {
 
             assertContains("Additional warning message from AP")
         }
+
+        project.build(options = defaultBuildOptions().copy(incremental = false), params = arrayOf("build")) {
+            assertSuccessful()
+            assertNull(
+                project.projectDir.findFileByName("TestGeneratedKt.java"),
+                "Java stubs should not be generated for Kotlin sources generated by annotation processors."
+            )
+            assertNotNull(project.projectDir.findFileByName("TestGeneratedKt.class"))
+            assertNull(
+                project.projectDir.findFileByName("AnotherGenerated.java"),
+                "Java stubs should not be generated for Kotlin sources generated by annotation processors."
+            )
+            assertNotNull(project.projectDir.findFileByName("AnotherGenerated.class"))
+        }
     }
 
     @Test
@@ -470,7 +548,7 @@ open class Kapt3IT : Kapt3BaseIT() {
     }
 
     @Test
-    fun testDisableDiscoveryInCompileClasspath() = with(Project("kaptAvoidance", directoryPrefix = "kapt2")) {
+    open fun testDisableDiscoveryInCompileClasspath() = with(Project("kaptAvoidance", directoryPrefix = "kapt2")) {
         setupWorkingDir()
         val buildGradle = projectDir.resolve("app/build.gradle")
         buildGradle.modify {
@@ -493,6 +571,12 @@ open class Kapt3IT : Kapt3BaseIT() {
 
     @Test
     fun testKaptAvoidance() = with(Project("kaptAvoidance", directoryPrefix = "kapt2")) {
+        setupWorkingDir()
+
+        projectDir.resolve("app/build.gradle").modify {
+            "$it\n\nkapt.includeCompileClasspath = true"
+        }
+
         build("assemble") {
             assertSuccessful()
             assertTasksExecuted(
@@ -521,7 +605,10 @@ open class Kapt3IT : Kapt3BaseIT() {
 
         // enable discovery
         projectDir.resolve("app/build.gradle").modify {
-            "$it\n\nkapt.includeCompileClasspath = false"
+            it.replace(
+                "kapt.includeCompileClasspath = true",
+                "kapt.includeCompileClasspath = false"
+            )
         }
         build("assemble") {
             assertSuccessful()
@@ -598,7 +685,7 @@ open class Kapt3IT : Kapt3BaseIT() {
 
         val kaptProject = Project("simple", directoryPrefix = "kapt2").apply { setupWorkingDir() }
         kaptProject.projectDir.copyRecursively(projectDir.resolve("simple"))
-        projectDir.resolve("settings.gradle").writeText("include 'simple'")
+        projectDir.resolve("settings.gradle").appendText("include 'simple'")
         gradleBuildScript().appendText("\ndependencies { implementation project(':simple') }")
 
         testResolveAllConfigurations()
@@ -657,6 +744,43 @@ open class Kapt3IT : Kapt3BaseIT() {
             assertSuccessful()
             assertKaptSuccessful()
             assertContains("Javac options: {-source=1.8}")
+        }
+    }
+
+    @Test
+    fun testJpmsModule() {
+        //jpms is part of java >= 9
+        val javaHome = File(System.getProperty("jdk9Home")!!)
+        Assume.assumeTrue("JDK 9 isn't available", javaHome.isDirectory)
+        val options = defaultBuildOptions().copy(javaHome = javaHome)
+
+        val project = Project("jpms-module", directoryPrefix = "kapt2")
+
+        project.build("build", options = options) {
+            assertSuccessful()
+            assertKaptSuccessful()
+            assertTasksExecuted(":compileKotlin", ":compileJava")
+            assertFileExists("build/generated/source/kapt/main/lab/TestClassGenerated.java")
+            assertFileExists(kotlinClassesDir() + "lab/TestClass.class")
+        }
+
+        project.build("build", options = options) {
+            assertSuccessful()
+            assertTasksUpToDate(":compileKotlin", ":compileJava")
+        }
+
+        project.projectDir.getFileByName("InjectedClass.kt").modify { text ->
+            text.checkedReplace(
+                "//placeholder",
+                "fun someChange() = null"
+            )
+        }
+
+        project.build("build", options = options) {
+            assertSuccessful()
+            assertKaptSuccessful()
+            assertTasksExecuted(":compileKotlin", ":compileJava")
+
         }
     }
 }

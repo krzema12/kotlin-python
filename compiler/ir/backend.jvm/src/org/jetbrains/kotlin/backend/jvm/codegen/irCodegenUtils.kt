@@ -9,15 +9,12 @@ import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.backend.common.ir.allOverridden
 import org.jetbrains.kotlin.backend.common.ir.ir2string
 import org.jetbrains.kotlin.backend.jvm.JvmBackendContext
-import org.jetbrains.kotlin.backend.jvm.JvmGeneratorExtensions
 import org.jetbrains.kotlin.backend.jvm.JvmLoweredDeclarationOrigin
+import org.jetbrains.kotlin.backend.jvm.JvmSymbols
 import org.jetbrains.kotlin.backend.jvm.lower.MultifileFacadeFileEntry
 import org.jetbrains.kotlin.builtins.StandardNames.FqNames
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
-import org.jetbrains.kotlin.codegen.AsmUtil
-import org.jetbrains.kotlin.codegen.FrameMapBase
-import org.jetbrains.kotlin.codegen.OwnerKind
-import org.jetbrains.kotlin.codegen.SourceInfo
+import org.jetbrains.kotlin.codegen.*
 import org.jetbrains.kotlin.codegen.inline.SourceMapper
 import org.jetbrains.kotlin.codegen.signature.BothSignatureWriter
 import org.jetbrains.kotlin.descriptors.ClassKind
@@ -26,6 +23,8 @@ import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.expressions.IrCall
+import org.jetbrains.kotlin.ir.expressions.IrExpressionBody
 import org.jetbrains.kotlin.ir.expressions.IrMemberAccessExpression
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
@@ -34,7 +33,8 @@ import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.getClass
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.load.java.JavaDescriptorVisibilities
-import org.jetbrains.kotlin.load.java.JvmAbi
+import org.jetbrains.kotlin.load.kotlin.JvmPackagePartSource
+import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.resolve.checkers.ExpectedActualDeclarationChecker
 import org.jetbrains.kotlin.resolve.inline.INLINE_ONLY_ANNOTATION_FQ_NAME
@@ -45,6 +45,7 @@ import org.jetbrains.kotlin.utils.addIfNotNull
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 import org.jetbrains.org.objectweb.asm.Opcodes
 import org.jetbrains.org.objectweb.asm.Type
+import org.jetbrains.org.objectweb.asm.commons.Method
 
 class IrFrameMap : FrameMapBase<IrSymbol>() {
     private val typeMap = mutableMapOf<IrSymbol, Type>()
@@ -88,13 +89,12 @@ internal val DeclarationDescriptorWithSource.psiElement: PsiElement?
     get() = (source as? PsiSourceElement)?.psi
 
 fun JvmBackendContext.getSourceMapper(declaration: IrClass): SourceMapper {
-    val sourceManager = this.psiSourceManager
-    val fileEntry = sourceManager.getFileEntry(declaration.fileParent)
+    val fileEntry = declaration.fileParent.fileEntry
     // NOTE: apparently inliner requires the source range to cover the
     //       whole file the class is declared in rather than the class only.
     val endLineNumber = when (fileEntry) {
         is MultifileFacadeFileEntry -> 0
-        else -> fileEntry?.getSourceRangeInfo(0, fileEntry.maxOffset)?.endLineNumber ?: 0
+        else -> fileEntry.getSourceRangeInfo(0, fileEntry.maxOffset).endLineNumber
     }
     val sourceFileName = when (fileEntry) {
         is MultifileFacadeFileEntry -> fileEntry.partFiles.singleOrNull()?.name
@@ -179,11 +179,7 @@ private fun IrDeclarationWithVisibility.specialCaseVisibility(kind: OwnerKind?):
         return Opcodes.ACC_PRIVATE
     }
 
-    if (this is IrFunction && (isReifiable() || isBridge())) {
-        return Opcodes.ACC_PUBLIC
-    }
-
-    if (isEffectivelyInlineOnly()) {
+    if (isInlineOnlyPrivateInBytecode() || isInlineOnlyPropertyAccessor()) {
         return Opcodes.ACC_PRIVATE
     }
 
@@ -209,10 +205,6 @@ private fun IrDeclarationWithVisibility.specialCaseVisibility(kind: OwnerKind?):
 
     if (!DescriptorVisibilities.isPrivate(visibility)) {
         return null
-    }
-
-    if (this is IrSimpleFunction && isSuspend) {
-        return AsmUtil.NO_FLAG_PACKAGE_PRIVATE
     }
 
     if (this is IrConstructor && parentAsClass.kind === ClassKind.ENUM_ENTRY) {
@@ -343,18 +335,36 @@ fun IrClass.isOptionalAnnotationClass(): Boolean =
 val IrDeclaration.isAnnotatedWithDeprecated: Boolean
     get() = annotations.hasAnnotation(FqNames.deprecated)
 
-val IrDeclaration.isDeprecatedCallable: Boolean
-    get() = isAnnotatedWithDeprecated || origin == JvmLoweredDeclarationOrigin.DEFAULT_IMPLS_BRIDGE_FOR_COMPATIBILITY
+internal fun IrDeclaration.isDeprecatedCallable(context: JvmBackendContext): Boolean =
+    isAnnotatedWithDeprecated ||
+            annotations.any { it.symbol == context.ir.symbols.javaLangDeprecatedConstructorWithDeprecatedFlag }
 
-// We can't check for JvmLoweredDeclarationOrigin.SYNTHETIC_METHOD_FOR_PROPERTY_ANNOTATIONS because for interface methods
-// moved to DefaultImpls, origin is changed to DEFAULT_IMPLS
-// TODO: Fix origin somehow
-val IrFunction.isSyntheticMethodForProperty: Boolean
-    get() = name.asString().endsWith(JvmAbi.ANNOTATED_PROPERTY_METHOD_NAME_SUFFIX)
+internal fun IrFunction.isDeprecatedFunction(context: JvmBackendContext): Boolean =
+    origin == JvmLoweredDeclarationOrigin.SYNTHETIC_METHOD_FOR_PROPERTY_OR_TYPEALIAS_ANNOTATIONS ||
+            isDeprecatedCallable(context) ||
+            (this as? IrSimpleFunction)?.correspondingPropertySymbol?.owner?.isDeprecatedCallable(context) == true ||
+            isAccessorForDeprecatedPropertyImplementedByDelegation ||
+            isAccessorForDeprecatedJvmStaticProperty(context)
 
-val IrFunction.isDeprecatedFunction: Boolean
-    get() = isSyntheticMethodForProperty || isDeprecatedCallable ||
-            (this as? IrSimpleFunction)?.correspondingPropertySymbol?.owner?.isDeprecatedCallable == true
+private val IrFunction.isAccessorForDeprecatedPropertyImplementedByDelegation: Boolean
+    get() =
+        origin == IrDeclarationOrigin.DELEGATED_MEMBER &&
+                this is IrSimpleFunction &&
+                correspondingPropertySymbol != null &&
+                overriddenSymbols.any {
+                    it.owner.correspondingPropertySymbol?.owner?.isAnnotatedWithDeprecated == true
+                }
+
+private fun IrFunction.isAccessorForDeprecatedJvmStaticProperty(context: JvmBackendContext): Boolean {
+    if (origin != JvmLoweredDeclarationOrigin.JVM_STATIC_WRAPPER) return false
+    val irExpressionBody = this.body as? IrExpressionBody
+        ?: throw AssertionError("IrExpressionBody expected for JvmStatic wrapper:\n${this.dump()}")
+    val irCall = irExpressionBody.expression as? IrCall
+        ?: throw AssertionError("IrCall expected inside JvmStatic wrapper:\n${this.dump()}")
+    val callee = irCall.symbol.owner
+    val property = callee.correspondingPropertySymbol?.owner ?: return false
+    return property.isDeprecatedCallable(context)
+}
 
 @OptIn(ObsoleteDescriptorBasedAPI::class)
 val IrDeclaration.psiElement: PsiElement?
@@ -365,4 +375,25 @@ val IrMemberAccessExpression<*>.psiElement: PsiElement?
     get() = (symbol.descriptor.original as? DeclarationDescriptorWithSource)?.psiElement
 
 fun IrSimpleType.isRawType(): Boolean =
-    hasAnnotation(JvmGeneratorExtensions.RAW_TYPE_ANNOTATION_FQ_NAME)
+    hasAnnotation(JvmSymbols.RAW_TYPE_ANNOTATION_FQ_NAME)
+
+internal fun classFileContainsMethod(classId: ClassId, function: IrFunction, context: JvmBackendContext): Boolean? {
+    val originalSignature = context.methodSignatureMapper.mapSignatureWithGeneric(function).asmMethod
+    val originalDescriptor = originalSignature.descriptor
+    val descriptor = if (function.isSuspend)
+        listOf(*Type.getArgumentTypes(originalDescriptor), Type.getObjectType("kotlin/coroutines/Continuation"))
+            .joinToString(prefix = "(", postfix = ")", separator = "") + AsmTypes.OBJECT_TYPE
+    else originalDescriptor
+    return classFileContainsMethod(classId, context.state, Method(originalSignature.name, descriptor))
+}
+
+val IrMemberWithContainerSource.parentClassId: ClassId?
+    get() = (containerSource as? JvmPackagePartSource)?.classId ?: (parent as? IrClass)?.classId
+
+// Translated into IR-based terms from classifierDescriptor?.classId
+val IrClass.classId: ClassId?
+    get() = when (val parent = parent) {
+        is IrExternalPackageFragment -> ClassId(parent.fqName, name)
+        is IrClass -> parent.classId?.createNestedClassId(name)
+        else -> null
+    }

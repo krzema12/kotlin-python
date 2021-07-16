@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.fir.resolve.inference
 
+import org.jetbrains.kotlin.fir.*
 import org.jetbrains.kotlin.fir.declarations.FirAnonymousFunction
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
 import org.jetbrains.kotlin.fir.declarations.builder.buildValueParameter
@@ -24,7 +25,6 @@ import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.FirAbstractBod
 import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.FirBodyResolveTransformer
 import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.resultType
 import org.jetbrains.kotlin.fir.resolve.typeFromCallee
-import org.jetbrains.kotlin.fir.resolvedTypeFromPrototype
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.fir.types.builder.buildResolvedTypeRef
@@ -33,7 +33,6 @@ import org.jetbrains.kotlin.fir.visitors.transformSingle
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.resolve.calls.inference.buildAbstractResultingSubstitutor
 import org.jetbrains.kotlin.resolve.calls.inference.components.ConstraintSystemCompletionMode
-import org.jetbrains.kotlin.resolve.calls.inference.model.ArgumentConstraintPosition
 import org.jetbrains.kotlin.resolve.calls.inference.model.SimpleConstraintSystemConstraintPosition
 import org.jetbrains.kotlin.types.TypeApproximatorConfiguration
 import org.jetbrains.kotlin.types.model.StubTypeMarker
@@ -61,7 +60,9 @@ class FirCallCompleter(
         val initialType = components.initialTypeOfCandidate(candidate, call)
 
         if (call is FirExpression) {
-            call.resultType = typeRef.resolvedTypeFromPrototype(initialType)
+            val resolvedTypeRef = typeRef.resolvedTypeFromPrototype(initialType)
+            call.resultType = resolvedTypeRef
+            session.lookupTracker?.recordTypeResolveAsLookup(resolvedTypeRef, call.source, null)
         }
 
         if (expectedTypeRef is FirResolvedTypeRef) {
@@ -82,7 +83,8 @@ class FirCallCompleter(
                     val completedCall = call.transformSingle(
                         FirCallCompletionResultsWriterTransformer(
                             session, finalSubstitutor, components.returnTypeCalculator,
-                            session.inferenceComponents.approximator
+                            session.inferenceComponents.approximator,
+                            components.dataFlowAnalyzer,
                         ),
                         null
                     )
@@ -141,7 +143,7 @@ class FirCallCompleter(
             functionalType.attributes
         )
         csBuilder.addSubtypeConstraint(expectedType, functionalType, ConeArgumentConstraintPosition())
-        atom.replaceExpectedType(expectedType)
+        atom.replaceExpectedType(expectedType, returnVariable.defaultType)
         atom.replaceTypeVariableForLambdaReturnType(returnVariable)
     }
 
@@ -152,6 +154,7 @@ class FirCallCompleter(
         return FirCallCompletionResultsWriterTransformer(
             session, substitutor, components.returnTypeCalculator,
             session.inferenceComponents.approximator,
+            components.dataFlowAnalyzer,
             mode
         )
     }
@@ -172,7 +175,6 @@ class FirCallCompleter(
             receiverType: ConeKotlinType?,
             parameters: List<ConeKotlinType>,
             expectedReturnType: ConeKotlinType?,
-            rawReturnType: ConeKotlinType,
             stubsForPostponedVariables: Map<TypeVariableMarker, StubTypeMarker>
         ): ReturnArgumentsAnalysisResult {
             val lambdaArgument: FirAnonymousFunction = lambdaAtom.atom
@@ -183,7 +185,8 @@ class FirCallCompleter(
                     val name = Name.identifier("it")
                     val itType = parameters.single()
                     buildValueParameter {
-                        session = this@FirCallCompleter.session
+                        source = lambdaAtom.atom.source?.fakeElement(FirFakeSourceElementKind.ItLambdaParameter)
+                        declarationSiteSession = session
                         origin = FirDeclarationOrigin.Source
                         returnTypeRef = buildResolvedTypeRef { type = itType.approximateLambdaInputType() }
                         this.name = name
@@ -205,22 +208,32 @@ class FirCallCompleter(
                 }
             )
 
+            val lookupTracker = session.lookupTracker
             lambdaArgument.valueParameters.forEachIndexed { index, parameter ->
-                parameter.replaceReturnTypeRef(
-                    parameter.returnTypeRef.resolvedTypeFromPrototype(parameters[index].approximateLambdaInputType())
-                )
+                val newReturnType = parameters[index].approximateLambdaInputType()
+                val newReturnTypeRef = if (parameter.returnTypeRef is FirImplicitTypeRef) {
+                    buildResolvedTypeRef {
+                        source = parameter.source
+                        type = newReturnType
+                    }
+                } else parameter.returnTypeRef.resolvedTypeFromPrototype(newReturnType)
+                parameter.replaceReturnTypeRef(newReturnTypeRef)
+                lookupTracker?.recordTypeResolveAsLookup(newReturnTypeRef, parameter.source, null)
             }
 
             lambdaArgument.replaceValueParameters(lambdaArgument.valueParameters + listOfNotNull(itParam))
-            lambdaArgument.replaceReturnTypeRef(expectedReturnTypeRef ?: components.noExpectedType)
+            lambdaArgument.replaceReturnTypeRef(
+                expectedReturnTypeRef?.also {
+                    lookupTracker?.recordTypeResolveAsLookup(it, lambdaArgument.source, null)
+                } ?: components.noExpectedType
+            )
 
             val builderInferenceSession = runIf(stubsForPostponedVariables.isNotEmpty()) {
                 @Suppress("UNCHECKED_CAST")
                 FirBuilderInferenceSession(transformer.resolutionContext, stubsForPostponedVariables as Map<ConeTypeVariable, ConeStubType>)
             }
 
-            val localContext = components.towerDataContextForAnonymousFunctions[lambdaArgument.symbol] ?: error("")
-            transformer.context.withTowerDataContext(localContext) {
+            transformer.context.withAnonymousFunctionTowerDataContext(lambdaArgument.symbol) {
                 if (builderInferenceSession != null) {
                     transformer.context.withInferenceSession(builderInferenceSession) {
                         lambdaArgument.transformSingle(transformer, ResolutionMode.LambdaResolution(expectedReturnTypeRef))
@@ -240,5 +253,5 @@ class FirCallCompleter(
     private fun ConeKotlinType.approximateLambdaInputType(): ConeKotlinType =
         session.inferenceComponents.approximator.approximateToSuperType(
             this, TypeApproximatorConfiguration.FinalApproximationAfterResolutionAndInference
-        ) as ConeKotlinType? ?: this
+        ) ?: this
 }

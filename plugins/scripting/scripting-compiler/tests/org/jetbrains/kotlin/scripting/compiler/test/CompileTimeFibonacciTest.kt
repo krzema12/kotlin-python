@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.script.loadScriptingPlugin
 import org.jetbrains.kotlin.scripting.compiler.plugin.TestDisposable
 import org.jetbrains.kotlin.scripting.compiler.plugin.impl.ScriptJvmCompilerFromEnvironment
+import org.jetbrains.kotlin.scripting.compiler.plugin.updateWithBaseCompilerArguments
 import org.jetbrains.kotlin.scripting.configuration.ScriptingConfigurationKeys
 import org.jetbrains.kotlin.scripting.definitions.ScriptDefinition
 import org.jetbrains.kotlin.scripting.definitions.ScriptDefinitionProvider
@@ -21,6 +22,8 @@ import org.jetbrains.kotlin.test.KotlinTestUtils
 import org.jetbrains.kotlin.test.TestJdkKind
 import org.junit.Assert
 import java.io.File
+import java.nio.file.Files
+import kotlin.io.path.*
 import kotlin.script.experimental.annotations.KotlinScript
 import kotlin.script.experimental.api.*
 import kotlin.script.experimental.host.ScriptingHostConfiguration
@@ -60,8 +63,9 @@ class CompileTimeFibonacciTest : TestCase() {
             is ResultWithDiagnostics.Failure -> {
                 val error = result.reports.first()
 
+                val expectedFile = File("plugins/scripting/scripting-compiler/testData/compiler/compileTimeFibonacci/unsupported.fib.kts")
                 val expectedErrorMessage = """
-                    (plugins/scripting/scripting-compiler/testData/compiler/compileTimeFibonacci/unsupported.fib.kts:3:1) Fibonacci of non-positive numbers like 0 are not supported
+                    ($expectedFile:3:1) Fibonacci of non-positive numbers like 0 are not supported
                 """.trimIndent()
                 Assert.assertEquals(expectedErrorMessage, error.message)
                 // TODO: the location is not in the diagnostics because the `MessageCollector` defined in KotlinTestUtils,
@@ -91,6 +95,7 @@ class CompileTimeFibonacciTest : TestCase() {
         script: SourceCode
     ): ResultWithDiagnostics<CompiledScript> {
         val configuration = KotlinTestUtils.newConfiguration(ConfigurationKind.NO_KOTLIN_REFLECT, TestJdkKind.FULL_JDK).apply {
+            updateWithBaseCompilerArguments()
             val hostConfiguration = ScriptingHostConfiguration(defaultJvmScriptingHostConfiguration)
             add(
                 ScriptingConfigurationKeys.SCRIPT_DEFINITIONS,
@@ -154,13 +159,13 @@ object CompileTimeFibonacciConfiguration : ScriptCompilationConfiguration(
                             )
                     }
                     ?.valueOr { return@onAnnotations it }
-                    ?.max() ?: return@onAnnotations context.compilationConfiguration.asSuccess()
+                    ?.maxOrNull() ?: return@onAnnotations context.compilationConfiguration.asSuccess()
 
                 val sourceCode = fibUntil(maxFibonacciNumber)
                     .mapIndexed { index, number -> "val FIB_${index + 1} = $number" }
                     .joinToString("\n")
 
-                val file = createTempFile("CompileTimeFibonacci", ".fib.kts")
+                val file = Files.createTempFile("CompileTimeFibonacci", ".fib.kts").toFile()
                     .apply {
                         deleteOnExit()
                         writeText(sourceCode)

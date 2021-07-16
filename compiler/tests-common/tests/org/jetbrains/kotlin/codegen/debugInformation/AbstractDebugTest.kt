@@ -25,10 +25,10 @@ import org.jetbrains.kotlin.test.KotlinTestUtils
 import org.jetbrains.kotlin.test.clientserver.TestProcessServer
 import org.jetbrains.kotlin.test.clientserver.TestProxy
 import org.jetbrains.kotlin.test.clientserver.getGeneratedClass
+import org.jetbrains.kotlin.test.util.KtTestUtil
 import org.junit.After
 import org.junit.Before
 import java.io.File
-import java.lang.IllegalStateException
 import java.net.URLClassLoader
 import kotlin.properties.Delegates
 
@@ -110,6 +110,10 @@ abstract class AbstractDebugTest : CodegenTestCase() {
                 ?: File(javaBin, "java").also { assert(it.exists()) }
         }
 
+        val Location.isInDebugTestInfrastructure: Boolean
+            get() {
+                return this.sourcePath().startsWith("helpers" + File.separatorChar)
+            }
     }
 
     @Before
@@ -158,7 +162,7 @@ abstract class AbstractDebugTest : CodegenTestCase() {
             GenerationUtils.compileFiles(myFiles.psiFiles, myEnvironment, classBuilderFactory)
         classFileFactory = generationState.factory
 
-        val tempDirForTest = KotlinTestUtils.tmpDir("debuggerTest")
+        val tempDirForTest = KtTestUtil.tmpDir("debuggerTest")
         val classesDir = File(tempDirForTest, "classes")
         try {
             classFileFactory.writeAllTo(classesDir)

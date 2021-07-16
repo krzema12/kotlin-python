@@ -25,7 +25,7 @@ class E<T> {
     // selection of the proper constructor
     // but a type mismatch for the first
     // argument
-    constructor(e: T, i: Int) : <!INAPPLICABLE_CANDIDATE!>this<!>(i, 10) {}
+    constructor(e: T, i: Int) : this(<!ARGUMENT_TYPE_MISMATCH!>i<!>, 10) {}
 }
 
 class I<T> {
@@ -33,7 +33,7 @@ class I<T> {
     // selection of the proper constructor
     // but a type mismatch for the first
     // argument
-    constructor(e: T, i: Int) : <!INAPPLICABLE_CANDIDATE!>this<!>(i, 10)
+    constructor(e: T, i: Int) : this(<!ARGUMENT_TYPE_MISMATCH!>i<!>, 10)
 }
 
 class J<T> {
@@ -63,5 +63,5 @@ class M {
 }
 
 class U : M {
-    <!INAPPLICABLE_CANDIDATE!>constructor()<!>
+    constructor()
 }

@@ -22,8 +22,11 @@ import org.jetbrains.kotlin.fir.scopes.FirTypeScope
 import org.jetbrains.kotlin.fir.symbols.AbstractFirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassSymbol
-import org.jetbrains.kotlin.fir.types.*
+import org.jetbrains.kotlin.fir.types.ConeKotlinErrorType
+import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.fir.types.builder.buildResolvedTypeRef
+import org.jetbrains.kotlin.fir.types.coneType
+import org.jetbrains.kotlin.fir.types.coneTypeSafe
 
 interface Receiver
 
@@ -51,7 +54,7 @@ abstract class AbstractExplicitReceiverValue<E : FirExpression> : AbstractExplic
         get() = explicitReceiver
 }
 
-internal class ExpressionReceiverValue(
+class ExpressionReceiverValue(
     override val explicitReceiver: FirExpression
 ) : AbstractExplicitReceiverValue<FirExpression>(), ReceiverValue
 
@@ -63,6 +66,8 @@ sealed class ImplicitReceiverValue<S : AbstractFirBasedSymbol<*>>(
 ) : ReceiverValue {
     final override var type: ConeKotlinType = type
         private set
+
+    val originalType: ConeKotlinType = type
 
     var implicitScope: FirTypeScope? = type.scope(useSiteSession, scopeSession, FakeOverrideTypeCalculator.DoNothing)
         private set
@@ -127,16 +132,9 @@ class ImplicitExtensionReceiverValue(
 ) : ImplicitReceiverValue<FirCallableSymbol<*>>(boundSymbol, type, useSiteSession, scopeSession)
 
 
-class InaccessibleImplicitReceiverValue internal constructor(
+class InaccessibleImplicitReceiverValue(
     boundSymbol: FirClassSymbol<*>,
     type: ConeKotlinType,
     useSiteSession: FirSession,
     scopeSession: ScopeSession
-) : ImplicitReceiverValue<FirClassSymbol<*>>(boundSymbol, type, useSiteSession, scopeSession) {
-    internal constructor(
-        boundSymbol: FirClassSymbol<*>, useSiteSession: FirSession, scopeSession: ScopeSession
-    ) : this(
-        boundSymbol, boundSymbol.constructType(typeArguments = emptyArray(), isNullable = false),
-        useSiteSession, scopeSession
-    )
-}
+) : ImplicitReceiverValue<FirClassSymbol<*>>(boundSymbol, type, useSiteSession, scopeSession)

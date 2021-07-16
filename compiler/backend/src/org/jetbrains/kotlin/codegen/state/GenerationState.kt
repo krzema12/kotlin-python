@@ -20,6 +20,7 @@ import org.jetbrains.kotlin.codegen.intrinsics.IntrinsicMethods
 import org.jetbrains.kotlin.codegen.optimization.OptimizationClassBuilderFactory
 import org.jetbrains.kotlin.codegen.serialization.JvmSerializationBindings
 import org.jetbrains.kotlin.config.*
+import org.jetbrains.kotlin.config.LanguageVersion.*
 import org.jetbrains.kotlin.descriptors.ClassDescriptor
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.descriptors.ScriptDescriptor
@@ -49,6 +50,7 @@ import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.TypeApproximator
 import org.jetbrains.org.objectweb.asm.Type
 import java.io.File
+import java.util.*
 
 class GenerationState private constructor(
     val project: Project,
@@ -108,7 +110,7 @@ class GenerationState private constructor(
         fun wantsDiagnostics(v: Boolean) =
             apply { wantsDiagnostics = v }
 
-        var jvmBackendClassResolver: JvmBackendClassResolver = JvmBackendClassResolverForModuleWithDependencies(module); private set
+        private var jvmBackendClassResolver: JvmBackendClassResolver = JvmBackendClassResolverForModuleWithDependencies(module)
         fun jvmBackendClassResolver(v: JvmBackendClassResolver) =
             apply { jvmBackendClassResolver = v }
 
@@ -153,8 +155,10 @@ class GenerationState private constructor(
     val deserializationConfiguration: DeserializationConfiguration =
         CompilerDeserializationConfiguration(configuration.languageVersionSettings)
 
-    val deprecationProvider =
-        DeprecationResolver(LockBasedStorageManager.NO_LOCKS, configuration.languageVersionSettings, CoroutineCompatibilitySupport.ENABLED, JavaDeprecationSettings)
+    val deprecationProvider = DeprecationResolver(
+        LockBasedStorageManager.NO_LOCKS, configuration.languageVersionSettings, CoroutineCompatibilitySupport.ENABLED,
+        JavaDeprecationSettings
+    )
 
     init {
         val icComponents = configuration.get(JVMConfigurationKeys.INCREMENTAL_COMPILATION_COMPONENTS)
@@ -195,11 +199,37 @@ class GenerationState private constructor(
 
     val languageVersionSettings = configuration.languageVersionSettings
 
+    val useOldManglingSchemeForFunctionsWithInlineClassesInSignatures =
+        configuration.getBoolean(JVMConfigurationKeys.USE_OLD_INLINE_CLASSES_MANGLING_SCHEME) ||
+                languageVersionSettings.languageVersion.run { major == 1 && minor < 4 }
+
     val target = configuration.get(JVMConfigurationKeys.JVM_TARGET) ?: JvmTarget.DEFAULT
     val runtimeStringConcat =
-        if (target.bytecodeVersion >= JvmTarget.JVM_9.bytecodeVersion)
-            configuration.get(JVMConfigurationKeys.STRING_CONCAT) ?: JvmStringConcat.INLINE
+        if (target.majorVersion >= JvmTarget.JVM_9.majorVersion)
+            configuration.get(JVMConfigurationKeys.STRING_CONCAT) ?: JvmStringConcat.INDY_WITH_CONSTANTS
         else JvmStringConcat.INLINE
+
+    val samConversionsScheme = run {
+        val fromConfig = configuration.get(JVMConfigurationKeys.SAM_CONVERSIONS)
+        if (fromConfig != null && target >= fromConfig.minJvmTarget)
+            fromConfig
+        else if (
+            target >= JvmClosureGenerationScheme.INDY.minJvmTarget &&
+            languageVersionSettings.supportsFeature(LanguageFeature.SamWrapperClassesAreSynthetic)
+        )
+            JvmClosureGenerationScheme.INDY
+        else
+            JvmClosureGenerationScheme.CLASS
+    }
+
+    val lambdasScheme = run {
+        val fromConfig = configuration.get(JVMConfigurationKeys.LAMBDAS)
+            ?: JvmClosureGenerationScheme.DEFAULT
+        if (target >= fromConfig.minJvmTarget)
+            fromConfig
+        else
+            JvmClosureGenerationScheme.DEFAULT
+    }
 
     val moduleName: String = moduleName ?: JvmCodegenUtil.getModuleName(module)
     val classBuilderMode: ClassBuilderMode = builderFactory.classBuilderMode
@@ -214,7 +244,8 @@ class GenerationState private constructor(
         classBuilderMode,
         this.moduleName,
         languageVersionSettings,
-        IncompatibleClassTrackerImpl(extraJvmDiagnosticsTrace),
+        useOldManglingSchemeForFunctionsWithInlineClassesInSignatures,
+        IncompatibleClassTracker.DoNothing,
         target,
         isIrBackend
     )
@@ -245,6 +276,7 @@ class GenerationState private constructor(
     class ForScript {
         // quite a mess, this one is an input from repl interpreter
         var earlierScriptsForReplInterpreter: List<ScriptDescriptor>? = null
+
         // and the rest is an output from the codegen
         var resultFieldName: String? = null
         var resultTypeString: String? = null
@@ -267,7 +299,10 @@ class GenerationState private constructor(
 
     val rootContext: CodegenContext<*> = RootContext(this)
 
-    val classFileVersion: Int = target.bytecodeVersion
+    val classFileVersion: Int = run {
+        val minorVersion = if (configuration.getBoolean(JVMConfigurationKeys.ENABLE_JVM_PREVIEW)) 0xffff else 0
+        (minorVersion shl 16) + target.majorVersion
+    }
 
     val generateParametersMetadata: Boolean = configuration.getBoolean(JVMConfigurationKeys.PARAMETERS_METADATA)
 
@@ -287,17 +322,16 @@ class GenerationState private constructor(
 
     val metadataVersion =
         configuration.get(CommonConfigurationKeys.METADATA_VERSION)
-            ?: if (languageVersionSettings.languageVersion >= LanguageVersion.LATEST_STABLE) JvmMetadataVersion.INSTANCE
-            else JvmMetadataVersion(1, 1, 18)
+            ?: LANGUAGE_TO_METADATA_VERSION.getValue(languageVersionSettings.languageVersion)
 
-    val isIrWithStableAbi = configuration.getBoolean(JVMConfigurationKeys.IS_IR_WITH_STABLE_ABI)
+    val abiStability = configuration.get(JVMConfigurationKeys.ABI_STABILITY)
 
     val globalSerializationBindings = JvmSerializationBindings()
     var mapInlineClass: (ClassDescriptor) -> Type = { descriptor -> typeMapper.mapType(descriptor.defaultType) }
 
     val typeApproximator: TypeApproximator? =
         if (languageVersionSettings.supportsFeature(LanguageFeature.NewInference))
-            TypeApproximator(module.builtIns)
+            TypeApproximator(module.builtIns, languageVersionSettings)
         else
             null
 
@@ -318,6 +352,7 @@ class GenerationState private constructor(
                     else
                         BuilderFactoryForDuplicateSignatureDiagnostics(
                             it, bindingContext, diagnostics, this.moduleName, languageVersionSettings,
+                            useOldManglingSchemeForFunctionsWithInlineClassesInSignatures,
                             shouldGenerate = { origin -> !shouldOnlyCollectSignatures(origin) },
                         ).apply { duplicateSignatureFactory = this }
                 },
@@ -337,7 +372,7 @@ class GenerationState private constructor(
     fun beforeCompile() {
         markUsed()
 
-        if (!isIrBackend || languageVersionSettings.getFlag(JvmAnalysisFlags.irCheckLocalNames)) {
+        if (!isIrBackend) {
             CodegenBinding.initTrace(this)
         }
     }
@@ -358,6 +393,24 @@ class GenerationState private constructor(
 
     private fun shouldOnlyCollectSignatures(origin: JvmDeclarationOrigin) =
         classBuilderMode == ClassBuilderMode.LIGHT_CLASSES && origin.originKind in doNotGenerateInLightClassMode
+
+    companion object {
+        private val LANGUAGE_TO_METADATA_VERSION = EnumMap<LanguageVersion, JvmMetadataVersion>(LanguageVersion::class.java).apply {
+            val oldMetadataVersion = JvmMetadataVersion(1, 1, 18)
+            this[KOTLIN_1_0] = oldMetadataVersion
+            this[KOTLIN_1_1] = oldMetadataVersion
+            this[KOTLIN_1_2] = oldMetadataVersion
+            this[KOTLIN_1_3] = oldMetadataVersion
+            this[KOTLIN_1_4] = JvmMetadataVersion(1, 4, 3)
+            this[KOTLIN_1_5] = JvmMetadataVersion.INSTANCE
+            this[KOTLIN_1_6] = JvmMetadataVersion(1, 6, 0)
+
+            check(size == LanguageVersion.values().size) {
+                "Please add mappings from the missing LanguageVersion instances to the corresponding JvmMetadataVersion " +
+                        "in `GenerationState.LANGUAGE_TO_METADATA_VERSION`"
+            }
+        }
+    }
 }
 
 private val doNotGenerateInLightClassMode = setOf(CLASS_MEMBER_DELEGATION_TO_DEFAULT_IMPL, BRIDGE, COLLECTION_STUB, AUGMENTED_BUILTIN_API)

@@ -15,7 +15,6 @@ import org.jetbrains.kotlin.serialization.deserialization.descriptors.Deserializ
 import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedPropertyDescriptor
 import org.jetbrains.kotlin.serialization.deserialization.getName
 import org.jetbrains.kotlinx.serialization.compiler.diagnostic.SERIALIZABLE_PROPERTIES
-import org.jetbrains.kotlinx.serialization.compiler.extensions.SerializationComponentRegistrar
 import org.jetbrains.kotlinx.serialization.compiler.extensions.SerializationDescriptorSerializerPlugin
 import org.jetbrains.kotlinx.serialization.compiler.extensions.SerializationPluginMetadataExtensions
 
@@ -52,6 +51,9 @@ class SerializableProperties(private val serializableClass: ClassDescriptor, val
                     prop,
                     primaryConstructorProperties[prop] ?: false,
                     prop.hasBackingField(bindingContext) || (prop is DeserializedPropertyDescriptor && prop.backingField != null) // workaround for TODO in .hasBackingField
+                            // workaround for overridden getter (val) and getter+setter (var) - in this case hasBackingField returning false
+                            // but initializer presents only for property with backing field
+                            || prop.declaresDefaultValue
                 )
             }
             .filterNot { it.transient }
@@ -85,6 +87,34 @@ class SerializableProperties(private val serializableClass: ClassDescriptor, val
     val primaryConstructorWithDefaults = serializableClass.unsubstitutedPrimaryConstructor
         ?.original?.valueParameters?.any { it.declaresDefaultValue() } ?: false
 }
+
+internal val SerializableProperties.goldenMask: Int
+    get() {
+        var goldenMask = 0
+        var requiredBit = 1
+        for (property in serializableProperties) {
+            if (!property.optional) {
+                goldenMask = goldenMask or requiredBit
+            }
+            requiredBit = requiredBit shl 1
+        }
+        return goldenMask
+    }
+
+internal val SerializableProperties.goldenMaskList: List<Int>
+    get() {
+        val maskSlotCount = serializableProperties.bitMaskSlotCount()
+        val goldenMaskList = MutableList(maskSlotCount) { 0 }
+
+        for (i in serializableProperties.indices) {
+            if (!serializableProperties[i].optional) {
+                val slotNumber = i / 32
+                val bitInSlot = i % 32
+                goldenMaskList[slotNumber] = goldenMaskList[slotNumber] or (1 shl bitInSlot)
+            }
+        }
+        return goldenMaskList
+    }
 
 internal fun List<SerializableProperty>.bitMaskSlotCount() = size / 32 + 1
 internal fun bitMaskSlotAt(propertyIndex: Int) = propertyIndex / 32

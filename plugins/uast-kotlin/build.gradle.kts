@@ -50,6 +50,7 @@ dependencies {
     testRuntime(project(":plugins:kapt3-idea"))
     testRuntime(project(":kotlinx-serialization-ide-plugin"))
     testRuntime(project(":plugins:parcelize:parcelize-ide"))
+    testRuntime(project(":plugins:lombok:lombok-ide-plugin"))
     testRuntime(intellijDep())
     testRuntime(intellijPluginDep("junit"))
     testRuntime(intellijPluginDep("gradle"))
@@ -65,5 +66,6 @@ sourceSets {
 testsJar {}
 
 projectTest(parallel = true) {
+    dependsOn(":dist")
     workingDir = rootDir
 }

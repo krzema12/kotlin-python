@@ -5,8 +5,6 @@
 
 package kotlin.text
 
-import kotlin.internal.LowPriorityInOverloadResolution
-
 expect class Regex {
     constructor(pattern: String)
     constructor(pattern: String, option: RegexOption)
@@ -27,12 +25,15 @@ expect class Regex {
      *
      * @param startIndex An index to start search with, by default 0. Must be not less than zero and not greater than `input.length()`
      * @return An instance of [MatchResult] if match was found or `null` otherwise.
+     * @throws IndexOutOfBoundsException if [startIndex] is less than zero or greater than the length of the [input] char sequence.
      * @sample samples.text.Regexps.find
      */
     fun find(input: CharSequence, startIndex: Int = 0): MatchResult?
 
     /**
      * Returns a sequence of all occurrences of a regular expression within the [input] string, beginning at the specified [startIndex].
+     *
+     * @throws IndexOutOfBoundsException if [startIndex] is less than zero or greater than the length of the [input] char sequence.
      *
      * @sample samples.text.Regexps.findAll
      */
@@ -65,9 +66,6 @@ expect enum class RegexOption {
 
 // From char.kt
 
-expect fun Char.isWhitespace(): Boolean
-expect fun Char.toLowerCase(): Char
-expect fun Char.toUpperCase(): Char
 expect fun Char.isHighSurrogate(): Boolean
 expect fun Char.isLowSurrogate(): Boolean
 
@@ -79,6 +77,7 @@ expect fun Char.isLowSurrogate(): Boolean
  */
 @SinceKotlin("1.2")
 @Deprecated("Use CharArray.concatToString() instead", ReplaceWith("chars.concatToString()"))
+@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5")
 public expect fun String(chars: CharArray): String
 
 /**
@@ -89,6 +88,7 @@ public expect fun String(chars: CharArray): String
  */
 @SinceKotlin("1.2")
 @Deprecated("Use CharArray.concatToString(startIndex, endIndex) instead", ReplaceWith("chars.concatToString(offset, offset + length)"))
+@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5")
 public expect fun String(chars: CharArray, offset: Int, length: Int): String
 
 /**
@@ -196,49 +196,25 @@ public expect fun String.substring(startIndex: Int): String
 public expect fun String.substring(startIndex: Int, endIndex: Int): String
 
 /**
- * Returns a copy of this string converted to upper case using the rules of the default locale.
- *
- * @sample samples.text.Strings.toUpperCase
+ * Returns a string containing this char sequence repeated [n] times.
+ * @throws [IllegalArgumentException] when n < 0.
+ * @sample samples.text.Strings.repeat
  */
-public expect fun String.toUpperCase(): String
-
-/**
- * Returns a copy of this string converted to lower case using the rules of the default locale.
- *
- * @sample samples.text.Strings.toLowerCase
- */
-public expect fun String.toLowerCase(): String
-
-/**
- * Returns a copy of this string having its first letter titlecased using the rules of the default locale,
- * or the original string if it's empty or already starts with a title case letter.
- *
- * The title case of a character is usually the same as its upper case with several exceptions.
- * The particular list of characters with the special title case form depends on the underlying platform.
- *
- * @sample samples.text.Strings.capitalize
- */
-public expect fun String.capitalize(): String
-
-/**
- * Returns a copy of this string having its first letter lowercased using the rules of the default locale,
- * or the original string if it's empty or already starts with a lower case letter.
- *
- * @sample samples.text.Strings.decapitalize
- */
-public expect fun String.decapitalize(): String
-
 public expect fun CharSequence.repeat(n: Int): String
 
 
 /**
  * Returns a new string with all occurrences of [oldChar] replaced with [newChar].
+ * 
+ * @sample samples.text.Strings.replace
  */
 expect fun String.replace(oldChar: Char, newChar: Char, ignoreCase: Boolean = false): String
 
 /**
  * Returns a new string obtained by replacing all occurrences of the [oldValue] substring in this string
  * with the specified [newValue] string.
+ *
+ * @sample samples.text.Strings.replace
  */
 expect fun String.replace(oldValue: String, newValue: String, ignoreCase: Boolean = false): String
 
@@ -313,6 +289,8 @@ public expect fun String.toBoolean(): Boolean
 
 /**
  * Returns `true` if this string is not `null` and its content is equal to the word "true", ignoring case, and `false` otherwise.
+ *
+ * There are also strict versions of the function available on non-nullable String, [toBooleanStrict] and [toBooleanStrictOrNull].
  */
 @SinceKotlin("1.4")
 public expect fun String?.toBoolean(): Boolean

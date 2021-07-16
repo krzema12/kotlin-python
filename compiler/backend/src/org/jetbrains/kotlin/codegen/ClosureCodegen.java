@@ -40,6 +40,7 @@ import org.jetbrains.kotlin.resolve.scopes.receivers.TransientReceiver;
 import org.jetbrains.kotlin.serialization.DescriptorSerializer;
 import org.jetbrains.kotlin.types.KotlinType;
 import org.jetbrains.kotlin.types.SimpleType;
+import org.jetbrains.kotlin.backend.common.SamType;
 import org.jetbrains.kotlin.types.expressions.ExpressionTypingUtils;
 import org.jetbrains.kotlin.util.OperatorNameConventions;
 import org.jetbrains.org.objectweb.asm.MethodVisitor;
@@ -157,7 +158,14 @@ public class ClosureCodegen extends MemberCodegen<KtElement> {
         for (int i = 0; i < superInterfaceTypes.size(); i++) {
             KotlinType superInterfaceType = superInterfaceTypes.get(i);
             sw.writeInterface();
-            superInterfaceAsmTypes[i] = typeMapper.mapSupertype(superInterfaceType, sw).getInternalName();
+            Type superInterfaceAsmType;
+            if (samType != null && superInterfaceType.getConstructor() == samType.getType().getConstructor()) {
+                superInterfaceAsmType = typeMapper.mapSupertype(superInterfaceType, null);
+                sw.writeAsmType(superInterfaceAsmType);
+            } else {
+                superInterfaceAsmType = typeMapper.mapSupertype(superInterfaceType, sw);
+            }
+            superInterfaceAsmTypes[i] = superInterfaceAsmType.getInternalName();
             sw.writeInterfaceEnd();
         }
 

@@ -17,12 +17,8 @@
 package org.jetbrains.kotlin.gradle.tasks
 
 import org.gradle.api.Project
-import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileTree
-import org.gradle.api.tasks.CacheableTask
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.*
 import org.jetbrains.kotlin.cli.common.arguments.K2JSDceArguments
 import org.jetbrains.kotlin.cli.js.dce.K2JSDce
 import org.jetbrains.kotlin.compilerRunner.runToolInSeparateProcess
@@ -34,7 +30,7 @@ import org.jetbrains.kotlin.gradle.utils.canonicalPathWithoutExtension
 import java.io.File
 
 @CacheableTask
-open class KotlinJsDce : AbstractKotlinCompileTool<K2JSDceArguments>(), KotlinJsDce {
+abstract class KotlinJsDce : AbstractKotlinCompileTool<K2JSDceArguments>(), KotlinJsDce {
 
     init {
         cacheOnlyIfEnabledForKotlin()
@@ -42,8 +38,6 @@ open class KotlinJsDce : AbstractKotlinCompileTool<K2JSDceArguments>(), KotlinJs
 
     @get:Internal
     internal val objects = project.objects
-
-    override fun localStateDirectories(): FileCollection = project.files()
 
     override fun createCompilerArgs(): K2JSDceArguments = K2JSDceArguments()
 
@@ -71,6 +65,13 @@ open class KotlinJsDce : AbstractKotlinCompileTool<K2JSDceArguments>(), KotlinJs
         keep += fqn
     }
 
+    @Input
+    var jvmArgs = mutableListOf<String>()
+
+    private val buildDir by lazy {
+        project.buildDir
+    }
+
     @TaskAction
     fun performDce() {
         val inputFiles = (listOf(source) + classpath
@@ -91,7 +92,8 @@ open class KotlinJsDce : AbstractKotlinCompileTool<K2JSDceArguments>(), KotlinJs
             K2JSDce::class.java.name,
             computedCompilerClasspath,
             log,
-            project.buildDir
+            buildDir,
+            jvmArgs
         )
         throwGradleExceptionIfError(exitCode)
 

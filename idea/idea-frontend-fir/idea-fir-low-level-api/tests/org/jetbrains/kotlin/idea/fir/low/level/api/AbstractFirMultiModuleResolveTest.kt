@@ -11,16 +11,17 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.search.FileTypeIndex
 import org.jetbrains.kotlin.fir.FirRenderer
+import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.builder.RawFirBuilder
 import org.jetbrains.kotlin.fir.declarations.FirFile
 import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
 import org.jetbrains.kotlin.fir.dependenciesWithoutSelf
 import org.jetbrains.kotlin.fir.java.*
 import org.jetbrains.kotlin.fir.psi
+import org.jetbrains.kotlin.fir.resolve.ScopeSession
 import org.jetbrains.kotlin.fir.resolve.firProvider
 import org.jetbrains.kotlin.fir.resolve.providers.impl.FirProviderImpl
-import org.jetbrains.kotlin.fir.resolve.transformers.FirTransformerBasedResolveProcessor
-import org.jetbrains.kotlin.fir.resolve.transformers.createAllTransformerBasedResolveProcessors
+import org.jetbrains.kotlin.fir.resolve.transformers.*
 import org.jetbrains.kotlin.fir.session.FirSessionFactory
 import org.jetbrains.kotlin.idea.KotlinFileType
 import org.jetbrains.kotlin.idea.caches.project.IdeaModuleInfo
@@ -57,7 +58,7 @@ abstract class AbstractFirMultiModuleResolveTest : AbstractMultiModuleTest() {
 
     private fun createSession(module: Module, provider: FirProjectSessionProvider): FirJavaModuleBasedSession {
         val moduleInfo = module.productionSourceInfo()!!
-        return FirSessionFactory.createJavaModuleBasedSession(moduleInfo, provider, moduleInfo.contentScope())
+        return FirSessionFactory.createJavaModuleBasedSession(moduleInfo, provider, moduleInfo.contentScope(), project)
     }
 
     private fun createLibrarySession(moduleInfo: IdeaModuleInfo, provider: FirProjectSessionProvider): FirLibrarySession {
@@ -69,7 +70,7 @@ abstract class AbstractFirMultiModuleResolveTest : AbstractMultiModuleTest() {
         val firFilesPerSession = mutableMapOf<FirJavaModuleBasedSession, List<FirFile>>()
         val processorsPerSession = mutableMapOf<FirJavaModuleBasedSession, List<FirTransformerBasedResolveProcessor>>()
         val sessions = mutableListOf<FirJavaModuleBasedSession>()
-        val provider = FirProjectSessionProvider(project)
+        val provider = FirProjectSessionProvider()
         for (module in project.allModules().drop(1)) {
             val session = createSession(module, provider)
             sessions += session
@@ -154,6 +155,16 @@ abstract class AbstractFirMultiModuleResolveTest : AbstractMultiModuleTest() {
 //        if (javaFirDump.isNotEmpty()) {
 //            KotlinTestUtils.assertEqualsToFile(File("$dirPath/extraDump.java.txt"), javaFirDump)
 //        }
+    }
+
+    private fun createAllTransformerBasedResolveProcessors(
+        session: FirSession,
+        scopeSession: ScopeSession? = null,
+        pluginPhasesEnabled: Boolean = false,
+    ): List<FirTransformerBasedResolveProcessor> {
+        return createAllResolveProcessors(scopeSession, pluginPhasesEnabled) {
+            createTransformerBasedProcessorByPhase(session, it)
+        }
     }
 }
 

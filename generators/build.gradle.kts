@@ -24,16 +24,20 @@ fun extraSourceSet(name: String, extendMain: Boolean = true): Pair<SourceSet, Co
 val (builtinsSourceSet, builtinsApi) = extraSourceSet("builtins", extendMain = false)
 val (evaluateSourceSet, evaluateApi) = extraSourceSet("evaluate")
 val (interpreterSourceSet, interpreterApi) = extraSourceSet("interpreter")
+val (wasmSourceSet, wasmApi) = extraSourceSet("wasm")
 
 dependencies {
     // for GeneratorsFileUtil
-    compile(kotlinStdlib())
+    compile(kotlinStdlib("jdk8"))
     compile(intellijDep()) { includeJars("util") }
 
     builtinsApi("org.jetbrains.kotlin:kotlin-stdlib:$bootstrapKotlinVersion") { isTransitive = false }
     evaluateApi(project(":core:deserialization"))
+    wasmApi(project(":wasm:wasm.ir"))
+    wasmApi(kotlinStdlib())
     interpreterApi(project(":compiler:ir.tree"))
     interpreterApi(project(":compiler:ir.tree.impl"))
+    interpreterApi(project(":compiler:ir.psi2ir"))
 
     testCompile(builtinsSourceSet.output)
     testCompile(evaluateSourceSet.output)
@@ -64,8 +68,10 @@ dependencies {
     testCompile(projectTests(":kotlin-annotation-processing-cli"))
     testCompile(projectTests(":kotlin-allopen-compiler-plugin"))
     testCompile(projectTests(":kotlin-noarg-compiler-plugin"))
+    testCompile(projectTests(":plugins:lombok:lombok-compiler-plugin"))
     testCompile(projectTests(":kotlin-sam-with-receiver-compiler-plugin"))
     testCompile(projectTests(":kotlinx-serialization-compiler-plugin"))
+    testCompile(projectTests(":kotlinx-serialization-ide-plugin"))
     testCompile(projectTests(":plugins:fir:fir-plugin-prototype"))
     testCompile(projectTests(":idea:jvm-debugger:jvm-debugger-test"))
     testCompile(projectTests(":generators:test-generator"))
@@ -96,5 +102,6 @@ val generateKeywordStrings by generator("org.jetbrains.kotlin.generators.fronten
 val generateBuiltins by generator("org.jetbrains.kotlin.generators.builtins.generateBuiltIns.GenerateBuiltInsKt", builtinsSourceSet)
 val generateOperationsMap by generator("org.jetbrains.kotlin.generators.evaluate.GenerateOperationsMapKt", evaluateSourceSet)
 val generateInterpreterMap by generator("org.jetbrains.kotlin.generators.interpreter.GenerateInterpreterMapKt", interpreterSourceSet)
+val generateWasmIntrinsics by generator("org.jetbrains.kotlin.generators.wasm.WasmIntrinsicGeneratorKt", wasmSourceSet)
 
 testsJar()

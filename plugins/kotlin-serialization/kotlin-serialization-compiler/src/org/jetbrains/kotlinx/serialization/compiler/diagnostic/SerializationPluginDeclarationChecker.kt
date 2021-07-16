@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -13,15 +13,10 @@ import org.jetbrains.kotlin.descriptors.annotations.Annotated
 import org.jetbrains.kotlin.diagnostics.DiagnosticFactory0
 import org.jetbrains.kotlin.js.resolve.diagnostics.findPsi
 import org.jetbrains.kotlin.psi.*
-import org.jetbrains.kotlin.resolve.BindingTrace
+import org.jetbrains.kotlin.resolve.*
 import org.jetbrains.kotlin.resolve.checkers.DeclarationChecker
 import org.jetbrains.kotlin.resolve.checkers.DeclarationCheckerContext
-import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
-import org.jetbrains.kotlin.resolve.descriptorUtil.getSuperClassOrAny
-import org.jetbrains.kotlin.resolve.descriptorUtil.getSuperInterfaces
-import org.jetbrains.kotlin.resolve.descriptorUtil.module
-import org.jetbrains.kotlin.resolve.hasBackingField
-import org.jetbrains.kotlin.resolve.isInlineClassType
+import org.jetbrains.kotlin.resolve.descriptorUtil.*
 import org.jetbrains.kotlin.resolve.jvm.annotations.TRANSIENT_ANNOTATION_FQ_NAME
 import org.jetbrains.kotlin.resolve.lazy.descriptors.LazyAnnotationDescriptor
 import org.jetbrains.kotlin.resolve.source.getPsi
@@ -122,8 +117,27 @@ open class SerializationPluginDeclarationChecker : DeclarationChecker {
             return false
         }
 
-        if (descriptor.isInline) {
-            trace.reportOnSerializableAnnotation(descriptor, SerializationErrors.INLINE_CLASSES_NOT_SUPPORTED)
+
+        if (DescriptorUtils.isLocal(descriptor)) {
+            trace.reportOnSerializableAnnotation(descriptor, SerializationErrors.LOCAL_CLASSES_NOT_SUPPORTED)
+            return false
+        }
+
+        if (descriptor.isInner) {
+            trace.reportOnSerializableAnnotation(descriptor, SerializationErrors.INNER_CLASSES_NOT_SUPPORTED)
+            return false
+        }
+
+        if (descriptor.isInlineClass() && !canSupportInlineClasses(descriptor.module, trace)) {
+            descriptor.onSerializableAnnotation {
+                trace.report(
+                    SerializationErrors.INLINE_CLASSES_NOT_SUPPORTED.on(
+                        it,
+                        VersionReader.minVersionForInlineClasses.toString(),
+                        VersionReader.getVersionsForCurrentModuleFromTrace(descriptor.module, trace)?.implementationVersion.toString()
+                    )
+                )
+            }
             return false
         }
         if (!descriptor.hasSerializableAnnotationWithoutArgs) return false
@@ -248,6 +262,11 @@ open class SerializationPluginDeclarationChecker : DeclarationChecker {
 
     private fun KotlinType.isUnsupportedInlineType() = isInlineClassType() && !KotlinBuiltIns.isPrimitiveTypeOrNullablePrimitiveType(this)
 
+    private fun canSupportInlineClasses(module: ModuleDescriptor, trace: BindingTrace): Boolean {
+        if (isIde) return true // do not get version from jar manifest in ide
+        return VersionReader.canSupportInlineClasses(module, trace)
+    }
+
     private fun AbstractSerialGenerator.checkType(
         module: ModuleDescriptor,
         type: KotlinType,
@@ -257,8 +276,12 @@ open class SerializationPluginDeclarationChecker : DeclarationChecker {
     ) {
         if (type.genericIndex != null) return // type arguments always have serializer stored in class' field
         val element = ktType?.typeElement
-        if (type.isUnsupportedInlineType()) {
-            trace.report(SerializationErrors.INLINE_CLASSES_NOT_SUPPORTED.on(element ?: fallbackElement))
+        if (type.isUnsupportedInlineType() && !canSupportInlineClasses(module, trace)) {
+            trace.report(SerializationErrors.INLINE_CLASSES_NOT_SUPPORTED.on(
+                element ?: fallbackElement,
+                VersionReader.minVersionForInlineClasses.toString(),
+                VersionReader.getVersionsForCurrentModuleFromTrace(module, trace)?.implementationVersion.toString()
+            ))
         }
         val serializer = findTypeSerializerOrContextUnchecked(module, type)
         if (serializer != null) {

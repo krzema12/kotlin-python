@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.fir.resolve.dfa
 
 import org.jetbrains.kotlin.fir.types.ConeInferenceContext
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
+import org.jetbrains.kotlin.fir.types.canBeNull
 import org.jetbrains.kotlin.fir.types.commonSuperTypeOrNull
 
 abstract class Flow {
@@ -17,6 +18,7 @@ abstract class Flow {
 
     abstract val directAliasMap: Map<RealVariable, RealVariableAndType>
     abstract val backwardsAliasMap: Map<RealVariable, List<RealVariable>>
+    abstract val assignmentIndex: Map<RealVariable, Int>
 }
 
 fun Flow.unwrapVariable(variable: RealVariable): RealVariable {
@@ -35,7 +37,9 @@ abstract class LogicSystem<FLOW : Flow>(protected val context: ConeInferenceCont
 
     abstract fun addImplication(flow: FLOW, implication: Implication)
 
-    abstract fun removeAllAboutVariable(flow: FLOW, variable: RealVariable)
+    abstract fun removeTypeStatementsAboutVariable(flow: FLOW, variable: RealVariable)
+    abstract fun removeLogicStatementsAboutVariable(flow: FLOW, variable: DataFlowVariable)
+    abstract fun removeAliasInformationAboutVariable(flow: FLOW, variable: RealVariable)
 
     abstract fun translateVariableFromConditionInStatements(
         flow: FLOW,
@@ -56,7 +60,11 @@ abstract class LogicSystem<FLOW : Flow>(protected val context: ConeInferenceCont
     abstract fun addLocalVariableAlias(flow: FLOW, alias: RealVariable, underlyingVariable: RealVariableAndType)
     abstract fun removeLocalVariableAlias(flow: FLOW, alias: RealVariable)
 
+    abstract fun recordNewAssignment(flow: FLOW, variable: RealVariable, index: Int)
+
     protected abstract fun getImplicationsWithVariable(flow: FLOW, variable: DataFlowVariable): Collection<Implication>
+
+    protected abstract fun ConeKotlinType.isAcceptableForSmartcast(): Boolean
 
     // ------------------------------- Callbacks for updating implicit receiver stack -------------------------------
 
@@ -122,37 +130,46 @@ abstract class LogicSystem<FLOW : Flow>(protected val context: ConeInferenceCont
         return result
     }
 
-    protected fun or(statements: Collection<TypeStatement>): MutableTypeStatement {
+    private inline fun manipulateTypeStatements(
+        statements: Collection<TypeStatement>,
+        op: (Collection<Set<ConeKotlinType>>) -> MutableSet<ConeKotlinType>
+    ): MutableTypeStatement {
         require(statements.isNotEmpty())
         statements.singleOrNull()?.let { return it as MutableTypeStatement }
         val variable = statements.first().variable
         assert(statements.all { it.variable == variable })
-        val exactType = orForTypes(statements.map { it.exactType })
-        val exactNotType = orForTypes(statements.map { it.exactNotType })
+        val exactType = op.invoke(statements.map { it.exactType })
+        val exactNotType = op.invoke(statements.map { it.exactNotType })
         return MutableTypeStatement(variable, exactType, exactNotType)
     }
+
+    protected fun or(statements: Collection<TypeStatement>): MutableTypeStatement =
+        manipulateTypeStatements(statements, ::orForTypes)
 
     private fun orForTypes(types: Collection<Set<ConeKotlinType>>): MutableSet<ConeKotlinType> {
         if (types.any { it.isEmpty() }) return mutableSetOf()
-        val allTypes = types.flatMapTo(mutableSetOf()) { it }
-        val commonTypes = allTypes.toMutableSet()
-        types.forEach { commonTypes.retainAll(it) }
-        val differentTypes = types.mapNotNull { typeSet -> (typeSet - commonTypes).takeIf { it.isNotEmpty() } }
-        if (differentTypes.size == types.size) {
-            context.commonSuperTypeOrNull(differentTypes.flatten())?.let { commonTypes += it }
+        val intersectedTypes = types.map {
+            if (it.size > 1) {
+                context.intersectTypes(it.toList())
+            } else {
+                assert(it.size == 1) { "We've already checked each set of types is not empty." }
+                it.single()
+            }
         }
-        return commonTypes
+        val result = mutableSetOf<ConeKotlinType>()
+        context.commonSuperTypeOrNull(intersectedTypes)?.let {
+            if (it.isAcceptableForSmartcast()) {
+                result.add(it)
+            } else if (!it.canBeNull) {
+                result.add(context.anyType())
+            }
+            Unit
+        }
+        return result
     }
 
-    protected fun and(statements: Collection<TypeStatement>): MutableTypeStatement {
-        require(statements.isNotEmpty())
-        statements.singleOrNull()?.let { return it as MutableTypeStatement }
-        val variable = statements.first().variable
-        assert(statements.all { it.variable == variable })
-        val exactType = andForTypes(statements.map { it.exactType })
-        val exactNotType = andForTypes(statements.map { it.exactNotType })
-        return MutableTypeStatement(variable, exactType, exactNotType)
-    }
+    protected fun and(statements: Collection<TypeStatement>): MutableTypeStatement =
+        manipulateTypeStatements(statements, ::andForTypes)
 
     private fun andForTypes(types: Collection<Set<ConeKotlinType>>): MutableSet<ConeKotlinType> {
         return types.flatMapTo(mutableSetOf()) { it }

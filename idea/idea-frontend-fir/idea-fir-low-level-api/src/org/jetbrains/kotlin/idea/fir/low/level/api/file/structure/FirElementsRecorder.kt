@@ -7,9 +7,11 @@ package org.jetbrains.kotlin.idea.fir.low.level.api.file.structure
 
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
+import org.jetbrains.kotlin.fir.expressions.FirVariableAssignment
 import org.jetbrains.kotlin.fir.realPsi
 import org.jetbrains.kotlin.fir.references.*
 import org.jetbrains.kotlin.fir.types.FirErrorTypeRef
+import org.jetbrains.kotlin.fir.types.FirResolvedTypeRef
 import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.types.FirUserTypeRef
 import org.jetbrains.kotlin.fir.types.impl.FirResolvedTypeRefImpl
@@ -53,11 +55,15 @@ internal open class FirElementsRecorder : FirVisitor<Unit, MutableMap<KtElement,
     }
 
     override fun visitElement(element: FirElement, data: MutableMap<KtElement, FirElement>) {
-        (element.realPsi as? KtElement)?.let { psi ->
-            cache(psi, element, data)
-        }
+        cacheElement(element, data)
         element.acceptChildren(this, data)
     }
+
+    override fun visitVariableAssignment(variableAssignment: FirVariableAssignment, data: MutableMap<KtElement, FirElement>) {
+        cacheElement(variableAssignment.lValue, data) // FirReference is not cached by default
+        visitElement(variableAssignment, data)
+    }
+
 
     //@formatter:off
     override fun visitReference(reference: FirReference, data: MutableMap<KtElement, FirElement>) {}
@@ -68,11 +74,26 @@ internal open class FirElementsRecorder : FirVisitor<Unit, MutableMap<KtElement,
     override fun visitBackingFieldReference(backingFieldReference: FirBackingFieldReference, data: MutableMap<KtElement, FirElement>) {}
     override fun visitSuperReference(superReference: FirSuperReference, data: MutableMap<KtElement, FirElement>) {}
     override fun visitThisReference(thisReference: FirThisReference, data: MutableMap<KtElement, FirElement>) {}
-    override fun visitErrorTypeRef(errorTypeRef: FirErrorTypeRef, data: MutableMap<KtElement, FirElement>) {}
     //@formatter:on
+
+    override fun visitErrorTypeRef(errorTypeRef: FirErrorTypeRef, data: MutableMap<KtElement, FirElement>) {
+        super.visitResolvedTypeRef(errorTypeRef, data)
+        errorTypeRef.delegatedTypeRef?.accept(this, data)
+    }
+
+    override fun visitResolvedTypeRef(resolvedTypeRef: FirResolvedTypeRef, data: MutableMap<KtElement, FirElement>) {
+        super.visitResolvedTypeRef(resolvedTypeRef, data)
+        resolvedTypeRef.delegatedTypeRef?.accept(this, data)
+    }
 
     override fun visitUserTypeRef(userTypeRef: FirUserTypeRef, data: MutableMap<KtElement, FirElement>) {
         userTypeRef.acceptChildren(this, data)
+    }
+
+    private fun cacheElement(element: FirElement, cache: MutableMap<KtElement, FirElement>) {
+        (element.realPsi as? KtElement)?.let { psi ->
+            cache(psi, element, cache)
+        }
     }
 
     companion object {

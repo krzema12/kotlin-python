@@ -24,6 +24,8 @@ import org.jetbrains.kotlin.backend.common.DataClassMethodGenerator
 import org.jetbrains.kotlin.builtins.KotlinBuiltIns
 import org.jetbrains.kotlin.codegen.JvmCodegenUtil
 import org.jetbrains.kotlin.codegen.kotlinType
+import org.jetbrains.kotlin.config.AnalysisFlags
+import org.jetbrains.kotlin.config.JvmAnalysisFlags
 import org.jetbrains.kotlin.descriptors.ClassDescriptor
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.descriptors.PropertyDescriptor
@@ -33,18 +35,20 @@ import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.load.kotlin.TypeMappingMode
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.DelegationResolver
 import org.jetbrains.kotlin.resolve.DescriptorToSourceUtils
 import org.jetbrains.kotlin.resolve.annotations.JVM_STATIC_ANNOTATION_FQ_NAME
 import org.jetbrains.kotlin.resolve.annotations.argumentValue
 import org.jetbrains.kotlin.resolve.constants.EnumValue
 import org.jetbrains.kotlin.resolve.jvm.annotations.JVM_OVERLOADS_FQ_NAME
+import org.jetbrains.kotlin.resolve.jvm.annotations.JVM_RECORD_ANNOTATION_FQ_NAME
 import org.jetbrains.kotlin.resolve.jvm.diagnostics.JvmDeclarationOriginKind
 import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.typeUtil.isAnyOrNullableAny
 
 open class KtUltraLightClass(classOrObject: KtClassOrObject, internal val support: KtUltraLightSupport) :
-    KtLightClassImpl(classOrObject) {
+    KtLightClassImpl(classOrObject, support.languageVersionSettings.getFlag(JvmAnalysisFlags.jvmDefaultMode)) {
 
     private class KtUltraLightClassModifierList(
         private val containingClass: KtLightClassForSourceDeclaration,
@@ -281,7 +285,8 @@ open class KtUltraLightClass(classOrObject: KtClassOrObject, internal val suppor
                     parameter.isMutable,
                     forceStatic = false,
                     onlyJvmStatic = false,
-                    createAsAnnotationMethod = isAnnotationType
+                    createAsAnnotationMethod = isAnnotationType,
+                    isJvmRecord = classOrObject.hasAnnotation(JVM_RECORD_ANNOTATION_FQ_NAME),
                 )
             )
         }
@@ -334,11 +339,18 @@ open class KtUltraLightClass(classOrObject: KtClassOrObject, internal val suppor
 
     private fun addMethodsFromDataClass(result: MutableList<KtLightMethod>) {
         if (!classOrObject.hasModifier(DATA_KEYWORD)) return
+        val ktClass = classOrObject as? KtClass ?: return
         val descriptor = classOrObject.resolve() as? ClassDescriptor ?: return
         val bindingContext = classOrObject.analyze()
 
         // Force resolving data class members set
         descriptor.unsubstitutedMemberScope.getContributedDescriptors()
+
+        val areCtorParametersAreAnalyzed = ktClass.primaryConstructorParameters
+            .filter { it.hasValOrVar() }
+            .all { bindingContext.get(BindingContext.PRIMARY_CONSTRUCTOR_PARAMETER, it) != null }
+
+        if (!areCtorParametersAreAnalyzed) return
 
         object : DataClassMethodGenerator(classOrObject, bindingContext) {
             private fun addFunction(descriptor: FunctionDescriptor, declarationForOrigin: KtDeclaration? = null) {
@@ -474,7 +486,7 @@ open class KtUltraLightClass(classOrObject: KtClassOrObject, internal val suppor
 
         val containingBody = classOrObject.parent as? KtClassBody
         val containingClass = containingBody?.parent as? KtClassOrObject
-        containingClass?.let { return create(it) }
+        containingClass?.let { return create(it, jvmDefaultMode) }
 
         val containingBlock = classOrObject.parent as? KtBlockExpression
         val containingScript = containingBlock?.parent as? KtScript

@@ -26,7 +26,11 @@ internal abstract class KotlinToolRunner(
     open val execEnvironmentBlacklist: Set<String> = emptySet()
 
     open val execSystemProperties: Map<String, String> = emptyMap()
-    open val execSystemPropertiesBlacklist: Set<String> = setOf("java.endorsed.dirs")
+    open val execSystemPropertiesBlacklist: Set<String> = setOf(
+        "java.endorsed.dirs",       // Fix for KT-25887
+        "user.dir",                 // Don't propagate the working dir of the current Gradle process
+        "java.system.class.loader"  // Don't use custom class loaders
+    )
 
     abstract val classpath: Set<File>
     open fun checkClasspath(): Unit = check(classpath.isNotEmpty()) { "Classpath of the tool is empty: $displayName" }
@@ -112,7 +116,8 @@ internal abstract class KotlinToolRunner(
         project.logger.info(
             """|Run in-process tool "$displayName"
                |Entry point method = $mainClass.$daemonEntryPoint
-               |Arguments = ${transformedArgs.toPrettyString()}
+               |Arguments = ${args.toPrettyString()}
+               |Transformed arguments = ${if (transformedArgs == args) "same as arguments" else transformedArgs.toPrettyString()}
             """.trimMargin()
         )
 
@@ -135,12 +140,12 @@ internal abstract class KotlinToolRunner(
         private val isolatedClassLoadersMap = ConcurrentHashMap<Any, ClassLoader>()
 
         private fun Map<String, String>.toPrettyString(): String = buildString {
-            append('{')
+            append('[')
             if (this@toPrettyString.isNotEmpty()) append('\n')
             this@toPrettyString.entries.forEach { (key, value) ->
                 append('\t').append(key).append(" = ").append(value.toPrettyString()).append('\n')
             }
-            append('}')
+            append(']')
         }
 
         private fun Collection<String>.toPrettyString(): String = buildString {

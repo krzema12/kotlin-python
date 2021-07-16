@@ -48,7 +48,7 @@ interface SourceCompilerForInline {
 
     val lazySourceMapper: SourceMapper
 
-    fun generateLambdaBody(lambdaInfo: ExpressionLambda): SMAPAndMethodNode
+    fun generateLambdaBody(lambdaInfo: ExpressionLambda, reifiedTypeParameters: ReifiedTypeParametersUsages): SMAPAndMethodNode
 
     fun doCreateMethodNodeFromSource(
         callableDescriptor: FunctionDescriptor,
@@ -64,7 +64,7 @@ interface SourceCompilerForInline {
         curFinallyDepth: Int
     ): BaseExpressionCodegen
 
-    fun generateFinallyBlocksIfNeeded(finallyCodegen: BaseExpressionCodegen, returnType: Type, afterReturnLabel: Label)
+    fun generateFinallyBlocksIfNeeded(codegen: BaseExpressionCodegen, returnType: Type, afterReturnLabel: Label, target: Label?)
 
     fun isCallInsideSameModuleAsDeclared(functionDescriptor: FunctionDescriptor): Boolean
 
@@ -74,7 +74,7 @@ interface SourceCompilerForInline {
 
     val compilationContextFunctionDescriptor: FunctionDescriptor
 
-    fun getContextLabels(): Set<String>
+    fun getContextLabels(): Map<String, Label?>
 
     fun reportSuspensionPointInsideMonitor(stackTraceElement: String)
 }
@@ -130,7 +130,7 @@ class PsiSourceCompilerForInline(private val codegen: ExpressionCodegen, overrid
     override val lazySourceMapper
         get() = codegen.parentCodegen.orCreateSourceMapper
 
-    override fun generateLambdaBody(lambdaInfo: ExpressionLambda): SMAPAndMethodNode {
+    override fun generateLambdaBody(lambdaInfo: ExpressionLambda, reifiedTypeParameters: ReifiedTypeParametersUsages): SMAPAndMethodNode {
         lambdaInfo as? PsiExpressionLambda ?: error("TODO")
         val invokeMethodDescriptor = lambdaInfo.invokeMethodDescriptor
         val jvmMethodSignature = state.typeMapper.mapSignatureSkipGeneric(invokeMethodDescriptor)
@@ -311,9 +311,10 @@ class PsiSourceCompilerForInline(private val codegen: ExpressionCodegen, overrid
 
     override fun hasFinallyBlocks() = codegen.hasFinallyBlocks()
 
-    override fun generateFinallyBlocksIfNeeded(finallyCodegen: BaseExpressionCodegen, returnType: Type, afterReturnLabel: Label) {
-        require(finallyCodegen is ExpressionCodegen)
-        finallyCodegen.generateFinallyBlocksIfNeeded(returnType, null, afterReturnLabel)
+    override fun generateFinallyBlocksIfNeeded(codegen: BaseExpressionCodegen, returnType: Type, afterReturnLabel: Label, target: Label?) {
+        // TODO use the target label for non-local break/continue
+        require(codegen is ExpressionCodegen)
+        codegen.generateFinallyBlocksIfNeeded(returnType, null, afterReturnLabel)
     }
 
     override fun createCodegenForExternalFinallyBlockGenerationOnNonLocalReturn(finallyNode: MethodNode, curFinallyDepth: Int) =
@@ -337,14 +338,15 @@ class PsiSourceCompilerForInline(private val codegen: ExpressionCodegen, overrid
     override val compilationContextFunctionDescriptor
         get() = codegen.getContext().functionDescriptor
 
-    override fun getContextLabels(): Set<String> {
+    override fun getContextLabels(): Map<String, Label?> {
         val context = codegen.getContext()
         val parentContext = context.parentContext
         val descriptor = if (parentContext is ClosureContext && parentContext.originalSuspendLambdaDescriptor != null) {
             parentContext.originalSuspendLambdaDescriptor!!
         } else context.contextDescriptor
 
-        return InlineCodegen.getDeclarationLabels(DescriptorToSourceUtils.descriptorToDeclaration(descriptor), descriptor)
+        val labels = InlineCodegen.getDeclarationLabels(DescriptorToSourceUtils.descriptorToDeclaration(descriptor), descriptor)
+        return labels.associateWith { null } // TODO add break/continue labels
     }
 
     fun initializeInlineFunctionContext(functionDescriptor: FunctionDescriptor) {

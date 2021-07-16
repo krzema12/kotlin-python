@@ -1,3 +1,4 @@
+// JVM_TARGET: 1.8
 // FILE: kt43217.kt
 class A {
     private val b =
@@ -43,4 +44,3 @@ public interface ObservableDouble extends ObservableValue<Double> {
     @NotNull
     Object isEqualTo(double value);
 }
-

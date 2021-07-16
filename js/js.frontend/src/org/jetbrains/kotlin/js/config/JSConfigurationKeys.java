@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.incremental.js.IncrementalResultsConsumer;
 import org.jetbrains.kotlin.serialization.js.ModuleKind;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -84,9 +85,12 @@ public class JSConfigurationKeys {
     public static final CompilerConfigurationKey<Boolean> PRINT_REACHABILITY_INFO =
             CompilerConfigurationKey.create("print declarations' reachability info during performing DCE");
 
-    public static final CompilerConfigurationKey<Boolean> DISABLE_FAKE_OVERRIDE_VALIDATOR =
-            CompilerConfigurationKey.create("disable IR fake override validator");
+    public static final CompilerConfigurationKey<Boolean> FAKE_OVERRIDE_VALIDATOR =
+            CompilerConfigurationKey.create("IR fake override validator");
 
     public static final CompilerConfigurationKey<ErrorTolerancePolicy> ERROR_TOLERANCE_POLICY =
             CompilerConfigurationKey.create("set up policy to ignore compilation errors");
+
+    public static final CompilerConfigurationKey<Collection<String>> REPOSITORIES =
+            CompilerConfigurationKey.create("set up additional repository paths");
 }

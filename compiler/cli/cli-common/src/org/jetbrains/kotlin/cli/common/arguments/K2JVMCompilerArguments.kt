@@ -25,6 +25,7 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
         description = "List of directories and JAR/ZIP archives to search for user class files")
     var classpath: String? by NullableStringFreezableVar(null)
 
+    @DeprecatedOption(removeAfter = "1.5", level = DeprecationLevel.ERROR)
     @GradleOption(DefaultValues.BooleanFalseDefault::class)
     @Argument(value = "-include-runtime", description = "Include Kotlin runtime into the resulting JAR")
     var includeRuntime: Boolean by FreezableVar(false)
@@ -41,10 +42,12 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
     @Argument(value = "-no-jdk", description = "Don't automatically include the Java runtime into the classpath")
     var noJdk: Boolean by FreezableVar(false)
 
+    @DeprecatedOption(removeAfter = "1.5", level = DeprecationLevel.ERROR)
     @GradleOption(DefaultValues.BooleanTrueDefault::class)
     @Argument(value = "-no-stdlib", description = "Don't automatically include the Kotlin/JVM stdlib and Kotlin reflection into the classpath")
     var noStdlib: Boolean by FreezableVar(false)
 
+    @DeprecatedOption(removeAfter = "1.5", level = DeprecationLevel.ERROR)
     @GradleOption(DefaultValues.BooleanTrueDefault::class)
     @Argument(value = "-no-reflect", description = "Don't automatically include Kotlin reflection into the classpath")
     var noReflect: Boolean by FreezableVar(false)
@@ -71,7 +74,7 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
     @Argument(
         value = "-jvm-target",
         valueDescription = "<version>",
-        description = "Target version of the generated JVM bytecode (1.6, 1.8, 9, 10, 11, 12, 13, 14 or 15), default is 1.6"
+        description = "Target version of the generated JVM bytecode (1.6 (DEPRECATED), 1.8, 9, 10, 11, 12, 13, 14, 15 or 16), default is 1.8"
     )
     var jvmTarget: String? by NullableStringFreezableVar(JvmTarget.DEFAULT.description)
 
@@ -81,38 +84,47 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
 
     // Advanced options
 
+    @DeprecatedOption(removeAfter = "1.5", level = DeprecationLevel.WARNING)
     @GradleOption(DefaultValues.BooleanFalseDefault::class)
-    @Argument(value = "-Xuse-ir", description = "Use the IR backend")
+    @Argument(
+        value = "-Xuse-ir",
+        description = "Use the IR backend. This option has no effect unless the language version less than 1.5 is used"
+    )
     var useIR: Boolean by FreezableVar(false)
 
-    @Argument(value = "-Xno-use-ir", description = "Do not use the IR backend. Useful for a custom-built compiler where IR backend is enabled by default")
-    var noUseIR: Boolean by FreezableVar(false)
+    @GradleOption(DefaultValues.BooleanFalseDefault::class)
+    @Argument(value = "-Xuse-old-backend", description = "Use the old JVM backend")
+    var useOldBackend: Boolean by FreezableVar(false)
 
     @Argument(
-        value = "-Xir-check-local-names",
-        description = "Check that names of local classes and anonymous objects are the same in the IR backend as in the old backend"
+        value = "-Xallow-unstable-dependencies",
+        description = "Do not report errors on classes in dependencies, which were compiled by an unstable version of the Kotlin compiler"
     )
-    var irCheckLocalNames: Boolean by FreezableVar(false)
+    var allowUnstableDependencies: Boolean by FreezableVar(false)
 
     @Argument(
-        value = "-Xallow-jvm-ir-dependencies",
-        description = "When not using the IR backend, do not report errors on those classes in dependencies, " +
-                "which were compiled by the IR backend"
+        value = "-Xabi-stability",
+        valueDescription = "{stable|unstable}",
+        description = "When using unstable compiler features such as FIR, use 'stable' to mark generated class files as stable\n" +
+                "to prevent diagnostics from stable compilers at the call site.\n" +
+                "When using the JVM IR backend, conversely, use 'unstable' to mark generated class files as unstable\n" +
+                "to force diagnostics to be reported."
     )
-    var allowJvmIrDependencies: Boolean by FreezableVar(false)
-
-    @Argument(
-        value = "-Xir-binary-with-stable-abi",
-        description = "When using the IR backend, produce binaries which can be read by non-IR backend.\n" +
-                "The author is responsible for verifying that the resulting binaries do indeed have the correct ABI"
-    )
-    var isIrWithStableAbi: Boolean by FreezableVar(false)
+    var abiStability: String? by FreezableVar(null)
 
     @Argument(
         value = "-Xir-do-not-clear-binding-context",
         description = "When using the IR backend, do not clear BindingContext between psi2ir and lowerings"
     )
     var doNotClearBindingContext: Boolean by FreezableVar(false)
+
+    @Argument(
+        value = "-Xparallel-backend-threads",
+        description = "When using the IR backend, run lowerings by file in N parallel threads.\n" +
+                "0 means use a thread per processor core.\n" +
+                "Default value is 1"
+    )
+    var parallelBackendThreads: String by FreezableVar("1")
 
     @Argument(value = "-Xmodule-path", valueDescription = "<path>", description = "Paths where to find Java 9+ modules")
     var javaModulePath: String? by NullableStringFreezableVar(null)
@@ -312,6 +324,13 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
     )
     var jvmDefault: String by FreezableVar(JvmDefaultMode.DEFAULT.description)
 
+    @Argument(
+        value = "-Xdefault-script-extension",
+        valueDescription = "<script filename extension>",
+        description = "Compile expressions and unrecognized scripts passed with the -script argument as scripts with given filename extension"
+    )
+    var defaultScriptExtension: String? by FreezableVar(null)
+
     @Argument(value = "-Xdisable-standard-script", description = "Disable standard kotlin script support")
     var disableStandardScript: Boolean by FreezableVar(false)
 
@@ -351,12 +370,33 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
     @Argument(
         value = "-Xstring-concat",
         valueDescription = "{indy-with-constants|indy|inline}",
-        description = """Switch a way in which string concatenation is performed.
--Xstring-concat=indy-with-constants   Performs string concatenation via `invokedynamic` 'makeConcatWithConstants'. Works only with `-jvm-target 9` or greater
--Xstring-concat=indy                Performs string concatenation via `invokedynamic` 'makeConcat'. Works only with `-jvm-target 9` or greater
--Xstring-concat=inline              Performs string concatenation via `StringBuilder`"""
+        description = """Select code generation scheme for string concatenation.
+-Xstring-concat=indy-with-constants   Concatenate strings using `invokedynamic` `makeConcatWithConstants`. Requires `-jvm-target 9` or greater.
+-Xstring-concat=indy                Concatenate strings using `invokedynamic` `makeConcat`. Requires `-jvm-target 9` or greater.
+-Xstring-concat=inline              Concatenate strings using `StringBuilder`
+default: `indy-with-constants` for JVM target 9 or greater, `inline` otherwise"""
+
     )
-    var stringConcat: String? by NullableStringFreezableVar(JvmStringConcat.INLINE.description)
+    var stringConcat: String? by NullableStringFreezableVar(null)
+
+    @Argument(
+        value = "-Xsam-conversions",
+        valueDescription = "{class|indy}",
+        description = """Select code generation scheme for SAM conversions.
+-Xsam-conversions=indy              Generate SAM conversions using `invokedynamic` with `LambdaMetafactory.metafactory`. Requires `-jvm-target 1.8` or greater.
+-Xsam-conversions=class             Generate SAM conversions as explicit classes"""
+    )
+    var samConversions: String? by NullableStringFreezableVar(null)
+
+    @Argument(
+        value = "-Xlambdas",
+        valueDescription = "{class|indy}",
+        description = """Select code generation scheme for lambdas.
+-Xlambdas=indy                      Generate lambdas using `invokedynamic` with `LambdaMetafactory.metafactory`. Requires `-jvm-target 1.8` or greater.
+                                    Lambda objects created using `LambdaMetafactory.metafactory` will have different `toString()`.
+-Xlambdas=class                     Generate lambdas as explicit classes"""
+    )
+    var lambdas: String? by NullableStringFreezableVar(null)
 
     @Argument(
         value = "-Xklib",
@@ -376,6 +416,12 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
         description = "Do not use KotlinNothingValueException available since 1.4"
     )
     var noKotlinNothingValueException: Boolean by FreezableVar(false)
+
+    @Argument(
+        value = "-Xno-reset-jar-timestamps",
+        description = "Do not reset jar entry timestamps to a fixed date"
+    )
+    var noResetJarTimestamps: Boolean by FreezableVar(false)
 
     @Argument(
         value = "-Xno-unified-null-checks",
@@ -406,6 +452,33 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
     )
     var useOldSpilledVarTypeAnalysis: Boolean by FreezableVar(false)
 
+    @Argument(
+        value = "-Xuse-14-inline-classes-mangling-scheme",
+        description = "Use 1.4 inline classes mangling scheme instead of 1.4.30 one"
+    )
+    var useOldInlineClassesManglingScheme: Boolean by FreezableVar(false)
+
+    @Argument(
+        value = "-Xjvm-enable-preview",
+        description = "Allow using features from Java language that are in preview phase.\n" +
+                "Works as `--enable-preview` in Java. All class files are marked as preview-generated thus it won't be possible to use them in release environment"
+    )
+    var enableJvmPreview: Boolean by FreezableVar(false)
+
+    @Argument(
+        value = "-Xsuppress-deprecated-jvm-target-warning",
+        description = "Suppress deprecation warning about deprecated JVM target versions"
+    )
+    var suppressDeprecatedJvmTargetWarning: Boolean by FreezableVar(false)
+
+    @Argument(
+        value = "-Xtype-enhancement-improvements-strict-mode",
+        description = "Enable strict mode for some improvements in the type enhancement for loaded Java types based on nullability annotations," +
+                "including freshly supported reading of the type use annotations from class files. " +
+                "See KT-45671 for more details"
+    )
+    var typeEnhancementImprovementsInStrictMode: Boolean by FreezableVar(false)
+
     override fun configureAnalysisFlags(collector: MessageCollector): MutableMap<AnalysisFlag<*>, Any> {
         val result = super.configureAnalysisFlags(collector)
         result[JvmAnalysisFlags.strictMetadataVersionSemantics] = strictMetadataVersionSemantics
@@ -425,9 +498,10 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
         result[JvmAnalysisFlags.inheritMultifileParts] = inheritMultifileParts
         result[JvmAnalysisFlags.sanitizeParentheses] = sanitizeParentheses
         result[JvmAnalysisFlags.suppressMissingBuiltinsError] = suppressMissingBuiltinsError
-        result[JvmAnalysisFlags.irCheckLocalNames] = irCheckLocalNames
-        result[AnalysisFlags.reportErrorsOnIrDependencies] = !useIR && !useFir && !allowJvmIrDependencies
+        result[JvmAnalysisFlags.enableJvmPreview] = enableJvmPreview
+        result[AnalysisFlags.allowUnstableDependencies] = allowUnstableDependencies || useFir
         result[JvmAnalysisFlags.disableUltraLightClasses] = disableUltraLightClasses
+        result[JvmAnalysisFlags.useIR] = !useOldBackend
         return result
     }
 
@@ -436,11 +510,14 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
         if (strictJavaNullabilityAssertions) {
             result[LanguageFeature.StrictJavaNullabilityAssertions] = LanguageFeature.State.ENABLED
         }
+        if (typeEnhancementImprovementsInStrictMode) {
+            result[LanguageFeature.TypeEnhancementImprovementsInStrictMode] = LanguageFeature.State.ENABLED
+        }
         return result
     }
 
     override fun checkIrSupport(languageVersionSettings: LanguageVersionSettings, collector: MessageCollector) {
-        if (!useIR) return
+        if (!useIR || useOldBackend) return
 
         if (languageVersionSettings.languageVersion < LanguageVersion.KOTLIN_1_3
             || languageVersionSettings.apiVersion < ApiVersion.KOTLIN_1_3

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.ideaExt.idea
+
 plugins {
     kotlin("jvm")
     id("jps-compatible")
@@ -9,21 +11,41 @@ dependencies {
 
     testCompileOnly(project(":compiler:fir:raw-fir:psi2fir"))
 
-    testCompileOnly(project(":compiler:visualizer:render-psi"))
-    testCompileOnly(project(":compiler:visualizer:render-fir"))
+    testImplementation(project(":compiler:visualizer:render-psi"))
+    testImplementation(project(":compiler:visualizer:render-fir"))
 
-    testCompile(commonDep("junit:junit"))
-    testCompile(projectTests(":compiler:tests-common"))
-    testCompile(projectTests(":compiler:fir:analysis-tests"))
+    testApiJUnit5()
+
+    testApi(projectTests(":compiler:tests-compiler-utils"))
+    testApi(projectTests(":compiler:tests-common-new"))
+    testApi(projectTests(":compiler:test-infrastructure"))
+    testApi(projectTests(":compiler:fir:analysis-tests:legacy-fir-tests"))
+    testImplementation(projectTests(":generators:test-generator"))
 }
+
+val generationRoot = projectDir.resolve("tests-gen")
 
 sourceSets {
-    "main" {}
-    "test" { projectDefault() }
+    "main" { projectDefault() }
+    "test" {
+        projectDefault()
+        this.java.srcDir(generationRoot.name)
+    }
 }
 
-projectTest {
+if (kotlinBuildProperties.isInJpsBuildIdeaSync) {
+    apply(plugin = "idea")
+    idea {
+        this.module.generatedSourceDirs.add(generationRoot)
+    }
+}
+
+projectTest(parallel = true, jUnit5Enabled = true) {
     workingDir = rootDir
+
+    useJUnitPlatform()
 }
 
 testsJar()
+
+val generateVisualizerTests by generator("org.jetbrains.kotlin.visualizer.GenerateVisualizerTestsKt")

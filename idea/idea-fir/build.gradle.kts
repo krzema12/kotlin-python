@@ -21,6 +21,7 @@ dependencies {
     testCompile(projectTests(":idea:idea-frontend-fir"))
     testCompile(project(":kotlin-test:kotlin-test-junit"))
     testCompile(commonDep("junit:junit"))
+    testCompile(projectTests(":idea:idea-frontend-independent"))
 
     testCompileOnly(intellijDep())
     testRuntime(intellijDep())
@@ -33,10 +34,14 @@ sourceSets {
     "test" { projectDefault() }
 }
 
-if (rootProject.findProperty("idea.fir.plugin") == "true") {
-    projectTest(parallel = true) {
-        dependsOn(":dist")
-        workingDir = rootDir
+projectTest(parallel = true) {
+    dependsOn(":dist")
+    workingDir = rootDir
+    val useFirIdeaPlugin = kotlinBuildProperties.useFirIdeaPlugin
+    doFirst {
+        if (!useFirIdeaPlugin) {
+            error("Test task in the module should be executed with -Pidea.fir.plugin=true")
+        }
     }
 }
 

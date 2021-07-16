@@ -21,6 +21,7 @@ import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrPackageFragment
 import org.jetbrains.kotlin.ir.declarations.IrTypeParameter
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
+import org.jetbrains.kotlin.ir.symbols.IrScriptSymbol
 import org.jetbrains.kotlin.ir.symbols.IrTypeParameterSymbol
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
@@ -39,7 +40,7 @@ import org.jetbrains.kotlin.ir.types.isKClass as isKClassImpl
 import org.jetbrains.kotlin.ir.util.isSuspendFunction as isSuspendFunctionImpl
 
 class IrTypeMapper(private val context: JvmBackendContext) : KotlinTypeMapperBase(), TypeMappingContext<JvmSignatureWriter> {
-    internal val typeSystem = IrTypeCheckerContext(context.irBuiltIns)
+    override val typeSystem: IrTypeSystemContext = IrTypeSystemContextImpl(context.irBuiltIns)
     override val typeContext: TypeSystemCommonBackendContextForTypeMapping = IrTypeCheckerContextForTypeMapping(typeSystem, context)
 
     override fun mapClass(classifier: ClassifierDescriptor): Type =
@@ -52,7 +53,14 @@ class IrTypeMapper(private val context: JvmBackendContext) : KotlinTypeMapperBas
                 error("Unknown descriptor: $classifier")
         }
 
+    override fun mapTypeCommon(type: KotlinTypeMarker, mode: TypeMappingMode): Type =
+        mapType(type as IrType, mode)
+
     private fun computeClassInternalName(irClass: IrClass): StringBuilder {
+        context.getLocalClassType(irClass)?.internalName?.let {
+            return StringBuilder(it)
+        }
+
         val shortName = SpecialNames.safeIdentifier(irClass.name).identifier
 
         when (val parent = irClass.parent) {
@@ -71,11 +79,6 @@ class IrTypeMapper(private val context: JvmBackendContext) : KotlinTypeMapperBas
                     return computeClassInternalName(parent.parentAsClass.parentAsClass)
                         .append("$").append(parent.name.asString())
                 }
-        }
-
-        val localClassType = context.getLocalClassType(irClass)
-        if (localClassType != null) {
-            return StringBuilder(localClassType.internalName)
         }
 
         error(
@@ -97,6 +100,12 @@ class IrTypeMapper(private val context: JvmBackendContext) : KotlinTypeMapperBas
 
     override fun getClassInternalName(typeConstructor: TypeConstructorMarker): String =
         classInternalName((typeConstructor as IrClassSymbol).owner)
+
+    override fun getScriptInternalName(typeConstructor: TypeConstructorMarker): String {
+        val script = (typeConstructor as IrScriptSymbol).owner
+        val targetClass = script.targetClass ?: error("No target class computed for script: ${script.render()}")
+        return classInternalName(targetClass.owner)
+    }
 
     fun writeFormalTypeParameters(irParameters: List<IrTypeParameter>, sw: JvmSignatureWriter) {
         if (sw.skipGenericSignature()) return
@@ -220,6 +229,10 @@ private class IrTypeCheckerContextForTypeMapping(
             is IrTypeParameterSymbol -> owner.defaultType
             else -> error("Unsupported type constructor: $this")
         }
+    }
+
+    override fun TypeConstructorMarker.isScript(): Boolean {
+        return this is IrScriptSymbol
     }
 
     override fun SimpleTypeMarker.isSuspendFunction(): Boolean {

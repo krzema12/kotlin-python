@@ -8,7 +8,9 @@ package org.jetbrains.kotlin.resolve.calls.inference.model
 import org.jetbrains.kotlin.resolve.calls.components.PostponedArgumentsAnalyzerContext
 import org.jetbrains.kotlin.resolve.calls.inference.*
 import org.jetbrains.kotlin.resolve.calls.inference.components.*
+import org.jetbrains.kotlin.types.AbstractTypeApproximator
 import org.jetbrains.kotlin.types.AbstractTypeChecker
+import org.jetbrains.kotlin.types.TypeApproximatorConfiguration
 import org.jetbrains.kotlin.types.model.*
 import org.jetbrains.kotlin.utils.SmartList
 import org.jetbrains.kotlin.utils.SmartSet
@@ -27,6 +29,8 @@ class NewConstraintSystemImpl(
     PostponedArgumentsAnalyzerContext
 {
     private val utilContext = constraintInjector.constraintIncorporator.utilContext
+
+    private val postponedComputationsAfterAllVariablesAreFixed = mutableListOf<() -> Unit>()
 
     private val storage = MutableConstraintStorage()
     private var state = State.BUILDING
@@ -85,6 +89,13 @@ class NewConstraintSystemImpl(
         checkState(State.BUILDING, State.FREEZED)
         state = State.FREEZED
         return storage
+    }
+
+    override fun addMissedConstraints(
+        position: IncorporationConstraintPosition,
+        constraints: MutableList<Pair<TypeVariableMarker, Constraint>>
+    ) {
+        storage.missedConstraints.add(position to constraints)
     }
 
     override fun asConstraintSystemCompleterContext() = apply { checkState(State.BUILDING) }
@@ -183,6 +194,8 @@ class NewConstraintSystemImpl(
         val beforeErrorsCount = storage.errors.size
         val beforeMaxTypeDepthFromInitialConstraints = storage.maxTypeDepthFromInitialConstraints
         val beforeTypeVariablesTransactionSize = typeVariablesTransaction.size
+        val beforeMissedConstraintsCount = storage.missedConstraints.size
+        val beforeConstraintCountByVariables = storage.notFixedTypeVariables.mapValues { it.value.rawConstraintsCount }
 
         state = State.TRANSACTION
         // typeVariablesTransaction is clear
@@ -197,13 +210,16 @@ class NewConstraintSystemImpl(
         }
         storage.maxTypeDepthFromInitialConstraints = beforeMaxTypeDepthFromInitialConstraints
         storage.errors.trimToSize(beforeErrorsCount)
+        storage.missedConstraints.trimToSize(beforeMissedConstraintsCount)
 
         val addedInitialConstraints = storage.initialConstraints.subList(beforeInitialConstraintCount, storage.initialConstraints.size)
 
-        val shouldRemove = { c: Constraint -> addedInitialConstraints.contains(c.position.initialConstraint) }
-
         for (variableWithConstraint in storage.notFixedTypeVariables.values) {
-            variableWithConstraint.removeLastConstraints(shouldRemove)
+            val sinceIndexToRemoveConstraints =
+                beforeConstraintCountByVariables[variableWithConstraint.typeVariable.freshTypeConstructor()]
+            if (sinceIndexToRemoveConstraints != null) {
+                variableWithConstraint.removeLastConstraints(sinceIndexToRemoveConstraints)
+            }
         }
 
         addedInitialConstraints.clear() // remove constraint from storage.initialConstraints
@@ -321,42 +337,123 @@ class NewConstraintSystemImpl(
     }
 
     // KotlinConstraintSystemCompleter.Context
-    // TODO: simplify this: do only substitution a fixing type variable rather than running of subtyping and full incorporation
-    override fun fixVariable(variable: TypeVariableMarker, resultType: KotlinTypeMarker, position: FixVariableConstraintPosition<*>) {
+    override fun fixVariable(
+        variable: TypeVariableMarker,
+        resultType: KotlinTypeMarker,
+        position: FixVariableConstraintPosition<*>
+    ) = with(utilContext) {
         checkState(State.BUILDING, State.COMPLETION)
 
-        constraintInjector.addInitialEqualityConstraint(
-            this, variable.defaultType(), resultType, position
-        )
+        constraintInjector.addInitialEqualityConstraint(this@NewConstraintSystemImpl, variable.defaultType(), resultType, position)
+
+        /*
+         * Checking missed constraint can introduce new type mismatch warnings.
+         * It's needed to deprecate green code which works only due to incorrect optimization in the constraint injector.
+         * TODO: remove this code (and `substituteMissedConstraints`) with removing `ProperTypeInferenceConstraintsProcessing` feature
+         */
+        checkMissedConstraints()
 
         val freshTypeConstructor = variable.freshTypeConstructor()
-
         val variableWithConstraints = notFixedTypeVariables.remove(freshTypeConstructor)
-        checkOnlyInputTypesAnnotation(variableWithConstraints, resultType)
 
-        for (variableWithConstraint in notFixedTypeVariables.values) {
-            variableWithConstraint.removeConstrains {
-                it.type.contains { it.typeConstructor() == freshTypeConstructor }
-            }
+        for (otherVariableWithConstraints in notFixedTypeVariables.values) {
+            otherVariableWithConstraints.removeConstrains { containsTypeVariable(it.type, freshTypeConstructor) }
         }
 
         storage.fixedTypeVariables[freshTypeConstructor] = resultType
+
+        // Substitute freshly fixed type variable into missed constraints
+        substituteMissedConstraints()
+
+        postponeOnlyInputTypesCheck(variableWithConstraints, resultType)
+
+        doPostponedComputationsIfAllVariablesAreFixed()
     }
 
-    private fun checkOnlyInputTypesAnnotation(
+    @OptIn(ExperimentalStdlibApi::class)
+    private fun checkMissedConstraints() {
+        val constraintSystem = this@NewConstraintSystemImpl
+        val errorsByMissedConstraints = buildList {
+            runTransaction {
+                for ((position, constraints) in storage.missedConstraints) {
+                    val fixedVariableConstraints =
+                        constraints.filter { (typeVariable, _) -> typeVariable.freshTypeConstructor() in notFixedTypeVariables }
+                    constraintInjector.processMissedConstraints(constraintSystem, position, fixedVariableConstraints)
+                }
+                errors.filterIsInstance<NewConstraintError>().forEach(::add)
+                false
+            }
+        }
+        val constraintErrors = constraintSystem.errors.filterIsInstance<NewConstraintError>()
+        // Don't report warning if an error on the same call has already been reported
+        if (constraintErrors.isEmpty()) {
+            errorsByMissedConstraints.forEach {
+                constraintSystem.addError(it.transformToWarning())
+            }
+        }
+    }
+
+    private fun substituteMissedConstraints() {
+        val substitutor = buildCurrentSubstitutor()
+        for ((_, constraints) in storage.missedConstraints) {
+            for ((index, variableWithConstraint) in constraints.withIndex()) {
+                val (typeVariable, constraint) = variableWithConstraint
+                constraints[index] = typeVariable to constraint.replaceType(substitutor.safeSubstitute(constraint.type))
+            }
+        }
+    }
+
+    private fun ConstraintSystemUtilContext.postponeOnlyInputTypesCheck(
         variableWithConstraints: MutableVariableWithConstraints?,
         resultType: KotlinTypeMarker
     ) {
-        if (variableWithConstraints == null) return
-        val variableHasOnlyInputTypes = with(utilContext) { variableWithConstraints.typeVariable.hasOnlyInputTypesAttribute() }
-        if (!variableHasOnlyInputTypes) return
-
-        val resultTypeIsInputType = variableWithConstraints.getProjectedInputCallTypes(utilContext).any { inputType ->
-            if (AbstractTypeChecker.equalTypes(this, resultType, inputType)) return@any true
-            val constructor = inputType.typeConstructor()
-            constructor.isIntersection() && constructor.supertypes().any { AbstractTypeChecker.equalTypes(this, resultType, it) }
+        if (variableWithConstraints != null && variableWithConstraints.typeVariable.hasOnlyInputTypesAttribute()) {
+            postponedComputationsAfterAllVariablesAreFixed.add { checkOnlyInputTypesAnnotation(variableWithConstraints, resultType) }
         }
-        if (!resultTypeIsInputType) {
+    }
+
+    private fun doPostponedComputationsIfAllVariablesAreFixed() {
+        if (notFixedTypeVariables.isEmpty()) {
+            postponedComputationsAfterAllVariablesAreFixed.forEach { it() }
+        }
+    }
+
+    private fun KotlinTypeMarker.substituteAndApproximateIfNecessary(
+        substitutor: TypeSubstitutorMarker,
+        approximator: AbstractTypeApproximator,
+        constraintKind: ConstraintKind
+    ): KotlinTypeMarker {
+        val doesInputTypeContainsOtherVariables = this.contains { it.typeConstructor() is TypeVariableTypeConstructorMarker }
+        val substitutedType = if (doesInputTypeContainsOtherVariables) substitutor.safeSubstitute(this) else this
+        // Appoximation here is the same as ResultTypeResolver do
+        val approximatedType = when (constraintKind) {
+            ConstraintKind.LOWER ->
+                approximator.approximateToSuperType(substitutedType, TypeApproximatorConfiguration.InternalTypesApproximation)
+            ConstraintKind.UPPER ->
+                approximator.approximateToSubType(substitutedType, TypeApproximatorConfiguration.InternalTypesApproximation)
+            ConstraintKind.EQUALITY -> substitutedType
+        } ?: substitutedType
+
+        return approximatedType
+    }
+
+    private fun checkOnlyInputTypesAnnotation(variableWithConstraints: MutableVariableWithConstraints, resultType: KotlinTypeMarker) {
+        val substitutor = buildCurrentSubstitutor()
+        val approximator = constraintInjector.typeApproximator
+        val isResultTypeEqualSomeInputType =
+            variableWithConstraints.getProjectedInputCallTypes(utilContext).any { (inputType, constraintKind) ->
+                val inputTypeConstructor = inputType.typeConstructor()
+                val otherResultType = inputType.substituteAndApproximateIfNecessary(substitutor, approximator, constraintKind)
+
+                if (AbstractTypeChecker.equalTypes(this, resultType, otherResultType)) return@any true
+                if (!inputTypeConstructor.isIntersection()) return@any false
+
+                inputTypeConstructor.supertypes().any {
+                    val intersectionComponentResultType = it.substituteAndApproximateIfNecessary(substitutor, approximator, constraintKind)
+                    AbstractTypeChecker.equalTypes(this, resultType, intersectionComponentResultType)
+                }
+            }
+        if (!isResultTypeEqualSomeInputType) {
             addError(OnlyInputTypesDiagnostic(variableWithConstraints.typeVariable))
         }
     }
@@ -412,6 +509,9 @@ class NewConstraintSystemImpl(
     override fun hasUpperOrEqualUnitConstraint(type: KotlinTypeMarker): Boolean {
         checkState(State.BUILDING, State.COMPLETION, State.FREEZED)
         val constraints = storage.notFixedTypeVariables[type.typeConstructor()]?.constraints ?: return false
-        return constraints.any { (it.kind == ConstraintKind.UPPER || it.kind == ConstraintKind.EQUALITY) && it.type.isUnit() }
+        return constraints.any {
+            (it.kind == ConstraintKind.UPPER || it.kind == ConstraintKind.EQUALITY) &&
+                    it.type.lowerBoundIfFlexible().isUnit()
+        }
     }
 }

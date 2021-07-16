@@ -5,61 +5,40 @@
 
 package org.jetbrains.kotlin.fir.analysis.checkers.declaration
 
-import com.intellij.lang.LighterASTNode
-import com.intellij.openapi.util.Ref
-import com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.descriptors.ClassKind.ANNOTATION_CLASS
-import org.jetbrains.kotlin.descriptors.ClassKind.ENUM_CLASS
-import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
-import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporter
-import org.jetbrains.kotlin.fir.analysis.diagnostics.FirDiagnosticFactory0
-import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors
-import org.jetbrains.kotlin.fir.declarations.*
-import org.jetbrains.kotlin.fir.FirLightSourceElement
-import org.jetbrains.kotlin.fir.FirPsiSourceElement
-import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.FirSourceElement
-import org.jetbrains.kotlin.fir.resolve.toSymbol
-import org.jetbrains.kotlin.fir.symbols.StandardClassIds
-import org.jetbrains.kotlin.fir.symbols.StandardClassIds.primitiveArrayTypeByElementType
-import org.jetbrains.kotlin.fir.symbols.StandardClassIds.primitiveTypes
-import org.jetbrains.kotlin.fir.symbols.StandardClassIds.unsignedTypes
-import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.KtNodeTypes.FUN
 import org.jetbrains.kotlin.KtNodeTypes.VALUE_PARAMETER
-import org.jetbrains.kotlin.lexer.KtTokens.VAL_KEYWORD
-import org.jetbrains.kotlin.lexer.KtTokens.VAR_KEYWORD
+import org.jetbrains.kotlin.descriptors.ClassKind.ANNOTATION_CLASS
+import org.jetbrains.kotlin.descriptors.ClassKind.ENUM_CLASS
+import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
+import org.jetbrains.kotlin.fir.analysis.diagnostics.*
+import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.resolve.toSymbol
+import org.jetbrains.kotlin.name.StandardClassIds
+import org.jetbrains.kotlin.name.StandardClassIds.primitiveArrayTypeByElementType
+import org.jetbrains.kotlin.name.StandardClassIds.primitiveTypes
+import org.jetbrains.kotlin.name.StandardClassIds.unsignedTypes
+import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.name.ClassId
-import org.jetbrains.kotlin.psi.KtParameter
 
-object FirAnnotationClassDeclarationChecker : FirBasicDeclarationChecker() {
-    override fun check(declaration: FirDeclaration, context: CheckerContext, reporter: DiagnosticReporter) {
-        if (declaration !is FirRegularClass) return
+object FirAnnotationClassDeclarationChecker : FirRegularClassChecker() {
+    override fun check(declaration: FirRegularClass, context: CheckerContext, reporter: DiagnosticReporter) {
         if (declaration.classKind != ANNOTATION_CLASS) return
-        if (declaration.isLocal) reporter.report(declaration.source, FirErrors.LOCAL_ANNOTATION_CLASS_ERROR)
+        if (declaration.isLocal) reporter.reportOn(declaration.source, FirErrors.LOCAL_ANNOTATION_CLASS_ERROR, context)
+
+        if (declaration.superTypeRefs.size != 1) {
+            reporter.reportOn(declaration.source, FirErrors.SUPERTYPES_FOR_ANNOTATION_CLASS, context)
+        }
 
         for (it in declaration.declarations) {
             when {
                 it is FirConstructor && it.isPrimary -> {
                     for (parameter in it.valueParameters) {
-                        when (val parameterSourceElement = parameter.source) {
-                            is FirPsiSourceElement<*> -> {
-                                val parameterPsiElement = parameterSourceElement.psi as KtParameter
-
-                                if (!parameterPsiElement.hasValOrVar())
-                                    reporter.report(parameterSourceElement, FirErrors.MISSING_VAL_ON_ANNOTATION_PARAMETER)
-                                else if (parameterPsiElement.isMutable)
-                                    reporter.report(parameterSourceElement, FirErrors.VAR_ANNOTATION_PARAMETER)
-                            }
-                            is FirLightSourceElement -> {
-                                val kidsRef = Ref<Array<LighterASTNode?>>()
-                                parameterSourceElement.tree.getChildren(parameterSourceElement.element, kidsRef)
-
-                                if (kidsRef.get().any { it?.tokenType == VAR_KEYWORD })
-                                    reporter.report(parameterSourceElement, FirErrors.VAR_ANNOTATION_PARAMETER)
-                                else if (kidsRef.get().all { it?.tokenType != VAL_KEYWORD })
-                                    reporter.report(parameterSourceElement, FirErrors.MISSING_VAL_ON_ANNOTATION_PARAMETER)
-                            }
+                        val source = parameter.source ?: continue
+                        if (!source.hasValOrVar()) {
+                            reporter.reportOn(source, FirErrors.MISSING_VAL_ON_ANNOTATION_PARAMETER, context)
+                        } else if (source.hasVar()) {
+                            reporter.reportOn(source, FirErrors.VAR_ANNOTATION_PARAMETER, context)
                         }
 
                         val typeRef = parameter.returnTypeRef
@@ -71,7 +50,7 @@ object FirAnnotationClassDeclarationChecker : FirBasicDeclarationChecker() {
                                 // TODO: replace with UNRESOLVED_REFERENCE check
                             }
                             coneType.isNullable -> {
-                                reporter.report(typeRef.source, FirErrors.NULLABLE_TYPE_OF_ANNOTATION_MEMBER)
+                                reporter.reportOn(typeRef.source, FirErrors.NULLABLE_TYPE_OF_ANNOTATION_MEMBER, context)
                             }
                             classId in primitiveTypes -> {
                                 // DO NOTHING: primitives are allowed as annotation class parameter
@@ -90,13 +69,13 @@ object FirAnnotationClassDeclarationChecker : FirBasicDeclarationChecker() {
                             }
                             classId == StandardClassIds.Array -> {
                                 if (!isAllowedArray(typeRef, context.session))
-                                    reporter.report(typeRef.source, FirErrors.INVALID_TYPE_OF_ANNOTATION_MEMBER)
+                                    reporter.reportOn(typeRef.source, FirErrors.INVALID_TYPE_OF_ANNOTATION_MEMBER, context)
                             }
                             isAllowedClassKind(coneType, context.session) -> {
                                 // DO NOTHING: annotation or enum classes are allowed
                             }
                             else -> {
-                                reporter.report(typeRef.source, FirErrors.INVALID_TYPE_OF_ANNOTATION_MEMBER)
+                                reporter.reportOn(typeRef.source, FirErrors.INVALID_TYPE_OF_ANNOTATION_MEMBER, context)
                             }
                         }
                     }
@@ -112,7 +91,7 @@ object FirAnnotationClassDeclarationChecker : FirBasicDeclarationChecker() {
                     // TODO: replace with origin check
                 }
                 else -> {
-                    reporter.report(it.source, FirErrors.ANNOTATION_CLASS_MEMBER)
+                    reporter.reportOn(it.source, FirErrors.ANNOTATION_CLASS_MEMBER, context)
                 }
             }
         }
@@ -156,12 +135,5 @@ object FirAnnotationClassDeclarationChecker : FirBasicDeclarationChecker() {
         }
 
         return false
-    }
-
-    private inline fun <reified T : FirSourceElement, P : PsiElement> DiagnosticReporter.report(
-        source: T?,
-        factory: FirDiagnosticFactory0<T, P>
-    ) {
-        source?.let { report(factory.on(it)) }
     }
 }

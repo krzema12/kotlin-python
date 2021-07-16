@@ -16,8 +16,8 @@
 
 package org.jetbrains.kotlin.ir.util
 
+import org.jetbrains.kotlin.ir.IrFileEntry
 import org.jetbrains.kotlin.ir.IrElement
-import org.jetbrains.kotlin.ir.SourceManager
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
@@ -99,9 +99,7 @@ class DumpIrTreeVisitor(
         declaration.dumpLabeledElementWith(data) {
             dumpAnnotations(declaration)
             declaration.correspondingPropertySymbol?.dumpInternal("correspondingProperty")
-            declaration.overriddenSymbols.dumpItems<IrSymbol>("overridden") {
-                it.dump()
-            }
+            declaration.overriddenSymbols.dumpItems("overridden") { it.dump() }
             declaration.typeParameters.dumpElements()
             declaration.dispatchReceiverParameter?.accept(this, "\$this")
             declaration.extensionReceiverParameter?.accept(this, "\$receiver")
@@ -136,6 +134,7 @@ class DumpIrTreeVisitor(
     override fun visitProperty(declaration: IrProperty, data: String) {
         declaration.dumpLabeledElementWith(data) {
             dumpAnnotations(declaration)
+            declaration.overriddenSymbols.dumpItems("overridden") { it.dump() }
             declaration.backingField?.accept(this, "")
             declaration.getter?.accept(this, "")
             declaration.setter?.accept(this, "")
@@ -355,7 +354,7 @@ class DumpIrTreeVisitor(
 }
 
 class DumpTreeFromSourceLineVisitor(
-    val fileEntry: SourceManager.FileEntry,
+    val fileEntry: IrFileEntry,
     private val lineNumber: Int,
     out: Appendable,
     normalizeNames: Boolean = false

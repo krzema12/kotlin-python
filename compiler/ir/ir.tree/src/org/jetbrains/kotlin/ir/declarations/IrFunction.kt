@@ -26,11 +26,11 @@ import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.util.transformIfNeeded
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformer
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitor
-import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedContainerSource
 
 abstract class IrFunction :
     IrDeclarationBase(),
-    IrDeclarationWithName, IrDeclarationWithVisibility, IrTypeParametersContainer, IrSymbolOwner, IrDeclarationParent, IrReturnTarget,
+    IrPossiblyExternalDeclaration, IrDeclarationWithVisibility, IrTypeParametersContainer, IrSymbolOwner, IrDeclarationParent, IrReturnTarget,
+    IrMemberWithContainerSource,
     IrMetadataSourceOwner {
 
     @ObsoleteDescriptorBasedAPI
@@ -38,7 +38,6 @@ abstract class IrFunction :
     abstract override val symbol: IrFunctionSymbol
 
     abstract val isInline: Boolean // NB: there's an inline constructor for Array and each primitive array class
-    abstract val isExternal: Boolean
     abstract val isExpect: Boolean
 
     abstract var returnType: IrType
@@ -48,8 +47,6 @@ abstract class IrFunction :
     abstract var valueParameters: List<IrValueParameter>
 
     abstract var body: IrBody?
-
-    abstract val containerSource: DeserializedContainerSource?
 
     override fun <D> acceptChildren(visitor: IrElementVisitor<Unit, D>, data: D) {
         typeParameters.forEach { it.accept(visitor, data) }

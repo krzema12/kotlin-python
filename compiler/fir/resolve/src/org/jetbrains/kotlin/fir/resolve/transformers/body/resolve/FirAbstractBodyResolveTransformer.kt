@@ -38,26 +38,17 @@ abstract class FirAbstractBodyResolveTransformer(phase: FirResolvePhase) : FirAb
     abstract var implicitTypeOnly: Boolean
         internal set
 
+    override val transformerPhase: FirResolvePhase
+        get() = if (implicitTypeOnly) baseTransformerPhase else FirResolvePhase.BODY_RESOLVE
+
     final override val session: FirSession get() = components.session
 
-    protected inline fun <T> withLocalScopeCleanup(crossinline l: () -> T): T {
-        return context.withTowerDataCleanup(l)
-    }
+    protected open fun needReplacePhase(firDeclaration: FirDeclaration) = true
 
-    protected inline fun <T> withNewLocalScope(crossinline l: () -> T): T {
-        return context.withTowerDataCleanup {
-            addNewLocalScope()
-            l()
+    fun replaceDeclarationResolvePhaseIfNeeded(firDeclaration: FirDeclaration, newResolvePhase: FirResolvePhase) {
+        if (needReplacePhase(firDeclaration) && newResolvePhase > firDeclaration.resolvePhase) {
+            firDeclaration.replaceResolvePhase(newResolvePhase)
         }
-    }
-
-    protected fun addNewLocalScope() {
-        context.addLocalScope(FirLocalScope())
-    }
-
-    protected fun addLocalScope(localScope: FirLocalScope?) {
-        if (localScope == null) return
-        context.addLocalScope(localScope)
     }
 
     @OptIn(PrivateForInline::class)
@@ -114,12 +105,11 @@ abstract class FirAbstractBodyResolveTransformer(phase: FirResolvePhase) : FirAb
         override val file: FirFile get() = context.file
         override val implicitReceiverStack: ImplicitReceiverStack get() = context.implicitReceiverStack
         override val containingDeclarations: List<FirDeclaration> get() = context.containers
-        override val towerDataContextForAnonymousFunctions: TowerDataContextForAnonymousFunctions get() = context.towerDataContextForAnonymousFunctions
         override val returnTypeCalculator: ReturnTypeCalculator get() = context.returnTypeCalculator
         override val container: FirDeclaration get() = context.containerIfAny!!
 
         override val noExpectedType: FirTypeRef = buildImplicitTypeRef()
-        override val symbolProvider: FirSymbolProvider = session.firSymbolProvider
+        override val symbolProvider: FirSymbolProvider = session.symbolProvider
 
         override val resolutionStageRunner: ResolutionStageRunner = ResolutionStageRunner()
 

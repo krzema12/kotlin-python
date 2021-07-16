@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.idea.perf;
 import com.intellij.testFramework.TestDataPath;
 import org.jetbrains.kotlin.test.JUnit3RunnerWithInners;
 import org.jetbrains.kotlin.test.KotlinTestUtils;
+import org.jetbrains.kotlin.test.util.KtTestUtil;
 import org.jetbrains.kotlin.test.TestMetadata;
 import org.junit.runner.RunWith;
 
@@ -30,7 +31,7 @@ public class HighLevelPerformanceBasicCompletionHandlerTestGenerated extends Abs
     }
 
     public void testAllFilesPresentInBasic() throws Exception {
-        KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
     }
 
     @TestMetadata("ClassKeywordBeforeName.kt")
@@ -76,6 +77,11 @@ public class HighLevelPerformanceBasicCompletionHandlerTestGenerated extends Abs
     @TestMetadata("ExtensionFunctionTypeVariable2.kt")
     public void testExtensionFunctionTypeVariable2() throws Exception {
         runTest("idea/idea-completion/testData/handlers/basic/ExtensionFunctionTypeVariable2.kt");
+    }
+
+    @TestMetadata("ExtensionPropertyFromSameFile.kt")
+    public void testExtensionPropertyFromSameFile() throws Exception {
+        runTest("idea/idea-completion/testData/handlers/basic/ExtensionPropertyFromSameFile.kt");
     }
 
     @TestMetadata("ExtensionReceiverTypeArg.kt")
@@ -146,6 +152,11 @@ public class HighLevelPerformanceBasicCompletionHandlerTestGenerated extends Abs
     @TestMetadata("KT36306.kt")
     public void testKT36306() throws Exception {
         runTest("idea/idea-completion/testData/handlers/basic/KT36306.kt");
+    }
+
+    @TestMetadata("LocalFunction.kt")
+    public void testLocalFunction() throws Exception {
+        runTest("idea/idea-completion/testData/handlers/basic/LocalFunction.kt");
     }
 
     @TestMetadata("NestedTypeArg.kt")
@@ -247,7 +258,7 @@ public class HighLevelPerformanceBasicCompletionHandlerTestGenerated extends Abs
         }
 
         public void testAllFilesPresentInAnnotation() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/annotation"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/annotation"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
         }
 
         @TestMetadata("AnnotationInBrackets.kt")
@@ -280,7 +291,7 @@ public class HighLevelPerformanceBasicCompletionHandlerTestGenerated extends Abs
         }
 
         public void testAllFilesPresentInCallableReference() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/callableReference"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/callableReference"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
         }
 
         @TestMetadata("ClassConstructor.kt")
@@ -343,7 +354,7 @@ public class HighLevelPerformanceBasicCompletionHandlerTestGenerated extends Abs
         }
 
         public void testAllFilesPresentInExclChar() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/exclChar"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/exclChar"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
         }
     }
 
@@ -356,7 +367,7 @@ public class HighLevelPerformanceBasicCompletionHandlerTestGenerated extends Abs
         }
 
         public void testAllFilesPresentInExtensionMethodInObject() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/extensionMethodInObject"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/extensionMethodInObject"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
         }
 
         @TestMetadata("CompanionObjectInSameFileExplicitReceiver.kt")
@@ -409,7 +420,7 @@ public class HighLevelPerformanceBasicCompletionHandlerTestGenerated extends Abs
         }
 
         public void testAllFilesPresentInHighOrderFunctions() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/highOrderFunctions"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/highOrderFunctions"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
         }
 
         @TestMetadata("ContextVariable.kt")
@@ -470,6 +481,11 @@ public class HighLevelPerformanceBasicCompletionHandlerTestGenerated extends Abs
         @TestMetadata("HigherOrderSuspendFunctionWithArgs.kt")
         public void testHigherOrderSuspendFunctionWithArgs() throws Exception {
             runTest("idea/idea-completion/testData/handlers/basic/highOrderFunctions/HigherOrderSuspendFunctionWithArgs.kt");
+        }
+
+        @TestMetadata("InsertFunctionLiteralForLocalFunction.kt")
+        public void testInsertFunctionLiteralForLocalFunction() throws Exception {
+            runTest("idea/idea-completion/testData/handlers/basic/highOrderFunctions/InsertFunctionLiteralForLocalFunction.kt");
         }
 
         @TestMetadata("InsertFunctionWithSingleParameterWithBrace.kt")
@@ -537,7 +553,7 @@ public class HighLevelPerformanceBasicCompletionHandlerTestGenerated extends Abs
         }
 
         public void testAllFilesPresentInImportAliases() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/importAliases"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/importAliases"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
         }
 
         @TestMetadata("CompanionObject.kt")
@@ -605,7 +621,7 @@ public class HighLevelPerformanceBasicCompletionHandlerTestGenerated extends Abs
         }
 
         public void testAllFilesPresentInOverride() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/override"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/override"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
         }
 
         @TestMetadata("ExpectClassValOverride.kt")
@@ -703,7 +719,7 @@ public class HighLevelPerformanceBasicCompletionHandlerTestGenerated extends Abs
         }
 
         public void testAllFilesPresentInParameterNameAndType() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/parameterNameAndType"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/parameterNameAndType"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
         }
 
         @TestMetadata("CodeStyleSettings.kt")
@@ -781,7 +797,7 @@ public class HighLevelPerformanceBasicCompletionHandlerTestGenerated extends Abs
         }
 
         public void testAllFilesPresentInStaticMemberOfNotImported() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/staticMemberOfNotImported"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/staticMemberOfNotImported"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
         }
 
         @TestMetadata("AmbigiousExtension.kt")
@@ -819,7 +835,7 @@ public class HighLevelPerformanceBasicCompletionHandlerTestGenerated extends Abs
         }
 
         public void testAllFilesPresentInStaticMembers() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/staticMembers"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/staticMembers"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
         }
 
         @TestMetadata("classObjectMethod.kt")
@@ -897,7 +913,7 @@ public class HighLevelPerformanceBasicCompletionHandlerTestGenerated extends Abs
         }
 
         public void testAllFilesPresentInStringTemplate() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/stringTemplate"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/stringTemplate"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
         }
 
         @TestMetadata("GlobalVal.kt")
@@ -950,7 +966,7 @@ public class HighLevelPerformanceBasicCompletionHandlerTestGenerated extends Abs
         }
 
         public void testAllFilesPresentInTypeArgsForCall() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/typeArgsForCall"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/handlers/basic/typeArgsForCall"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
         }
 
         @TestMetadata("ExpectedTypeDoesNotHelp.kt")

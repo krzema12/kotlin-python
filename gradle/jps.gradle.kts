@@ -63,18 +63,9 @@ fun setupGenerateAllTestsRunConfiguration() {
 // Needed because of idea.ext plugin doesn't allow to set TEST_SEARCH_SCOPE = moduleWithDependencies
 fun setupFirRunConfiguration() {
 
-    val tests = listOf(
-        "org\\.jetbrains\\.kotlin\\.fir((?!\\.lightTree\\.benchmark)(\\.\\w+)*)\\.((?!(TreesCompareTest|TotalKotlinTest|RawFirBuilderTotalKotlinTestCase))\\w+)",
-        "org\\.jetbrains\\.kotlin\\.codegen\\.ir\\.FirBlackBoxCodegenTestGenerated",
-        "org\\.jetbrains\\.kotlin\\.spec\\.checkers\\.FirDiagnosticsTestSpecGenerated",
-        "org\\.jetbrains\\.kotlin\\.codegen\\.ir\\.FirBytecodeTextTestGenerated",
-        "org\\.jetbrains\\.kotlin\\.codegen\\.ir\\.FirBlackBoxAgainstJavaCodegenTestGenerated",
-        "org\\.jetbrains\\.kotlin\\.codegen\\.ir\\.FirBlackBoxInlineCodegenTestGenerated"
-    )
-
     val junit = JUnit("_stub").apply { configureForKotlin("2048m") }
-    junit.moduleName = "kotlin.compiler.tests-spec.test"
-    junit.pattern = tests.joinToString(separator = "|", prefix = "^(", postfix = ")\$")
+    junit.moduleName = "kotlin.compiler.fir.fir2ir.test"
+    junit.pattern = """^.*\.Fir\w+Test\w*Generated$"""
     junit.vmParameters = junit.vmParameters.replace(rootDir.absolutePath, "\$PROJECT_DIR\$")
     junit.workingDirectory = junit.workingDirectory.replace(rootDir.absolutePath, "\$PROJECT_DIR\$")
 
@@ -95,6 +86,7 @@ fun setupFirRunConfiguration() {
             |    <envs>
                    ${junit.envs.entries.joinToString("\n") { (name, value) -> "|      <env name=\"$name\" value=\"$value\" />" }}
             |    </envs>
+            |    <dir value="${'$'}PROJECT_DIR${'$'}/compiler/fir/analysis-tests/tests-gen" />
             |    <patterns>
             |      <pattern testClass="${junit.pattern}" />
             |    </patterns>
@@ -488,7 +480,7 @@ fun RecursiveArtifact.jarContentsFromConfiguration(configuration: Configuration)
 
     resolvedArtifacts.filter { it.id.componentIdentifier is ModuleComponentIdentifier }
         .map { it.file }
-        .forEach(::extractedDirectory)
+        .forEach { extractedDirectory(it) }
 
     resolvedArtifacts
         .map { it.id.componentIdentifier }

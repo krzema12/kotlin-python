@@ -19,19 +19,19 @@ interface CompilerVersion : Serializable {
 
     companion object {
         // major.minor.patch-meta-build where patch, meta and build are optional.
-        private val versionPattern = "(\\d+)\\.(\\d+)(?:\\.(\\d+))?(?:-M(\\p{Digit}))?(?:-(\\p{Alpha}\\p{Alnum}*))?(?:-(\\d+))?".toRegex()
+        private val versionPattern = "(\\d+)\\.(\\d+)(?:\\.(\\d+))?(?:-(\\p{Alpha}\\p{Alnum}*))?(?:-(\\d+))?".toRegex()
 
         fun fromString(version: String): CompilerVersion {
-            val (major, minor, maintenance, milestone, metaString, build) =
-                    versionPattern.matchEntire(version)?.destructured
-                        ?: throw IllegalArgumentException("Cannot parse Kotlin/Native version: $version")
+            val (major, minor, maintenance, metaString, build) =
+                versionPattern.matchEntire(version)?.destructured
+                    ?: throw IllegalArgumentException("Cannot parse Kotlin/Native version: $version")
 
             return CompilerVersionImpl(
                 MetaVersion.findAppropriate(metaString),
                 major.toInt(),
                 minor.toInt(),
                 maintenance.toIntOrNull() ?: 0,
-                milestone.toIntOrNull() ?: -1,
+                -1,
                 build.toIntOrNull() ?: -1
             )
         }
@@ -45,7 +45,7 @@ data class CompilerVersionImpl(
     override val major: Int,
     override val minor: Int,
     override val maintenance: Int,
-    override val milestone: Int = 0,
+    override val milestone: Int = -1,
     override val build: Int = -1
 ) : CompilerVersion {
 
@@ -53,14 +53,8 @@ data class CompilerVersionImpl(
         append(major)
         append('.')
         append(minor)
-        if (maintenance != 0) {
-            append('.')
-            append(maintenance)
-        }
-        if (milestone != -1) {
-            append("-M")
-            append(milestone)
-        }
+        append('.')
+        append(maintenance)
         if (showMeta) {
             append('-')
             append(meta.metaString)

@@ -147,7 +147,7 @@ fun case_9() {
         }
         throw Exception()
     }
-    println(<!UNINITIALIZED_VARIABLE!>x<!>.inc())
+    println(x.inc())
 }
 
 // TESTCASE NUMBER: 10
@@ -155,7 +155,7 @@ fun case_10() {
     val x: Int
     funWithExactlyOnceCallsInPlace outer@ {
         funWithAtLeastOnceCallsInPlace {
-            x = 42
+            <!VAL_REASSIGNMENT!>x<!> = 42
             return@outer
         }
     }

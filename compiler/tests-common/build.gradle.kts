@@ -5,6 +5,7 @@ plugins {
 }
 
 dependencies {
+    testCompile(kotlinStdlib("jdk8"))
     testCompile(project(":kotlin-scripting-compiler"))
     testCompile(project(":core:descriptors"))
     testCompile(project(":core:descriptors.jvm"))
@@ -44,11 +45,13 @@ dependencies {
     testCompile(project(":js:js.translator"))
     testCompile(project(":native:frontend.native"))
     testCompileOnly(project(":plugins:android-extensions-compiler"))
+    testApi(projectTests(":generators:test-generator"))
+    testCompile(projectTests(":compiler:tests-compiler-utils"))
     testCompile(project(":kotlin-test:kotlin-test-jvm"))
     testCompile(projectTests(":compiler:tests-common-jvm6"))
     testCompile(project(":kotlin-scripting-compiler-impl"))
+    testCompile(projectTests(":compiler:test-infrastructure-utils"))
     testCompile(commonDep("junit:junit"))
-    testCompile(androidDxJar()) { isTransitive = false }
     testCompile(commonDep("com.android.tools:r8"))
     testCompileOnly(project(":kotlin-reflect-api"))
     testCompileOnly(toolsJar())
@@ -94,6 +97,7 @@ dependencies {
 
     testCompile(intellijDep()) { includeJars("platform-util-ui", "platform-concurrency", "platform-objectSerializer") }
     testCompile(intellijDep()) { includeJars("platform-ide-util-io") }
+    testApiJUnit5()
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>> {

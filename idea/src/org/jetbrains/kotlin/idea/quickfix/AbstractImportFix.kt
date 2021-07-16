@@ -85,6 +85,7 @@ internal abstract class ImportFixBase<T : KtExpression> protected constructor(
 
     protected abstract val importNames: Collection<Name>
     protected abstract fun getCallTypeAndReceiver(): CallTypeAndReceiver<*, *>?
+    protected open fun getReceiverTypeFromDiagnostic(): KotlinType? = null
 
     override fun showHint(editor: Editor): Boolean {
         val element = element ?: return false
@@ -251,14 +252,23 @@ internal abstract class OrdinaryImportFixBase<T : KtExpression>(expression: T, f
                 indicesHelper.getTopLevelCallablesByName(name).filterTo(result, filterByCallType)
             }
             if (callTypeAndReceiver.callType == CallType.OPERATOR) {
-                val type = expression.getCallableDescriptor()?.returnType
+                val type = expression.getCallableDescriptor()?.returnType ?: getReceiverTypeFromDiagnostic()
                 if (type != null) {
                     result.addAll(indicesHelper.getCallableTopLevelExtensions(callTypeAndReceiver, listOf(type), { it == name }))
                 }
             }
         }
 
-        result.addAll(indicesHelper.getCallableTopLevelExtensions(callTypeAndReceiver, expression, bindingContext) { it == name })
+        val receiverFromDiagnostic = if (callTypeAndReceiver.callType == CallType.DELEGATE) getReceiverTypeFromDiagnostic() else null
+        result.addAll(
+            indicesHelper.getCallableTopLevelExtensions(
+                callTypeAndReceiver,
+                expression,
+                bindingContext,
+                receiverFromDiagnostic
+            ) { it == name }
+        )
+
         return result
     }
 }
@@ -432,14 +442,18 @@ internal class ImportConstructorReferenceFix(expression: KtSimpleNameExpression)
     }
 }
 
-internal class InvokeImportFix(expression: KtExpression) : OrdinaryImportFixBase<KtExpression>(expression, MyFactory) {
+internal class InvokeImportFix(
+    expression: KtExpression, val diagnostic: Diagnostic
+) : OrdinaryImportFixBase<KtExpression>(expression, MyFactory) {
     override val importNames = listOf(OperatorNameConventions.INVOKE)
 
     override fun getCallTypeAndReceiver() = element?.let { CallTypeAndReceiver.OPERATOR(it) }
 
+    override fun getReceiverTypeFromDiagnostic(): KotlinType = Errors.FUNCTION_EXPECTED.cast(diagnostic).b
+
     companion object MyFactory : Factory() {
         override fun createImportAction(diagnostic: Diagnostic) =
-            (diagnostic.psiElement as? KtExpression)?.let(::InvokeImportFix)
+            (diagnostic.psiElement as? KtExpression)?.let { InvokeImportFix(it, diagnostic) }
     }
 }
 
@@ -489,7 +503,8 @@ internal open class ArrayAccessorImportFix(
 internal class DelegateAccessorsImportFix(
     element: KtExpression,
     override val importNames: Collection<Name>,
-    private val solveSeveralProblems: Boolean
+    private val solveSeveralProblems: Boolean,
+    private val diagnostic: Diagnostic,
 ) : OrdinaryImportFixBase<KtExpression>(element, MyFactory) {
 
     override fun getCallTypeAndReceiver() = CallTypeAndReceiver.DELEGATE(element)
@@ -506,6 +521,9 @@ internal class DelegateAccessorsImportFix(
         return super.createAction(project, editor, element)
     }
 
+    override fun getReceiverTypeFromDiagnostic(): KotlinType? =
+        if (diagnostic.factory === Errors.DELEGATE_SPECIAL_FUNCTION_MISSING) Errors.DELEGATE_SPECIAL_FUNCTION_MISSING.cast(diagnostic).b else null
+
     companion object MyFactory : Factory() {
         private fun importNames(diagnostics: Collection<Diagnostic>): Collection<Name> {
             return diagnostics.map {
@@ -519,14 +537,15 @@ internal class DelegateAccessorsImportFix(
 
         override fun createImportAction(diagnostic: Diagnostic) =
             (diagnostic.psiElement as? KtExpression)?.let {
-                DelegateAccessorsImportFix(it, importNames(listOf(diagnostic)), false)
+                DelegateAccessorsImportFix(it, importNames(listOf(diagnostic)), false, diagnostic)
             }
 
 
         override fun createImportActionsForAllProblems(sameTypeDiagnostics: Collection<Diagnostic>): List<DelegateAccessorsImportFix> {
-            val element = sameTypeDiagnostics.first().psiElement
+            val diagnostic = sameTypeDiagnostics.first()
+            val element = diagnostic.psiElement
             val names = importNames(sameTypeDiagnostics)
-            return listOfNotNull((element as? KtExpression)?.let { DelegateAccessorsImportFix(it, names, true) })
+            return listOfNotNull((element as? KtExpression)?.let { DelegateAccessorsImportFix(it, names, true, diagnostic) })
         }
     }
 }
@@ -636,7 +655,7 @@ internal class ImportForMismatchingArgumentsFix(
         }
 
         indicesHelper
-            .getCallableTopLevelExtensions(callTypeAndReceiver, element, bindingContext) { it == name }
+            .getCallableTopLevelExtensions(callTypeAndReceiver, element, bindingContext, receiverTypeFromDiagnostic = null) { it == name }
             .forEach(::processDescriptor)
 
         if (!isSelectorInQualified(element)) {

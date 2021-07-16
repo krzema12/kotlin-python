@@ -17,6 +17,7 @@
 package org.jetbrains.kotlin.generators.arguments
 
 import org.jetbrains.kotlin.cli.common.arguments.*
+import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.utils.Printer
 import java.io.File
@@ -159,8 +160,15 @@ fun main() {
     generateKotlinGradleOptions(::getPrinter)
 }
 
+private inline fun <reified T : Any> List<KProperty1<T, *>>.filterToBeDeleted() = filter { prop ->
+    prop.findAnnotation<DeprecatedOption>()
+        ?.let { LanguageVersion.fromVersionString(it.removeAfter) }
+        ?.let { it >= LanguageVersion.LATEST_STABLE }
+        ?: true
+}
+
 private inline fun <reified T : Any> gradleOptions(): List<KProperty1<T, *>> =
-        T::class.declaredMemberProperties.filter { it.findAnnotation<GradleOption>() != null }.sortedBy { it.name }
+        T::class.declaredMemberProperties.filter { it.findAnnotation<GradleOption>() != null }.filterToBeDeleted().sortedBy { it.name }
 
 private fun File(baseDir: File, fqName: FqName): File {
     val fileRelativePath = fqName.asString().replace(".", "/") + ".kt"
@@ -173,6 +181,7 @@ private fun Printer.generateInterface(type: FqName, properties: List<KProperty1<
         for (property in properties) {
             println()
             generateDoc(property)
+            generateOptionDeprecation(property)
             generatePropertyDeclaration(property)
         }
     }
@@ -189,15 +198,19 @@ private fun Printer.generateImpl(
 
         for (property in properties) {
             println()
-            val backingField = property.backingField()
-            val backingFieldType = property.gradleReturnType + "?"
-            println("private var $backingField: $backingFieldType = null")
-            generatePropertyDeclaration(property, modifiers = "override")
-            withIndent {
-                println("get() = $backingField ?: ${property.gradleDefaultValue}")
-                println("set(value) {")
-                withIndent { println("$backingField = value") }
-                println("}")
+            val propertyType = property.gradleReturnType
+            if (propertyType.endsWith("?")) {
+                generatePropertyDeclaration(property, modifiers = "override", value = "null")
+            } else {
+                val backingField = property.backingField()
+                println("private var $backingField: $propertyType? = null")
+                generatePropertyDeclaration(property, modifiers = "override")
+                withIndent {
+                    println("get() = $backingField ?: ${property.gradleDefaultValue}")
+                    println("set(value) {")
+                    withIndent { println("$backingField = value") }
+                    println("}")
+                }
             }
         }
 
@@ -205,7 +218,7 @@ private fun Printer.generateImpl(
         println("internal open fun updateArguments(args: $argsType) {")
         withIndent {
             for (property in properties) {
-                val backingField = property.backingField()
+                val backingField = if (property.gradleReturnType.endsWith("?")) property.name else property.backingField()
                 println("$backingField?.let { args.${property.name} = it }")
             }
         }
@@ -243,9 +256,16 @@ private fun Printer.generateDeclaration(
     println("}")
 }
 
-private fun Printer.generatePropertyDeclaration(property: KProperty1<*, *>, modifiers: String = "") {
+private fun Printer.generatePropertyDeclaration(property: KProperty1<*, *>, modifiers: String = "", value: String? = null) {
     val returnType = property.gradleReturnType
-    println("$modifiers var ${property.name}: $returnType")
+    val initialValue = if (value != null) " = $value" else ""
+    println("$modifiers var ${property.name}: $returnType$initialValue")
+}
+
+private fun Printer.generateOptionDeprecation(property: KProperty1<*, *>) {
+    property.findAnnotation<DeprecatedOption>()
+        ?.let { DeprecatedOptionAnnotator.generateOptionAnnotation(it) }
+        ?.also { println(it) }
 }
 
 private fun Printer.generateDoc(property: KProperty1<*, *>) {
@@ -274,6 +294,8 @@ private fun generateMarkdown(properties: List<KProperty1<*, *>>) {
     for (property in properties) {
         val name = property.name
         if (name == "includeRuntime") continue   // This option has no effect in Gradle builds
+        val renderName = listOfNotNull("`$name`", property.findAnnotation<DeprecatedOption>()?.let { "__(Deprecated)__" })
+            .joinToString(" ")
         val description = property.findAnnotation<Argument>()!!.description
         val possibleValues = property.gradleValues.possibleValues
         val defaultValue = when (property.gradleDefaultValue) {
@@ -282,7 +304,7 @@ private fun generateMarkdown(properties: List<KProperty1<*, *>>) {
             else -> property.gradleDefaultValue
         }
 
-        println("| `$name` | $description | ${possibleValues.orEmpty().joinToString()} | $defaultValue |")
+        println("| $renderName | $description | ${possibleValues.orEmpty().joinToString()} | $defaultValue |")
     }
 }
 
@@ -304,3 +326,12 @@ private val KProperty1<*, *>.gradleReturnType: String
 
 private inline fun <reified T> KAnnotatedElement.findAnnotation(): T? =
         annotations.filterIsInstance<T>().firstOrNull()
+
+object DeprecatedOptionAnnotator {
+    fun generateOptionAnnotation(annotation: DeprecatedOption): String {
+        val message = annotation.message.takeIf { it.isNotEmpty() }?.let { "message = \"$it\"" }
+        val level = "level = DeprecationLevel.${annotation.level.name}"
+        val arguments = listOfNotNull(message, level).joinToString()
+        return "@Deprecated($arguments)"
+    }
+}

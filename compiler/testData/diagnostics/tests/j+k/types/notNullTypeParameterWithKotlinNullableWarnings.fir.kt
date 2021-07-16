@@ -1,5 +1,6 @@
-// FILE: SLRUMap.java
+// !SKIP_JAVAC
 // !LANGUAGE: -ProhibitUsingNullableTypeParameterAgainstNotNullAnnotated
+// FILE: SLRUMap.java
 
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
@@ -17,7 +18,7 @@ public interface SLRUMap<V> {
 // FILE: main.kt
 
 fun <V> SLRUMap<V>.getOrPut(value: V, l: List<V>) {
-    <!INAPPLICABLE_CANDIDATE!>takeV<!>(value)
+    takeV(<!ARGUMENT_TYPE_MISMATCH!>value<!>)
     takeVList(l)
 
     takeE(value)

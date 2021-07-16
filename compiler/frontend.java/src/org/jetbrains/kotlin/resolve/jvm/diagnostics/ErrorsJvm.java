@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.resolve.jvm.diagnostics;
 
 import com.intellij.psi.PsiElement;
 import org.jetbrains.kotlin.descriptors.CallableDescriptor;
+import org.jetbrains.kotlin.descriptors.ClassifierDescriptor;
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor;
 import org.jetbrains.kotlin.diagnostics.*;
 import org.jetbrains.kotlin.name.FqName;
@@ -37,6 +38,7 @@ public interface ErrorsJvm {
     DiagnosticFactory0<KtAnnotationEntry> ILLEGAL_JVM_NAME = DiagnosticFactory0.create(ERROR);
 
     DiagnosticFactory1<KtAnnotationEntry, String> INAPPLICABLE_JVM_FIELD = DiagnosticFactory1.create(ERROR);
+    DiagnosticFactory1<KtAnnotationEntry, String> INAPPLICABLE_JVM_FIELD_WARNING = DiagnosticFactory1.create(WARNING);
 
     DiagnosticFactory0<KtAnnotationEntry> JVM_SYNTHETIC_ON_DELEGATE = DiagnosticFactory0.create(ERROR);
 
@@ -55,7 +57,8 @@ public interface ErrorsJvm {
     DiagnosticFactory0<KtAnnotationEntry> OVERLOADS_LOCAL = DiagnosticFactory0.create(ERROR);
     DiagnosticFactory0<KtAnnotationEntry> OVERLOADS_ANNOTATION_CLASS_CONSTRUCTOR_WARNING = DiagnosticFactory0.create(WARNING);
     DiagnosticFactory0<KtAnnotationEntry> OVERLOADS_ANNOTATION_CLASS_CONSTRUCTOR = DiagnosticFactory0.create(ERROR);
-
+    DiagnosticFactory0<KtAnnotationEntry> OVERLOADS_ANNOTATION_MANGLED_FUNCTION = DiagnosticFactory0.create(ERROR);
+    DiagnosticFactory0<KtAnnotationEntry> OVERLOADS_ANNOTATION_HIDDEN_CONSTRUCTOR = DiagnosticFactory0.create(ERROR);
 
     DiagnosticFactory0<KtDeclaration> EXTERNAL_DECLARATION_CANNOT_BE_ABSTRACT = DiagnosticFactory0.create(ERROR, ABSTRACT_MODIFIER);
     DiagnosticFactory0<KtDeclaration> EXTERNAL_DECLARATION_CANNOT_HAVE_BODY = DiagnosticFactory0.create(ERROR, DECLARATION_SIGNATURE);
@@ -72,6 +75,7 @@ public interface ErrorsJvm {
     DiagnosticFactory0<KtAnnotationEntry> JVM_PACKAGE_NAME_NOT_SUPPORTED_IN_FILES_WITH_CLASSES = DiagnosticFactory0.create(ERROR);
 
     DiagnosticFactory0<KtDeclaration> STATE_IN_MULTIFILE_CLASS = DiagnosticFactory0.create(ERROR);
+    DiagnosticFactory0<PsiElement> NOT_ALL_MULTIFILE_CLASS_PARTS_ARE_JVM_SYNTHETIC = DiagnosticFactory0.create(ERROR);
 
     DiagnosticFactory0<PsiElement> INTERFACE_CANT_CALL_DEFAULT_METHOD_VIA_SUPER = DiagnosticFactory0.create(ERROR);
     DiagnosticFactory0<PsiElement> SUBCLASS_CANT_CALL_COMPANION_PROTECTED_NON_STATIC = DiagnosticFactory0.create(ERROR);
@@ -114,6 +118,21 @@ public interface ErrorsJvm {
     DiagnosticFactory0<KtDeclaration> JVM_DEFAULT_THROUGH_INHERITANCE = DiagnosticFactory0.create(ERROR, DECLARATION_SIGNATURE);
     DiagnosticFactory0<PsiElement> USAGE_OF_JVM_DEFAULT_THROUGH_SUPER_CALL = DiagnosticFactory0.create(ERROR);
 
+    DiagnosticFactory0<PsiElement> LOCAL_JVM_RECORD = DiagnosticFactory0.create(ERROR);
+    DiagnosticFactory0<PsiElement> NON_FINAL_JVM_RECORD = DiagnosticFactory0.create(ERROR);
+    DiagnosticFactory0<PsiElement> ENUM_JVM_RECORD = DiagnosticFactory0.create(ERROR);
+    DiagnosticFactory0<PsiElement> JVM_RECORD_WITHOUT_PRIMARY_CONSTRUCTOR_PARAMETERS = DiagnosticFactory0.create(ERROR);
+    DiagnosticFactory0<PsiElement> JVM_RECORD_NOT_VAL_PARAMETER = DiagnosticFactory0.create(ERROR);
+    DiagnosticFactory0<PsiElement> JVM_RECORD_NOT_LAST_VARARG_PARAMETER = DiagnosticFactory0.create(ERROR);
+    DiagnosticFactory1<PsiElement, KotlinType> JVM_RECORD_EXTENDS_CLASS = DiagnosticFactory1.create(ERROR);
+    DiagnosticFactory0<PsiElement> JVM_RECORD_REQUIRES_JDK15 = DiagnosticFactory0.create(ERROR);
+    DiagnosticFactory0<PsiElement> INNER_JVM_RECORD = DiagnosticFactory0.create(ERROR);
+    DiagnosticFactory0<PsiElement> FIELD_IN_JVM_RECORD = DiagnosticFactory0.create(ERROR);
+    DiagnosticFactory0<PsiElement> DELEGATION_BY_IN_JVM_RECORD = DiagnosticFactory0.create(ERROR);
+    DiagnosticFactory0<PsiElement> NON_DATA_CLASS_JVM_RECORD = DiagnosticFactory0.create(ERROR);
+    DiagnosticFactory0<PsiElement> ILLEGAL_JAVA_LANG_RECORD_SUPERTYPE = DiagnosticFactory0.create(ERROR);
+    DiagnosticFactory0<PsiElement> JVM_RECORDS_ILLEGAL_BYTECODE_TARGET = DiagnosticFactory0.create(ERROR);
+
     DiagnosticFactory0<KtDeclaration> NON_JVM_DEFAULT_OVERRIDES_JAVA_DEFAULT = DiagnosticFactory0.create(WARNING, DECLARATION_SIGNATURE);
 
     DiagnosticFactory0<KtAnnotationEntry> EXPLICIT_METADATA_IS_DISALLOWED = DiagnosticFactory0.create(ERROR);
@@ -121,8 +140,14 @@ public interface ErrorsJvm {
     DiagnosticFactory2<KtElement, KotlinType, KotlinType> NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS
             = DiagnosticFactory2.create(WARNING);
 
-    DiagnosticFactory2<KtElement, KotlinType, KotlinType> NULLABLE_TYPE_PARAMETER_AGAINST_NOT_NULL_TYPE_PARAMETER
+    DiagnosticFactory2<KtTypeReference, KotlinType, KotlinType> UPPER_BOUND_VIOLATED_BASED_ON_JAVA_ANNOTATIONS
             = DiagnosticFactory2.create(WARNING);
+
+    DiagnosticFactory3<KtElement, KotlinType, KotlinType, ClassifierDescriptor> UPPER_BOUND_VIOLATED_IN_TYPEALIAS_EXPANSION_BASED_ON_JAVA_ANNOTATIONS
+            = DiagnosticFactory3.create(WARNING);
+
+    DiagnosticFactory1<KtElement, KotlinType> NULLABLE_TYPE_PARAMETER_AGAINST_NOT_NULL_TYPE_PARAMETER
+            = DiagnosticFactory1.create(WARNING);
 
     DiagnosticFactory1<KtElement, KotlinType> RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS
             = DiagnosticFactory1.create(WARNING);
@@ -146,6 +171,9 @@ public interface ErrorsJvm {
     DiagnosticFactory3<KtDeclaration, CallableDescriptor, CallableDescriptor, String> EXPLICIT_OVERRIDE_REQUIRED_IN_MIXED_MODE = DiagnosticFactory3.create(ERROR, DECLARATION_SIGNATURE_OR_DEFAULT);
 
     DiagnosticFactory1<PsiElement, String> DANGEROUS_CHARACTERS = DiagnosticFactory1.create(WARNING);
+
+    DiagnosticFactory0<PsiElement> VALUE_CLASS_WITHOUT_JVM_INLINE_ANNOTATION = DiagnosticFactory0.create(ERROR);
+    DiagnosticFactory0<PsiElement> JVM_INLINE_WITHOUT_VALUE_CLASS = DiagnosticFactory0.create(ERROR);
 
     @SuppressWarnings("UnusedDeclaration")
     Object _initializer = new Object() {

@@ -29,6 +29,7 @@ import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.DescriptorUtils
 import org.jetbrains.kotlin.resolve.descriptorUtil.varargParameterPosition
 import org.jetbrains.kotlin.resolve.lazy.BodyResolveMode
+import org.jetbrains.kotlin.util.capitalizeDecapitalize.capitalizeAsciiOnly
 import org.jetbrains.kotlin.utils.keysToMap
 import kotlin.jvm.internal.FunctionBase
 
@@ -41,7 +42,7 @@ abstract class FileRankingCalculator(private val checkClassFqName: Boolean = tru
 
     fun findMostAppropriateSource(files: Collection<KtFile>, location: Location): KtFile {
         val fileWithRankings: Map<KtFile, Int> = rankFiles(files, location)
-        val fileWithMaxScore = fileWithRankings.maxBy { it.value }!!
+        val fileWithMaxScore = fileWithRankings.maxByOrNull { it.value }!!
         return fileWithMaxScore.key
     }
 
@@ -172,7 +173,7 @@ abstract class FileRankingCalculator(private val checkClassFqName: Boolean = tru
             return -MAJOR
 
         // boolean is
-        return if (methodName.drop(3) == propertyName.capitalize()) MAJOR else -NORMAL
+        return if (methodName.drop(3) == propertyName.capitalizeAsciiOnly()) MAJOR else -NORMAL
     }
 
     private fun rankingForVisibility(descriptor: DeclarationDescriptorWithVisibility, accessible: Accessible): Ranking {
@@ -342,7 +343,8 @@ abstract class FileRankingCalculator(private val checkClassFqName: Boolean = tru
             bindingContext,
             ClassBuilderMode.LIGHT_CLASSES,
             "debugger",
-            KotlinTypeMapper.LANGUAGE_VERSION_SETTINGS_DEFAULT // TODO use proper LanguageVersionSettings
+            KotlinTypeMapper.LANGUAGE_VERSION_SETTINGS_DEFAULT, // TODO use proper LanguageVersionSettings
+            useOldInlineClassesManglingScheme = false
         )
     }
 

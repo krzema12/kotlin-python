@@ -58,6 +58,12 @@ fun ControlFlowGraphBuilder.createPropertyInitializerExitNode(fir: FirProperty):
 fun ControlFlowGraphBuilder.createPropertyInitializerEnterNode(fir: FirProperty): PropertyInitializerEnterNode =
     PropertyInitializerEnterNode(currentGraph, fir, levelCounter, createId())
 
+fun ControlFlowGraphBuilder.createFieldInitializerExitNode(fir: FirField): FieldInitializerExitNode =
+    FieldInitializerExitNode(currentGraph, fir, levelCounter, createId())
+
+fun ControlFlowGraphBuilder.createFieldInitializerEnterNode(fir: FirField): FieldInitializerEnterNode =
+    FieldInitializerEnterNode(currentGraph, fir, levelCounter, createId())
+
 fun ControlFlowGraphBuilder.createFunctionEnterNode(fir: FirFunction<*>): FunctionEnterNode =
     FunctionEnterNode(currentGraph, fir, levelCounter, createId()).also {
         currentGraph.enterNode = it
@@ -107,8 +113,8 @@ fun ControlFlowGraphBuilder.createWhenBranchResultEnterNode(fir: FirWhenBranch):
 fun ControlFlowGraphBuilder.createLoopConditionExitNode(fir: FirExpression): LoopConditionExitNode =
     LoopConditionExitNode(currentGraph, fir, levelCounter, createId())
 
-fun ControlFlowGraphBuilder.createLoopConditionEnterNode(fir: FirExpression): LoopConditionEnterNode =
-    LoopConditionEnterNode(currentGraph, fir, levelCounter, createId())
+fun ControlFlowGraphBuilder.createLoopConditionEnterNode(fir: FirExpression, loop: FirLoop): LoopConditionEnterNode =
+    LoopConditionEnterNode(currentGraph, fir, loop, levelCounter, createId())
 
 fun ControlFlowGraphBuilder.createLoopBlockEnterNode(fir: FirLoop): LoopBlockEnterNode =
     LoopBlockEnterNode(currentGraph, fir, levelCounter, createId())
@@ -119,8 +125,14 @@ fun ControlFlowGraphBuilder.createLoopBlockExitNode(fir: FirLoop): LoopBlockExit
 fun ControlFlowGraphBuilder.createFunctionCallNode(fir: FirFunctionCall): FunctionCallNode =
     FunctionCallNode(currentGraph, fir, levelCounter, createId())
 
+fun ControlFlowGraphBuilder.createCallableReferenceNode(fir: FirCallableReferenceAccess): CallableReferenceNode =
+    CallableReferenceNode(currentGraph, fir, levelCounter, createId())
+
 fun ControlFlowGraphBuilder.createDelegatedConstructorCallNode(fir: FirDelegatedConstructorCall): DelegatedConstructorCallNode =
     DelegatedConstructorCallNode(currentGraph, fir, levelCounter, createId())
+
+fun ControlFlowGraphBuilder.createStringConcatenationCallNode(fir: FirStringConcatenationCall): StringConcatenationCallNode =
+    StringConcatenationCallNode(currentGraph, fir, levelCounter, createId())
 
 fun ControlFlowGraphBuilder.createVariableAssignmentNode(fir: FirVariableAssignment): VariableAssignmentNode =
     VariableAssignmentNode(currentGraph, fir, levelCounter, createId())

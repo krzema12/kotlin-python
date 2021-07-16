@@ -6,8 +6,10 @@
 package org.jetbrains.kotlin.backend.jvm.codegen
 
 import com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.backend.common.psi.PsiSourceManager
 import org.jetbrains.kotlin.backend.jvm.JvmBackendContext
 import org.jetbrains.kotlin.backend.jvm.JvmLoweredDeclarationOrigin
+import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.diagnostics.DiagnosticFactory1
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.descriptors.toIrBasedDescriptor
@@ -21,8 +23,8 @@ class JvmSignatureClashDetector(
     private val type: Type,
     private val context: JvmBackendContext
 ) {
-    private val methodsBySignature = HashMap<RawSignature, MutableSet<IrFunction>>()
-    private val fieldsBySignature = HashMap<RawSignature, MutableSet<IrField>>()
+    private val methodsBySignature = LinkedHashMap<RawSignature, MutableSet<IrFunction>>()
+    private val fieldsBySignature = LinkedHashMap<RawSignature, MutableSet<IrField>>()
 
     fun trackField(irField: IrField, rawSignature: RawSignature) {
         fieldsBySignature.getOrPut(rawSignature) { SmartSet.create() }.add(irField)
@@ -48,7 +50,7 @@ class JvmSignatureClashDetector(
     }
 
     private fun getOverriddenFunctions(irFunction: IrSimpleFunction): Set<IrFunction> {
-        val result = HashSet<IrFunction>()
+        val result = LinkedHashSet<IrFunction>()
         collectOverridesOf(irFunction, result)
         return result
     }
@@ -68,10 +70,6 @@ class JvmSignatureClashDetector(
         origin in SPECIAL_BRIDGES_AND_OVERRIDES
 
     fun reportErrors(classOrigin: JvmDeclarationOrigin) {
-        // Class IFoo$DefaultImpls has conflicting signatures if and only if corresponding interface IFoo has conflicting signatures.
-        // Do not report these diagnostics twice.
-        if (irClass.origin == JvmLoweredDeclarationOrigin.DEFAULT_IMPLS) return
-
         reportMethodSignatureConflicts(classOrigin)
         reportPredefinedMethodSignatureConflicts(classOrigin)
         reportFieldSignatureConflicts(classOrigin)
@@ -89,25 +87,36 @@ class JvmSignatureClashDetector(
 
             when {
                 realMethodsCount == 0 && (fakeOverridesCount > 1 || specialOverridesCount > 1) ->
-                    reportJvmSignatureClash(
-                        ErrorsJvm.CONFLICTING_INHERITED_JVM_DECLARATIONS,
-                        listOf(irClass),
-                        conflictingJvmDeclarationsData
-                    )
+                    if (irClass.origin != JvmLoweredDeclarationOrigin.DEFAULT_IMPLS) {
+                        reportJvmSignatureClash(
+                            ErrorsJvm.CONFLICTING_INHERITED_JVM_DECLARATIONS,
+                            listOf(irClass),
+                            conflictingJvmDeclarationsData
+                        )
+                    }
 
-                fakeOverridesCount == 0 && specialOverridesCount == 0 ->
-                    reportJvmSignatureClash(
-                        ErrorsJvm.CONFLICTING_JVM_DECLARATIONS,
-                        methods,
-                        conflictingJvmDeclarationsData
-                    )
+                fakeOverridesCount == 0 && specialOverridesCount == 0 -> {
+                    // In IFoo$DefaultImpls we should report errors only if there are private methods among conflicting ones
+                    // (otherwise such errors would be reported twice: once for IFoo and once for IFoo$DefaultImpls).
+                    if (irClass.origin != JvmLoweredDeclarationOrigin.DEFAULT_IMPLS ||
+                        methods.any { DescriptorVisibilities.isPrivate(it.visibility) }
+                    ) {
+                        reportJvmSignatureClash(
+                            ErrorsJvm.CONFLICTING_JVM_DECLARATIONS,
+                            methods,
+                            conflictingJvmDeclarationsData
+                        )
+                    }
+                }
 
                 else ->
-                    reportJvmSignatureClash(
-                        ErrorsJvm.ACCIDENTAL_OVERRIDE,
-                        methods.filter { !it.isFakeOverride && !it.isSpecialOverride() },
-                        conflictingJvmDeclarationsData
-                    )
+                    if (irClass.origin != JvmLoweredDeclarationOrigin.DEFAULT_IMPLS) {
+                        reportJvmSignatureClash(
+                            ErrorsJvm.ACCIDENTAL_OVERRIDE,
+                            methods.filter { !it.isFakeOverride && !it.isSpecialOverride() },
+                            conflictingJvmDeclarationsData
+                        )
+                    }
             }
         }
     }
@@ -138,14 +147,14 @@ class JvmSignatureClashDetector(
         irDeclarations: Collection<IrDeclaration>,
         conflictingJvmDeclarationsData: ConflictingJvmDeclarationsData
     ) {
-        val psiElements = irDeclarations.mapNotNullTo(HashSet()) { it.getElementForDiagnostics() }
+        val psiElements = irDeclarations.mapNotNullTo(LinkedHashSet()) { it.getElementForDiagnostics() }
         for (psiElement in psiElements) {
             context.psiErrorBuilder.at(psiElement)
                 .report(diagnosticFactory1, conflictingJvmDeclarationsData)
         }
     }
 
-    private fun IrDeclaration.findPsiElement() = context.psiSourceManager.findPsiElement(this)
+    private fun IrDeclaration.findPsiElement(): PsiElement? = PsiSourceManager.findPsiElement(this)
 
     private fun IrDeclaration.getElementForDiagnostics(): PsiElement? =
         findPsiElement()
@@ -168,7 +177,7 @@ class JvmSignatureClashDetector(
         // However, if needed, we can provide more meaningful information regarding function origin.
         return JvmDeclarationOrigin(
             JvmDeclarationOriginKind.OTHER,
-            context.psiSourceManager.findPsiElement(this),
+            PsiSourceManager.findPsiElement(this),
             toIrBasedDescriptor()
         )
     }
@@ -179,10 +188,7 @@ class JvmSignatureClashDetector(
             IrDeclarationOrigin.BRIDGE_SPECIAL,
             IrDeclarationOrigin.IR_BUILTINS_STUB,
             JvmLoweredDeclarationOrigin.TO_ARRAY,
-            JvmLoweredDeclarationOrigin.DEFAULT_IMPLS_BRIDGE,
-            JvmLoweredDeclarationOrigin.DEFAULT_IMPLS_BRIDGE_FOR_COMPATIBILITY,
-            JvmLoweredDeclarationOrigin.DEFAULT_IMPLS_BRIDGE_TO_SYNTHETIC,
-            JvmLoweredDeclarationOrigin.DEFAULT_IMPLS_BRIDGE_FOR_COMPATIBILITY_SYNTHETIC
+            JvmLoweredDeclarationOrigin.SUPER_INTERFACE_METHOD_BRIDGE,
         )
 
         val PREDEFINED_SIGNATURES = listOf(

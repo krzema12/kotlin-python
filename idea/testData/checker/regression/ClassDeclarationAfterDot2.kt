@@ -1,3 +1,5 @@
+// FIR_IDENTICAL
+
 class A
 
 fun f() {

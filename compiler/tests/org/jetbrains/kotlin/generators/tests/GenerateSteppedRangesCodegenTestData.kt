@@ -19,6 +19,7 @@ object GenerateSteppedRangesCodegenTestData {
     private val KT_34166_AFFECTED_FILENAMES = setOf("illegalStepZero.kt", "illegalStepNegative.kt", "illegalStepNonConst.kt")
 
     private val JVM_IR_FAILING_FOR_UNSIGNED_FILENAMES = setOf<String>()
+    private val USE_OLD_MANGLING_SCHEME = emptySet<String>()
 
     private enum class Type(val type: String, val isLong: Boolean = false, val isUnsigned: Boolean = false) {
         INT("Int"),
@@ -163,12 +164,16 @@ object GenerateSteppedRangesCodegenTestData {
         extraCode: String?,
         fullSubdir: File,
         asLiteral: Boolean,
-        shouldIgnoreForJvmIR: Boolean = false
+        shouldIgnoreForJvmIR: Boolean = false,
+        shouldUseOldManglingScheme: Boolean = false,
     ) {
         fullSubdir.mkdirs()
         PrintWriter(File(fullSubdir, fileName)).use {
             with(it) {
                 println("// $PREAMBLE_MESSAGE")
+                if (shouldUseOldManglingScheme) {
+                    println("// KOTLIN_CONFIGURATION_FLAGS: +JVM.USE_OLD_INLINE_CLASSES_MANGLING_SCHEME")
+                }
                 if (shouldIgnoreForJvmIR) {
                     println("// IGNORE_BACKEND: JVM_IR")
                 }
@@ -220,6 +225,7 @@ object GenerateSteppedRangesCodegenTestData {
                 File(UNSIGNED_TEST_DATA_DIR, fullSubdirPath),
                 asLiteral,
                 shouldIgnoreForJvmIR = fileName in JVM_IR_FAILING_FOR_UNSIGNED_FILENAMES,
+                shouldUseOldManglingScheme = fileName in USE_OLD_MANGLING_SCHEME,
             )
         }
         if (signedTests.isNotEmpty()) {
@@ -236,7 +242,7 @@ object GenerateSteppedRangesCodegenTestData {
 
     private fun PrintWriter.printTestForFunctionAndType(builder: TestBuilder, function: Function, type: Type, asLiteral: Boolean) {
         val shouldFail = (builder.expectedValuesOrFailIfNull == null)
-        val listVarName = type.type.toLowerCase() + "List"
+        val listVarName = type.type.lowercase() + "List"
         if (shouldFail) {
             println("    assertFailsWith<IllegalArgumentException> {")
         } else {
@@ -247,7 +253,7 @@ object GenerateSteppedRangesCodegenTestData {
         if (asLiteral) {
             println("$indent    for (i in ${builder.buildFullLiteral(type, function)}) {")
         } else {
-            val progressionVarName = type.type.toLowerCase() + "Progression"
+            val progressionVarName = type.type.lowercase() + "Progression"
             println("$indent    val $progressionVarName = ${builder.buildRangeOnlyExpression(type, function)}")
             println("$indent    for (i in ${builder.buildOnTopOfRangeOnlyVariable(progressionVarName, type)}) {")
         }

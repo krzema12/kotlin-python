@@ -74,7 +74,14 @@ class TypeClsStubBuilder(private val c: ClsStubBuilderContext) {
 
     private fun createTypeParameterStub(parent: KotlinStubBaseImpl<*>, type: Type, name: Name, annotations: List<ClassIdWithTarget>) {
         createTypeAnnotationStubs(parent, type, annotations)
-        createStubForTypeName(ClassId.topLevel(FqName.topLevel(name)), nullableTypeParent(parent, type))
+        val nullableParentWrapper = nullableTypeParent(parent, type)
+        val definitelyNotNullTypeWrapper =
+            if (Flags.DEFINITELY_NOT_NULL_TYPE.get(type.flags))
+                KotlinPlaceHolderStubImpl<KtNullableType>(parent, KtStubElementTypes.DEFINITELY_NOT_NULL_TYPE)
+            else
+                nullableParentWrapper
+
+        createStubForTypeName(ClassId.topLevel(FqName.topLevel(name)), definitelyNotNullTypeWrapper)
     }
 
     private fun createClassReferenceTypeStub(parent: KotlinStubBaseImpl<*>, type: Type, annotations: List<ClassIdWithTarget>) {
@@ -252,11 +259,14 @@ class TypeClsStubBuilder(private val c: ClsStubBuilderContext) {
             }
 
             val modifierList = createModifierListStub(parameterStub, modifiers)
-            val parameterAnnotations = c.components.annotationLoader.loadValueParameterAnnotations(
-                container, callableProto, callableProto.annotatedCallableKind, index, valueParameterProto
-            )
-            if (parameterAnnotations.isNotEmpty()) {
-                createAnnotationStubs(parameterAnnotations, modifierList ?: createEmptyModifierListStub(parameterStub))
+
+            if (Flags.HAS_ANNOTATIONS.get(valueParameterProto.flags)) {
+                val parameterAnnotations = c.components.annotationLoader.loadValueParameterAnnotations(
+                    container, callableProto, callableProto.annotatedCallableKind, index, valueParameterProto
+                )
+                if (parameterAnnotations.isNotEmpty()) {
+                    createAnnotationStubs(parameterAnnotations, modifierList ?: createEmptyModifierListStub(parameterStub))
+                }
             }
 
             createTypeReferenceStub(parameterStub, typeProto)

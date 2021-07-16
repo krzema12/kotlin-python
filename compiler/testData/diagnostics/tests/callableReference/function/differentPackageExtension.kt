@@ -1,8 +1,11 @@
+// FIR_IDENTICAL
 // !CHECK_TYPE
 // !DIAGNOSTICS: -UNUSED_EXPRESSION
 // FILE: a.kt
 
 package first
+
+import checkSubtype
 
 class A
 
@@ -18,6 +21,7 @@ import kotlin.reflect.KFunction1
 
 import first.A
 import first.foo
+import checkSubtype
 
 fun main() {
     val x = first.A::foo

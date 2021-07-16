@@ -8,10 +8,20 @@ package kotlin.collections
 import kotlin.comparisons.naturalOrder
 import kotlin.random.Random
 
-/** Returns the array if it's not `null`, or an empty array otherwise. */
+/**
+ * Returns the array if it's not `null`, or an empty array otherwise.
+ * @sample samples.collections.Arrays.Usage.arrayOrEmpty
+ */
 @kotlin.internal.InlineOnly
 public actual inline fun <T> Array<out T>?.orEmpty(): Array<out T> = this ?: emptyArray<T>()
 
+/**
+ * Returns a *typed* array containing all of the elements of this collection.
+ *
+ * Allocates an array of runtime type `T` having its size equal to the size of this collection
+ * and populates the array with the elements of this collection.
+ * @sample samples.collections.Collections.Collections.collectionToTypedArray
+ */
 @kotlin.internal.InlineOnly
 public actual inline fun <T> Collection<T>.toTypedArray(): Array<T> = copyToArray(this)
 
@@ -148,6 +158,8 @@ public actual fun <T> Iterable<T>.shuffled(): List<T> = toMutableList().apply { 
  * Sorts elements in the list in-place according to their natural sort order.
  *
  * The sort is _stable_. It means that equal elements preserve their order relative to each other after sorting.
+ *
+ * @sample samples.collections.Collections.Sorting.sortMutableList
  */
 public actual fun <T : Comparable<T>> MutableList<T>.sort(): Unit {
     collectionsSort(this, naturalOrder())
@@ -157,6 +169,8 @@ public actual fun <T : Comparable<T>> MutableList<T>.sort(): Unit {
  * Sorts elements in the list in-place according to the order specified with [comparator].
  *
  * The sort is _stable_. It means that equal elements preserve their order relative to each other after sorting.
+ *
+ * @sample samples.collections.Collections.Sorting.sortMutableListWith
  */
 public actual fun <T> MutableList<T>.sortWith(comparator: Comparator<in T>): Unit {
     collectionsSort(this, comparator)

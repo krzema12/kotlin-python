@@ -28,11 +28,12 @@ import org.jetbrains.kotlin.ir.builders.irGet
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
-import org.jetbrains.kotlin.ir.descriptors.WrappedSimpleFunctionDescriptor
-import org.jetbrains.kotlin.ir.descriptors.WrappedValueParameterDescriptor
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.*
+import org.jetbrains.kotlin.ir.symbols.impl.IrSimpleFunctionSymbolImpl
+import org.jetbrains.kotlin.ir.symbols.impl.IrValueParameterSymbolImpl
 import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.util.isTrivial
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtExpression
@@ -95,11 +96,6 @@ fun StatementGenerator.generateReceiver(defaultStartOffset: Int, defaultEndOffse
                 generateThisOrSuperReceiver(receiver, receiver.thisType.constructor.declarationDescriptor as ClassDescriptor)
             is ExpressionReceiver ->
                 generateExpression(receiver.expression)
-            is ClassValueReceiver ->
-                IrGetObjectValueImpl(
-                    receiver.expression.startOffsetSkippingComments, receiver.expression.endOffset, irReceiverType,
-                    context.symbolTable.referenceClass(receiver.classQualifier.descriptor as ClassDescriptor)
-                )
             is ExtensionReceiver ->
                 IrGetValueImpl(
                     defaultStartOffset, defaultStartOffset, irReceiverType,
@@ -109,7 +105,7 @@ fun StatementGenerator.generateReceiver(defaultStartOffset: Int, defaultEndOffse
                 TODO("Receiver: ${receiver::class.java.simpleName}")
         }
 
-        if (receiverExpression is IrExpressionWithCopy)
+        if (receiverExpression.isTrivial())
             RematerializableValue(receiverExpression.type, receiverExpression)
         else
             OnceExpressionValue(receiverExpression)
@@ -358,40 +354,26 @@ private fun StatementGenerator.createFunctionForSuspendConversion(
     val suspendFunReturnType = suspendFunType.arguments.last().type
     val irSuspendFunReturnType = suspendFunReturnType.toIrType()
 
-    val adapterFunctionDescriptor = WrappedSimpleFunctionDescriptor()
+    val irAdapterFun = context.irFactory.createFunction(
+        startOffset, endOffset,
+        IrDeclarationOrigin.ADAPTER_FOR_SUSPEND_CONVERSION,
+        IrSimpleFunctionSymbolImpl(),
+        Name.identifier(scope.inventNameForTemporary("suspendConversion")),
+        DescriptorVisibilities.LOCAL, Modality.FINAL,
+        irSuspendFunReturnType,
+        isInline = false, isExternal = false, isTailrec = false,
+        isSuspend = true,
+        isOperator = false, isInfix = false, isExpect = false, isFakeOverride = false
+    )
 
-    val irAdapterFun = context.symbolTable.declareSimpleFunction(
-        adapterFunctionDescriptor
-    ) { irAdapterSymbol ->
-        context.irFactory.createFunction(
-            startOffset, endOffset,
-            IrDeclarationOrigin.ADAPTER_FOR_SUSPEND_CONVERSION,
-            irAdapterSymbol,
-            Name.identifier(scope.inventNameForTemporary("suspendConversion")),
-            DescriptorVisibilities.LOCAL, Modality.FINAL,
-            irSuspendFunReturnType,
-            isInline = false, isExternal = false, isTailrec = false,
-            isSuspend = true,
-            isOperator = false, isInfix = false, isExpect = false, isFakeOverride = false
+    context.symbolTable.enterScope(irAdapterFun)
+
+    fun createValueParameter(name: String, index: Int, type: IrType): IrValueParameter =
+        context.irFactory.createValueParameter(
+            startOffset, endOffset, IrDeclarationOrigin.ADAPTER_PARAMETER_FOR_SUSPEND_CONVERSION, IrValueParameterSymbolImpl(),
+            Name.identifier(name), index, type, varargElementType = null, isCrossinline = false, isNoinline = false,
+            isHidden = false, isAssignable = false
         )
-    }
-    adapterFunctionDescriptor.bind(irAdapterFun)
-
-    context.symbolTable.enterScope(adapterFunctionDescriptor)
-
-    fun createValueParameter(name: String, index: Int, type: IrType): IrValueParameter {
-        val descriptor = WrappedValueParameterDescriptor()
-        return context.symbolTable.declareValueParameter(
-            startOffset, endOffset, IrDeclarationOrigin.ADAPTER_PARAMETER_FOR_SUSPEND_CONVERSION, descriptor, type
-        ) {
-            context.irFactory.createValueParameter(
-                startOffset, endOffset, IrDeclarationOrigin.ADAPTER_PARAMETER_FOR_SUSPEND_CONVERSION,
-                it, Name.identifier(name), index, type, varargElementType = null, isCrossinline = false, isNoinline = false
-            )
-        }.also {
-            descriptor.bind(it)
-        }
-    }
 
     irAdapterFun.extensionReceiverParameter = createValueParameter("callee", -1, funType.toIrType())
     irAdapterFun.valueParameters = suspendFunType.arguments
@@ -433,7 +415,7 @@ private fun StatementGenerator.createFunctionForSuspendConversion(
         }
     }
 
-    context.symbolTable.leaveScope(adapterFunctionDescriptor)
+    context.symbolTable.leaveScope(irAdapterFun)
 
     return irAdapterFun
 }

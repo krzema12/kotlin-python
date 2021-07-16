@@ -1,8 +1,14 @@
 package org.jetbrains.kotlin.gradle.internal
 
-import org.gradle.api.artifacts.Configuration
+import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.internal.ConventionTask
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.ProviderFactory
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.*
 import org.gradle.api.tasks.incremental.IncrementalTaskInputs
 import org.jetbrains.kotlin.build.report.metrics.BuildMetricsReporter
@@ -11,17 +17,49 @@ import org.jetbrains.kotlin.gradle.internal.kapt.incremental.ClasspathSnapshot
 import org.jetbrains.kotlin.gradle.internal.kapt.incremental.KaptClasspathChanges
 import org.jetbrains.kotlin.gradle.internal.kapt.incremental.KaptIncrementalChanges
 import org.jetbrains.kotlin.gradle.internal.kapt.incremental.UnknownSnapshot
+import org.jetbrains.kotlin.gradle.internal.tasks.TaskConfigurator
 import org.jetbrains.kotlin.gradle.internal.tasks.TaskWithLocalState
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.*
 import org.jetbrains.kotlin.gradle.tasks.cacheOnlyIfEnabledForKotlin
 import org.jetbrains.kotlin.gradle.tasks.clearLocalState
 import org.jetbrains.kotlin.gradle.utils.getValue
-import org.jetbrains.kotlin.gradle.utils.isJavaFile
+import org.jetbrains.kotlin.gradle.utils.propertyWithNewInstance
 import java.io.File
+import java.util.concurrent.Callable
 import java.util.jar.JarFile
+import javax.inject.Inject
 
 @CacheableTask
-abstract class KaptTask : ConventionTask(), TaskWithLocalState {
+abstract class KaptTask @Inject constructor(
+    objectFactory: ObjectFactory
+) : ConventionTask(),
+    TaskWithLocalState,
+    UsesKotlinJavaToolchain {
+
+    open class Configurator<T: KaptTask>(protected val kotlinCompileTask: KotlinCompile) : TaskConfigurator<T> {
+        override fun configure(task: T) {
+            val objectFactory = task.project.objects
+            val providerFactory = task.project.providers
+
+            task.compilerClasspath.from({ kotlinCompileTask.computedCompilerClasspath })
+            task.classpath.from(kotlinCompileTask.classpath)
+            task.kotlinSourceRoots.value(
+                providerFactory.provider { kotlinCompileTask.sourceRootsContainer.sourceRoots }
+            ).disallowChanges()
+            task.compiledSources.from(
+                kotlinCompileTask.destinationDirectory,
+                Callable { kotlinCompileTask.javaOutputDir.takeIf { it.isPresent } }
+            ).disallowChanges()
+            task.sourceSetName.value(kotlinCompileTask.sourceSetName).disallowChanges()
+            task.localStateDirectories.from(Callable { task.incAptCache.orNull }).disallowChanges()
+            task.source.from(
+                objectFactory.fileCollection().from(task.kotlinSourceRoots, task.stubsDir).asFileTree
+                    .matching { it.include("**/*.java") }
+                    .filter { f -> task.isRootAllowed(f) }
+            ).disallowChanges()
+        }
+    }
+
     init {
         cacheOnlyIfEnabledForKotlin()
 
@@ -29,45 +67,37 @@ abstract class KaptTask : ConventionTask(), TaskWithLocalState {
         outputs.cacheIf(reason) { useBuildCache }
     }
 
-    override fun localStateDirectories(): FileCollection = objects.fileCollection()
-
     @get:Internal
-    @field:Transient
-    internal lateinit var kotlinCompileTask: KotlinCompile
-
-    @get:Internal
-    internal lateinit var stubsDir: File
-
-    @get:Internal
-    internal val objects = project.objects
+    internal abstract val stubsDir: DirectoryProperty
 
     @get:Classpath
     @get:InputFiles
-    val kaptClasspath: FileCollection
-        get() = objects.fileCollection().from(kaptClasspathConfigurations)
+    abstract val kaptClasspath: ConfigurableFileCollection
+
+    //part of kaptClasspath consisting from external artifacts only
+    //basically kaptClasspath = kaptExternalClasspath + artifacts built locally
+    @get:Classpath
+    @get:InputFiles
+    abstract val kaptExternalClasspath: ConfigurableFileCollection
 
     @get:Classpath
     @get:InputFiles
-    val compilerClasspath: List<File> by project.provider {
-        kotlinCompileTask.computedCompilerClasspath
-    }
+    abstract val compilerClasspath: ConfigurableFileCollection
 
     @get:Internal
-    internal lateinit var kaptClasspathConfigurations: List<Configuration>
+    internal abstract val kaptClasspathConfigurationNames: ListProperty<String>
 
 
     @get:PathSensitive(PathSensitivity.NONE)
     @get:Optional
     @get:InputFiles
-    internal var classpathStructure: FileCollection? = null
+    abstract val classpathStructure: ConfigurableFileCollection
 
     /**
      * Output directory that contains caches necessary to support incremental annotation processing.
-     * [LocalState] should be used here, but in order to be compatible with Gradle 4.2, correct input
-     * annotations are specified during task configuration.
      */
-    @get:Internal
-    var incAptCache: File? = null
+    @get:LocalState
+    abstract val incAptCache: DirectoryProperty
 
     @get:OutputDirectory
     internal lateinit var classesDir: File
@@ -89,9 +119,10 @@ abstract class KaptTask : ConventionTask(), TaskWithLocalState {
 
     // @Internal because _abiClasspath and _nonAbiClasspath are used for actual checks
     @get:Internal
-    val classpath: FileCollection by project.provider {
-        kotlinCompileTask.classpath
-    }
+    abstract val classpath: ConfigurableFileCollection
+
+    final override val kotlinJavaToolchainProvider: Provider<KotlinJavaToolchainProvider> =
+        objectFactory.propertyWithNewInstance()
 
     @Suppress("unused", "DeprecatedCallableAddReplaceWith")
     @Deprecated(
@@ -101,7 +132,7 @@ abstract class KaptTask : ConventionTask(), TaskWithLocalState {
     @get:CompileClasspath
     @get:InputFiles
     internal val internalAbiClasspath: FileCollection by project.provider {
-        if (includeCompileClasspath) project.files() else kotlinCompileTask.classpath
+        if (includeCompileClasspath) project.files() else classpath
     }
 
 
@@ -113,31 +144,22 @@ abstract class KaptTask : ConventionTask(), TaskWithLocalState {
     @get:Classpath
     @get:InputFiles
     internal val internalNonAbiClasspath: FileCollection by project.provider {
-        if (includeCompileClasspath) kotlinCompileTask.classpath else project.files()
+        if (includeCompileClasspath) classpath else project.files()
     }
 
     @get:Internal
     var useBuildCache: Boolean = false
 
+    @get:Internal
+    abstract val kotlinSourceRoots: ListProperty<File>
+
+    /** Needed for the model builder. */
+    @get:Internal
+    abstract val sourceSetName: Property<String>
+
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    val source: Collection<File>
-        get() {
-            val result = HashSet<File>()
-            for (root in javaSourceRoots) {
-                root.walk().filterTo(result) { it.isJavaFile() }
-            }
-            return result
-        }
-
-    // store the files before filtering, so that Gradle doesn't serialize the filtered collection for instant execution state and reuse it
-    private val unfilteredJavaSourceRoots by project.provider {
-        (kotlinCompileTask.sourceRootsContainer.sourceRoots + stubsDir)
-    }
-
-    @get:Internal
-    protected val javaSourceRoots: Set<File>
-        get() = unfilteredJavaSourceRoots.filterTo(HashSet(), ::isRootAllowed)
+    abstract val source: ConfigurableFileCollection
 
     @get:Internal
     override val metrics: BuildMetricsReporter =
@@ -145,8 +167,8 @@ abstract class KaptTask : ConventionTask(), TaskWithLocalState {
 
     private fun isRootAllowed(file: File): Boolean =
         file.exists() &&
-                !isAncestor(destinationDir, file) &&
-                !isAncestor(classesDir, file)
+            !isAncestor(destinationDir, file) &&
+            !isAncestor(classesDir, file)
 
     //Have to avoid using FileUtil because it is required system property reading that is not allowed for configuration cache
     private fun isAncestor(dir: File, file: File): Boolean {
@@ -175,10 +197,6 @@ abstract class KaptTask : ConventionTask(), TaskWithLocalState {
         }
     }
 
-
-    private fun FileCollection?.orEmpty(): FileCollection =
-        this ?: project.files()
-
     protected fun checkAnnotationProcessorClasspath() {
         if (!includeCompileClasspath) return
 
@@ -195,7 +213,7 @@ abstract class KaptTask : ConventionTask(), TaskWithLocalState {
                             + "\nThe following files, containing annotation processors, are not present in KAPT classpath:\n"
                             + processorsAbsentInKaptClasspath.joinToString("\n") { "  '$it'" }
                             + "\nAdd corresponding dependencies to any of the following configurations:\n"
-                            + kaptClasspathConfigurations.joinToString("\n") { " '${it.name}'" }
+                            + kaptClasspathConfigurationNames.get().joinToString("\n") { " '$it'" }
                 )
             } else {
                 logger.warn(
@@ -210,9 +228,7 @@ abstract class KaptTask : ConventionTask(), TaskWithLocalState {
 
     // TODO(gavra): Here we assume that kotlinc and javac output is available for incremental runs. We should insert some checks.
     @get:Internal
-    internal val compiledSources by project.provider {
-        listOfNotNull(kotlinCompileTask.destinationDir, kotlinCompileTask.javaOutputDir)
-    }
+    internal abstract val compiledSources: ConfigurableFileCollection
 
     protected fun getIncrementalChanges(inputs: IncrementalTaskInputs): KaptIncrementalChanges {
         return if (isIncremental) {
@@ -224,10 +240,10 @@ abstract class KaptTask : ConventionTask(), TaskWithLocalState {
     }
 
     private fun findClasspathChanges(inputs: IncrementalTaskInputs): KaptIncrementalChanges {
-        val incAptCacheDir = incAptCache!!
+        val incAptCacheDir = incAptCache.asFile.get()
         incAptCacheDir.mkdirs()
 
-        val allDataFiles = classpathStructure!!.files
+        val allDataFiles = classpathStructure.files
         val changedFiles = if (inputs.isIncremental) {
             with(mutableSetOf<File>()) {
                 inputs.outOfDate { this.add(it.file) }

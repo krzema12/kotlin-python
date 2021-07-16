@@ -5,7 +5,6 @@
 
 package org.jetbrains.kotlin.parcelize
 
-import org.jetbrains.kotlin.backend.common.serialization.findPackage
 import org.jetbrains.kotlin.codegen.ClassBuilderMode
 import org.jetbrains.kotlin.codegen.FrameMap
 import org.jetbrains.kotlin.codegen.state.KotlinTypeMapper
@@ -18,7 +17,6 @@ import org.jetbrains.kotlin.descriptors.annotations.Annotations
 import org.jetbrains.kotlin.diagnostics.DiagnosticSink
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.parcelize.ParcelizeAnnotationChecker.Companion.DEPRECATED_RUNTIME_PACKAGE
 import org.jetbrains.kotlin.parcelize.diagnostic.ErrorsParcelize
 import org.jetbrains.kotlin.parcelize.serializers.ParcelSerializer
 import org.jetbrains.kotlin.parcelize.serializers.isParcelable
@@ -37,7 +35,7 @@ val ANDROID_PARCELABLE_CLASS_FQNAME = FqName("android.os.Parcelable")
 val ANDROID_PARCELABLE_CREATOR_CLASS_FQNAME = FqName("android.os.Parcelable.Creator")
 val ANDROID_PARCEL_CLASS_FQNAME = FqName("android.os.Parcel")
 
-class ParcelizeDeclarationChecker : DeclarationChecker {
+open class ParcelizeDeclarationChecker : DeclarationChecker {
     private companion object {
         private val IGNORED_ON_PARCEL_FQ_NAMES = listOf(
             FqName(kotlinx.parcelize.IgnoredOnParcel::class.java.canonicalName),
@@ -212,7 +210,8 @@ class ParcelizeDeclarationChecker : DeclarationChecker {
             bindingContext,
             ClassBuilderMode.FULL,
             descriptor.module.name.asString(),
-            languageVersionSettings
+            languageVersionSettings,
+            useOldInlineClassesManglingScheme = false
         )
 
         for (parameter in primaryConstructor?.valueParameters.orEmpty<KtParameter>()) {

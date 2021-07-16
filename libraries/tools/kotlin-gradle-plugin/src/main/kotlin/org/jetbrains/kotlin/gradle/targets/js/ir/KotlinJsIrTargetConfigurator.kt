@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.gradle.targets.js.ir
 
+import org.gradle.api.InvalidUserDataException
 import org.gradle.api.attributes.Usage
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.bundling.Zip
@@ -16,10 +17,12 @@ import org.jetbrains.kotlin.gradle.targets.js.KotlinJsReportAggregatingTestRun
 import org.jetbrains.kotlin.gradle.tasks.KotlinTasksProvider
 import org.jetbrains.kotlin.gradle.testing.internal.kotlinTestRegistry
 import org.jetbrains.kotlin.gradle.testing.testTaskName
+import org.jetbrains.kotlin.gradle.utils.isParentOf
 import org.jetbrains.kotlin.gradle.utils.klibModuleName
+import java.io.File
 
-open class KotlinJsIrTargetConfigurator(kotlinPluginVersion: String) :
-    KotlinOnlyTargetConfigurator<KotlinJsIrCompilation, KotlinJsIrTarget>(true, true, kotlinPluginVersion),
+open class KotlinJsIrTargetConfigurator() :
+    KotlinOnlyTargetConfigurator<KotlinJsIrCompilation, KotlinJsIrTarget>(true, true),
     KotlinTargetWithTestsConfigurator<KotlinJsReportAggregatingTestRun, KotlinJsIrTarget> {
 
     override val testRunClass: Class<KotlinJsReportAggregatingTestRun> get() = KotlinJsReportAggregatingTestRun::class.java
@@ -51,8 +54,8 @@ open class KotlinJsIrTargetConfigurator(kotlinPluginVersion: String) :
     }
 
     override fun buildCompilationProcessor(compilation: KotlinJsIrCompilation): KotlinSourceSetProcessor<*> {
-        val tasksProvider = KotlinTasksProvider(compilation.target.targetName)
-        return KotlinJsIrSourceSetProcessor(tasksProvider, compilation, kotlinPluginVersion)
+        val tasksProvider = KotlinTasksProvider()
+        return KotlinJsIrSourceSetProcessor(tasksProvider, compilation)
     }
 
     override fun createArchiveTasks(target: KotlinJsIrTarget): TaskProvider<out Zip> {
@@ -68,18 +71,47 @@ open class KotlinJsIrTargetConfigurator(kotlinPluginVersion: String) :
             compilation.kotlinOptions {
                 configureOptions()
 
-                freeCompilerArgs += listOf(
-                    DISABLE_PRE_IR,
-                    PRODUCE_UNZIPPED_KLIB
-                )
+                var produceUnzippedKlib = isProduceUnzippedKlib()
+                val produceZippedKlib = isProduceZippedKlib()
+
+                freeCompilerArgs = freeCompilerArgs + DISABLE_PRE_IR
+
+                val isMainCompilation = compilation.isMain()
+
+                if (!produceUnzippedKlib && !produceZippedKlib) {
+                    freeCompilerArgs = freeCompilerArgs + PRODUCE_UNZIPPED_KLIB
+                    produceUnzippedKlib = true
+                }
 
                 // Configure FQ module name to avoid cyclic dependencies in klib manifests (see KT-36721).
-                val baseName = if (compilation.isMain()) {
+                val baseName = if (isMainCompilation) {
                     target.project.name
                 } else {
                     "${target.project.name}_${compilation.name}"
                 }
-                freeCompilerArgs += listOf("$MODULE_NAME=${target.project.klibModuleName(baseName)}")
+
+                compilation.compileKotlinTaskProvider.configure { task ->
+                    val outputFilePath = outputFile ?: if (produceUnzippedKlib) {
+                        task.destinationDir.absoluteFile.normalize().absolutePath
+                    } else {
+                        File(task.destinationDir, "$baseName.$KLIB_TYPE").absoluteFile.normalize().absolutePath
+                    }
+                    outputFile = outputFilePath
+
+                    val taskOutputDir = if (produceUnzippedKlib) File(outputFilePath) else File(outputFilePath).parentFile
+                    if (taskOutputDir.isParentOf(task.project.rootDir))
+                        throw InvalidUserDataException(
+                            "The output directory '$taskOutputDir' (defined by outputFile of $task) contains or " +
+                                    "matches the project root directory '${task.project.rootDir}'.\n" +
+                                    "Gradle will not be able to build the project because of the root directory lock.\n" +
+                                    "To fix this, consider using the default outputFile location instead of providing it explicitly."
+                        )
+
+                    task.destinationDir = taskOutputDir
+                }
+
+                val klibModuleName = target.project.klibModuleName(baseName)
+                freeCompilerArgs = freeCompilerArgs + "$MODULE_NAME=$klibModuleName"
             }
 
             compilation.binaries
@@ -94,7 +126,6 @@ open class KotlinJsIrTargetConfigurator(kotlinPluginVersion: String) :
 
     private fun KotlinJsOptions.configureOptions() {
         moduleKind = "umd"
-        sourceMap = true
     }
 
     override fun defineConfigurationsForTarget(target: KotlinJsIrTarget) {

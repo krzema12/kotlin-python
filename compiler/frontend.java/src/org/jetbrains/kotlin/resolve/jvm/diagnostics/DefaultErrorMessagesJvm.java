@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.utils.StringsKt;
 import java.util.List;
 
 import static kotlin.collections.CollectionsKt.*;
+import static org.jetbrains.kotlin.diagnostics.Errors.UPPER_BOUND_VIOLATED_IN_TYPEALIAS_EXPANSION;
 import static org.jetbrains.kotlin.diagnostics.rendering.Renderers.*;
 import static org.jetbrains.kotlin.resolve.jvm.diagnostics.ErrorsJvm.*;
 
@@ -52,8 +53,11 @@ public class DefaultErrorMessagesJvm implements DefaultErrorMessages.Extension {
         MAP.put(OVERLOADS_LOCAL, "'@JvmOverloads' annotation cannot be used on local declarations");
         MAP.put(OVERLOADS_ANNOTATION_CLASS_CONSTRUCTOR_WARNING, "'@JvmOverloads' annotation on constructors of annotation classes is deprecated");
         MAP.put(OVERLOADS_ANNOTATION_CLASS_CONSTRUCTOR, "'@JvmOverloads' annotation cannot be used on constructors of annotation classes");
+        MAP.put(OVERLOADS_ANNOTATION_HIDDEN_CONSTRUCTOR, "'@JvmOverloads' annotation cannot be used on constructors hidden by inline class rules");
+        MAP.put(OVERLOADS_ANNOTATION_MANGLED_FUNCTION, "'@JvmOverloads' annotation cannot be used on functions mangled by inline class rules");
         MAP.put(INAPPLICABLE_JVM_NAME, "'@JvmName' annotation is not applicable to this declaration");
         MAP.put(ILLEGAL_JVM_NAME, "Illegal JVM name");
+
         MAP.put(VOLATILE_ON_VALUE, "'@Volatile' annotation cannot be used on immutable properties");
         MAP.put(VOLATILE_ON_DELEGATE, "'@Volatile' annotation cannot be used on delegated properties");
         MAP.put(SYNCHRONIZED_ON_ABSTRACT, "'@Synchronized' annotation cannot be used on abstract functions");
@@ -74,6 +78,7 @@ public class DefaultErrorMessagesJvm implements DefaultErrorMessages.Extension {
         MAP.put(JVM_PACKAGE_NAME_NOT_SUPPORTED_IN_FILES_WITH_CLASSES, "''@JvmPackageName'' annotation is not supported for files with class declarations");
 
         MAP.put(STATE_IN_MULTIFILE_CLASS, "Non-const property with backing field or delegate is not allowed in a multi-file class if -Xmultifile-parts-inherit is enabled");
+        MAP.put(NOT_ALL_MULTIFILE_CLASS_PARTS_ARE_JVM_SYNTHETIC, "All of multi-file class parts should be annotated with @JvmSynthetic if at least one of them is");
 
         MAP.put(NO_REFLECTION_IN_CLASS_PATH, "Call uses reflection API which is not found in compilation classpath. " +
                                              "Make sure you have kotlin-reflect.jar in the classpath");
@@ -82,9 +87,16 @@ public class DefaultErrorMessagesJvm implements DefaultErrorMessages.Extension {
         MAP.put(SUBCLASS_CANT_CALL_COMPANION_PROTECTED_NON_STATIC, "Using non-JVM static members protected in the superclass companion is unsupported yet");
 
         MAP.put(NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS, "Type mismatch: inferred type is {1} but {0} was expected", RENDER_TYPE, RENDER_TYPE);
+        MAP.put(UPPER_BOUND_VIOLATED_BASED_ON_JAVA_ANNOTATIONS, "Type argument is not within its bounds: should be subtype of ''{0}''", RENDER_TYPE, RENDER_TYPE);
+        MAP.put(UPPER_BOUND_VIOLATED_IN_TYPEALIAS_EXPANSION_BASED_ON_JAVA_ANNOTATIONS,
+                "Type argument resulting from type alias expansion is not within required bounds for ''{2}'': " +
+                "should be subtype of ''{0}'', substituted type is ''{1}''",
+                RENDER_TYPE, RENDER_TYPE, NAME);
         MAP.put(NULLABLE_TYPE_PARAMETER_AGAINST_NOT_NULL_TYPE_PARAMETER,
-                "Type mismatch: type parameter with nullable bounds is used {1} is used where {0} was expected. This warning will become an error soon",
-                RENDER_TYPE, RENDER_TYPE
+                "Type mismatch: value of a nullable type {0} is used where non-nullable type is expected. " +
+                "This warning will become an error soon. " +
+                "See https://youtrack.jetbrains.com/issue/KT-36770 for details",
+                RENDER_TYPE
         );
         MAP.put(RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS,
                 "Unsafe use of a nullable receiver of type {0}", RENDER_TYPE);
@@ -108,6 +120,7 @@ public class DefaultErrorMessagesJvm implements DefaultErrorMessages.Extension {
         MAP.put(UPPER_BOUND_CANNOT_BE_ARRAY, "Upper bound of a type parameter cannot be an array");
 
         MAP.put(INAPPLICABLE_JVM_FIELD, "{0}", STRING);
+        MAP.put(INAPPLICABLE_JVM_FIELD_WARNING, "{0}. This warning will become an error in further releases", STRING);
 
         MAP.put(JVM_SYNTHETIC_ON_DELEGATE, "'@JvmSynthetic' annotation cannot be used on delegated properties");
 
@@ -149,6 +162,21 @@ public class DefaultErrorMessagesJvm implements DefaultErrorMessages.Extension {
         MAP.put(SUSPENSION_POINT_INSIDE_MONITOR, "A suspension point at {0} is inside a critical section", STRING);
         MAP.put(SUSPENSION_POINT_INSIDE_CRITICAL_SECTION, "The ''{0}'' suspension point is inside a critical section", NAME);
 
+        MAP.put(LOCAL_JVM_RECORD, "Local @JvmRecord classes are not allowed");
+        MAP.put(NON_FINAL_JVM_RECORD, "@JvmRecord class should be final");
+        MAP.put(ENUM_JVM_RECORD, "@JvmRecord class should not be an enum");
+        MAP.put(JVM_RECORD_WITHOUT_PRIMARY_CONSTRUCTOR_PARAMETERS, "Primary constructor with parameters is required for @JvmRecord class");
+        MAP.put(JVM_RECORD_NOT_VAL_PARAMETER, "Constructor parameter of @JvmRecord class should be a val");
+        MAP.put(JVM_RECORD_NOT_LAST_VARARG_PARAMETER, "Only the last constructor parameter of @JvmRecord may be a vararg");
+        MAP.put(JVM_RECORD_EXTENDS_CLASS, "Record cannot inherit a class" , RENDER_TYPE);
+        MAP.put(JVM_RECORD_REQUIRES_JDK15, "Using @JvmRecords requires at least JDK 15");
+        MAP.put(INNER_JVM_RECORD, "@JvmRecord class should not be inner");
+        MAP.put(FIELD_IN_JVM_RECORD, "It's not allowed to have non-constructor properties with backing filed in @JvmRecord class");
+        MAP.put(DELEGATION_BY_IN_JVM_RECORD, "Delegation is not allowed for @JvmRecord classes");
+        MAP.put(NON_DATA_CLASS_JVM_RECORD, "Only data classes are allowed to be marked as @JvmRecord");
+        MAP.put(ILLEGAL_JAVA_LANG_RECORD_SUPERTYPE, "Classes cannot have explicit 'java.lang.Record' supertype");
+        MAP.put(JVM_RECORDS_ILLEGAL_BYTECODE_TARGET, "Using @JvmRecord is only allowed with -jvm-target 15 and -Xjvm-enable-preview flag enabled");
+
         String MESSAGE_FOR_CONCURRENT_HASH_MAP_CONTAINS =
                 "Method 'contains' from ConcurrentHashMap may have unexpected semantics: it calls 'containsValue' instead of 'containsKey'. " +
                 "Use explicit form of the call to 'containsKey'/'containsValue'/'contains' or cast the value to kotlin.collections.Map instead. " +
@@ -173,10 +201,13 @@ public class DefaultErrorMessagesJvm implements DefaultErrorMessages.Extension {
         MAP.put(EXPLICIT_OVERRIDE_REQUIRED_IN_MIXED_MODE,
                 "Explicit override is required for ''{0}'' in the ''-Xjvm-default={2}'' mode. " +
                 "Otherwise, implicit class override ''{1}'' (compiled in the old -Xjvm-default mode) " +
-                "is not fully overridden and might be incorrectly called at runtime",
+                "is not fully overridden and would be incorrectly called at runtime",
                 SHORT_NAMES_IN_TYPES, SHORT_NAMES_IN_TYPES, TO_STRING);
 
         MAP.put(DANGEROUS_CHARACTERS, "Name contains characters which can cause problems on Windows: {0}", STRING);
+
+        MAP.put(VALUE_CLASS_WITHOUT_JVM_INLINE_ANNOTATION, "Value classes without @JvmInline annotation are not supported yet");
+        MAP.put(JVM_INLINE_WITHOUT_VALUE_CLASS, "@JvmInline annotation is only applicable to value classes");
     }
 
     @NotNull

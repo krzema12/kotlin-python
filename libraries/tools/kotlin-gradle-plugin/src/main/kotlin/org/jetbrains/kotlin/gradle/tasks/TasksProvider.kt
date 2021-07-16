@@ -21,10 +21,10 @@ import org.gradle.api.Task
 import org.gradle.api.UnknownTaskException
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.TaskProvider
-import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
+import org.jetbrains.kotlin.gradle.dsl.KotlinCommonOptions
 import org.jetbrains.kotlin.gradle.plugin.PropertiesProvider
 import org.jetbrains.kotlin.gradle.plugin.mapKotlinTaskProperties
-import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractKotlinCompilation
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.KotlinCompilationData
 import org.jetbrains.kotlin.gradle.plugin.runOnceAfterEvaluated
 import org.jetbrains.kotlin.gradle.plugin.sources.applyLanguageSettingsToKotlinOptions
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrLink
@@ -80,17 +80,18 @@ internal inline fun <reified T : Task> Project.locateOrRegisterTask(name: String
     return project.locateTask(name) ?: project.registerTask(name, T::class.java, body = body)
 }
 
-internal open class KotlinTasksProvider(val targetName: String) {
+internal open class KotlinTasksProvider {
     open fun registerKotlinJVMTask(
         project: Project,
         name: String,
-        compilation: KotlinCompilation<*>,
+        compilation: KotlinCompilationData<*>,
         configureAction: (KotlinCompile) -> (Unit)
     ): TaskProvider<out KotlinCompile> {
         val properties = PropertiesProvider(project)
         val taskClass = taskOrWorkersTask<KotlinCompile, KotlinCompileWithWorkers>(properties)
-        val result = project.registerTask(name, taskClass) {
+        val result = project.registerTask(name, taskClass, constructorArgs = listOf(compilation.kotlinOptions)) {
             configureAction(it)
+            KotlinCompile.Configurator(compilation).configure(it)
         }
         configure(result, project, properties, compilation)
         return result
@@ -99,13 +100,14 @@ internal open class KotlinTasksProvider(val targetName: String) {
     fun registerKotlinJSTask(
         project: Project,
         name: String,
-        compilation: KotlinCompilation<*>,
+        compilation: KotlinCompilationData<*>,
         configureAction: (Kotlin2JsCompile) -> Unit
     ): TaskProvider<out Kotlin2JsCompile> {
         val properties = PropertiesProvider(project)
         val taskClass = taskOrWorkersTask<Kotlin2JsCompile, Kotlin2JsCompileWithWorkers>(properties)
-        val result = project.registerTask(name, taskClass) {
+        val result = project.registerTask(name, taskClass, constructorArgs = listOf(compilation.kotlinOptions)) {
             configureAction(it)
+            Kotlin2JsCompile.Configurator<Kotlin2JsCompile>(compilation).configure(it)
         }
         configure(result, project, properties, compilation)
         return result
@@ -114,13 +116,14 @@ internal open class KotlinTasksProvider(val targetName: String) {
     fun registerKotlinJsIrTask(
         project: Project,
         name: String,
-        compilation: KotlinCompilation<*>,
+        compilation: KotlinCompilationData<*>,
         configureAction: (KotlinJsIrLink) -> Unit
     ): TaskProvider<out KotlinJsIrLink> {
         val properties = PropertiesProvider(project)
         val taskClass = taskOrWorkersTask<KotlinJsIrLink, KotlinJsIrLinkWithWorkers>(properties)
         val result = project.registerTask(name, taskClass) {
             configureAction(it)
+            KotlinJsIrLink.Configurator(compilation).configure(it)
         }
         configure(result, project, properties, compilation)
         return result
@@ -129,13 +132,14 @@ internal open class KotlinTasksProvider(val targetName: String) {
     fun registerKotlinCommonTask(
         project: Project,
         name: String,
-        compilation: KotlinCompilation<*>,
+        compilation: KotlinCompilationData<*>,
         configureAction: (KotlinCompileCommon) -> (Unit)
     ): TaskProvider<out KotlinCompileCommon> {
         val properties = PropertiesProvider(project)
         val taskClass = taskOrWorkersTask<KotlinCompileCommon, KotlinCompileCommonWithWorkers>(properties)
-        val result = project.registerTask(name, taskClass) {
+        val result = project.registerTask(name, taskClass, constructorArgs = listOf(compilation.kotlinOptions)) {
             configureAction(it)
+            KotlinCompileCommon.Configurator(compilation).configure(it)
         }
         configure(result, project, properties, compilation)
         return result
@@ -145,13 +149,13 @@ internal open class KotlinTasksProvider(val targetName: String) {
         kotlinTaskHolder: TaskProvider<out AbstractKotlinCompile<*>>,
         project: Project,
         propertiesProvider: PropertiesProvider,
-        compilation: KotlinCompilation<*>
+        compilation: KotlinCompilationData<*>
     ) {
         project.runOnceAfterEvaluated("apply properties and language settings to ${kotlinTaskHolder.name}", kotlinTaskHolder) {
             propertiesProvider.mapKotlinTaskProperties(kotlinTaskHolder.get())
 
             applyLanguageSettingsToKotlinOptions(
-                compilation.defaultSourceSet.languageSettings,
+                compilation.languageSettings,
                 (kotlinTaskHolder.get() as org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>).kotlinOptions
             )
         }
@@ -161,16 +165,16 @@ internal open class KotlinTasksProvider(val targetName: String) {
         if (properties.parallelTasksInProject != true) Task::class.java else WorkersTask::class.java
 }
 
-internal class AndroidTasksProvider(targetName: String) : KotlinTasksProvider(targetName) {
+internal class AndroidTasksProvider : KotlinTasksProvider() {
     override fun configure(
         kotlinTaskHolder: TaskProvider<out AbstractKotlinCompile<*>>,
         project: Project,
         propertiesProvider: PropertiesProvider,
-        compilation: KotlinCompilation<*>
+        compilation: KotlinCompilationData<*>
     ) {
         super.configure(kotlinTaskHolder, project, propertiesProvider, compilation)
         kotlinTaskHolder.configure {
-            it.useModuleDetection = true
+            it.useModuleDetection.set(true)
         }
     }
 }

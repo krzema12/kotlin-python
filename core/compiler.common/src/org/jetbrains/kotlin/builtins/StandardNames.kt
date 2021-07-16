@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -19,6 +19,8 @@ object StandardNames {
     @JvmField val ENUM_VALUES = Name.identifier("values")
 
     @JvmField val ENUM_VALUE_OF = Name.identifier("valueOf")
+
+    @JvmField val CHAR_CODE = Name.identifier("code")
 
     @JvmField val COROUTINES_PACKAGE_FQ_NAME_RELEASE = FqName("kotlin.coroutines")
 
@@ -153,6 +155,10 @@ object StandardNames {
         @JvmField val uShort: ClassId = ClassId.topLevel(uShortFqName)
         @JvmField val uInt: ClassId = ClassId.topLevel(uIntFqName)
         @JvmField val uLong: ClassId = ClassId.topLevel(uLongFqName)
+        @JvmField val uByteArrayFqName: FqName = fqName("UByteArray")
+        @JvmField val uShortArrayFqName: FqName = fqName("UShortArray")
+        @JvmField val uIntArrayFqName: FqName = fqName("UIntArray")
+        @JvmField val uLongArrayFqName: FqName = fqName("ULongArray")
 
         @JvmField val primitiveTypeShortNames: Set<Name> = newHashSetWithExpectedSize<Name>(PrimitiveType.values().size).apply {
             PrimitiveType.values().mapTo(this) { it.typeName }

@@ -9,6 +9,8 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.ProjectDependency
+import org.gradle.api.provider.Property
+import org.gradle.util.GradleVersion
 import org.jetbrains.plugins.gradle.tooling.ErrorMessageBuilder
 import org.jetbrains.plugins.gradle.tooling.ModelBuilderService
 import java.io.File
@@ -94,8 +96,16 @@ abstract class AbstractKotlinGradleModelBuilder : ModelBuilderService {
 
         val kotlinPluginWrapper = "org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapperKt"
 
+        private val propertyClassPresent = GradleVersion.current() >= GradleVersion.version("4.3")
+
         fun Task.getSourceSetName(): String = try {
-            javaClass.methods.firstOrNull { it.name.startsWith("getSourceSetName") && it.parameterTypes.isEmpty() }?.invoke(this) as? String
+            val method = javaClass.methods.firstOrNull { it.name.startsWith("getSourceSetName") && it.parameterTypes.isEmpty() }
+            val sourceSetName = method?.invoke(this)
+            when {
+                sourceSetName is String -> sourceSetName
+                propertyClassPresent && sourceSetName is Property<*> -> sourceSetName.get() as? String
+                else -> null
+            }
         } catch (e: InvocationTargetException) {
             null // can be thrown if property is not initialized yet
         } ?: "main"
@@ -123,7 +133,7 @@ class KotlinGradleModelBuilder : AbstractKotlinGradleModelBuilder() {
     @Suppress("UNCHECKED_CAST")
     private fun Task.getCompilerArguments(methodName: String): List<String>? {
         return try {
-            javaClass.getDeclaredMethod(methodName).invoke(this) as List<String>
+            this[methodName] as? List<String>
         } catch (e: Exception) {
             // No argument accessor method is available
             null
@@ -162,14 +172,24 @@ class KotlinGradleModelBuilder : AbstractKotlinGradleModelBuilder() {
         }
     }
 
-    override fun buildAll(modelName: String?, project: Project): KotlinGradleModelImpl {
+    override fun buildAll(modelName: String?, project: Project): KotlinGradleModelImpl? {
         val kotlinPluginId = kotlinPluginIds.singleOrNull { project.plugins.findPlugin(it) != null }
         val platformPluginId = platformPluginIds.singleOrNull { project.plugins.findPlugin(it) != null }
+        val target = project.getTarget()
+
+        if (kotlinPluginId == null && platformPluginId == null && target == null) {
+            return null
+        }
 
         val compilerArgumentsBySourceSet = LinkedHashMap<String, ArgsInfo>()
         val extraProperties = HashMap<String, KotlinTaskProperties>()
 
-        project.getAllTasks(false)[project]?.forEach { compileTask ->
+
+        val kotlinCompileTasks = target?.let { it.compilations ?: emptyList() }
+                ?.mapNotNull { compilation -> compilation.getCompileKotlinTaskName(project) }
+                ?: (project.getAllTasks(false)[project]?.filter { it.javaClass.name in kotlinCompileTaskClasses } ?: emptyList())
+
+        kotlinCompileTasks.forEach { compileTask ->
             if (compileTask.javaClass.name !in kotlinCompileTaskClasses) return@forEach
 
             val sourceSetName = compileTask.getSourceSetName()

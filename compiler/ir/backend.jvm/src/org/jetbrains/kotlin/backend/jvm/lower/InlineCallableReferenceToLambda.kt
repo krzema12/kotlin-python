@@ -23,6 +23,7 @@ import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.IrFunctionReferenceImpl
 import org.jetbrains.kotlin.ir.types.IrSimpleType
+import org.jetbrains.kotlin.ir.types.IrTypeProjection
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 import org.jetbrains.kotlin.name.Name
@@ -58,6 +59,8 @@ internal class InlineCallableReferenceToLambdaPhase(val context: JvmBackendConte
         irFile.transformChildrenVoid(InlineCallableReferenceToLambdaTransformer(context, inlinableReferences))
     }
 }
+
+const val STUB_FOR_INLINING = "stub_for_inlining"
 
 private class InlineCallableReferenceToLambdaTransformer(
     val context: JvmBackendContext,
@@ -109,7 +112,7 @@ private class InlineCallableReferenceToLambdaTransformer(
             +IrFunctionReferenceImpl.fromSymbolOwner(
                 expression.startOffset,
                 expression.endOffset,
-                field.type,
+                expression.type,
                 function.symbol,
                 typeArgumentsCount = 0,
                 reflectionTarget = null,
@@ -124,30 +127,20 @@ private class InlineCallableReferenceToLambdaTransformer(
     private fun expandInlineFunctionReferenceToLambda(expression: IrCallableReference<*>, referencedFunction: IrFunction): IrExpression {
         val irBuilder = context.createJvmIrBuilder(currentScope!!.scope.scopeOwnerSymbol, expression.startOffset, expression.endOffset)
         return irBuilder.irBlock(expression, IrStatementOrigin.LAMBDA) {
-            // We find the number of parameters for constructed lambda from the type of the function reference,
-            // but the actual types have to be copied from referencedFunction; function reference argument type may be too
-            // specific because of approximation. See compiler/testData/codegen/box/callableReference/function/argumentTypes.kt
-            val boundReceiver: Pair<IrValueParameter, IrExpression>? = expression.getArgumentsWithIr().singleOrNull()
-            val nParams = (expression.type as IrSimpleType).arguments.size - 1
-            val toDropAtStart = if (boundReceiver != null) 1 else 0
-            val argumentTypes = referencedFunction.explicitParameters.drop(toDropAtStart).take(nParams).map { parameter ->
-                parameter.type.substitute(
-                    referencedFunction.typeParameters,
-                    referencedFunction.typeParameters.indices.map { expression.getTypeArgument(it)!! }
-                )
-            }
+            val (receiverParameter, receiverValue) = expression.getArgumentsWithIr().singleOrNull() ?: (null to null)
+            val argumentTypes = (expression.type as IrSimpleType).arguments.dropLast(1).map { (it as IrTypeProjection).type }
 
             val function = context.irFactory.buildFun {
                 setSourceRange(expression)
                 origin = IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
-                name = Name.identifier("stub_for_inlining")
+                name = Name.identifier(STUB_FOR_INLINING)
                 visibility = DescriptorVisibilities.LOCAL
                 returnType = referencedFunction.returnType
                 isSuspend = referencedFunction.isSuspend
             }.apply {
                 parent = currentDeclarationParent!!
-                if (boundReceiver != null) {
-                    addExtensionReceiver(boundReceiver.first.type)
+                if (receiverValue != null) {
+                    addExtensionReceiver(receiverValue.type)
                 }
                 for ((index, argumentType) in argumentTypes.withIndex()) {
                     addValueParameter {
@@ -169,7 +162,7 @@ private class InlineCallableReferenceToLambdaTransformer(
                         var unboundIndex = 0
                         for (parameter in referencedFunction.explicitParameters) {
                             when {
-                                boundReceiver?.first == parameter ->
+                                receiverParameter == parameter ->
                                     irGet(extensionReceiverParameter!!)
                                 parameter.isVararg && unboundIndex < argumentTypes.size && parameter.type == valueParameters[unboundIndex].type ->
                                     irGet(valueParameters[unboundIndex++])
@@ -191,14 +184,14 @@ private class InlineCallableReferenceToLambdaTransformer(
             +IrFunctionReferenceImpl.fromSymbolOwner(
                 expression.startOffset,
                 expression.endOffset,
-                function.returnType,
+                expression.type,
                 function.symbol,
                 typeArgumentsCount = function.typeParameters.size,
                 reflectionTarget = null,
                 origin = IrStatementOrigin.LAMBDA
             ).apply {
                 copyAttributes(expression)
-                extensionReceiver = boundReceiver?.second
+                extensionReceiver = receiverValue
             }
         }
     }

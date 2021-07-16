@@ -22,6 +22,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiJavaModule
 import com.intellij.psi.PsiManager
 import com.intellij.psi.impl.light.LightJavaModule
+import com.intellij.psi.search.GlobalSearchScope
 import org.jetbrains.kotlin.cli.common.config.ContentRoot
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageLocation
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
@@ -37,6 +38,7 @@ import org.jetbrains.kotlin.cli.jvm.modules.CliJavaModuleFinder
 import org.jetbrains.kotlin.cli.jvm.modules.JavaModuleGraph
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.isValidJavaFqName
+import org.jetbrains.kotlin.resolve.jvm.KotlinCliJavaFileManager
 import org.jetbrains.kotlin.resolve.jvm.modules.JavaModule
 import org.jetbrains.kotlin.resolve.jvm.modules.JavaModuleInfo
 import org.jetbrains.kotlin.resolve.jvm.modules.KOTLIN_STDLIB_MODULE_NAME
@@ -52,9 +54,12 @@ class ClasspathRootsResolver(
     private val contentRootToVirtualFile: (JvmContentRoot) -> VirtualFile?,
     private val javaModuleFinder: CliJavaModuleFinder,
     private val requireStdlibModule: Boolean,
-    private val outputDirectory: VirtualFile?
+    private val outputDirectory: VirtualFile?,
+    private val javaFileManager: KotlinCliJavaFileManager
 ) {
     val javaModuleGraph = JavaModuleGraph(javaModuleFinder)
+
+    private val searchScope = GlobalSearchScope.allScope(psiManager.project)
 
     data class RootsAndModules(val roots: List<JavaRoot>, val modules: List<JavaModule>)
 
@@ -160,7 +165,7 @@ class ClasspathRootsResolver(
                 }
 
         if (moduleInfoFile != null) {
-            val moduleInfo = JavaModuleInfo.read(moduleInfoFile) ?: return null
+            val moduleInfo = JavaModuleInfo.read(moduleInfoFile, javaFileManager, searchScope) ?: return null
             return JavaModule.Explicit(moduleInfo, listOf(JavaModule.Root(root, isBinary = true)), moduleInfoFile)
         }
 

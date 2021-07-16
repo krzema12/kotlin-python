@@ -17,11 +17,10 @@ import org.jetbrains.kotlin.backend.common.phaser.makeCustomPhase
 import org.jetbrains.kotlin.backend.jvm.JvmBackendContext
 import org.jetbrains.kotlin.backend.jvm.JvmLoweredDeclarationOrigin
 import org.jetbrains.kotlin.backend.jvm.codegen.fileParent
-import org.jetbrains.kotlin.backend.jvm.codegen.isSyntheticMethodForProperty
+import org.jetbrains.kotlin.backend.jvm.ir.getKtFile
 import org.jetbrains.kotlin.config.JvmAnalysisFlags
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.Modality
-import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.descriptors.impl.EmptyPackageFragmentDescriptor
 import org.jetbrains.kotlin.ir.*
 import org.jetbrains.kotlin.ir.builders.*
@@ -43,6 +42,8 @@ import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 import org.jetbrains.kotlin.load.java.JavaDescriptorVisibilities
 import org.jetbrains.kotlin.resolve.inline.INLINE_ONLY_ANNOTATION_FQ_NAME
 import org.jetbrains.kotlin.resolve.jvm.JvmClassName
+import org.jetbrains.kotlin.resolve.jvm.annotations.JVM_SYNTHETIC_ANNOTATION_FQ_NAME
+import org.jetbrains.kotlin.resolve.jvm.diagnostics.ErrorsJvm
 
 internal val generateMultifileFacadesPhase = makeCustomPhase<JvmBackendContext, IrModuleFragment>(
     name = "GenerateMultifileFacades",
@@ -55,7 +56,7 @@ internal val generateMultifileFacadesPhase = makeCustomPhase<JvmBackendContext, 
         // we construct an inheritance chain such that all part members are present as fake overrides in the facade.
         val shouldGeneratePartHierarchy = context.state.languageVersionSettings.getFlag(JvmAnalysisFlags.inheritMultifileParts)
         input.files.addAll(
-            generateMultifileFacades(input.descriptor, context, shouldGeneratePartHierarchy, functionDelegates)
+            generateMultifileFacades(input, context, shouldGeneratePartHierarchy, functionDelegates)
         )
 
         UpdateFunctionCallSites(functionDelegates).lower(input)
@@ -70,7 +71,7 @@ internal val generateMultifileFacadesPhase = makeCustomPhase<JvmBackendContext, 
 class MultifileFacadeFileEntry(
     private val className: JvmClassName,
     val partFiles: List<IrFile>
-) : SourceManager.FileEntry {
+) : IrFileEntry {
     override val name: String
         get() = "<multi-file facade $className>"
 
@@ -88,7 +89,7 @@ class MultifileFacadeFileEntry(
 }
 
 private fun generateMultifileFacades(
-    module: ModuleDescriptor,
+    module: IrModuleFragment,
     context: JvmBackendContext,
     shouldGeneratePartHierarchy: Boolean,
     functionDelegates: MutableMap<IrSimpleFunction, IrSimpleFunction>
@@ -106,7 +107,7 @@ private fun generateMultifileFacades(
         }
 
         val fileEntry = MultifileFacadeFileEntry(jvmClassName, partClasses.map(IrClass::fileParent))
-        val file = IrFileImpl(fileEntry, EmptyPackageFragmentDescriptor(module, kotlinPackageFqName))
+        val file = IrFileImpl(fileEntry, EmptyPackageFragmentDescriptor(module.descriptor, kotlinPackageFqName), module)
 
         context.log {
             "Multifile facade $jvmClassName:\n  ${partClasses.joinToString("\n  ") { it.fqNameWhenAvailable!!.asString() }}\n"
@@ -134,7 +135,22 @@ private fun generateMultifileFacades(
                     }
                 }
             }
+
+            val nonJvmSyntheticParts = partClasses.filterNot { it.hasAnnotation(JVM_SYNTHETIC_ANNOTATION_FQ_NAME) }
+            if (nonJvmSyntheticParts.isEmpty()) {
+                annotations = annotations + partClasses.first().getAnnotation(JVM_SYNTHETIC_ANNOTATION_FQ_NAME)!!.deepCopyWithSymbols()
+            } else if (nonJvmSyntheticParts.size < partClasses.size) {
+                for (part in nonJvmSyntheticParts) {
+                    val partFile = part.fileParent.getKtFile() ?: error("Not a KtFile: ${part.render()} ${part.fileParent}")
+                    // If at least one of parts is annotated with @JvmSynthetic, then all other parts should also be annotated.
+                    // We report this error on the package directive for each non-@JvmSynthetic part.
+                    context.state.diagnostics.report(
+                        ErrorsJvm.NOT_ALL_MULTIFILE_CLASS_PARTS_ARE_JVM_SYNTHETIC.on(partFile.packageDirective ?: partFile)
+                    )
+                }
+            }
         }
+
         file.declarations.add(facadeClass)
 
         for (partClass in partClasses) {
@@ -144,6 +160,9 @@ private fun generateMultifileFacades(
             val correspondingProperties = CorrespondingPropertyCache(context, facadeClass)
             for (member in partClass.declarations) {
                 if (member !is IrSimpleFunction) continue
+
+                // KT-43519 Don't generate delegates for external methods
+                if (member.isExternal) continue
 
                 val correspondingProperty = member.correspondingPropertySymbol?.owner
                 if (member.hasAnnotation(INLINE_ONLY_ANNOTATION_FQ_NAME) ||
@@ -214,11 +233,15 @@ private fun IrSimpleFunction.createMultifileDelegateIfNeeded(
 ): IrSimpleFunction? {
     val target = this
 
-    if (DescriptorVisibilities.isPrivate(visibility) ||
+    val originalVisibility = context.mapping.defaultArgumentsOriginalFunction[this]?.visibility ?: visibility
+
+    if (DescriptorVisibilities.isPrivate(originalVisibility) ||
         name == StaticInitializersLowering.clinitName ||
         origin == JvmLoweredDeclarationOrigin.SYNTHETIC_ACCESSOR ||
+        origin == IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA ||
         // $annotations methods in the facade are only needed for const properties.
-        (isSyntheticMethodForProperty && (metadata as? MetadataSource.Property)?.isConst != true)
+        (origin == JvmLoweredDeclarationOrigin.SYNTHETIC_METHOD_FOR_PROPERTY_OR_TYPEALIAS_ANNOTATIONS &&
+                (metadata as? MetadataSource.Property)?.isConst != true)
     ) return null
 
     val function = context.irFactory.buildFun {
@@ -237,6 +260,7 @@ private fun IrSimpleFunction.createMultifileDelegateIfNeeded(
         }
     }
 
+    function.copyAttributes(target)
     function.copyAnnotationsFrom(target)
     function.copyParameterDeclarationsFrom(target)
     function.returnType = target.returnType.substitute(target.typeParameters, function.typeParameters.map { it.defaultType })

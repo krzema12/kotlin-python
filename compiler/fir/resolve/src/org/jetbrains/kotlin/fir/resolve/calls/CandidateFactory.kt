@@ -22,7 +22,6 @@ import org.jetbrains.kotlin.resolve.calls.tasks.ExplicitReceiverKind
 
 class CandidateFactory private constructor(
     val context: ResolutionContext,
-    val callInfo: CallInfo,
     private val baseSystem: ConstraintStorage
 ) {
 
@@ -37,26 +36,19 @@ class CandidateFactory private constructor(
         }
     }
 
-    constructor(context: ResolutionContext, callInfo: CallInfo) :
-            this(context, callInfo, buildBaseSystem(context, callInfo))
-
-    fun replaceCallInfo(callInfo: CallInfo): CandidateFactory {
-        if (this.callInfo.arguments.size != callInfo.arguments.size) {
-            throw AssertionError("Incorrect replacement of call info in CandidateFactory")
-        }
-        return CandidateFactory(context, callInfo, baseSystem)
-    }
+    constructor(context: ResolutionContext, callInfo: CallInfo) : this(context, buildBaseSystem(context, callInfo))
 
     fun createCandidate(
+        callInfo: CallInfo,
         symbol: AbstractFirBasedSymbol<*>,
         explicitReceiverKind: ExplicitReceiverKind,
         scope: FirScope?,
         dispatchReceiverValue: ReceiverValue? = null,
-        implicitExtensionReceiverValue: ImplicitReceiverValue<*>? = null,
+        extensionReceiverValue: ReceiverValue? = null,
         builtInExtensionFunctionReceiverValue: ReceiverValue? = null
     ): Candidate {
         return Candidate(
-            symbol, dispatchReceiverValue, implicitExtensionReceiverValue,
+            symbol, dispatchReceiverValue, extensionReceiverValue,
             explicitReceiverKind, context.inferenceComponents.constraintSystemFactory, baseSystem,
             builtInExtensionFunctionReceiverValue?.receiverExpression?.let {
                 callInfo.withReceiverAsArgument(it)
@@ -65,7 +57,7 @@ class CandidateFactory private constructor(
         )
     }
 
-    fun createErrorCandidate(diagnostic: ConeDiagnostic): Candidate {
+    fun createErrorCandidate(callInfo: CallInfo, diagnostic: ConeDiagnostic): Candidate {
         val symbol: AbstractFirBasedSymbol<*> = when (callInfo.callKind) {
             is CallKind.VariableAccess -> createErrorPropertySymbol(diagnostic)
             is CallKind.Function,
@@ -78,7 +70,7 @@ class CandidateFactory private constructor(
         return Candidate(
             symbol,
             dispatchReceiverValue = null,
-            implicitExtensionReceiverValue = null,
+            extensionReceiverValue = null,
             explicitReceiverKind = ExplicitReceiverKind.NO_EXPLICIT_RECEIVER,
             context.inferenceComponents.constraintSystemFactory,
             baseSystem,
@@ -90,7 +82,7 @@ class CandidateFactory private constructor(
     private fun createErrorFunctionSymbol(diagnostic: ConeDiagnostic): FirErrorFunctionSymbol {
         return FirErrorFunctionSymbol().also {
             buildErrorFunction {
-                session = context.session
+                declarationSiteSession = context.session
                 resolvePhase = FirResolvePhase.BODY_RESOLVE
                 origin = FirDeclarationOrigin.Synthetic
                 this.diagnostic = diagnostic
@@ -102,7 +94,7 @@ class CandidateFactory private constructor(
     private fun createErrorPropertySymbol(diagnostic: ConeDiagnostic): FirErrorPropertySymbol {
         return FirErrorPropertySymbol(diagnostic).also {
             buildErrorProperty {
-                session = context.session
+                declarationSiteSession = context.session
                 resolvePhase = FirResolvePhase.BODY_RESOLVE
                 origin = FirDeclarationOrigin.Synthetic
                 name = FirErrorPropertySymbol.NAME

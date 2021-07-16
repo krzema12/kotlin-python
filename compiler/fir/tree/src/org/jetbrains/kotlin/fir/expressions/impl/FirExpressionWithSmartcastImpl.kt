@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.fir.expressions.impl
 
+import org.jetbrains.kotlin.fir.FirImplementationDetail
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
 import org.jetbrains.kotlin.fir.expressions.FirExpression
@@ -43,7 +44,7 @@ internal class FirExpressionWithSmartcastImpl(
     }
 
     override fun <R, D> acceptChildren(visitor: FirVisitor<R, D>, data: D) {
-        originalExpression.acceptChildren(visitor, data)
+        originalExpression.accept(visitor, data)
     }
 
     override fun <D> transformCalleeReference(transformer: FirTransformer<D>, data: D): FirExpressionWithSmartcast {
@@ -83,4 +84,8 @@ internal class FirExpressionWithSmartcastImpl(
     }
 
     override fun replaceTypeRef(newTypeRef: FirTypeRef) {}
+
+    @FirImplementationDetail
+    override fun replaceSource(newSource: FirSourceElement?) {
+    }
 }

@@ -31,18 +31,16 @@ import org.jetbrains.kotlin.load.java.components.SignaturePropagator
 import org.jetbrains.kotlin.load.java.lazy.types.JavaTypeResolver
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElementFactory
 import org.jetbrains.kotlin.load.java.structure.JavaTypeParameterListOwner
-import org.jetbrains.kotlin.load.java.typeEnhancement.NullabilityQualifier
-import org.jetbrains.kotlin.load.java.typeEnhancement.NullabilityQualifierWithMigrationStatus
 import org.jetbrains.kotlin.load.java.typeEnhancement.SignatureEnhancement
 import org.jetbrains.kotlin.load.kotlin.DeserializedDescriptorResolver
 import org.jetbrains.kotlin.load.kotlin.KotlinClassFinder
 import org.jetbrains.kotlin.load.kotlin.PackagePartProvider
+import org.jetbrains.kotlin.resolve.jvm.SyntheticJavaPartsProvider
 import org.jetbrains.kotlin.resolve.sam.SamConversionResolver
 import org.jetbrains.kotlin.serialization.deserialization.ErrorReporter
 import org.jetbrains.kotlin.storage.StorageManager
 import org.jetbrains.kotlin.types.checker.NewKotlinTypeChecker
 import org.jetbrains.kotlin.utils.JavaTypeEnhancementState
-import java.util.*
 
 class JavaResolverComponents(
     val storageManager: StorageManager,
@@ -66,7 +64,9 @@ class JavaResolverComponents(
     val javaClassesTracker: JavaClassesTracker,
     val settings: JavaResolverSettings,
     val kotlinTypeChecker: NewKotlinTypeChecker,
-    val javaTypeEnhancementState: JavaTypeEnhancementState
+    val javaTypeEnhancementState: JavaTypeEnhancementState,
+    val javaModuleResolver: JavaModuleAnnotationsProvider,
+    val syntheticPartsProvider: SyntheticJavaPartsProvider = SyntheticJavaPartsProvider.EMPTY
 ) {
     fun replace(
         javaResolverCache: JavaResolverCache = this.javaResolverCache
@@ -76,14 +76,14 @@ class JavaResolverComponents(
         javaPropertyInitializerEvaluator, samConversionResolver, sourceElementFactory,
         moduleClassResolver, packagePartProvider, supertypeLoopChecker, lookupTracker, module, reflectionTypes,
         annotationTypeQualifierResolver, signatureEnhancement, javaClassesTracker, settings,
-        kotlinTypeChecker,
-        javaTypeEnhancementState
+        kotlinTypeChecker, javaTypeEnhancementState, javaModuleResolver
     )
 }
 
 interface JavaResolverSettings {
     val isReleaseCoroutines: Boolean
     val correctNullabilityForNotNullTypeParameter: Boolean
+    val typeEnhancementImprovementsInStrictMode: Boolean
 
     object Default : JavaResolverSettings {
         override val isReleaseCoroutines: Boolean
@@ -91,16 +91,21 @@ interface JavaResolverSettings {
 
         override val correctNullabilityForNotNullTypeParameter: Boolean
             get() = false
+
+        override val typeEnhancementImprovementsInStrictMode: Boolean
+            get() = false
     }
 
     companion object {
         fun create(
             isReleaseCoroutines: Boolean,
-            correctNullabilityForNotNullTypeParameter: Boolean
+            correctNullabilityForNotNullTypeParameter: Boolean,
+            typeEnhancementImprovementsInStrictMode: Boolean
         ): JavaResolverSettings =
             object : JavaResolverSettings {
                 override val isReleaseCoroutines get() = isReleaseCoroutines
                 override val correctNullabilityForNotNullTypeParameter get() = correctNullabilityForNotNullTypeParameter
+                override val typeEnhancementImprovementsInStrictMode get() = typeEnhancementImprovementsInStrictMode
             }
     }
 }
@@ -172,12 +177,11 @@ private fun LazyJavaResolverContext.extractDefaultNullabilityQualifier(
         return null
     }
 
+    val areImprovementsInStrictMode = components.settings.typeEnhancementImprovementsInStrictMode
+
     val nullabilityQualifier =
-        components
-            .signatureEnhancement
-            .extractNullability(typeQualifier, onlyForJspecify = false)
-            ?.copy(isForWarningOnly = jsr305State.isWarning)
-            ?: return null
+        components.signatureEnhancement.extractNullability(typeQualifier, areImprovementsInStrictMode, typeParameterBounds = false)
+            ?.copy(isForWarningOnly = jsr305State.isWarning) ?: return null
 
     return JavaDefaultQualifiers(nullabilityQualifier, applicability)
 }

@@ -5,9 +5,7 @@
 
 package org.jetbrains.kotlin.fir.resolve.calls
 
-import org.jetbrains.kotlin.fir.FirElement
-import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.FirSourceElement
+import org.jetbrains.kotlin.fir.*
 import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
 import org.jetbrains.kotlin.fir.expressions.FirExpression
@@ -20,7 +18,7 @@ import org.jetbrains.kotlin.fir.resolve.createFunctionalType
 import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeUnsupportedCallableReferenceTarget
 import org.jetbrains.kotlin.fir.resolve.inference.extractInputOutputTypesFromCallableReferenceExpectedType
 import org.jetbrains.kotlin.fir.resolve.inference.isSuspendFunctionType
-import org.jetbrains.kotlin.fir.symbols.StandardClassIds
+import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.fir.visitors.FirTransformer
@@ -45,7 +43,7 @@ internal object CheckCallableReferenceExpectedType : CheckerStage() {
 
         val fir: FirCallableDeclaration<*> = candidate.symbol.fir
 
-        val (rawResultingType, callableReferenceAdaptation) = buildReflectionType(fir, resultingReceiverType, callInfo, context)
+        val (rawResultingType, callableReferenceAdaptation) = buildReflectionType(fir, resultingReceiverType, candidate, context)
         val resultingType = candidate.substitutor.substituteOrSelf(rawResultingType)
 
         if (callableReferenceAdaptation.needCompatibilityResolveForCallableReference()) {
@@ -53,8 +51,7 @@ internal object CheckCallableReferenceExpectedType : CheckerStage() {
         }
 
         candidate.resultingTypeForCallableReference = resultingType
-        candidate.usesSuspendConversion =
-            callableReferenceAdaptation?.suspendConversionStrategy == SuspendConversionStrategy.SUSPEND_CONVERSION
+        candidate.callableReferenceAdaptation = callableReferenceAdaptation
         candidate.outerConstraintBuilderEffect = fun ConstraintSystemOperation.() {
             addOtherSystem(candidate.system.asReadOnlyStorage())
 
@@ -89,17 +86,10 @@ internal object CheckCallableReferenceExpectedType : CheckerStage() {
     }
 }
 
-
-/*
-val resultingReceiverType = when (callInfo.lhs) {
-    is DoubleColonLHS.Type -> callInfo.lhs.type.takeIf { callInfo.explicitReceiver !is FirResolvedQualifier }
-    else -> null
-}
- */
 private fun buildReflectionType(
     fir: FirCallableDeclaration<*>,
     receiverType: ConeKotlinType?,
-    callInfo: CallInfo,
+    candidate: Candidate,
     context: ResolutionContext
 ): Pair<ConeKotlinType, CallableReferenceAdaptation?> {
     val returnTypeRef = context.bodyResolveComponents.returnTypeCalculator.tryCalculateReturnType(fir)
@@ -107,8 +97,12 @@ private fun buildReflectionType(
         is FirFunction -> {
             val unboundReferenceTarget = if (receiverType != null) 1 else 0
             val callableReferenceAdaptation =
-                context.bodyResolveComponents
-                    .getCallableReferenceAdaptation(context.session, fir, callInfo.expectedType, unboundReferenceTarget)
+                context.bodyResolveComponents.getCallableReferenceAdaptation(
+                    context.session,
+                    fir,
+                    candidate.callInfo.expectedType?.lowerBoundIfFlexible(),
+                    unboundReferenceTarget
+                )
 
             val parameters = mutableListOf<ConeKotlinType>()
 
@@ -133,7 +127,7 @@ private fun buildReflectionType(
                 isSuspend = isSuspend
             ) to callableReferenceAdaptation
         }
-        is FirVariable -> createKPropertyType(fir, receiverType, returnTypeRef) to null
+        is FirVariable -> createKPropertyType(fir, receiverType, returnTypeRef, candidate) to null
         else -> ConeClassErrorType(ConeUnsupportedCallableReferenceTarget(fir)) to null
     }
 }
@@ -142,7 +136,7 @@ internal class CallableReferenceAdaptation(
     val argumentTypes: Array<ConeKotlinType>,
     val coercionStrategy: CoercionStrategy,
     val defaults: Int,
-    val mappedArguments: Map<FirValueParameter, ResolvedCallArgument>,
+    val mappedArguments: CallableReferenceMappedArguments,
     val suspendConversionStrategy: SuspendConversionStrategy
 )
 
@@ -235,7 +229,7 @@ private fun BodyResolveComponents.getCallableReferenceAdaptation(
         }
     }
 
-    val coercionStrategy = if (returnExpectedType.isUnit && !function.returnTypeRef.isUnit)
+    val coercionStrategy = if (returnExpectedType.isUnitOrFlexibleUnit && !function.returnTypeRef.isUnit)
         CoercionStrategy.COERCION_TO_UNIT
     else
         CoercionStrategy.NO_COERCION
@@ -297,7 +291,7 @@ private enum class VarargMappingState {
 
 private fun FirFunction<*>.indexOf(valueParameter: FirValueParameter): Int = valueParameters.indexOf(valueParameter)
 
-val ConeKotlinType.isUnit: Boolean
+val ConeKotlinType.isUnitOrFlexibleUnit: Boolean
     get() {
         val type = this.lowerBoundIfFlexible()
         if (type.isNullable) return false
@@ -360,7 +354,7 @@ private fun createFakeArgumentsForReference(
     }
 }
 
-private class FirFakeArgumentForCallableReference(
+class FirFakeArgumentForCallableReference(
     val index: Int
 ) : FirExpression() {
     override val source: FirSourceElement?
@@ -396,10 +390,22 @@ fun ConeKotlinType.isKCallableType(): Boolean {
 private fun createKPropertyType(
     propertyOrField: FirVariable<*>,
     receiverType: ConeKotlinType?,
-    returnTypeRef: FirResolvedTypeRef
+    returnTypeRef: FirResolvedTypeRef,
+    candidate: Candidate,
 ): ConeKotlinType {
     val propertyType = returnTypeRef.type
     return org.jetbrains.kotlin.fir.resolve.createKPropertyType(
-        receiverType, propertyType, isMutable = propertyOrField.isVar
+        receiverType,
+        propertyType,
+        isMutable = propertyOrField.canBeMutableReference(candidate)
     )
+}
+
+private fun FirVariable<*>.canBeMutableReference(candidate: Candidate): Boolean {
+    if (!isVar) return false
+    if (this is FirField) return true
+    val original = this.unwrapFakeOverrides()
+    return original.source?.kind == FirFakeSourceElementKind.PropertyFromParameter ||
+            (original.setter is FirMemberDeclaration &&
+                    candidate.callInfo.session.visibilityChecker.isVisible(original.setter!!, candidate))
 }

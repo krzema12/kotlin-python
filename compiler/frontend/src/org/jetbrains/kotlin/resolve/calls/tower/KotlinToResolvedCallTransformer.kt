@@ -84,6 +84,7 @@ class KotlinToResolvedCallTransformer(
     private val smartCastManager: SmartCastManager,
     private val typeApproximator: TypeApproximator,
     private val missingSupertypesResolver: MissingSupertypesResolver,
+    private val upperBoundChecker: UpperBoundChecker,
 ) {
     companion object {
         private val REPORT_MISSING_NEW_INFERENCE_DIAGNOSTIC
@@ -205,10 +206,12 @@ class KotlinToResolvedCallTransformer(
     ): ResolvedCall<D> {
         val psiKotlinCall = completedCallAtom.atom.psiKotlinCall
         return if (psiKotlinCall is PSIKotlinCallForInvoke) {
+            val diagnosticsForVariableCall = if (completedCallAtom.candidateDescriptor is FunctionDescriptor) emptyList() else diagnostics
+            val diagnosticsForFunctionCall = if (completedCallAtom.candidateDescriptor is FunctionDescriptor) diagnostics else emptyList()
             @Suppress("UNCHECKED_CAST")
             NewVariableAsFunctionResolvedCallImpl(
-                createOrGet(psiKotlinCall.variableCall.resolvedCall, trace, resultSubstitutor, diagnostics),
-                createOrGet(completedCallAtom, trace, resultSubstitutor, diagnostics),
+                createOrGet(psiKotlinCall.variableCall.resolvedCall, trace, resultSubstitutor, diagnosticsForVariableCall),
+                createOrGet(completedCallAtom, trace, resultSubstitutor, diagnosticsForFunctionCall),
             ) as ResolvedCall<D>
         } else {
             createOrGet(completedCallAtom, trace, resultSubstitutor, diagnostics)
@@ -519,6 +522,7 @@ class KotlinToResolvedCallTransformer(
             context.dataFlowValueFactory,
             allDiagnostics,
             smartCastManager,
+            typeSystemContext
         )
 
         for (diagnostic in allDiagnostics) {
@@ -565,6 +569,8 @@ sealed class NewAbstractResolvedCall<D : CallableDescriptor>() : ResolvedCall<D>
     protected var _valueArguments: Map<ValueParameterDescriptor, ResolvedValueArgument>? = null
 
     private var nonTrivialUpdatedResultInfo: DataFlowInfo? = null
+
+    abstract fun containsOnlyOnlyInputTypesErrors(): Boolean
 
     override fun getCall(): Call = kotlinCall.psiKotlinCall.psiCall
 
@@ -709,6 +715,9 @@ class NewResolvedCallImpl<D : CallableDescriptor>(
         val typeParameters = candidateDescriptor.typeParameters.takeIf { it.isNotEmpty() } ?: return emptyMap()
         return typeParameters.zip(typeArguments).toMap()
     }
+
+    override fun containsOnlyOnlyInputTypesErrors() =
+        diagnostics.all { it is KotlinConstraintSystemDiagnostic && it.error is OnlyInputTypesDiagnostic }
 
     override fun getSmartCastDispatchReceiverType(): KotlinType? = smartCastDispatchReceiverType
 
@@ -945,6 +954,7 @@ fun CandidateApplicability.toResolutionStatus(): ResolutionStatus = when (this) 
     CandidateApplicability.RESOLVED_WITH_ERROR,
     CandidateApplicability.RESOLVED_NEED_PRESERVE_COMPATIBILITY -> ResolutionStatus.SUCCESS
     CandidateApplicability.INAPPLICABLE_WRONG_RECEIVER -> ResolutionStatus.RECEIVER_TYPE_ERROR
+    CandidateApplicability.UNSAFE_CALL -> ResolutionStatus.UNSAFE_CALL_ERROR
     else -> ResolutionStatus.OTHER_ERROR
 }
 

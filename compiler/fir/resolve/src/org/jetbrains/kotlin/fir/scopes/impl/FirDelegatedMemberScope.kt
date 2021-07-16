@@ -9,10 +9,13 @@ import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.isIntersectionOverride
+import org.jetbrains.kotlin.fir.isSubstitutionOverride
+import org.jetbrains.kotlin.fir.originalForSubstitutionOverride
 import org.jetbrains.kotlin.fir.resolve.defaultType
 import org.jetbrains.kotlin.fir.scopes.*
 import org.jetbrains.kotlin.fir.symbols.ConeClassLikeLookupTag
-import org.jetbrains.kotlin.fir.symbols.StandardClassIds
+import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.ConeClassLikeType
 import org.jetbrains.kotlin.fir.types.ConeFlexibleType
@@ -33,20 +36,25 @@ class FirDelegatedMemberScope(
     private val dispatchReceiverType = containingClass.defaultType()
     private val overrideChecker = FirStandardOverrideChecker(session)
 
-    override fun processFunctionsByName(name: Name, processor: (FirFunctionSymbol<*>) -> Unit) {
+    override fun processFunctionsByName(name: Name, processor: (FirNamedFunctionSymbol) -> Unit) {
         useSiteScope.processFunctionsByName(name) processor@{ functionSymbol ->
-            if (functionSymbol !is FirNamedFunctionSymbol || functionSymbol.fir.isPublicInAny()) {
+            val original = functionSymbol.fir
+            // KT-6014: If the original is abstract, we still need a delegation
+            // For example,
+            //   interface IBase { override fun toString(): String }
+            //   object BaseImpl : IBase { override fun toString(): String = ... }
+            //   class Test : IBase by BaseImpl
+            if (original.isPublicInAny() && original.modality != Modality.ABSTRACT) {
                 processor(functionSymbol)
                 return@processor
             }
 
-            val original = functionSymbol.fir
             if (original.modality == Modality.FINAL || original.visibility == Visibilities.Private) {
                 processor(functionSymbol)
                 return@processor
             }
 
-            if (declaredMemberScope.getFunctions(name).any { it is FirNamedFunctionSymbol && overrideChecker.isOverriddenFunction(it.fir, original) }) {
+            if (declaredMemberScope.getFunctions(name).any { overrideChecker.isOverriddenFunction(it.fir, original) }) {
                 processor(functionSymbol)
                 return@processor
             }
@@ -64,7 +72,7 @@ class FirDelegatedMemberScope(
                     newModality = Modality.OPEN,
                 ).apply {
                     delegatedWrapperData = DelegatedWrapperData(functionSymbol.fir, containingClass.symbol.toLookupTag(), delegateField)
-                }.symbol as FirNamedFunctionSymbol
+                }.symbol
             }
             processor(delegatedSymbol)
         }
@@ -108,8 +116,8 @@ class FirDelegatedMemberScope(
     }
 
     override fun processDirectOverriddenFunctionsWithBaseScope(
-        functionSymbol: FirFunctionSymbol<*>,
-        processor: (FirFunctionSymbol<*>, FirTypeScope) -> ProcessorAction
+        functionSymbol: FirNamedFunctionSymbol,
+        processor: (FirNamedFunctionSymbol, FirTypeScope) -> ProcessorAction
     ): ProcessorAction {
         return processDirectOverriddenWithBaseScope(
             functionSymbol, processor, FirTypeScope::processDirectOverriddenFunctionsWithBaseScope
@@ -157,6 +165,35 @@ class DelegatedWrapperData<D : FirCallableDeclaration<*>>(
 var <D : FirCallableDeclaration<*>>
         D.delegatedWrapperData: DelegatedWrapperData<D>? by FirDeclarationDataRegistry.data(DelegatedWrapperDataKey)
 
+inline fun <reified S : FirCallableSymbol<D>, reified D : FirCallableMemberDeclaration<D>> S.unwrapDelegateTarget(
+    subClassLookupTag: ConeClassLikeLookupTag,
+    noinline directOverridden: S.() -> List<S>,
+    firField: FirField,
+    firSubClass: FirClass<*>,
+): D? {
+    val unwrappedIntersectionSymbol = this.unwrapIntersectionOverride(directOverridden) ?: return null
+
+    val callable = unwrappedIntersectionSymbol.fir as? D ?: return null
+
+    val delegatedWrapperData = callable.delegatedWrapperData ?: return null
+    if (delegatedWrapperData.containingClass != subClassLookupTag) return null
+    if (delegatedWrapperData.delegateField != firField) return null
+
+    val wrapped = delegatedWrapperData.wrapped as? D ?: return null
+    val wrappedSymbol = wrapped.symbol as? S ?: return null
+
+    return when {
+        wrappedSymbol.fir.isSubstitutionOverride &&
+                (wrappedSymbol.fir.dispatchReceiverType as? ConeClassLikeType)?.lookupTag == firSubClass.symbol.toLookupTag() ->
+            wrapped.originalForSubstitutionOverride
+        else -> wrapped
+    }
+}
+
+fun <S : FirCallableSymbol<*>> S.unwrapIntersectionOverride(directOverridden: S.() -> List<S>): S? {
+    if (this.fir.isIntersectionOverride) return directOverridden().firstOrNull { it.fir.delegatedWrapperData != null }
+    return this
+}
 
 // From the definition of function interfaces in the Java specification (pt. 9.8):
 // "methods that are members of I that do not have the same signature as any public instance method of the class Object"

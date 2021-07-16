@@ -37,6 +37,7 @@ import org.jetbrains.kotlin.incremental.util.BufferingMessageCollector
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.progress.CompilationCanceledStatus
 import java.io.File
+import java.io.IOException
 import java.util.*
 
 abstract class IncrementalCompilerRunner<
@@ -98,8 +99,21 @@ abstract class IncrementalCompilerRunner<
             return compileIncrementally(args, caches, allKotlinFiles, CompilationMode.Rebuild(reason), messageCollector)
         }
 
+        // If compilation has crashed or we failed to close caches we have to clear them
+        var cachesMayBeCorrupted = true
         return try {
-            val changedFiles = providedChangedFiles ?: caches.inputsCache.sourceSnapshotMap.compareAndUpdate(allSourceFiles)
+            val changedFiles = when (providedChangedFiles) {
+                is ChangedFiles.Dependencies -> {
+                    val changedSources = caches.inputsCache.sourceSnapshotMap.compareAndUpdate(allSourceFiles)
+                    ChangedFiles.Known(
+                        providedChangedFiles.modified + changedSources.modified,
+                        providedChangedFiles.removed + changedSources.removed
+                    )
+                }
+                null -> caches.inputsCache.sourceSnapshotMap.compareAndUpdate(allSourceFiles)
+                else -> providedChangedFiles
+            }
+
             val compilationMode = sourcesToCompile(caches, changedFiles, args, messageCollector)
 
             val exitCode = when (compilationMode) {
@@ -112,12 +126,18 @@ abstract class IncrementalCompilerRunner<
             }
 
             if (!caches.close(flush = true)) throw RuntimeException("Could not flush caches")
-
+            // Here we should analyze exit code of compiler. E.g. compiler failure should lead to caches rebuild,
+            // but now JsKlib compiler reports invalid exit code.
+            cachesMayBeCorrupted = false
             return exitCode
         } catch (e: Exception) { // todo: catch only cache corruption
             // todo: warn?
             reporter.report { "Rebuilding because of possible caches corruption: $e" }
             rebuild(BuildAttribute.CACHE_CORRUPTION)
+        } finally {
+            if (cachesMayBeCorrupted) {
+                clearLocalStateOnRebuild(args)
+            }
         }
     }
 
@@ -143,8 +163,8 @@ abstract class IncrementalCompilerRunner<
             }
         }
 
-        assert(!destinationDir.exists()) { "Could not delete destination dir $destinationDir" }
-        assert(!workingDir.exists()) { "Could not delete caches dir $workingDir" }
+        if (destinationDir.exists()) throw IOException("Could not delete directory $destinationDir.")
+        if (workingDir.exists()) throw IOException("Could not delete internal caches in folder $workingDir")
         destinationDir.mkdirs()
         workingDir.mkdirs()
     }
@@ -158,6 +178,7 @@ abstract class IncrementalCompilerRunner<
         when (changedFiles) {
             is ChangedFiles.Known -> calculateSourcesToCompile(caches, changedFiles, args, messageCollector)
             is ChangedFiles.Unknown -> CompilationMode.Rebuild(BuildAttribute.UNKNOWN_CHANGES_IN_GRADLE_INPUTS)
+            is ChangedFiles.Dependencies -> error("Unexpected ChangedFiles type (ChangedFiles.Dependencies)")
         }
 
     private fun calculateSourcesToCompile(
@@ -310,9 +331,10 @@ abstract class IncrementalCompilerRunner<
             }
             if (compilationMode is CompilationMode.Rebuild) break
 
-            val (dirtyLookupSymbols, dirtyClassFqNames) = changesCollector.getDirtyData(listOf(caches.platformCache), reporter)
+            val (dirtyLookupSymbols, dirtyClassFqNames, forceRecompile) = changesCollector.getDirtyData(listOf(caches.platformCache), reporter)
             val compiledInThisIterationSet = sourcesToCompile.toHashSet()
 
+            val forceToRecompileFiles = mapClassesFqNamesToFiles(listOf(caches.platformCache), forceRecompile, reporter)
             with(dirtySources) {
                 clear()
                 addAll(mapLookupSymbolsToFiles(caches.lookupCache, dirtyLookupSymbols, reporter, excludes = compiledInThisIterationSet))
@@ -324,6 +346,9 @@ abstract class IncrementalCompilerRunner<
                         excludes = compiledInThisIterationSet
                     )
                 )
+                if (!compiledInThisIterationSet.containsAll(forceToRecompileFiles)) {
+                    addAll(forceToRecompileFiles)
+                }
             }
 
             buildDirtyLookupSymbols.addAll(dirtyLookupSymbols)

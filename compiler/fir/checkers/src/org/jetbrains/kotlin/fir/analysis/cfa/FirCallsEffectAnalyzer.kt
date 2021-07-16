@@ -43,7 +43,8 @@ import kotlin.contracts.contract
 
 object FirCallsEffectAnalyzer : FirControlFlowChecker() {
 
-    override fun analyze(graph: ControlFlowGraph, reporter: DiagnosticReporter, checkerContext: CheckerContext) {
+    override fun analyze(graph: ControlFlowGraph, reporter: DiagnosticReporter, context: CheckerContext) {
+        val session = context.session
         val function = (graph.declaration as? FirFunction<*>) ?: return
         if (function !is FirContractDescriptionOwner) return
         if (function.contractDescription.coneEffects?.any { it is ConeCallsEffectDeclaration } != true) return
@@ -51,13 +52,13 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
         val functionalTypeEffects = mutableMapOf<AbstractFirBasedSymbol<*>, ConeCallsEffectDeclaration>()
 
         function.valueParameters.forEachIndexed { index, parameter ->
-            if (parameter.returnTypeRef.isFunctionalTypeRef(function.session)) {
+            if (parameter.returnTypeRef.isFunctionalTypeRef(session)) {
                 val effectDeclaration = function.contractDescription.getParameterCallsEffectDeclaration(index)
                 if (effectDeclaration != null) functionalTypeEffects[parameter.symbol] = effectDeclaration
             }
         }
 
-        if (function.receiverTypeRef.isFunctionalTypeRef(function.session)) {
+        if (function.receiverTypeRef.isFunctionalTypeRef(session)) {
             val effectDeclaration = function.contractDescription.getParameterCallsEffectDeclaration(-1)
             if (effectDeclaration != null) functionalTypeEffects[function.symbol] = effectDeclaration
         }
@@ -73,31 +74,49 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
 
         for ((symbol, leakedPlaces) in leakedSymbols) {
             function.contractDescription.source?.let {
-                reporter.report(FirErrors.LEAKED_IN_PLACE_LAMBDA.on(it, symbol))
+                reporter.report(FirErrors.LEAKED_IN_PLACE_LAMBDA.on(it, symbol), context)
             }
             leakedPlaces.forEach {
-                reporter.report(FirErrors.LEAKED_IN_PLACE_LAMBDA.on(it, symbol))
+                reporter.report(FirErrors.LEAKED_IN_PLACE_LAMBDA.on(it, symbol), context)
             }
         }
 
         val invocationData = graph.collectDataForNode(
             TraverseDirection.Forward,
-            LambdaInvocationInfo.EMPTY,
+            PathAwareLambdaInvocationInfo.EMPTY,
             InvocationDataCollector(functionalTypeEffects.keys.filterTo(mutableSetOf()) { it !in leakedSymbols })
         )
 
         for ((symbol, effectDeclaration) in functionalTypeEffects) {
             graph.exitNode.previousCfgNodes.forEach { node ->
                 val requiredRange = effectDeclaration.kind
-                val foundRange = invocationData.getValue(node)[symbol] ?: EventOccurrencesRange.ZERO
-
-                if (foundRange !in requiredRange) {
-                    function.contractDescription.source?.let {
-                        reporter.report(FirErrors.WRONG_INVOCATION_KIND.on(it, symbol, requiredRange, foundRange))
+                val pathAwareInfo = invocationData.getValue(node)
+                for (info in pathAwareInfo.values) {
+                    if (investigate(info, symbol, requiredRange, function, reporter, context)) {
+                        // To avoid duplicate reports, stop investigating remaining paths once reported.
+                        break
                     }
                 }
             }
         }
+    }
+
+    private fun investigate(
+        info: LambdaInvocationInfo,
+        symbol: AbstractFirBasedSymbol<*>,
+        requiredRange: EventOccurrencesRange,
+        function: FirContractDescriptionOwner,
+        reporter: DiagnosticReporter,
+        context: CheckerContext
+    ): Boolean {
+        val foundRange = info[symbol] ?: EventOccurrencesRange.ZERO
+        if (foundRange !in requiredRange) {
+            function.contractDescription.source?.let {
+                reporter.report(FirErrors.WRONG_INVOCATION_KIND.on(it, symbol, requiredRange, foundRange), context)
+                return true
+            }
+        }
+        return false
     }
 
     private class IllegalScopeContext(
@@ -185,10 +204,9 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
         }
     }
 
-    private class LambdaInvocationInfo(
+    class LambdaInvocationInfo(
         map: PersistentMap<FirBasedSymbol<*>, EventOccurrencesRange> = persistentMapOf(),
-    ) : ControlFlowInfo<LambdaInvocationInfo, FirBasedSymbol<*>, EventOccurrencesRange>(map) {
-
+    ) : EventOccurrencesRangeInfo<LambdaInvocationInfo, FirBasedSymbol<*>>(map) {
         companion object {
             val EMPTY = LambdaInvocationInfo()
         }
@@ -196,30 +214,41 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
         override val constructor: (PersistentMap<FirBasedSymbol<*>, EventOccurrencesRange>) -> LambdaInvocationInfo =
             ::LambdaInvocationInfo
 
-        fun merge(other: LambdaInvocationInfo): LambdaInvocationInfo {
-            var result = this
-            for (symbol in keys.union(other.keys)) {
-                val kind1 = this[symbol] ?: EventOccurrencesRange.ZERO
-                val kind2 = other[symbol] ?: EventOccurrencesRange.ZERO
-                result = result.put(symbol, kind1 or kind2)
-            }
-            return result
+        override val empty: () -> LambdaInvocationInfo =
+            ::EMPTY
+    }
+
+    class PathAwareLambdaInvocationInfo(
+        map: PersistentMap<EdgeLabel, LambdaInvocationInfo> = persistentMapOf()
+    ) : PathAwareControlFlowInfo<PathAwareLambdaInvocationInfo, LambdaInvocationInfo>(map) {
+        companion object {
+            val EMPTY = PathAwareLambdaInvocationInfo(persistentMapOf(NormalPath to LambdaInvocationInfo.EMPTY))
         }
+
+        override val constructor: (PersistentMap<EdgeLabel, LambdaInvocationInfo>) -> PathAwareLambdaInvocationInfo =
+            ::PathAwareLambdaInvocationInfo
+
+        override val empty: () -> PathAwareLambdaInvocationInfo =
+            ::EMPTY
     }
 
     private class InvocationDataCollector(
         val functionalTypeSymbols: Set<AbstractFirBasedSymbol<*>>
-    ) : ControlFlowGraphVisitor<LambdaInvocationInfo, Collection<LambdaInvocationInfo>>() {
+    ) : ControlFlowGraphVisitor<PathAwareLambdaInvocationInfo, Collection<Pair<EdgeLabel, PathAwareLambdaInvocationInfo>>>() {
 
-        override fun visitNode(node: CFGNode<*>, data: Collection<LambdaInvocationInfo>): LambdaInvocationInfo {
-            if (data.isEmpty()) return LambdaInvocationInfo.EMPTY
-            return data.reduce(LambdaInvocationInfo::merge)
+        override fun visitNode(
+            node: CFGNode<*>,
+            data: Collection<Pair<EdgeLabel, PathAwareLambdaInvocationInfo>>
+        ): PathAwareLambdaInvocationInfo {
+            if (data.isEmpty()) return PathAwareLambdaInvocationInfo.EMPTY
+            return data.map { (label, info) -> info.applyLabel(node, label) }
+                .reduce(PathAwareLambdaInvocationInfo::merge)
         }
 
         override fun visitFunctionCallNode(
             node: FunctionCallNode,
-            data: Collection<LambdaInvocationInfo>
-        ): LambdaInvocationInfo {
+            data: Collection<Pair<EdgeLabel, PathAwareLambdaInvocationInfo>>
+        ): PathAwareLambdaInvocationInfo {
             var dataForNode = visitNode(node, data)
 
             val functionSymbol = node.fir.toResolvedCallableSymbol() as? FirFunctionSymbol<*>?
@@ -249,22 +278,20 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
             return reference != null && referenceToSymbol(reference) in functionalTypeSymbols
         }
 
-        private inline fun LambdaInvocationInfo.checkReference(
+        private inline fun PathAwareLambdaInvocationInfo.checkReference(
             reference: FirReference?,
             rangeGetter: () -> EventOccurrencesRange
-        ): LambdaInvocationInfo {
+        ): PathAwareLambdaInvocationInfo {
             return if (collectDataForReference(reference)) addInvocationInfo(reference, rangeGetter()) else this
         }
 
-        private fun LambdaInvocationInfo.addInvocationInfo(
+        private fun PathAwareLambdaInvocationInfo.addInvocationInfo(
             reference: FirReference,
             range: EventOccurrencesRange
-        ): LambdaInvocationInfo {
+        ): PathAwareLambdaInvocationInfo {
             val symbol = referenceToSymbol(reference)
             return if (symbol != null) {
-                val existingKind = this[symbol] ?: EventOccurrencesRange.ZERO
-                val kind = existingKind + range
-                this.put(symbol, kind)
+                addRange(this, symbol, range, ::PathAwareLambdaInvocationInfo)
             } else this
         }
     }

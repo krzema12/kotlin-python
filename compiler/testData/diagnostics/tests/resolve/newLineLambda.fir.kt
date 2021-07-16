@@ -8,40 +8,40 @@ fun varargFn(vararg args: Int) {}
 
 fun testNoArgs() {
     noArgs()
-    <!INAPPLICABLE_CANDIDATE!>noArgs<!> {}
-    <!INAPPLICABLE_CANDIDATE!>noArgs<!>() {}
+    noArgs <!TOO_MANY_ARGUMENTS!>{}<!>
+    noArgs() <!TOO_MANY_ARGUMENTS!>{}<!>
     noArgs() // {}
-    <!INAPPLICABLE_CANDIDATE!>noArgs<!>() /* */ {}
-    <!INAPPLICABLE_CANDIDATE!>noArgs<!>() /*
+    noArgs() /* */ <!TOO_MANY_ARGUMENTS!>{}<!>
+    noArgs() /*
         block comment, no new line
-    */ {}
-    <!INAPPLICABLE_CANDIDATE!>noArgs<!>()
+    */ <!TOO_MANY_ARGUMENTS!>{}<!>
+    noArgs()
     /*
         block comment with new line
     */
-    {}
-    <!INAPPLICABLE_CANDIDATE!>noArgs<!>() // comment
+    <!TOO_MANY_ARGUMENTS!>{}<!>
+    noArgs() // comment
     // comment
-    {}
-    <!INAPPLICABLE_CANDIDATE!>noArgs<!>() {} {}
-    <!INAPPLICABLE_CANDIDATE!>noArgs<!>() {}
-    {}
+    <!TOO_MANY_ARGUMENTS!>{}<!>
+    noArgs() <!TOO_MANY_ARGUMENTS!>{}<!> <!TOO_MANY_ARGUMENTS!>{}<!>
+    noArgs() <!TOO_MANY_ARGUMENTS!>{}<!>
+    <!TOO_MANY_ARGUMENTS!>{}<!>
 }
 
 fun testLambdaArg() {
-    <!INAPPLICABLE_CANDIDATE!>oneLambdaArg<!>()
+    oneLambdaArg(<!NO_VALUE_FOR_PARAMETER!>)<!>
     oneLambdaArg {}
     oneLambdaArg()
     {}
-    <!INAPPLICABLE_CANDIDATE!>oneLambdaArg<!>()
+    oneLambdaArg()
     {}
-    {}
-    <!INAPPLICABLE_CANDIDATE!>oneLambdaArg<!>(
+    <!TOO_MANY_ARGUMENTS!>{}<!>
+    oneLambdaArg(
         {},
-        {}
+        <!TOO_MANY_ARGUMENTS!>{}<!>
     )
     oneLambdaArg() {}
-    <!INAPPLICABLE_CANDIDATE!>oneLambdaArg<!>() // {}
+    oneLambdaArg(<!NO_VALUE_FOR_PARAMETER!>)<!> // {}
     oneLambdaArg() /* */ {}
     oneLambdaArg() /*
         block
@@ -50,42 +50,42 @@ fun testLambdaArg() {
     oneLambdaArg() // comment
     // comment
     {}
-    <!INAPPLICABLE_CANDIDATE!>oneLambdaArg<!>() {}/*
+    oneLambdaArg() {}/*
         block comment, no new line
-    */ {}
-    <!INAPPLICABLE_CANDIDATE!>oneLambdaArg<!>() {}/*
+    */ <!TOO_MANY_ARGUMENTS!>{}<!>
+    oneLambdaArg() {}/*
         block comment with new line
     */
-    {}
-    <!INAPPLICABLE_CANDIDATE!>oneLambdaArg<!>() {}// comment
+    <!TOO_MANY_ARGUMENTS!>{}<!>
+    oneLambdaArg() {}// comment
     // comment
-    {}
-    <!INAPPLICABLE_CANDIDATE!>oneLambdaArg<!>() {} {}
-    <!INAPPLICABLE_CANDIDATE!>oneLambdaArg<!>() {}
-    {}
-    <!INAPPLICABLE_CANDIDATE!>oneLambdaArg<!>() {} // comment
-    {}
+    <!TOO_MANY_ARGUMENTS!>{}<!>
+    oneLambdaArg() {} <!TOO_MANY_ARGUMENTS!>{}<!>
+    oneLambdaArg() {}
+    <!TOO_MANY_ARGUMENTS!>{}<!>
+    oneLambdaArg() {} // comment
+    <!TOO_MANY_ARGUMENTS!>{}<!>
 }
 
 fun testVararg() {
     varargFn(1,2,3)
-    <!INAPPLICABLE_CANDIDATE!>varargFn<!> {}
-    <!INAPPLICABLE_CANDIDATE!>varargFn<!>(1,2,3) {}
+    varargFn <!VARARG_OUTSIDE_PARENTHESES!>{}<!>
+    varargFn(1,2,3) <!VARARG_OUTSIDE_PARENTHESES!>{}<!>
     varargFn(1,2,3) // {}
-    <!INAPPLICABLE_CANDIDATE!>varargFn<!>(1,2,3) /* */ {}
-    <!INAPPLICABLE_CANDIDATE!>varargFn<!>(1,2,3) /*
+    varargFn(1,2,3) /* */ <!VARARG_OUTSIDE_PARENTHESES!>{}<!>
+    varargFn(1,2,3) /*
         block comment, no new line
-    */ {}
-    <!INAPPLICABLE_CANDIDATE!>varargFn<!>(1,2,3)
+    */ <!VARARG_OUTSIDE_PARENTHESES!>{}<!>
+    varargFn(1,2,3)
     /*
         block comment with new line
-    */ {}
-    <!INAPPLICABLE_CANDIDATE!>varargFn<!>(1,2,3) // comment
+    */ <!VARARG_OUTSIDE_PARENTHESES!>{}<!>
+    varargFn(1,2,3) // comment
     // comment
-    {}
-    <!INAPPLICABLE_CANDIDATE!>varargFn<!>(1,2,3) {} {}
-    <!INAPPLICABLE_CANDIDATE!>varargFn<!>(1,2,3) {}
-    {}
+    <!VARARG_OUTSIDE_PARENTHESES!>{}<!>
+    varargFn(1,2,3) <!ARGUMENT_TYPE_MISMATCH!>{}<!> <!ARGUMENT_TYPE_MISMATCH, VARARG_OUTSIDE_PARENTHESES!>{}<!>
+    varargFn(1,2,3) <!ARGUMENT_TYPE_MISMATCH!>{}<!>
+    <!ARGUMENT_TYPE_MISMATCH, VARARG_OUTSIDE_PARENTHESES!>{}<!>
 }
 
 fun testTwoLambdas() {
@@ -101,9 +101,9 @@ fun testTwoLambdas() {
         {}
 
         return if (true) {
-            <!INAPPLICABLE_CANDIDATE!>twoLambdaArgs<!>({})
+            twoLambdaArgs({})
             {}
-            {}
+            <!TOO_MANY_ARGUMENTS!>{}<!>
         } else {
             {}
         }
@@ -111,8 +111,8 @@ fun testTwoLambdas() {
 }
 
 fun f1(): (() -> Unit) -> (() -> Unit) -> Unit {
-    return { l1 ->
-        <!INAPPLICABLE_CANDIDATE!>l1<!>()
-        { l2 -> <!UNRESOLVED_REFERENCE!>l2<!>() }
-    }
+    return <!RETURN_TYPE_MISMATCH!>{ l1 ->
+        l1()
+        <!TOO_MANY_ARGUMENTS!>{ l2 -> <!UNRESOLVED_REFERENCE!>l2<!>() }<!>
+    }<!>
 }

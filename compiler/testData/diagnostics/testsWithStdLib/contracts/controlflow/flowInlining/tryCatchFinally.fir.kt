@@ -23,12 +23,12 @@ fun innerTryCatchFinally() {
             x = someComputation()
             report(x)
         } catch (e: java.lang.Exception) {
-            x = 42
+            <!VAL_REASSIGNMENT!>x<!> = 42
             report(x)
         } finally {
-            x = 0
+            <!VAL_REASSIGNMENT!>x<!> = 0
         }
     }
 
-    <!UNINITIALIZED_VARIABLE!>x<!>.inc()
+    x.inc()
 }

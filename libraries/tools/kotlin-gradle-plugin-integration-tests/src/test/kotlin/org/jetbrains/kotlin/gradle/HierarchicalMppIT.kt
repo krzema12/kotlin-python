@@ -266,6 +266,19 @@ class HierarchicalMppIT : BaseGradleIT() {
 
             assertEquals(expectedProjectStructureMetadata, parsedProjectStructureMetadata)
         }
+
+        ZipFile(
+            project.projectDir.parentFile.resolve(
+                "repo/com/example/foo/my-lib-foo/1.0/my-lib-foo-1.0-sources.jar"
+            )
+        ).use { publishedSourcesJar ->
+            publishedSourcesJar.checkAllEntryNamesArePresent(
+                "commonMain/Foo.kt",
+                "jvmAndJsMain/FooJvmAndJs.kt",
+                "linuxAndJsMain/FooLinuxAndJs.kt",
+                "linuxX64Main/FooLinux.kt"
+            )
+        }
     }
 
     private fun checkMyLibBar(compiledProject: CompiledProject, subprojectPrefix: String?) = with(compiledProject) {
@@ -303,6 +316,19 @@ class HierarchicalMppIT : BaseGradleIT() {
             )
 
             assertEquals(expectedProjectStructureMetadata, parsedProjectStructureMetadata)
+        }
+
+        ZipFile(
+            project.projectDir.parentFile.resolve(
+                "repo/com/example/bar/my-lib-bar/1.0/my-lib-bar-1.0-sources.jar"
+            )
+        ).use { publishedSourcesJar ->
+            publishedSourcesJar.checkAllEntryNamesArePresent(
+                "commonMain/Bar.kt",
+                "jvmAndJsMain/BarJvmAndJs.kt",
+                "linuxAndJsMain/BarLinuxAndJs.kt",
+                "linuxX64Main/BarLinux.kt"
+            )
         }
 
         checkNamesOnCompileClasspath(
@@ -401,8 +427,7 @@ class HierarchicalMppIT : BaseGradleIT() {
         shouldInclude: Iterable<Pair<String, String>> = emptyList(),
         shouldNotInclude: Iterable<Pair<String, String>> = emptyList()
     ) {
-        val taskOutput = getOutputForTask(taskPath.removePrefix(":"))
-        val compilerArgsLine = taskOutput.lines().single { "Kotlin compiler args:" in it }
+        val compilerArgsLine = output.lines().single { "$taskPath Kotlin compiler args:" in it }
         val classpathItems = compilerArgsLine.substringAfter("-classpath").substringBefore(" -").split(File.pathSeparator)
 
         val actualClasspath = classpathItems.joinToString("\n")
@@ -555,6 +580,41 @@ class HierarchicalMppIT : BaseGradleIT() {
                 it.sourceSetName == "commonTest" && it.scope == "implementation" && "libtests" in it.groupAndModule
             }.let {
                 assertEquals(setOf("commonMain", "jvmAndJsMain"), it.allVisibleSourceSets)
+            }
+        }
+    }
+
+    @Test
+    fun testMixedScopesFilesExistKt44845() {
+        publishThirdPartyLib(withGranularMetadata = true)
+
+        transformNativeTestProjectWithPluginDsl("my-lib-foo", gradleVersion, "hierarchical-mpp-published-modules").run {
+            gradleBuildScript().appendText(
+                """
+                ${"\n"}
+                dependencies {
+                    "jvmAndJsMainImplementation"("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+                    "jvmAndJsMainCompileOnly"("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
+                }
+            """.trimIndent()
+            )
+
+            testDependencyTransformations { reports ->
+                val reportsForJvmAndJsMain = reports.filter { it.sourceSetName == "jvmAndJsMain" }
+                val thirdPartyLib = reportsForJvmAndJsMain.single {
+                    it.scope == "api" && it.groupAndModule.startsWith("com.example")
+                }
+                val coroutinesCore = reportsForJvmAndJsMain.single {
+                    it.scope == "implementation" && it.groupAndModule.contains("kotlinx-coroutines-core")
+                }
+                val serialization = reportsForJvmAndJsMain.single {
+                    it.scope == "compileOnly" && it.groupAndModule.contains("kotlinx-serialization-json")
+                }
+                listOf(thirdPartyLib, coroutinesCore, serialization).forEach { report ->
+                    assertTrue(report.newVisibleSourceSets.isNotEmpty(), "Expected visible source sets for $report")
+                    assertTrue(report.useFiles.isNotEmpty(), "Expected non-empty useFiles for $report")
+                    report.useFiles.forEach { assertTrue(it.isFile, "Expected $it to exist for $report") }
+                }
             }
         }
     }

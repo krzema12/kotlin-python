@@ -1,4 +1,4 @@
-// !LANGUAGE: +MultiPlatformProjects, +InlineClasses
+// !LANGUAGE: +MultiPlatformProjects, +InlineClasses, -JvmInlineValueClasses
 // MODULE: m1-common
 // FILE: common.kt
 
@@ -8,7 +8,7 @@ expect inline class Foo1(val x: Int) {
 
 expect inline class Foo2(val x: Int)
 
-expect <!ABSENCE_OF_PRIMARY_CONSTRUCTOR_FOR_INLINE_CLASS, JVM:ABSENCE_OF_PRIMARY_CONSTRUCTOR_FOR_INLINE_CLASS!>inline<!> class Foo3
+expect <!ABSENCE_OF_PRIMARY_CONSTRUCTOR_FOR_INLINE_CLASS, ABSENCE_OF_PRIMARY_CONSTRUCTOR_FOR_INLINE_CLASS{JVM}!>inline<!> class Foo3
 
 expect class NonInlineExpect
 

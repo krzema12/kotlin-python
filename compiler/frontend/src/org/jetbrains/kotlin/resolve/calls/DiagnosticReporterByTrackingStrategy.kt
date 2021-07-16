@@ -31,13 +31,21 @@ import org.jetbrains.kotlin.resolve.constants.evaluate.ConstantExpressionEvaluat
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
 import org.jetbrains.kotlin.resolve.scopes.receivers.ExpressionReceiver
 import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedCallableMemberDescriptor
+import org.jetbrains.kotlin.types.ErrorUtils
 import org.jetbrains.kotlin.types.KotlinType
+import org.jetbrains.kotlin.types.TypeUtils
 import org.jetbrains.kotlin.types.checker.intersectWrappedTypes
 import org.jetbrains.kotlin.types.expressions.ControlStructureTypingUtils
+import org.jetbrains.kotlin.types.model.TypeSystemInferenceExtensionContextDelegate
+import org.jetbrains.kotlin.types.model.TypeVariableMarker
+import org.jetbrains.kotlin.types.model.freshTypeConstructor
+import org.jetbrains.kotlin.types.typeUtil.contains
 import org.jetbrains.kotlin.types.typeUtil.isNullableNothing
 import org.jetbrains.kotlin.types.typeUtil.makeNullable
 import org.jetbrains.kotlin.utils.addToStdlib.cast
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 class DiagnosticReporterByTrackingStrategy(
     val constantExpressionEvaluator: ConstantExpressionEvaluator,
@@ -45,7 +53,8 @@ class DiagnosticReporterByTrackingStrategy(
     val psiKotlinCall: PSIKotlinCall,
     val dataFlowValueFactory: DataFlowValueFactory,
     val allDiagnostics: List<KotlinCallDiagnostic>,
-    private val smartCastManager: SmartCastManager
+    private val smartCastManager: SmartCastManager,
+    private val typeSystemContext: TypeSystemInferenceExtensionContextDelegate
 ) : DiagnosticReporter {
     private val trace = context.trace as TrackingBindingTrace
     private val tracingStrategy: TracingStrategy get() = psiKotlinCall.tracingStrategy
@@ -336,8 +345,8 @@ class DiagnosticReporterByTrackingStrategy(
 
     override fun constraintError(error: ConstraintSystemError) {
         when (error.javaClass) {
-            NewConstraintError::class.java -> {
-                error as NewConstraintError
+            NewConstraintError::class.java, NewConstraintWarning::class.java -> {
+                error as NewConstraintMismatch
                 val position = error.position.from
                 val argument =
                     when (position) {
@@ -347,13 +356,18 @@ class DiagnosticReporterByTrackingStrategy(
                         is LambdaArgumentConstraintPositionImpl -> position.lambda.atom
                         else -> null
                     }
+                val isWarning = error is NewConstraintWarning
+                val typeMismatchDiagnostic = if (isWarning) TYPE_MISMATCH_WARNING else TYPE_MISMATCH
+                val report = if (isWarning) trace::reportDiagnosticOnce else trace::report
                 argument?.let {
                     it.safeAs<LambdaKotlinCallArgument>()?.let lambda@{ lambda ->
                         val parameterTypes = lambda.parametersTypes?.toList() ?: return@lambda
                         val index = parameterTypes.indexOf(error.upperKotlinType.unwrap())
                         val lambdaExpression = lambda.psiExpression as? KtLambdaExpression ?: return@lambda
                         val parameter = lambdaExpression.valueParameters.getOrNull(index) ?: return@lambda
-                        trace.report(EXPECTED_PARAMETER_TYPE_MISMATCH.on(parameter, error.upperKotlinType))
+                        val diagnosticFactory =
+                            if (isWarning) EXPECTED_PARAMETER_TYPE_MISMATCH_WARNING else EXPECTED_PARAMETER_TYPE_MISMATCH
+                        report(diagnosticFactory.on(parameter, error.upperKotlinType))
                         return
                     }
 
@@ -370,7 +384,7 @@ class DiagnosticReporterByTrackingStrategy(
                             return
                         }
                     }
-                    trace.report(TYPE_MISMATCH.on(deparenthesized, error.upperKotlinType, error.lowerKotlinType))
+                    report(typeMismatchDiagnostic.on(deparenthesized, error.upperKotlinType, error.lowerKotlinType))
                 }
 
                 (position as? ExpectedTypeConstraintPositionImpl)?.let {
@@ -379,13 +393,14 @@ class DiagnosticReporterByTrackingStrategy(
                         if (!error.lowerKotlinType.isNullableNothing()) error.lowerKotlinType
                         else error.upperKotlinType.makeNullable()
                     if (call != null) {
-                        trace.report(TYPE_MISMATCH.on(call, error.upperKotlinType, inferredType))
+                        report(typeMismatchDiagnostic.on(call, error.upperKotlinType, inferredType))
                     }
                 }
 
                 (position as? ExplicitTypeParameterConstraintPositionImpl)?.let {
                     val typeArgumentReference = (it.typeArgument as SimpleTypeArgumentImpl).typeReference
-                    trace.report(UPPER_BOUND_VIOLATED.on(typeArgumentReference, error.upperKotlinType, error.lowerKotlinType))
+                    val diagnosticFactory = if (isWarning) UPPER_BOUND_VIOLATED_WARNING else UPPER_BOUND_VIOLATED
+                    report(diagnosticFactory.on(typeArgumentReference, error.upperKotlinType, error.lowerKotlinType))
                 }
 
                 (position as? FixVariableConstraintPositionImpl)?.let {
@@ -398,7 +413,7 @@ class DiagnosticReporterByTrackingStrategy(
                     val call = it.resolvedAtom?.atom?.safeAs<PSIKotlinCall>()?.psiCall ?: call
                     val expression = call.calleeExpression ?: return
 
-                    trace.reportDiagnosticOnce(TYPE_MISMATCH.on(expression, error.upperKotlinType, error.lowerKotlinType))
+                    trace.reportDiagnosticOnce(typeMismatchDiagnostic.on(expression, error.upperKotlinType, error.lowerKotlinType))
                 }
             }
 
@@ -421,49 +436,134 @@ class DiagnosticReporterByTrackingStrategy(
 
             NotEnoughInformationForTypeParameterImpl::class.java -> {
                 error as NotEnoughInformationForTypeParameterImpl
-                if (allDiagnostics.any {
-                        when (it) {
-                            is WrongCountOfTypeArguments -> true
-                            is KotlinConstraintSystemDiagnostic -> {
-                                val otherError = it.error
-                                (otherError is ConstrainingTypeIsError && otherError.typeVariable == error.typeVariable)
-                                        || otherError is NewConstraintError
-                            }
-                            else -> false
+
+                val resolvedAtom = error.resolvedAtom
+                val isDiagnosticRedundant = !isSpecialFunction(resolvedAtom) && allDiagnostics.any {
+                    when (it) {
+                        is WrongCountOfTypeArguments -> true
+                        is KotlinConstraintSystemDiagnostic -> {
+                            val otherError = it.error
+                            (otherError is ConstrainingTypeIsError && otherError.typeVariable == error.typeVariable)
+                                    || otherError is NewConstraintError
+                        }
+                        else -> false
+                    }
+                }
+
+                if (isDiagnosticRedundant) return
+                val expression = when (val atom = error.resolvedAtom.atom) {
+                    is PSIKotlinCall -> {
+                        val psiCall = atom.psiCall
+                        if (psiCall is CallTransformer.CallForImplicitInvoke) {
+                            psiCall.outerCall.calleeExpression
+                        } else {
+                            psiCall.calleeExpression
                         }
                     }
-                ) return
-
-                if (isSpecialFunction(error.resolvedAtom))
-                    return
-
-                val expression = when (val atom = error.resolvedAtom.atom) {
-                    is PSIKotlinCall -> atom.psiCall.calleeExpression
                     is PSIKotlinCallArgument -> atom.valueArgument.getArgumentExpression()
                     else -> call.calleeExpression
                 } ?: return
 
-                val typeVariableName = when (val typeVariable = error.typeVariable) {
-                    is TypeVariableFromCallableDescriptor -> typeVariable.originalTypeParameter.name.asString()
-                    is TypeVariableForLambdaReturnType -> "return type of lambda"
-                    else -> error("Unsupported type variable: $typeVariable")
+                if (isSpecialFunction(resolvedAtom)) {
+                    // We locally report errors on some arguments of special calls, on which the error may not be reported directly
+                    reportNotEnoughInformationForTypeParameterForSpecialCall(resolvedAtom, error)
+                } else {
+                    val typeVariableName = when (val typeVariable = error.typeVariable) {
+                        is TypeVariableFromCallableDescriptor -> typeVariable.originalTypeParameter.name.asString()
+                        is TypeVariableForLambdaReturnType -> "return type of lambda"
+                        else -> error("Unsupported type variable: $typeVariable")
+                    }
+                    val unwrappedExpression = if (expression is KtBlockExpression) {
+                        expression.statements.lastOrNull() ?: expression
+                    } else expression
+
+                    trace.reportDiagnosticOnce(NEW_INFERENCE_NO_INFORMATION_FOR_PARAMETER.on(unwrappedExpression, typeVariableName))
                 }
-                trace.reportDiagnosticOnce(NEW_INFERENCE_NO_INFORMATION_FOR_PARAMETER.on(expression, typeVariableName))
             }
 
             OnlyInputTypesDiagnostic::class.java -> {
                 val typeVariable = (error as OnlyInputTypesDiagnostic).typeVariable as? TypeVariableFromCallableDescriptor ?: return
                 psiKotlinCall.psiCall.calleeExpression?.let {
-                    val factory = if (context.languageVersionSettings.supportsFeature(LanguageFeature.NonStrictOnlyInputTypesChecks))
-                        TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING
-                    else TYPE_INFERENCE_ONLY_INPUT_TYPES
+                    val factory = if (context.languageVersionSettings.supportsFeature(LanguageFeature.StrictOnlyInputTypesChecks))
+                        TYPE_INFERENCE_ONLY_INPUT_TYPES
+                    else TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING
                     trace.report(factory.on(it, typeVariable.originalTypeParameter))
                 }
             }
         }
     }
 
+    private fun reportNotEnoughInformationForTypeParameterForSpecialCall(
+        resolvedAtom: ResolvedCallAtom,
+        error: NotEnoughInformationForTypeParameterImpl
+    ) {
+        val subResolvedAtomsToReportError =
+            getSubResolvedAtomsOfSpecialCallToReportUninferredTypeParameter(resolvedAtom, error.typeVariable)
+
+        if (subResolvedAtomsToReportError.isEmpty()) return
+
+        for (subResolvedAtom in subResolvedAtomsToReportError) {
+            val atom = subResolvedAtom.atom as? PSIKotlinCallArgument ?: continue
+            val argumentsExpression = getArgumentsExpressionOrLastExpressionInBlock(atom)
+
+            if (argumentsExpression != null) {
+                val specialFunctionName = requireNotNull(
+                    ControlStructureTypingUtils.ResolveConstruct.values().find { specialFunction ->
+                        specialFunction.specialFunctionName == resolvedAtom.candidateDescriptor.name
+                    }
+                ) { "Unsupported special construct: ${resolvedAtom.candidateDescriptor.name} not found in special construct names" }
+
+                trace.reportDiagnosticOnce(
+                    NEW_INFERENCE_NO_INFORMATION_FOR_PARAMETER.on(
+                        argumentsExpression, " for subcalls of ${specialFunctionName.getName()} expression"
+                    )
+                )
+            }
+        }
+    }
+
+    private fun getArgumentsExpressionOrLastExpressionInBlock(atom: PSIKotlinCallArgument): KtExpression? {
+        val valueArgumentExpression = atom.valueArgument.getArgumentExpression()
+
+        return if (valueArgumentExpression is KtBlockExpression) valueArgumentExpression.statements.lastOrNull() else valueArgumentExpression
+    }
+
+    private fun KotlinType.containsUninferredTypeParameter(uninferredTypeVariable: TypeVariableMarker) = contains {
+        ErrorUtils.isUninferredParameter(it) || it == TypeUtils.DONT_CARE
+                || it.constructor == uninferredTypeVariable.freshTypeConstructor(typeSystemContext)
+    }
+
+    @OptIn(ExperimentalStdlibApi::class)
+    private fun getSubResolvedAtomsOfSpecialCallToReportUninferredTypeParameter(
+        resolvedAtom: ResolvedAtom,
+        uninferredTypeVariable: TypeVariableMarker
+    ): Set<ResolvedAtom> =
+        buildSet {
+            for (subResolvedAtom in resolvedAtom.subResolvedAtoms ?: return@buildSet) {
+                val atom = subResolvedAtom.atom
+                val typeToCheck = when {
+                    subResolvedAtom is PostponedResolvedAtom -> subResolvedAtom.expectedType ?: return@buildSet
+                    atom is SimpleKotlinCallArgument -> atom.receiver.receiverValue.type
+                    else -> return@buildSet
+                }
+
+                if (typeToCheck.containsUninferredTypeParameter(uninferredTypeVariable)) {
+                    add(subResolvedAtom)
+                }
+
+                if (!subResolvedAtom.subResolvedAtoms.isNullOrEmpty()) {
+                    addAll(
+                        getSubResolvedAtomsOfSpecialCallToReportUninferredTypeParameter(subResolvedAtom, uninferredTypeVariable)
+                    )
+                }
+            }
+        }
+
+    @OptIn(ExperimentalContracts::class)
     private fun isSpecialFunction(atom: ResolvedAtom): Boolean {
+        contract {
+            returns(true) implies (atom is ResolvedCallAtom)
+        }
         if (atom !is ResolvedCallAtom) return false
 
         return ControlStructureTypingUtils.ResolveConstruct.values().any { specialFunction ->
@@ -471,7 +571,7 @@ class DiagnosticReporterByTrackingStrategy(
         }
     }
 
-    private fun reportConstantTypeMismatch(constraintError: NewConstraintError, expression: KtExpression): Boolean {
+    private fun reportConstantTypeMismatch(constraintError: NewConstraintMismatch, expression: KtExpression): Boolean {
         if (expression is KtConstantExpression) {
             val module = context.scope.ownerDescriptor.module
             val constantValue = constantExpressionEvaluator.evaluateToConstantValue(expression, trace, context.expectedType)
@@ -484,5 +584,5 @@ class DiagnosticReporterByTrackingStrategy(
 
 }
 
-val NewConstraintError.upperKotlinType get() = upperType as KotlinType
-val NewConstraintError.lowerKotlinType get() = lowerType as KotlinType
+val NewConstraintMismatch.upperKotlinType get() = upperType as KotlinType
+val NewConstraintMismatch.lowerKotlinType get() = lowerType as KotlinType

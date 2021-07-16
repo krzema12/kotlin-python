@@ -1,17 +1,6 @@
 /*
- * Copyright 2010-2016 JetBrains s.r.o.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
 package org.jetbrains.kotlin.ir.util
@@ -29,6 +18,7 @@ import org.jetbrains.kotlin.ir.symbols.IrTypeAliasSymbol
 import org.jetbrains.kotlin.ir.symbols.IrVariableSymbol
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.types.impl.ReturnTypeIsNotInitializedException
+import org.jetbrains.kotlin.ir.types.impl.originalKotlinType
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitor
 import org.jetbrains.kotlin.renderer.DescriptorRenderer
 import org.jetbrains.kotlin.types.Variance
@@ -65,9 +55,16 @@ class RenderIrElementVisitor(private val normalizeNames: Boolean = false) : IrEl
         }
         append(annotationClassName)
 
+        if (irAnnotation.typeArgumentsCount != 0) {
+            (0 until irAnnotation.typeArgumentsCount).joinTo(this, ", ", "<", ">") { i ->
+                irAnnotation.getTypeArgument(i)?.let { renderType(it) } ?: "null"
+            }
+        }
+
         if (irAnnotation.valueArgumentsCount == 0) return
 
         val valueParameterNames = irAnnotation.getValueParameterNamesForDebug()
+
         var first = true
         append("(")
         for (i in 0 until irAnnotation.valueArgumentsCount) {
@@ -114,7 +111,7 @@ class RenderIrElementVisitor(private val normalizeNames: Boolean = false) : IrEl
         when (this) {
             is IrDynamicType -> "dynamic"
 
-            is IrErrorType -> "IrErrorType"
+            is IrErrorType -> "IrErrorType($originalKotlinType)"
 
             is IrSimpleType -> buildTrimEnd {
                 append(classifier.renderClassifierFqn())
@@ -577,6 +574,7 @@ class RenderIrElementVisitor(private val normalizeNames: Boolean = false) : IrEl
     override fun visitSpreadElement(spread: IrSpreadElement, data: Nothing?): String =
         "SPREAD_ELEMENT"
 
+    // TODO do we need a special support for IrReturnableBlock here?
     override fun visitBlock(expression: IrBlock, data: Nothing?): String =
         "BLOCK type=${expression.type.render()} origin=${expression.origin}"
 
@@ -654,6 +652,9 @@ class RenderIrElementVisitor(private val normalizeNames: Boolean = false) : IrEl
         "FUNCTION_REFERENCE '${expression.symbol.renderReference()}' " +
                 "type=${expression.type.render()} origin=${expression.origin} " +
                 "reflectionTarget=${renderReflectionTarget(expression)}"
+
+    override fun visitRawFunctionReference(expression: IrRawFunctionReference, data: Nothing?): String =
+        "RAW_FUNCTION_REFERENCE '${expression.symbol.renderReference()}' type=${expression.type.render()}"
 
     private fun renderReflectionTarget(expression: IrFunctionReference) =
         if (expression.symbol == expression.reflectionTarget)

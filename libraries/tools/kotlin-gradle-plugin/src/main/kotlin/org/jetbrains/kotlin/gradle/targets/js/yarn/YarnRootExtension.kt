@@ -17,7 +17,10 @@ import org.jetbrains.kotlin.gradle.targets.js.npm.resolver.implementing
 import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.RootPackageJsonTask
 import org.jetbrains.kotlin.gradle.tasks.internal.CleanableStore
 
-open class YarnRootExtension(val project: Project) : ConfigurationPhaseAware<YarnEnv>() {
+open class YarnRootExtension(
+    @Transient
+    val project: Project
+) : ConfigurationPhaseAware<YarnEnv>() {
     init {
         check(project == project.rootProject)
     }
@@ -29,7 +32,7 @@ open class YarnRootExtension(val project: Project) : ConfigurationPhaseAware<Yar
     var installationDir by Property(gradleHome.resolve("yarn"))
 
     var downloadBaseUrl by Property("https://github.com/yarnpkg/yarn/releases/download")
-    var version by Property("1.22.4")
+    var version by Property("1.22.10")
 
     val yarnSetupTask: YarnSetupTask
         get() = project.tasks.getByName(YarnSetupTask.NAME) as YarnSetupTask

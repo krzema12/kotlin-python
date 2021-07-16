@@ -1,5 +1,5 @@
 // TARGET_BACKEND: JVM
-// SKIP_JDK6
+// JVM_TARGET: 1.8
 // FILE: I.java
 interface I {
     default String ifun() { return "fail"; }

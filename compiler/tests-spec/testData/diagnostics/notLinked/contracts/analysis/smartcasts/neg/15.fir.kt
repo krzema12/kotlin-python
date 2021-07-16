@@ -30,20 +30,20 @@ import contracts.*
 // TESTCASE NUMBER: 1
 fun case_1(value: Any) {
     if (contracts.case_1_2(contracts.case_1_1(value is Char))) {
-        println(value.<!INAPPLICABLE_CANDIDATE!>category<!>)
+        <!OVERLOAD_RESOLUTION_AMBIGUITY!>println<!>(value.<!UNRESOLVED_REFERENCE!>category<!>)
     }
 }
 
 // TESTCASE NUMBER: 2
 fun case_2(value: Any) {
     if (contracts.case_2(value is Char) is Boolean) {
-        println(value.<!INAPPLICABLE_CANDIDATE!>category<!>)
+        <!OVERLOAD_RESOLUTION_AMBIGUITY!>println<!>(value.<!UNRESOLVED_REFERENCE!>category<!>)
     }
 }
 
 // TESTCASE NUMBER: 3
 fun case_3(value: String?) {
     if (!value.isNullOrEmpty() is Boolean) {
-        value.<!INAPPLICABLE_CANDIDATE!>length<!>
+        value<!UNSAFE_CALL!>.<!>length
     }
 }

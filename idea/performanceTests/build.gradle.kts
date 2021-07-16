@@ -19,6 +19,7 @@ dependencies {
     testRuntimeOnly(project(":kotlin-scripting-idea"))
     testRuntimeOnly(project(":kotlinx-serialization-ide-plugin"))
     testRuntimeOnly(project(":plugins:parcelize:parcelize-ide"))
+    testRuntimeOnly(project(":plugins:lombok:lombok-ide-plugin"))
     testRuntimeOnly(project(":nj2k:nj2k-services"))
     testRuntimeOnly(project(":kotlin-reflect"))
     testRuntimeOnly(project(":idea:kotlin-gradle-tooling"))
@@ -33,8 +34,8 @@ dependencies {
     testImplementation(projectTests(":idea"))
     testImplementation(project(":idea:idea-gradle")) { isTransitive = false }
     testImplementation(commonDep("junit:junit"))
-    testImplementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.11.+")
-    testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.+")
+    testImplementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.11.4")
+    testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.4")
     testImplementation("khttp:khttp:1.0.0")
 
     testCompileOnly(intellijPluginDep("java"))
@@ -144,6 +145,31 @@ task("aggregateResults", JavaExec::class) {
     classpath = sourceSets["test"].runtimeClasspath
     workingDir = rootDir
     args(listOf(File(rootDir, "build")))
+}
+
+projectTest(taskName = "fe10ProjectPerformanceTest") {
+    include("**/*WholeProjectPerformanceComparisonFE10ImplTest*")
+
+    workingDir = rootDir
+
+    jvmArgs?.removeAll { it.startsWith("-Xmx") }
+
+    maxHeapSize = "3g"
+    jvmArgs("-DperformanceProjects=${System.getProperty("performanceProjects")}")
+    jvmArgs("-Didea.debug.mode=true")
+    jvmArgs("-DemptyProfile=${System.getProperty("emptyProfile")}")
+    jvmArgs("-XX:SoftRefLRUPolicyMSPerMB=50")
+    jvmArgs(
+        "-XX:+UseCompressedOops",
+        "-XX:+UseConcMarkSweepGC"
+    )
+
+    doFirst {
+        systemProperty("idea.home.path", intellijRootDir().canonicalPath)
+        project.findProperty("cacheRedirectorEnabled")?.let {
+            systemProperty("kotlin.test.gradle.import.arguments", "-PcacheRedirectorEnabled=$it")
+        }
+    }
 }
 
 

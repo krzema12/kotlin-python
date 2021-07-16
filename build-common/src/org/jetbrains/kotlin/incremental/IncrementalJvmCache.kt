@@ -33,6 +33,7 @@ import org.jetbrains.kotlin.metadata.jvm.deserialization.JvmProtoBufUtil
 import org.jetbrains.kotlin.metadata.jvm.deserialization.ModuleMapping
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.name.SpecialNames.DEFAULT_NAME_FOR_COMPANION_OBJECT
 import org.jetbrains.kotlin.resolve.jvm.AsmTypes
 import org.jetbrains.kotlin.resolve.jvm.JvmClassName
 import org.jetbrains.org.objectweb.asm.*
@@ -94,6 +95,10 @@ open class IncrementalJvmCache(
     fun sourcesByInternalName(internalName: String): Collection<File> =
         internalNameToSource[internalName]
 
+    fun getAllPartsOfMultifileFacade(facade: JvmClassName): Collection<String>? {
+        return multifileFacadeToParts[facade]
+    }
+
     fun isMultifileFacade(className: JvmClassName): Boolean =
         className in multifileFacadeToParts
 
@@ -145,6 +150,7 @@ open class IncrementalJvmCache(
                 }
                 protoMap.remove(className, changesCollector)
                 classFqNameToSourceMap.remove(className.fqNameForClassNameWithoutDollars)
+                classAttributesMap.remove(className.fqNameForClassNameWithoutDollars)
                 internalNameToSource.remove(className.internalName)
 
                 // TODO NO_CHANGES? (delegates only)
@@ -271,6 +277,7 @@ open class IncrementalJvmCache(
 
     private inner class ProtoMap(storageFile: File) : BasicStringMap<ProtoMapValue>(storageFile, ProtoMapValueExternalizer) {
 
+        @Synchronized
         fun process(kotlinClass: LocalFileKotlinClass, changesCollector: ChangesCollector) {
             return put(kotlinClass, changesCollector)
         }
@@ -282,10 +289,12 @@ open class IncrementalJvmCache(
         // from files compiled during last round.
         // However there is no need to compare old and new data in this case
         // (also that would fail with exception).
+        @Synchronized
         fun storeModuleMapping(className: JvmClassName, bytes: ByteArray) {
             storage[className.internalName] = ProtoMapValue(isPackageFacade = false, bytes = bytes, strings = emptyArray())
         }
 
+        @Synchronized
         private fun put(kotlinClass: LocalFileKotlinClass, changesCollector: ChangesCollector) {
             val header = kotlinClass.classHeader
 
@@ -308,6 +317,7 @@ open class IncrementalJvmCache(
         operator fun get(className: JvmClassName): ProtoMapValue? =
             storage[className.internalName]
 
+        @Synchronized
         fun remove(className: JvmClassName, changesCollector: ChangesCollector) {
             val key = className.internalName
             val oldValue = storage[key] ?: return
@@ -324,6 +334,8 @@ open class IncrementalJvmCache(
 
     private inner class JavaSourcesProtoMap(storageFile: File) :
         BasicStringMap<SerializedJavaClass>(storageFile, JavaClassProtoMapValueExternalizer) {
+
+        @Synchronized
         fun process(jvmClassName: JvmClassName, newData: SerializedJavaClass, changesCollector: ChangesCollector) {
             val key = jvmClassName.internalName
             val oldData = storage[key]
@@ -335,6 +347,7 @@ open class IncrementalJvmCache(
             )
         }
 
+        @Synchronized
         fun remove(className: JvmClassName, changesCollector: ChangesCollector) {
             val key = className.internalName
             val oldValue = storage[key] ?: return
@@ -374,6 +387,7 @@ open class IncrementalJvmCache(
         operator fun contains(className: JvmClassName): Boolean =
             className.internalName in storage
 
+        @Synchronized
         fun process(kotlinClass: LocalFileKotlinClass, changesCollector: ChangesCollector) {
             val key = kotlinClass.className.internalName
             val oldMap = storage[key] ?: emptyMap()
@@ -386,10 +400,13 @@ open class IncrementalJvmCache(
             }
 
             for (const in oldMap.keys + newMap.keys) {
-                changesCollector.collectMemberIfValueWasChanged(kotlinClass.scopeFqName(), const, oldMap[const], newMap[const])
+                //Constant can be declared via companion object or via const field declaration
+                changesCollector.collectMemberIfValueWasChanged(kotlinClass.scopeFqName(companion = true), const, oldMap[const], newMap[const])
+                changesCollector.collectMemberIfValueWasChanged(kotlinClass.scopeFqName(companion = false), const, oldMap[const], newMap[const])
             }
         }
 
+        @Synchronized
         fun remove(className: JvmClassName) {
             storage.remove(className.internalName)
         }
@@ -415,6 +432,8 @@ open class IncrementalJvmCache(
 
     private inner class MultifileClassFacadeMap(storageFile: File) :
         BasicStringMap<Collection<String>>(storageFile, StringCollectionExternalizer) {
+
+        @Synchronized
         operator fun set(className: JvmClassName, partNames: Collection<String>) {
             storage[className.internalName] = partNames
         }
@@ -425,6 +444,7 @@ open class IncrementalJvmCache(
         operator fun contains(className: JvmClassName): Boolean =
             className.internalName in storage
 
+        @Synchronized
         fun remove(className: JvmClassName) {
             storage.remove(className.internalName)
         }
@@ -434,6 +454,8 @@ open class IncrementalJvmCache(
 
     private inner class MultifileClassPartMap(storageFile: File) :
         BasicStringMap<String>(storageFile, EnumeratorStringDescriptor.INSTANCE) {
+
+        @Synchronized
         fun set(partName: String, facadeName: String) {
             storage[partName] = facadeName
         }
@@ -441,6 +463,7 @@ open class IncrementalJvmCache(
         fun get(partName: JvmClassName): String? =
             storage[partName.internalName]
 
+        @Synchronized
         fun remove(className: JvmClassName) {
             storage.remove(className.internalName)
         }
@@ -522,6 +545,7 @@ open class IncrementalJvmCache(
             return result
         }
 
+        @Synchronized
         fun process(kotlinClass: LocalFileKotlinClass, changesCollector: ChangesCollector) {
             val key = kotlinClass.className.internalName
             val oldMap = storage[key] ?: emptyMap()
@@ -547,6 +571,7 @@ open class IncrementalJvmCache(
         private fun functionNameBySignature(signature: String): String =
             signature.substringBefore("(")
 
+        @Synchronized
         fun remove(className: JvmClassName) {
             storage.remove(className.internalName)
         }
@@ -568,6 +593,7 @@ sealed class ChangeInfo(val fqName: FqName) {
 
     class SignatureChanged(fqName: FqName, val areSubclassesAffected: Boolean) : ChangeInfo(fqName)
 
+    class ParentsChanged(fqName: FqName, val parentsChanged: Collection<FqName>) : ChangeInfo(fqName)
 
     protected open fun toStringProperties(): String = "fqName = $fqName"
 
@@ -576,11 +602,12 @@ sealed class ChangeInfo(val fqName: FqName) {
     }
 }
 
-private fun LocalFileKotlinClass.scopeFqName() =
-    when (classHeader.kind) {
-        KotlinClassHeader.Kind.CLASS -> className.fqNameForClassNameWithoutDollars
-        else -> className.packageFqName
+private fun LocalFileKotlinClass.scopeFqName(companion: Boolean = false) = when (classHeader.kind) {
+    KotlinClassHeader.Kind.CLASS -> {
+        className.fqNameForClassNameWithoutDollars.let { if (companion) it.child(DEFAULT_NAME_FOR_COMPANION_OBJECT) else it }
     }
+    else -> className.packageFqName
+}
 
 fun ByteArray.md5(): Long {
     val d = MessageDigest.getInstance("MD5").digest(this)!!

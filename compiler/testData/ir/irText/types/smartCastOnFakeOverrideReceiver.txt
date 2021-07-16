@@ -115,6 +115,8 @@ FILE fqName:<root> fileName:/smartCastOnFakeOverrideReceiver.kt
       $this: VALUE_PARAMETER name:<this> type:<root>.A
       VALUE_PARAMETER name:x index:0 type:kotlin.Any
     PROPERTY FAKE_OVERRIDE name:aVal visibility:public modality:FINAL [fake_override,val]
+      overridden:
+        public final aVal: kotlin.Int [val]
       FUN FAKE_OVERRIDE name:<get-aVal> visibility:public modality:FINAL <> ($this:<root>.A) returnType:kotlin.Int [fake_override]
         correspondingProperty: PROPERTY FAKE_OVERRIDE name:aVal visibility:public modality:FINAL [fake_override,val]
         overridden:
@@ -187,17 +189,19 @@ FILE fqName:<root> fileName:/smartCastOnFakeOverrideReceiver.kt
             GET_VAR 'a: kotlin.Any declared in <root>.GB.testGB1' type=kotlin.Any origin=null
         TYPE_OP type=kotlin.Unit origin=IMPLICIT_COERCION_TO_UNIT typeOperand=kotlin.Unit
           CALL 'public final fun f (): kotlin.Int [fake_override] declared in <root>.GB' type=kotlin.Int origin=null
-            $this: TYPE_OP type=<root>.GB<*, *> origin=IMPLICIT_CAST typeOperand=<root>.GB<*, *>
+            $this: TYPE_OP type=<root>.GB<kotlin.Int, kotlin.String> origin=IMPLICIT_CAST typeOperand=<root>.GB<kotlin.Int, kotlin.String>
               GET_VAR 'a: kotlin.Any declared in <root>.GB.testGB1' type=kotlin.Any origin=null
         TYPE_OP type=kotlin.Unit origin=IMPLICIT_COERCION_TO_UNIT typeOperand=kotlin.Unit
           CALL 'public final fun <get-aVal> (): kotlin.Int [fake_override] declared in <root>.GB' type=kotlin.Int origin=GET_PROPERTY
-            $this: TYPE_OP type=<root>.GB<*, *> origin=IMPLICIT_CAST typeOperand=<root>.GB<*, *>
+            $this: TYPE_OP type=<root>.GB<kotlin.Int, kotlin.String> origin=IMPLICIT_CAST typeOperand=<root>.GB<kotlin.Int, kotlin.String>
               GET_VAR 'a: kotlin.Any declared in <root>.GB.testGB1' type=kotlin.Any origin=null
     FUN FAKE_OVERRIDE name:f visibility:public modality:FINAL <> ($this:<root>.GA<T of <root>.GB>) returnType:kotlin.Int [fake_override]
       overridden:
         public final fun f (): kotlin.Int declared in <root>.GA
       $this: VALUE_PARAMETER name:<this> type:<root>.GA<T of <root>.GB>
     PROPERTY FAKE_OVERRIDE name:aVal visibility:public modality:FINAL [fake_override,val]
+      overridden:
+        public final aVal: kotlin.Int [val]
       FUN FAKE_OVERRIDE name:<get-aVal> visibility:public modality:FINAL <> ($this:<root>.GA<T of <root>.GB>) returnType:kotlin.Int [fake_override]
         correspondingProperty: PROPERTY FAKE_OVERRIDE name:aVal visibility:public modality:FINAL [fake_override,val]
         overridden:

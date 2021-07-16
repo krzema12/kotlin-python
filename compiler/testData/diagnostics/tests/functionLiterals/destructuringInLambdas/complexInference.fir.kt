@@ -9,9 +9,9 @@ fun <X, Y> foo(y: Y, x: (X, Y) -> Unit) {}
 
 fun bar(aInstance: A, bInstance: B) {
     foo("") {
-        (<!UNRESOLVED_REFERENCE!>a<!>, <!UNRESOLVED_REFERENCE!>b<!>): A, c ->
-        a <!INAPPLICABLE_CANDIDATE!>checkType<!> { <!INAPPLICABLE_CANDIDATE!>_<!><Int>() }
-        b <!INAPPLICABLE_CANDIDATE!>checkType<!> { <!INAPPLICABLE_CANDIDATE!>_<!><String>() }
+        (a, b): A, c ->
+        a checkType { _<Int>() }
+        b checkType { _<String>() }
         c checkType { _<String>() }
     }
 
@@ -24,24 +24,24 @@ fun bar(aInstance: A, bInstance: B) {
 
     foo(bInstance) {
         (a, b): A, (c, d) ->
-        <!UNRESOLVED_REFERENCE!>a<!> <!INAPPLICABLE_CANDIDATE!>checkType<!> { <!INAPPLICABLE_CANDIDATE!>_<!><Int>() }
-        <!UNRESOLVED_REFERENCE!>b<!> <!INAPPLICABLE_CANDIDATE!>checkType<!> { <!INAPPLICABLE_CANDIDATE!>_<!><String>() }
+        a checkType { _<Int>() }
+        b checkType { _<String>() }
         c checkType { _<Double>() }
         d checkType { _<Short>() }
     }
 
     foo(bInstance) {
-        (a, b), (c, d) ->
-        <!UNRESOLVED_REFERENCE!>a<!> <!INAPPLICABLE_CANDIDATE!>checkType<!> { <!INAPPLICABLE_CANDIDATE!>_<!><Int>() }
-        <!UNRESOLVED_REFERENCE!>b<!> <!INAPPLICABLE_CANDIDATE!>checkType<!> { <!INAPPLICABLE_CANDIDATE!>_<!><String>() }
+        <!COMPONENT_FUNCTION_MISSING, COMPONENT_FUNCTION_MISSING!>(a, b)<!>, (c, d) ->
+        a <!INAPPLICABLE_CANDIDATE!>checkType<!> { <!INAPPLICABLE_CANDIDATE!>_<!><Int>() }
+        b <!INAPPLICABLE_CANDIDATE!>checkType<!> { <!INAPPLICABLE_CANDIDATE!>_<!><String>() }
         c checkType { _<Double>() }
         d checkType { _<Short>() }
     }
 
     foo<A, B>(bInstance) {
         (a, b), (c, d) ->
-        <!UNRESOLVED_REFERENCE!>a<!> <!INAPPLICABLE_CANDIDATE!>checkType<!> { <!INAPPLICABLE_CANDIDATE!>_<!><Int>() }
-        <!UNRESOLVED_REFERENCE!>b<!> <!INAPPLICABLE_CANDIDATE!>checkType<!> { <!INAPPLICABLE_CANDIDATE!>_<!><String>() }
+        a checkType { _<Int>() }
+        b checkType { _<String>() }
         c checkType { _<Double>() }
         d checkType { _<Short>() }
     }

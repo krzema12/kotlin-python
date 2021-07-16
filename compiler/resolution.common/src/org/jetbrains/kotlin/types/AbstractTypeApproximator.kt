@@ -5,11 +5,16 @@
 
 package org.jetbrains.kotlin.types
 
+import org.jetbrains.kotlin.config.LanguageFeature
+import org.jetbrains.kotlin.config.LanguageVersionSettings
 import org.jetbrains.kotlin.resolve.calls.NewCommonSuperTypeCalculator.commonSuperType
 import org.jetbrains.kotlin.types.model.*
 import java.util.concurrent.ConcurrentHashMap
 
-abstract class AbstractTypeApproximator(val ctx: TypeSystemInferenceExtensionContext) : TypeSystemInferenceExtensionContext by ctx {
+abstract class AbstractTypeApproximator(
+    val ctx: TypeSystemInferenceExtensionContext,
+    protected val languageVersionSettings: LanguageVersionSettings,
+) : TypeSystemInferenceExtensionContext by ctx {
 
     private class ApproximationResult(val type: KotlinTypeMarker?)
 
@@ -81,7 +86,7 @@ abstract class AbstractTypeApproximator(val ctx: TypeSystemInferenceExtensionCon
 
         return cachedValue(type, conf, toSuper = true) {
             approximateTo(
-                prepareType(type), conf, { upperBound() },
+                AbstractTypeChecker.prepareType(ctx, type), conf, { upperBound() },
                 referenceApproximateToSuperType, depth
             )
         }
@@ -92,7 +97,7 @@ abstract class AbstractTypeApproximator(val ctx: TypeSystemInferenceExtensionCon
 
         return cachedValue(type, conf, toSuper = false) {
             approximateTo(
-                prepareType(type), conf, { lowerBound() },
+                AbstractTypeChecker.prepareType(ctx, type), conf, { lowerBound() },
                 referenceApproximateToSubType, depth
             )
         }
@@ -160,6 +165,21 @@ abstract class AbstractTypeApproximator(val ctx: TypeSystemInferenceExtensionCon
             }
             else -> error("sealed")
         }
+    }
+
+    private fun approximateLocalTypes(type: SimpleTypeMarker, conf: TypeApproximatorConfiguration, toSuper: Boolean): SimpleTypeMarker? {
+        if (!toSuper) return null
+        if (!conf.localTypes) return null
+        val constructor = type.typeConstructor()
+        val needApproximate = conf.localTypes && constructor.isLocalType()
+        if (!needApproximate) return null
+        val superConstructor = constructor.supertypes().first().typeConstructor()
+        val typeCheckerContext = newBaseTypeCheckerContext(
+            errorTypesEqualToAnything = false,
+            stubTypesEqualToAnything = false
+        )
+        return AbstractTypeChecker.findCorrespondingSupertypes(typeCheckerContext, type, superConstructor).first()
+            .withNullability(type.isMarkedNullable())
     }
 
     private fun isIntersectionTypeEffectivelyNothing(constructor: IntersectionTypeConstructorMarker): Boolean {
@@ -326,7 +346,7 @@ abstract class AbstractTypeApproximator(val ctx: TypeSystemInferenceExtensionCon
                 null
         }
 
-        return null // simple classifier type
+        return approximateLocalTypes(type, conf, toSuper) // simple classifier type
     }
 
     private fun approximateDefinitelyNotNullType(
@@ -338,8 +358,14 @@ abstract class AbstractTypeApproximator(val ctx: TypeSystemInferenceExtensionCon
         val originalType = type.original()
         val approximatedOriginalType =
             if (toSuper) approximateToSuperType(originalType, conf, depth) else approximateToSubType(originalType, conf, depth)
+        val typeWithErasedNullability = originalType.withNullability(false)
 
-        return if (conf.definitelyNotNullType) {
+        // Approximate T!! into T if T is already not-null (has not-null upper bounds)
+        if (originalType.typeConstructor().isTypeParameterTypeConstructor() && !typeWithErasedNullability.isNullableType()) {
+            return typeWithErasedNullability
+        }
+
+        return if (conf.definitelyNotNullType || languageVersionSettings.supportsFeature(LanguageFeature.DefinitelyNotNullTypeParameters)) {
             approximatedOriginalType?.makeDefinitelyNotNullOrNotNull()
         } else {
             if (toSuper)
@@ -512,10 +538,11 @@ abstract class AbstractTypeApproximator(val ctx: TypeSystemInferenceExtensionCon
             }
         }
 
-        if (newArguments.all { it == null }) return null
+        if (newArguments.all { it == null }) return approximateLocalTypes(type, conf, toSuper)
 
         val newArgumentsList = List(type.argumentsCount()) { index -> newArguments[index] ?: type.getArgument(index) }
-        return type.replaceArguments(newArgumentsList)
+        val approximatedType = type.replaceArguments(newArgumentsList)
+        return approximateLocalTypes(approximatedType, conf, toSuper) ?: approximatedType
     }
 
     private fun KotlinTypeMarker.defaultResult(toSuper: Boolean) = if (toSuper) nullableAnyType() else {

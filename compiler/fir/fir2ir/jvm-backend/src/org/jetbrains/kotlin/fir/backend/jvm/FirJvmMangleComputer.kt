@@ -11,7 +11,8 @@ import org.jetbrains.kotlin.backend.common.serialization.mangle.MangleMode
 import org.jetbrains.kotlin.backend.common.serialization.mangle.collectForMangler
 import org.jetbrains.kotlin.fir.*
 import org.jetbrains.kotlin.fir.declarations.*
-import org.jetbrains.kotlin.fir.resolve.firSymbolProvider
+import org.jetbrains.kotlin.fir.resolve.firProvider
+import org.jetbrains.kotlin.fir.resolve.symbolProvider
 import org.jetbrains.kotlin.fir.resolve.fullyExpandedType
 import org.jetbrains.kotlin.fir.resolve.toSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassSymbol
@@ -20,6 +21,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirTypeParameterSymbol
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
 import org.jetbrains.kotlin.utils.addToStdlib.ifNotEmpty
 
 open class FirJvmMangleComputer(
@@ -33,6 +35,11 @@ open class FirJvmMangleComputer(
     private var isRealExpect = false
 
     open fun FirFunction<*>.platformSpecificFunctionName(): String? = null
+
+    open fun FirFunction<*>.platformSpecificSuffix(): String? =
+        if (this is FirSimpleFunction && name.asString() == "main")
+            this@FirJvmMangleComputer.session.firProvider.getFirCallableContainerFile(symbol)?.name
+        else null
 
     open fun FirFunction<*>.specialValueParamPrefix(param: FirValueParameter): String = ""
 
@@ -78,7 +85,7 @@ open class FirJvmMangleComputer(
             else -> return
         }
         if (parentClassId != null && !parentClassId.isLocal) {
-            val parentClassLike = this@FirJvmMangleComputer.session.firSymbolProvider.getClassLikeSymbolByFqName(parentClassId)?.fir
+            val parentClassLike = this@FirJvmMangleComputer.session.symbolProvider.getClassLikeSymbolByFqName(parentClassId)?.fir
                 ?: error("Attempt to find parent ($parentClassId) for probably-local declaration!")
             if (parentClassLike is FirRegularClass || parentClassLike is FirTypeAlias) {
                 parentClassLike.accept(this@FirJvmMangleComputer, false)
@@ -119,6 +126,11 @@ open class FirJvmMangleComputer(
 
         val name = (this as? FirSimpleFunction)?.name ?: Name.special("<anonymous>")
         builder.append(name.asString())
+
+        platformSpecificSuffix()?.let {
+            builder.append(MangleConstant.PLATFORM_FUNCTION_MARKER)
+            builder.append(it)
+        }
 
         mangleSignature(isCtor, isStatic)
     }
@@ -210,7 +222,7 @@ open class FirJvmMangleComputer(
                             is ConeStarProjection -> appendSignature(MangleConstant.STAR_MARK)
                             is ConeKotlinTypeProjection -> {
                                 if (arg.kind != ProjectionKind.INVARIANT) {
-                                    appendSignature(arg.kind.name.toLowerCase())
+                                    appendSignature(arg.kind.name.toLowerCaseAsciiOnly())
                                     appendSignature(MangleConstant.VARIANCE_SEPARATOR)
                                 }
 

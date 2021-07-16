@@ -8,13 +8,14 @@ package org.jetbrains.kotlin.idea.frontend.api.fir.scopes
 import com.intellij.openapi.project.Project
 import org.jetbrains.kotlin.fir.scopes.impl.FirPackageMemberScope
 import org.jetbrains.kotlin.idea.fir.low.level.api.api.searchScope
-import org.jetbrains.kotlin.idea.frontend.api.ValidityToken
+import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
 import org.jetbrains.kotlin.idea.frontend.api.fir.KtSymbolByFirBuilder
 import org.jetbrains.kotlin.idea.frontend.api.fir.utils.weakRef
 import org.jetbrains.kotlin.idea.frontend.api.scopes.KtPackageScope
 import org.jetbrains.kotlin.idea.frontend.api.scopes.KtScopeNameFilter
 import org.jetbrains.kotlin.idea.frontend.api.symbols.KtCallableSymbol
 import org.jetbrains.kotlin.idea.frontend.api.symbols.KtClassifierSymbol
+import org.jetbrains.kotlin.idea.frontend.api.symbols.KtConstructorSymbol
 import org.jetbrains.kotlin.idea.frontend.api.withValidityAssertion
 import org.jetbrains.kotlin.idea.stubindex.KotlinTopLevelClassByPackageIndex
 import org.jetbrains.kotlin.idea.stubindex.KotlinTopLevelFunctionByPackageIndex
@@ -52,4 +53,6 @@ internal class KtFirPackageScope(
     override fun getClassifierSymbols(nameFilter: KtScopeNameFilter): Sequence<KtClassifierSymbol> = withValidityAssertion {
         firScope.getClassifierSymbols(getClassifierNames().filter(nameFilter), builder)
     }
+
+    override fun getConstructors(): Sequence<KtConstructorSymbol> = emptySequence()
 }

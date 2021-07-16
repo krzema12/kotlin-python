@@ -66,8 +66,16 @@ abstract class TypeRegistry<K : Any, V : Any> {
         return NullableArrayMapAccessor(kClass, getId(kClass))
     }
 
+    fun <KK : K> generateAnyNullableAccessor(kClass: KClass<KK>): NullableArrayMapAccessor<K, V, *> {
+        return NullableArrayMapAccessor(kClass, getId(kClass))
+    }
+
     fun <T : K> getId(kClass: KClass<T>): Int {
         return idPerType.computeIfAbsent(kClass) { idCounter.getAndIncrement() }
+    }
+
+    fun allValuesThreadUnsafeForRendering(): Map<KClass<out K>, Int> {
+        return idPerType
     }
 
     protected val indices: Collection<Int>

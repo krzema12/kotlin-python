@@ -2550,6 +2550,30 @@ public inline fun <T> kotlin.collections.Iterable<T>.first(predicate: (T) -> kot
 
 public fun <T> kotlin.collections.List<T>.first(): T
 
+@kotlin.SinceKotlin(version = "1.5")
+@kotlin.internal.InlineOnly
+public inline fun <T, R : kotlin.Any> kotlin.Array<out T>.firstNotNullOf(transform: (T) -> R?): R
+
+@kotlin.SinceKotlin(version = "1.5")
+@kotlin.internal.InlineOnly
+public inline fun <T, R : kotlin.Any> kotlin.collections.Iterable<T>.firstNotNullOf(transform: (T) -> R?): R
+
+@kotlin.SinceKotlin(version = "1.5")
+@kotlin.internal.InlineOnly
+public inline fun <K, V, R : kotlin.Any> kotlin.collections.Map<out K, V>.firstNotNullOf(transform: (kotlin.collections.Map.Entry<K, V>) -> R?): R
+
+@kotlin.SinceKotlin(version = "1.5")
+@kotlin.internal.InlineOnly
+public inline fun <T, R : kotlin.Any> kotlin.Array<out T>.firstNotNullOfOrNull(transform: (T) -> R?): R?
+
+@kotlin.SinceKotlin(version = "1.5")
+@kotlin.internal.InlineOnly
+public inline fun <T, R : kotlin.Any> kotlin.collections.Iterable<T>.firstNotNullOfOrNull(transform: (T) -> R?): R?
+
+@kotlin.SinceKotlin(version = "1.5")
+@kotlin.internal.InlineOnly
+public inline fun <K, V, R : kotlin.Any> kotlin.collections.Map<out K, V>.firstNotNullOfOrNull(transform: (kotlin.collections.Map.Entry<K, V>) -> R?): R?
+
 public fun <T> kotlin.Array<out T>.firstOrNull(): T?
 
 public inline fun <T> kotlin.Array<out T>.firstOrNull(predicate: (T) -> kotlin.Boolean): T?
@@ -4159,156 +4183,156 @@ public inline fun <K, V, R> kotlin.collections.Map<out K, V>.mapValues(transform
 
 public inline fun <K, V, R, M : kotlin.collections.MutableMap<in K, in R>> kotlin.collections.Map<out K, V>.mapValuesTo(destination: M, transform: (kotlin.collections.Map.Entry<K, V>) -> R): M
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun <T : kotlin.Comparable<T>> kotlin.Array<out T>.max(): T?
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.1")
 public fun kotlin.Array<out kotlin.Double>.max(): kotlin.Double?
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.1")
 public fun kotlin.Array<out kotlin.Float>.max(): kotlin.Float?
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.ByteArray.max(): kotlin.Byte?
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.CharArray.max(): kotlin.Char?
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.DoubleArray.max(): kotlin.Double?
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.FloatArray.max(): kotlin.Float?
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.IntArray.max(): kotlin.Int?
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.LongArray.max(): kotlin.Long?
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.ShortArray.max(): kotlin.Short?
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.UByteArray.max(): kotlin.UByte?
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.UIntArray.max(): kotlin.UInt?
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.ULongArray.max(): kotlin.ULong?
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.UShortArray.max(): kotlin.UShort?
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun <T : kotlin.Comparable<T>> kotlin.collections.Iterable<T>.max(): T?
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.1")
 public fun kotlin.collections.Iterable<kotlin.Double>.max(): kotlin.Double?
 
-@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.1")
 public fun kotlin.collections.Iterable<kotlin.Float>.max(): kotlin.Float?
 
-@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <T, R : kotlin.Comparable<R>> kotlin.Array<out T>.maxBy(selector: (T) -> R): T?
 
-@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.BooleanArray.maxBy(selector: (kotlin.Boolean) -> R): kotlin.Boolean?
 
-@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.ByteArray.maxBy(selector: (kotlin.Byte) -> R): kotlin.Byte?
 
-@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.CharArray.maxBy(selector: (kotlin.Char) -> R): kotlin.Char?
 
-@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.DoubleArray.maxBy(selector: (kotlin.Double) -> R): kotlin.Double?
 
-@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.FloatArray.maxBy(selector: (kotlin.Float) -> R): kotlin.Float?
 
-@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.IntArray.maxBy(selector: (kotlin.Int) -> R): kotlin.Int?
 
-@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.LongArray.maxBy(selector: (kotlin.Long) -> R): kotlin.Long?
 
-@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.ShortArray.maxBy(selector: (kotlin.Short) -> R): kotlin.Short?
 
-@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R : kotlin.Comparable<R>> kotlin.UByteArray.maxBy(selector: (kotlin.UByte) -> R): kotlin.UByte?
 
-@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R : kotlin.Comparable<R>> kotlin.UIntArray.maxBy(selector: (kotlin.UInt) -> R): kotlin.UInt?
 
-@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R : kotlin.Comparable<R>> kotlin.ULongArray.maxBy(selector: (kotlin.ULong) -> R): kotlin.ULong?
 
-@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R : kotlin.Comparable<R>> kotlin.UShortArray.maxBy(selector: (kotlin.UShort) -> R): kotlin.UShort?
 
-@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <T, R : kotlin.Comparable<R>> kotlin.collections.Iterable<T>.maxBy(selector: (T) -> R): T?
 
-@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.internal.InlineOnly
 public inline fun <K, V, R : kotlin.Comparable<R>> kotlin.collections.Map<out K, V>.maxBy(selector: (kotlin.collections.Map.Entry<K, V>) -> R): kotlin.collections.Map.Entry<K, V>?
 
@@ -5053,72 +5077,72 @@ public fun kotlin.collections.Iterable<kotlin.Double>.maxOrNull(): kotlin.Double
 @kotlin.SinceKotlin(version = "1.4")
 public fun kotlin.collections.Iterable<kotlin.Float>.maxOrNull(): kotlin.Float?
 
-@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun <T> kotlin.Array<out T>.maxWith(comparator: kotlin.Comparator<in T>): T?
 
-@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.BooleanArray.maxWith(comparator: kotlin.Comparator<in kotlin.Boolean>): kotlin.Boolean?
 
-@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.ByteArray.maxWith(comparator: kotlin.Comparator<in kotlin.Byte>): kotlin.Byte?
 
-@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.CharArray.maxWith(comparator: kotlin.Comparator<in kotlin.Char>): kotlin.Char?
 
-@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.DoubleArray.maxWith(comparator: kotlin.Comparator<in kotlin.Double>): kotlin.Double?
 
-@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.FloatArray.maxWith(comparator: kotlin.Comparator<in kotlin.Float>): kotlin.Float?
 
-@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.IntArray.maxWith(comparator: kotlin.Comparator<in kotlin.Int>): kotlin.Int?
 
-@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.LongArray.maxWith(comparator: kotlin.Comparator<in kotlin.Long>): kotlin.Long?
 
-@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.ShortArray.maxWith(comparator: kotlin.Comparator<in kotlin.Short>): kotlin.Short?
 
-@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.UByteArray.maxWith(comparator: kotlin.Comparator<in kotlin.UByte>): kotlin.UByte?
 
-@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.UIntArray.maxWith(comparator: kotlin.Comparator<in kotlin.UInt>): kotlin.UInt?
 
-@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.ULongArray.maxWith(comparator: kotlin.Comparator<in kotlin.ULong>): kotlin.ULong?
 
-@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.UShortArray.maxWith(comparator: kotlin.Comparator<in kotlin.UShort>): kotlin.UShort?
 
-@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun <T> kotlin.collections.Iterable<T>.maxWith(comparator: kotlin.Comparator<in T>): T?
 
-@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "maxWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.internal.InlineOnly
 public inline fun <K, V> kotlin.collections.Map<out K, V>.maxWith(comparator: kotlin.Comparator<in kotlin.collections.Map.Entry<K, V>>): kotlin.collections.Map.Entry<K, V>?
 
@@ -5172,156 +5196,156 @@ public fun <T> kotlin.collections.Iterable<T>.maxWithOrNull(comparator: kotlin.C
 @kotlin.internal.InlineOnly
 public inline fun <K, V> kotlin.collections.Map<out K, V>.maxWithOrNull(comparator: kotlin.Comparator<in kotlin.collections.Map.Entry<K, V>>): kotlin.collections.Map.Entry<K, V>?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun <T : kotlin.Comparable<T>> kotlin.Array<out T>.min(): T?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.1")
 public fun kotlin.Array<out kotlin.Double>.min(): kotlin.Double?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.1")
 public fun kotlin.Array<out kotlin.Float>.min(): kotlin.Float?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.ByteArray.min(): kotlin.Byte?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.CharArray.min(): kotlin.Char?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.DoubleArray.min(): kotlin.Double?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.FloatArray.min(): kotlin.Float?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.IntArray.min(): kotlin.Int?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.LongArray.min(): kotlin.Long?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.ShortArray.min(): kotlin.Short?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.UByteArray.min(): kotlin.UByte?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.UIntArray.min(): kotlin.UInt?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.ULongArray.min(): kotlin.ULong?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.UShortArray.min(): kotlin.UShort?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun <T : kotlin.Comparable<T>> kotlin.collections.Iterable<T>.min(): T?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.1")
 public fun kotlin.collections.Iterable<kotlin.Double>.min(): kotlin.Double?
 
-@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.1")
 public fun kotlin.collections.Iterable<kotlin.Float>.min(): kotlin.Float?
 
-@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <T, R : kotlin.Comparable<R>> kotlin.Array<out T>.minBy(selector: (T) -> R): T?
 
-@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.BooleanArray.minBy(selector: (kotlin.Boolean) -> R): kotlin.Boolean?
 
-@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.ByteArray.minBy(selector: (kotlin.Byte) -> R): kotlin.Byte?
 
-@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.CharArray.minBy(selector: (kotlin.Char) -> R): kotlin.Char?
 
-@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.DoubleArray.minBy(selector: (kotlin.Double) -> R): kotlin.Double?
 
-@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.FloatArray.minBy(selector: (kotlin.Float) -> R): kotlin.Float?
 
-@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.IntArray.minBy(selector: (kotlin.Int) -> R): kotlin.Int?
 
-@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.LongArray.minBy(selector: (kotlin.Long) -> R): kotlin.Long?
 
-@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.ShortArray.minBy(selector: (kotlin.Short) -> R): kotlin.Short?
 
-@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R : kotlin.Comparable<R>> kotlin.UByteArray.minBy(selector: (kotlin.UByte) -> R): kotlin.UByte?
 
-@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R : kotlin.Comparable<R>> kotlin.UIntArray.minBy(selector: (kotlin.UInt) -> R): kotlin.UInt?
 
-@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R : kotlin.Comparable<R>> kotlin.ULongArray.minBy(selector: (kotlin.ULong) -> R): kotlin.ULong?
 
-@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R : kotlin.Comparable<R>> kotlin.UShortArray.minBy(selector: (kotlin.UShort) -> R): kotlin.UShort?
 
-@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <T, R : kotlin.Comparable<R>> kotlin.collections.Iterable<T>.minBy(selector: (T) -> R): T?
 
-@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minByOrNull(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public inline fun <K, V, R : kotlin.Comparable<R>> kotlin.collections.Map<out K, V>.minBy(selector: (kotlin.collections.Map.Entry<K, V>) -> R): kotlin.collections.Map.Entry<K, V>?
 
 @kotlin.SinceKotlin(version = "1.4")
@@ -6065,72 +6089,72 @@ public fun kotlin.collections.Iterable<kotlin.Double>.minOrNull(): kotlin.Double
 @kotlin.SinceKotlin(version = "1.4")
 public fun kotlin.collections.Iterable<kotlin.Float>.minOrNull(): kotlin.Float?
 
-@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun <T> kotlin.Array<out T>.minWith(comparator: kotlin.Comparator<in T>): T?
 
-@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.BooleanArray.minWith(comparator: kotlin.Comparator<in kotlin.Boolean>): kotlin.Boolean?
 
-@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.ByteArray.minWith(comparator: kotlin.Comparator<in kotlin.Byte>): kotlin.Byte?
 
-@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.CharArray.minWith(comparator: kotlin.Comparator<in kotlin.Char>): kotlin.Char?
 
-@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.DoubleArray.minWith(comparator: kotlin.Comparator<in kotlin.Double>): kotlin.Double?
 
-@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.FloatArray.minWith(comparator: kotlin.Comparator<in kotlin.Float>): kotlin.Float?
 
-@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.IntArray.minWith(comparator: kotlin.Comparator<in kotlin.Int>): kotlin.Int?
 
-@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.LongArray.minWith(comparator: kotlin.Comparator<in kotlin.Long>): kotlin.Long?
 
-@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun kotlin.ShortArray.minWith(comparator: kotlin.Comparator<in kotlin.Short>): kotlin.Short?
 
-@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.UByteArray.minWith(comparator: kotlin.Comparator<in kotlin.UByte>): kotlin.UByte?
 
-@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.UIntArray.minWith(comparator: kotlin.Comparator<in kotlin.UInt>): kotlin.UInt?
 
-@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.ULongArray.minWith(comparator: kotlin.Comparator<in kotlin.ULong>): kotlin.ULong?
 
-@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 public fun kotlin.UShortArray.minWith(comparator: kotlin.Comparator<in kotlin.UShort>): kotlin.UShort?
 
-@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun <T> kotlin.collections.Iterable<T>.minWith(comparator: kotlin.Comparator<in T>): T?
 
-@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "minWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(warningSince = "1.4")
+@kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minWithOrNull(comparator)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
 public fun <K, V> kotlin.collections.Map<out K, V>.minWith(comparator: kotlin.Comparator<in kotlin.collections.Map.Entry<K, V>>): kotlin.collections.Map.Entry<K, V>?
 
 @kotlin.SinceKotlin(version = "1.4")
@@ -6864,47 +6888,47 @@ public inline fun kotlin.ShortArray.randomOrNull(): kotlin.Short?
 public fun kotlin.ShortArray.randomOrNull(random: kotlin.random.Random): kotlin.Short?
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UByteArray.randomOrNull(): kotlin.UByte?
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 public fun kotlin.UByteArray.randomOrNull(random: kotlin.random.Random): kotlin.UByte?
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UIntArray.randomOrNull(): kotlin.UInt?
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 public fun kotlin.UIntArray.randomOrNull(random: kotlin.random.Random): kotlin.UInt?
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.ULongArray.randomOrNull(): kotlin.ULong?
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 public fun kotlin.ULongArray.randomOrNull(random: kotlin.random.Random): kotlin.ULong?
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UShortArray.randomOrNull(): kotlin.UShort?
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 public fun kotlin.UShortArray.randomOrNull(random: kotlin.random.Random): kotlin.UShort?
 
 @kotlin.SinceKotlin(version = "1.4")
@@ -7086,26 +7110,26 @@ public inline fun kotlin.LongArray.reduceOrNull(operation: (acc: kotlin.Long, ko
 public inline fun kotlin.ShortArray.reduceOrNull(operation: (acc: kotlin.Short, kotlin.Short) -> kotlin.Short): kotlin.Short?
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UByteArray.reduceOrNull(operation: (acc: kotlin.UByte, kotlin.UByte) -> kotlin.UByte): kotlin.UByte?
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UIntArray.reduceOrNull(operation: (acc: kotlin.UInt, kotlin.UInt) -> kotlin.UInt): kotlin.UInt?
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.ULongArray.reduceOrNull(operation: (acc: kotlin.ULong, kotlin.ULong) -> kotlin.ULong): kotlin.ULong?
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UShortArray.reduceOrNull(operation: (acc: kotlin.UShort, kotlin.UShort) -> kotlin.UShort): kotlin.UShort?
 
@@ -7280,26 +7304,26 @@ public inline fun kotlin.LongArray.reduceRightOrNull(operation: (kotlin.Long, ac
 public inline fun kotlin.ShortArray.reduceRightOrNull(operation: (kotlin.Short, acc: kotlin.Short) -> kotlin.Short): kotlin.Short?
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UByteArray.reduceRightOrNull(operation: (kotlin.UByte, acc: kotlin.UByte) -> kotlin.UByte): kotlin.UByte?
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UIntArray.reduceRightOrNull(operation: (kotlin.UInt, acc: kotlin.UInt) -> kotlin.UInt): kotlin.UInt?
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.ULongArray.reduceRightOrNull(operation: (kotlin.ULong, acc: kotlin.ULong) -> kotlin.ULong): kotlin.ULong?
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UShortArray.reduceRightOrNull(operation: (kotlin.UShort, acc: kotlin.UShort) -> kotlin.UShort): kotlin.UShort?
 
@@ -7812,26 +7836,26 @@ public inline fun <R> kotlin.LongArray.scan(initial: R, operation: (acc: R, kotl
 public inline fun <R> kotlin.ShortArray.scan(initial: R, operation: (acc: R, kotlin.Short) -> R): kotlin.collections.List<R>
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun <R> kotlin.UByteArray.scan(initial: R, operation: (acc: R, kotlin.UByte) -> R): kotlin.collections.List<R>
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun <R> kotlin.UIntArray.scan(initial: R, operation: (acc: R, kotlin.UInt) -> R): kotlin.collections.List<R>
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun <R> kotlin.ULongArray.scan(initial: R, operation: (acc: R, kotlin.ULong) -> R): kotlin.collections.List<R>
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun <R> kotlin.UShortArray.scan(initial: R, operation: (acc: R, kotlin.UShort) -> R): kotlin.collections.List<R>
 
@@ -7884,204 +7908,32 @@ public inline fun <R> kotlin.LongArray.scanIndexed(initial: R, operation: (index
 public inline fun <R> kotlin.ShortArray.scanIndexed(initial: R, operation: (index: kotlin.Int, acc: R, kotlin.Short) -> R): kotlin.collections.List<R>
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun <R> kotlin.UByteArray.scanIndexed(initial: R, operation: (index: kotlin.Int, acc: R, kotlin.UByte) -> R): kotlin.collections.List<R>
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun <R> kotlin.UIntArray.scanIndexed(initial: R, operation: (index: kotlin.Int, acc: R, kotlin.UInt) -> R): kotlin.collections.List<R>
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun <R> kotlin.ULongArray.scanIndexed(initial: R, operation: (index: kotlin.Int, acc: R, kotlin.ULong) -> R): kotlin.collections.List<R>
 
 @kotlin.SinceKotlin(version = "1.4")
-@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 @kotlin.internal.InlineOnly
 public inline fun <R> kotlin.UShortArray.scanIndexed(initial: R, operation: (index: kotlin.Int, acc: R, kotlin.UShort) -> R): kotlin.collections.List<R>
 
 @kotlin.SinceKotlin(version = "1.4")
 @kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
 public inline fun <T, R> kotlin.collections.Iterable<T>.scanIndexed(initial: R, operation: (index: kotlin.Int, acc: R, T) -> R): kotlin.collections.List<R>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduce instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduce(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-public inline fun <S, T : S> kotlin.Array<out T>.scanReduce(operation: (acc: S, T) -> S): kotlin.collections.List<S>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduce instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduce(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.internal.InlineOnly
-public inline fun kotlin.BooleanArray.scanReduce(operation: (acc: kotlin.Boolean, kotlin.Boolean) -> kotlin.Boolean): kotlin.collections.List<kotlin.Boolean>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduce instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduce(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.internal.InlineOnly
-public inline fun kotlin.ByteArray.scanReduce(operation: (acc: kotlin.Byte, kotlin.Byte) -> kotlin.Byte): kotlin.collections.List<kotlin.Byte>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduce instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduce(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.internal.InlineOnly
-public inline fun kotlin.CharArray.scanReduce(operation: (acc: kotlin.Char, kotlin.Char) -> kotlin.Char): kotlin.collections.List<kotlin.Char>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduce instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduce(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.internal.InlineOnly
-public inline fun kotlin.DoubleArray.scanReduce(operation: (acc: kotlin.Double, kotlin.Double) -> kotlin.Double): kotlin.collections.List<kotlin.Double>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduce instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduce(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.internal.InlineOnly
-public inline fun kotlin.FloatArray.scanReduce(operation: (acc: kotlin.Float, kotlin.Float) -> kotlin.Float): kotlin.collections.List<kotlin.Float>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduce instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduce(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.internal.InlineOnly
-public inline fun kotlin.IntArray.scanReduce(operation: (acc: kotlin.Int, kotlin.Int) -> kotlin.Int): kotlin.collections.List<kotlin.Int>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduce instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduce(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.internal.InlineOnly
-public inline fun kotlin.LongArray.scanReduce(operation: (acc: kotlin.Long, kotlin.Long) -> kotlin.Long): kotlin.collections.List<kotlin.Long>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduce instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduce(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.internal.InlineOnly
-public inline fun kotlin.ShortArray.scanReduce(operation: (acc: kotlin.Short, kotlin.Short) -> kotlin.Short): kotlin.collections.List<kotlin.Short>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduce instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduce(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.ExperimentalUnsignedTypes
-@kotlin.internal.InlineOnly
-public inline fun kotlin.UByteArray.scanReduce(operation: (acc: kotlin.UByte, kotlin.UByte) -> kotlin.UByte): kotlin.collections.List<kotlin.UByte>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduce instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduce(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.ExperimentalUnsignedTypes
-@kotlin.internal.InlineOnly
-public inline fun kotlin.UIntArray.scanReduce(operation: (acc: kotlin.UInt, kotlin.UInt) -> kotlin.UInt): kotlin.collections.List<kotlin.UInt>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduce instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduce(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.ExperimentalUnsignedTypes
-@kotlin.internal.InlineOnly
-public inline fun kotlin.ULongArray.scanReduce(operation: (acc: kotlin.ULong, kotlin.ULong) -> kotlin.ULong): kotlin.collections.List<kotlin.ULong>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduce instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduce(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.ExperimentalUnsignedTypes
-@kotlin.internal.InlineOnly
-public inline fun kotlin.UShortArray.scanReduce(operation: (acc: kotlin.UShort, kotlin.UShort) -> kotlin.UShort): kotlin.collections.List<kotlin.UShort>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduce instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduce(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-public inline fun <S, T : S> kotlin.collections.Iterable<T>.scanReduce(operation: (acc: S, T) -> S): kotlin.collections.List<S>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduceIndexed instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduceIndexed(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-public inline fun <S, T : S> kotlin.Array<out T>.scanReduceIndexed(operation: (index: kotlin.Int, acc: S, T) -> S): kotlin.collections.List<S>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduceIndexed instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduceIndexed(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.internal.InlineOnly
-public inline fun kotlin.BooleanArray.scanReduceIndexed(operation: (index: kotlin.Int, acc: kotlin.Boolean, kotlin.Boolean) -> kotlin.Boolean): kotlin.collections.List<kotlin.Boolean>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduceIndexed instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduceIndexed(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.internal.InlineOnly
-public inline fun kotlin.ByteArray.scanReduceIndexed(operation: (index: kotlin.Int, acc: kotlin.Byte, kotlin.Byte) -> kotlin.Byte): kotlin.collections.List<kotlin.Byte>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduceIndexed instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduceIndexed(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.internal.InlineOnly
-public inline fun kotlin.CharArray.scanReduceIndexed(operation: (index: kotlin.Int, acc: kotlin.Char, kotlin.Char) -> kotlin.Char): kotlin.collections.List<kotlin.Char>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduceIndexed instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduceIndexed(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.internal.InlineOnly
-public inline fun kotlin.DoubleArray.scanReduceIndexed(operation: (index: kotlin.Int, acc: kotlin.Double, kotlin.Double) -> kotlin.Double): kotlin.collections.List<kotlin.Double>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduceIndexed instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduceIndexed(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.internal.InlineOnly
-public inline fun kotlin.FloatArray.scanReduceIndexed(operation: (index: kotlin.Int, acc: kotlin.Float, kotlin.Float) -> kotlin.Float): kotlin.collections.List<kotlin.Float>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduceIndexed instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduceIndexed(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.internal.InlineOnly
-public inline fun kotlin.IntArray.scanReduceIndexed(operation: (index: kotlin.Int, acc: kotlin.Int, kotlin.Int) -> kotlin.Int): kotlin.collections.List<kotlin.Int>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduceIndexed instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduceIndexed(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.internal.InlineOnly
-public inline fun kotlin.LongArray.scanReduceIndexed(operation: (index: kotlin.Int, acc: kotlin.Long, kotlin.Long) -> kotlin.Long): kotlin.collections.List<kotlin.Long>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduceIndexed instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduceIndexed(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.internal.InlineOnly
-public inline fun kotlin.ShortArray.scanReduceIndexed(operation: (index: kotlin.Int, acc: kotlin.Short, kotlin.Short) -> kotlin.Short): kotlin.collections.List<kotlin.Short>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduceIndexed instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduceIndexed(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.ExperimentalUnsignedTypes
-@kotlin.internal.InlineOnly
-public inline fun kotlin.UByteArray.scanReduceIndexed(operation: (index: kotlin.Int, acc: kotlin.UByte, kotlin.UByte) -> kotlin.UByte): kotlin.collections.List<kotlin.UByte>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduceIndexed instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduceIndexed(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.ExperimentalUnsignedTypes
-@kotlin.internal.InlineOnly
-public inline fun kotlin.UIntArray.scanReduceIndexed(operation: (index: kotlin.Int, acc: kotlin.UInt, kotlin.UInt) -> kotlin.UInt): kotlin.collections.List<kotlin.UInt>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduceIndexed instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduceIndexed(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.ExperimentalUnsignedTypes
-@kotlin.internal.InlineOnly
-public inline fun kotlin.ULongArray.scanReduceIndexed(operation: (index: kotlin.Int, acc: kotlin.ULong, kotlin.ULong) -> kotlin.ULong): kotlin.collections.List<kotlin.ULong>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduceIndexed instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduceIndexed(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-@kotlin.ExperimentalUnsignedTypes
-@kotlin.internal.InlineOnly
-public inline fun kotlin.UShortArray.scanReduceIndexed(operation: (index: kotlin.Int, acc: kotlin.UShort, kotlin.UShort) -> kotlin.UShort): kotlin.collections.List<kotlin.UShort>
-
-@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Use runningReduceIndexed instead.", replaceWith = kotlin.ReplaceWith(expression = "runningReduceIndexed(operation)", imports = {}))
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalStdlibApi
-public inline fun <S, T : S> kotlin.collections.Iterable<T>.scanReduceIndexed(operation: (index: kotlin.Int, acc: S, T) -> S): kotlin.collections.List<S>
 
 @kotlin.internal.InlineOnly
 public inline operator fun <K, V> kotlin.collections.MutableMap<K, V>.set(key: K, value: V): kotlin.Unit
@@ -8912,23 +8764,23 @@ public fun kotlin.Array<out kotlin.Long>.sum(): kotlin.Long
 public fun kotlin.Array<out kotlin.Short>.sum(): kotlin.Int
 
 @kotlin.jvm.JvmName(name = "sumOfUByte")
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.SinceKotlin(version = "1.5")
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 public fun kotlin.Array<out kotlin.UByte>.sum(): kotlin.UInt
 
 @kotlin.jvm.JvmName(name = "sumOfUInt")
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.SinceKotlin(version = "1.5")
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 public fun kotlin.Array<out kotlin.UInt>.sum(): kotlin.UInt
 
 @kotlin.jvm.JvmName(name = "sumOfULong")
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.SinceKotlin(version = "1.5")
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 public fun kotlin.Array<out kotlin.ULong>.sum(): kotlin.ULong
 
 @kotlin.jvm.JvmName(name = "sumOfUShort")
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.SinceKotlin(version = "1.5")
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 public fun kotlin.Array<out kotlin.UShort>.sum(): kotlin.UInt
 
 public fun kotlin.ByteArray.sum(): kotlin.Int
@@ -8982,103 +8834,159 @@ public fun kotlin.collections.Iterable<kotlin.Long>.sum(): kotlin.Long
 public fun kotlin.collections.Iterable<kotlin.Short>.sum(): kotlin.Int
 
 @kotlin.jvm.JvmName(name = "sumOfUByte")
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.SinceKotlin(version = "1.5")
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 public fun kotlin.collections.Iterable<kotlin.UByte>.sum(): kotlin.UInt
 
 @kotlin.jvm.JvmName(name = "sumOfUInt")
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.SinceKotlin(version = "1.5")
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 public fun kotlin.collections.Iterable<kotlin.UInt>.sum(): kotlin.UInt
 
 @kotlin.jvm.JvmName(name = "sumOfULong")
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.SinceKotlin(version = "1.5")
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 public fun kotlin.collections.Iterable<kotlin.ULong>.sum(): kotlin.ULong
 
 @kotlin.jvm.JvmName(name = "sumOfUShort")
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.SinceKotlin(version = "1.5")
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 public fun kotlin.collections.Iterable<kotlin.UShort>.sum(): kotlin.UInt
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun <T> kotlin.Array<out T>.sumBy(selector: (T) -> kotlin.Int): kotlin.Int
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun kotlin.BooleanArray.sumBy(selector: (kotlin.Boolean) -> kotlin.Int): kotlin.Int
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun kotlin.ByteArray.sumBy(selector: (kotlin.Byte) -> kotlin.Int): kotlin.Int
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun kotlin.CharArray.sumBy(selector: (kotlin.Char) -> kotlin.Int): kotlin.Int
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun kotlin.DoubleArray.sumBy(selector: (kotlin.Double) -> kotlin.Int): kotlin.Int
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun kotlin.FloatArray.sumBy(selector: (kotlin.Float) -> kotlin.Int): kotlin.Int
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun kotlin.IntArray.sumBy(selector: (kotlin.Int) -> kotlin.Int): kotlin.Int
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun kotlin.LongArray.sumBy(selector: (kotlin.Long) -> kotlin.Int): kotlin.Int
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun kotlin.ShortArray.sumBy(selector: (kotlin.Short) -> kotlin.Int): kotlin.Int
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UByteArray.sumBy(selector: (kotlin.UByte) -> kotlin.UInt): kotlin.UInt
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UIntArray.sumBy(selector: (kotlin.UInt) -> kotlin.UInt): kotlin.UInt
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun kotlin.ULongArray.sumBy(selector: (kotlin.ULong) -> kotlin.UInt): kotlin.UInt
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UShortArray.sumBy(selector: (kotlin.UShort) -> kotlin.UInt): kotlin.UInt
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun <T> kotlin.collections.Iterable<T>.sumBy(selector: (T) -> kotlin.Int): kotlin.Int
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun <T> kotlin.Array<out T>.sumByDouble(selector: (T) -> kotlin.Double): kotlin.Double
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun kotlin.BooleanArray.sumByDouble(selector: (kotlin.Boolean) -> kotlin.Double): kotlin.Double
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun kotlin.ByteArray.sumByDouble(selector: (kotlin.Byte) -> kotlin.Double): kotlin.Double
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun kotlin.CharArray.sumByDouble(selector: (kotlin.Char) -> kotlin.Double): kotlin.Double
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun kotlin.DoubleArray.sumByDouble(selector: (kotlin.Double) -> kotlin.Double): kotlin.Double
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun kotlin.FloatArray.sumByDouble(selector: (kotlin.Float) -> kotlin.Double): kotlin.Double
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun kotlin.IntArray.sumByDouble(selector: (kotlin.Int) -> kotlin.Double): kotlin.Double
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun kotlin.LongArray.sumByDouble(selector: (kotlin.Long) -> kotlin.Double): kotlin.Double
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun kotlin.ShortArray.sumByDouble(selector: (kotlin.Short) -> kotlin.Double): kotlin.Double
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UByteArray.sumByDouble(selector: (kotlin.UByte) -> kotlin.Double): kotlin.Double
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UIntArray.sumByDouble(selector: (kotlin.UInt) -> kotlin.Double): kotlin.Double
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun kotlin.ULongArray.sumByDouble(selector: (kotlin.ULong) -> kotlin.Double): kotlin.Double
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UShortArray.sumByDouble(selector: (kotlin.UShort) -> kotlin.Double): kotlin.Double
 
+@kotlin.Deprecated(message = "Use sumOf instead.", replaceWith = kotlin.ReplaceWith(expression = "this.sumOf(selector)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public inline fun <T> kotlin.collections.Iterable<T>.sumByDouble(selector: (T) -> kotlin.Double): kotlin.Double
 
 @kotlin.SinceKotlin(version = "1.4")
@@ -9099,17 +9007,17 @@ public inline fun <T> kotlin.Array<out T>.sumOf(selector: (T) -> kotlin.Int): ko
 @kotlin.internal.InlineOnly
 public inline fun <T> kotlin.Array<out T>.sumOf(selector: (T) -> kotlin.Long): kotlin.Long
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfUInt")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun <T> kotlin.Array<out T>.sumOf(selector: (T) -> kotlin.UInt): kotlin.UInt
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfULong")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun <T> kotlin.Array<out T>.sumOf(selector: (T) -> kotlin.ULong): kotlin.ULong
 
@@ -9131,17 +9039,17 @@ public inline fun kotlin.BooleanArray.sumOf(selector: (kotlin.Boolean) -> kotlin
 @kotlin.internal.InlineOnly
 public inline fun kotlin.BooleanArray.sumOf(selector: (kotlin.Boolean) -> kotlin.Long): kotlin.Long
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfUInt")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.BooleanArray.sumOf(selector: (kotlin.Boolean) -> kotlin.UInt): kotlin.UInt
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfULong")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.BooleanArray.sumOf(selector: (kotlin.Boolean) -> kotlin.ULong): kotlin.ULong
 
@@ -9163,17 +9071,17 @@ public inline fun kotlin.ByteArray.sumOf(selector: (kotlin.Byte) -> kotlin.Int):
 @kotlin.internal.InlineOnly
 public inline fun kotlin.ByteArray.sumOf(selector: (kotlin.Byte) -> kotlin.Long): kotlin.Long
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfUInt")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.ByteArray.sumOf(selector: (kotlin.Byte) -> kotlin.UInt): kotlin.UInt
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfULong")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.ByteArray.sumOf(selector: (kotlin.Byte) -> kotlin.ULong): kotlin.ULong
 
@@ -9195,17 +9103,17 @@ public inline fun kotlin.CharArray.sumOf(selector: (kotlin.Char) -> kotlin.Int):
 @kotlin.internal.InlineOnly
 public inline fun kotlin.CharArray.sumOf(selector: (kotlin.Char) -> kotlin.Long): kotlin.Long
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfUInt")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.CharArray.sumOf(selector: (kotlin.Char) -> kotlin.UInt): kotlin.UInt
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfULong")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.CharArray.sumOf(selector: (kotlin.Char) -> kotlin.ULong): kotlin.ULong
 
@@ -9227,17 +9135,17 @@ public inline fun kotlin.DoubleArray.sumOf(selector: (kotlin.Double) -> kotlin.I
 @kotlin.internal.InlineOnly
 public inline fun kotlin.DoubleArray.sumOf(selector: (kotlin.Double) -> kotlin.Long): kotlin.Long
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfUInt")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.DoubleArray.sumOf(selector: (kotlin.Double) -> kotlin.UInt): kotlin.UInt
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfULong")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.DoubleArray.sumOf(selector: (kotlin.Double) -> kotlin.ULong): kotlin.ULong
 
@@ -9259,17 +9167,17 @@ public inline fun kotlin.FloatArray.sumOf(selector: (kotlin.Float) -> kotlin.Int
 @kotlin.internal.InlineOnly
 public inline fun kotlin.FloatArray.sumOf(selector: (kotlin.Float) -> kotlin.Long): kotlin.Long
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfUInt")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.FloatArray.sumOf(selector: (kotlin.Float) -> kotlin.UInt): kotlin.UInt
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfULong")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.FloatArray.sumOf(selector: (kotlin.Float) -> kotlin.ULong): kotlin.ULong
 
@@ -9291,17 +9199,17 @@ public inline fun kotlin.IntArray.sumOf(selector: (kotlin.Int) -> kotlin.Int): k
 @kotlin.internal.InlineOnly
 public inline fun kotlin.IntArray.sumOf(selector: (kotlin.Int) -> kotlin.Long): kotlin.Long
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfUInt")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.IntArray.sumOf(selector: (kotlin.Int) -> kotlin.UInt): kotlin.UInt
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfULong")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.IntArray.sumOf(selector: (kotlin.Int) -> kotlin.ULong): kotlin.ULong
 
@@ -9323,17 +9231,17 @@ public inline fun kotlin.LongArray.sumOf(selector: (kotlin.Long) -> kotlin.Int):
 @kotlin.internal.InlineOnly
 public inline fun kotlin.LongArray.sumOf(selector: (kotlin.Long) -> kotlin.Long): kotlin.Long
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfUInt")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.LongArray.sumOf(selector: (kotlin.Long) -> kotlin.UInt): kotlin.UInt
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfULong")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.LongArray.sumOf(selector: (kotlin.Long) -> kotlin.ULong): kotlin.ULong
 
@@ -9355,17 +9263,17 @@ public inline fun kotlin.ShortArray.sumOf(selector: (kotlin.Short) -> kotlin.Int
 @kotlin.internal.InlineOnly
 public inline fun kotlin.ShortArray.sumOf(selector: (kotlin.Short) -> kotlin.Long): kotlin.Long
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfUInt")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.ShortArray.sumOf(selector: (kotlin.Short) -> kotlin.UInt): kotlin.UInt
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfULong")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.ShortArray.sumOf(selector: (kotlin.Short) -> kotlin.ULong): kotlin.ULong
 
@@ -9390,17 +9298,19 @@ public inline fun kotlin.UByteArray.sumOf(selector: (kotlin.UByte) -> kotlin.Int
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UByteArray.sumOf(selector: (kotlin.UByte) -> kotlin.Long): kotlin.Long
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfUInt")
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UByteArray.sumOf(selector: (kotlin.UByte) -> kotlin.UInt): kotlin.UInt
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfULong")
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UByteArray.sumOf(selector: (kotlin.UByte) -> kotlin.ULong): kotlin.ULong
 
@@ -9425,17 +9335,19 @@ public inline fun kotlin.UIntArray.sumOf(selector: (kotlin.UInt) -> kotlin.Int):
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UIntArray.sumOf(selector: (kotlin.UInt) -> kotlin.Long): kotlin.Long
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfUInt")
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UIntArray.sumOf(selector: (kotlin.UInt) -> kotlin.UInt): kotlin.UInt
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfULong")
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UIntArray.sumOf(selector: (kotlin.UInt) -> kotlin.ULong): kotlin.ULong
 
@@ -9460,17 +9372,19 @@ public inline fun kotlin.ULongArray.sumOf(selector: (kotlin.ULong) -> kotlin.Int
 @kotlin.internal.InlineOnly
 public inline fun kotlin.ULongArray.sumOf(selector: (kotlin.ULong) -> kotlin.Long): kotlin.Long
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfUInt")
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.ULongArray.sumOf(selector: (kotlin.ULong) -> kotlin.UInt): kotlin.UInt
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfULong")
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.ULongArray.sumOf(selector: (kotlin.ULong) -> kotlin.ULong): kotlin.ULong
 
@@ -9495,17 +9409,19 @@ public inline fun kotlin.UShortArray.sumOf(selector: (kotlin.UShort) -> kotlin.I
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UShortArray.sumOf(selector: (kotlin.UShort) -> kotlin.Long): kotlin.Long
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfUInt")
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UShortArray.sumOf(selector: (kotlin.UShort) -> kotlin.UInt): kotlin.UInt
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfULong")
 @kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun kotlin.UShortArray.sumOf(selector: (kotlin.UShort) -> kotlin.ULong): kotlin.ULong
 
@@ -9527,17 +9443,17 @@ public inline fun <T> kotlin.collections.Iterable<T>.sumOf(selector: (T) -> kotl
 @kotlin.internal.InlineOnly
 public inline fun <T> kotlin.collections.Iterable<T>.sumOf(selector: (T) -> kotlin.Long): kotlin.Long
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfUInt")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun <T> kotlin.collections.Iterable<T>.sumOf(selector: (T) -> kotlin.UInt): kotlin.UInt
 
-@kotlin.SinceKotlin(version = "1.4")
+@kotlin.SinceKotlin(version = "1.5")
 @kotlin.OverloadResolutionByLambdaReturnType
 @kotlin.jvm.JvmName(name = "sumOfULong")
-@kotlin.ExperimentalUnsignedTypes
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalUnsignedTypes::class})
 @kotlin.internal.InlineOnly
 public inline fun <T> kotlin.collections.Iterable<T>.sumOf(selector: (T) -> kotlin.ULong): kotlin.ULong
 
@@ -10519,6 +10435,10 @@ public final class ArrayDeque<E> : kotlin.collections.AbstractMutableList<E> {
     public open override fun retainAll(elements: kotlin.collections.Collection<E>): kotlin.Boolean
 
     public open override operator fun set(index: kotlin.Int, element: E): E
+
+    protected open override fun toArray(): kotlin.Array<kotlin.Any?>
+
+    protected open override fun <T> toArray(array: kotlin.Array<T>): kotlin.Array<T>
 }
 
 public open class ArrayList<E> : kotlin.collections.AbstractMutableList<E>, kotlin.collections.MutableList<E>, kotlin.collections.RandomAccess {
@@ -10557,6 +10477,8 @@ public open class ArrayList<E> : kotlin.collections.AbstractMutableList<E>, kotl
     public open override operator fun set(index: kotlin.Int, element: E): E
 
     protected open override fun toArray(): kotlin.Array<kotlin.Any?>
+
+    protected open override fun <T> toArray(array: kotlin.Array<T>): kotlin.Array<T>
 
     public open override fun toString(): kotlin.String
 
@@ -11201,8 +11123,8 @@ public abstract class ShortIterator : kotlin.collections.Iterator<kotlin.Short> 
 /*∆*/     public abstract fun nextShort(): kotlin.Short
 /*∆*/ }
 /*∆*/ 
+@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "This class is not going to be stabilized and is to be removed soon.")
 @kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalUnsignedTypes
 public abstract class UByteIterator : kotlin.collections.Iterator<kotlin.UByte> {
     public constructor UByteIterator()
 
@@ -11211,8 +11133,8 @@ public abstract class UByteIterator : kotlin.collections.Iterator<kotlin.UByte> 
     public abstract fun nextUByte(): kotlin.UByte
 }
 
+@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "This class is not going to be stabilized and is to be removed soon.")
 @kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalUnsignedTypes
 public abstract class UIntIterator : kotlin.collections.Iterator<kotlin.UInt> {
     public constructor UIntIterator()
 
@@ -11221,8 +11143,8 @@ public abstract class UIntIterator : kotlin.collections.Iterator<kotlin.UInt> {
     public abstract fun nextUInt(): kotlin.UInt
 }
 
+@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "This class is not going to be stabilized and is to be removed soon.")
 @kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalUnsignedTypes
 public abstract class ULongIterator : kotlin.collections.Iterator<kotlin.ULong> {
     public constructor ULongIterator()
 
@@ -11231,8 +11153,8 @@ public abstract class ULongIterator : kotlin.collections.Iterator<kotlin.ULong> 
     public abstract fun nextULong(): kotlin.ULong
 }
 
+@kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "This class is not going to be stabilized and is to be removed soon.")
 @kotlin.SinceKotlin(version = "1.3")
-@kotlin.ExperimentalUnsignedTypes
 public abstract class UShortIterator : kotlin.collections.Iterator<kotlin.UShort> {
     public constructor UShortIterator()
 

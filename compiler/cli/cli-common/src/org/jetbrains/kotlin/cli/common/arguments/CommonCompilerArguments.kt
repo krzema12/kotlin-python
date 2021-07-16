@@ -122,13 +122,6 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
     var intellijPluginRoot: String? by NullableStringFreezableVar(null)
 
     @Argument(
-        value = "-Xcoroutines",
-        valueDescription = "{enable|warn|error}",
-        description = "Enable coroutines or report warnings or errors on declarations and use sites of 'suspend' modifier"
-    )
-    var coroutinesState: String? by NullableStringFreezableVar(DEFAULT)
-
-    @Argument(
         value = "-Xnew-inference",
         description = "Enable new experimental generic type inference algorithm"
     )
@@ -311,6 +304,7 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
     )
     var checkStickyPhaseConditions: Boolean by FreezableVar(false)
 
+    @GradleOption(DefaultValues.BooleanFalseDefault::class)
     @Argument(
         value = "-Xuse-fir",
         description = "Compile using Front-end IR. Warning: this feature is far from being production-ready"
@@ -358,6 +352,19 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
     )
     var inferenceCompatibility: Boolean by FreezableVar(false)
 
+    @Argument(
+        value = "-Xsuppress-version-warnings",
+        description = "Suppress warnings about outdated, inconsistent or experimental language or API versions"
+    )
+    var suppressVersionWarnings: Boolean by FreezableVar(false)
+
+    @Argument(
+        value = "-Xextended-compiler-checks",
+        description = "Enable additional compiler checks that might provide verbose diagnostic information for certain errors.\n" +
+                "Warning: this mode is not backward-compatible and might cause compilation errors in previously compiled code."
+    )
+    var extendedCompilerChecks: Boolean by FreezableVar(false)
+
     open fun configureAnalysisFlags(collector: MessageCollector): MutableMap<AnalysisFlag<*>, Any> {
         return HashMap<AnalysisFlag<*>, Any>().apply {
             put(AnalysisFlags.skipMetadataVersionCheck, skipMetadataVersionCheck)
@@ -376,6 +383,7 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
                 CompilerMessageSeverity.ERROR,
                 "Unknown value for parameter -Xexplicit-api: '$explicitApi'. Value should be one of ${ExplicitApiMode.availableValues()}"
             )
+            put(AnalysisFlags.extendedCompilerChecks, extendedCompilerChecks)
         }
     }
 
@@ -383,17 +391,6 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
         HashMap<LanguageFeature, LanguageFeature.State>().apply {
             if (multiPlatform) {
                 put(LanguageFeature.MultiPlatformProjects, LanguageFeature.State.ENABLED)
-            }
-
-            when (coroutinesState) {
-                CommonCompilerArguments.ERROR -> put(LanguageFeature.Coroutines, LanguageFeature.State.ENABLED_WITH_ERROR)
-                CommonCompilerArguments.ENABLE -> put(LanguageFeature.Coroutines, LanguageFeature.State.ENABLED)
-                CommonCompilerArguments.WARN, CommonCompilerArguments.DEFAULT -> {
-                }
-                else -> {
-                    val message = "Invalid value of -Xcoroutines (should be: enable, warn or error): " + coroutinesState
-                    collector.report(CompilerMessageSeverity.ERROR, message, null)
-                }
             }
 
             if (newInference) {
@@ -514,9 +511,6 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
         val apiVersion = parseVersion(collector, apiVersion, "API") ?: languageVersion
 
         checkApiVersionIsNotGreaterThenLanguageVersion(languageVersion, apiVersion, collector)
-        checkLanguageVersionIsStable(languageVersion, collector)
-        checkOutdatedVersions(languageVersion, apiVersion, collector)
-        checkProgressiveMode(languageVersion, collector)
 
         val languageVersionSettings = LanguageVersionSettingsImpl(
             languageVersion,
@@ -525,8 +519,13 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
             configureLanguageFeatures(collector)
         )
 
-        checkCoroutines(languageVersionSettings, collector)
-        checkIrSupport(languageVersionSettings, collector)
+        if (!suppressVersionWarnings) {
+            checkLanguageVersionIsStable(languageVersion, collector)
+            checkOutdatedVersions(languageVersion, apiVersion, collector)
+            checkProgressiveMode(languageVersion, collector)
+
+            checkIrSupport(languageVersionSettings, collector)
+        }
 
         return languageVersionSettings
     }
@@ -593,17 +592,6 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
                         "Compiler behavior in such mode is undefined; please, consider moving to the latest stable version " +
                         "or turning off progressive mode."
             )
-        }
-    }
-
-    private fun checkCoroutines(languageVersionSettings: LanguageVersionSettings, collector: MessageCollector) {
-        if (languageVersionSettings.supportsFeature(LanguageFeature.ReleaseCoroutines)) {
-            if (coroutinesState != DEFAULT) {
-                collector.report(
-                    CompilerMessageSeverity.STRONG_WARNING,
-                    "-Xcoroutines has no effect: coroutines are enabled anyway in 1.3 and beyond"
-                )
-            }
         }
     }
 

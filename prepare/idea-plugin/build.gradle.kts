@@ -6,12 +6,9 @@ plugins {
     java
 }
 
-repositories {
-    maven("https://jetbrains.bintray.com/markdown")
-}
-
 // PILL: used in pill importer
 val projectsToShadow by extra(listOf(
+        ":plugins:base-compiler-plugins-ide-support",
         ":plugins:annotation-based-compiler-plugins-ide-support",
         ":compiler:backend",
         ":compiler:resolution.common.jvm",
@@ -19,6 +16,7 @@ val projectsToShadow by extra(listOf(
         ":compiler:backend.common.jvm",
         ":compiler:backend-common",
         ":compiler:backend.jvm",
+        ":compiler:backend.jvm:backend.jvm.entrypoint",
         ":compiler:ir.backend.common",
         ":compiler:ir.serialization.jvm",
         ":compiler:ir.serialization.common",
@@ -62,6 +60,7 @@ val projectsToShadow by extra(listOf(
         ":compiler:frontend",
         ":compiler:frontend.common",
         ":compiler:frontend.java",
+        ":compiler:frontend:cfg",
         ":idea",
         ":idea:idea-native",
         ":idea:idea-core",
@@ -124,7 +123,6 @@ val projectsToShadow by extra(listOf(
 // Projects published to maven copied to the plugin as separate jars
 val libraryProjects = listOf(
     ":kotlin-reflect",
-    ":kotlin-coroutines-experimental-compat",
     ":kotlin-compiler-client-embeddable",
     ":kotlin-daemon-client",
     ":kotlin-daemon-client-new",
@@ -141,6 +139,7 @@ val libraryProjects = listOf(
     ":kotlin-allopen-compiler-plugin",
     ":kotlin-noarg-compiler-plugin",
     ":kotlin-sam-with-receiver-compiler-plugin",
+    ":plugins:lombok:lombok-compiler-plugin",
     ":plugins:android-extensions-compiler",
     ":plugins:parcelize:parcelize-compiler",
     ":kotlinx-serialization-compiler-plugin",
@@ -196,12 +195,13 @@ dependencies {
     gradleToolingModel(project(":plugins:parcelize:parcelize-ide")) { isTransitive = false }
     gradleToolingModel(project(":noarg-ide-plugin")) { isTransitive = false }
     gradleToolingModel(project(":allopen-ide-plugin")) { isTransitive = false }
+    gradleToolingModel(project(":plugins:lombok:lombok-ide-plugin")) { isTransitive = false }
 
     jpsPlugin(project(":kotlin-jps-plugin")) { isTransitive = false }
 
     (libraries.dependencies + gradleToolingModel.dependencies)
         .map { if (it is ProjectDependency) it.dependencyProject else it }
-        .forEach(::compile)
+        .forEach { compile(it) }
 }
 
 val jar = runtimeJar {

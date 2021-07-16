@@ -20,6 +20,7 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 import org.jetbrains.kotlin.resolve.scopes.DescriptorKindFilter
+import org.jetbrains.kotlin.serialization.ApproximatingStringTable
 import org.jetbrains.kotlin.serialization.DescriptorSerializer
 import org.jetbrains.kotlin.serialization.StringTableImpl
 import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedClassDescriptor
@@ -33,6 +34,7 @@ abstract class KlibMetadataSerializer(
     val languageVersionSettings: LanguageVersionSettings,
     val metadataVersion: BinaryVersion,
     val project: Project?,
+    val exportKDoc: Boolean = false,
     val skipExpects: Boolean = false,
     val includeOnlyModuleContent: Boolean = false,
     private val allowErrorTypes: Boolean
@@ -51,8 +53,9 @@ abstract class KlibMetadataSerializer(
         val extension = KlibMetadataSerializerExtension(
             languageVersionSettings,
             metadataVersion,
-            KlibMetadataStringTable(),
-            allowErrorTypes
+            ApproximatingStringTable(),
+            allowErrorTypes,
+            exportKDoc
         )
         return SerializerContext(
             extension,

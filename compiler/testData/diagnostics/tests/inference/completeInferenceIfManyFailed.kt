@@ -3,15 +3,17 @@
 
 package d
 
-fun <T: Any> joinT(<!UNUSED_PARAMETER!>x<!>: Int, vararg <!UNUSED_PARAMETER!>a<!>: T): T? {
+import checkSubtype
+
+fun <T: Any> joinT(x: Int, vararg a: T): T? {
     return null
 }
 
-fun <T: Any> joinT(<!UNUSED_PARAMETER!>x<!>: Comparable<*>, <!UNUSED_PARAMETER!>y<!>: T): T? {
+fun <T: Any> joinT(x: Comparable<*>, y: T): T? {
     return null
 }
 
 fun test() {
-    val x2 = <!OI;TYPE_INFERENCE_PARAMETER_CONSTRAINT_ERROR!>joinT<!>(<!TYPE_MISMATCH!>Unit<!>, "2")
+    val x2 = <!TYPE_INFERENCE_PARAMETER_CONSTRAINT_ERROR{OI}!>joinT<!>(<!TYPE_MISMATCH!>Unit<!>, "2")
     checkSubtype<String?>(x2)
 }

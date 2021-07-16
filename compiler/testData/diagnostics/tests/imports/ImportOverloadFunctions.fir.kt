@@ -32,12 +32,12 @@ fun test() {
     <!NONE_APPLICABLE!>zero<!>("")
 
     one()
-    <!INAPPLICABLE_CANDIDATE!>one<!>(1)
-    <!INAPPLICABLE_CANDIDATE!>one<!>("")
+    one(<!TOO_MANY_ARGUMENTS!>1<!>)
+    one(<!TOO_MANY_ARGUMENTS!>""<!>)
 
     two()
     two(1)
-    <!INAPPLICABLE_CANDIDATE!>two<!>("")
+    two(<!ARGUMENT_TYPE_MISMATCH!>""<!>)
 
     all()
     all(1)

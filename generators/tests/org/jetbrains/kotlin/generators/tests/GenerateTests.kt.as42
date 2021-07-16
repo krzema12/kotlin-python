@@ -19,6 +19,7 @@ package org.jetbrains.kotlin.generators.tests
 import org.jetbrains.kotlin.AbstractDataFlowValueRenderingTest
 import org.jetbrains.kotlin.addImport.AbstractAddImportTest
 import org.jetbrains.kotlin.allopen.AbstractBytecodeListingTestForAllOpen
+import org.jetbrains.kotlin.allopen.AbstractIrBytecodeListingTestForAllOpen
 import org.jetbrains.kotlin.android.parcel.AbstractParcelBytecodeListingTest
 import org.jetbrains.kotlin.android.synthetic.test.AbstractAndroidBoxTest
 import org.jetbrains.kotlin.android.synthetic.test.AbstractAndroidBytecodeShapeTest
@@ -29,12 +30,11 @@ import org.jetbrains.kotlin.findUsages.AbstractFindUsagesTest
 import org.jetbrains.kotlin.findUsages.AbstractKotlinFindUsagesWithLibraryTest
 import org.jetbrains.kotlin.formatter.AbstractFormatterTest
 import org.jetbrains.kotlin.formatter.AbstractTypingIndentationTestBase
-import org.jetbrains.kotlin.generators.tests.generator.TestGroup
-import org.jetbrains.kotlin.generators.tests.generator.muteExtraSuffix
-import org.jetbrains.kotlin.generators.tests.generator.testGroup
-import org.jetbrains.kotlin.generators.util.KT_OR_KTS
-import org.jetbrains.kotlin.generators.util.KT_OR_KTS_WITHOUT_DOTS_IN_NAME
-import org.jetbrains.kotlin.generators.util.KT_WITHOUT_DOTS_IN_NAME
+import org.jetbrains.kotlin.generators.TestGroup
+import org.jetbrains.kotlin.generators.impl.generateTestGroupSuite
+import org.jetbrains.kotlin.generators.util.TestGeneratorUtil.KT_OR_KTS
+import org.jetbrains.kotlin.generators.util.TestGeneratorUtil.KT_OR_KTS_WITHOUT_DOTS_IN_NAME
+import org.jetbrains.kotlin.generators.util.TestGeneratorUtil.KT_WITHOUT_DOTS_IN_NAME
 import org.jetbrains.kotlin.idea.AbstractExpressionSelectionTest
 import org.jetbrains.kotlin.idea.index.AbstractKotlinTypeAliasByExpansionShortNameIndexTest
 import org.jetbrains.kotlin.idea.AbstractSmartSelectionTest
@@ -58,10 +58,8 @@ import org.jetbrains.kotlin.idea.completion.test.handlers.AbstractSmartCompletio
 import org.jetbrains.kotlin.idea.completion.test.weighers.AbstractBasicCompletionWeigherTest
 import org.jetbrains.kotlin.idea.completion.test.weighers.AbstractSmartCompletionWeigherTest
 import org.jetbrains.kotlin.idea.configuration.AbstractGradleConfigureProjectByChangingFileTest
-import org.jetbrains.kotlin.idea.conversion.copy.AbstractJavaToKotlinCopyPasteConversionTest
 import org.jetbrains.kotlin.idea.conversion.copy.AbstractLiteralKotlinToKotlinCopyPasteTest
 import org.jetbrains.kotlin.idea.conversion.copy.AbstractLiteralTextToKotlinCopyPasteTest
-import org.jetbrains.kotlin.idea.conversion.copy.AbstractTextJavaToKotlinCopyPasteConversionTest
 import org.jetbrains.kotlin.idea.coverage.AbstractKotlinCoverageOutputFilesTest
 import org.jetbrains.kotlin.idea.debugger.evaluate.*
 import org.jetbrains.kotlin.idea.debugger.test.sequence.exec.AbstractSequenceTraceTestCase
@@ -132,9 +130,6 @@ import org.jetbrains.kotlin.idea.stubs.AbstractMultiFileHighlightingTest
 import org.jetbrains.kotlin.idea.stubs.AbstractResolveByStubTest
 import org.jetbrains.kotlin.idea.stubs.AbstractStubBuilderTest
 import org.jetbrains.kotlin.incremental.*
-import org.jetbrains.kotlin.j2k.AbstractJavaToKotlinConverterForWebDemoTest
-import org.jetbrains.kotlin.j2k.AbstractJavaToKotlinConverterMultiFileTest
-import org.jetbrains.kotlin.j2k.AbstractJavaToKotlinConverterSingleFileTest
 //import org.jetbrains.kotlin.jps.build.*
 //import org.jetbrains.kotlin.jps.incremental.AbstractJsProtoComparisonTest
 //import org.jetbrains.kotlin.jps.incremental.AbstractJvmProtoComparisonTest
@@ -142,6 +137,7 @@ import org.jetbrains.kotlin.kapt.cli.test.AbstractArgumentParsingTest
 import org.jetbrains.kotlin.kapt.cli.test.AbstractKaptToolIntegrationTest
 import org.jetbrains.kotlin.kapt3.test.AbstractClassFileToSourceStubConverterTest
 import org.jetbrains.kotlin.kapt3.test.AbstractKotlinKaptContextTest
+import org.jetbrains.kotlin.lombok.AbstractLombokCompileTest
 import org.jetbrains.kotlin.nj2k.AbstractNewJavaToKotlinConverterMultiFileTest
 import org.jetbrains.kotlin.nj2k.AbstractNewJavaToKotlinConverterSingleFileTest
 import org.jetbrains.kotlin.nj2k.AbstractNewJavaToKotlinCopyPasteConversionTest
@@ -149,8 +145,7 @@ import org.jetbrains.kotlin.nj2k.AbstractTextNewJavaToKotlinCopyPasteConversionT
 import org.jetbrains.kotlin.nj2k.inference.common.AbstractCommonConstraintCollectorTest
 import org.jetbrains.kotlin.nj2k.inference.mutability.AbstractMutabilityInferenceTest
 import org.jetbrains.kotlin.nj2k.inference.nullability.AbstractNullabilityInferenceTest
-import org.jetbrains.kotlin.noarg.AbstractBlackBoxCodegenTestForNoArg
-import org.jetbrains.kotlin.noarg.AbstractBytecodeListingTestForNoArg
+import org.jetbrains.kotlin.noarg.*
 import org.jetbrains.kotlin.psi.patternMatching.AbstractPsiUnifierTest
 import org.jetbrains.kotlin.samWithReceiver.AbstractSamWithReceiverScriptTest
 import org.jetbrains.kotlin.samWithReceiver.AbstractSamWithReceiverTest
@@ -161,6 +156,8 @@ import org.jetbrains.kotlin.test.TargetBackend
 import org.jetbrains.kotlinx.serialization.AbstractSerializationPluginBytecodeListingTest
 import org.jetbrains.kotlinx.serialization.AbstractSerializationPluginDiagnosticTest
 import org.jetbrains.kotlinx.serialization.AbstractSerializationIrBytecodeListingTest
+import org.jetbrains.kotlinx.serialization.idea.AbstractSerializationPluginIdeDiagnosticTest
+import org.jetbrains.kotlinx.serialization.idea.AbstractSerializationQuickFixTest
 
 fun main(args: Array<String>) {
     System.setProperty("java.awt.headless", "true")
@@ -237,7 +234,7 @@ fun main(args: Array<String>) {
             model("resolve/partialBodyResolve")
         }
 
-        testClass<AbstractPsiCheckerTest> {
+        testClass<AbstractKotlinHighlightingPassTest> {
             model("checker", recursive = false)
             model("checker/regression")
             model("checker/recovery")
@@ -303,15 +300,15 @@ fun main(args: Array<String>) {
             model("navigation/gotoSymbol", testMethod = "doSymbolTest")
         }
 
-        testClass<AbstractNavigateToLibrarySourceTest>(annotations = listOf(muteExtraSuffix(".libsrc"))) {
+        testClass<AbstractNavigateToLibrarySourceTest>() {
             model("decompiler/navigation/usercode")
         }
 
-        testClass<AbstractNavigateJavaToLibrarySourceTest>(annotations = listOf(muteExtraSuffix(".libsrc"))) {
+        testClass<AbstractNavigateJavaToLibrarySourceTest>() {
             model("decompiler/navigation/userJavaCode", pattern = "^(.+)\\.java$")
         }
 
-        testClass<AbstractNavigateToLibrarySourceTestWithJS>(annotations = listOf(muteExtraSuffix(".libsrcjs"))) {
+        testClass<AbstractNavigateToLibrarySourceTestWithJS>() {
             model("decompiler/navigation/usercode", testClassName ="UsercodeWithJSModule")
         }
 
@@ -602,14 +599,6 @@ fun main(args: Array<String>) {
             model("dataFlowValueRendering")
         }
 
-        testClass<AbstractJavaToKotlinCopyPasteConversionTest> {
-            model("copyPaste/conversion", pattern = """^([^\.]+)\.java$""")
-        }
-
-        testClass<AbstractTextJavaToKotlinCopyPasteConversionTest> {
-            model("copyPaste/plainTextConversion", pattern = """^([^\.]+)\.txt$""")
-        }
-
         testClass<AbstractLiteralTextToKotlinCopyPasteTest> {
             model("copyPaste/plainTextLiteral", pattern = """^([^\.]+)\.txt$""")
         }
@@ -897,7 +886,7 @@ fun main(args: Array<String>) {
         }
 
         testClass<AbstractIdeCompiledLightClassTest> {
-            model("asJava/lightClasses", excludeDirs = listOf("local", "compilationErrors", "ideRegression"), pattern = KT_OR_KTS_WITHOUT_DOTS_IN_NAME)
+            model("asJava/lightClasses", excludeDirs = listOf("local", "compilationErrors", "ideRegression", "script"), pattern = KT_WITHOUT_DOTS_IN_NAME)
         }
     }
 
@@ -996,21 +985,8 @@ fun main(args: Array<String>) {
         }
     }
 
-    testGroup("j2k/tests", "j2k/testData") {
-        testClass<AbstractJavaToKotlinConverterSingleFileTest> {
-            model("fileOrElement", extension = "java")
-        }
-    }
-    testGroup("j2k/tests", "j2k/testData") {
-        testClass<AbstractJavaToKotlinConverterMultiFileTest> {
-            model("multiFile", extension = null, recursive = false)
-        }
-    }
-    testGroup("j2k/tests", "j2k/testData") {
-        testClass<AbstractJavaToKotlinConverterForWebDemoTest> {
-            model("fileOrElement", extension = "java")
-        }
-    }
+
+
 
     testGroup("nj2k/tests", "nj2k/testData") {
         testClass<AbstractNewJavaToKotlinConverterSingleFileTest> {
@@ -1109,16 +1085,23 @@ fun main(args: Array<String>) {
         testClass<AbstractBytecodeListingTestForAllOpen> {
             model("bytecodeListing", extension = "kt")
         }
+        testClass<AbstractIrBytecodeListingTestForAllOpen> {
+            model("bytecodeListing", extension = "kt")
+        }
     }
 
     testGroup("plugins/noarg/noarg-cli/test", "plugins/noarg/noarg-cli/testData") {
+        testClass<AbstractDiagnosticsTestForNoArg> { model("diagnostics", extension = "kt") }
+
         testClass<AbstractBytecodeListingTestForNoArg> {
-            model("bytecodeListing", extension = "kt")
+            model("bytecodeListing", extension = "kt", targetBackend = TargetBackend.JVM)
+        }
+        testClass<AbstractIrBytecodeListingTestForNoArg> {
+            model("bytecodeListing", extension = "kt", targetBackend = TargetBackend.JVM_IR)
         }
 
-        testClass<AbstractBlackBoxCodegenTestForNoArg> {
-            model("box", targetBackend = TargetBackend.JVM)
-        }
+        testClass<AbstractBlackBoxCodegenTestForNoArg> { model("box", targetBackend = TargetBackend.JVM) }
+        testClass<AbstractIrBlackBoxCodegenTestForNoArg> { model("box", targetBackend = TargetBackend.JVM_IR) }
     }
 
     testGroup("plugins/sam-with-receiver/sam-with-receiver-cli/test", "plugins/sam-with-receiver/sam-with-receiver-cli/testData") {
@@ -1144,6 +1127,24 @@ fun main(args: Array<String>) {
 
         testClass<AbstractSerializationIrBytecodeListingTest> {
             model("codegen")
+        }
+    }
+
+    testGroup(
+        "plugins/kotlin-serialization/kotlin-serialization-ide/test",
+        "plugins/kotlin-serialization/kotlin-serialization-ide/testData"
+    ) {
+        testClass<AbstractSerializationPluginIdeDiagnosticTest> {
+            model("diagnostics")
+        }
+        testClass<AbstractSerializationQuickFixTest> {
+            model("quickfix", pattern = "^([\\w\\-_]+)\\.kt$", filenameStartsLowerCase = true)
+        }
+    }
+
+    testGroup("plugins/lombok/lombok-compiler-plugin/tests", "plugins/lombok/lombok-compiler-plugin/testData") {
+        testClass<AbstractLombokCompileTest> {
+            model("compile")
         }
     }
 /*

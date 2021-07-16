@@ -34,6 +34,7 @@ interface TypeSystemCommonBackendContext : TypeSystemContext {
     fun TypeConstructorMarker.isInlineClass(): Boolean
     fun TypeConstructorMarker.isInnerClass(): Boolean
     fun TypeParameterMarker.getRepresentativeUpperBound(): KotlinTypeMarker
+    fun KotlinTypeMarker.getUnsubstitutedUnderlyingType(): KotlinTypeMarker?
     fun KotlinTypeMarker.getSubstitutedUnderlyingType(): KotlinTypeMarker?
 
     fun KotlinTypeMarker.makeNullable(): KotlinTypeMarker =
@@ -54,6 +55,7 @@ interface TypeSystemCommonBackendContext : TypeSystemContext {
 interface TypeSystemCommonBackendContextForTypeMapping : TypeSystemCommonBackendContext {
     fun TypeConstructorMarker.isTypeParameter(): Boolean
     fun TypeConstructorMarker.defaultType(): KotlinTypeMarker
+    fun TypeConstructorMarker.isScript(): Boolean
 
     fun SimpleTypeMarker.isSuspendFunction(): Boolean
     fun SimpleTypeMarker.isKClass(): Boolean
