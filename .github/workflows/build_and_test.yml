@@ -20,3 +20,7 @@ jobs:
         run: less tests-out.txt | grep "FAILED" | grep "Codegen" | sort > failed-tests.txt
       - name: Compare failed-tests.txt
         run: diff failed-tests.txt python/experiments/failed-tests.txt
+      - name: Compile python.kt
+        run: dist/kotlinc/bin/kotlinc-py -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -output out_ir.py python/experiments/python.kt
+      - name: Compare out_ir.py
+        run: diff out_ir.py python/experiments/out_ir.py
