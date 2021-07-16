@@ -19,7 +19,7 @@ fun createScriptEngine(): ScriptEngine {
 }
 
 fun ScriptEngine.overrideAsserter() {
-    evalVoid("this['kotlin-test'].kotlin.test.overrideAsserter_wbnzx$(this['kotlin-test'].kotlin.test.DefaultAsserter);")
+    eval("this['kotlin-test'].kotlin.test.overrideAsserter_wbnzx$(this['kotlin-test'].kotlin.test.DefaultAsserter);")
 }
 
 fun ScriptEngine.runTestFunction(
@@ -27,7 +27,7 @@ fun ScriptEngine.runTestFunction(
     testPackageName: String?,
     testFunctionName: String,
     withModuleSystem: Boolean
-): String? {
+): String {
     var script = when {
         withModuleSystem -> BasicBoxTest.KOTLIN_TEST_INTERNAL + ".require('" + testModuleName!! + "')"
         testModuleName === null -> "this"
@@ -38,10 +38,9 @@ fun ScriptEngine.runTestFunction(
         script += ".$testPackageName"
     }
 
-    val testPackage = eval<Any>(script)
-    return callMethod<String?>(testPackage, testFunctionName).also {
-        releaseObject(testPackage)
-    }
+    script += ".$testFunctionName()"
+
+    return eval(script)
 }
 
 abstract class AbstractJsTestChecker {
@@ -120,9 +119,9 @@ object PythonTestChecker : AbstractJsTestChecker() {
 
 fun ScriptEngine.runAndRestoreContext(f: ScriptEngine.() -> Any?): Any? {
     return try {
-        saveState()
+        saveGlobalState()
         f()
     } finally {
-        restoreState()
+        restoreGlobalState()
     }
 }

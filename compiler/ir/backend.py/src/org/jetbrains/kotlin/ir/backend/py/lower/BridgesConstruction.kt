@@ -11,11 +11,8 @@ import org.jetbrains.kotlin.backend.common.bridges.generateBridges
 import org.jetbrains.kotlin.backend.common.ir.*
 import org.jetbrains.kotlin.backend.common.lower.*
 import org.jetbrains.kotlin.descriptors.Modality
-import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.backend.py.JsCommonBackendContext
-import org.jetbrains.kotlin.ir.backend.py.JsLoweredDeclarationOrigin
-import org.jetbrains.kotlin.ir.backend.py.utils.getJsName
 import org.jetbrains.kotlin.ir.backend.py.utils.realOverrideTarget
 import org.jetbrains.kotlin.ir.builders.*
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
@@ -44,8 +41,7 @@ import org.jetbrains.kotlin.ir.util.*
 //            fun foo(t: Any?) = foo(t as Int)  // Constructed bridge
 //          }
 //
-@OptIn(ObsoleteDescriptorBasedAPI::class)
-abstract class BridgesConstruction(val context: JsCommonBackendContext) : DeclarationTransformer {
+abstract class BridgesConstruction<T : JsCommonBackendContext>(val context: T) : DeclarationTransformer {
 
     private val specialBridgeMethods = SpecialBridgeMethods(context)
 
@@ -117,11 +113,7 @@ abstract class BridgesConstruction(val context: JsCommonBackendContext) : Declar
         specialMethodInfo: SpecialMethodWithDefaultInfo?
     ): IrFunction {
 
-        val origin =
-            if (bridge.isEffectivelyExternal() || bridge.getJsName() != null)
-                JsLoweredDeclarationOrigin.BRIDGE_TO_EXTERNAL_FUNCTION
-            else
-                IrDeclarationOrigin.BRIDGE
+        val origin = getBridgeOrigin(bridge)
 
         // TODO: Support offsets for debug info
         val irFunction = context.irFactory.buildFun {
@@ -181,6 +173,8 @@ abstract class BridgesConstruction(val context: JsCommonBackendContext) : Declar
         return irFunction
     }
 
+    abstract fun getBridgeOrigin(bridge: IrSimpleFunction): IrDeclarationOrigin
+
     // TODO: get rid of Unit check
     private fun IrBlockBodyBuilder.irCastIfNeeded(argument: IrExpression, type: IrType): IrExpression =
         if (argument.type.classifierOrNull == type.classifierOrNull) argument else irAs(argument, type)
@@ -196,7 +190,7 @@ abstract class BridgesConstruction(val context: JsCommonBackendContext) : Declar
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
-            if (other !is BridgesConstruction.FunctionAndSignature) return false
+            if (other !is BridgesConstruction<*>.FunctionAndSignature) return false
 
             return signature == other.signature
         }

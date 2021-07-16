@@ -7,22 +7,21 @@ package org.jetbrains.kotlin.ir.backend.py.lower
 
 import org.jetbrains.kotlin.backend.common.CommonBackendContext
 import org.jetbrains.kotlin.backend.common.FileLoweringPass
-import org.jetbrains.kotlin.descriptors.ScriptDescriptor
-import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
-import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.declarations.IrFile
+import org.jetbrains.kotlin.ir.declarations.IrProperty
+import org.jetbrains.kotlin.ir.declarations.IrScript
+import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrFunctionReferenceImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrPropertyReferenceImpl
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
-import org.jetbrains.kotlin.ir.types.IrSimpleType
-import org.jetbrains.kotlin.ir.types.IrTypeProjection
+import org.jetbrains.kotlin.ir.symbols.IrScriptSymbol
+import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.types.impl.IrSimpleTypeImpl
-import org.jetbrains.kotlin.ir.types.makeNullable
 import org.jetbrains.kotlin.ir.util.transformFlat
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
-import java.lang.IllegalArgumentException
 
 class ScriptRemoveReceiverLowering(val context: CommonBackendContext) : FileLoweringPass {
     override fun lower(irFile: IrFile) {
@@ -37,7 +36,6 @@ class ScriptRemoveReceiverLowering(val context: CommonBackendContext) : FileLowe
 
     private fun IrExpression.nullConst() = IrConstImpl.constNull(startOffset, endOffset, type.makeNullable())
 
-    @OptIn(ObsoleteDescriptorBasedAPI::class)
     fun lower(script: IrScript): List<IrScript> {
         val transformer: IrElementTransformerVoid = object : IrElementTransformerVoid() {
             override fun visitCall(expression: IrCall): IrExpression {
@@ -59,6 +57,8 @@ class ScriptRemoveReceiverLowering(val context: CommonBackendContext) : FileLowe
                 return super.visitFieldAccess(expression)
             }
 
+            private fun isScript(it: IrTypeArgument) = it.typeOrNull?.classifierOrNull is IrScriptSymbol
+
             override fun visitFunctionReference(expression: IrFunctionReference): IrExpression {
                 expression.transformChildrenVoid(this)
 
@@ -66,14 +66,15 @@ class ScriptRemoveReceiverLowering(val context: CommonBackendContext) : FileLowe
                     expression.dispatchReceiver = null
 
                     val result = with(super.visitFunctionReference(expression) as IrFunctionReference) {
-                        val arguments = (type as IrSimpleType).arguments.filter {
-                            !(it is IrTypeProjection && it.type is IrSimpleType && (it.type as IrSimpleType).classifier.descriptor is ScriptDescriptor)
-                        }
+                        // TODO do we really need to fix type or removing dispatchReceiver is enough?
+                        val arguments = (type as IrSimpleType).arguments.filterNot(::isScript)
+                        val newN = arguments.size - 1
+
                         IrFunctionReferenceImpl(
                             startOffset,
                             endOffset,
                             IrSimpleTypeImpl(
-                                context.ir.symbols.functionN(arguments.size),
+                                context.ir.symbols.functionN(newN),
                                 (type as IrSimpleType).hasQuestionMark,
                                 arguments,
                                 type.annotations
@@ -102,14 +103,15 @@ class ScriptRemoveReceiverLowering(val context: CommonBackendContext) : FileLowe
                     expression.dispatchReceiver = null
 
                     val result = with(super.visitPropertyReference(expression) as IrPropertyReference) {
-                        val arguments = (type as IrSimpleType).arguments.filter {
-                            !(it is IrTypeProjection && it.type is IrSimpleType && (it.type as IrSimpleType).classifier.descriptor is ScriptDescriptor)
-                        }
+                        // TODO do we really need to fix type or removing dispatchReceiver is enough?
+                        val arguments = (type as IrSimpleType).arguments.filterNot(::isScript)
+                        val newN = arguments.size - 1
+
                         IrPropertyReferenceImpl(
                             startOffset,
                             endOffset,
                             IrSimpleTypeImpl(
-                                (if (setter == null) getPropertyN(arguments.size) else getMutablePropertyN(arguments.size)),
+                                (if (setter == null) getPropertyN(newN) else getMutablePropertyN(newN)),
                                 (type as IrSimpleType).hasQuestionMark,
                                 arguments,
                                 type.annotations

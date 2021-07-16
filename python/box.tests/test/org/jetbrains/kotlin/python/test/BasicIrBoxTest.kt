@@ -13,9 +13,10 @@ import org.jetbrains.kotlin.cli.js.messageCollectorLogger
 import org.jetbrains.kotlin.ir.backend.js.MainModule
 import org.jetbrains.kotlin.ir.backend.js.generateKLib
 import org.jetbrains.kotlin.ir.backend.js.jsResolveLibraries
-import org.jetbrains.kotlin.ir.backend.py.compile
 import org.jetbrains.kotlin.ir.backend.py.JsCode
+import org.jetbrains.kotlin.ir.backend.py.compile
 import org.jetbrains.kotlin.ir.backend.py.jsPhases
+import org.jetbrains.kotlin.ir.declarations.impl.IrFactoryImpl
 import org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFactory
 import org.jetbrains.kotlin.js.config.JSConfigurationKeys
 import org.jetbrains.kotlin.js.config.JsConfig
@@ -27,6 +28,7 @@ import org.jetbrains.kotlin.test.TargetBackend
 import org.jetbrains.kotlin.utils.fileUtils.withReplacedExtensionOrNull
 import java.io.File
 import java.lang.Boolean.getBoolean
+import java.util.*
 
 private val fullRuntimeKlib: String = System.getProperty("kotlin.js.full.stdlib.path")
 private val defaultRuntimeKlib = System.getProperty("kotlin.js.reduced.stdlib.path")
@@ -64,7 +66,7 @@ abstract class BasicIrBoxTest(
 
     val perModule: Boolean = getBoolean("kotlin.js.ir.perModule")
 
-    private val osName: String = System.getProperty("os.name").toLowerCase()
+    private val osName: String = System.getProperty("os.name").lowercase(Locale.getDefault())
 
     // TODO Design incremental compilation for IR and add test support
     override val incrementalCompilationChecksEnabled = false
@@ -73,10 +75,10 @@ abstract class BasicIrBoxTest(
 
     private val cachedDependencies = mutableMapOf<String, Collection<String>>()
 
-    override fun doTest(filePath: String, expectedResult: String, mainCallParameters: MainCallParameters, coroutinesPackage: String) {
+    override fun doTest(filePath: String, expectedResult: String, mainCallParameters: MainCallParameters,) {
         compilationCache.clear()
         cachedDependencies.clear()
-        super.doTest(filePath, expectedResult, mainCallParameters, coroutinesPackage)
+        super.doTest(filePath, expectedResult, mainCallParameters)
     }
 
     override val testChecker get() = PythonTestChecker
@@ -98,7 +100,8 @@ abstract class BasicIrBoxTest(
         needsFullIrRuntime: Boolean,
         isMainModule: Boolean,
         skipDceDriven: Boolean,
-        splitPerModule: Boolean
+        splitPerModule: Boolean,
+        propertyLazyInitialization: Boolean,
     ) {
         val filesToCompile = units.map { (it as TranslationUnit.SourceFile).file }
 
@@ -110,7 +113,7 @@ abstract class BasicIrBoxTest(
             compilationCache[it] ?: error("Can't find compiled module for dependency $it")
         }).map { File(it).absolutePath }
 
-        val resolvedLibraries = jsResolveLibraries(allKlibPaths, messageCollectorLogger(MessageCollector.NONE))
+        val resolvedLibraries = jsResolveLibraries(allKlibPaths, emptyList(), messageCollectorLogger(MessageCollector.NONE))
 
         val actualOutputFile = outputFile.absolutePath.let {
             if (!isMainModule) it.replace("_v5.js", "/") else it
@@ -141,6 +144,7 @@ abstract class BasicIrBoxTest(
                     analyzer = AnalyzerWithCompilerReport(config.configuration),
                     configuration = config.configuration,
                     phaseConfig = phaseConfig,
+                    irFactory = IrFactoryImpl,
                     allDependencies = resolvedLibraries,
                     friendDependencies = emptyList(),
                     mainArguments = mainCallParameters.run { if (shouldBeGenerated()) arguments() else null },
@@ -148,7 +152,8 @@ abstract class BasicIrBoxTest(
                     generateFullJs = true,
                     generateDceJs = runIrDce,
                     es6mode = runEs6Mode,
-                    multiModule = splitPerModule || perModule
+                    multiModule = splitPerModule || perModule,
+                    propertyLazyInitialization = propertyLazyInitialization,
                 )
 
                 compiledModule.jsCode!!.writeTo(outputFile, config)
@@ -168,13 +173,15 @@ abstract class BasicIrBoxTest(
                     analyzer = AnalyzerWithCompilerReport(config.configuration),
                     configuration = config.configuration,
                     phaseConfig = phaseConfig,
+                    irFactory = PersistentIrFactory(),
                     allDependencies = resolvedLibraries,
                     friendDependencies = emptyList(),
                     mainArguments = mainCallParameters.run { if (shouldBeGenerated()) arguments() else null },
                     exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, testFunction))),
                     dceDriven = true,
                     es6mode = runEs6Mode,
-                    multiModule = splitPerModule || perModule
+                    multiModule = splitPerModule || perModule,
+                    propertyLazyInitialization = propertyLazyInitialization
                 ).jsCode!!.writeTo(pirOutputFile, config)
             }
         } else {
@@ -185,7 +192,7 @@ abstract class BasicIrBoxTest(
                 configuration = config.configuration,
                 allDependencies = resolvedLibraries,
                 friendDependencies = emptyList(),
-                irFactory = PersistentIrFactory,
+                irFactory = IrFactoryImpl,
                 outputKlibPath = actualOutputFile,
                 nopack = true
             )

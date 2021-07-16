@@ -13,6 +13,10 @@ import org.jetbrains.kotlin.descriptors.CallableDescriptor
 import org.jetbrains.kotlin.descriptors.ClassDescriptor
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.js.backend.ast.*
+import org.jetbrains.kotlin.lexer.KtTokens
+import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.psi.psiUtil.getTextWithLocation
 import org.jetbrains.kotlin.py.translate.context.Namer
 import org.jetbrains.kotlin.py.translate.context.TranslationContext
 import org.jetbrains.kotlin.py.translate.general.AbstractTranslator
@@ -23,10 +27,6 @@ import org.jetbrains.kotlin.py.translate.utils.JsAstUtils
 import org.jetbrains.kotlin.py.translate.utils.JsAstUtils.not
 import org.jetbrains.kotlin.py.translate.utils.mutator.CoercionMutator
 import org.jetbrains.kotlin.py.translate.utils.mutator.LastExpressionMutator
-import org.jetbrains.kotlin.lexer.KtTokens
-import org.jetbrains.kotlin.name.Name
-import org.jetbrains.kotlin.psi.*
-import org.jetbrains.kotlin.psi.psiUtil.getTextWithLocation
 import org.jetbrains.kotlin.resolve.DescriptorUtils
 import org.jetbrains.kotlin.resolve.bindingContextUtil.getDataFlowInfoBefore
 import org.jetbrains.kotlin.resolve.calls.smartcasts.DataFlowValueFactory
@@ -197,7 +197,7 @@ private constructor(private val whenExpression: KtWhenExpression, context: Trans
                         is Int -> JsIntLiteral(it)
                         is Short -> JsIntLiteral(it.toInt())
                         is Byte -> JsIntLiteral(it.toInt())
-                        is Char -> JsIntLiteral(it.toInt())
+                        is Char -> JsIntLiteral(it.code)
                         else -> null
                     }
                 }

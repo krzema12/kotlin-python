@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.test.JUnit3RunnerWithInners;
 import org.jetbrains.kotlin.test.KotlinTestUtils;
 import org.jetbrains.kotlin.test.TargetBackend;
 import org.jetbrains.kotlin.test.TestMetadata;
+import org.jetbrains.kotlin.test.util.KtTestUtil;
 import org.junit.runner.RunWith;
 
 import java.io.File;
@@ -26,7 +27,7 @@ public class IrPythonCodegenBoxErrorTestGenerated extends AbstractIrPythonCodege
     }
 
     public void testAllFilesPresentInBoxError() throws Exception {
-        KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/testData/codegen/boxError"), Pattern.compile("^(.+)\\.kt$"), null, TargetBackend.PYTHON, true);
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/testData/codegen/boxError"), Pattern.compile("^(.+)\\.kt$"), null, TargetBackend.PYTHON, true);
     }
 
     @TestMetadata("compiler/testData/codegen/boxError/semantic")
@@ -38,7 +39,7 @@ public class IrPythonCodegenBoxErrorTestGenerated extends AbstractIrPythonCodege
         }
 
         public void testAllFilesPresentInSemantic() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/testData/codegen/boxError/semantic"), Pattern.compile("^(.+)\\.kt$"), null, TargetBackend.PYTHON, true);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/testData/codegen/boxError/semantic"), Pattern.compile("^(.+)\\.kt$"), null, TargetBackend.PYTHON, true);
         }
 
         @TestMetadata("castToErrorType.kt")
@@ -71,6 +72,11 @@ public class IrPythonCodegenBoxErrorTestGenerated extends AbstractIrPythonCodege
             runTest("compiler/testData/codegen/boxError/semantic/reifiedNonInline.kt");
         }
 
+        @TestMetadata("reifiedWithWrongArguments.kt")
+        public void testReifiedWithWrongArguments() throws Exception {
+            runTest("compiler/testData/codegen/boxError/semantic/reifiedWithWrongArguments.kt");
+        }
+
         @TestMetadata("typeMismatch.kt")
         public void testTypeMismatch() throws Exception {
             runTest("compiler/testData/codegen/boxError/semantic/typeMismatch.kt");
@@ -96,7 +102,7 @@ public class IrPythonCodegenBoxErrorTestGenerated extends AbstractIrPythonCodege
         }
 
         public void testAllFilesPresentInSyntax() throws Exception {
-            KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/testData/codegen/boxError/syntax"), Pattern.compile("^(.+)\\.kt$"), null, TargetBackend.PYTHON, true);
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/testData/codegen/boxError/syntax"), Pattern.compile("^(.+)\\.kt$"), null, TargetBackend.PYTHON, true);
         }
 
         @TestMetadata("arrowReference.kt")

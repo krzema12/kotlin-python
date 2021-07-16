@@ -5,20 +5,55 @@
 
 package org.jetbrains.kotlin.ir.backend.py.utils
 
+import org.jetbrains.kotlin.backend.common.ir.isMethodOfAny
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.JsLoweredDeclarationOrigin
+import org.jetbrains.kotlin.ir.backend.py.export.isExported
+import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.IrCallImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.isNullableAny
-import org.jetbrains.kotlin.ir.types.isUnit
+import org.jetbrains.kotlin.ir.util.isEffectivelyExternal
 import org.jetbrains.kotlin.ir.util.isTopLevelDeclaration
 import org.jetbrains.kotlin.name.Name
 
 fun TODO(element: IrElement): Nothing = TODO(element::class.java.simpleName + " is not supported yet here")
+
+fun IrFunction.hasStableJsName(context: JsIrBackendContext?): Boolean {
+    if (
+        origin == JsLoweredDeclarationOrigin.BRIDGE_WITH_STABLE_NAME ||
+        (this as? IrSimpleFunction)?.isMethodOfAny() == true // Handle names for special functions
+    ) {
+        return true
+    }
+
+    if (
+        origin == JsLoweredDeclarationOrigin.JS_SHADOWED_EXPORT ||
+        origin == IrDeclarationOrigin.FUNCTION_FOR_DEFAULT_PARAMETER ||
+        origin == JsLoweredDeclarationOrigin.BRIDGE_WITHOUT_STABLE_NAME
+    ) {
+        return false
+    }
+
+    val namedOrMissingGetter = when (this) {
+        is IrSimpleFunction -> {
+            val owner = correspondingPropertySymbol?.owner
+            if (owner == null) {
+                true
+            } else {
+                owner.getter?.getJsName() != null
+            }
+        }
+        else -> true
+    }
+
+    return (isEffectivelyExternal() || getJsName() != null || isExported(context)) && namedOrMissingGetter
+}
 
 fun IrFunction.isEqualsInheritedFromAny() =
     name == Name.identifier("equals") &&
@@ -46,41 +81,6 @@ fun List<IrExpression>.toJsArrayLiteral(context: JsIrBackendContext, arrayType: 
     }
 }
 
-// TODO: support more cases like built-in operator call and so on
-
-fun IrExpression?.isPure(anyVariable: Boolean, checkFields: Boolean = true): Boolean {
-    if (this == null) return true
-
-    fun IrExpression.isPureImpl(): Boolean {
-        return when (this) {
-            is IrConst<*> -> true
-            is IrGetValue -> {
-                if (anyVariable) return true
-                val valueDeclaration = symbol.owner
-                if (valueDeclaration is IrVariable) !valueDeclaration.isVar
-                else true
-            }
-            is IrGetObjectValue -> type.isUnit()
-            else -> false
-        }
-    }
-
-    if (isPureImpl()) return true
-
-    if (!checkFields) return false
-
-    if (this is IrGetField) {
-        if (!symbol.owner.isFinal) {
-            if (!anyVariable) {
-                return false
-            }
-        }
-        return receiver.isPure(anyVariable)
-    }
-
-    return false
-}
-
 val IrValueDeclaration.isDispatchReceiver: Boolean
     get() {
         val parent = this.parent
@@ -90,3 +90,25 @@ val IrValueDeclaration.isDispatchReceiver: Boolean
             return true
         return false
     }
+
+fun IrBody.prependFunctionCall(
+    call: IrCall
+) {
+    when (this) {
+        is IrExpressionBody -> {
+            expression = JsIrBuilder.buildComposite(
+                type = expression.type,
+                statements = listOf(
+                    call,
+                    expression
+                )
+            )
+        }
+        is IrBlockBody -> {
+            statements.add(
+                0,
+                call
+            )
+        }
+    }
+}

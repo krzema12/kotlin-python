@@ -5,17 +5,17 @@
 
 package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 
-import generated.Python.*
+import generated.Python.Module
+import generated.Python.stmt
 import org.jetbrains.kotlin.ir.backend.py.CompilerResult
 import org.jetbrains.kotlin.ir.backend.py.JsCode
 import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.eliminateDeadDeclarations
 import org.jetbrains.kotlin.ir.backend.py.export.ExportModelGenerator
-import org.jetbrains.kotlin.ir.backend.py.export.ExportedModule
 import org.jetbrains.kotlin.ir.backend.py.export.toTypeScript
 import org.jetbrains.kotlin.ir.backend.py.lower.StaticMembersLowering
 import org.jetbrains.kotlin.ir.backend.py.utils.*
-import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import topython.toPython
 
 // TODO
@@ -52,7 +52,7 @@ class IrModuleToPyTransformer(
             namer.merge(module.files, additionalPackages)
         }
 
-        val jsCode = if (fullJs) generateWrappedModuleBody(modules, exportedModule, namer) else null
+        val jsCode = if (fullJs) generateWrappedModuleBody(modules, namer) else null
 
         val dceJsCode = if (dceJs) {
             eliminateDeadDeclarations(modules, backendContext)
@@ -60,13 +60,13 @@ class IrModuleToPyTransformer(
             // TODO: is this mode relevant for scripting? If yes, refactor so that the external name tables are used here when needed.
             val namer = NameTables(emptyList())
             namer.merge(modules.flatMap { it.files }, additionalPackages)
-            generateWrappedModuleBody(modules, exportedModule, namer)
+            generateWrappedModuleBody(modules, namer)
         } else null
 
         return CompilerResult(jsCode, dceJsCode, dts)
     }
 
-    private fun generateWrappedModuleBody(modules: Iterable<IrModuleFragment>, exportedModule: ExportedModule, namer: NameTables): JsCode {
+    private fun generateWrappedModuleBody(modules: Iterable<IrModuleFragment>, namer: NameTables): JsCode {
         if (multiModule) {
 
             val refInfo = buildCrossModuleReferenceInfo(modules)
@@ -78,21 +78,15 @@ class IrModuleToPyTransformer(
 
             val mainModule = generateWrappedModuleBody2(
                 listOf(main),
-                others,
-                exportedModule,
                 namer,
                 refInfo
             )
 
-            val dependencies = others.mapIndexed { index, module ->
+            val dependencies = others.map { module ->
                 val moduleName = sanitizeName(module.safeName)
-
-                val exportedDeclarations = ExportModelGenerator(backendContext).let { module.files.flatMap { file -> it.generateExport(file) } }
 
                 moduleName to generateWrappedModuleBody2(
                     listOf(module),
-                    others.drop(index + 1),
-                    ExportedModule(moduleName, exportedModule.moduleKind, exportedDeclarations),
                     namer,
                     refInfo
                 )
@@ -103,8 +97,6 @@ class IrModuleToPyTransformer(
             return JsCode(
                 generateWrappedModuleBody2(
                     modules,
-                    emptyList(),
-                    exportedModule,
                     namer,
                     EmptyCrossModuleReferenceInfo
                 )
@@ -114,23 +106,23 @@ class IrModuleToPyTransformer(
 
     private fun generateWrappedModuleBody2(
         modules: Iterable<IrModuleFragment>,
-        dependencies: Iterable<IrModuleFragment>,
-        exportedModule: ExportedModule,
         namer: NameTables,
         refInfo: CrossModuleReferenceInfo
     ): String {
 
         val nameGenerator = refInfo.withReferenceTracking(
-            IrNamerImpl(newNameTables = namer),
+            IrNamerImpl(newNameTables = namer, backendContext),
             modules
         )
         val staticContext = JsStaticContext(
             backendContext = backendContext,
-            irNamer = nameGenerator
+            irNamer = nameGenerator,
+            globalNameScope = namer.globalNames
         )
         val rootContext = JsGenerationContext(
             currentFunction = null,
-            staticContext = staticContext
+            staticContext = staticContext,
+            localNames = LocalNameGenerator(NameScope.EmptyScope)
         )
 
         val moduleBody = generateModuleBody(modules, rootContext)

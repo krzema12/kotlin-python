@@ -7,7 +7,6 @@ package org.jetbrains.kotlin.ir.backend.py.lower
 
 import org.jetbrains.kotlin.backend.common.lower.ErrorDeclarationLowering
 import org.jetbrains.kotlin.backend.common.lower.ErrorExpressionLowering
-import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
@@ -52,7 +51,7 @@ class JsErrorExpressionLowering(context: JsIrBackendContext) : ErrorExpressionLo
         return buildThrowError(expression, description)
     }
 
-    private fun buildThrowError(element: IrElement, description: String): IrExpression {
+    private fun buildThrowError(element: IrExpression, description: String): IrExpression {
         require(errorSymbol != null) { "Should be non-null if errors are allowed" }
         return element.run {
             IrCallImpl(startOffset, endOffset, nothingType, errorSymbol, 0, 1, null, null).apply {

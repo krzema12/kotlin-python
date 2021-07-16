@@ -7,18 +7,16 @@ package org.jetbrains.kotlin.ir.backend.py.lower
 
 import org.jetbrains.kotlin.backend.common.DeclarationTransformer
 import org.jetbrains.kotlin.backend.common.ir.addChild
-import org.jetbrains.kotlin.descriptors.PackageFragmentDescriptor
 import org.jetbrains.kotlin.ir.IrElement
-import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.utils.getJsModule
 import org.jetbrains.kotlin.ir.backend.py.utils.getJsQualifier
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.declarations.impl.IrFileImpl
-import org.jetbrains.kotlin.ir.symbols.IrFileSymbol
-import org.jetbrains.kotlin.ir.util.IdSignature
+import org.jetbrains.kotlin.ir.symbols.impl.IrFileSymbolImpl
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.isEffectivelyExternal
+import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitorVoid
 import org.jetbrains.kotlin.ir.visitors.acceptChildrenVoid
 import org.jetbrains.kotlin.name.FqName
@@ -45,30 +43,13 @@ private val BODILESS_BUILTIN_CLASSES = listOf(
     "kotlin.Function"
 ).map { FqName(it) }.toSet()
 
-private class DescriptorlessIrFileSymbol : IrFileSymbol {
-    override fun bind(owner: IrFile) {
-        _owner = owner
-    }
-
-    @ObsoleteDescriptorBasedAPI
-    override val descriptor: PackageFragmentDescriptor
-        get() = error("Operation is unsupported")
-
-    private var _owner: IrFile? = null
-    override val owner get() = _owner!!
-
-    override val isBound get() = _owner != null
-
-    override val signature: IdSignature?
-        get() = null
-}
-
 private fun isBuiltInClass(declaration: IrDeclaration): Boolean =
     declaration is IrClass && declaration.fqNameWhenAvailable in BODILESS_BUILTIN_CLASSES
 
 fun moveBodilessDeclarationsToSeparatePlace(context: JsIrBackendContext, moduleFragment: IrModuleFragment) {
     MoveBodilessDeclarationsToSeparatePlaceLowering(context).let { moveBodiless ->
         moduleFragment.files.forEach {
+            validateIsExternal(it)
             moveBodiless.lower(it)
         }
     }
@@ -81,7 +62,7 @@ class MoveBodilessDeclarationsToSeparatePlaceLowering(private val context: JsIrB
 
         val externalPackageFragment by lazy {
             context.externalPackageFragment.getOrPut(irFile.symbol) {
-                IrFileImpl(fileEntry = irFile.fileEntry, fqName = irFile.fqName, symbol = DescriptorlessIrFileSymbol()).also {
+                IrFileImpl(fileEntry = irFile.fileEntry, fqName = irFile.fqName, symbol = IrFileSymbolImpl(), module = irFile.module).also {
                     it.annotations += irFile.annotations
                 }
             }
@@ -133,3 +114,33 @@ class MoveBodilessDeclarationsToSeparatePlaceLowering(private val context: JsIrB
         }, null)
     }
 }
+
+fun validateIsExternal(packageFragment: IrPackageFragment) {
+    for (declaration in packageFragment.declarations) {
+        validateNestedExternalDeclarations(declaration, (declaration as? IrPossiblyExternalDeclaration)?.isExternal ?: false)
+    }
+}
+
+
+fun validateNestedExternalDeclarations(declaration: IrDeclaration, isExternalTopLevel: Boolean) {
+    fun IrPossiblyExternalDeclaration.checkExternal() {
+        if (isExternal != isExternalTopLevel) {
+            throw error("isExternal validation failed for declaration ${declaration.render()}")
+        }
+    }
+
+    if (declaration is IrPossiblyExternalDeclaration) {
+        declaration.checkExternal()
+    }
+    if (declaration is IrProperty) {
+        declaration.getter?.checkExternal()
+        declaration.setter?.checkExternal()
+        declaration.backingField?.checkExternal()
+    }
+    if (declaration is IrClass) {
+        declaration.declarations.forEach {
+            validateNestedExternalDeclarations(it, isExternalTopLevel)
+        }
+    }
+}
+
