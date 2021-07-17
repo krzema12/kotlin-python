@@ -12,6 +12,10 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v2
+      - name: Clean
+        run: JDK_9="$JAVA_HOME" ./gradlew clean
+      - name: Run ast tests
+        run: JDK_9="$JAVA_HOME" ./gradlew :python:ast:test
       - name: Build
         run: JDK_9="$JAVA_HOME" ./gradlew dist
       - name: Run box tests (succeed even if they fail)
