@@ -32,8 +32,9 @@ See discussion at https://discuss.kotlinlang.org/t/idea-python-backend/19852
 
 ## Running box tests
 
-```
+```shell script
 ./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated" | tee tests-out.txt
+export LC_ALL=C  # set locale for sorting
 less tests-out.txt | grep "FAILED" | grep "Codegen" | sort > python/experiments/failed-tests.txt
 ```
 
