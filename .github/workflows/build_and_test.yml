@@ -35,6 +35,6 @@ jobs:
       - name: Generate stats about missing IR mapping
         run: less python/experiments/out_ir.py  | grep -Po "visit[a-zA-Z0-9_]+" | sort | uniq -c | sort -nr > missing.txt
         if: always()
-      - name: Compare out_ir.py
+      - name: Compare missing.txt
         run: diff -u missing.txt python/experiments/missing.txt
         if: always()
