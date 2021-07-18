@@ -43,6 +43,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     override fun visitExpression(expression: IrExpression, context: JsGenerationContext): List<stmt> {
         return when (expression) {
             is IrBlock -> visitBlock(expression, context)
+            is IrReturn -> visitReturn(expression, context)
             else -> listOf(Expr(value = Name(id = identifier("visitExpression-other--inToPyStatementTransformer $expression".toValidPythonSymbol()), ctx = Load)))
         }
     }

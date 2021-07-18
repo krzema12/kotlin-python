@@ -192,7 +192,7 @@ def indexOfFirst(predicate):
     while tmp0_iterator.hasNext():
         item = tmp0_iterator.next()
         if predicate.invoke(item):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return index
         
         tmp1 = index
         index = jsBitOr(jsPlus(tmp1, 1), 0)
@@ -218,13 +218,13 @@ def any(predicate):
         
     
     if tmp:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp0_iterator = self.iterator()
     while tmp0_iterator.hasNext():
         element = tmp0_iterator.next()
         if predicate.invoke(element):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return True
         
     
     return False
@@ -238,13 +238,13 @@ def all(predicate):
         
     
     if tmp:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return True
     
     tmp0_iterator = self.iterator()
     while tmp0_iterator.hasNext():
         element = tmp0_iterator.next()
         if jsNot(predicate.invoke(element)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
     
     return True
@@ -349,7 +349,7 @@ def downTo(to):
 
 def until(to):
     if to <= IntCompanionObject_getInstance().MIN_VALUE:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return Companion_getInstance().EMPTY
     
     return numberRangeToNumber(self, kotlin_Int(jsBitOr(jsMinus(to, 1), 0)))
 
@@ -446,10 +446,10 @@ def values():
 
 def valueOf(value):
     if 'WARNING' == value:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return Level_WARNING_getInstance()
     else:
         if 'ERROR' == value:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return Level_ERROR_getInstance()
         else:
             Level_initEntries()
             THROW_ISE()
@@ -459,7 +459,7 @@ def valueOf(value):
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Level_initEntries():
     if Level_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return Unit_getInstance()
     
     Level_entriesInitialized = True
     Level_WARNING_instance = Level('WARNING', 0)
@@ -589,10 +589,10 @@ def values():
 
 def valueOf(value):
     if 'WARNING' == value:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return Level_WARNING_getInstance()
     else:
         if 'ERROR' == value:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return Level_ERROR_getInstance()
         else:
             Level_initEntries()
             THROW_ISE()
@@ -602,7 +602,7 @@ def valueOf(value):
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Level_initEntries():
     if Level_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return Unit_getInstance()
     
     Level_entriesInitialized = True
     Level_WARNING_instance = Level('WARNING', 0)
@@ -936,7 +936,7 @@ class Companion:
     
     def orderedEquals(self, c, other):
         if jsNot(c._get_size_() == other._get_size_()):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         otherIterator = other.iterator()
         tmp0_iterator = c.iterator()
@@ -999,10 +999,10 @@ class AbstractList:
     
     def equals(self, other):
         if other is self:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return True
         
         if jsNot((isInterface(other, jsClass())) if (jsNot(other == None)) else (False)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         return Companion_getInstance().orderedEquals(self, kotlin_collections_Collection___(other))
     
@@ -1072,7 +1072,7 @@ class EmptyList:
     
     def contains(self, element):
         if jsNot(False):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         if False:
             tmp = kotlin_Nothing(element)
@@ -1097,7 +1097,7 @@ class EmptyList:
     
     def indexOf(self, element):
         if jsNot(False):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return -1
         
         if False:
             tmp = kotlin_Nothing(element)
@@ -1113,7 +1113,7 @@ class EmptyList:
     
     def lastIndexOf(self, element):
         if jsNot(False):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return -1
         
         if False:
             tmp = kotlin_Nothing(element)
@@ -1138,7 +1138,7 @@ class EmptyList:
     
     def subList(self, fromIndex, toIndex):
         if (toIndex == 0) if (fromIndex == 0) else (False):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return self
         
         visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
     
@@ -1300,16 +1300,16 @@ def values():
 
 def valueOf(value):
     if 'AT_MOST_ONCE' == value:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return InvocationKind_AT_MOST_ONCE_getInstance()
     else:
         if 'AT_LEAST_ONCE' == value:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return InvocationKind_AT_LEAST_ONCE_getInstance()
         else:
             if 'EXACTLY_ONCE' == value:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                return InvocationKind_EXACTLY_ONCE_getInstance()
             else:
                 if 'UNKNOWN' == value:
-                    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                    return InvocationKind_UNKNOWN_getInstance()
                 else:
                     InvocationKind_initEntries()
                     THROW_ISE()
@@ -1321,7 +1321,7 @@ def valueOf(value):
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def InvocationKind_initEntries():
     if InvocationKind_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return Unit_getInstance()
     
     InvocationKind_entriesInitialized = True
     InvocationKind_AT_MOST_ONCE_instance = InvocationKind('AT_MOST_ONCE', 0)
@@ -1820,7 +1820,7 @@ def containsAll(_this, context):
     cur = context
     while True:
         if jsNot(contains(_this, cur.element)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         next = cur.left
         if jsInstanceOf(next, jsClass()):
@@ -2022,13 +2022,13 @@ def values():
 
 def valueOf(value):
     if 'COROUTINE_SUSPENDED' == value:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return CoroutineSingletons_COROUTINE_SUSPENDED_getInstance()
     else:
         if 'UNDECIDED' == value:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return CoroutineSingletons_UNDECIDED_getInstance()
         else:
             if 'RESUMED' == value:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                return CoroutineSingletons_RESUMED_getInstance()
             else:
                 CoroutineSingletons_initEntries()
                 THROW_ISE()
@@ -2039,7 +2039,7 @@ def valueOf(value):
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def CoroutineSingletons_initEntries():
     if CoroutineSingletons_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return Unit_getInstance()
     
     CoroutineSingletons_entriesInitialized = True
     CoroutineSingletons_COROUTINE_SUSPENDED_instance = CoroutineSingletons('COROUTINE_SUSPENDED', 0)
@@ -2179,13 +2179,13 @@ def values():
 
 def valueOf(value):
     if 'LANGUAGE_VERSION' == value:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return RequireKotlinVersionKind_LANGUAGE_VERSION_getInstance()
     else:
         if 'COMPILER_VERSION' == value:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return RequireKotlinVersionKind_COMPILER_VERSION_getInstance()
         else:
             if 'API_VERSION' == value:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                return RequireKotlinVersionKind_API_VERSION_getInstance()
             else:
                 RequireKotlinVersionKind_initEntries()
                 THROW_ISE()
@@ -2196,7 +2196,7 @@ def valueOf(value):
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def RequireKotlinVersionKind_initEntries():
     if RequireKotlinVersionKind_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return Unit_getInstance()
     
     RequireKotlinVersionKind_entriesInitialized = True
     RequireKotlinVersionKind_LANGUAGE_VERSION_instance = RequireKotlinVersionKind('LANGUAGE_VERSION', 0)
@@ -2462,17 +2462,17 @@ class KTypeProjection:
     
     def equals(self, other):
         if self is other:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return True
         
         if jsNot(jsInstanceOf(other, jsClass())):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         tmp0_other_with_cast = (kotlin_reflect_KTypeProjection(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
         if jsNot(equals(self.variance, tmp0_other_with_cast.variance)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         if jsNot(equals(self.type, tmp0_other_with_cast.type)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         return True
     
@@ -2485,13 +2485,13 @@ def values():
 
 def valueOf(value):
     if 'INVARIANT' == value:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return KVariance_INVARIANT_getInstance()
     else:
         if 'IN' == value:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return KVariance_IN_getInstance()
         else:
             if 'OUT' == value:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                return KVariance_OUT_getInstance()
             else:
                 KVariance_initEntries()
                 THROW_ISE()
@@ -2502,7 +2502,7 @@ def valueOf(value):
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def KVariance_initEntries():
     if KVariance_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return Unit_getInstance()
     
     KVariance_entriesInitialized = True
     KVariance_INVARIANT_instance = KVariance('INVARIANT', 0)
@@ -2698,11 +2698,11 @@ def Result__hashCode_impl(this):
 
 def Result__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if jsNot(equals(this.value, tmp0_other_with_cast.value)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     return True
 
@@ -3059,11 +3059,11 @@ def UByte__hashCode_impl(this):
 
 def UByte__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if jsNot(this.data == tmp0_other_with_cast.data):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     return True
 
@@ -3170,14 +3170,14 @@ class Iterator:
 def UByteArray__contains_impl(this, element):
     tmp = (boxIntrinsic(element)) if (isObject(boxIntrinsic(element))) else (THROW_CCE())
     if jsNot(jsInstanceOf(tmp, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp = _UByteArray___get_storage__impl_(this)
     return contains(_UByte___get_data__impl_(element))
 
 def UByteArray__contains_impl(this, element):
     if jsNot(jsInstanceOf(element, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp = unboxIntrinsic(this)
     return UByteArray__contains_impl(tmp, (unboxIntrinsic(element)) if (jsInstanceOf(element, jsClass())) else (THROW_CCE()))
@@ -3200,11 +3200,11 @@ def UByteArray__hashCode_impl(this):
 
 def UByteArray__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if jsNot(equals(this.storage, tmp0_other_with_cast.storage)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     return True
 
@@ -3481,11 +3481,11 @@ def UInt__hashCode_impl(this):
 
 def UInt__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if jsNot(this.data == tmp0_other_with_cast.data):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     return True
 
@@ -3598,14 +3598,14 @@ class Iterator:
 def UIntArray__contains_impl(this, element):
     tmp = (boxIntrinsic(element)) if (isObject(boxIntrinsic(element))) else (THROW_CCE())
     if jsNot(jsInstanceOf(tmp, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp = _UIntArray___get_storage__impl_(this)
     return contains(_UInt___get_data__impl_(element))
 
 def UIntArray__contains_impl(this, element):
     if jsNot(jsInstanceOf(element, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp = unboxIntrinsic(this)
     return UIntArray__contains_impl(tmp, (unboxIntrinsic(element)) if (jsInstanceOf(element, jsClass())) else (THROW_CCE()))
@@ -3628,11 +3628,11 @@ def UIntArray__hashCode_impl(this):
 
 def UIntArray__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if jsNot(equals(this.storage, tmp0_other_with_cast.storage)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     return True
 
@@ -4270,11 +4270,11 @@ def ULong__hashCode_impl(this):
 
 def ULong__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if jsNot(this.data.equals(tmp0_other_with_cast.data)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     return True
 
@@ -4387,14 +4387,14 @@ class Iterator:
 def ULongArray__contains_impl(this, element):
     tmp = (boxIntrinsic(element)) if (isObject(boxIntrinsic(element))) else (THROW_CCE())
     if jsNot(jsInstanceOf(tmp, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp = _ULongArray___get_storage__impl_(this)
     return contains(_ULong___get_data__impl_(element))
 
 def ULongArray__contains_impl(this, element):
     if jsNot(jsInstanceOf(element, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp = unboxIntrinsic(this)
     return ULongArray__contains_impl(tmp, (unboxIntrinsic(element)) if (jsInstanceOf(element, jsClass())) else (THROW_CCE()))
@@ -4417,11 +4417,11 @@ def ULongArray__hashCode_impl(this):
 
 def ULongArray__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if jsNot(equals(this.storage, tmp0_other_with_cast.storage)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     return True
 
@@ -5072,11 +5072,11 @@ def UShort__hashCode_impl(this):
 
 def UShort__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if jsNot(this.data == tmp0_other_with_cast.data):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     return True
 
@@ -5180,14 +5180,14 @@ class Iterator:
 def UShortArray__contains_impl(this, element):
     tmp = (boxIntrinsic(element)) if (isObject(boxIntrinsic(element))) else (THROW_CCE())
     if jsNot(jsInstanceOf(tmp, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp = _UShortArray___get_storage__impl_(this)
     return contains(_UShort___get_data__impl_(element))
 
 def UShortArray__contains_impl(this, element):
     if jsNot(jsInstanceOf(element, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp = unboxIntrinsic(this)
     return UShortArray__contains_impl(tmp, (unboxIntrinsic(element)) if (jsInstanceOf(element, jsClass())) else (THROW_CCE()))
@@ -5210,11 +5210,11 @@ def UShortArray__hashCode_impl(this):
 
 def UShortArray__equals_impl(this, other):
     if jsNot(jsInstanceOf(other, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if jsNot(equals(this.storage, tmp0_other_with_cast.storage)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return False
     
     return True
 
@@ -5342,7 +5342,7 @@ def ulongToString(v):
 
 def ulongToString(v, base):
     if v.compareTo(Long(0, 0)) >= 0:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return toString(base)
     
     tmp0_div_0 = v.ushr(1)
     quotient = tmp0_div_0.div(toLong(base)).shl(1)
@@ -5682,13 +5682,13 @@ def values():
 
 def valueOf(value):
     if 'WARNING' == value:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return DeprecationLevel_WARNING_getInstance()
     else:
         if 'ERROR' == value:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return DeprecationLevel_ERROR_getInstance()
         else:
             if 'HIDDEN' == value:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                return DeprecationLevel_HIDDEN_getInstance()
             else:
                 DeprecationLevel_initEntries()
                 THROW_ISE()
@@ -5699,7 +5699,7 @@ def valueOf(value):
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def DeprecationLevel_initEntries():
     if DeprecationLevel_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return Unit_getInstance()
     
     DeprecationLevel_entriesInitialized = True
     DeprecationLevel_WARNING_instance = DeprecationLevel('WARNING', 0)
@@ -6788,49 +6788,49 @@ def values():
 
 def valueOf(value):
     if 'CLASS' == value:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return AnnotationTarget_CLASS_getInstance()
     else:
         if 'ANNOTATION_CLASS' == value:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return AnnotationTarget_ANNOTATION_CLASS_getInstance()
         else:
             if 'TYPE_PARAMETER' == value:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                return AnnotationTarget_TYPE_PARAMETER_getInstance()
             else:
                 if 'PROPERTY' == value:
-                    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                    return AnnotationTarget_PROPERTY_getInstance()
                 else:
                     if 'FIELD' == value:
-                        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                        return AnnotationTarget_FIELD_getInstance()
                     else:
                         if 'LOCAL_VARIABLE' == value:
-                            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                            return AnnotationTarget_LOCAL_VARIABLE_getInstance()
                         else:
                             if 'VALUE_PARAMETER' == value:
-                                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                                return AnnotationTarget_VALUE_PARAMETER_getInstance()
                             else:
                                 if 'CONSTRUCTOR' == value:
-                                    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                                    return AnnotationTarget_CONSTRUCTOR_getInstance()
                                 else:
                                     if 'FUNCTION' == value:
-                                        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                                        return AnnotationTarget_FUNCTION_getInstance()
                                     else:
                                         if 'PROPERTY_GETTER' == value:
-                                            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                                            return AnnotationTarget_PROPERTY_GETTER_getInstance()
                                         else:
                                             if 'PROPERTY_SETTER' == value:
-                                                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                                                return AnnotationTarget_PROPERTY_SETTER_getInstance()
                                             else:
                                                 if 'TYPE' == value:
-                                                    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                                                    return AnnotationTarget_TYPE_getInstance()
                                                 else:
                                                     if 'EXPRESSION' == value:
-                                                        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                                                        return AnnotationTarget_EXPRESSION_getInstance()
                                                     else:
                                                         if 'FILE' == value:
-                                                            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                                                            return AnnotationTarget_FILE_getInstance()
                                                         else:
                                                             if 'TYPEALIAS' == value:
-                                                                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                                                                return AnnotationTarget_TYPEALIAS_getInstance()
                                                             else:
                                                                 AnnotationTarget_initEntries()
                                                                 THROW_ISE()
@@ -6853,7 +6853,7 @@ def valueOf(value):
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def AnnotationTarget_initEntries():
     if AnnotationTarget_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return Unit_getInstance()
     
     AnnotationTarget_entriesInitialized = True
     AnnotationTarget_CLASS_instance = AnnotationTarget('CLASS', 0)
@@ -6944,13 +6944,13 @@ def values():
 
 def valueOf(value):
     if 'SOURCE' == value:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return AnnotationRetention_SOURCE_getInstance()
     else:
         if 'BINARY' == value:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return AnnotationRetention_BINARY_getInstance()
         else:
             if 'RUNTIME' == value:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+                return AnnotationRetention_RUNTIME_getInstance()
             else:
                 AnnotationRetention_initEntries()
                 THROW_ISE()
@@ -6961,7 +6961,7 @@ def valueOf(value):
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def AnnotationRetention_initEntries():
     if AnnotationRetention_entriesInitialized:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return Unit_getInstance()
     
     AnnotationRetention_entriesInitialized = True
     AnnotationRetention_SOURCE_instance = AnnotationRetention('SOURCE', 0)
@@ -7951,10 +7951,10 @@ class AbstractMutableList:
     
     def equals(self, other):
         if other is self:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return True
         
         if jsNot((isInterface(other, jsClass())) if (jsNot(other == None)) else (False)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         return Companion_getInstance().orderedEquals(self, kotlin_collections_Collection___(other))
     
@@ -8109,7 +8109,7 @@ class ArrayList:
     def addAll(self, elements):
         self.checkIsMutable()
         if elements.isEmpty():
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         tmp0_this = self
         tmp = tmp0_this
@@ -8127,14 +8127,14 @@ class ArrayList:
         insertionRangeCheck(self, index)
         Unit_getInstance()
         if index == self._get_size_():
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return self.addAll(elements)
         
         if elements.isEmpty():
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         tmp0_subject = index
         if tmp0_subject == self._get_size_():
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return self.addAll(elements)
         else:
             if tmp0_subject == 0:
                 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
@@ -8626,7 +8626,7 @@ class PrimitiveKClassImpl:
     
     def equals(self, other):
         if jsNot(jsInstanceOf(other, jsClass())):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         return (self.givenSimpleName == kotlin_reflect_js_internal_PrimitiveKClassImpl___(other).givenSimpleName) if (self.equals(other)) else (False)
     
@@ -8983,7 +8983,7 @@ def createContravariantKTypeProjection(type):
 
 def asString(_this):
     if self.variance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return '*'
     
     return jsPlus(prefixString(), toString())
 
@@ -9169,23 +9169,23 @@ class KTypeParameterImpl:
     
     def equals(self, other):
         if self is other:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return True
         
         if jsNot(jsInstanceOf(other, jsClass())):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         tmp0_other_with_cast = (kotlin_reflect_js_internal_KTypeParameterImpl(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
         if jsNot(self.name == tmp0_other_with_cast.name):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         if jsNot(equals(self.upperBounds, tmp0_other_with_cast.upperBounds)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         if jsNot(self.variance.equals(tmp0_other_with_cast.variance)):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         if jsNot(self.isReified == tmp0_other_with_cast.isReified):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         return True
     
@@ -9953,7 +9953,7 @@ class StringBuilder:
             
         
         if tmp:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return -1
         
         tmp0_asDynamic_0 = self.string
         return kotlin_Int(INVOKE(lastIndexOf(tmp0_asDynamic_0), string, startIndex))
@@ -10203,7 +10203,7 @@ def compareTo(other, ignoreCase):
         n2 = jsArrayLength(other)
         min = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.min(n1, n2)
         if min == 0:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return jsBitOr(jsMinus(n1, n2), 0)
         
         start = 0
         while True:
@@ -10448,10 +10448,10 @@ class Char:
     
     def equals(self, other):
         if other is self:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return True
         
         if jsNot(jsInstanceOf(other, jsClass())):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+            return False
         
         return self.value == kotlin_Char(other).value
     
@@ -11700,7 +11700,7 @@ def toString(o):
 
 def hashCode(obj):
     if EQEQ(obj, None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return 0
     
     tmp0_subject = jsTypeOf(obj)
     if tmp0_subject == 'object':
@@ -12652,7 +12652,7 @@ def isInterface(obj, iface):
 
 def isInterfaceImpl(ctor, iface):
     if ctor is iface:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
+        return True
     
     metadata = ctor._get__metadata__()
     if jsNot(metadata == None):
