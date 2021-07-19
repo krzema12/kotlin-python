@@ -1,4 +1,3 @@
-    112 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrReturnImpl
     111 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl
      70 visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
      59 visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl
