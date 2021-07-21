@@ -509,8 +509,8 @@ def Char(code):
     
     return numberToChar(code)
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
+pass
 def values():
     return Level_WARNING_getInstance()
 
@@ -524,7 +524,7 @@ def valueOf(value):
         THROW_ISE()
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Level_initEntries():
     if Level_entriesInitialized:
         return Unit_getInstance()
@@ -650,8 +650,8 @@ class ExperimentalMultiplatform:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
+pass
 def values():
     return Level_WARNING_getInstance()
 
@@ -665,7 +665,7 @@ def valueOf(value):
         THROW_ISE()
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Level_initEntries():
     if Level_entriesInitialized:
         return Unit_getInstance()
@@ -1069,7 +1069,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -1275,7 +1275,7 @@ class EmptyList:
         raise IndexOutOfBoundsException_init__Create_(((str('fromIndex: ') + str(fromIndex)) + str(', toIndex: ')) + str(toIndex))
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def EmptyList_getInstance():
     if EmptyList_instance == None:
         EmptyList()
@@ -1314,7 +1314,7 @@ class EmptyIterator:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def EmptyIterator_getInstance():
     if EmptyIterator_instance == None:
         EmptyIterator()
@@ -1446,10 +1446,10 @@ class ContractBuilder:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
+pass
+pass
+pass
 def values():
     return InvocationKind_AT_MOST_ONCE_getInstance()
 
@@ -1467,7 +1467,7 @@ def valueOf(value):
         THROW_ISE()
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def InvocationKind_initEntries():
     if InvocationKind_entriesInitialized:
         return Unit_getInstance()
@@ -1693,7 +1693,7 @@ class Key:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Key_getInstance():
     if Key_instance == None:
         Key()
@@ -1893,7 +1893,7 @@ class EmptyCoroutineContext:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def EmptyCoroutineContext_getInstance():
     if EmptyCoroutineContext_instance == None:
         EmptyCoroutineContext()
@@ -1918,7 +1918,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -2151,9 +2151,9 @@ def _no_name_provided__factory(_elements, _index):
 def _get_COROUTINE_SUSPENDED_():
     return CoroutineSingletons_COROUTINE_SUSPENDED_getInstance()
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
+pass
+pass
 def values():
     return CoroutineSingletons_COROUTINE_SUSPENDED_getInstance()
 
@@ -2169,7 +2169,7 @@ def valueOf(value):
         THROW_ISE()
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def CoroutineSingletons_initEntries():
     if CoroutineSingletons_entriesInitialized:
         return Unit_getInstance()
@@ -2304,9 +2304,9 @@ class RequireKotlin:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
+pass
+pass
 def values():
     return RequireKotlinVersionKind_LANGUAGE_VERSION_getInstance()
 
@@ -2322,7 +2322,7 @@ def valueOf(value):
         THROW_ISE()
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def RequireKotlinVersionKind_initEntries():
     if RequireKotlinVersionKind_entriesInitialized:
         return Unit_getInstance()
@@ -2521,7 +2521,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -2600,9 +2600,9 @@ class KTypeProjection:
         return True
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
+pass
+pass
 def values():
     return KVariance_INVARIANT_getInstance()
 
@@ -2618,7 +2618,7 @@ def valueOf(value):
         THROW_ISE()
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def KVariance_initEntries():
     if KVariance_entriesInitialized:
         return Unit_getInstance()
@@ -2685,13 +2685,23 @@ def _get_lastIndex_():
     return (charSequenceLength(self) - 1) | 0
 
 def _get_UNDEFINED_RESULT_():
+    init_properties_DeepRecursive_kt()
     return UNDEFINED_RESULT
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-def UNDEFINED_RESULT_init_():
-    tmp0_success_0 = Companion_getInstance()
-    tmp1_success_0 = _get_COROUTINE_SUSPENDED_()
-    return _Result___init__impl_(tmp1_success_0)
+pass
+properties_initialized_DeepRecursive_kt = False
+def init_properties_DeepRecursive_kt():
+    global properties_initialized_DeepRecursive_kt
+    if not properties_initialized_DeepRecursive_kt:
+        properties_initialized_DeepRecursive_kt = True
+        tmp0_success_0 = Companion_getInstance()
+        tmp1_success_0 = _get_COROUTINE_SUSPENDED_()
+        UNDEFINED_RESULT = _Result___init__impl_(tmp1_success_0)
+        boxIntrinsic(Unit_getInstance())
+    
+
+def Python_workaround_set_properties_initialized_DeepRecursive_kt_to_global():
+    pass
 
 def check(value):
     if not value:
@@ -2775,7 +2785,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -2951,7 +2961,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -3427,7 +3437,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -3871,7 +3881,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -3965,7 +3975,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -4237,7 +4247,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -4684,7 +4694,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -4784,7 +4794,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -5027,7 +5037,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -5870,9 +5880,9 @@ class Suppress:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
+pass
+pass
 def values():
     return DeprecationLevel_WARNING_getInstance()
 
@@ -5888,7 +5898,7 @@ def valueOf(value):
         THROW_ISE()
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def DeprecationLevel_initEntries():
     if DeprecationLevel_entriesInitialized:
         return Unit_getInstance()
@@ -6465,7 +6475,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -6532,7 +6542,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -6600,7 +6610,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -6704,7 +6714,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -6776,7 +6786,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -6848,7 +6858,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -6924,7 +6934,7 @@ class Unit:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Unit_getInstance():
     if Unit_instance == None:
         Unit()
@@ -6948,21 +6958,21 @@ class Target:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
+pass
+pass
+pass
+pass
+pass
+pass
+pass
+pass
+pass
+pass
+pass
+pass
+pass
+pass
 def values():
     return AnnotationTarget_CLASS_getInstance()
 
@@ -7002,7 +7012,7 @@ def valueOf(value):
         THROW_ISE()
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def AnnotationTarget_initEntries():
     if AnnotationTarget_entriesInitialized:
         return Unit_getInstance()
@@ -7088,9 +7098,9 @@ class Retention:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
+pass
+pass
 def values():
     return AnnotationRetention_SOURCE_getInstance()
 
@@ -7106,7 +7116,7 @@ def valueOf(value):
         THROW_ISE()
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def AnnotationRetention_initEntries():
     if AnnotationRetention_entriesInitialized:
         return Unit_getInstance()
@@ -7289,7 +7299,7 @@ class ByteCompanionObject:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def ByteCompanionObject_getInstance():
     if ByteCompanionObject_instance == None:
         ByteCompanionObject()
@@ -7326,7 +7336,7 @@ class ShortCompanionObject:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def ShortCompanionObject_getInstance():
     if ShortCompanionObject_instance == None:
         ShortCompanionObject()
@@ -7363,7 +7373,7 @@ class IntCompanionObject:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def IntCompanionObject_getInstance():
     if IntCompanionObject_instance == None:
         IntCompanionObject()
@@ -7412,7 +7422,7 @@ class FloatCompanionObject:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def FloatCompanionObject_getInstance():
     if FloatCompanionObject_instance == None:
         FloatCompanionObject()
@@ -7461,7 +7471,7 @@ class DoubleCompanionObject:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def DoubleCompanionObject_getInstance():
     if DoubleCompanionObject_instance == None:
         DoubleCompanionObject()
@@ -7482,7 +7492,7 @@ class StringCompanionObject:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def StringCompanionObject_getInstance():
     if StringCompanionObject_instance == None:
         StringCompanionObject()
@@ -7503,7 +7513,7 @@ class BooleanCompanionObject:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def BooleanCompanionObject_getInstance():
     if BooleanCompanionObject_instance == None:
         BooleanCompanionObject()
@@ -8477,7 +8487,7 @@ def _set__stableSortingIsSupported_(_set___):
 def _get__stableSortingIsSupported_():
     return _stableSortingIsSupported
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+_stableSortingIsSupported = None
 class RandomAccess:
     def equals(self, other):
         pass
@@ -8493,12 +8503,14 @@ class RandomAccess:
     
 
 def _set_output_(_set___):
+    init_properties_console_kt()
     output = _set___
 
 def _get_output_():
+    init_properties_console_kt()
     return output
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 class BaseOutput:
     def __init__(self):
         pass
@@ -8605,6 +8617,7 @@ class BufferedOutputToConsoleLog:
     
 
 def String(value):
+    init_properties_console_kt()
     return kotlin_String(INVOKE(js('String'), value))
 
 class BufferedOutput:
@@ -8644,16 +8657,26 @@ class BufferedOutput:
     
 
 def println(message):
-    output.println(message)
+    init_properties_console_kt()
+    _get_output_().println(message)
 
-def output_init_():
-    isNode_2 = kotlin_Boolean(js('typeof process !== \'undefined\' && process.versions && !!process.versions.node'))
-    return (NodeJsOutput(js('process.stdout'))) if (isNode_2) else (BufferedOutputToConsoleLog())
+properties_initialized_console_kt = False
+def init_properties_console_kt():
+    global properties_initialized_console_kt
+    if not properties_initialized_console_kt:
+        properties_initialized_console_kt = True
+        isNode_2 = kotlin_Boolean(js('typeof process !== \'undefined\' && process.versions && !!process.versions.node'))
+        output = (NodeJsOutput(js('process.stdout'))) if (isNode_2) else (BufferedOutputToConsoleLog())
+    
+
+def Python_workaround_set_properties_initialized_console_kt_to_global():
+    pass
 
 def _get_EmptyContinuation_():
+    init_properties_EmptyContinuation_kt()
     return EmptyContinuation
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 class _no_name_provided__1:
     def __init__(self, _tmp0_Continuation_0):
         self._tmp0_Continuation_0 = _tmp0_Continuation_0
@@ -8687,9 +8710,17 @@ class _no_name_provided__1:
         pass
     
 
-def EmptyContinuation_init_():
-    tmp0_Continuation_0 = EmptyCoroutineContext_getInstance()
-    return _no_name_provided__1(tmp0_Continuation_0)
+properties_initialized_EmptyContinuation_kt = False
+def init_properties_EmptyContinuation_kt():
+    global properties_initialized_EmptyContinuation_kt
+    if not properties_initialized_EmptyContinuation_kt:
+        properties_initialized_EmptyContinuation_kt = True
+        tmp0_Continuation_0 = EmptyCoroutineContext_getInstance()
+        EmptyContinuation = _no_name_provided__1(tmp0_Continuation_0)
+    
+
+def Python_workaround_set_properties_initialized_EmptyContinuation_kt_to_global():
+    pass
 
 def asDynamic():
     return self
@@ -8721,18 +8752,26 @@ def isNaN():
     return not (self == self)
 
 def _get_INV_2_26_():
+    init_properties_PlatformRandom_kt()
     return INV_2_26
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def _get_INV_2_53_():
+    init_properties_PlatformRandom_kt()
     return INV_2_53
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-def INV_2_26_init_():
-    return visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(2.0, -26.0)
+pass
+properties_initialized_PlatformRandom_kt = False
+def init_properties_PlatformRandom_kt():
+    global properties_initialized_PlatformRandom_kt
+    if not properties_initialized_PlatformRandom_kt:
+        properties_initialized_PlatformRandom_kt = True
+        INV_2_26 = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(2.0, -26.0)
+        INV_2_53 = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(2.0, -53.0)
+    
 
-def INV_2_53_init_():
-    return visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(2.0, -53.0)
+def Python_workaround_set_properties_initialized_PlatformRandom_kt_to_global():
+    pass
 
 def _get_js_():
     return ((kotlin_reflect_js_internal_KClassImpl_T_(self)) if (jsInstanceOf(self, jsClass())) else (THROW_CCE()))._get_jClass_()
@@ -8875,7 +8914,7 @@ class NothingKClassImpl:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def NothingKClassImpl_getInstance():
     if NothingKClassImpl_instance == None:
         NothingKClassImpl()
@@ -9285,7 +9324,7 @@ class DynamicKType:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def DynamicKType_getInstance():
     if DynamicKType_instance == None:
         DynamicKType()
@@ -9379,9 +9418,10 @@ class KTypeParameterImpl:
     
 
 def _get_functionClasses_():
+    init_properties_primitives_kt()
     return functionClasses
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 class _no_name_provided_:
     def __init__(self):
         pass
@@ -9730,12 +9770,12 @@ class PrimitiveClasses:
         return self.doubleArrayClass
     
     def functionClass(self, arity):
-        tmp0_elvis_lhs = functionClasses[arity]
+        tmp0_elvis_lhs = _get_functionClasses_()[arity]
         if tmp0_elvis_lhs == None:
             tmp0_unsafeCast_0_3 = js('Function')
             tmp = str('Function') + str(arity)
             result_2 = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_3), tmp, _no_name_provided__factory(arity))
-            tmp1_asDynamic_0_5 = functionClasses
+            tmp1_asDynamic_0_5 = _get_functionClasses_()
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
             tmp = result_2
         else:
@@ -9753,7 +9793,7 @@ class PrimitiveClasses:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def PrimitiveClasses_getInstance():
     if PrimitiveClasses_instance == None:
         PrimitiveClasses()
@@ -9840,8 +9880,16 @@ def _no_name_provided__factory(_arity):
     i = _no_name_provided_(_arity)
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def functionClasses_init_():
-    return fillArrayVal(Array(0), None)
+properties_initialized_primitives_kt = False
+def init_properties_primitives_kt():
+    global properties_initialized_primitives_kt
+    if not properties_initialized_primitives_kt:
+        properties_initialized_primitives_kt = True
+        functionClasses = fillArrayVal(Array(0), None)
+    
+
+def Python_workaround_set_properties_initialized_primitives_kt_to_global():
+    pass
 
 def getKClass(jClass):
     if kotlin_Boolean(INVOKE(isArray(js('Array')), jClass)):
@@ -10353,19 +10401,24 @@ def checkRadix(radix):
     return radix
 
 def _get_STRING_CASE_INSENSITIVE_ORDER_():
+    init_properties_string_kt()
     return STRING_CASE_INSENSITIVE_ORDER
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def nativeLastIndexOf(str, fromIndex):
+    init_properties_string_kt()
     return kotlin_Int(INVOKE(lastIndexOf(self), str, fromIndex))
 
 def substring(startIndex, endIndex):
+    init_properties_string_kt()
     return kotlin_String(INVOKE(substring(self), startIndex, endIndex))
 
 def substring(startIndex):
+    init_properties_string_kt()
     return kotlin_String(INVOKE(substring(self), startIndex))
 
 def compareTo(other, ignoreCase):
+    init_properties_string_kt()
     if ignoreCase:
         n1 = len(self)
         n2 = len(other)
@@ -10413,12 +10466,15 @@ def compareTo_default(other, ignoreCase, _mask0, _handler):
     return compareTo(other, ignoreCase)
 
 def uppercase():
+    init_properties_string_kt()
     return kotlin_String(INVOKE(toUpperCase(self)))
 
 def lowercase():
+    init_properties_string_kt()
     return kotlin_String(INVOKE(toLowerCase(self)))
 
 def concatToString():
+    init_properties_string_kt()
     result = ''
     indexedObject = self
     inductionVariable = 0
@@ -10431,6 +10487,7 @@ def concatToString():
     return result
 
 def concatToString(startIndex, endIndex):
+    init_properties_string_kt()
     Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, len(self))
     result = ''
     inductionVariable = startIndex
@@ -10456,6 +10513,7 @@ def concatToString_default(startIndex, endIndex, _mask0, _handler):
     return concatToString(startIndex, endIndex)
 
 def toUpperCase():
+    init_properties_string_kt()
     return kotlin_String(INVOKE(toUpperCase(self)))
 
 class sam_kotlin_Comparator_0:
@@ -10494,17 +10552,34 @@ def _no_name_provided__factory():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def STRING_CASE_INSENSITIVE_ORDER_init_():
-    tmp = _no_name_provided__factory()
-    return sam_kotlin_Comparator_0(tmp)
+properties_initialized_string_kt = False
+def init_properties_string_kt():
+    global properties_initialized_string_kt
+    if not properties_initialized_string_kt:
+        properties_initialized_string_kt = True
+        tmp = _no_name_provided__factory()
+        STRING_CASE_INSENSITIVE_ORDER = sam_kotlin_Comparator_0(tmp)
+    
+
+def Python_workaround_set_properties_initialized_string_kt_to_global():
+    pass
 
 def _get_REPLACEMENT_BYTE_SEQUENCE_():
+    init_properties_utf8Encoding_kt()
     return REPLACEMENT_BYTE_SEQUENCE
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-def REPLACEMENT_BYTE_SEQUENCE_init_():
-    tmp0_byteArrayOf_0 = -17
-    return tmp0_byteArrayOf_0
+pass
+properties_initialized_utf8Encoding_kt = False
+def init_properties_utf8Encoding_kt():
+    global properties_initialized_utf8Encoding_kt
+    if not properties_initialized_utf8Encoding_kt:
+        properties_initialized_utf8Encoding_kt = True
+        tmp0_byteArrayOf_0 = -17
+        REPLACEMENT_BYTE_SEQUENCE = tmp0_byteArrayOf_0
+    
+
+def Python_workaround_set_properties_initialized_utf8Encoding_kt_to_global():
+    pass
 
 def _get_value_(_this):
     return _this.value
@@ -10563,7 +10638,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -11093,7 +11168,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -11182,7 +11257,7 @@ class DefaultConstructorMarker:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def DefaultConstructorMarker_getInstance():
     if DefaultConstructorMarker_instance == None:
         DefaultConstructorMarker()
@@ -11649,52 +11724,63 @@ class _no_name_provided_:
     
 
 def _get_buf_():
+    init_properties_bitUtils_kt()
     return buf
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def _get_bufFloat64_():
+    init_properties_bitUtils_kt()
     return bufFloat64
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def _get_bufFloat32_():
+    init_properties_bitUtils_kt()
     return bufFloat32
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def _get_bufInt32_():
+    init_properties_bitUtils_kt()
     return bufInt32
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def _get_lowIndex_():
+    init_properties_bitUtils_kt()
     return lowIndex
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def _get_highIndex_():
+    init_properties_bitUtils_kt()
     return highIndex
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def getNumberHashCode(obj):
+    init_properties_bitUtils_kt()
     tmp0_unsafeCast_0 = jsBitwiseOr(obj, 0)
     if kotlin_Any_(tmp0_unsafeCast_0) is obj:
         return numberToInt(obj)
     
-    bufFloat64.__setitem__(0, obj)
-    return (imul(bufInt32[highIndex], 31) + bufInt32[lowIndex]) | 0
+    _get_bufFloat64_().__setitem__(0, obj)
+    return (imul(_get_bufInt32_()[_get_highIndex_()], 31) + _get_bufInt32_()[_get_lowIndex_()]) | 0
 
-def bufFloat64_init_():
-    tmp0_unsafeCast_0 = Float64Array(buf)
-    return kotlin_Any_(tmp0_unsafeCast_0)
+properties_initialized_bitUtils_kt = False
+def init_properties_bitUtils_kt():
+    global properties_initialized_bitUtils_kt
+    if not properties_initialized_bitUtils_kt:
+        properties_initialized_bitUtils_kt = True
+        buf = ArrayBuffer(8)
+        tmp0_unsafeCast_0 = Float64Array(_get_buf_())
+        bufFloat64 = kotlin_Any_(tmp0_unsafeCast_0)
+        tmp0_unsafeCast_0 = Float32Array(_get_buf_())
+        bufFloat32 = kotlin_Any_(tmp0_unsafeCast_0)
+        tmp0_unsafeCast_0 = Int32Array(_get_buf_())
+        bufInt32 = kotlin_Any_(tmp0_unsafeCast_0)
+        _get_bufFloat64_().__setitem__(0, -1.0)
+        lowIndex = (1) if (not (_get_bufInt32_()[0] == 0)) else (0)
+        highIndex = (1 - _get_lowIndex_()) | 0
+    
 
-def bufFloat32_init_():
-    tmp0_unsafeCast_0 = Float32Array(buf)
-    return kotlin_Any_(tmp0_unsafeCast_0)
-
-def bufInt32_init_():
-    tmp0_unsafeCast_0 = Int32Array(buf)
-    return kotlin_Any_(tmp0_unsafeCast_0)
-
-def lowIndex_init_():
-    bufFloat64.__setitem__(0, -1.0)
-    return (1) if (not (bufInt32[0] == 0)) else (0)
+def Python_workaround_set_properties_initialized_bitUtils_kt_to_global():
+    pass
 
 class DoNotIntrinsify:
     def __init__(self):
@@ -11842,11 +11928,11 @@ def getObjectHashCode(obj):
 def _get_OBJECT_HASH_CODE_PROPERTY_NAME_():
     return OBJECT_HASH_CODE_PROPERTY_NAME
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+OBJECT_HASH_CODE_PROPERTY_NAME = 'kotlinHashCodeValue$'
 def _get_POW_2_32_():
     return POW_2_32
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+POW_2_32 = 4.294967296E9
 def toString(o):
     if EQEQ(o, None):
         tmp = 'null'
@@ -12100,7 +12186,7 @@ class Companion:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -12316,30 +12402,37 @@ class Long:
     
 
 def _get_ZERO_():
+    init_properties_longjs_kt()
     return ZERO
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def _get_ONE_():
+    init_properties_longjs_kt()
     return ONE
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def _get_NEG_ONE_():
+    init_properties_longjs_kt()
     return NEG_ONE
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def _get_MAX_VALUE_():
+    init_properties_longjs_kt()
     return MAX_VALUE
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def _get_MIN_VALUE_():
+    init_properties_longjs_kt()
     return MIN_VALUE
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def _get_TWO_PWR_24__():
+    init_properties_longjs_kt()
     return TWO_PWR_24_
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def compare(other):
+    init_properties_longjs_kt()
     if equalsLong(other):
         return 0
     
@@ -12348,6 +12441,7 @@ def compare(other):
     return (-1) if ((not otherNeg) if (thisNeg) else (False)) else ((1) if ((otherNeg) if (not thisNeg) else (False)) else ((-1) if (isNegative()) else (1)))
 
 def add(other):
+    init_properties_longjs_kt()
     a48 = jsBitShiftRU(self.high, 16)
     a32 = self.high & 65535
     a16 = jsBitShiftRU(self.low, 16)
@@ -12374,18 +12468,20 @@ def add(other):
     return Long((c16 << 16) | c00, (c48 << 16) | c32)
 
 def subtract(other):
+    init_properties_longjs_kt()
     return add(other.unaryMinus())
 
 def multiply(other):
+    init_properties_longjs_kt()
     if isZero():
-        return ZERO
+        return _get_ZERO_()
     elif isZero():
-        return ZERO
+        return _get_ZERO_()
     
-    if equalsLong(MIN_VALUE):
-        return (MIN_VALUE) if (isOdd()) else (ZERO)
-    elif equalsLong(MIN_VALUE):
-        return (MIN_VALUE) if (isOdd()) else (ZERO)
+    if equalsLong(_get_MIN_VALUE_()):
+        return (_get_MIN_VALUE_()) if (isOdd()) else (_get_ZERO_())
+    elif equalsLong(_get_MIN_VALUE_()):
+        return (_get_MIN_VALUE_()) if (isOdd()) else (_get_ZERO_())
     
     if isNegative():
         if isNegative():
@@ -12397,7 +12493,7 @@ def multiply(other):
     elif isNegative():
         return negate()
     
-    if (lessThan(TWO_PWR_24_)) if (lessThan(TWO_PWR_24_)) else (False):
+    if (lessThan(_get_TWO_PWR_24__())) if (lessThan(_get_TWO_PWR_24__())) else (False):
         return fromNumber(toNumber() * toNumber())
     
     a48 = jsBitShiftRU(self.high, 16)
@@ -12435,28 +12531,29 @@ def multiply(other):
     return Long((c16 << 16) | c00, (c48 << 16) | c32)
 
 def divide(other):
+    init_properties_longjs_kt()
     if isZero():
         raise Exception_init__Create_('division by zero')
     elif isZero():
-        return ZERO
+        return _get_ZERO_()
     
-    if equalsLong(MIN_VALUE):
-        if (True) if (equalsLong(ONE)) else (equalsLong(NEG_ONE)):
-            return MIN_VALUE
-        elif equalsLong(MIN_VALUE):
-            return ONE
+    if equalsLong(_get_MIN_VALUE_()):
+        if (True) if (equalsLong(_get_ONE_())) else (equalsLong(_get_NEG_ONE_())):
+            return _get_MIN_VALUE_()
+        elif equalsLong(_get_MIN_VALUE_()):
+            return _get_ONE_()
         else:
             halfThis = shiftRight(1)
             approx = shiftLeft(1)
-            if equalsLong(ZERO):
-                return (ONE) if (isNegative()) else (NEG_ONE)
+            if equalsLong(_get_ZERO_()):
+                return (_get_ONE_()) if (isNegative()) else (_get_NEG_ONE_())
             else:
                 rem = subtract(multiply(approx))
                 return add(rem.div(other))
             
         
-    elif equalsLong(MIN_VALUE):
-        return ZERO
+    elif equalsLong(_get_MIN_VALUE_()):
+        return _get_ZERO_()
     
     if isNegative():
         if isNegative():
@@ -12468,7 +12565,7 @@ def divide(other):
     elif isNegative():
         return negate()
     
-    res = ZERO
+    res = _get_ZERO_()
     rem = self
     while greaterThanOrEqual(other):
         approxDouble = toNumber() / toNumber()
@@ -12483,7 +12580,7 @@ def divide(other):
             approxRem = multiply(other)
         
         if isZero():
-            approxRes = ONE
+            approxRes = _get_ONE_()
         
         res = add(approxRes)
         rem = subtract(approxRem)
@@ -12491,9 +12588,11 @@ def divide(other):
     return res
 
 def modulo(other):
+    init_properties_longjs_kt()
     return subtract(multiply(other))
 
 def shiftLeft(numBits):
+    init_properties_longjs_kt()
     numBits = numBits & 63
     if numBits == 0:
         return self
@@ -12504,6 +12603,7 @@ def shiftLeft(numBits):
     
 
 def shiftRight(numBits):
+    init_properties_longjs_kt()
     numBits = numBits & 63
     if numBits == 0:
         return self
@@ -12514,6 +12614,7 @@ def shiftRight(numBits):
     
 
 def shiftRightUnsigned(numBits):
+    init_properties_longjs_kt()
     numBits = numBits & 63
     if numBits == 0:
         return self
@@ -12529,15 +12630,19 @@ def shiftRightUnsigned(numBits):
     
 
 def toNumber():
+    init_properties_longjs_kt()
     return (self.high * 4.294967296E9) + getLowBitsUnsigned()
 
 def equalsLong(other):
+    init_properties_longjs_kt()
     return (self.low == other.low) if (self.high == other.high) else (False)
 
 def hashCode(l):
+    init_properties_longjs_kt()
     return l.low ^ l.high
 
 def toStringImpl(radix):
+    init_properties_longjs_kt()
     if (True) if (radix < 2) else (36 < radix):
         raise Exception_init__Create_(str('radix out of range: ') + str(radix))
     
@@ -12545,7 +12650,7 @@ def toStringImpl(radix):
         return '0'
     
     if isNegative():
-        if equalsLong(MIN_VALUE):
+        if equalsLong(_get_MIN_VALUE_()):
             radixLong = fromInt(radix)
             div = self.div(radixLong)
             rem = subtract(self).toInt()
@@ -12576,30 +12681,37 @@ def toStringImpl(radix):
     
 
 def fromInt(value):
+    init_properties_longjs_kt()
     return Long(value, (-1) if (value < 0) else (0))
 
 def isNegative():
+    init_properties_longjs_kt()
     return self.high < 0
 
 def isZero():
+    init_properties_longjs_kt()
     return (self.low == 0) if (self.high == 0) else (False)
 
 def isOdd():
+    init_properties_longjs_kt()
     return self.low & 1 == 1
 
 def negate():
+    init_properties_longjs_kt()
     return self.unaryMinus()
 
 def lessThan(other):
+    init_properties_longjs_kt()
     return compare(other) < 0
 
 def fromNumber(value):
+    init_properties_longjs_kt()
     if isNaN():
-        return ZERO
+        return _get_ZERO_()
     elif value <= -9.223372036854776E18:
-        return MIN_VALUE
+        return _get_MIN_VALUE_()
     elif value + 1 >= 9.223372036854776E18:
-        return MAX_VALUE
+        return _get_MAX_VALUE_()
     elif value < 0.0:
         return negate()
     else:
@@ -12608,22 +12720,43 @@ def fromNumber(value):
     
 
 def greaterThan(other):
+    init_properties_longjs_kt()
     return compare(other) > 0
 
 def greaterThanOrEqual(other):
+    init_properties_longjs_kt()
     return compare(other) >= 0
 
 def getLowBitsUnsigned():
+    init_properties_longjs_kt()
     return (kotlin_Double(self.low)) if (self.low >= 0) else (4.294967296E9 + self.low)
 
 def _get_TWO_PWR_32_DBL__():
+    init_properties_longjs_kt()
     return TWO_PWR_32_DBL_
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+TWO_PWR_32_DBL_ = 4.294967296E9
 def _get_TWO_PWR_63_DBL__():
+    init_properties_longjs_kt()
     return TWO_PWR_63_DBL_
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+TWO_PWR_63_DBL_ = 9.223372036854776E18
+properties_initialized_longjs_kt = False
+def init_properties_longjs_kt():
+    global properties_initialized_longjs_kt
+    if not properties_initialized_longjs_kt:
+        properties_initialized_longjs_kt = True
+        ZERO = fromInt(0)
+        ONE = fromInt(1)
+        NEG_ONE = fromInt(-1)
+        MAX_VALUE = Long(-1, 2147483647)
+        MIN_VALUE = Long(0, -2147483648)
+        TWO_PWR_24_ = fromInt(16777216)
+    
+
+def Python_workaround_set_properties_initialized_longjs_kt_to_global():
+    pass
+
 def imul(a_local, b_local):
     lhs = kotlin_Double(jsBitwiseAnd(a_local, js('0xffff0000'))) * kotlin_Double(jsBitwiseAnd(b_local, 65535))
     rhs = kotlin_Double(jsBitwiseAnd(a_local, 65535)) * kotlin_Double(b_local)
@@ -12765,13 +12898,16 @@ def numberRangeToLong(start, endInclusive):
     return LongRange(numberToLong(start), kotlin_Long(endInclusive))
 
 def _get_propertyRefClassMetadataCache_():
+    init_properties_reflectRuntime_kt()
     return propertyRefClassMetadataCache
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def metadataObject():
+    init_properties_reflectRuntime_kt()
     return js('{ kind: \'class\', interfaces: [] }')
 
 def getPropertyCallableRef(name, paramCount, type, getter, setter):
+    init_properties_reflectRuntime_kt()
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
@@ -12779,29 +12915,40 @@ def getPropertyCallableRef(name, paramCount, type, getter, setter):
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def getPropertyRefClass(obj, metadata):
+    init_properties_reflectRuntime_kt()
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     return obj
 
 def getKPropMetadata(paramCount, setter, type):
-    mdata = propertyRefClassMetadataCache[paramCount][(0) if (setter == None) else (1)]
+    init_properties_reflectRuntime_kt()
+    mdata = _get_propertyRefClassMetadataCache_()[paramCount][(0) if (setter == None) else (1)]
     if EQEQ(length(interfaces(mdata)), 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     
     return mdata
 
 def getLocalDelegateReference(name, type, mutable, _lambda):
+    init_properties_reflectRuntime_kt()
     return getPropertyCallableRef(name, 0, type, _lambda, (_lambda) if (mutable) else (None))
 
-def propertyRefClassMetadataCache_init_():
-    tmp = js('{ kind: \'class\', interfaces: [] }')
-    tmp0_arrayOf_0 = tmp
-    tmp = js('{ kind: \'class\', interfaces: [] }')
-    tmp1_arrayOf_0 = tmp
-    tmp = js('{ kind: \'class\', interfaces: [] }')
-    tmp2_arrayOf_0 = tmp
-    tmp3_arrayOf_0 = kotlin_Any_(tmp0_arrayOf_0)
-    return kotlin_Any_(tmp3_arrayOf_0)
+properties_initialized_reflectRuntime_kt = False
+def init_properties_reflectRuntime_kt():
+    global properties_initialized_reflectRuntime_kt
+    if not properties_initialized_reflectRuntime_kt:
+        properties_initialized_reflectRuntime_kt = True
+        tmp = js('{ kind: \'class\', interfaces: [] }')
+        tmp0_arrayOf_0 = tmp
+        tmp = js('{ kind: \'class\', interfaces: [] }')
+        tmp1_arrayOf_0 = tmp
+        tmp = js('{ kind: \'class\', interfaces: [] }')
+        tmp2_arrayOf_0 = tmp
+        tmp3_arrayOf_0 = kotlin_Any_(tmp0_arrayOf_0)
+        propertyRefClassMetadataCache = kotlin_Any_(tmp3_arrayOf_0)
+    
+
+def Python_workaround_set_properties_initialized_reflectRuntime_kt_to_global():
+    pass
 
 def isArrayish(o):
     if isJsArray(kotlin_Any(o)):
@@ -13115,7 +13262,7 @@ class CompletedContinuation:
         pass
     
 
-visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
+pass
 def CompletedContinuation_getInstance():
     if CompletedContinuation_instance == None:
         CompletedContinuation()

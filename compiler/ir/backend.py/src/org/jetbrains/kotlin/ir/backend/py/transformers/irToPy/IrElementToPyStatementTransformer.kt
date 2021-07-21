@@ -124,6 +124,14 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     }
 
     override fun visitCall(expression: IrCall, data: JsGenerationContext): List<stmt> {
+        val functionName = expression.symbol.owner.name.asString()
+        // This is a workaround to be able to emit "global ..." Python construct. There's no corresponding IR entity, so we emit a function
+        // which then is checked if the name contains some special parts. If yes, it's translated to "Global".
+        if (functionName.startsWith("Python workaround") && functionName.endsWith("to global")) {
+            return listOf(Global(names = listOf(
+                identifier(functionName.toValidPythonSymbol().substringAfter("Python_workaround_set_").substringBefore("_to_global")))))
+        }
+
         // TODO
         return IrElementToPyExpressionTransformer().visitCall(expression, data)
             .map { Expr(value = it) }

@@ -182,7 +182,6 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
     }
 
     override fun visitCall(expression: IrCall, context: JsGenerationContext): List<expr> {
-        // TODO
         val function = expression.symbol.owner.realOverrideTarget
 
         context.staticContext.intrinsics[function.symbol]?.let {

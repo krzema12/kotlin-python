@@ -33,11 +33,13 @@ class IrDeclarationToPyTransformer : BaseIrElementToPyNodeTransformer<stmt, JsGe
 
     override fun visitField(declaration: IrField, context: JsGenerationContext): stmt {
         // TODO
-        return Assign(
-            targets = listOf(Name(id = identifier("visitField $declaration".toValidPythonSymbol()), ctx = Store)),
-            value = Constant(value = constant("0"), kind = null),
-            type_comment = null,
-        )
+        return declaration.initializer?.let { initializer ->
+            Assign(
+                targets = listOf(Name(id = identifier(declaration.name.identifier.toValidPythonSymbol()), ctx = Store)),
+                value = IrElementToPyExpressionTransformer().visitExpression(initializer.expression, context).first(),
+                type_comment = null,
+            )
+        } ?: Pass
     }
 
     override fun visitVariable(declaration: IrVariable, context: JsGenerationContext): stmt {

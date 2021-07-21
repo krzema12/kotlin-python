@@ -61,10 +61,6 @@ class PropertyLazyInitLowering(
         get() = context.fileToInitializerPureness
 
     override fun lower(irBody: IrBody, container: IrDeclaration) {
-        if (!context.propertyLazyInitialization) {
-            return
-        }
-
         if (container !is IrField && container !is IrSimpleFunction && container !is IrProperty)
             return
 
@@ -72,8 +68,6 @@ class PropertyLazyInitLowering(
 
         val file = container.parent as? IrFile
             ?: return
-
-        container.assertCompatibleDeclaration()
 
         val initFun = (when {
             file in fileToInitializationFuns -> fileToInitializationFuns[file]
@@ -131,6 +125,7 @@ class PropertyLazyInitLowering(
                 file.declarations.add(this)
                 parent = file
             }
+        initializedField.initializer = irFactory.createExpressionBody(JsIrBuilder.buildBoolean(context.irBuiltIns.booleanType, false))
 
         return irFactory.addFunction(file) {
             name = Name.identifier("init properties $fileName")
@@ -139,6 +134,7 @@ class PropertyLazyInitLowering(
             origin = JsIrBuilder.SYNTHESIZED_DECLARATION
         }.apply {
             buildPropertiesInitializationBody(
+                file,
                 fieldToInitializer,
                 initializedField
             )
@@ -155,17 +151,19 @@ class PropertyLazyInitLowering(
         }
 
     private fun IrSimpleFunction.buildPropertiesInitializationBody(
+        file: IrFile,
         initializers: Map<IrField, IrExpression>,
         initializedField: IrField
     ) {
         body = irFactory.createBlockBody(
             UNDEFINED_OFFSET,
             UNDEFINED_OFFSET,
-            buildBodyWithIfGuard(initializers, initializedField)
+            buildBodyWithIfGuard(file, initializers, initializedField)
         )
     }
 
     private fun buildBodyWithIfGuard(
+        file: IrFile,
         initializers: Map<IrField, IrExpression>,
         initializedField: IrField
     ): List<IrStatement> {
@@ -179,14 +177,26 @@ class PropertyLazyInitLowering(
             JsIrBuilder.buildBoolean(context.irBuiltIns.booleanType, true)
         )
 
-        return JsIrBuilder.buildIfElse(
+        // This is a workaround to be able to emit "global ..." Python construct. There's no corresponding IR entity, so we emit a function
+        // which then is checked if the name contains some special parts. If yes, it's translated to "Global".
+        val dummyFunction = irFactory.addFunction(file) {
+            name = Name.identifier("Python workaround set ${initializedField.name.identifier} to global")
+            returnType = irBuiltIns.unitType
+            visibility = INTERNAL
+            origin = JsIrBuilder.SYNTHESIZED_DECLARATION
+        }
+
+        val settingToGlobal = JsIrBuilder.buildCall(dummyFunction.symbol)
+        val ifStatement = JsIrBuilder.buildIfElse(
             type = irBuiltIns.unitType,
             cond = calculator.not(createIrGetField(initializedField)),
             thenBranch = JsIrBuilder.buildComposite(
                 type = irBuiltIns.unitType,
                 statements = mutableListOf(upGuard).apply { addAll(statements) }
             )
-        ).let { listOf(it) }
+        )
+
+        return listOf(settingToGlobal, ifStatement)
     }
 }
 
@@ -217,10 +227,6 @@ class RemoveInitializersForLazyProperties(
         get() = context.fileToInitializerPureness
 
     override fun transformFlat(declaration: IrDeclaration): List<IrDeclaration>? {
-        if (!context.propertyLazyInitialization) {
-            return null
-        }
-
         if (declaration !is IrField) return null
 
         if (!declaration.isCompatibleDeclaration()) return null
@@ -240,7 +246,6 @@ class RemoveInitializersForLazyProperties(
             ?.takeIf { it.isForLazyInit() }
             ?.backingField
             ?.let {
-                it.assertCompatibleDeclaration()
                 it.initializer = null
             }
 
@@ -297,10 +302,6 @@ private fun IrDeclaration.propertyWithPersistentSafe(transform: IrDeclaration.()
 
 private fun IrDeclaration.isCompatibleDeclaration() =
     origin in compatibleOrigins
-
-private fun IrDeclaration.assertCompatibleDeclaration() {
-    assert(this !is PersistentIrElementBase<*> || createdOn == 0)
-}
 
 private val compatibleOrigins = listOf(
     IrDeclarationOrigin.DEFINED,

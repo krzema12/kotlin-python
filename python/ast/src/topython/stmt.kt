@@ -28,7 +28,7 @@ fun stmt.toPython(): String {
         is Assert -> TODO()
         is Import -> TODO()
         is ImportFrom -> TODO()
-        is Global -> TODO()
+        is Global -> toPython()
         is Nonlocal -> TODO()
         is Expr -> toPython()
         Pass -> "pass"
@@ -77,3 +77,7 @@ fun ClassDef.toPython() =
 
 fun Raise.toPython() =
     "raise ${exc?.toPython()}"
+
+fun Global.toPython() =
+    "global ${names.joinToString { it.name }}"
+
