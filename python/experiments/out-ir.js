@@ -2266,14 +2266,19 @@ this['out-ir'] = function (_) {
     return charSequenceLength(_this_) - 1 | 0;
   }
   function _get_UNDEFINED_RESULT_() {
+    init_properties_DeepRecursive_kt();
     return UNDEFINED_RESULT;
   }
   var UNDEFINED_RESULT;
-  function UNDEFINED_RESULT$init$() {
-    var tmp0_success_0 = Companion_getInstance_2();
-    var tmp1_success_0 = _get_COROUTINE_SUSPENDED_();
-    return _Result___init__impl_(tmp1_success_0);
-  }
+  var properties_initialized_DeepRecursive_kt;
+  function init_properties_DeepRecursive_kt() {
+    if (!properties_initialized_DeepRecursive_kt) {
+      properties_initialized_DeepRecursive_kt = true;
+      var tmp0_success_0 = Companion_getInstance_2();
+      var tmp1_success_0 = _get_COROUTINE_SUSPENDED_();
+      UNDEFINED_RESULT = _Result___init__impl_(tmp1_success_0);
+      new Result(Unit_getInstance());
+    }}
   function check(value) {
     if (!value) {
       var message_2 = 'Check failed.';
@@ -7331,9 +7336,11 @@ this['out-ir'] = function (_) {
     interfaces: []
   };
   function _set_output_(_set___) {
+    init_properties_console_kt();
     output = _set___;
   }
   function _get_output_() {
+    init_properties_console_kt();
     return output;
   }
   var output;
@@ -7398,6 +7405,7 @@ this['out-ir'] = function (_) {
     interfaces: []
   };
   function String_0(value) {
+    init_properties_console_kt();
     return String(value);
   }
   function BufferedOutput_0() {
@@ -7425,13 +7433,18 @@ this['out-ir'] = function (_) {
     interfaces: []
   };
   function println(message) {
-    output.println_qi8yb4_k$(message);
+    init_properties_console_kt();
+    _get_output_().println_qi8yb4_k$(message);
   }
-  function output$init$() {
-    var isNode_2 = typeof process !== 'undefined' && process.versions && !!process.versions.node;
-    return isNode_2 ? new NodeJsOutput_0(process.stdout) : new BufferedOutputToConsoleLog_0();
-  }
+  var properties_initialized_console_kt;
+  function init_properties_console_kt() {
+    if (!properties_initialized_console_kt) {
+      properties_initialized_console_kt = true;
+      var isNode_2 = typeof process !== 'undefined' && process.versions && !!process.versions.node;
+      output = isNode_2 ? new NodeJsOutput_0(process.stdout) : new BufferedOutputToConsoleLog_0();
+    }}
   function _get_EmptyContinuation_() {
+    init_properties_EmptyContinuation_kt();
     return EmptyContinuation;
   }
   var EmptyContinuation;
@@ -7461,10 +7474,13 @@ this['out-ir'] = function (_) {
     kind: 'class',
     interfaces: [Continuation]
   };
-  function EmptyContinuation$init$() {
-    var tmp0_Continuation_0 = EmptyCoroutineContext_getInstance();
-    return new _no_name_provided__1_0(tmp0_Continuation_0);
-  }
+  var properties_initialized_EmptyContinuation_kt;
+  function init_properties_EmptyContinuation_kt() {
+    if (!properties_initialized_EmptyContinuation_kt) {
+      properties_initialized_EmptyContinuation_kt = true;
+      var tmp0_Continuation_0 = EmptyCoroutineContext_getInstance();
+      EmptyContinuation = new _no_name_provided__1_0(tmp0_Continuation_0);
+    }}
   function asDynamic(_this_) {
     return _this_;
   }
@@ -7488,19 +7504,22 @@ this['out-ir'] = function (_) {
     return !(_this_ === _this_);
   }
   function _get_INV_2_26_() {
+    init_properties_PlatformRandom_kt();
     return INV_2_26;
   }
   var INV_2_26;
   function _get_INV_2_53_() {
+    init_properties_PlatformRandom_kt();
     return INV_2_53;
   }
   var INV_2_53;
-  function INV_2_26$init$() {
-    return Math.pow(2.0, -26.0);
-  }
-  function INV_2_53$init$() {
-    return Math.pow(2.0, -53.0);
-  }
+  var properties_initialized_PlatformRandom_kt;
+  function init_properties_PlatformRandom_kt() {
+    if (!properties_initialized_PlatformRandom_kt) {
+      properties_initialized_PlatformRandom_kt = true;
+      INV_2_26 = Math.pow(2.0, -26.0);
+      INV_2_53 = Math.pow(2.0, -53.0);
+    }}
   function _get_js_(_this_) {
     return (_this_ instanceof KClassImpl ? _this_ : THROW_CCE())._get_jClass__0_k$();
   }
@@ -7964,6 +7983,7 @@ this['out-ir'] = function (_) {
     interfaces: [KTypeParameter]
   };
   function _get_functionClasses_() {
+    init_properties_primitives_kt();
     return functionClasses;
   }
   var functionClasses;
@@ -8336,13 +8356,13 @@ this['out-ir'] = function (_) {
     return this._doubleArrayClass;
   };
   PrimitiveClasses_0.prototype.functionClass = function (arity) {
-    var tmp0_elvis_lhs = functionClasses[arity];
+    var tmp0_elvis_lhs = _get_functionClasses_()[arity];
     var tmp;
     if (tmp0_elvis_lhs == null) {
       var tmp0_unsafeCast_0_3 = Function;
       var tmp_0 = '' + 'Function' + arity;
       var result_2 = new PrimitiveKClassImpl(tmp0_unsafeCast_0_3, tmp_0, _no_name_provided_$factory_27(arity));
-      var tmp1_asDynamic_0_5 = functionClasses;
+      var tmp1_asDynamic_0_5 = _get_functionClasses_();
       tmp1_asDynamic_0_5[arity] = result_2;
       tmp = result_2;
     } else {
@@ -8561,9 +8581,12 @@ this['out-ir'] = function (_) {
       return i.invoke_wi7j7l_k$(p1);
     };
   }
-  function functionClasses$init$() {
-    return fillArrayVal(Array(0), null);
-  }
+  var properties_initialized_primitives_kt;
+  function init_properties_primitives_kt() {
+    if (!properties_initialized_primitives_kt) {
+      properties_initialized_primitives_kt = true;
+      functionClasses = fillArrayVal(Array(0), null);
+    }}
   function getKClass_0(jClass) {
     var tmp;
     if (Array.isArray(jClass)) {
@@ -9090,19 +9113,24 @@ this['out-ir'] = function (_) {
     }return radix;
   }
   function _get_STRING_CASE_INSENSITIVE_ORDER_() {
+    init_properties_string_kt();
     return STRING_CASE_INSENSITIVE_ORDER;
   }
   var STRING_CASE_INSENSITIVE_ORDER;
   function nativeLastIndexOf(_this_, str, fromIndex) {
+    init_properties_string_kt();
     return _this_.lastIndexOf(str, fromIndex);
   }
   function substring(_this_, startIndex, endIndex) {
+    init_properties_string_kt();
     return _this_.substring(startIndex, endIndex);
   }
   function substring_0(_this_, startIndex) {
+    init_properties_string_kt();
     return _this_.substring(startIndex);
   }
   function compareTo(_this_, other, ignoreCase) {
+    init_properties_string_kt();
     if (ignoreCase) {
       var n1 = _this_.length;
       var n2 = other.length;
@@ -9144,12 +9172,15 @@ this['out-ir'] = function (_) {
     return compareTo(_this_, other, ignoreCase);
   }
   function uppercase(_this_) {
+    init_properties_string_kt();
     return _this_.toUpperCase();
   }
   function lowercase(_this_) {
+    init_properties_string_kt();
     return _this_.toLowerCase();
   }
   function concatToString(_this_) {
+    init_properties_string_kt();
     var result = '';
     var indexedObject = _this_;
     var inductionVariable = 0;
@@ -9162,6 +9193,7 @@ this['out-ir'] = function (_) {
     return result;
   }
   function concatToString_0(_this_, startIndex, endIndex) {
+    init_properties_string_kt();
     Companion_getInstance().checkBoundsIndexes_zd700_k$(startIndex, endIndex, _this_.length);
     var result = '';
     var inductionVariable = startIndex;
@@ -9182,6 +9214,7 @@ this['out-ir'] = function (_) {
     return concatToString_0(_this_, startIndex, endIndex);
   }
   function toUpperCase(_this_) {
+    init_properties_string_kt();
     return _this_.toUpperCase();
   }
   function sam$kotlin_Comparator$0(function_0) {
@@ -9217,18 +9250,25 @@ this['out-ir'] = function (_) {
       return i.invoke_jg38oy_k$(p1, p2);
     };
   }
-  function STRING_CASE_INSENSITIVE_ORDER$init$() {
-    var tmp = _no_name_provided_$factory_28();
-    return new sam$kotlin_Comparator$0(tmp);
-  }
+  var properties_initialized_string_kt;
+  function init_properties_string_kt() {
+    if (!properties_initialized_string_kt) {
+      properties_initialized_string_kt = true;
+      var tmp = _no_name_provided_$factory_28();
+      STRING_CASE_INSENSITIVE_ORDER = new sam$kotlin_Comparator$0(tmp);
+    }}
   function _get_REPLACEMENT_BYTE_SEQUENCE_() {
+    init_properties_utf8Encoding_kt();
     return REPLACEMENT_BYTE_SEQUENCE;
   }
   var REPLACEMENT_BYTE_SEQUENCE;
-  function REPLACEMENT_BYTE_SEQUENCE$init$() {
-    var tmp0_byteArrayOf_0 = new Int8Array([-17, -65, -67]);
-    return tmp0_byteArrayOf_0;
-  }
+  var properties_initialized_utf8Encoding_kt;
+  function init_properties_utf8Encoding_kt() {
+    if (!properties_initialized_utf8Encoding_kt) {
+      properties_initialized_utf8Encoding_kt = true;
+      var tmp0_byteArrayOf_0 = new Int8Array([-17, -65, -67]);
+      REPLACEMENT_BYTE_SEQUENCE = tmp0_byteArrayOf_0;
+    }}
   function _get_value_($this) {
     return $this._value_1;
   }
@@ -9923,54 +9963,60 @@ this['out-ir'] = function (_) {
     interfaces: []
   };
   function _get_buf_() {
+    init_properties_bitUtils_kt();
     return buf;
   }
   var buf;
   function _get_bufFloat64_() {
+    init_properties_bitUtils_kt();
     return bufFloat64;
   }
   var bufFloat64;
   function _get_bufFloat32_() {
+    init_properties_bitUtils_kt();
     return bufFloat32;
   }
   var bufFloat32;
   function _get_bufInt32_() {
+    init_properties_bitUtils_kt();
     return bufInt32;
   }
   var bufInt32;
   function _get_lowIndex_() {
+    init_properties_bitUtils_kt();
     return lowIndex;
   }
   var lowIndex;
   function _get_highIndex_() {
+    init_properties_bitUtils_kt();
     return highIndex;
   }
   var highIndex;
   function getNumberHashCode(obj) {
+    init_properties_bitUtils_kt();
     var tmp0_unsafeCast_0 = jsBitwiseOr(obj, 0);
     if (tmp0_unsafeCast_0 === obj) {
       return numberToInt(obj);
     } else {
     }
-    bufFloat64[0] = obj;
-    return imul(bufInt32[highIndex], 31) + bufInt32[lowIndex] | 0;
+    _get_bufFloat64_()[0] = obj;
+    return imul(_get_bufInt32_()[_get_highIndex_()], 31) + _get_bufInt32_()[_get_lowIndex_()] | 0;
   }
-  function bufFloat64$init$() {
-    var tmp0_unsafeCast_0 = new Float64Array(buf);
-    return tmp0_unsafeCast_0;
-  }
-  function bufFloat32$init$() {
-    var tmp0_unsafeCast_0 = new Float32Array(buf);
-    return tmp0_unsafeCast_0;
-  }
-  function bufInt32$init$() {
-    var tmp0_unsafeCast_0 = new Int32Array(buf);
-    return tmp0_unsafeCast_0;
-  }
-  function lowIndex$init$() {
-    bufFloat64[0] = -1.0;
-    return !(bufInt32[0] === 0) ? 1 : 0;
-  }
+  var properties_initialized_bitUtils_kt;
+  function init_properties_bitUtils_kt() {
+    if (!properties_initialized_bitUtils_kt) {
+      properties_initialized_bitUtils_kt = true;
+      buf = new ArrayBuffer(8);
+      var tmp0_unsafeCast_0 = new Float64Array(_get_buf_());
+      bufFloat64 = tmp0_unsafeCast_0;
+      var tmp0_unsafeCast_0_0 = new Float32Array(_get_buf_());
+      bufFloat32 = tmp0_unsafeCast_0_0;
+      var tmp0_unsafeCast_0_1 = new Int32Array(_get_buf_());
+      bufInt32 = tmp0_unsafeCast_0_1;
+      _get_bufFloat64_()[0] = -1.0;
+      lowIndex = !(_get_bufInt32_()[0] === 0) ? 1 : 0;
+      highIndex = 1 - _get_lowIndex_() | 0;
+    }}
   function DoNotIntrinsify() {
   }
   DoNotIntrinsify.$metadata$ = {
@@ -10611,30 +10657,37 @@ this['out-ir'] = function (_) {
     interfaces: [Comparable]
   };
   function _get_ZERO_() {
+    init_properties_longjs_kt();
     return ZERO;
   }
   var ZERO;
   function _get_ONE_() {
+    init_properties_longjs_kt();
     return ONE;
   }
   var ONE;
   function _get_NEG_ONE_() {
+    init_properties_longjs_kt();
     return NEG_ONE;
   }
   var NEG_ONE;
   function _get_MAX_VALUE_() {
+    init_properties_longjs_kt();
     return MAX_VALUE;
   }
   var MAX_VALUE;
   function _get_MIN_VALUE_() {
+    init_properties_longjs_kt();
     return MIN_VALUE;
   }
   var MIN_VALUE;
   function _get_TWO_PWR_24__() {
+    init_properties_longjs_kt();
     return TWO_PWR_24_;
   }
   var TWO_PWR_24_;
   function compare(_this_, other) {
+    init_properties_longjs_kt();
     if (equalsLong(_this_, other)) {
       return 0;
     }var thisNeg = isNegative(_this_);
@@ -10642,6 +10695,7 @@ this['out-ir'] = function (_) {
     return (thisNeg ? !otherNeg : false) ? -1 : (!thisNeg ? otherNeg : false) ? 1 : isNegative(subtract(_this_, other)) ? -1 : 1;
   }
   function add(_this_, other) {
+    init_properties_longjs_kt();
     var a48 = _this_._high >>> 16;
     var a32 = _this_._high & 65535;
     var a16 = _this_._low >>> 16;
@@ -10668,17 +10722,19 @@ this['out-ir'] = function (_) {
     return new Long(c16 << 16 | c00, c48 << 16 | c32);
   }
   function subtract(_this_, other) {
+    init_properties_longjs_kt();
     return add(_this_, other.unaryMinus_0_k$());
   }
   function multiply(_this_, other) {
+    init_properties_longjs_kt();
     if (isZero(_this_)) {
-      return ZERO;
+      return _get_ZERO_();
     } else if (isZero(other)) {
-      return ZERO;
-    }if (equalsLong(_this_, MIN_VALUE)) {
-      return isOdd(other) ? MIN_VALUE : ZERO;
-    } else if (equalsLong(other, MIN_VALUE)) {
-      return isOdd(_this_) ? MIN_VALUE : ZERO;
+      return _get_ZERO_();
+    }if (equalsLong(_this_, _get_MIN_VALUE_())) {
+      return isOdd(other) ? _get_MIN_VALUE_() : _get_ZERO_();
+    } else if (equalsLong(other, _get_MIN_VALUE_())) {
+      return isOdd(_this_) ? _get_MIN_VALUE_() : _get_ZERO_();
     }if (isNegative(_this_)) {
       var tmp;
       if (isNegative(other)) {
@@ -10689,7 +10745,7 @@ this['out-ir'] = function (_) {
       return tmp;
     } else if (isNegative(other)) {
       return negate(multiply(_this_, negate(other)));
-    }if (lessThan(_this_, TWO_PWR_24_) ? lessThan(other, TWO_PWR_24_) : false) {
+    }if (lessThan(_this_, _get_TWO_PWR_24__()) ? lessThan(other, _get_TWO_PWR_24__()) : false) {
       return fromNumber(toNumber(_this_) * toNumber(other));
     }var a48 = _this_._high >>> 16;
     var a32 = _this_._high & 65535;
@@ -10726,27 +10782,28 @@ this['out-ir'] = function (_) {
     return new Long(c16 << 16 | c00, c48 << 16 | c32);
   }
   function divide(_this_, other) {
+    init_properties_longjs_kt();
     if (isZero(other)) {
       throw Exception_init_$Create$_0('division by zero');
     } else if (isZero(_this_)) {
-      return ZERO;
-    }if (equalsLong(_this_, MIN_VALUE)) {
-      if (equalsLong(other, ONE) ? true : equalsLong(other, NEG_ONE)) {
-        return MIN_VALUE;
-      } else if (equalsLong(other, MIN_VALUE)) {
-        return ONE;
+      return _get_ZERO_();
+    }if (equalsLong(_this_, _get_MIN_VALUE_())) {
+      if (equalsLong(other, _get_ONE_()) ? true : equalsLong(other, _get_NEG_ONE_())) {
+        return _get_MIN_VALUE_();
+      } else if (equalsLong(other, _get_MIN_VALUE_())) {
+        return _get_ONE_();
       } else {
         var halfThis = shiftRight(_this_, 1);
         var approx = shiftLeft(halfThis.div_wiekkq_k$(other), 1);
-        if (equalsLong(approx, ZERO)) {
-          return isNegative(other) ? ONE : NEG_ONE;
+        if (equalsLong(approx, _get_ZERO_())) {
+          return isNegative(other) ? _get_ONE_() : _get_NEG_ONE_();
         } else {
           var rem = subtract(_this_, multiply(other, approx));
           return add(approx, rem.div_wiekkq_k$(other));
         }
       }
-    } else if (equalsLong(other, MIN_VALUE)) {
-      return ZERO;
+    } else if (equalsLong(other, _get_MIN_VALUE_())) {
+      return _get_ZERO_();
     }if (isNegative(_this_)) {
       var tmp;
       if (isNegative(other)) {
@@ -10757,7 +10814,7 @@ this['out-ir'] = function (_) {
       return tmp;
     } else if (isNegative(other)) {
       return negate(_this_.div_wiekkq_k$(negate(other)));
-    }var res = ZERO;
+    }var res = _get_ZERO_();
     var rem_0 = _this_;
     while (greaterThanOrEqual(rem_0, other)) {
       var approxDouble = toNumber(rem_0) / toNumber(other);
@@ -10772,16 +10829,18 @@ this['out-ir'] = function (_) {
         approxRem = multiply(approxRes, other);
       }
       if (isZero(approxRes)) {
-        approxRes = ONE;
+        approxRes = _get_ONE_();
       }res = add(res, approxRes);
       rem_0 = subtract(rem_0, approxRem);
     }
     return res;
   }
   function modulo(_this_, other) {
+    init_properties_longjs_kt();
     return subtract(_this_, multiply(_this_.div_wiekkq_k$(other), other));
   }
   function shiftLeft(_this_, numBits) {
+    init_properties_longjs_kt();
     var numBits_0 = numBits & 63;
     if (numBits_0 === 0) {
       return _this_;
@@ -10794,6 +10853,7 @@ this['out-ir'] = function (_) {
     }
   }
   function shiftRight(_this_, numBits) {
+    init_properties_longjs_kt();
     var numBits_0 = numBits & 63;
     if (numBits_0 === 0) {
       return _this_;
@@ -10806,6 +10866,7 @@ this['out-ir'] = function (_) {
     }
   }
   function shiftRightUnsigned(_this_, numBits) {
+    init_properties_longjs_kt();
     var numBits_0 = numBits & 63;
     if (numBits_0 === 0) {
       return _this_;
@@ -10824,21 +10885,25 @@ this['out-ir'] = function (_) {
     }
   }
   function toNumber(_this_) {
+    init_properties_longjs_kt();
     return _this_._high * 4.294967296E9 + getLowBitsUnsigned(_this_);
   }
   function equalsLong(_this_, other) {
+    init_properties_longjs_kt();
     return _this_._high === other._high ? _this_._low === other._low : false;
   }
   function hashCode_0(l) {
+    init_properties_longjs_kt();
     return l._low ^ l._high;
   }
   function toStringImpl(_this_, radix) {
+    init_properties_longjs_kt();
     if (radix < 2 ? true : 36 < radix) {
       throw Exception_init_$Create$_0('' + 'radix out of range: ' + radix);
     }if (isZero(_this_)) {
       return '0';
     }if (isNegative(_this_)) {
-      if (equalsLong(_this_, MIN_VALUE)) {
+      if (equalsLong(_this_, _get_MIN_VALUE_())) {
         var radixLong = fromInt(radix);
         var div = _this_.div_wiekkq_k$(radixLong);
         var rem = subtract(multiply(div, radixLong), _this_).toInt_0_k$();
@@ -10868,30 +10933,37 @@ this['out-ir'] = function (_) {
     }
   }
   function fromInt(value) {
+    init_properties_longjs_kt();
     return new Long(value, value < 0 ? -1 : 0);
   }
   function isNegative(_this_) {
+    init_properties_longjs_kt();
     return _this_._high < 0;
   }
   function isZero(_this_) {
+    init_properties_longjs_kt();
     return _this_._high === 0 ? _this_._low === 0 : false;
   }
   function isOdd(_this_) {
+    init_properties_longjs_kt();
     return (_this_._low & 1) === 1;
   }
   function negate(_this_) {
+    init_properties_longjs_kt();
     return _this_.unaryMinus_0_k$();
   }
   function lessThan(_this_, other) {
+    init_properties_longjs_kt();
     return compare(_this_, other) < 0;
   }
   function fromNumber(value) {
+    init_properties_longjs_kt();
     if (isNaN_0(value)) {
-      return ZERO;
+      return _get_ZERO_();
     } else if (value <= -9.223372036854776E18) {
-      return MIN_VALUE;
+      return _get_MIN_VALUE_();
     } else if (value + 1 >= 9.223372036854776E18) {
-      return MAX_VALUE;
+      return _get_MAX_VALUE_();
     } else if (value < 0.0) {
       return negate(fromNumber(-value));
     } else {
@@ -10900,22 +10972,38 @@ this['out-ir'] = function (_) {
     }
   }
   function greaterThan(_this_, other) {
+    init_properties_longjs_kt();
     return compare(_this_, other) > 0;
   }
   function greaterThanOrEqual(_this_, other) {
+    init_properties_longjs_kt();
     return compare(_this_, other) >= 0;
   }
   function getLowBitsUnsigned(_this_) {
+    init_properties_longjs_kt();
     return _this_._low >= 0 ? _this_._low : 4.294967296E9 + _this_._low;
   }
   function _get_TWO_PWR_32_DBL__() {
+    init_properties_longjs_kt();
     return TWO_PWR_32_DBL_;
   }
   var TWO_PWR_32_DBL_;
   function _get_TWO_PWR_63_DBL__() {
+    init_properties_longjs_kt();
     return TWO_PWR_63_DBL_;
   }
   var TWO_PWR_63_DBL_;
+  var properties_initialized_longjs_kt;
+  function init_properties_longjs_kt() {
+    if (!properties_initialized_longjs_kt) {
+      properties_initialized_longjs_kt = true;
+      ZERO = fromInt(0);
+      ONE = fromInt(1);
+      NEG_ONE = fromInt(-1);
+      MAX_VALUE = new Long(-1, 2147483647);
+      MIN_VALUE = new Long(0, -2147483648);
+      TWO_PWR_24_ = fromInt(16777216);
+    }}
   function imul(a_local, b_local) {
     var lhs = jsBitwiseAnd(a_local, 4.29490176E9) * jsBitwiseAnd(b_local, 65535);
     var rhs = jsBitwiseAnd(a_local, 65535) * b_local;
@@ -11069,13 +11157,16 @@ this['out-ir'] = function (_) {
     return new LongRange(numberToLong(start), endInclusive);
   }
   function _get_propertyRefClassMetadataCache_() {
+    init_properties_reflectRuntime_kt();
     return propertyRefClassMetadataCache;
   }
   var propertyRefClassMetadataCache;
   function metadataObject() {
+    init_properties_reflectRuntime_kt();
     return {kind: 'class', interfaces: []};
   }
   function getPropertyCallableRef(name, paramCount, type, getter, setter) {
+    init_properties_reflectRuntime_kt();
     getter.get = getter;
     getter.set = setter;
     getter.callableName = name;
@@ -11083,29 +11174,35 @@ this['out-ir'] = function (_) {
     return tmp0_unsafeCast_0;
   }
   function getPropertyRefClass(obj, metadata) {
+    init_properties_reflectRuntime_kt();
     obj.$metadata$ = metadata;
     obj.constructor = obj;
     return obj;
   }
   function getKPropMetadata(paramCount, setter, type) {
-    var mdata = propertyRefClassMetadataCache[paramCount][setter == null ? 0 : 1];
+    init_properties_reflectRuntime_kt();
+    var mdata = _get_propertyRefClassMetadataCache_()[paramCount][setter == null ? 0 : 1];
     if (mdata.interfaces.length == 0) {
       mdata.interfaces.push(type);
     }return mdata;
   }
   function getLocalDelegateReference(name, type, mutable, lambda) {
+    init_properties_reflectRuntime_kt();
     return getPropertyCallableRef(name, 0, type, lambda, mutable ? lambda : null);
   }
-  function propertyRefClassMetadataCache$init$() {
-    var tmp = {kind: 'class', interfaces: []};
-    var tmp0_arrayOf_0 = [tmp, {kind: 'class', interfaces: []}];
-    var tmp_0 = {kind: 'class', interfaces: []};
-    var tmp1_arrayOf_0 = [tmp_0, {kind: 'class', interfaces: []}];
-    var tmp_1 = {kind: 'class', interfaces: []};
-    var tmp2_arrayOf_0 = [tmp_1, {kind: 'class', interfaces: []}];
-    var tmp3_arrayOf_0 = [tmp0_arrayOf_0, tmp1_arrayOf_0, tmp2_arrayOf_0];
-    return tmp3_arrayOf_0;
-  }
+  var properties_initialized_reflectRuntime_kt;
+  function init_properties_reflectRuntime_kt() {
+    if (!properties_initialized_reflectRuntime_kt) {
+      properties_initialized_reflectRuntime_kt = true;
+      var tmp = {kind: 'class', interfaces: []};
+      var tmp0_arrayOf_0 = [tmp, {kind: 'class', interfaces: []}];
+      var tmp_0 = {kind: 'class', interfaces: []};
+      var tmp1_arrayOf_0 = [tmp_0, {kind: 'class', interfaces: []}];
+      var tmp_1 = {kind: 'class', interfaces: []};
+      var tmp2_arrayOf_0 = [tmp_1, {kind: 'class', interfaces: []}];
+      var tmp3_arrayOf_0 = [tmp0_arrayOf_0, tmp1_arrayOf_0, tmp2_arrayOf_0];
+      propertyRefClassMetadataCache = tmp3_arrayOf_0;
+    }}
   function isArrayish(o) {
     var tmp;
     if (isJsArray(o)) {
@@ -12036,31 +12133,10 @@ this['out-ir'] = function (_) {
   AbstractMutableList.prototype.get_ha5a7z_k$ = List.prototype.get_ha5a7z_k$;
   KClassImpl.prototype._get_simpleName__0_k$ = KClass.prototype._get_simpleName__0_k$;
   KClassImpl.prototype.isInstance_wi7j7l_k$ = KClass.prototype.isInstance_wi7j7l_k$;
-  UNDEFINED_RESULT = UNDEFINED_RESULT$init$();
   _stableSortingIsSupported = null;
-  output = output$init$();
-  EmptyContinuation = EmptyContinuation$init$();
-  INV_2_26 = INV_2_26$init$();
-  INV_2_53 = INV_2_53$init$();
-  functionClasses = functionClasses$init$();
-  STRING_CASE_INSENSITIVE_ORDER = STRING_CASE_INSENSITIVE_ORDER$init$();
-  REPLACEMENT_BYTE_SEQUENCE = REPLACEMENT_BYTE_SEQUENCE$init$();
-  buf = new ArrayBuffer(8);
-  bufFloat64 = bufFloat64$init$();
-  bufFloat32 = bufFloat32$init$();
-  bufInt32 = bufInt32$init$();
-  lowIndex = lowIndex$init$();
-  highIndex = 1 - lowIndex | 0;
   OBJECT_HASH_CODE_PROPERTY_NAME = 'kotlinHashCodeValue$';
   POW_2_32 = 4.294967296E9;
-  ZERO = fromInt(0);
-  ONE = fromInt(1);
-  NEG_ONE = fromInt(-1);
-  MAX_VALUE = new Long(-1, 2147483647);
-  MIN_VALUE = new Long(0, -2147483648);
-  TWO_PWR_24_ = fromInt(16777216);
   TWO_PWR_32_DBL_ = 4.294967296E9;
   TWO_PWR_63_DBL_ = 9.223372036854776E18;
-  propertyRefClassMetadataCache = propertyRefClassMetadataCache$init$();
   return _;
 }(typeof this['out-ir'] === 'undefined' ? {} : this['out-ir']);
