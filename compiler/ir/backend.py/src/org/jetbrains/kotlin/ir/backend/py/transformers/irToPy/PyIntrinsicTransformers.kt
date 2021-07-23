@@ -45,28 +45,28 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
 //            postfixOp(intrinsics.jsPostfixInc, JsUnaryOperator.INC)
 //            prefixOp(intrinsics.jsPrefixDec, JsUnaryOperator.DEC)
 //            postfixOp(intrinsics.jsPostfixDec, JsUnaryOperator.DEC)
-//
-//            binOp(intrinsics.jsPlus, JsBinaryOperator.ADD)
-//            binOp(intrinsics.jsMinus, JsBinaryOperator.SUB)
-//            binOp(intrinsics.jsMult, JsBinaryOperator.MUL)
-//            binOp(intrinsics.jsDiv, JsBinaryOperator.DIV)
-//            binOp(intrinsics.jsMod, JsBinaryOperator.MOD)
-//
+
+            binOp(intrinsics.jsPlus, Add)
+            binOp(intrinsics.jsMinus, Sub)
+            binOp(intrinsics.jsMult, Mult)
+            binOp(intrinsics.jsDiv, Div)  // todo: need to switch to FloorDiv in some cases
+            binOp(intrinsics.jsMod, Mod)  // todo: ensure that Python's Mod gives the same results as Kotlin's
+
 //            binOp(intrinsics.jsPlusAssign, JsBinaryOperator.ASG_ADD)
 //            binOp(intrinsics.jsMinusAssign, JsBinaryOperator.ASG_SUB)
 //            binOp(intrinsics.jsMultAssign, JsBinaryOperator.ASG_MUL)
 //            binOp(intrinsics.jsDivAssign, JsBinaryOperator.ASG_DIV)
 //            binOp(intrinsics.jsModAssign, JsBinaryOperator.ASG_MOD)
-//
-//            binOp(intrinsics.jsBitAnd, JsBinaryOperator.BIT_AND)
-//            binOp(intrinsics.jsBitOr, JsBinaryOperator.BIT_OR)
-//            binOp(intrinsics.jsBitXor, JsBinaryOperator.BIT_XOR)
-//            prefixOp(intrinsics.jsBitNot, JsUnaryOperator.BIT_NOT)
-//
-//            binOp(intrinsics.jsBitShiftR, JsBinaryOperator.SHR)
+
+            binOp(intrinsics.jsBitAnd, BitAnd)
+            binOp(intrinsics.jsBitOr, BitOr)
+            binOp(intrinsics.jsBitXor, BitXor)
+            unaryOp(intrinsics.jsBitNot, Invert)
+
+            binOp(intrinsics.jsBitShiftR, RShift)
 //            binOp(intrinsics.jsBitShiftRU, JsBinaryOperator.SHRU)
-//            binOp(intrinsics.jsBitShiftL, JsBinaryOperator.SHL)
-//
+            binOp(intrinsics.jsBitShiftL, LShift)
+
 //            binOp(intrinsics.jsInstanceOf, JsBinaryOperator.INSTANCEOF)
 //
 //            prefixOp(intrinsics.jsTypeOf, JsUnaryOperator.TYPEOF)
@@ -280,6 +280,10 @@ private fun MutableMap<IrSymbol, IrCallTransformer>.compareOp(function: IrSimple
 
 private fun MutableMap<IrSymbol, IrCallTransformer>.unaryOp(function: IrSimpleFunctionSymbol, op: unaryop) {
     withTranslatedArgs(function) { listOf(UnaryOp(op = op, operand = it[0])) }
+}
+
+private fun MutableMap<IrSymbol, IrCallTransformer>.binOp(function: IrSimpleFunctionSymbol, op: operator) {
+    withTranslatedArgs(function) { listOf(BinOp(left = it[0], op = op, right = it[1])) }
 }
 
 //private fun MutableMap<IrSymbol, IrCallTransformer>.postfixOp(function: IrSimpleFunctionSymbol, op: JsUnaryOperator) {
