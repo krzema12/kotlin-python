@@ -19,15 +19,6 @@ jobs:
       - name: Build
         run: JDK_9="$JAVA_HOME" ./gradlew dist
 
-      - name: Run box tests (succeed even if they fail)
-        run: (JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated" || true) | tee tests-out.txt
-      - name: Generate failed-tests.txt
-        run: less tests-out.txt | grep "FAILED" | grep "Codegen" | sort > failed-tests.txt
-        if: always()
-      - name: Compare failed-tests.txt
-        run: diff -u failed-tests.txt python/experiments/failed-tests.txt
-        if: always()
-
       - name: Compile python.kt to Python
         run: dist/kotlinc/bin/kotlinc-py -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -output out_ir.py python/experiments/python.kt
         if: always()
@@ -47,4 +38,14 @@ jobs:
         if: always()
       - name: Compare missing.txt
         run: diff -u missing.txt python/experiments/missing.txt
+        if: always()
+
+      - name: Run box tests (succeed even if they fail)
+        run: (JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated" || true) | tee tests-out.txt
+        if: always()
+      - name: Generate failed-tests.txt
+        run: less tests-out.txt | grep "FAILED" | grep "Codegen" | sort > failed-tests.txt
+        if: always()
+      - name: Compare failed-tests.txt
+        run: diff -u failed-tests.txt python/experiments/failed-tests.txt
         if: always()
