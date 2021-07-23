@@ -82,7 +82,8 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
         inductionVariable = ((inductionVariable) + (1)) | (0)
         count = ((count) + (1)) | (0)
         if count > 1:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+            buffer.append(separator)
+            Unit_getInstance()
         
         if (True) if (limit < 0) else (count <= limit):
             appendElement(element, transform)
@@ -91,7 +92,8 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
         
     
     if (count > limit) if (limit >= 0) else (False):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+        buffer.append(truncated)
+        Unit_getInstance()
     
     buffer.append(postfix)
     Unit_getInstance()
@@ -278,7 +280,8 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
         element = tmp0_iterator.next()
         count = ((count) + (1)) | (0)
         if count > 1:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+            buffer.append(separator)
+            Unit_getInstance()
         
         if (True) if (limit < 0) else (count <= limit):
             appendElement(element, transform)
@@ -287,7 +290,8 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
         
     
     if (count > limit) if (limit >= 0) else (False):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+        buffer.append(truncated)
+        Unit_getInstance()
     
     buffer.append(postfix)
     Unit_getInstance()
@@ -1190,7 +1194,7 @@ def removeAll(predicate):
 
 def filterInPlace(predicate, predicateResultToRemove):
     if not (isInterface(self, jsClass())):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+        return filterInPlace(predicate, predicateResultToRemove)
     
     writeIndex = 0
     inductionVariable = 0
@@ -1879,7 +1883,7 @@ class CombinedContext:
             if tmp0_safe_receiver == None:
                 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstImpl
             else:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+                return tmp0_safe_receiver
             
             Unit_getInstance()
             next = cur.left
@@ -1898,7 +1902,7 @@ class CombinedContext:
         if tmp0_safe_receiver == None:
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstImpl
         else:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+            return self.left
         
         Unit_getInstance()
         newLeft = self.left.minusKey(key)
@@ -2490,13 +2494,17 @@ def KVariance_OUT_getInstance():
 
 def appendElement(element, transform):
     if not (transform == None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+        self.append(transform.invoke(element))
+        Unit_getInstance()
     elif (True) if (element == None) else (isCharSequence(element)):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+        self.append(kotlin_CharSequence_(element))
+        Unit_getInstance()
     elif jsInstanceOf(element, jsClass()):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+        self.append(kotlin_Char(element))
+        Unit_getInstance()
     elif True:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+        self.append(toString())
+        Unit_getInstance()
     
 
 def isEmpty():
@@ -7280,7 +7288,8 @@ def arrayCopy(source, destination, destinationOffset, startIndex, endIndex):
 
 def copyToArrayImpl(collection, array):
     if len(array) < collection._get_size_():
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+        tmp0_unsafeCast_0 = copyToArrayImpl(collection)
+        return kotlin_Any_(tmp0_unsafeCast_0)
     
     iterator = collection.iterator()
     index = 0
@@ -7970,9 +7979,14 @@ class ArrayList:
         if tmp0_subject == self._get_size_():
             return self.addAll(elements)
         elif tmp0_subject == 0:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+            tmp = self
+            tmp0_plus_0 = copyToArray(elements)
+            tmp1_plus_0 = self.array
+            tmp.array = kotlin_Array_kotlin_Any__(INVOKE(concat(tmp0_plus_0), tmp1_plus_0))
         else:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+            tmp = self
+            tmp2_asDynamic_0 = copyOfRange(0, index)
+            tmp.array = kotlin_Array_kotlin_Any__(INVOKE(concat(tmp2_asDynamic_0), copyToArray(elements), copyOfRange(index, self._get_size_())))
         
         tmp1_this = self
         tmp2 = tmp1_this._get_modCount_()
@@ -9498,7 +9512,8 @@ def getKClassM(jClasses):
 
 def getKClass1(jClass):
     if jClass is js('String'):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+        tmp0_unsafeCast_0 = PrimitiveClasses_getInstance().stringClass
+        return kotlin_Any_(tmp0_unsafeCast_0)
     
     metadata = _metadata_(jClass)
     if EXCLEQ(metadata, None):
@@ -12112,7 +12127,12 @@ def shiftRightUnsigned(numBits):
     elif numBits < 32:
         return Long((jsBitShiftRU(self.low, numBits)) | ((self.high) << (((32) - (numBits)) | (0))), jsBitShiftRU(self.high, numBits))
     else:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
+        if numBits == 32:
+            tmp = Long(self.high, 0)
+        else:
+            tmp = Long(jsBitShiftRU(self.high, ((numBits) - (32)) | (0)), 0)
+        
+        return tmp
     
 
 def toNumber():
