@@ -18,6 +18,7 @@ jobs:
         run: JDK_9="$JAVA_HOME" ./gradlew :python:ast:test
       - name: Build
         run: JDK_9="$JAVA_HOME" ./gradlew dist
+
       - name: Run box tests (succeed even if they fail)
         run: (JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated" || true) | tee tests-out.txt
       - name: Generate failed-tests.txt
@@ -26,18 +27,21 @@ jobs:
       - name: Compare failed-tests.txt
         run: diff -u failed-tests.txt python/experiments/failed-tests.txt
         if: always()
+
       - name: Compile python.kt to Python
         run: dist/kotlinc/bin/kotlinc-py -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -output out_ir.py python/experiments/python.kt
         if: always()
       - name: Compare out_ir.py
         run: diff -u out_ir.py python/experiments/out_ir.py
         if: always()
+
       - name: Compile python.kt to JavaScript
         run: dist/kotlinc/bin/kotlinc-js -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -Xir-property-lazy-initialization -output out-ir.js python/experiments/python.kt
         if: always()
       - name: Compare out-ir.js
         run: diff -u out-ir.js python/experiments/out-ir.js
         if: always()
+
       - name: Generate stats about missing IR mapping
         run: less python/experiments/out_ir.py  | grep -Po "visit[a-zA-Z0-9_]+" | sort | uniq -c | sort -nr > missing.txt
         if: always()
