@@ -39,4 +39,39 @@ class PythonAstTest {
 
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun testElifToPython() {
+        val expected = """
+            |if a <= 5:
+            |    branch1
+            |elif a <= 10:
+            |    branch2
+            |else:
+            |    branch3
+            |
+        """.trimMargin()
+        val initial = If(
+            test = Compare(
+                left = Name(identifier("a"), Load),
+                ops = listOf(LtE),
+                comparators = listOf(Constant(constant("5"), null)),
+            ),
+            body = listOf(Expr(Name(identifier("branch1"), Load))),
+            orelse = listOf(
+                If(
+                    test = Compare(
+                        left = Name(identifier("a"), Load),
+                        ops = listOf(LtE),
+                        comparators = listOf(Constant(constant("10"), null)),
+                    ),
+                    body = listOf(Expr(Name(identifier("branch2"), Load))),
+                    orelse = listOf(Expr(Name(identifier("branch3"), Load))),
+                )
+            ),
+        )
+        val actual = initial.toPython()
+
+        assertEquals(expected, actual)
+    }
 }
