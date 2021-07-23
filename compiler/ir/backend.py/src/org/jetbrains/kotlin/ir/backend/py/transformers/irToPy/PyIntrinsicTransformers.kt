@@ -138,27 +138,50 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
 //                val continuation = context.continuation
 //                JsInvocation(JsNameRef(getterName, continuation))
 //            }
-//
-//            add(intrinsics.jsArrayLength) { call, context ->
-//                val args = translateCallArguments(call, context)
-//                JsNameRef("length", args[0])
-//            }
-//
-//            add(intrinsics.jsArrayGet) { call, context ->
-//                val args = translateCallArguments(call, context)
-//                val array = args[0]
-//                val index = args[1]
-//                JsArrayAccess(array, index)
-//            }
-//
-//            add(intrinsics.jsArraySet) { call, context ->
-//                val args = translateCallArguments(call, context)
-//                val array = args[0]
-//                val index = args[1]
-//                val value = args[2]
-//                JsBinaryOperation(JsBinaryOperator.ASG, JsArrayAccess(array, index), value)
-//            }
-//
+
+            add(intrinsics.jsArrayLength) { call, context ->
+                val args = translateCallArguments(call, context)
+                listOf(
+                    Call(
+                        func = Name(identifier("len"), Load),
+                        args = args,
+                        keywords = emptyList(),
+                    )
+                )
+            }
+
+            add(intrinsics.jsArrayGet) { call, context ->
+                val args = translateCallArguments(call, context)
+                val array = args[0]
+                val index = args[1]
+                listOf(Subscript(value = array, slice = index, ctx = Load))
+            }
+
+            add(intrinsics.jsArraySet) { call, context ->
+                val args = translateCallArguments(call, context)
+                val array = args[0]
+                val index = args[1]
+                val value = args[2]
+//                listOf(  // todo: this is a statement but an expression is required, so using __setitem__ call below for now
+//                    Assign(
+//                        targets = listOf(Subscript(value = array, slice = index, ctx = Store)),
+//                        value = value,
+//                        type_comment = null,
+//                    )
+//                )
+                listOf(
+                    Call(
+                        func = Attribute(
+                            value = array,
+                            attr = identifier("__setitem__"),
+                            ctx = Load,
+                        ),
+                        args = listOf(index, value),
+                        keywords = emptyList(),
+                    )
+                )
+            }
+
 //            add(intrinsics.arrayLiteral) { call, context ->
 //                translateCallArguments(call, context).single()
 //            }
@@ -238,10 +261,10 @@ private fun translateCallArguments(expression: IrCall, context: JsGenerationCont
     return translateCallArguments(expression, context, IrElementToPyExpressionTransformer())
 }
 
-//private fun MutableMap<IrSymbol, IrCallTransformer>.add(functionSymbol: IrSymbol, t: IrCallTransformer) {
-//    put(functionSymbol, t)
-//}
-//
+private fun MutableMap<IrSymbol, IrCallTransformer>.add(functionSymbol: IrSymbol, t: IrCallTransformer) {
+    put(functionSymbol, t)
+}
+
 //private fun MutableMap<IrSymbol, IrCallTransformer>.add(function: IrSimpleFunction, t: IrCallTransformer) {
 //    put(function.symbol, t)
 //}

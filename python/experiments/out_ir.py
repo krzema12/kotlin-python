@@ -2,9 +2,9 @@ def fold(initial, operation):
     accumulator = initial
     indexedObject = self
     inductionVariable = 0
-    last = jsArrayLength(indexedObject)
+    last = len(indexedObject)
     while inductionVariable < last:
-        element = jsArrayGet(indexedObject, inductionVariable)
+        element = indexedObject[inductionVariable]
         inductionVariable = jsBitOr(jsPlus(inductionVariable, 1), 0)
         accumulator = operation.invoke(accumulator, element)
     
@@ -16,13 +16,13 @@ def _get_indices_():
 def indexOf(element):
     if element == None:
         inductionVariable = 0
-        last = jsBitOr(jsMinus(jsArrayLength(self), 1), 0)
+        last = jsBitOr(jsMinus(len(self), 1), 0)
         if inductionVariable <= last:
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
         
     else:
         inductionVariable = 0
-        last = jsBitOr(jsMinus(jsArrayLength(self), 1), 0)
+        last = jsBitOr(jsMinus(len(self), 1), 0)
         if inductionVariable <= last:
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
         
@@ -31,12 +31,12 @@ def indexOf(element):
 
 def lastIndexOf(element):
     if element == None:
-        inductionVariable = jsBitOr(jsMinus(jsArrayLength(self), 1), 0)
+        inductionVariable = jsBitOr(jsMinus(len(self), 1), 0)
         if 0 <= inductionVariable:
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
         
     else:
-        inductionVariable = jsBitOr(jsMinus(jsArrayLength(self), 1), 0)
+        inductionVariable = jsBitOr(jsMinus(len(self), 1), 0)
         if 0 <= inductionVariable:
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
         
@@ -44,7 +44,7 @@ def lastIndexOf(element):
     return -1
 
 def _get_lastIndex_():
-    return jsBitOr(jsMinus(jsArrayLength(self), 1), 0)
+    return jsBitOr(jsMinus(len(self), 1), 0)
 
 def joinToString(separator, prefix, postfix, limit, truncated, transform):
     return joinTo(StringBuilder_init__Create_(), separator, prefix, postfix, limit, truncated, transform).toString()
@@ -76,9 +76,9 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
     count = 0
     indexedObject = self
     inductionVariable = 0
-    last = jsArrayLength(indexedObject)
+    last = len(indexedObject)
     while inductionVariable < last:
-        element = jsArrayGet(indexedObject, inductionVariable)
+        element = indexedObject[inductionVariable]
         inductionVariable = jsBitOr(jsPlus(inductionVariable, 1), 0)
         count = jsBitOr(jsPlus(count, 1), 0)
         if count > 1:
@@ -123,7 +123,7 @@ def contains(element):
 
 def indexOf(element):
     inductionVariable = 0
-    last = jsBitOr(jsMinus(jsArrayLength(self), 1), 0)
+    last = jsBitOr(jsMinus(len(self), 1), 0)
     if inductionVariable <= last:
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
     
@@ -133,14 +133,14 @@ def _get_indices_():
     return IntRange(0, _get_lastIndex_())
 
 def _get_lastIndex_():
-    return jsBitOr(jsMinus(jsArrayLength(self), 1), 0)
+    return jsBitOr(jsMinus(len(self), 1), 0)
 
 def contains(element):
     return indexOf(element) >= 0
 
 def indexOf(element):
     inductionVariable = 0
-    last = jsBitOr(jsMinus(jsArrayLength(self), 1), 0)
+    last = jsBitOr(jsMinus(len(self), 1), 0)
     if inductionVariable <= last:
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
     
@@ -150,14 +150,14 @@ def _get_indices_():
     return IntRange(0, _get_lastIndex_())
 
 def _get_lastIndex_():
-    return jsBitOr(jsMinus(jsArrayLength(self), 1), 0)
+    return jsBitOr(jsMinus(len(self), 1), 0)
 
 def contains(element):
     return indexOf(element) >= 0
 
 def indexOf(element):
     inductionVariable = 0
-    last = jsBitOr(jsMinus(jsArrayLength(self), 1), 0)
+    last = jsBitOr(jsMinus(len(self), 1), 0)
     if inductionVariable <= last:
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
     
@@ -167,14 +167,14 @@ def _get_indices_():
     return IntRange(0, _get_lastIndex_())
 
 def _get_lastIndex_():
-    return jsBitOr(jsMinus(jsArrayLength(self), 1), 0)
+    return jsBitOr(jsMinus(len(self), 1), 0)
 
 def contains(element):
     return indexOf(element) >= 0
 
 def indexOf(element):
     inductionVariable = 0
-    last = jsBitOr(jsMinus(jsArrayLength(self), 1), 0)
+    last = jsBitOr(jsMinus(len(self), 1), 0)
     if inductionVariable <= last:
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
     
@@ -184,7 +184,7 @@ def _get_indices_():
     return IntRange(0, _get_lastIndex_())
 
 def _get_lastIndex_():
-    return jsBitOr(jsMinus(jsArrayLength(self), 1), 0)
+    return jsBitOr(jsMinus(len(self), 1), 0)
 
 def indexOfFirst(predicate):
     index = 0
@@ -1019,7 +1019,7 @@ class AbstractList:
     
 
 def listOf(*elements):
-    return (asList()) if (jsArrayLength(elements) > 0) else (emptyList())
+    return (asList()) if (len(elements) > 0) else (emptyList())
 
 def emptyList():
     return EmptyList_getInstance()
@@ -1756,9 +1756,9 @@ def readResolve(_this):
     accumulator_1 = tmp1_fold_0
     indexedObject = tmp0_fold_0
     inductionVariable = 0
-    last = jsArrayLength(indexedObject)
+    last = len(indexedObject)
     while inductionVariable < last:
-        element_3 = jsArrayGet(indexedObject, inductionVariable)
+        element_3 = indexedObject[inductionVariable]
         inductionVariable = jsBitOr(jsPlus(inductionVariable, 1), 0)
         accumulator_1 = accumulator_1.plus(element_3)
     
@@ -1859,7 +1859,7 @@ class _no_name_provided_:
     def invoke(self, _anonymous_parameter_0_, element):
         tmp0 = _sharedBox_read(self._index)
         _sharedBox_write(self._index, jsBitOr(jsPlus(tmp0, 1), 0))
-        jsArraySet(self._elements, tmp0, element)
+        self._elements.__setitem__(tmp0, element)
     
     def invoke(self, p1, p2):
         tmp = (kotlin_Unit(p1)) if (jsInstanceOf(p1, jsClass())) else (THROW_CCE())
@@ -3052,15 +3052,15 @@ def _UByteArray___init__impl_(size):
     return tmp
 
 def UByteArray__get_impl(this, index):
-    tmp0_toUByte_0 = jsArrayGet(_UByteArray___get_storage__impl_(this), index)
+    tmp0_toUByte_0 = _UByteArray___get_storage__impl_(this)[index]
     return _UByte___init__impl_(tmp0_toUByte_0)
 
 def UByteArray__set_impl(this, index, value):
     tmp = _UByteArray___get_storage__impl_(this)
-    jsArraySet(tmp, index, _UByte___get_data__impl_(value))
+    tmp.__setitem__(index, _UByte___get_data__impl_(value))
 
 def _UByteArray___get_size__impl_(this):
-    return jsArrayLength(_UByteArray___get_storage__impl_(this))
+    return len(_UByteArray___get_storage__impl_(this))
 
 def UByteArray__iterator_impl(this):
     return Iterator(_UByteArray___get_storage__impl_(this))
@@ -3072,14 +3072,14 @@ class Iterator:
         self.index = 0
     
     def hasNext(self):
-        return self.index < jsArrayLength(self.array)
+        return self.index < len(self.array)
     
     def nextUByte(self):
-        if self.index < jsArrayLength(self.array):
+        if self.index < len(self.array):
             tmp0_this = self
             tmp1 = tmp0_this.index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
-            tmp0_toUByte_0 = jsArrayGet(self.array, tmp1)
+            tmp0_toUByte_0 = self.array[tmp1]
             tmp = _UByte___init__impl_(tmp0_toUByte_0)
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
@@ -3122,7 +3122,7 @@ def UByteArray__containsAll_impl(this, elements):
     return UByteArray__containsAll_impl(unboxIntrinsic(this), elements)
 
 def UByteArray__isEmpty_impl(this):
-    return jsArrayLength(_UByteArray___get_storage__impl_(this)) == 0
+    return len(_UByteArray___get_storage__impl_(this)) == 0
 
 def UByteArray__toString_impl(this):
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
@@ -3480,15 +3480,15 @@ def _UIntArray___init__impl_(size):
     return tmp
 
 def UIntArray__get_impl(this, index):
-    tmp0_toUInt_0 = jsArrayGet(_UIntArray___get_storage__impl_(this), index)
+    tmp0_toUInt_0 = _UIntArray___get_storage__impl_(this)[index]
     return _UInt___init__impl_(tmp0_toUInt_0)
 
 def UIntArray__set_impl(this, index, value):
     tmp = _UIntArray___get_storage__impl_(this)
-    jsArraySet(tmp, index, _UInt___get_data__impl_(value))
+    tmp.__setitem__(index, _UInt___get_data__impl_(value))
 
 def _UIntArray___get_size__impl_(this):
-    return jsArrayLength(_UIntArray___get_storage__impl_(this))
+    return len(_UIntArray___get_storage__impl_(this))
 
 def UIntArray__iterator_impl(this):
     return Iterator(_UIntArray___get_storage__impl_(this))
@@ -3500,14 +3500,14 @@ class Iterator:
         self.index = 0
     
     def hasNext(self):
-        return self.index < jsArrayLength(self.array)
+        return self.index < len(self.array)
     
     def nextUInt(self):
-        if self.index < jsArrayLength(self.array):
+        if self.index < len(self.array):
             tmp0_this = self
             tmp1 = tmp0_this.index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
-            tmp0_toUInt_0 = jsArrayGet(self.array, tmp1)
+            tmp0_toUInt_0 = self.array[tmp1]
             tmp = _UInt___init__impl_(tmp0_toUInt_0)
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
@@ -3550,7 +3550,7 @@ def UIntArray__containsAll_impl(this, elements):
     return UIntArray__containsAll_impl(unboxIntrinsic(this), elements)
 
 def UIntArray__isEmpty_impl(this):
-    return jsArrayLength(_UIntArray___get_storage__impl_(this)) == 0
+    return len(_UIntArray___get_storage__impl_(this)) == 0
 
 def UIntArray__toString_impl(this):
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
@@ -4263,15 +4263,15 @@ def _ULongArray___init__impl_(size):
     return tmp
 
 def ULongArray__get_impl(this, index):
-    tmp0_toULong_0 = jsArrayGet(_ULongArray___get_storage__impl_(this), index)
+    tmp0_toULong_0 = _ULongArray___get_storage__impl_(this)[index]
     return _ULong___init__impl_(tmp0_toULong_0)
 
 def ULongArray__set_impl(this, index, value):
     tmp = _ULongArray___get_storage__impl_(this)
-    jsArraySet(tmp, index, _ULong___get_data__impl_(value))
+    tmp.__setitem__(index, _ULong___get_data__impl_(value))
 
 def _ULongArray___get_size__impl_(this):
-    return jsArrayLength(_ULongArray___get_storage__impl_(this))
+    return len(_ULongArray___get_storage__impl_(this))
 
 def ULongArray__iterator_impl(this):
     return Iterator(_ULongArray___get_storage__impl_(this))
@@ -4283,14 +4283,14 @@ class Iterator:
         self.index = 0
     
     def hasNext(self):
-        return self.index < jsArrayLength(self.array)
+        return self.index < len(self.array)
     
     def nextULong(self):
-        if self.index < jsArrayLength(self.array):
+        if self.index < len(self.array):
             tmp0_this = self
             tmp1 = tmp0_this.index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
-            tmp0_toULong_0 = jsArrayGet(self.array, tmp1)
+            tmp0_toULong_0 = self.array[tmp1]
             tmp = _ULong___init__impl_(tmp0_toULong_0)
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
@@ -4333,7 +4333,7 @@ def ULongArray__containsAll_impl(this, elements):
     return ULongArray__containsAll_impl(unboxIntrinsic(this), elements)
 
 def ULongArray__isEmpty_impl(this):
-    return jsArrayLength(_ULongArray___get_storage__impl_(this)) == 0
+    return len(_ULongArray___get_storage__impl_(this)) == 0
 
 def ULongArray__toString_impl(this):
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
@@ -5034,15 +5034,15 @@ def _UShortArray___init__impl_(size):
     return tmp
 
 def UShortArray__get_impl(this, index):
-    tmp0_toUShort_0 = jsArrayGet(_UShortArray___get_storage__impl_(this), index)
+    tmp0_toUShort_0 = _UShortArray___get_storage__impl_(this)[index]
     return _UShort___init__impl_(tmp0_toUShort_0)
 
 def UShortArray__set_impl(this, index, value):
     tmp = _UShortArray___get_storage__impl_(this)
-    jsArraySet(tmp, index, _UShort___get_data__impl_(value))
+    tmp.__setitem__(index, _UShort___get_data__impl_(value))
 
 def _UShortArray___get_size__impl_(this):
-    return jsArrayLength(_UShortArray___get_storage__impl_(this))
+    return len(_UShortArray___get_storage__impl_(this))
 
 def UShortArray__iterator_impl(this):
     return Iterator(_UShortArray___get_storage__impl_(this))
@@ -5054,14 +5054,14 @@ class Iterator:
         self.index = 0
     
     def hasNext(self):
-        return self.index < jsArrayLength(self.array)
+        return self.index < len(self.array)
     
     def nextUShort(self):
-        if self.index < jsArrayLength(self.array):
+        if self.index < len(self.array):
             tmp0_this = self
             tmp1 = tmp0_this.index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
-            tmp0_toUShort_0 = jsArrayGet(self.array, tmp1)
+            tmp0_toUShort_0 = self.array[tmp1]
             tmp = _UShort___init__impl_(tmp0_toUShort_0)
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
@@ -5104,7 +5104,7 @@ def UShortArray__containsAll_impl(this, elements):
     return UShortArray__containsAll_impl(unboxIntrinsic(this), elements)
 
 def UShortArray__isEmpty_impl(this):
-    return jsArrayLength(_UShortArray___get_storage__impl_(this)) == 0
+    return len(_UShortArray___get_storage__impl_(this)) == 0
 
 def UShortArray__toString_impl(this):
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
@@ -7260,9 +7260,9 @@ def copyToArrayImpl(collection):
     return array
 
 def arrayCopy(source, destination, destinationOffset, startIndex, endIndex):
-    Companion_getInstance().checkRangeIndexes(startIndex, endIndex, jsArrayLength(source))
+    Companion_getInstance().checkRangeIndexes(startIndex, endIndex, len(source))
     rangeSize = jsBitOr(jsMinus(endIndex, startIndex), 0)
-    Companion_getInstance().checkRangeIndexes(destinationOffset, jsBitOr(jsPlus(destinationOffset, rangeSize), 0), jsArrayLength(destination))
+    Companion_getInstance().checkRangeIndexes(destinationOffset, jsBitOr(jsPlus(destinationOffset, rangeSize), 0), len(destination))
     if ANDAND(INVOKE(isView(js('ArrayBuffer')), destination), INVOKE(isView(js('ArrayBuffer')), source)):
         subrange = INVOKE(subarray(source), startIndex, endIndex)
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
@@ -7279,7 +7279,7 @@ def arrayCopy(source, destination, destinationOffset, startIndex, endIndex):
     
 
 def copyToArrayImpl(collection, array):
-    if jsArrayLength(array) < collection._get_size_():
+    if len(array) < collection._get_size_():
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCompositeImpl
     
     iterator = collection.iterator()
@@ -7288,11 +7288,11 @@ def copyToArrayImpl(collection, array):
         tmp0 = index
         index = jsBitOr(jsPlus(tmp0, 1), 0)
         tmp1_unsafeCast_0 = iterator.next()
-        jsArraySet(array, tmp0, kotlin_Any_(tmp1_unsafeCast_0))
+        array.__setitem__(tmp0, kotlin_Any_(tmp1_unsafeCast_0))
     
-    if index < jsArrayLength(array):
+    if index < len(array):
         tmp = index
-        jsArraySet(array, tmp, kotlin_Any_(None))
+        array.__setitem__(tmp, kotlin_Any_(None))
     
     return array
 
@@ -7906,18 +7906,18 @@ class ArrayList:
         pass
     
     def _get_size_(self):
-        return jsArrayLength(self.array)
+        return len(self.array)
     
     def get(self, index):
-        tmp = jsArrayGet(self.array, rangeCheck(self, index))
+        tmp = self.array[rangeCheck(self, index)]
         return (E(tmp)) if ((True) if (tmp == None) else (isObject(tmp))) else (THROW_CCE())
     
     def set(self, index, element):
         self.checkIsMutable()
         rangeCheck(self, index)
         Unit_getInstance()
-        tmp0_apply_0 = jsArrayGet(self.array, index)
-        jsArraySet(self.array, index, element)
+        tmp0_apply_0 = self.array[index]
+        self.array.__setitem__(index, element)
         tmp = tmp0_apply_0
         return (E(tmp)) if ((True) if (tmp == None) else (isObject(tmp))) else (THROW_CCE())
     
@@ -8000,7 +8000,7 @@ class ArrayList:
     def remove(self, element):
         self.checkIsMutable()
         inductionVariable = 0
-        last = jsBitOr(jsMinus(jsArrayLength(self.array), 1), 0)
+        last = jsBitOr(jsMinus(len(self.array), 1), 0)
         if inductionVariable <= last:
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
         
@@ -8034,18 +8034,18 @@ class ArrayList:
         return arrayToString(self.array)
     
     def toArray(self, array):
-        if jsArrayLength(array) < self._get_size_():
+        if len(array) < self._get_size_():
             tmp = self.toArray()
             return (kotlin_Array_T_(tmp)) if (isArray(tmp)) else (THROW_CCE())
         
         tmp = self.array
         tmp0_copyInto_0 = (kotlin_Array_T_(tmp)) if (isArray(tmp)) else (THROW_CCE())
-        tmp1_copyInto_0 = jsArrayLength(tmp0_copyInto_0)
+        tmp1_copyInto_0 = len(tmp0_copyInto_0)
         arrayCopy(tmp0_copyInto_0, array, 0, 0, tmp1_copyInto_0)
         Unit_getInstance()
-        if jsArrayLength(array) > self._get_size_():
+        if len(array) > self._get_size_():
             tmp = self._get_size_()
-            jsArraySet(array, tmp, (T(None)) if ((True) if (None == None) else (isObject(None))) else (THROW_CCE()))
+            array.__setitem__(tmp, (T(None)) if ((True) if (None == None) else (isObject(None))) else (THROW_CCE()))
         
         return array
     
@@ -9362,7 +9362,7 @@ class PrimitiveClasses:
         return self.doubleArrayClass
     
     def functionClass(self, arity):
-        tmp0_elvis_lhs = jsArrayGet(functionClasses, arity)
+        tmp0_elvis_lhs = functionClasses[arity]
         if tmp0_elvis_lhs == None:
             tmp0_unsafeCast_0_3 = js('Function')
             tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
@@ -9484,9 +9484,9 @@ def getKClass(jClass):
     return tmp
 
 def getKClassM(jClasses):
-    tmp0_subject = jsArrayLength(jClasses)
+    tmp0_subject = len(jClasses)
     if tmp0_subject == 1:
-        tmp = getKClass1(jsArrayGet(jClasses, 0))
+        tmp = getKClass1(jClasses[0])
     elif tmp0_subject == 0:
         tmp0_unsafeCast_0 = NothingKClassImpl_getInstance()
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
@@ -9665,7 +9665,7 @@ class StringBuilder:
     
     def reverse(self):
         reversed = ''
-        index = jsBitOr(jsMinus(jsArrayLength(self.string), 1), 0)
+        index = jsBitOr(jsMinus(len(self.string), 1), 0)
         while index >= 0:
             tmp = self.string
             tmp0 = index
@@ -9877,7 +9877,7 @@ class StringBuilder:
     
     def toCharArray(self, destination, destinationOffset, startIndex, endIndex):
         Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, self._get_length_())
-        Companion_getInstance().checkBoundsIndexes(destinationOffset, jsBitOr(jsMinus(jsBitOr(jsPlus(destinationOffset, endIndex), 0), startIndex), 0), jsArrayLength(destination))
+        Companion_getInstance().checkBoundsIndexes(destinationOffset, jsBitOr(jsMinus(jsBitOr(jsPlus(destinationOffset, endIndex), 0), startIndex), 0), len(destination))
         dstIndex = destinationOffset
         inductionVariable = startIndex
         if inductionVariable < endIndex:
@@ -9903,7 +9903,7 @@ class StringBuilder:
     
     def appendRange(self, value, startIndex, endIndex):
         stringCsq = toString(value)
-        Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, jsArrayLength(stringCsq))
+        Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, len(stringCsq))
         tmp0_this = self
         tmp = tmp0_this
         tmp = tmp0_this.string
@@ -9922,7 +9922,7 @@ class StringBuilder:
     def insertRange(self, index, value, startIndex, endIndex):
         Companion_getInstance().checkPositionIndex(index, self._get_length_())
         stringCsq = toString(value)
-        Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, jsArrayLength(stringCsq))
+        Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, len(stringCsq))
         tmp = self
         tmp0_substring_0 = self.string
         tmp = kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index))
@@ -9981,8 +9981,8 @@ def substring(startIndex):
 
 def compareTo(other, ignoreCase):
     if ignoreCase:
-        n1 = jsArrayLength(self)
-        n2 = jsArrayLength(other)
+        n1 = len(self)
+        n2 = len(other)
         min = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.min(n1, n2)
         if min == 0:
             return jsBitOr(jsMinus(n1, n2), 0)
@@ -10036,16 +10036,16 @@ def concatToString():
     result = ''
     indexedObject = self
     inductionVariable = 0
-    last = jsArrayLength(indexedObject)
+    last = len(indexedObject)
     while inductionVariable < last:
-        char = jsArrayGet(indexedObject, inductionVariable)
+        char = indexedObject[inductionVariable]
         inductionVariable = jsBitOr(jsPlus(inductionVariable, 1), 0)
         result = jsPlus(result, char)
     
     return result
 
 def concatToString(startIndex, endIndex):
-    Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, jsArrayLength(self))
+    Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, len(self))
     result = ''
     inductionVariable = startIndex
     if inductionVariable < endIndex:
@@ -10798,7 +10798,7 @@ def DefaultConstructorMarker_getInstance():
 
 def fillArrayVal(array, initValue):
     inductionVariable = 0
-    last = jsBitOr(jsMinus(jsArrayLength(array), 1), 0)
+    last = jsBitOr(jsMinus(len(array), 1), 0)
     if inductionVariable <= last:
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
     
@@ -10808,8 +10808,8 @@ def arrayWithFun(size, init):
     tmp0_fillArrayFun_0 = Array(size)
     result_1 = kotlin_Any_(tmp0_fillArrayFun_0)
     i_2 = 0
-    while not (i_2 == jsArrayLength(result_1)):
-        jsArraySet(result_1, i_2, init.invoke(i_2))
+    while not (i_2 == len(result_1)):
+        result_1.__setitem__(i_2, init.invoke(i_2))
         i_2 = jsBitOr(jsPlus(i_2, 1), 0)
         Unit_getInstance()
     
@@ -10818,8 +10818,8 @@ def arrayWithFun(size, init):
 def fillArrayFun(array, init):
     result = kotlin_Any_(array)
     i = 0
-    while not (i == jsArrayLength(result)):
-        jsArraySet(result, i, init.invoke(i))
+    while not (i == len(result)):
+        result.__setitem__(i, init.invoke(i))
         i = jsBitOr(jsPlus(i, 1), 0)
         Unit_getInstance()
     
@@ -10913,14 +10913,14 @@ class _no_name_provided_:
         return self.index
     
     def hasNext(self):
-        return not (self.index == jsArrayLength(self._array))
+        return not (self.index == len(self._array))
     
     def next(self):
-        if not (self.index == jsArrayLength(self._array)):
+        if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
-            tmp = jsArrayGet(self._array, tmp1)
+            tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
@@ -10949,14 +10949,14 @@ class _no_name_provided_:
         return self.index
     
     def hasNext(self):
-        return not (self.index == jsArrayLength(self._array))
+        return not (self.index == len(self._array))
     
     def nextBoolean(self):
-        if not (self.index == jsArrayLength(self._array)):
+        if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
-            tmp = jsArrayGet(self._array, tmp1)
+            tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
@@ -10988,14 +10988,14 @@ class _no_name_provided_:
         return self.index
     
     def hasNext(self):
-        return not (self.index == jsArrayLength(self._array))
+        return not (self.index == len(self._array))
     
     def nextChar(self):
-        if not (self.index == jsArrayLength(self._array)):
+        if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
-            tmp = jsArrayGet(self._array, tmp1)
+            tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
@@ -11027,14 +11027,14 @@ class _no_name_provided_:
         return self.index
     
     def hasNext(self):
-        return not (self.index == jsArrayLength(self._array))
+        return not (self.index == len(self._array))
     
     def nextByte(self):
-        if not (self.index == jsArrayLength(self._array)):
+        if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
-            tmp = jsArrayGet(self._array, tmp1)
+            tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
@@ -11066,14 +11066,14 @@ class _no_name_provided_:
         return self.index
     
     def hasNext(self):
-        return not (self.index == jsArrayLength(self._array))
+        return not (self.index == len(self._array))
     
     def nextShort(self):
-        if not (self.index == jsArrayLength(self._array)):
+        if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
-            tmp = jsArrayGet(self._array, tmp1)
+            tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
@@ -11105,14 +11105,14 @@ class _no_name_provided_:
         return self.index
     
     def hasNext(self):
-        return not (self.index == jsArrayLength(self._array))
+        return not (self.index == len(self._array))
     
     def nextInt(self):
-        if not (self.index == jsArrayLength(self._array)):
+        if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
-            tmp = jsArrayGet(self._array, tmp1)
+            tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
@@ -11144,14 +11144,14 @@ class _no_name_provided_:
         return self.index
     
     def hasNext(self):
-        return not (self.index == jsArrayLength(self._array))
+        return not (self.index == len(self._array))
     
     def nextFloat(self):
-        if not (self.index == jsArrayLength(self._array)):
+        if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
-            tmp = jsArrayGet(self._array, tmp1)
+            tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
@@ -11183,14 +11183,14 @@ class _no_name_provided_:
         return self.index
     
     def hasNext(self):
-        return not (self.index == jsArrayLength(self._array))
+        return not (self.index == len(self._array))
     
     def nextLong(self):
-        if not (self.index == jsArrayLength(self._array)):
+        if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
-            tmp = jsArrayGet(self._array, tmp1)
+            tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
@@ -11222,14 +11222,14 @@ class _no_name_provided_:
         return self.index
     
     def hasNext(self):
-        return not (self.index == jsArrayLength(self._array))
+        return not (self.index == len(self._array))
     
     def nextDouble(self):
-        if not (self.index == jsArrayLength(self._array)):
+        if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
             tmp0_this.index = jsBitOr(jsPlus(tmp1, 1), 0)
-            tmp = jsArrayGet(self._array, tmp1)
+            tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
@@ -11277,8 +11277,8 @@ def getNumberHashCode(obj):
     if kotlin_Any_(tmp0_unsafeCast_0) is obj:
         return numberToInt(obj)
     
-    jsArraySet(bufFloat64, 0, obj)
-    return jsBitOr(jsPlus(imul(jsArrayGet(bufInt32, highIndex), 31), jsArrayGet(bufInt32, lowIndex)), 0)
+    bufFloat64.__setitem__(0, obj)
+    return jsBitOr(jsPlus(imul(bufInt32[highIndex], 31), bufInt32[lowIndex]), 0)
 
 def bufFloat64_init_():
     tmp0_unsafeCast_0 = Float64Array(buf)
@@ -11293,8 +11293,8 @@ def bufInt32_init_():
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def lowIndex_init_():
-    jsArraySet(bufFloat64, 0, -1.0)
-    return (1) if (not (jsArrayGet(bufInt32, 0) == 0)) else (0)
+    bufFloat64.__setitem__(0, -1.0)
+    return (1) if (not (bufInt32[0] == 0)) else (0)
 
 class DoNotIntrinsify:
     def __init__(self):
@@ -11483,7 +11483,7 @@ def hashCode(obj):
 
 def getStringHashCode(str):
     hash = 0
-    length = jsArrayLength(str)
+    length = len(str)
     inductionVariable = 0
     last = jsBitOr(jsMinus(length, 1), 0)
     if inductionVariable <= last:
@@ -12155,7 +12155,7 @@ def toStringImpl(radix):
         if isZero():
             return jsPlus(digits, result)
         else:
-            while jsArrayLength(digits) < 6:
+            while len(digits) < 6:
                 digits = jsPlus('0', digits)
             
             result = jsPlus(digits, result)
@@ -12221,7 +12221,7 @@ def withType(type, array):
     return array
 
 def arrayConcat(*args):
-    len = jsArrayLength(args)
+    len = len(args)
     tmp0_unsafeCast_0 = js('Array(len)')
     typed = kotlin_Any_(tmp0_unsafeCast_0)
     inductionVariable = 0
@@ -12234,11 +12234,11 @@ def arrayConcat(*args):
 def primitiveArrayConcat(*args):
     size_local = 0
     inductionVariable = 0
-    last = jsBitOr(jsMinus(jsArrayLength(args), 1), 0)
+    last = jsBitOr(jsMinus(len(args), 1), 0)
     if inductionVariable <= last:
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
     
-    a = jsArrayGet(args, 0)
+    a = args[0]
     tmp1_unsafeCast_0 = js('new a.constructor(size_local)')
     result = kotlin_Any_(tmp1_unsafeCast_0)
     if EXCLEQ(_type_(a), None):
@@ -12247,7 +12247,7 @@ def primitiveArrayConcat(*args):
     
     size_local = 0
     inductionVariable = 0
-    last = jsBitOr(jsMinus(jsArrayLength(args), 1), 0)
+    last = jsBitOr(jsMinus(len(args), 1), 0)
     if inductionVariable <= last:
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
     
@@ -12328,7 +12328,7 @@ def getPropertyRefClass(obj, metadata):
     return obj
 
 def getKPropMetadata(paramCount, setter, type):
-    mdata = jsArrayGet(jsArrayGet(propertyRefClassMetadataCache, paramCount), (0) if (setter == None) else (1))
+    mdata = propertyRefClassMetadataCache[paramCount][(0) if (setter == None) else (1)]
     if EQEQ(length(interfaces(mdata)), 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     
@@ -12379,9 +12379,9 @@ def isInterfaceImpl(ctor, iface):
         interfaces = metadata._get_interfaces_()
         indexedObject = interfaces
         inductionVariable = 0
-        last = jsArrayLength(indexedObject)
+        last = len(indexedObject)
         while inductionVariable < last:
-            i = jsArrayGet(indexedObject, inductionVariable)
+            i = indexedObject[inductionVariable]
             inductionVariable = jsBitOr(jsPlus(inductionVariable, 1), 0)
             if isInterfaceImpl(i, iface):
                 return True
@@ -12489,7 +12489,7 @@ def plus(elements):
     return kotlin_Array_T_(INVOKE(concat(self), elements))
 
 def copyOfRange(fromIndex, toIndex):
-    Companion_getInstance().checkRangeIndexes(fromIndex, toIndex, jsArrayLength(self))
+    Companion_getInstance().checkRangeIndexes(fromIndex, toIndex, len(self))
     return kotlin_Array_T_(INVOKE(slice(self), fromIndex, toIndex))
 
 def copyInto(destination, destinationOffset, startIndex, endIndex):
