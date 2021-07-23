@@ -34,7 +34,6 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     }
 
     override fun visitComposite(expression: IrComposite, context: JsGenerationContext): List<stmt> {
-        // TODO
         return expression.statements.flatMap {
             it.accept(this, context)
         }
@@ -44,6 +43,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         return when (expression) {
             is IrBlock -> visitBlock(expression, context)
             is IrReturn -> visitReturn(expression, context)
+            is IrComposite -> visitComposite(expression, context)
             else -> listOf(Expr(value = Name(id = identifier("visitExpression-other--inToPyStatementTransformer $expression".toValidPythonSymbol()), ctx = Load)))
         }
     }
