@@ -33,7 +33,7 @@ fun expr.toPython(): String {
         is JoinedStr -> TODO()
         is Constant -> toPython()
         is Attribute -> toPython()
-        is Subscript -> TODO()
+        is Subscript -> toPython()
         is Starred -> TODO()
         is List -> toPython()
         is Tuple -> TODO()
@@ -66,3 +66,6 @@ fun Call.toPython() =
 
 fun Attribute.toPython() =
     "${value.toPython()}.${attr.name}"
+
+fun Subscript.toPython() =
+    "${value.toPython()}[${slice.toPython()}]"
