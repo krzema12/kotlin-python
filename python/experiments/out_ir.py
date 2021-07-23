@@ -18,13 +18,31 @@ def indexOf(element):
         inductionVariable = 0
         last = ((len(self)) - (1)) | (0)
         if inductionVariable <= last:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+            while True:
+                index = inductionVariable
+                inductionVariable = ((inductionVariable) + (1)) | (0)
+                if self[index] == None:
+                    return index
+                
+                if inductionVariable <= last:
+                    break
+                
+            
         
     else:
         inductionVariable = 0
         last = ((len(self)) - (1)) | (0)
         if inductionVariable <= last:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+            while True:
+                index = inductionVariable
+                inductionVariable = ((inductionVariable) + (1)) | (0)
+                if equals(element, self[index]):
+                    return index
+                
+                if inductionVariable <= last:
+                    break
+                
+            
         
     
     return -1
@@ -33,12 +51,30 @@ def lastIndexOf(element):
     if element == None:
         inductionVariable = ((len(self)) - (1)) | (0)
         if 0 <= inductionVariable:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+            while True:
+                index = inductionVariable
+                inductionVariable = ((inductionVariable) + (-1)) | (0)
+                if self[index] == None:
+                    return index
+                
+                if 0 <= inductionVariable:
+                    break
+                
+            
         
     else:
         inductionVariable = ((len(self)) - (1)) | (0)
         if 0 <= inductionVariable:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+            while True:
+                index = inductionVariable
+                inductionVariable = ((inductionVariable) + (-1)) | (0)
+                if equals(element, self[index]):
+                    return index
+                
+                if 0 <= inductionVariable:
+                    break
+                
+            
         
     
     return -1
@@ -88,7 +124,7 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
         if (True) if (limit < 0) else (count <= limit):
             appendElement(element, transform)
         else:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrBreakImpl
+            break
         
     
     if (count > limit) if (limit >= 0) else (False):
@@ -127,7 +163,16 @@ def indexOf(element):
     inductionVariable = 0
     last = ((len(self)) - (1)) | (0)
     if inductionVariable <= last:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        while True:
+            index = inductionVariable
+            inductionVariable = ((inductionVariable) + (1)) | (0)
+            if kotlin_Int(element) == kotlin_Int(self[index]):
+                return index
+            
+            if inductionVariable <= last:
+                break
+            
+        
     
     return -1
 
@@ -144,7 +189,16 @@ def indexOf(element):
     inductionVariable = 0
     last = ((len(self)) - (1)) | (0)
     if inductionVariable <= last:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        while True:
+            index = inductionVariable
+            inductionVariable = ((inductionVariable) + (1)) | (0)
+            if kotlin_Int(element) == kotlin_Int(self[index]):
+                return index
+            
+            if inductionVariable <= last:
+                break
+            
+        
     
     return -1
 
@@ -161,7 +215,16 @@ def indexOf(element):
     inductionVariable = 0
     last = ((len(self)) - (1)) | (0)
     if inductionVariable <= last:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        while True:
+            index = inductionVariable
+            inductionVariable = ((inductionVariable) + (1)) | (0)
+            if element == self[index]:
+                return index
+            
+            if inductionVariable <= last:
+                break
+            
+        
     
     return -1
 
@@ -178,7 +241,16 @@ def indexOf(element):
     inductionVariable = 0
     last = ((len(self)) - (1)) | (0)
     if inductionVariable <= last:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        while True:
+            index = inductionVariable
+            inductionVariable = ((inductionVariable) + (1)) | (0)
+            if element.equals(self[index]):
+                return index
+            
+            if inductionVariable <= last:
+                break
+            
+        
     
     return -1
 
@@ -286,7 +358,7 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
         if (True) if (limit < 0) else (count <= limit):
             appendElement(element, transform)
         else:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrBreakImpl
+            break
         
     
     if (count > limit) if (limit >= 0) else (False):
@@ -706,11 +778,55 @@ class AbstractCollection:
         pass
     
     def contains(self, element):
-        visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        while True:
+            if isInterface(self, jsClass()):
+                tmp = kotlin_collections_Collection_kotlin_Any__(self).isEmpty()
+            elif True:
+                tmp = False
+            
+            if tmp:
+                tmp_ret_0 = False
+                break
+            
+            tmp0_iterator_1 = self.iterator()
+            while tmp0_iterator_1.hasNext():
+                element_2 = tmp0_iterator_1.next()
+                if equals(element_2, element):
+                    tmp_ret_0 = True
+                    break
+                
+            
+            tmp_ret_0 = False
+            if False:
+                break
+            
+        
         return tmp_ret_0
     
     def containsAll(self, elements):
-        visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        while True:
+            if isInterface(elements, jsClass()):
+                tmp = kotlin_collections_Collection_kotlin_Any__(elements).isEmpty()
+            elif True:
+                tmp = False
+            
+            if tmp:
+                tmp_ret_0 = True
+                break
+            
+            tmp0_iterator_1 = elements.iterator()
+            while tmp0_iterator_1.hasNext():
+                element_2 = tmp0_iterator_1.next()
+                if not (self.contains(element_2)):
+                    tmp_ret_0 = False
+                    break
+                
+            
+            tmp_ret_0 = True
+            if False:
+                break
+            
+        
         return tmp_ret_0
     
     def isEmpty(self):
@@ -975,11 +1091,41 @@ class AbstractList:
         return IteratorImpl(self)
     
     def indexOf(self, element):
-        visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        while True:
+            index_1 = 0
+            tmp0_iterator_2 = self.iterator()
+            while tmp0_iterator_2.hasNext():
+                item_3 = tmp0_iterator_2.next()
+                if equals(item_3, element):
+                    tmp_ret_0 = index_1
+                    break
+                
+                tmp1_4 = index_1
+                index_1 = ((tmp1_4) + (1)) | (0)
+                Unit_getInstance()
+            
+            tmp_ret_0 = -1
+            if False:
+                break
+            
+        
         return tmp_ret_0
     
     def lastIndexOf(self, element):
-        visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        while True:
+            iterator_1 = self.listIterator(self._get_size_())
+            while iterator_1.hasPrevious():
+                tmp0__anonymous__2 = iterator_1.previous()
+                if equals(tmp0__anonymous__2, element):
+                    tmp_ret_0 = iterator_1.nextIndex()
+                    break
+                
+            
+            tmp_ret_0 = -1
+            if False:
+                break
+            
+        
         return tmp_ret_0
     
     def listIterator(self):
@@ -1200,12 +1346,37 @@ def filterInPlace(predicate, predicateResultToRemove):
     inductionVariable = 0
     last = _get_lastIndex_()
     if inductionVariable <= last:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        while True:
+            readIndex = inductionVariable
+            inductionVariable = ((inductionVariable) + (1)) | (0)
+            element = self.get(readIndex)
+            if predicate.invoke(element) == predicateResultToRemove:
+                continue
+            
+            if not (writeIndex == readIndex):
+                self.set(writeIndex, element)
+                Unit_getInstance()
+            
+            tmp1 = writeIndex
+            writeIndex = ((tmp1) + (1)) | (0)
+            Unit_getInstance()
+            if not (readIndex == last):
+                break
+            
+        
     
     if writeIndex < self._get_size_():
         inductionVariable = _get_lastIndex_()
         if writeIndex <= inductionVariable:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+            while True:
+                removeIndex = inductionVariable
+                inductionVariable = ((inductionVariable) + (-1)) | (0)
+                self.removeAt(removeIndex)
+                Unit_getInstance()
+                if not (removeIndex == writeIndex):
+                    break
+                
+            
         
         return True
     else:
@@ -2724,7 +2895,14 @@ def apply(block):
 def repeat(times, action):
     inductionVariable = 0
     if inductionVariable < times:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        while True:
+            index = inductionVariable
+            inductionVariable = ((inductionVariable) + (1)) | (0)
+            action.invoke(index)
+            if inductionVariable < times:
+                break
+            
+        
     
 
 def _with(receiver, block):
@@ -3123,7 +3301,37 @@ def UByteArray__contains_impl(this, element):
     return UByteArray__contains_impl(tmp, (unboxIntrinsic(element)) if (jsInstanceOf(element, jsClass())) else (THROW_CCE()))
 
 def UByteArray__containsAll_impl(this, elements):
-    visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+    while True:
+        tmp0_all_0 = (kotlin_collections_Collection___(elements)) if (isInterface(elements, jsClass())) else (THROW_CCE())
+        if isInterface(tmp0_all_0, jsClass()):
+            tmp = kotlin_collections_Collection_kotlin_Any__(tmp0_all_0).isEmpty()
+        elif True:
+            tmp = False
+        
+        if tmp:
+            tmp_ret_0 = True
+            break
+        
+        tmp0_iterator_1 = tmp0_all_0.iterator()
+        while tmp0_iterator_1.hasNext():
+            element_2 = tmp0_iterator_1.next()
+            if jsInstanceOf(element_2, jsClass()):
+                tmp = _UByteArray___get_storage__impl_(this)
+                tmp0_toByte_0_4 = unboxIntrinsic(element_2)
+                tmp = contains(_UByte___get_data__impl_(tmp0_toByte_0_4))
+            elif True:
+                tmp = False
+            
+            if not (tmp):
+                tmp_ret_0 = False
+                break
+            
+        
+        tmp_ret_0 = True
+        if False:
+            break
+        
+    
     return tmp_ret_0
 
 def UByteArray__containsAll_impl(this, elements):
@@ -3551,7 +3759,37 @@ def UIntArray__contains_impl(this, element):
     return UIntArray__contains_impl(tmp, (unboxIntrinsic(element)) if (jsInstanceOf(element, jsClass())) else (THROW_CCE()))
 
 def UIntArray__containsAll_impl(this, elements):
-    visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+    while True:
+        tmp0_all_0 = (kotlin_collections_Collection___(elements)) if (isInterface(elements, jsClass())) else (THROW_CCE())
+        if isInterface(tmp0_all_0, jsClass()):
+            tmp = kotlin_collections_Collection_kotlin_Any__(tmp0_all_0).isEmpty()
+        elif True:
+            tmp = False
+        
+        if tmp:
+            tmp_ret_0 = True
+            break
+        
+        tmp0_iterator_1 = tmp0_all_0.iterator()
+        while tmp0_iterator_1.hasNext():
+            element_2 = tmp0_iterator_1.next()
+            if jsInstanceOf(element_2, jsClass()):
+                tmp = _UIntArray___get_storage__impl_(this)
+                tmp0_toInt_0_4 = unboxIntrinsic(element_2)
+                tmp = contains(_UInt___get_data__impl_(tmp0_toInt_0_4))
+            elif True:
+                tmp = False
+            
+            if not (tmp):
+                tmp_ret_0 = False
+                break
+            
+        
+        tmp_ret_0 = True
+        if False:
+            break
+        
+    
     return tmp_ret_0
 
 def UIntArray__containsAll_impl(this, elements):
@@ -4334,7 +4572,37 @@ def ULongArray__contains_impl(this, element):
     return ULongArray__contains_impl(tmp, (unboxIntrinsic(element)) if (jsInstanceOf(element, jsClass())) else (THROW_CCE()))
 
 def ULongArray__containsAll_impl(this, elements):
-    visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+    while True:
+        tmp0_all_0 = (kotlin_collections_Collection___(elements)) if (isInterface(elements, jsClass())) else (THROW_CCE())
+        if isInterface(tmp0_all_0, jsClass()):
+            tmp = kotlin_collections_Collection_kotlin_Any__(tmp0_all_0).isEmpty()
+        elif True:
+            tmp = False
+        
+        if tmp:
+            tmp_ret_0 = True
+            break
+        
+        tmp0_iterator_1 = tmp0_all_0.iterator()
+        while tmp0_iterator_1.hasNext():
+            element_2 = tmp0_iterator_1.next()
+            if jsInstanceOf(element_2, jsClass()):
+                tmp = _ULongArray___get_storage__impl_(this)
+                tmp0_toLong_0_4 = unboxIntrinsic(element_2)
+                tmp = contains(_ULong___get_data__impl_(tmp0_toLong_0_4))
+            elif True:
+                tmp = False
+            
+            if not (tmp):
+                tmp_ret_0 = False
+                break
+            
+        
+        tmp_ret_0 = True
+        if False:
+            break
+        
+    
     return tmp_ret_0
 
 def ULongArray__containsAll_impl(this, elements):
@@ -5105,7 +5373,37 @@ def UShortArray__contains_impl(this, element):
     return UShortArray__contains_impl(tmp, (unboxIntrinsic(element)) if (jsInstanceOf(element, jsClass())) else (THROW_CCE()))
 
 def UShortArray__containsAll_impl(this, elements):
-    visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+    while True:
+        tmp0_all_0 = (kotlin_collections_Collection___(elements)) if (isInterface(elements, jsClass())) else (THROW_CCE())
+        if isInterface(tmp0_all_0, jsClass()):
+            tmp = kotlin_collections_Collection_kotlin_Any__(tmp0_all_0).isEmpty()
+        elif True:
+            tmp = False
+        
+        if tmp:
+            tmp_ret_0 = True
+            break
+        
+        tmp0_iterator_1 = tmp0_all_0.iterator()
+        while tmp0_iterator_1.hasNext():
+            element_2 = tmp0_iterator_1.next()
+            if jsInstanceOf(element_2, jsClass()):
+                tmp = _UShortArray___get_storage__impl_(this)
+                tmp0_toShort_0_4 = unboxIntrinsic(element_2)
+                tmp = contains(_UShort___get_data__impl_(tmp0_toShort_0_4))
+            elif True:
+                tmp = False
+            
+            if not (tmp):
+                tmp_ret_0 = False
+                break
+            
+        
+        tmp_ret_0 = True
+        if False:
+            break
+        
+    
     return tmp_ret_0
 
 def UShortArray__containsAll_impl(this, elements):
@@ -7277,12 +7575,26 @@ def arrayCopy(source, destination, destinationOffset, startIndex, endIndex):
     elif (True) if (not (source is destination)) else (destinationOffset <= startIndex):
         inductionVariable = 0
         if inductionVariable < rangeSize:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+            while True:
+                index = inductionVariable
+                inductionVariable = ((inductionVariable) + (1)) | (0)
+                destination.__setitem__(((destinationOffset) + (index)) | (0), source[((startIndex) + (index)) | (0)])
+                if inductionVariable < rangeSize:
+                    break
+                
+            
         
     else:
         inductionVariable = ((rangeSize) - (1)) | (0)
         if 0 <= inductionVariable:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+            while True:
+                index = inductionVariable
+                inductionVariable = ((inductionVariable) + (-1)) | (0)
+                destination.__setitem__(((destinationOffset) + (index)) | (0), source[((startIndex) + (index)) | (0)])
+                if 0 <= inductionVariable:
+                    break
+                
+            
         
     
 
@@ -7764,14 +8076,32 @@ class AbstractMutableList:
         inductionVariable = 0
         last = _get_lastIndex_()
         if inductionVariable <= last:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+            while True:
+                index = inductionVariable
+                inductionVariable = ((inductionVariable) + (1)) | (0)
+                if equals(self.get(index), element):
+                    return index
+                
+                if not (index == last):
+                    break
+                
+            
         
         return -1
     
     def lastIndexOf(self, element):
         inductionVariable = _get_lastIndex_()
         if 0 <= inductionVariable:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+            while True:
+                index = inductionVariable
+                inductionVariable = ((inductionVariable) + (-1)) | (0)
+                if equals(self.get(index), element):
+                    return index
+                
+                if 0 <= inductionVariable:
+                    break
+                
+            
         
         return -1
     
@@ -7789,7 +8119,16 @@ class AbstractMutableList:
         tmp0_repeat_0 = ((toIndex) - (fromIndex)) | (0)
         inductionVariable = 0
         if inductionVariable < tmp0_repeat_0:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+            while True:
+                index_2 = inductionVariable
+                inductionVariable = ((inductionVariable) + (1)) | (0)
+                iterator.next()
+                Unit_getInstance()
+                iterator.remove()
+                if inductionVariable < tmp0_repeat_0:
+                    break
+                
+            
         
     
     def equals(self, other):
@@ -8016,7 +8355,22 @@ class ArrayList:
         inductionVariable = 0
         last = ((len(self.array)) - (1)) | (0)
         if inductionVariable <= last:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+            while True:
+                index = inductionVariable
+                inductionVariable = ((inductionVariable) + (1)) | (0)
+                if equals(self.array[index], element):
+                    tmp0_asDynamic_0 = self.array
+                    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+                    tmp1_this = self
+                    tmp2 = tmp1_this._get_modCount_()
+                    tmp1_this._set_modCount_(((tmp2) + (1)) | (0))
+                    Unit_getInstance()
+                    return True
+                
+                if inductionVariable <= last:
+                    break
+                
+            
         
         return False
     
@@ -9829,7 +10183,15 @@ class StringBuilder:
         else:
             inductionVariable = self._get_length_()
             if inductionVariable < newLength:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+                while True:
+                    i = inductionVariable
+                    inductionVariable = ((inductionVariable) + (1)) | (0)
+                    tmp1_this = self
+                    tmp1_this.string = (tmp1_this.string) + (Char(0))
+                    if inductionVariable < newLength:
+                        break
+                    
+                
             
         
     
@@ -9896,7 +10258,16 @@ class StringBuilder:
         dstIndex = destinationOffset
         inductionVariable = startIndex
         if inductionVariable < endIndex:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+            while True:
+                index = inductionVariable
+                inductionVariable = ((inductionVariable) + (1)) | (0)
+                tmp1 = dstIndex
+                dstIndex = ((tmp1) + (1)) | (0)
+                destination.__setitem__(tmp1, charSequenceGet(self.string, index))
+                if inductionVariable < endIndex:
+                    break
+                
+            
         
     
     def toCharArray_default(self, destination, destinationOffset, startIndex, endIndex, _mask0, _handler):
@@ -10026,7 +10397,7 @@ def compareTo(other, ignoreCase):
                 
             
             if end == min:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrBreakImpl
+                break
             
             start = end
         
@@ -10064,7 +10435,14 @@ def concatToString(startIndex, endIndex):
     result = ''
     inductionVariable = startIndex
     if inductionVariable < endIndex:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        while True:
+            index = inductionVariable
+            inductionVariable = ((inductionVariable) + (1)) | (0)
+            result = (result) + (self[index])
+            if inductionVariable < endIndex:
+                break
+            
+        
     
     return result
 
@@ -10815,7 +11193,14 @@ def fillArrayVal(array, initValue):
     inductionVariable = 0
     last = ((len(array)) - (1)) | (0)
     if inductionVariable <= last:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        while True:
+            i = inductionVariable
+            inductionVariable = ((inductionVariable) + (1)) | (0)
+            array.__setitem__(i, initValue)
+            if not (i == last):
+                break
+            
+        
     
     return array
 
@@ -11502,7 +11887,15 @@ def getStringHashCode(str):
     inductionVariable = 0
     last = ((length) - (1)) | (0)
     if inductionVariable <= last:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        while True:
+            i = inductionVariable
+            inductionVariable = ((inductionVariable) + (1)) | (0)
+            code = kotlin_Int(INVOKE(charCodeAt(str), i))
+            hash = ((imul(hash, 31)) + (code)) | (0)
+            if not (i == last):
+                break
+            
+        
     
     return hash
 
@@ -12247,7 +12640,19 @@ def arrayConcat(*args):
     inductionVariable = 0
     last = ((len) - (1)) | (0)
     if inductionVariable <= last:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        while True:
+            i = inductionVariable
+            inductionVariable = ((inductionVariable) + (1)) | (0)
+            arr = args[i]
+            if not ((isArray(arr)) if (not (arr == None)) else (False)):
+                typed.__setitem__(i, T(INVOKE(call(slice(js('[]'))), arr)))
+            elif True:
+                typed.__setitem__(i, arr)
+            
+            if not (i == last):
+                break
+            
+        
     
     return T(INVOKE(apply(concat(js('[]'))), js('[]'), typed))
 
@@ -12256,7 +12661,16 @@ def primitiveArrayConcat(*args):
     inductionVariable = 0
     last = ((len(args)) - (1)) | (0)
     if inductionVariable <= last:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        while True:
+            i = inductionVariable
+            inductionVariable = ((inductionVariable) + (1)) | (0)
+            tmp = size_local
+            tmp0_unsafeCast_0 = args[i]
+            size_local = ((tmp) + (len(kotlin_Any_(tmp0_unsafeCast_0)))) | (0)
+            if not (i == last):
+                break
+            
+        
     
     a = args[0]
     tmp1_unsafeCast_0 = js('new a.constructor(size_local)')
@@ -12269,7 +12683,29 @@ def primitiveArrayConcat(*args):
     inductionVariable = 0
     last = ((len(args)) - (1)) | (0)
     if inductionVariable <= last:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        while True:
+            i = inductionVariable
+            inductionVariable = ((inductionVariable) + (1)) | (0)
+            tmp3_unsafeCast_0 = args[i]
+            arr = kotlin_Any_(tmp3_unsafeCast_0)
+            inductionVariable = 0
+            last = ((len(arr)) - (1)) | (0)
+            if inductionVariable <= last:
+                while True:
+                    j = inductionVariable
+                    inductionVariable = ((inductionVariable) + (1)) | (0)
+                    tmp3 = size_local
+                    size_local = ((tmp3) + (1)) | (0)
+                    result.__setitem__(tmp3, arr[j])
+                    if not (j == last):
+                        break
+                    
+                
+            
+            if not (i == last):
+                break
+            
+        
     
     return kotlin_Any_(result)
 

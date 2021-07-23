@@ -730,7 +730,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testContinueInFor FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testContinueInForCondition FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testContinueInWhen FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testContinueInWhile FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testContinueToLabelInFor FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testDoWhile FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testDoWhileFib FAILED
@@ -766,8 +765,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt42455 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt513 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt628 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt772 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt773 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt8148 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt8148_break FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt8148_continue FAILED
@@ -783,18 +780,13 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions > testBreakInLoopConditions FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions > testContinueInDoWhile FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions > testContinueInExpr FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions > testInlineWithStack FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions > testInnerLoopWithStack FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions > testKt14581 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions > testKt16713 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions > testKt16713_2 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions > testKt17384 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions > testKt9022And FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions > testPathologicalDoWhile FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions > testPopSizes FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions > testTryFinally1 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions > testTryFinally2 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions > testWhileTrueBreak FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ForInArray > testForInArraySpecializedToUntil FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ForInArray > testForInArrayWithArrayPropertyUpdatedInLoopBody FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ForInArray > testForInArrayWithArrayVarUpdatedInLoopBody13 FAILED
@@ -1511,7 +1503,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Di
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion > testRealStringRepeat FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion > testRecursiveCallInInlineLambda FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion > testRecursiveCallInInlineLambdaWithCapture FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion > testRecursiveInnerFunction FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion > testReturnInParentheses FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion > testSum FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion > testTailCallInBlockInParentheses FAILED
@@ -3672,7 +3663,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$St
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Strings > testKt5956 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Strings > testKt894 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Strings > testNestedConcat FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Strings > testRawStringsWithManyQuotes FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Strings > testSimpleStringPlus FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Strings > testSingleConcatNullable FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Strings > testStringBuilderAppend FAILED
@@ -3855,7 +3845,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Un
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ValueClasses > testJvmInline FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testDoNotCopyImmediatelyCreatedArrays FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testEvaluationOrder FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testKt1978 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testKt37715 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testKt37779 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testKt581 FAILED
@@ -4384,10 +4373,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special > testLoopInStoreLoadChains2 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special > testPlusAssign FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special > testStackHeightBug FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn > testElvis FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn > testIfThenElse FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn > testKt11499 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn > testKt17591 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn > testKt17591a FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn > testKt17591b FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn > testMixedTypesOnStack1 FAILED
