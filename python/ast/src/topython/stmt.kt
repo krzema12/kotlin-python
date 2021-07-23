@@ -58,8 +58,19 @@ fun Return.toPython() =
 fun While.toPython() =
     "while ${test.toPython()}:\n${body.toPython().indent()}\n"
 
-fun If.toPython() =
-    "if ${test.toPython()}:\n${(if (body.isNotEmpty()) body.toPython() else "pass").indent()}\n${if (orelse.isNotEmpty()) "else:\n${orelse.toPython().indent()}\n" else ""}"  // todo: for optimization need to support elif
+fun If.toPython(): String {
+    val elsePart = when {
+        orelse.isEmpty() -> ""
+        orelse.size == 1 && orelse.single() is If -> "el${orelse.single().toPython()}"
+        else -> "else:\n${orelse.toPython().indent()}\n"
+    }
+
+    return """
+        |if ${test.toPython()}:
+        |${(if (body.isNotEmpty()) body.toPython() else "pass").indent()}
+        |$elsePart
+    """.trimMargin()
+}
 
 fun ClassDef.toPython() =
     "${if (bases.isNotEmpty()) bases.joinToString("") { "class ${it.toPython()}:\n${"pass".indent()}\n\n" } else ""}class ${name.name}${if (bases.isNotEmpty()) "(${bases.joinToString(", ") { it.toPython() }})" else ""}:\n${(if (body.isNotEmpty()) body.toPython() else "pass").indent()}\n"
