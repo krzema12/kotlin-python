@@ -1846,7 +1846,7 @@ class _no_name_provided_:
         if charSequenceLength(acc) == 0:
             tmp = toString(element)
         elif True:
-            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+            tmp = ((str(acc)) + (str(', '))) + (str(element))
         
         return tmp
     
@@ -2364,7 +2364,7 @@ class KTypeProjection:
         self.type = type
         tmp0_require_0 = self.variance == None == self.type == None
         if not (tmp0_require_0):
-            message_2 = ('Star projection must have no type specified.') if (self.variance == None) else (visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl)
+            message_2 = ('Star projection must have no type specified.') if (self.variance == None) else (((str('The projection variance ')) + (str(self.variance))) + (str(' requires type to be specified.')))
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
     
@@ -2381,9 +2381,9 @@ class KTypeProjection:
         elif equals(tmp0_subject, KVariance_INVARIANT_getInstance()):
             tmp = toString()
         elif equals(tmp0_subject, KVariance_IN_getInstance()):
-            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+            tmp = (str('in ')) + (str(self.type))
         elif equals(tmp0_subject, KVariance_OUT_getInstance()):
-            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+            tmp = (str('out ')) + (str(self.type))
         else:
             noWhenBranchMatchedException()
         
@@ -2580,7 +2580,7 @@ def Result__toString_impl(this):
     if jsInstanceOf(tmp0_subject, jsClass()):
         tmp = toString(_Result___get_value__impl_(this))
     elif True:
-        tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+        tmp = ((str('Success(')) + (str(_Result___get_value__impl_(this)))) + (str(')'))
     
     return tmp
 
@@ -2630,7 +2630,7 @@ class Failure:
         return hashCode(self.exception)
     
     def toString(self):
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+        return ((str('Failure(')) + (str(self.exception))) + (str(')'))
     
 
 def Result__hashCode_impl(this):
@@ -3133,7 +3133,7 @@ def UByteArray__isEmpty_impl(this):
     return len(_UByteArray___get_storage__impl_(this)) == 0
 
 def UByteArray__toString_impl(this):
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+    return ((str('UByteArray(storage=')) + (str(toString(this.storage)))) + (str(')'))
 
 def UByteArray__hashCode_impl(this):
     return hashCode(this.storage)
@@ -3561,7 +3561,7 @@ def UIntArray__isEmpty_impl(this):
     return len(_UIntArray___get_storage__impl_(this)) == 0
 
 def UIntArray__toString_impl(this):
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+    return ((str('UIntArray(storage=')) + (str(toString(this.storage)))) + (str(')'))
 
 def UIntArray__hashCode_impl(this):
     return hashCode(this.storage)
@@ -3695,7 +3695,7 @@ class UIntRange:
         return tmp
     
     def toString(self):
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+        return ((str(boxIntrinsic(self._get_first_()))) + (str('..'))) + (str(boxIntrinsic(self._get_last_())))
     
     def _get_first_(self):
         pass
@@ -3791,7 +3791,7 @@ class UIntProgression:
         return tmp
     
     def toString(self):
-        return (visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl) if (self.step > 0) else (visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl)
+        return (((((str(boxIntrinsic(self.first))) + (str('..'))) + (str(boxIntrinsic(self.last)))) + (str(' step '))) + (str(self.step))) if (self.step > 0) else (((((str(boxIntrinsic(self.first))) + (str(' downTo '))) + (str(boxIntrinsic(self.last)))) + (str(' step '))) + (str((-(self.step)) | (0))))
     
 
 def _get_finalElement_(_this):
@@ -4344,7 +4344,7 @@ def ULongArray__isEmpty_impl(this):
     return len(_ULongArray___get_storage__impl_(this)) == 0
 
 def ULongArray__toString_impl(this):
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+    return ((str('ULongArray(storage=')) + (str(toString(this.storage)))) + (str(')'))
 
 def ULongArray__hashCode_impl(this):
     return hashCode(this.storage)
@@ -4484,7 +4484,7 @@ class ULongRange:
         return tmp
     
     def toString(self):
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+        return ((str(boxIntrinsic(self._get_first_()))) + (str('..'))) + (str(boxIntrinsic(self._get_last_())))
     
     def _get_first_(self):
         pass
@@ -4587,7 +4587,7 @@ class ULongProgression:
         return tmp
     
     def toString(self):
-        return (visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl) if (self.step.compareTo(Long(0, 0)) > 0) else (visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl)
+        return (((((str(boxIntrinsic(self.first))) + (str('..'))) + (str(boxIntrinsic(self.last)))) + (str(' step '))) + (str(self.step))) if (self.step.compareTo(Long(0, 0)) > 0) else (((((str(boxIntrinsic(self.first))) + (str(' downTo '))) + (str(boxIntrinsic(self.last)))) + (str(' step '))) + (str(self.step.unaryMinus())))
     
 
 def _get_finalElement_(_this):
@@ -5115,7 +5115,7 @@ def UShortArray__isEmpty_impl(this):
     return len(_UShortArray___get_storage__impl_(this)) == 0
 
 def UShortArray__toString_impl(this):
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+    return ((str('UShortArray(storage=')) + (str(toString(this.storage)))) + (str(')'))
 
 def UShortArray__hashCode_impl(this):
     return hashCode(this.storage)
@@ -6214,7 +6214,7 @@ class IntProgression:
         return (-1) if (self.isEmpty()) else (((imul(31, ((imul(31, self.first)) + (self.last)) | (0))) + (self.step)) | (0))
     
     def toString(self):
-        return (visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl) if (self.step > 0) else (visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl)
+        return (((((str(self.first)) + (str('..'))) + (str(self.last))) + (str(' step '))) + (str(self.step))) if (self.step > 0) else (((((str(self.first)) + (str(' downTo '))) + (str(self.last))) + (str(' step '))) + (str((-(self.step)) | (0))))
     
 
 class Companion:
@@ -6282,7 +6282,7 @@ class LongProgression:
         return (-1) if (self.isEmpty()) else (numberToLong(31).times(numberToLong(31).times(self.first.xor(self.first.ushr(32))).plus(self.last.xor(self.last.ushr(32)))).plus(self.step.xor(self.step.ushr(32))).toInt())
     
     def toString(self):
-        return (visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl) if (self.step.compareTo(Long(0, 0)) > 0) else (visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl)
+        return (((((str(self.first)) + (str('..'))) + (str(self.last))) + (str(' step '))) + (str(self.step))) if (self.step.compareTo(Long(0, 0)) > 0) else (((((str(self.first)) + (str(' downTo '))) + (str(self.last))) + (str(' step '))) + (str(self.step.unaryMinus())))
     
 
 class Companion:
@@ -6359,7 +6359,7 @@ class CharProgression:
         return tmp
     
     def toString(self):
-        return (visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl) if (self.step > 0) else (visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl)
+        return (((((str(self.first)) + (str('..'))) + (str(self.last))) + (str(' step '))) + (str(self.step))) if (self.step > 0) else (((((str(self.first)) + (str(' downTo '))) + (str(self.last))) + (str(' step '))) + (str((-(self.step)) | (0))))
     
 
 class ClosedRange:
@@ -6445,7 +6445,7 @@ class IntRange:
         return (-1) if (self.isEmpty()) else (((imul(31, self._get_first_())) + (self._get_last_())) | (0))
     
     def toString(self):
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+        return ((str(self._get_first_())) + (str('..'))) + (str(self._get_last_()))
     
     def _get_first_(self):
         pass
@@ -6517,7 +6517,7 @@ class LongRange:
         return (-1) if (self.isEmpty()) else (numberToLong(31).times(self._get_first_().xor(self._get_first_().ushr(32))).plus(self._get_last_().xor(self._get_last_().ushr(32))).toInt())
     
     def toString(self):
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+        return ((str(self._get_first_())) + (str('..'))) + (str(self._get_last_()))
     
     def _get_first_(self):
         pass
@@ -6597,7 +6597,7 @@ class CharRange:
         return tmp
     
     def toString(self):
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+        return ((str(self._get_first_())) + (str('..'))) + (str(self._get_last_()))
     
     def _get_first_(self):
         pass
@@ -8447,7 +8447,7 @@ class KClassImpl:
         return (0) if (tmp1_elvis_lhs == None) else (tmp1_elvis_lhs)
     
     def toString(self):
-        return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+        return (str('class ')) + (str(self._get_simpleName_()))
     
     def _get_simpleName_(self):
         pass
@@ -9379,7 +9379,7 @@ class PrimitiveClasses:
         tmp0_elvis_lhs = functionClasses[arity]
         if tmp0_elvis_lhs == None:
             tmp0_unsafeCast_0_3 = js('Function')
-            tmp = visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+            tmp = (str('Function')) + (str(arity))
             result_2 = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_3), tmp, _no_name_provided__factory(arity))
             tmp1_asDynamic_0_5 = functionClasses
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
@@ -12160,7 +12160,7 @@ def toStringImpl(radix):
             tmp0_unsafeCast_0 = INVOKE(toString(rem), radix)
             return (tmp) + (kotlin_Any_(tmp0_unsafeCast_0))
         else:
-            return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrStringConcatenationImpl
+            return (str('-')) + (str(toStringImpl(radix)))
         
     
     radixToPower = fromNumber(visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(kotlin_Double(radix), 6.0))
