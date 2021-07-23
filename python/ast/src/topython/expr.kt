@@ -15,7 +15,7 @@ fun expr.toPython(): String {
         is BoolOp -> TODO()
         is NamedExpr -> TODO()
         is BinOp -> TODO()
-        is UnaryOp -> TODO()
+        is UnaryOp -> toPython()
         is Lambda -> TODO()
         is IfExp -> toPython()
         is Dict -> TODO()
@@ -43,6 +43,9 @@ fun expr.toPython(): String {
 
 fun Name.toPython() =
     id.name
+
+fun UnaryOp.toPython() =
+    "${op.toPython()}(${operand.toPython()})"
 
 fun IfExp.toPython() =
     "(${body.toPython()}) if (${test.toPython()}) else (${orelse.toPython()})"
