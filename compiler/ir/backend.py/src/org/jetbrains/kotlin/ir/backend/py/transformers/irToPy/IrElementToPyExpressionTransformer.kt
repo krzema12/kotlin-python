@@ -37,6 +37,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
             is IrVararg -> visitVararg(expression, data)
             is IrDynamicOperatorExpression -> visitDynamicOperatorExpression(expression, data)
             is IrDynamicMemberExpression -> visitDynamicMemberExpression(expression, data)
+            is IrStringConcatenation -> visitStringConcatenation(expression, data)
             else -> listOf(Name(id = identifier("visitExpression-other $expression".toValidPythonSymbol()), ctx = Load))
         }
     }
@@ -84,8 +85,17 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
     }
 
     override fun visitStringConcatenation(expression: IrStringConcatenation, context: JsGenerationContext): List<expr> {
-        // TODO
-        return listOf(Name(id = identifier("visitStringConcatenation $expression".toValidPythonSymbol()), ctx = Load))
+        return expression
+            .arguments
+            .map { argument ->
+                argument
+                    .accept(this, context)
+                    .singleOrNull()
+                    ?.let { Call(func = Name(id = identifier("str"), ctx = Load), args = listOf(it), keywords = emptyList()) }
+                    ?: Name(id = identifier("visitStringConcatenation $argument".toValidPythonSymbol()), ctx = Load)
+            }
+            .reduce { left, right -> BinOp(left = left, op = Add, right = right) }
+            .let(::listOf)
     }
 
     override fun visitGetField(expression: IrGetField, context: JsGenerationContext): List<expr> {
