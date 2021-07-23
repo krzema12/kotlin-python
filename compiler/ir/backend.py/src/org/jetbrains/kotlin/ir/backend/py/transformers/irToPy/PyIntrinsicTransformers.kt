@@ -11,7 +11,6 @@ import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
-import org.jetbrains.kotlin.js.backend.ast.*
 
 typealias IrCallTransformer = (IrCall, context: JsGenerationContext) -> List<expr>
 
@@ -35,13 +34,13 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
             compareOp(intrinsics.jsLt, Lt)
             compareOp(intrinsics.jsLtEq, LtE)
 
-//            prefixOp(intrinsics.jsNot, JsUnaryOperator.NOT)
+            unaryOp(intrinsics.jsNot, Not)
 //            binOp(intrinsics.jsAnd, JsBinaryOperator.AND)
 //            binOp(intrinsics.jsOr, JsBinaryOperator.OR)
-//
-//            prefixOp(intrinsics.jsUnaryPlus, JsUnaryOperator.POS)
-//            prefixOp(intrinsics.jsUnaryMinus, JsUnaryOperator.NEG)
-//
+
+            unaryOp(intrinsics.jsUnaryPlus, UAdd)
+            unaryOp(intrinsics.jsUnaryMinus, USub)
+
 //            prefixOp(intrinsics.jsPrefixInc, JsUnaryOperator.INC)
 //            postfixOp(intrinsics.jsPostfixInc, JsUnaryOperator.INC)
 //            prefixOp(intrinsics.jsPrefixDec, JsUnaryOperator.DEC)
@@ -256,10 +255,10 @@ private fun MutableMap<IrSymbol, IrCallTransformer>.compareOp(function: IrSimple
     withTranslatedArgs(function) { listOf(Compare(left = it[0], ops = listOf(op), comparators = listOf(it[1]))) }
 }
 
-//private fun MutableMap<IrSymbol, IrCallTransformer>.prefixOp(function: IrSimpleFunctionSymbol, op: JsUnaryOperator) {
-//    withTranslatedArgs(function) { JsPrefixOperation(op, it[0]) }
-//}
-//
+private fun MutableMap<IrSymbol, IrCallTransformer>.unaryOp(function: IrSimpleFunctionSymbol, op: unaryop) {
+    withTranslatedArgs(function) { listOf(UnaryOp(op = op, operand = it[0])) }
+}
+
 //private fun MutableMap<IrSymbol, IrCallTransformer>.postfixOp(function: IrSimpleFunctionSymbol, op: JsUnaryOperator) {
 //    withTranslatedArgs(function) { JsPostfixOperation(op, it[0]) }
 //}
