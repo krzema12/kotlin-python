@@ -32,8 +32,8 @@ fun stmt.toPython(): String {
         is Nonlocal -> TODO()
         is Expr -> toPython()
         Pass -> "pass"
-        Break -> TODO()
-        Continue -> TODO()
+        Break -> "break"
+        Continue -> "continue"
     }
 }
 

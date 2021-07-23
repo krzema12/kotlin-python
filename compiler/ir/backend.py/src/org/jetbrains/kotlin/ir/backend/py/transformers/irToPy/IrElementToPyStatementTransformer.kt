@@ -44,18 +44,21 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
             is IrBlock -> visitBlock(expression, context)
             is IrReturn -> visitReturn(expression, context)
             is IrComposite -> visitComposite(expression, context)
+            is IrBreak -> visitBreak(expression, context)
+            is IrDoWhileLoop -> visitDoWhileLoop(expression, context)
+            is IrContinue -> visitContinue(expression, context)
             else -> listOf(Expr(value = Name(id = identifier("visitExpression-other--inToPyStatementTransformer $expression".toValidPythonSymbol()), ctx = Load)))
         }
     }
 
     override fun visitBreak(jump: IrBreak, context: JsGenerationContext): List<stmt> {
-        // TODO
-        return listOf(Expr(value = Name(id = identifier("visitBreak $jump".toValidPythonSymbol()), ctx = Load)))
+        // todo (support label)
+        return listOf(Break)
     }
 
     override fun visitContinue(jump: IrContinue, context: JsGenerationContext): List<stmt> {
-        // TODO
-        return listOf(Expr(value = Name(id = identifier("visitContinue $jump".toValidPythonSymbol()), ctx = Load)))
+        // todo (support label)
+        return listOf(Continue)
     }
 
     override fun visitSetField(expression: IrSetField, context: JsGenerationContext): List<stmt> {
@@ -175,7 +178,25 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     }
 
     override fun visitDoWhileLoop(loop: IrDoWhileLoop, context: JsGenerationContext): List<stmt> {
-        // TODO
-        return listOf(Expr(value = Name(id = identifier("visitDoWhileLoop $loop".toValidPythonSymbol()), ctx = Load)))
+        // transform like:
+        //
+        // while True:
+        //     <body>
+        //     if <condition>:
+        //         break
+        val body = loop.body?.accept(this, context).orEmpty()
+        val condition = If(
+            test = IrElementToPyExpressionTransformer().visitExpression(loop.condition, context).singleOrNull()
+                ?: Name(id = identifier("visitDoWhileLoop ${loop.condition}".toValidPythonSymbol()), ctx = Load),
+            body = listOf(Break),
+            orelse = emptyList(),
+        )
+
+        return While(
+            test = Constant(value = constant("True"), kind = null),
+            body = body + condition,
+            orelse = emptyList(),
+        )
+            .let(::listOf)
     }
 }
