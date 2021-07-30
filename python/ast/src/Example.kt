@@ -80,7 +80,7 @@ val examplePythonCodeAst: mod = Module(
 )
 
 fun main() {
-    println(examplePythonCodeAst.toPython())
+    println(buildString { examplePythonCodeAst.toPython(this) })
     // Produces:
     //
     // fruits = ["apple", "banana", "cherry"]

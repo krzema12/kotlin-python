@@ -8,11 +8,10 @@ package topython
 import generated.Python.arg
 import generated.Python.argImpl
 
-fun arg.toPython(): String {
-    return when (this) {
-        is argImpl -> toPython()
-    }
+fun arg.toPython(acc: StringBuilder) = when (this) {
+    is argImpl -> toPython(acc)
 }
 
-fun argImpl.toPython() =
-    arg.name
+fun argImpl.toPython(acc: StringBuilder) {
+    acc.append(arg.name)
+}

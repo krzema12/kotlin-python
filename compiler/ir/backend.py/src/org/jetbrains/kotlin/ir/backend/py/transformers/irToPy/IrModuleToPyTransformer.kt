@@ -131,7 +131,10 @@ class IrModuleToPyTransformer(
             type_ignores = emptyList(),
         )
 
-        return program.toPython()
+        return buildString {
+            ensureCapacity(1_000_000)  // reserve 1mb by default – reasonable output file size (including stdlib)
+            program.toPython(this)
+        }
     }
 
     private fun generateModuleBody(modules: Iterable<IrModuleFragment>, context: JsGenerationContext): List<stmt> {

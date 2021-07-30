@@ -8,12 +8,22 @@ package topython
 import generated.Python.arguments
 import generated.Python.argumentsImpl
 
-fun arguments.toPython(): String {
-    return when (this) {
-        is argumentsImpl -> toPython()
-    }
+fun arguments.toPython(acc: StringBuilder) = when (this) {
+    is argumentsImpl -> toPython(acc)
 }
 
-fun argumentsImpl.toPython() =
-    (args.map { it.toPython() } + vararg?.let { listOf("*${it.toPython()}") }.orEmpty())
-        .joinToString(", ")
+fun argumentsImpl.toPython(acc: StringBuilder) {
+    args.forEachIndexed { i, arg ->
+        if (i != 0) {
+            acc.append(", ")
+        }
+        arg.toPython(acc)
+    }
+    vararg?.let {
+        if (args.isNotEmpty()) {
+            acc.append(", ")
+        }
+        acc.append('*')
+        it.toPython(acc)
+    }
+}
