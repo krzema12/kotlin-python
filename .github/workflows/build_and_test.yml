@@ -40,6 +40,13 @@ jobs:
         run: diff -u missing.txt python/experiments/missing.txt
         if: always()
 
+      - name: Run consumer.py
+        run: python3 python/experiments/consumer.py > consumer-output.txt
+        if: always()
+      - name: Compare consumer-output.txt
+        run: diff -u consumer-output.txt python/experiments/consumer-output.txt
+        if: always()
+
       - name: Run box tests (succeed even if they fail)
         run: (JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated" || true) | tee tests-out.txt
         if: always()

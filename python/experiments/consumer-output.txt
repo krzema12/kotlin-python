@@ -1,0 +1,3 @@
+Hello from Kotlin!
+Hello from Kotlin class!
+paramVal
