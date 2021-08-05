@@ -41,7 +41,10 @@ jobs:
         if: always()
 
       - name: Run consumer.py
-        run: python3 python/experiments/consumer.py > consumer-output.txt
+        run: python3 python/experiments/consumer.py > consumer-output-tmp.txt 2>&1
+        if: always()
+      - name: Normalize stack trace
+        run: less consumer-output-tmp.txt | sed -e 's/".*out_ir.py"/"...out_ir.py"/g' > consumer-output.txt
         if: always()
       - name: Compare consumer-output.txt
         run: diff -u consumer-output.txt python/experiments/consumer-output.txt

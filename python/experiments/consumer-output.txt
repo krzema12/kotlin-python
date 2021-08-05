@@ -1,3 +1,13 @@
 Hello from Kotlin!
 Hello from Kotlin class!
 paramVal
+Traceback (most recent call last):
+  File "python/experiments/consumer.py", line 9, in <module>
+    newCode()
+  File "...out_ir.py", line 13806, in newCode
+    tmp0_map_0 = listOf('apple', 'banana', 'cherry')
+  File "...out_ir.py", line 1172, in listOf
+    return (asList()) if (len(elements) > 0) else (emptyList())
+  File "...out_ir.py", line 12942, in asList
+    return ArrayList(kotlin_Any_(self))
+NameError: name 'kotlin_Any_' is not defined
