@@ -41,14 +41,30 @@ fun expr.toPython(): String {
     }
 }
 
+private fun expr.needsParentheses() = when (this) {
+    is Name -> false
+    is UnaryOp -> false
+    is List -> false
+    is Constant -> false
+    is Call -> false
+    is Attribute -> false
+    is Subscript -> false
+    else -> true
+}
+
+private fun expr.surroundIfNeeded() = when (needsParentheses()) {
+    true -> "(${this.toPython()})"
+    false -> this.toPython()
+}
+
 fun Name.toPython() =
     id.name
 
 fun BinOp.toPython() =
-    "(${left.toPython()}) ${op.toPython()} (${right.toPython()})"
+    "${left.surroundIfNeeded()} ${op.toPython()} ${right.surroundIfNeeded()}"
 
 fun UnaryOp.toPython() =
-    "${op.toPython()}(${operand.toPython()})"
+    "${op.toPython()}${operand.surroundIfNeeded()}"
 
 fun IfExp.toPython() =
     "(${body.toPython()}) if (${test.toPython()}) else (${orelse.toPython()})"
@@ -65,10 +81,10 @@ fun Compare.toPython() =
     "${left.toPython()}${ops.zip(comparators).joinToString("") { (op, c) -> " ${op.toPython()} ${c.toPython()}" }}"
 
 fun Call.toPython() =
-    "${func.toPython()}(${args.joinToString(", ") { it.toPython() }})"
+    "${func.surroundIfNeeded()}(${args.joinToString(", ") { it.toPython() }})"
 
 fun Attribute.toPython() =
-    "${value.toPython()}.${attr.name}"
+    "${value.surroundIfNeeded()}.${attr.name}"
 
 fun Subscript.toPython() =
-    "${value.toPython()}[${slice.toPython()}]"
+    "${value.surroundIfNeeded()}[${slice.toPython()}]"
