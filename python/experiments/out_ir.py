@@ -5,7 +5,7 @@ def fold(initial, operation):
     last = len(indexedObject)
     while inductionVariable < last:
         element = indexedObject[inductionVariable]
-        inductionVariable = ((inductionVariable) + (1)) | (0)
+        inductionVariable = (inductionVariable + 1) | 0
         accumulator = operation.invoke(accumulator, element)
     
     return accumulator
@@ -16,11 +16,11 @@ def _get_indices_():
 def indexOf(element):
     if element == None:
         inductionVariable = 0
-        last = ((len(self)) - (1)) | (0)
+        last = (len(self) - 1) | 0
         if inductionVariable <= last:
             while True:
                 index = inductionVariable
-                inductionVariable = ((inductionVariable) + (1)) | (0)
+                inductionVariable = (inductionVariable + 1) | 0
                 if self[index] == None:
                     return index
                 
@@ -31,11 +31,11 @@ def indexOf(element):
         
     else:
         inductionVariable = 0
-        last = ((len(self)) - (1)) | (0)
+        last = (len(self) - 1) | 0
         if inductionVariable <= last:
             while True:
                 index = inductionVariable
-                inductionVariable = ((inductionVariable) + (1)) | (0)
+                inductionVariable = (inductionVariable + 1) | 0
                 if equals(element, self[index]):
                     return index
                 
@@ -49,11 +49,11 @@ def indexOf(element):
 
 def lastIndexOf(element):
     if element == None:
-        inductionVariable = ((len(self)) - (1)) | (0)
+        inductionVariable = (len(self) - 1) | 0
         if 0 <= inductionVariable:
             while True:
                 index = inductionVariable
-                inductionVariable = ((inductionVariable) + (-1)) | (0)
+                inductionVariable = (inductionVariable + -1) | 0
                 if self[index] == None:
                     return index
                 
@@ -63,11 +63,11 @@ def lastIndexOf(element):
             
         
     else:
-        inductionVariable = ((len(self)) - (1)) | (0)
+        inductionVariable = (len(self) - 1) | 0
         if 0 <= inductionVariable:
             while True:
                 index = inductionVariable
-                inductionVariable = ((inductionVariable) + (-1)) | (0)
+                inductionVariable = (inductionVariable + -1) | 0
                 if equals(element, self[index]):
                     return index
                 
@@ -80,28 +80,28 @@ def lastIndexOf(element):
     return -1
 
 def _get_lastIndex_():
-    return ((len(self)) - (1)) | (0)
+    return (len(self) - 1) | 0
 
 def joinToString(separator, prefix, postfix, limit, truncated, transform):
     return joinTo(StringBuilder_init__Create_(), separator, prefix, postfix, limit, truncated, transform).toString()
 
 def joinToString_default(separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
-    if not ((_mask0) & (1) == 0):
+    if not (_mask0 & 1 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (2) == 0):
+    if not (_mask0 & 2 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (4) == 0):
+    if not (_mask0 & 4 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (8) == 0):
+    if not (_mask0 & 8 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (16) == 0):
+    if not (_mask0 & 16 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (32) == 0):
+    if not (_mask0 & 32 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
     return joinToString(kotlin_CharSequence(separator), kotlin_CharSequence(prefix), kotlin_CharSequence(postfix), limit, kotlin_CharSequence(truncated), transform)
@@ -115,8 +115,8 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
     last = len(indexedObject)
     while inductionVariable < last:
         element = indexedObject[inductionVariable]
-        inductionVariable = ((inductionVariable) + (1)) | (0)
-        count = ((count) + (1)) | (0)
+        inductionVariable = (inductionVariable + 1) | 0
+        count = (count + 1) | 0
         if count > 1:
             buffer.append(separator)
             Unit_getInstance()
@@ -136,22 +136,22 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
     return buffer
 
 def joinTo_default(buffer, separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
-    if not ((_mask0) & (2) == 0):
+    if not (_mask0 & 2 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (4) == 0):
+    if not (_mask0 & 4 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (8) == 0):
+    if not (_mask0 & 8 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (16) == 0):
+    if not (_mask0 & 16 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (32) == 0):
+    if not (_mask0 & 32 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (64) == 0):
+    if not (_mask0 & 64 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
     return joinTo(buffer, kotlin_CharSequence(separator), kotlin_CharSequence(prefix), kotlin_CharSequence(postfix), limit, kotlin_CharSequence(truncated), transform)
@@ -161,11 +161,11 @@ def contains(element):
 
 def indexOf(element):
     inductionVariable = 0
-    last = ((len(self)) - (1)) | (0)
+    last = (len(self) - 1) | 0
     if inductionVariable <= last:
         while True:
             index = inductionVariable
-            inductionVariable = ((inductionVariable) + (1)) | (0)
+            inductionVariable = (inductionVariable + 1) | 0
             if kotlin_Int(element) == kotlin_Int(self[index]):
                 return index
             
@@ -180,18 +180,18 @@ def _get_indices_():
     return IntRange(0, _get_lastIndex_())
 
 def _get_lastIndex_():
-    return ((len(self)) - (1)) | (0)
+    return (len(self) - 1) | 0
 
 def contains(element):
     return indexOf(element) >= 0
 
 def indexOf(element):
     inductionVariable = 0
-    last = ((len(self)) - (1)) | (0)
+    last = (len(self) - 1) | 0
     if inductionVariable <= last:
         while True:
             index = inductionVariable
-            inductionVariable = ((inductionVariable) + (1)) | (0)
+            inductionVariable = (inductionVariable + 1) | 0
             if kotlin_Int(element) == kotlin_Int(self[index]):
                 return index
             
@@ -206,18 +206,18 @@ def _get_indices_():
     return IntRange(0, _get_lastIndex_())
 
 def _get_lastIndex_():
-    return ((len(self)) - (1)) | (0)
+    return (len(self) - 1) | 0
 
 def contains(element):
     return indexOf(element) >= 0
 
 def indexOf(element):
     inductionVariable = 0
-    last = ((len(self)) - (1)) | (0)
+    last = (len(self) - 1) | 0
     if inductionVariable <= last:
         while True:
             index = inductionVariable
-            inductionVariable = ((inductionVariable) + (1)) | (0)
+            inductionVariable = (inductionVariable + 1) | 0
             if element == self[index]:
                 return index
             
@@ -232,18 +232,18 @@ def _get_indices_():
     return IntRange(0, _get_lastIndex_())
 
 def _get_lastIndex_():
-    return ((len(self)) - (1)) | (0)
+    return (len(self) - 1) | 0
 
 def contains(element):
     return indexOf(element) >= 0
 
 def indexOf(element):
     inductionVariable = 0
-    last = ((len(self)) - (1)) | (0)
+    last = (len(self) - 1) | 0
     if inductionVariable <= last:
         while True:
             index = inductionVariable
-            inductionVariable = ((inductionVariable) + (1)) | (0)
+            inductionVariable = (inductionVariable + 1) | 0
             if element.equals(self[index]):
                 return index
             
@@ -258,7 +258,7 @@ def _get_indices_():
     return IntRange(0, _get_lastIndex_())
 
 def _get_lastIndex_():
-    return ((len(self)) - (1)) | (0)
+    return (len(self) - 1) | 0
 
 def indexOfFirst(predicate):
     index = 0
@@ -269,7 +269,7 @@ def indexOfFirst(predicate):
             return index
         
         tmp1 = index
-        index = ((tmp1) + (1)) | (0)
+        index = (tmp1 + 1) | 0
         Unit_getInstance()
     
     return -1
@@ -313,7 +313,7 @@ def all(predicate):
     tmp0_iterator = self.iterator()
     while tmp0_iterator.hasNext():
         element = tmp0_iterator.next()
-        if not (predicate.invoke(element)):
+        if not predicate.invoke(element):
             return False
         
     
@@ -323,22 +323,22 @@ def joinToString(separator, prefix, postfix, limit, truncated, transform):
     return joinTo(StringBuilder_init__Create_(), separator, prefix, postfix, limit, truncated, transform).toString()
 
 def joinToString_default(separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
-    if not ((_mask0) & (1) == 0):
+    if not (_mask0 & 1 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (2) == 0):
+    if not (_mask0 & 2 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (4) == 0):
+    if not (_mask0 & 4 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (8) == 0):
+    if not (_mask0 & 8 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (16) == 0):
+    if not (_mask0 & 16 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (32) == 0):
+    if not (_mask0 & 32 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
     return joinToString(kotlin_CharSequence(separator), kotlin_CharSequence(prefix), kotlin_CharSequence(postfix), limit, kotlin_CharSequence(truncated), transform)
@@ -350,7 +350,7 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
     tmp0_iterator = self.iterator()
     while tmp0_iterator.hasNext():
         element = tmp0_iterator.next()
-        count = ((count) + (1)) | (0)
+        count = (count + 1) | 0
         if count > 1:
             buffer.append(separator)
             Unit_getInstance()
@@ -370,22 +370,22 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
     return buffer
 
 def joinTo_default(buffer, separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
-    if not ((_mask0) & (2) == 0):
+    if not (_mask0 & 2 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (4) == 0):
+    if not (_mask0 & 4 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (8) == 0):
+    if not (_mask0 & 8 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (16) == 0):
+    if not (_mask0 & 16 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (32) == 0):
+    if not (_mask0 & 32 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (64) == 0):
+    if not (_mask0 & 64 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
     return joinTo(buffer, kotlin_CharSequence(separator), kotlin_CharSequence(prefix), kotlin_CharSequence(postfix), limit, kotlin_CharSequence(truncated), transform)
@@ -423,10 +423,10 @@ def until(to):
     if to <= IntCompanionObject_getInstance().MIN_VALUE:
         return Companion_getInstance().EMPTY
     
-    return numberRangeToNumber(self, kotlin_Int(((to) - (1)) | (0)))
+    return numberRangeToNumber(self, kotlin_Int((to - 1) | 0))
 
 def reversed():
-    return Companion_getInstance().fromClosedRange(self.last, self.first, (-(self.step)) | (0))
+    return Companion_getInstance().fromClosedRange(self.last, self.first, -self.step | 0)
 
 def getOrElse(index, defaultValue):
     return (charSequenceGet(self, index)) if ((index <= _get_lastIndex_()) if (index >= 0) else (False)) else (defaultValue.invoke(index))
@@ -534,7 +534,7 @@ def Level_initEntries():
     Level_ERROR_instance = Level('ERROR', 1)
 
 def Experimental_init__Init_(level, _mask0, _marker, _this):
-    if not ((_mask0) & (1) == 0):
+    if not (_mask0 & 1 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
     super(level)
@@ -675,10 +675,10 @@ def Level_initEntries():
     Level_ERROR_instance = Level('ERROR', 1)
 
 def RequiresOptIn_init__Init_(message, level, _mask0, _marker, _this):
-    if not ((_mask0) & (1) == 0):
+    if not (_mask0 & 1 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (2) == 0):
+    if not (_mask0 & 2 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
     super(message, level)
@@ -817,7 +817,7 @@ class AbstractCollection:
             tmp0_iterator_1 = elements.iterator()
             while tmp0_iterator_1.hasNext():
                 element_2 = tmp0_iterator_1.next()
-                if not (self.contains(element_2)):
+                if not self.contains(element_2):
                     tmp_ret_0 = False
                     break
                 
@@ -871,11 +871,11 @@ class SubList:
         self.fromIndex = fromIndex
         self._size = 0
         Companion_getInstance().checkRangeIndexes(self.fromIndex, toIndex, self.list._get_size_())
-        self._size = ((toIndex) - (self.fromIndex)) | (0)
+        self._size = (toIndex - self.fromIndex) | 0
     
     def get(self, index):
         Companion_getInstance().checkElementIndex(index, self._size)
-        return self.list.get(((self.fromIndex) + (index)) | (0))
+        return self.list.get((self.fromIndex + index) | 0)
     
     def _get_size_(self):
         return self._size
@@ -938,12 +938,12 @@ class IteratorImpl:
         return self.index < self._this._get_size_()
     
     def next(self):
-        if not (self.hasNext()):
+        if not self.hasNext():
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
         tmp0_this = self
         tmp1 = tmp0_this.index
-        tmp0_this.index = ((tmp1) + (1)) | (0)
+        tmp0_this.index = (tmp1 + 1) | 0
         return self._this.get(tmp1)
     
     def equals(self, other):
@@ -970,15 +970,15 @@ class ListIteratorImpl:
         return self._get_index_()
     
     def previous(self):
-        if not (self.hasPrevious()):
+        if not self.hasPrevious():
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
         tmp0_this = self
-        tmp0_this._set_index_(((tmp0_this._get_index_()) - (1)) | (0))
+        tmp0_this._set_index_((tmp0_this._get_index_() - 1) | 0)
         return self._this.get(tmp0_this._get_index_())
     
     def previousIndex(self):
-        return ((self._get_index_()) - (1)) | (0)
+        return (self._get_index_() - 1) | 0
     
     def _set_index_(self, _set___):
         pass
@@ -1040,7 +1040,7 @@ class Companion:
             tmp = imul(31, hashCode)
             tmp1_safe_receiver = e
             tmp2_elvis_lhs = (None) if (tmp1_safe_receiver == None) else (hashCode(tmp1_safe_receiver))
-            hashCode = ((tmp) + ((0) if (tmp2_elvis_lhs == None) else (tmp2_elvis_lhs))) | (0)
+            hashCode = (tmp + ((0) if (tmp2_elvis_lhs == None) else (tmp2_elvis_lhs))) | 0
         
         return hashCode
     
@@ -1053,7 +1053,7 @@ class Companion:
         while tmp0_iterator.hasNext():
             elem = tmp0_iterator.next()
             elemOther = otherIterator.next()
-            if not (equals(elem, elemOther)):
+            if not equals(elem, elemOther):
                 return False
             
         
@@ -1101,7 +1101,7 @@ class AbstractList:
                     break
                 
                 tmp1_4 = index_1
-                index_1 = ((tmp1_4) + (1)) | (0)
+                index_1 = (tmp1_4 + 1) | 0
                 Unit_getInstance()
             
             tmp_ret_0 = -1
@@ -1209,7 +1209,7 @@ class EmptyList:
         return False
     
     def contains(self, element):
-        if not (False):
+        if not False:
             return False
         
         if False:
@@ -1232,7 +1232,7 @@ class EmptyList:
         return -1
     
     def indexOf(self, element):
-        if not (False):
+        if not False:
             return -1
         
         if False:
@@ -1246,7 +1246,7 @@ class EmptyList:
         return -1
     
     def lastIndexOf(self, element):
-        if not (False):
+        if not False:
             return -1
         
         if False:
@@ -1322,7 +1322,7 @@ def EmptyIterator_getInstance():
     return EmptyIterator_instance
 
 def _get_lastIndex_():
-    return ((self._get_size_()) - (1)) | (0)
+    return (self._get_size_() - 1) | 0
 
 def collectionSizeOrDefault(default):
     if isInterface(self, jsClass()):
@@ -1339,7 +1339,7 @@ def removeAll(predicate):
     return filterInPlace(predicate, True)
 
 def filterInPlace(predicate, predicateResultToRemove):
-    if not (isInterface(self, jsClass())):
+    if not isInterface(self, jsClass()):
         return filterInPlace(predicate, predicateResultToRemove)
     
     writeIndex = 0
@@ -1348,7 +1348,7 @@ def filterInPlace(predicate, predicateResultToRemove):
     if inductionVariable <= last:
         while True:
             readIndex = inductionVariable
-            inductionVariable = ((inductionVariable) + (1)) | (0)
+            inductionVariable = (inductionVariable + 1) | 0
             element = self.get(readIndex)
             if predicate.invoke(element) == predicateResultToRemove:
                 continue
@@ -1358,7 +1358,7 @@ def filterInPlace(predicate, predicateResultToRemove):
                 Unit_getInstance()
             
             tmp1 = writeIndex
-            writeIndex = ((tmp1) + (1)) | (0)
+            writeIndex = (tmp1 + 1) | 0
             Unit_getInstance()
             if not (readIndex == last):
                 break
@@ -1370,7 +1370,7 @@ def filterInPlace(predicate, predicateResultToRemove):
         if writeIndex <= inductionVariable:
             while True:
                 removeIndex = inductionVariable
-                inductionVariable = ((inductionVariable) + (-1)) | (0)
+                inductionVariable = (inductionVariable + -1) | 0
                 self.removeAt(removeIndex)
                 Unit_getInstance()
                 if not (removeIndex == writeIndex):
@@ -1428,7 +1428,7 @@ class ContractBuilder:
         pass
     
     def callsInPlace_default(self, _lambda, kind, _mask0, _handler):
-        if not ((_mask0) & (2) == 0):
+        if not (_mask0 & 2 == 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
         
         return (self.callsInPlace(_lambda, kotlin_contracts_InvocationKind(kind))) if (_handler == None) else (kotlin_Function2_kotlin_Function2_kotlin_Function2_kotlin_Function2_(_handler).invoke(_lambda, kind))
@@ -1934,7 +1934,7 @@ def readResolve(_this):
     last = len(indexedObject)
     while inductionVariable < last:
         element_3 = indexedObject[inductionVariable]
-        inductionVariable = ((inductionVariable) + (1)) | (0)
+        inductionVariable = (inductionVariable + 1) | 0
         accumulator_1 = accumulator_1.plus(element_3)
     
     return accumulator_1
@@ -1958,7 +1958,7 @@ def size(_this):
         
         cur = tmp
         tmp1 = size
-        size = ((tmp1) + (1)) | (0)
+        size = (tmp1 + 1) | 0
         Unit_getInstance()
     
 
@@ -1968,7 +1968,7 @@ def contains(_this, element):
 def containsAll(_this, context):
     cur = context
     while True:
-        if not (contains(_this, cur.element)):
+        if not contains(_this, cur.element):
             return False
         
         next = cur.left
@@ -1985,7 +1985,7 @@ def writeReplace(_this):
     index = _sharedBox_create(0)
     _this.fold(Unit_getInstance(), _no_name_provided__factory(elements, index))
     tmp0_check_0 = _sharedBox_read(index) == n
-    if not (tmp0_check_0):
+    if not tmp0_check_0:
         message_2 = 'Check failed.'
         visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
     
@@ -2017,7 +2017,7 @@ class _no_name_provided_:
         if charSequenceLength(acc) == 0:
             tmp = toString(element)
         elif True:
-            tmp = ((str(acc)) + (str(', '))) + (str(element))
+            tmp = (str(acc) + str(', ')) + str(element)
         
         return tmp
     
@@ -2033,7 +2033,7 @@ class _no_name_provided_:
     
     def invoke(self, _anonymous_parameter_0_, element):
         tmp0 = _sharedBox_read(self._index)
-        _sharedBox_write(self._index, ((tmp0) + (1)) | (0))
+        _sharedBox_write(self._index, (tmp0 + 1) | 0)
         self._elements.__setitem__(tmp0, element)
     
     def invoke(self, p1, p2):
@@ -2098,10 +2098,10 @@ class CombinedContext:
         return tmp
     
     def hashCode(self):
-        return ((hashCode(self.left)) + (hashCode(self.element))) | (0)
+        return (hashCode(self.left) + hashCode(self.element)) | 0
     
     def toString(self):
-        return (('[') + (self.fold('', _no_name_provided__factory()))) + (']')
+        return ('[' + self.fold('', _no_name_provided__factory())) + ']'
     
     def plus(self, context):
         pass
@@ -2215,28 +2215,28 @@ def CoroutineSingletons_RESUMED_getInstance():
     return CoroutineSingletons_RESUMED_instance
 
 def _and(other):
-    return toShort((kotlin_Int(self)) & (kotlin_Int(other)))
+    return toShort(kotlin_Int(self) & kotlin_Int(other))
 
 def _or(other):
-    return toShort((kotlin_Int(self)) | (kotlin_Int(other)))
+    return toShort(kotlin_Int(self) | kotlin_Int(other))
 
 def xor(other):
-    return toShort((kotlin_Int(self)) ^ (kotlin_Int(other)))
+    return toShort(kotlin_Int(self) ^ kotlin_Int(other))
 
 def inv():
-    return toShort(~(kotlin_Int(self)))
+    return toShort(~kotlin_Int(self))
 
 def _and(other):
-    return toByte((kotlin_Int(self)) & (kotlin_Int(other)))
+    return toByte(kotlin_Int(self) & kotlin_Int(other))
 
 def _or(other):
-    return toByte((kotlin_Int(self)) | (kotlin_Int(other)))
+    return toByte(kotlin_Int(self) | kotlin_Int(other))
 
 def xor(other):
-    return toByte((kotlin_Int(self)) ^ (kotlin_Int(other)))
+    return toByte(kotlin_Int(self) ^ kotlin_Int(other))
 
 def inv():
-    return toByte(~(kotlin_Int(self)))
+    return toByte(~kotlin_Int(self))
 
 class ExperimentalTypeInference:
     def __init__(self):
@@ -2253,16 +2253,16 @@ class ExperimentalTypeInference:
     
 
 def RequireKotlin_init__Init_(version, message, level, versionKind, errorCode, _mask0, _marker, _this):
-    if not ((_mask0) & (2) == 0):
+    if not (_mask0 & 2 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (4) == 0):
+    if not (_mask0 & 4 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (8) == 0):
+    if not (_mask0 & 8 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (16) == 0):
+    if not (_mask0 & 16 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
     super(version, message, level, versionKind, errorCode)
@@ -2534,8 +2534,8 @@ class KTypeProjection:
         self.variance = variance
         self.type = type
         tmp0_require_0 = self.variance == None == self.type == None
-        if not (tmp0_require_0):
-            message_2 = ('Star projection must have no type specified.') if (self.variance == None) else (((str('The projection variance ')) + (str(self.variance))) + (str(' requires type to be specified.')))
+        if not tmp0_require_0:
+            message_2 = ('Star projection must have no type specified.') if (self.variance == None) else ((str('The projection variance ') + str(self.variance)) + str(' requires type to be specified.'))
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
     
@@ -2552,9 +2552,9 @@ class KTypeProjection:
         elif equals(tmp0_subject, KVariance_INVARIANT_getInstance()):
             tmp = toString()
         elif equals(tmp0_subject, KVariance_IN_getInstance()):
-            tmp = (str('in ')) + (str(self.type))
+            tmp = str('in ') + str(self.type)
         elif equals(tmp0_subject, KVariance_OUT_getInstance()):
-            tmp = (str('out ')) + (str(self.type))
+            tmp = str('out ') + str(self.type)
         else:
             noWhenBranchMatchedException()
         
@@ -2570,31 +2570,31 @@ class KTypeProjection:
         return KTypeProjection(variance, type)
     
     def copy_default(self, variance, type, _mask0, _handler):
-        if not ((_mask0) & (1) == 0):
+        if not (_mask0 & 1 == 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
         
-        if not ((_mask0) & (2) == 0):
+        if not (_mask0 & 2 == 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
         
         return self.copy(variance, type)
     
     def hashCode(self):
         result = (0) if (self.variance == None) else (self.variance.hashCode())
-        result = ((imul(result, 31)) + ((0) if (self.type == None) else (hashCode(self.type)))) | (0)
+        result = (imul(result, 31) + ((0) if (self.type == None) else (hashCode(self.type)))) | 0
         return result
     
     def equals(self, other):
         if self is other:
             return True
         
-        if not (jsInstanceOf(other, jsClass())):
+        if not jsInstanceOf(other, jsClass()):
             return False
         
         tmp0_other_with_cast = (kotlin_reflect_KTypeProjection(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
-        if not (equals(self.variance, tmp0_other_with_cast.variance)):
+        if not equals(self.variance, tmp0_other_with_cast.variance):
             return False
         
-        if not (equals(self.type, tmp0_other_with_cast.type)):
+        if not equals(self.type, tmp0_other_with_cast.type):
             return False
         
         return True
@@ -2682,7 +2682,7 @@ def isEmpty():
     return charSequenceLength(self) == 0
 
 def _get_lastIndex_():
-    return ((charSequenceLength(self)) - (1)) | (0)
+    return (charSequenceLength(self) - 1) | 0
 
 def _get_UNDEFINED_RESULT_():
     return UNDEFINED_RESULT
@@ -2694,13 +2694,13 @@ def UNDEFINED_RESULT_init_():
     return _Result___init__impl_(tmp1_success_0)
 
 def check(value):
-    if not (value):
+    if not value:
         message_2 = 'Check failed.'
         visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
     
 
 def check(value, lazyMessage):
-    if not (value):
+    if not value:
         message = lazyMessage.invoke()
         visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
     
@@ -2709,7 +2709,7 @@ def error(message):
     visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
 
 def require(value, lazyMessage):
-    if not (value):
+    if not value:
         message = lazyMessage.invoke()
         visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
     
@@ -2722,7 +2722,7 @@ def _Result___get_value__impl_(this):
 
 def _Result___get_isSuccess__impl_(this):
     tmp = _Result___get_value__impl_(this)
-    return not (jsInstanceOf(tmp, jsClass()))
+    return not jsInstanceOf(tmp, jsClass())
 
 def _Result___get_isFailure__impl_(this):
     tmp = _Result___get_value__impl_(this)
@@ -2751,7 +2751,7 @@ def Result__toString_impl(this):
     if jsInstanceOf(tmp0_subject, jsClass()):
         tmp = toString(_Result___get_value__impl_(this))
     elif True:
-        tmp = ((str('Success(')) + (str(_Result___get_value__impl_(this)))) + (str(')'))
+        tmp = (str('Success(') + str(_Result___get_value__impl_(this))) + str(')')
     
     return tmp
 
@@ -2801,18 +2801,18 @@ class Failure:
         return hashCode(self.exception)
     
     def toString(self):
-        return ((str('Failure(')) + (str(self.exception))) + (str(')'))
+        return (str('Failure(') + str(self.exception)) + str(')')
     
 
 def Result__hashCode_impl(this):
     return (0) if (this.value == None) else (hashCode(this.value))
 
 def Result__equals_impl(this, other):
-    if not (jsInstanceOf(other, jsClass())):
+    if not jsInstanceOf(other, jsClass()):
         return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
-    if not (equals(this.value, tmp0_other_with_cast.value)):
+    if not equals(this.value, tmp0_other_with_cast.value):
         return False
     
     return True
@@ -2853,7 +2853,7 @@ def TODO():
     visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
 
 def NotImplementedError_init__Init_(message, _mask0, _marker, _this):
-    if not ((_mask0) & (1) == 0):
+    if not (_mask0 & 1 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
     super(message)
@@ -2897,7 +2897,7 @@ def repeat(times, action):
     if inductionVariable < times:
         while True:
             index = inductionVariable
-            inductionVariable = ((inductionVariable) + (1)) | (0)
+            inductionVariable = (inductionVariable + 1) | 0
             action.invoke(index)
             if inductionVariable < times:
                 break
@@ -2959,19 +2959,19 @@ def Companion_getInstance():
     return Companion_instance
 
 def UByte__compareTo_impl(this, other):
-    tmp = (kotlin_Int(_UByte___get_data__impl_(this))) & (255)
-    return compareTo(tmp, (kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp = kotlin_Int(_UByte___get_data__impl_(this)) & 255
+    return compareTo(tmp, kotlin_Int(_UByte___get_data__impl_(other)) & 255)
 
 def UByte__compareTo_impl(this, other):
     tmp = unboxIntrinsic(this)
     return UByte__compareTo_impl(tmp, (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
 
 def UByte__compareTo_impl(this, other):
-    tmp = (kotlin_Int(_UByte___get_data__impl_(this))) & (255)
-    return compareTo(tmp, (kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp = kotlin_Int(_UByte___get_data__impl_(this)) & 255
+    return compareTo(tmp, kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
 
 def UByte__compareTo_impl(this, other):
-    tmp0_compareTo_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
+    tmp0_compareTo_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     return uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(other))
 
 def UByte__compareTo_impl(this, other):
@@ -2979,53 +2979,53 @@ def UByte__compareTo_impl(this, other):
     return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other))
 
 def UByte__plus_impl(this, other):
-    tmp0_plus_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    tmp1_plus_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
-    return _UInt___init__impl_(((_UInt___get_data__impl_(tmp0_plus_0)) + (_UInt___get_data__impl_(tmp1_plus_0))) | (0))
+    tmp0_plus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    tmp1_plus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
+    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)) | 0)
 
 def UByte__plus_impl(this, other):
-    tmp0_plus_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    tmp1_plus_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
-    return _UInt___init__impl_(((_UInt___get_data__impl_(tmp0_plus_0)) + (_UInt___get_data__impl_(tmp1_plus_0))) | (0))
+    tmp0_plus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    tmp1_plus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
+    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)) | 0)
 
 def UByte__plus_impl(this, other):
-    tmp0_plus_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    return _UInt___init__impl_(((_UInt___get_data__impl_(tmp0_plus_0)) + (_UInt___get_data__impl_(other))) | (0))
+    tmp0_plus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(other)) | 0)
 
 def UByte__plus_impl(this, other):
     tmp0_plus_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus(_ULong___get_data__impl_(other)))
 
 def UByte__minus_impl(this, other):
-    tmp0_minus_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    tmp1_minus_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
-    return _UInt___init__impl_(((_UInt___get_data__impl_(tmp0_minus_0)) - (_UInt___get_data__impl_(tmp1_minus_0))) | (0))
+    tmp0_minus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    tmp1_minus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
+    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0)) | 0)
 
 def UByte__minus_impl(this, other):
-    tmp0_minus_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    tmp1_minus_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
-    return _UInt___init__impl_(((_UInt___get_data__impl_(tmp0_minus_0)) - (_UInt___get_data__impl_(tmp1_minus_0))) | (0))
+    tmp0_minus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    tmp1_minus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
+    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0)) | 0)
 
 def UByte__minus_impl(this, other):
-    tmp0_minus_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    return _UInt___init__impl_(((_UInt___get_data__impl_(tmp0_minus_0)) - (_UInt___get_data__impl_(other))) | (0))
+    tmp0_minus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(other)) | 0)
 
 def UByte__minus_impl(this, other):
     tmp0_minus_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_minus_0).minus(_ULong___get_data__impl_(other)))
 
 def UByte__times_impl(this, other):
-    tmp0_times_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    tmp1_times_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp0_times_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    tmp1_times_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)))
 
 def UByte__times_impl(this, other):
-    tmp0_times_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    tmp1_times_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp0_times_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    tmp1_times_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)))
 
 def UByte__times_impl(this, other):
-    tmp0_times_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
+    tmp0_times_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(other)))
 
 def UByte__times_impl(this, other):
@@ -3033,17 +3033,17 @@ def UByte__times_impl(this, other):
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_times_0).times(_ULong___get_data__impl_(other)))
 
 def UByte__div_impl(this, other):
-    tmp0_div_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    tmp1_div_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp0_div_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    tmp1_div_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintDivide(tmp0_div_0, tmp1_div_0)
 
 def UByte__div_impl(this, other):
-    tmp0_div_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    tmp1_div_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp0_div_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    tmp1_div_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintDivide(tmp0_div_0, tmp1_div_0)
 
 def UByte__div_impl(this, other):
-    tmp0_div_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
+    tmp0_div_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     return uintDivide(tmp0_div_0, other)
 
 def UByte__div_impl(this, other):
@@ -3051,17 +3051,17 @@ def UByte__div_impl(this, other):
     return ulongDivide(tmp0_div_0, other)
 
 def UByte__rem_impl(this, other):
-    tmp0_rem_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    tmp1_rem_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp0_rem_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    tmp1_rem_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintRemainder(tmp0_rem_0, tmp1_rem_0)
 
 def UByte__rem_impl(this, other):
-    tmp0_rem_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    tmp1_rem_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp0_rem_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    tmp1_rem_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintRemainder(tmp0_rem_0, tmp1_rem_0)
 
 def UByte__rem_impl(this, other):
-    tmp0_rem_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
+    tmp0_rem_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     return uintRemainder(tmp0_rem_0, other)
 
 def UByte__rem_impl(this, other):
@@ -3069,17 +3069,17 @@ def UByte__rem_impl(this, other):
     return ulongRemainder(tmp0_rem_0, other)
 
 def UByte__floorDiv_impl(this, other):
-    tmp0_floorDiv_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    tmp1_floorDiv_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp0_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    tmp1_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintDivide(tmp0_floorDiv_0, tmp1_floorDiv_0)
 
 def UByte__floorDiv_impl(this, other):
-    tmp0_floorDiv_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    tmp1_floorDiv_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp0_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    tmp1_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintDivide(tmp0_floorDiv_0, tmp1_floorDiv_0)
 
 def UByte__floorDiv_impl(this, other):
-    tmp0_floorDiv_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
+    tmp0_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     return uintDivide(tmp0_floorDiv_0, other)
 
 def UByte__floorDiv_impl(this, other):
@@ -3087,21 +3087,21 @@ def UByte__floorDiv_impl(this, other):
     return ulongDivide(tmp0_floorDiv_0, other)
 
 def UByte__mod_impl(this, other):
-    tmp0_mod_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    tmp1_mod_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp0_mod_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    tmp1_mod_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     tmp3_toUByte_0 = uintRemainder(tmp0_mod_0, tmp1_mod_0)
     tmp2_toUByte_0 = _UInt___get_data__impl_(tmp3_toUByte_0)
     return _UByte___init__impl_(toByte(tmp2_toUByte_0))
 
 def UByte__mod_impl(this, other):
-    tmp0_mod_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    tmp1_mod_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp0_mod_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    tmp1_mod_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     tmp3_toUShort_0 = uintRemainder(tmp0_mod_0, tmp1_mod_0)
     tmp2_toUShort_0 = _UInt___get_data__impl_(tmp3_toUShort_0)
     return _UShort___init__impl_(toShort(tmp2_toUShort_0))
 
 def UByte__mod_impl(this, other):
-    tmp0_mod_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
+    tmp0_mod_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     return uintRemainder(tmp0_mod_0, other)
 
 def UByte__mod_impl(this, other):
@@ -3109,43 +3109,43 @@ def UByte__mod_impl(this, other):
     return ulongRemainder(tmp0_mod_0, other)
 
 def UByte__inc_impl(this):
-    return _UByte___init__impl_(numberToByte((_UByte___get_data__impl_(this)) + (1)))
+    return _UByte___init__impl_(numberToByte(_UByte___get_data__impl_(this) + 1))
 
 def UByte__dec_impl(this):
-    return _UByte___init__impl_(numberToByte((_UByte___get_data__impl_(this)) - (1)))
+    return _UByte___init__impl_(numberToByte(_UByte___get_data__impl_(this) - 1))
 
 def UByte__rangeTo_impl(this, other):
-    tmp = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
-    return UIntRange(tmp, _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255)))
+    tmp = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
+    return UIntRange(tmp, _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255))
 
 def UByte__and_impl(this, other):
     tmp0_and_0 = _UByte___get_data__impl_(this)
     tmp1_and_0 = _UByte___get_data__impl_(other)
-    return _UByte___init__impl_(toByte((kotlin_Int(tmp0_and_0)) & (kotlin_Int(tmp1_and_0))))
+    return _UByte___init__impl_(toByte(kotlin_Int(tmp0_and_0) & kotlin_Int(tmp1_and_0)))
 
 def UByte__or_impl(this, other):
     tmp0_or_0 = _UByte___get_data__impl_(this)
     tmp1_or_0 = _UByte___get_data__impl_(other)
-    return _UByte___init__impl_(toByte((kotlin_Int(tmp0_or_0)) | (kotlin_Int(tmp1_or_0))))
+    return _UByte___init__impl_(toByte(kotlin_Int(tmp0_or_0) | kotlin_Int(tmp1_or_0)))
 
 def UByte__xor_impl(this, other):
     tmp0_xor_0 = _UByte___get_data__impl_(this)
     tmp1_xor_0 = _UByte___get_data__impl_(other)
-    return _UByte___init__impl_(toByte((kotlin_Int(tmp0_xor_0)) ^ (kotlin_Int(tmp1_xor_0))))
+    return _UByte___init__impl_(toByte(kotlin_Int(tmp0_xor_0) ^ kotlin_Int(tmp1_xor_0)))
 
 def UByte__inv_impl(this):
     tmp0_inv_0 = _UByte___get_data__impl_(this)
-    return _UByte___init__impl_(toByte(~(kotlin_Int(tmp0_inv_0))))
+    return _UByte___init__impl_(toByte(~kotlin_Int(tmp0_inv_0)))
 
 def UByte__toByte_impl(this):
     return _UByte___get_data__impl_(this)
 
 def UByte__toShort_impl(this):
     tmp0_and_0 = kotlin_Short(_UByte___get_data__impl_(this))
-    return toShort((kotlin_Int(tmp0_and_0)) & (255))
+    return toShort(kotlin_Int(tmp0_and_0) & 255)
 
 def UByte__toInt_impl(this):
-    return (kotlin_Int(_UByte___get_data__impl_(this))) & (255)
+    return kotlin_Int(_UByte___get_data__impl_(this)) & 255
 
 def UByte__toLong_impl(this):
     return toLong(_UByte___get_data__impl_(this))._and(Long(255, 0))
@@ -3155,28 +3155,28 @@ def UByte__toUByte_impl(this):
 
 def UByte__toUShort_impl(this):
     tmp0_and_0 = kotlin_Short(_UByte___get_data__impl_(this))
-    return _UShort___init__impl_(toShort((kotlin_Int(tmp0_and_0)) & (255)))
+    return _UShort___init__impl_(toShort(kotlin_Int(tmp0_and_0) & 255))
 
 def UByte__toUInt_impl(this):
-    return _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
+    return _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
 
 def UByte__toULong_impl(this):
     return _ULong___init__impl_(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
 
 def UByte__toFloat_impl(this):
-    return kotlin_Float((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
+    return kotlin_Float(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
 
 def UByte__toDouble_impl(this):
-    return kotlin_Double((kotlin_Int(_UByte___get_data__impl_(this))) & (255))
+    return kotlin_Double(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
 
 def UByte__toString_impl(this):
-    return (kotlin_Int(_UByte___get_data__impl_(this))) & (255).toString()
+    return (kotlin_Int(_UByte___get_data__impl_(this)) & 255).toString()
 
 def UByte__hashCode_impl(this):
     return this.data
 
 def UByte__equals_impl(this, other):
-    if not (jsInstanceOf(other, jsClass())):
+    if not jsInstanceOf(other, jsClass()):
         return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
@@ -3264,7 +3264,7 @@ class Iterator:
         if self.index < len(self.array):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = ((tmp1) + (1)) | (0)
+            tmp0_this.index = (tmp1 + 1) | 0
             tmp0_toUByte_0 = self.array[tmp1]
             tmp = _UByte___init__impl_(tmp0_toUByte_0)
         else:
@@ -3287,14 +3287,14 @@ class Iterator:
 
 def UByteArray__contains_impl(this, element):
     tmp = (boxIntrinsic(element)) if (isObject(boxIntrinsic(element))) else (THROW_CCE())
-    if not (jsInstanceOf(tmp, jsClass())):
+    if not jsInstanceOf(tmp, jsClass()):
         return False
     
     tmp = _UByteArray___get_storage__impl_(this)
     return contains(_UByte___get_data__impl_(element))
 
 def UByteArray__contains_impl(this, element):
-    if not (jsInstanceOf(element, jsClass())):
+    if not jsInstanceOf(element, jsClass()):
         return False
     
     tmp = unboxIntrinsic(this)
@@ -3322,7 +3322,7 @@ def UByteArray__containsAll_impl(this, elements):
             elif True:
                 tmp = False
             
-            if not (tmp):
+            if not tmp:
                 tmp_ret_0 = False
                 break
             
@@ -3341,17 +3341,17 @@ def UByteArray__isEmpty_impl(this):
     return len(_UByteArray___get_storage__impl_(this)) == 0
 
 def UByteArray__toString_impl(this):
-    return ((str('UByteArray(storage=')) + (str(toString(this.storage)))) + (str(')'))
+    return (str('UByteArray(storage=') + str(toString(this.storage))) + str(')')
 
 def UByteArray__hashCode_impl(this):
     return hashCode(this.storage)
 
 def UByteArray__equals_impl(this, other):
-    if not (jsInstanceOf(other, jsClass())):
+    if not jsInstanceOf(other, jsClass()):
         return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
-    if not (equals(this.storage, tmp0_other_with_cast.storage)):
+    if not equals(this.storage, tmp0_other_with_cast.storage):
         return False
     
     return True
@@ -3435,11 +3435,11 @@ def Companion_getInstance():
     return Companion_instance
 
 def UInt__compareTo_impl(this, other):
-    tmp0_compareTo_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp0_compareTo_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintCompare(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_compareTo_0))
 
 def UInt__compareTo_impl(this, other):
-    tmp0_compareTo_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp0_compareTo_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintCompare(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_compareTo_0))
 
 def UInt__compareTo_impl(this, other):
@@ -3454,41 +3454,41 @@ def UInt__compareTo_impl(this, other):
     return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other))
 
 def UInt__plus_impl(this, other):
-    tmp0_plus_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
-    return _UInt___init__impl_(((_UInt___get_data__impl_(this)) + (_UInt___get_data__impl_(tmp0_plus_0))) | (0))
+    tmp0_plus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
+    return _UInt___init__impl_((_UInt___get_data__impl_(this) + _UInt___get_data__impl_(tmp0_plus_0)) | 0)
 
 def UInt__plus_impl(this, other):
-    tmp0_plus_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
-    return _UInt___init__impl_(((_UInt___get_data__impl_(this)) + (_UInt___get_data__impl_(tmp0_plus_0))) | (0))
+    tmp0_plus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
+    return _UInt___init__impl_((_UInt___get_data__impl_(this) + _UInt___get_data__impl_(tmp0_plus_0)) | 0)
 
 def UInt__plus_impl(this, other):
-    return _UInt___init__impl_(((_UInt___get_data__impl_(this)) + (_UInt___get_data__impl_(other))) | (0))
+    return _UInt___init__impl_((_UInt___get_data__impl_(this) + _UInt___get_data__impl_(other)) | 0)
 
 def UInt__plus_impl(this, other):
     tmp0_plus_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus(_ULong___get_data__impl_(other)))
 
 def UInt__minus_impl(this, other):
-    tmp0_minus_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
-    return _UInt___init__impl_(((_UInt___get_data__impl_(this)) - (_UInt___get_data__impl_(tmp0_minus_0))) | (0))
+    tmp0_minus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
+    return _UInt___init__impl_((_UInt___get_data__impl_(this) - _UInt___get_data__impl_(tmp0_minus_0)) | 0)
 
 def UInt__minus_impl(this, other):
-    tmp0_minus_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
-    return _UInt___init__impl_(((_UInt___get_data__impl_(this)) - (_UInt___get_data__impl_(tmp0_minus_0))) | (0))
+    tmp0_minus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
+    return _UInt___init__impl_((_UInt___get_data__impl_(this) - _UInt___get_data__impl_(tmp0_minus_0)) | 0)
 
 def UInt__minus_impl(this, other):
-    return _UInt___init__impl_(((_UInt___get_data__impl_(this)) - (_UInt___get_data__impl_(other))) | (0))
+    return _UInt___init__impl_((_UInt___get_data__impl_(this) - _UInt___get_data__impl_(other)) | 0)
 
 def UInt__minus_impl(this, other):
     tmp0_minus_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_minus_0).minus(_ULong___get_data__impl_(other)))
 
 def UInt__times_impl(this, other):
-    tmp0_times_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp0_times_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_times_0)))
 
 def UInt__times_impl(this, other):
-    tmp0_times_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp0_times_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_times_0)))
 
 def UInt__times_impl(this, other):
@@ -3499,11 +3499,11 @@ def UInt__times_impl(this, other):
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_times_0).times(_ULong___get_data__impl_(other)))
 
 def UInt__div_impl(this, other):
-    tmp0_div_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp0_div_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintDivide(this, tmp0_div_0)
 
 def UInt__div_impl(this, other):
-    tmp0_div_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp0_div_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintDivide(this, tmp0_div_0)
 
 def UInt__div_impl(this, other):
@@ -3514,11 +3514,11 @@ def UInt__div_impl(this, other):
     return ulongDivide(tmp0_div_0, other)
 
 def UInt__rem_impl(this, other):
-    tmp0_rem_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp0_rem_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintRemainder(this, tmp0_rem_0)
 
 def UInt__rem_impl(this, other):
-    tmp0_rem_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp0_rem_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintRemainder(this, tmp0_rem_0)
 
 def UInt__rem_impl(this, other):
@@ -3529,11 +3529,11 @@ def UInt__rem_impl(this, other):
     return ulongRemainder(tmp0_rem_0, other)
 
 def UInt__floorDiv_impl(this, other):
-    tmp0_floorDiv_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp0_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintDivide(this, tmp0_floorDiv_0)
 
 def UInt__floorDiv_impl(this, other):
-    tmp0_floorDiv_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp0_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintDivide(this, tmp0_floorDiv_0)
 
 def UInt__floorDiv_impl(this, other):
@@ -3544,13 +3544,13 @@ def UInt__floorDiv_impl(this, other):
     return ulongDivide(tmp0_floorDiv_0, other)
 
 def UInt__mod_impl(this, other):
-    tmp0_mod_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp0_mod_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     tmp2_toUByte_0 = uintRemainder(this, tmp0_mod_0)
     tmp1_toUByte_0 = _UInt___get_data__impl_(tmp2_toUByte_0)
     return _UByte___init__impl_(toByte(tmp1_toUByte_0))
 
 def UInt__mod_impl(this, other):
-    tmp0_mod_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp0_mod_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     tmp2_toUShort_0 = uintRemainder(this, tmp0_mod_0)
     tmp1_toUShort_0 = _UInt___get_data__impl_(tmp2_toUShort_0)
     return _UShort___init__impl_(toShort(tmp1_toUShort_0))
@@ -3563,31 +3563,31 @@ def UInt__mod_impl(this, other):
     return ulongRemainder(tmp0_mod_0, other)
 
 def UInt__inc_impl(this):
-    return _UInt___init__impl_(((_UInt___get_data__impl_(this)) + (1)) | (0))
+    return _UInt___init__impl_((_UInt___get_data__impl_(this) + 1) | 0)
 
 def UInt__dec_impl(this):
-    return _UInt___init__impl_(((_UInt___get_data__impl_(this)) - (1)) | (0))
+    return _UInt___init__impl_((_UInt___get_data__impl_(this) - 1) | 0)
 
 def UInt__rangeTo_impl(this, other):
     return UIntRange(this, other)
 
 def UInt__shl_impl(this, bitCount):
-    return _UInt___init__impl_((_UInt___get_data__impl_(this)) << (bitCount))
+    return _UInt___init__impl_(_UInt___get_data__impl_(this) << bitCount)
 
 def UInt__shr_impl(this, bitCount):
     return _UInt___init__impl_(jsBitShiftRU(_UInt___get_data__impl_(this), bitCount))
 
 def UInt__and_impl(this, other):
-    return _UInt___init__impl_((_UInt___get_data__impl_(this)) & (_UInt___get_data__impl_(other)))
+    return _UInt___init__impl_(_UInt___get_data__impl_(this) & _UInt___get_data__impl_(other))
 
 def UInt__or_impl(this, other):
-    return _UInt___init__impl_((_UInt___get_data__impl_(this)) | (_UInt___get_data__impl_(other)))
+    return _UInt___init__impl_(_UInt___get_data__impl_(this) | _UInt___get_data__impl_(other))
 
 def UInt__xor_impl(this, other):
-    return _UInt___init__impl_((_UInt___get_data__impl_(this)) ^ (_UInt___get_data__impl_(other)))
+    return _UInt___init__impl_(_UInt___get_data__impl_(this) ^ _UInt___get_data__impl_(other))
 
 def UInt__inv_impl(this):
-    return _UInt___init__impl_(~(_UInt___get_data__impl_(this)))
+    return _UInt___init__impl_(~_UInt___get_data__impl_(this))
 
 def UInt__toByte_impl(this):
     return toByte(_UInt___get_data__impl_(this))
@@ -3628,7 +3628,7 @@ def UInt__hashCode_impl(this):
     return this.data
 
 def UInt__equals_impl(this, other):
-    if not (jsInstanceOf(other, jsClass())):
+    if not jsInstanceOf(other, jsClass()):
         return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
@@ -3722,7 +3722,7 @@ class Iterator:
         if self.index < len(self.array):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = ((tmp1) + (1)) | (0)
+            tmp0_this.index = (tmp1 + 1) | 0
             tmp0_toUInt_0 = self.array[tmp1]
             tmp = _UInt___init__impl_(tmp0_toUInt_0)
         else:
@@ -3745,14 +3745,14 @@ class Iterator:
 
 def UIntArray__contains_impl(this, element):
     tmp = (boxIntrinsic(element)) if (isObject(boxIntrinsic(element))) else (THROW_CCE())
-    if not (jsInstanceOf(tmp, jsClass())):
+    if not jsInstanceOf(tmp, jsClass()):
         return False
     
     tmp = _UIntArray___get_storage__impl_(this)
     return contains(_UInt___get_data__impl_(element))
 
 def UIntArray__contains_impl(this, element):
-    if not (jsInstanceOf(element, jsClass())):
+    if not jsInstanceOf(element, jsClass()):
         return False
     
     tmp = unboxIntrinsic(this)
@@ -3780,7 +3780,7 @@ def UIntArray__containsAll_impl(this, elements):
             elif True:
                 tmp = False
             
-            if not (tmp):
+            if not tmp:
                 tmp_ret_0 = False
                 break
             
@@ -3799,17 +3799,17 @@ def UIntArray__isEmpty_impl(this):
     return len(_UIntArray___get_storage__impl_(this)) == 0
 
 def UIntArray__toString_impl(this):
-    return ((str('UIntArray(storage=')) + (str(toString(this.storage)))) + (str(')'))
+    return (str('UIntArray(storage=') + str(toString(this.storage))) + str(')')
 
 def UIntArray__hashCode_impl(this):
     return hashCode(this.storage)
 
 def UIntArray__equals_impl(this, other):
-    if not (jsInstanceOf(other, jsClass())):
+    if not jsInstanceOf(other, jsClass()):
         return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
-    if not (equals(this.storage, tmp0_other_with_cast.storage)):
+    if not equals(this.storage, tmp0_other_with_cast.storage):
         return False
     
     return True
@@ -3928,12 +3928,12 @@ class UIntRange:
             tmp0_toInt_0 = self._get_first_()
             tmp = imul(31, _UInt___get_data__impl_(tmp0_toInt_0))
             tmp1_toInt_0 = self._get_last_()
-            tmp = ((tmp) + (_UInt___get_data__impl_(tmp1_toInt_0))) | (0)
+            tmp = (tmp + _UInt___get_data__impl_(tmp1_toInt_0)) | 0
         
         return tmp
     
     def toString(self):
-        return ((str(boxIntrinsic(self._get_first_()))) + (str('..'))) + (str(boxIntrinsic(self._get_last_())))
+        return (str(boxIntrinsic(self._get_first_())) + str('..')) + str(boxIntrinsic(self._get_last_()))
     
     def _get_first_(self):
         pass
@@ -4024,12 +4024,12 @@ class UIntProgression:
             tmp0_toInt_0 = self.first
             tmp = imul(31, _UInt___get_data__impl_(tmp0_toInt_0))
             tmp1_toInt_0 = self.last
-            tmp = ((imul(31, ((tmp) + (_UInt___get_data__impl_(tmp1_toInt_0))) | (0))) + (kotlin_Int(self.step))) | (0)
+            tmp = (imul(31, (tmp + _UInt___get_data__impl_(tmp1_toInt_0)) | 0) + kotlin_Int(self.step)) | 0
         
         return tmp
     
     def toString(self):
-        return (((((str(boxIntrinsic(self.first))) + (str('..'))) + (str(boxIntrinsic(self.last)))) + (str(' step '))) + (str(self.step))) if (self.step > 0) else (((((str(boxIntrinsic(self.first))) + (str(' downTo '))) + (str(boxIntrinsic(self.last)))) + (str(' step '))) + (str((-(self.step)) | (0))))
+        return ((((str(boxIntrinsic(self.first)) + str('..')) + str(boxIntrinsic(self.last))) + str(' step ')) + str(self.step)) if (self.step > 0) else ((((str(boxIntrinsic(self.first)) + str(' downTo ')) + str(boxIntrinsic(self.last))) + str(' step ')) + str(-self.step | 0))
     
 
 def _get_finalElement_(_this):
@@ -4071,7 +4071,7 @@ class UIntProgressionIterator:
     def nextUInt(self):
         value = self.next
         if equals(boxIntrinsic(value), boxIntrinsic(self.finalElement)):
-            if not (self.hasNext):
+            if not self.hasNext:
                 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
             
             self.hasNext = False
@@ -4080,7 +4080,7 @@ class UIntProgressionIterator:
             tmp = tmp0_this
             tmp0_plus_0 = tmp0_this.next
             tmp1_plus_0 = self.step
-            tmp.next = _UInt___init__impl_(((_UInt___get_data__impl_(tmp0_plus_0)) + (_UInt___get_data__impl_(tmp1_plus_0))) | (0))
+            tmp.next = _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)) | 0)
         
         return value
     
@@ -4441,11 +4441,11 @@ def ULong__hashCode_impl(this):
     return this.data.hashCode()
 
 def ULong__equals_impl(this, other):
-    if not (jsInstanceOf(other, jsClass())):
+    if not jsInstanceOf(other, jsClass()):
         return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
-    if not (this.data.equals(tmp0_other_with_cast.data)):
+    if not this.data.equals(tmp0_other_with_cast.data):
         return False
     
     return True
@@ -4535,7 +4535,7 @@ class Iterator:
         if self.index < len(self.array):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = ((tmp1) + (1)) | (0)
+            tmp0_this.index = (tmp1 + 1) | 0
             tmp0_toULong_0 = self.array[tmp1]
             tmp = _ULong___init__impl_(tmp0_toULong_0)
         else:
@@ -4558,14 +4558,14 @@ class Iterator:
 
 def ULongArray__contains_impl(this, element):
     tmp = (boxIntrinsic(element)) if (isObject(boxIntrinsic(element))) else (THROW_CCE())
-    if not (jsInstanceOf(tmp, jsClass())):
+    if not jsInstanceOf(tmp, jsClass()):
         return False
     
     tmp = _ULongArray___get_storage__impl_(this)
     return contains(_ULong___get_data__impl_(element))
 
 def ULongArray__contains_impl(this, element):
-    if not (jsInstanceOf(element, jsClass())):
+    if not jsInstanceOf(element, jsClass()):
         return False
     
     tmp = unboxIntrinsic(this)
@@ -4593,7 +4593,7 @@ def ULongArray__containsAll_impl(this, elements):
             elif True:
                 tmp = False
             
-            if not (tmp):
+            if not tmp:
                 tmp_ret_0 = False
                 break
             
@@ -4612,17 +4612,17 @@ def ULongArray__isEmpty_impl(this):
     return len(_ULongArray___get_storage__impl_(this)) == 0
 
 def ULongArray__toString_impl(this):
-    return ((str('ULongArray(storage=')) + (str(toString(this.storage)))) + (str(')'))
+    return (str('ULongArray(storage=') + str(toString(this.storage))) + str(')')
 
 def ULongArray__hashCode_impl(this):
     return hashCode(this.storage)
 
 def ULongArray__equals_impl(this, other):
-    if not (jsInstanceOf(other, jsClass())):
+    if not jsInstanceOf(other, jsClass()):
         return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
-    if not (equals(this.storage, tmp0_other_with_cast.storage)):
+    if not equals(this.storage, tmp0_other_with_cast.storage):
         return False
     
     return True
@@ -4747,12 +4747,12 @@ class ULongRange:
             tmp4_shr_0 = self._get_last_()
             tmp6_xor_0 = _ULong___init__impl_(_ULong___get_data__impl_(tmp4_shr_0).ushr(32))
             tmp7_toInt_0 = _ULong___init__impl_(_ULong___get_data__impl_(tmp5_xor_0).xor(_ULong___get_data__impl_(tmp6_xor_0)))
-            tmp = ((tmp) + (_ULong___get_data__impl_(tmp7_toInt_0).toInt())) | (0)
+            tmp = (tmp + _ULong___get_data__impl_(tmp7_toInt_0).toInt()) | 0
         
         return tmp
     
     def toString(self):
-        return ((str(boxIntrinsic(self._get_first_()))) + (str('..'))) + (str(boxIntrinsic(self._get_last_())))
+        return (str(boxIntrinsic(self._get_first_())) + str('..')) + str(boxIntrinsic(self._get_last_()))
     
     def _get_first_(self):
         pass
@@ -4850,12 +4850,12 @@ class ULongProgression:
             tmp4_shr_0 = self.last
             tmp6_xor_0 = _ULong___init__impl_(_ULong___get_data__impl_(tmp4_shr_0).ushr(32))
             tmp7_toInt_0 = _ULong___init__impl_(_ULong___get_data__impl_(tmp5_xor_0).xor(_ULong___get_data__impl_(tmp6_xor_0)))
-            tmp = ((imul(31, ((tmp) + (_ULong___get_data__impl_(tmp7_toInt_0).toInt())) | (0))) + (self.step.xor(self.step.ushr(32)).toInt())) | (0)
+            tmp = (imul(31, (tmp + _ULong___get_data__impl_(tmp7_toInt_0).toInt()) | 0) + self.step.xor(self.step.ushr(32)).toInt()) | 0
         
         return tmp
     
     def toString(self):
-        return (((((str(boxIntrinsic(self.first))) + (str('..'))) + (str(boxIntrinsic(self.last)))) + (str(' step '))) + (str(self.step))) if (self.step.compareTo(Long(0, 0)) > 0) else (((((str(boxIntrinsic(self.first))) + (str(' downTo '))) + (str(boxIntrinsic(self.last)))) + (str(' step '))) + (str(self.step.unaryMinus())))
+        return ((((str(boxIntrinsic(self.first)) + str('..')) + str(boxIntrinsic(self.last))) + str(' step ')) + str(self.step)) if (self.step.compareTo(Long(0, 0)) > 0) else ((((str(boxIntrinsic(self.first)) + str(' downTo ')) + str(boxIntrinsic(self.last))) + str(' step ')) + str(self.step.unaryMinus()))
     
 
 def _get_finalElement_(_this):
@@ -4897,7 +4897,7 @@ class ULongProgressionIterator:
     def nextULong(self):
         value = self.next
         if equals(boxIntrinsic(value), boxIntrinsic(self.finalElement)):
-            if not (self.hasNext):
+            if not self.hasNext:
                 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
             
             self.hasNext = False
@@ -4929,16 +4929,16 @@ def getProgressionLastElement(start, end, step):
             tmp = end
         elif True:
             tmp0_minus_0 = differenceModulo(end, start, _UInt___init__impl_(step))
-            tmp = _UInt___init__impl_(((_UInt___get_data__impl_(end)) - (_UInt___get_data__impl_(tmp0_minus_0))) | (0))
+            tmp = _UInt___init__impl_((_UInt___get_data__impl_(end) - _UInt___get_data__impl_(tmp0_minus_0)) | 0)
         
         tmp = tmp
     elif step < 0:
         if uintCompare(_UInt___get_data__impl_(start), _UInt___get_data__impl_(end)) <= 0:
             tmp = end
         elif True:
-            tmp1_toUInt_0 = (-(step)) | (0)
+            tmp1_toUInt_0 = -step | 0
             tmp2_plus_0 = differenceModulo(start, end, _UInt___init__impl_(tmp1_toUInt_0))
-            tmp = _UInt___init__impl_(((_UInt___get_data__impl_(end)) + (_UInt___get_data__impl_(tmp2_plus_0))) | (0))
+            tmp = _UInt___init__impl_((_UInt___get_data__impl_(end) + _UInt___get_data__impl_(tmp2_plus_0)) | 0)
         
         tmp = tmp
     else:
@@ -4973,10 +4973,10 @@ def differenceModulo(a, b, c):
     ac = uintRemainder(a, c)
     bc = uintRemainder(b, c)
     if uintCompare(_UInt___get_data__impl_(ac), _UInt___get_data__impl_(bc)) >= 0:
-        tmp = _UInt___init__impl_(((_UInt___get_data__impl_(ac)) - (_UInt___get_data__impl_(bc))) | (0))
+        tmp = _UInt___init__impl_((_UInt___get_data__impl_(ac) - _UInt___get_data__impl_(bc)) | 0)
     elif True:
-        tmp0_plus_0 = _UInt___init__impl_(((_UInt___get_data__impl_(ac)) - (_UInt___get_data__impl_(bc))) | (0))
-        tmp = _UInt___init__impl_(((_UInt___get_data__impl_(tmp0_plus_0)) + (_UInt___get_data__impl_(c))) | (0))
+        tmp0_plus_0 = _UInt___init__impl_((_UInt___get_data__impl_(ac) - _UInt___get_data__impl_(bc)) | 0)
+        tmp = _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(c)) | 0)
     
     return tmp
 
@@ -5035,19 +5035,19 @@ def Companion_getInstance():
     return Companion_instance
 
 def UShort__compareTo_impl(this, other):
-    tmp = (kotlin_Int(_UShort___get_data__impl_(this))) & (65535)
-    return compareTo(tmp, (kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp = kotlin_Int(_UShort___get_data__impl_(this)) & 65535
+    return compareTo(tmp, kotlin_Int(_UByte___get_data__impl_(other)) & 255)
 
 def UShort__compareTo_impl(this, other):
-    tmp = (kotlin_Int(_UShort___get_data__impl_(this))) & (65535)
-    return compareTo(tmp, (kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp = kotlin_Int(_UShort___get_data__impl_(this)) & 65535
+    return compareTo(tmp, kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
 
 def UShort__compareTo_impl(this, other):
     tmp = unboxIntrinsic(this)
     return UShort__compareTo_impl(tmp, (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
 
 def UShort__compareTo_impl(this, other):
-    tmp0_compareTo_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
+    tmp0_compareTo_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     return uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(other))
 
 def UShort__compareTo_impl(this, other):
@@ -5055,53 +5055,53 @@ def UShort__compareTo_impl(this, other):
     return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other))
 
 def UShort__plus_impl(this, other):
-    tmp0_plus_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    tmp1_plus_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
-    return _UInt___init__impl_(((_UInt___get_data__impl_(tmp0_plus_0)) + (_UInt___get_data__impl_(tmp1_plus_0))) | (0))
+    tmp0_plus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    tmp1_plus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
+    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)) | 0)
 
 def UShort__plus_impl(this, other):
-    tmp0_plus_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    tmp1_plus_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
-    return _UInt___init__impl_(((_UInt___get_data__impl_(tmp0_plus_0)) + (_UInt___get_data__impl_(tmp1_plus_0))) | (0))
+    tmp0_plus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    tmp1_plus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
+    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)) | 0)
 
 def UShort__plus_impl(this, other):
-    tmp0_plus_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    return _UInt___init__impl_(((_UInt___get_data__impl_(tmp0_plus_0)) + (_UInt___get_data__impl_(other))) | (0))
+    tmp0_plus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(other)) | 0)
 
 def UShort__plus_impl(this, other):
     tmp0_plus_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus(_ULong___get_data__impl_(other)))
 
 def UShort__minus_impl(this, other):
-    tmp0_minus_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    tmp1_minus_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
-    return _UInt___init__impl_(((_UInt___get_data__impl_(tmp0_minus_0)) - (_UInt___get_data__impl_(tmp1_minus_0))) | (0))
+    tmp0_minus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    tmp1_minus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
+    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0)) | 0)
 
 def UShort__minus_impl(this, other):
-    tmp0_minus_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    tmp1_minus_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
-    return _UInt___init__impl_(((_UInt___get_data__impl_(tmp0_minus_0)) - (_UInt___get_data__impl_(tmp1_minus_0))) | (0))
+    tmp0_minus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    tmp1_minus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
+    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0)) | 0)
 
 def UShort__minus_impl(this, other):
-    tmp0_minus_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    return _UInt___init__impl_(((_UInt___get_data__impl_(tmp0_minus_0)) - (_UInt___get_data__impl_(other))) | (0))
+    tmp0_minus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(other)) | 0)
 
 def UShort__minus_impl(this, other):
     tmp0_minus_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_minus_0).minus(_ULong___get_data__impl_(other)))
 
 def UShort__times_impl(this, other):
-    tmp0_times_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    tmp1_times_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp0_times_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    tmp1_times_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)))
 
 def UShort__times_impl(this, other):
-    tmp0_times_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    tmp1_times_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp0_times_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    tmp1_times_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)))
 
 def UShort__times_impl(this, other):
-    tmp0_times_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
+    tmp0_times_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(other)))
 
 def UShort__times_impl(this, other):
@@ -5109,17 +5109,17 @@ def UShort__times_impl(this, other):
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_times_0).times(_ULong___get_data__impl_(other)))
 
 def UShort__div_impl(this, other):
-    tmp0_div_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    tmp1_div_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp0_div_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    tmp1_div_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintDivide(tmp0_div_0, tmp1_div_0)
 
 def UShort__div_impl(this, other):
-    tmp0_div_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    tmp1_div_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp0_div_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    tmp1_div_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintDivide(tmp0_div_0, tmp1_div_0)
 
 def UShort__div_impl(this, other):
-    tmp0_div_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
+    tmp0_div_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     return uintDivide(tmp0_div_0, other)
 
 def UShort__div_impl(this, other):
@@ -5127,17 +5127,17 @@ def UShort__div_impl(this, other):
     return ulongDivide(tmp0_div_0, other)
 
 def UShort__rem_impl(this, other):
-    tmp0_rem_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    tmp1_rem_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp0_rem_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    tmp1_rem_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintRemainder(tmp0_rem_0, tmp1_rem_0)
 
 def UShort__rem_impl(this, other):
-    tmp0_rem_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    tmp1_rem_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp0_rem_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    tmp1_rem_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintRemainder(tmp0_rem_0, tmp1_rem_0)
 
 def UShort__rem_impl(this, other):
-    tmp0_rem_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
+    tmp0_rem_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     return uintRemainder(tmp0_rem_0, other)
 
 def UShort__rem_impl(this, other):
@@ -5145,17 +5145,17 @@ def UShort__rem_impl(this, other):
     return ulongRemainder(tmp0_rem_0, other)
 
 def UShort__floorDiv_impl(this, other):
-    tmp0_floorDiv_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    tmp1_floorDiv_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp0_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    tmp1_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintDivide(tmp0_floorDiv_0, tmp1_floorDiv_0)
 
 def UShort__floorDiv_impl(this, other):
-    tmp0_floorDiv_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    tmp1_floorDiv_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp0_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    tmp1_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintDivide(tmp0_floorDiv_0, tmp1_floorDiv_0)
 
 def UShort__floorDiv_impl(this, other):
-    tmp0_floorDiv_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
+    tmp0_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     return uintDivide(tmp0_floorDiv_0, other)
 
 def UShort__floorDiv_impl(this, other):
@@ -5163,21 +5163,21 @@ def UShort__floorDiv_impl(this, other):
     return ulongDivide(tmp0_floorDiv_0, other)
 
 def UShort__mod_impl(this, other):
-    tmp0_mod_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    tmp1_mod_0 = _UInt___init__impl_((kotlin_Int(_UByte___get_data__impl_(other))) & (255))
+    tmp0_mod_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    tmp1_mod_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     tmp2_toUByte_0 = uintRemainder(tmp0_mod_0, tmp1_mod_0)
     tmp0_toUByte_0_1 = _UInt___get_data__impl_(tmp2_toUByte_0)
     return _UByte___init__impl_(toByte(tmp0_toUByte_0_1))
 
 def UShort__mod_impl(this, other):
-    tmp0_mod_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    tmp1_mod_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535))
+    tmp0_mod_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    tmp1_mod_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     tmp2_toUShort_0 = uintRemainder(tmp0_mod_0, tmp1_mod_0)
     tmp0_toUShort_0_1 = _UInt___get_data__impl_(tmp2_toUShort_0)
     return _UShort___init__impl_(toShort(tmp0_toUShort_0_1))
 
 def UShort__mod_impl(this, other):
-    tmp0_mod_0 = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
+    tmp0_mod_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     return uintRemainder(tmp0_mod_0, other)
 
 def UShort__mod_impl(this, other):
@@ -5185,33 +5185,33 @@ def UShort__mod_impl(this, other):
     return ulongRemainder(tmp0_mod_0, other)
 
 def UShort__inc_impl(this):
-    return _UShort___init__impl_(numberToShort((_UShort___get_data__impl_(this)) + (1)))
+    return _UShort___init__impl_(numberToShort(_UShort___get_data__impl_(this) + 1))
 
 def UShort__dec_impl(this):
-    return _UShort___init__impl_(numberToShort((_UShort___get_data__impl_(this)) - (1)))
+    return _UShort___init__impl_(numberToShort(_UShort___get_data__impl_(this) - 1))
 
 def UShort__rangeTo_impl(this, other):
-    tmp = _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
-    return UIntRange(tmp, _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(other))) & (65535)))
+    tmp = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
+    return UIntRange(tmp, _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535))
 
 def UShort__and_impl(this, other):
     tmp0_and_0 = _UShort___get_data__impl_(this)
     tmp1_and_0 = _UShort___get_data__impl_(other)
-    return _UShort___init__impl_(toShort((kotlin_Int(tmp0_and_0)) & (kotlin_Int(tmp1_and_0))))
+    return _UShort___init__impl_(toShort(kotlin_Int(tmp0_and_0) & kotlin_Int(tmp1_and_0)))
 
 def UShort__or_impl(this, other):
     tmp0_or_0 = _UShort___get_data__impl_(this)
     tmp1_or_0 = _UShort___get_data__impl_(other)
-    return _UShort___init__impl_(toShort((kotlin_Int(tmp0_or_0)) | (kotlin_Int(tmp1_or_0))))
+    return _UShort___init__impl_(toShort(kotlin_Int(tmp0_or_0) | kotlin_Int(tmp1_or_0)))
 
 def UShort__xor_impl(this, other):
     tmp0_xor_0 = _UShort___get_data__impl_(this)
     tmp1_xor_0 = _UShort___get_data__impl_(other)
-    return _UShort___init__impl_(toShort((kotlin_Int(tmp0_xor_0)) ^ (kotlin_Int(tmp1_xor_0))))
+    return _UShort___init__impl_(toShort(kotlin_Int(tmp0_xor_0) ^ kotlin_Int(tmp1_xor_0)))
 
 def UShort__inv_impl(this):
     tmp0_inv_0 = _UShort___get_data__impl_(this)
-    return _UShort___init__impl_(toShort(~(kotlin_Int(tmp0_inv_0))))
+    return _UShort___init__impl_(toShort(~kotlin_Int(tmp0_inv_0)))
 
 def UShort__toByte_impl(this):
     return toByte(_UShort___get_data__impl_(this))
@@ -5220,7 +5220,7 @@ def UShort__toShort_impl(this):
     return _UShort___get_data__impl_(this)
 
 def UShort__toInt_impl(this):
-    return (kotlin_Int(_UShort___get_data__impl_(this))) & (65535)
+    return kotlin_Int(_UShort___get_data__impl_(this)) & 65535
 
 def UShort__toLong_impl(this):
     return toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0))
@@ -5233,25 +5233,25 @@ def UShort__toUShort_impl(this):
     return this
 
 def UShort__toUInt_impl(this):
-    return _UInt___init__impl_((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
+    return _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
 
 def UShort__toULong_impl(this):
     return _ULong___init__impl_(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
 
 def UShort__toFloat_impl(this):
-    return kotlin_Float((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
+    return kotlin_Float(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
 
 def UShort__toDouble_impl(this):
-    return kotlin_Double((kotlin_Int(_UShort___get_data__impl_(this))) & (65535))
+    return kotlin_Double(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
 
 def UShort__toString_impl(this):
-    return (kotlin_Int(_UShort___get_data__impl_(this))) & (65535).toString()
+    return (kotlin_Int(_UShort___get_data__impl_(this)) & 65535).toString()
 
 def UShort__hashCode_impl(this):
     return this.data
 
 def UShort__equals_impl(this, other):
-    if not (jsInstanceOf(other, jsClass())):
+    if not jsInstanceOf(other, jsClass()):
         return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
@@ -5336,7 +5336,7 @@ class Iterator:
         if self.index < len(self.array):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = ((tmp1) + (1)) | (0)
+            tmp0_this.index = (tmp1 + 1) | 0
             tmp0_toUShort_0 = self.array[tmp1]
             tmp = _UShort___init__impl_(tmp0_toUShort_0)
         else:
@@ -5359,14 +5359,14 @@ class Iterator:
 
 def UShortArray__contains_impl(this, element):
     tmp = (boxIntrinsic(element)) if (isObject(boxIntrinsic(element))) else (THROW_CCE())
-    if not (jsInstanceOf(tmp, jsClass())):
+    if not jsInstanceOf(tmp, jsClass()):
         return False
     
     tmp = _UShortArray___get_storage__impl_(this)
     return contains(_UShort___get_data__impl_(element))
 
 def UShortArray__contains_impl(this, element):
-    if not (jsInstanceOf(element, jsClass())):
+    if not jsInstanceOf(element, jsClass()):
         return False
     
     tmp = unboxIntrinsic(this)
@@ -5394,7 +5394,7 @@ def UShortArray__containsAll_impl(this, elements):
             elif True:
                 tmp = False
             
-            if not (tmp):
+            if not tmp:
                 tmp_ret_0 = False
                 break
             
@@ -5413,17 +5413,17 @@ def UShortArray__isEmpty_impl(this):
     return len(_UShortArray___get_storage__impl_(this)) == 0
 
 def UShortArray__toString_impl(this):
-    return ((str('UShortArray(storage=')) + (str(toString(this.storage)))) + (str(')'))
+    return (str('UShortArray(storage=') + str(toString(this.storage))) + str(')')
 
 def UShortArray__hashCode_impl(this):
     return hashCode(this.storage)
 
 def UShortArray__equals_impl(this, other):
-    if not (jsInstanceOf(other, jsClass())):
+    if not jsInstanceOf(other, jsClass()):
         return False
     
     tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
-    if not (equals(this.storage, tmp0_other_with_cast.storage)):
+    if not equals(this.storage, tmp0_other_with_cast.storage):
         return False
     
     return True
@@ -5464,7 +5464,7 @@ class UShortArray:
     
 
 def uintCompare(v1, v2):
-    return compareTo((v1) ^ (IntCompanionObject_getInstance().MIN_VALUE), (v2) ^ (IntCompanionObject_getInstance().MIN_VALUE))
+    return compareTo(v1 ^ IntCompanionObject_getInstance().MIN_VALUE, v2 ^ IntCompanionObject_getInstance().MIN_VALUE)
 
 def uintDivide(v1, v2):
     tmp = toLong(_UInt___get_data__impl_(v1))._and(Long(-1, 0))
@@ -5477,7 +5477,7 @@ def uintRemainder(v1, v2):
     return _UInt___init__impl_(tmp0_toUInt_0.toInt())
 
 def uintToDouble(v):
-    return (kotlin_Double((v) & (IntCompanionObject_getInstance().MAX_VALUE))) + ((kotlin_Double((jsBitShiftRU(v, 31)) << (30))) * (2))
+    return kotlin_Double(v & IntCompanionObject_getInstance().MAX_VALUE) + (kotlin_Double(jsBitShiftRU(v, 31) << 30) * 2)
 
 def ulongCompare(v1, v2):
     Companion_getInstance()
@@ -5537,7 +5537,7 @@ def ulongRemainder(v1, v2):
     return _ULong___init__impl_(rem.minus(tmp))
 
 def ulongToDouble(v):
-    return ((v.ushr(11).toDouble()) * (2048)) + (v._and(Long(2047, 0)).toDouble())
+    return (v.ushr(11).toDouble() * 2048) + v._and(Long(2047, 0)).toDouble()
 
 def ulongToString(v):
     return ulongToString(v, 10)
@@ -5556,7 +5556,7 @@ def ulongToString(v, base):
         tmp3_plus_0 = quotient
         quotient = tmp3_plus_0.plus(Long(1, 0))
     
-    return (toString(base)) + (toString(base))
+    return toString(base) + toString(base)
 
 def doubleToUInt(v):
     if isNaN():
@@ -5577,11 +5577,11 @@ def doubleToUInt(v):
                 tmp2_toUInt_0 = numberToInt(v)
                 tmp = _UInt___init__impl_(tmp2_toUInt_0)
             elif True:
-                tmp3_toUInt_0 = numberToInt((v) - (IntCompanionObject_getInstance().MAX_VALUE))
+                tmp3_toUInt_0 = numberToInt(v - IntCompanionObject_getInstance().MAX_VALUE)
                 tmp5_plus_0 = _UInt___init__impl_(tmp3_toUInt_0)
                 tmp4_toUInt_0 = IntCompanionObject_getInstance().MAX_VALUE
                 tmp6_plus_0 = _UInt___init__impl_(tmp4_toUInt_0)
-                tmp = _UInt___init__impl_(((_UInt___get_data__impl_(tmp5_plus_0)) + (_UInt___get_data__impl_(tmp6_plus_0))) | (0))
+                tmp = _UInt___init__impl_((_UInt___get_data__impl_(tmp5_plus_0) + _UInt___get_data__impl_(tmp6_plus_0)) | 0)
             
         
     
@@ -5608,7 +5608,7 @@ def doubleToULong(v):
                     tmp2_toULong_0 = numberToLong(v)
                     tmp = _ULong___init__impl_(tmp2_toULong_0)
                 elif True:
-                    tmp3_toULong_0 = numberToLong((v) - (9.223372036854776E18))
+                    tmp3_toULong_0 = numberToLong(v - 9.223372036854776E18)
                     tmp4_plus_0 = _ULong___init__impl_(tmp3_toULong_0)
                     tmp = _ULong___init__impl_(_ULong___get_data__impl_(tmp4_plus_0).plus(_ULong___get_data__impl_(_ULong___init__impl_(Long(0, -2147483648)))))
                 
@@ -5953,10 +5953,10 @@ class ParameterName:
     
 
 def Deprecated_init__Init_(message, replaceWith, level, _mask0, _marker, _this):
-    if not ((_mask0) & (2) == 0):
+    if not (_mask0 & 2 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (4) == 0):
+    if not (_mask0 & 4 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
     super(message, replaceWith, level)
@@ -6012,13 +6012,13 @@ class ReplaceWith:
     
 
 def DeprecatedSinceKotlin_init__Init_(warningSince, errorSince, hiddenSince, _mask0, _marker, _this):
-    if not ((_mask0) & (1) == 0):
+    if not (_mask0 & 1 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (2) == 0):
+    if not (_mask0 & 2 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (4) == 0):
+    if not (_mask0 & 4 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
     super(warningSince, errorSince, hiddenSince)
@@ -6308,13 +6308,13 @@ class IntProgressionIterator:
     def nextInt(self):
         value = self.next
         if value == self.finalElement:
-            if not (self.hasNext):
+            if not self.hasNext:
                 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
             
             self.hasNext = False
         else:
             tmp0_this = self
-            tmp0_this.next = ((tmp0_this.next) + (self.step)) | (0)
+            tmp0_this.next = (tmp0_this.next + self.step) | 0
         
         return value
     
@@ -6363,7 +6363,7 @@ class LongProgressionIterator:
     def nextLong(self):
         value = self.next
         if value.equals(self.finalElement):
-            if not (self.hasNext):
+            if not self.hasNext:
                 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
             
             self.hasNext = False
@@ -6425,13 +6425,13 @@ class CharProgressionIterator:
     def nextChar(self):
         value = self.next
         if value == self.finalElement:
-            if not (self.hasNext):
+            if not self.hasNext:
                 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
             
             self.hasNext = False
         else:
             tmp0_this = self
-            tmp0_this.next = ((tmp0_this.next) + (self.step)) | (0)
+            tmp0_this.next = (tmp0_this.next + self.step) | 0
         
         return numberToChar(value)
     
@@ -6509,10 +6509,10 @@ class IntProgression:
         return tmp
     
     def hashCode(self):
-        return (-1) if (self.isEmpty()) else (((imul(31, ((imul(31, self.first)) + (self.last)) | (0))) + (self.step)) | (0))
+        return (-1) if (self.isEmpty()) else ((imul(31, (imul(31, self.first) + self.last) | 0) + self.step) | 0)
     
     def toString(self):
-        return (((((str(self.first)) + (str('..'))) + (str(self.last))) + (str(' step '))) + (str(self.step))) if (self.step > 0) else (((((str(self.first)) + (str(' downTo '))) + (str(self.last))) + (str(' step '))) + (str((-(self.step)) | (0))))
+        return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str(-self.step | 0))
     
 
 class Companion:
@@ -6580,7 +6580,7 @@ class LongProgression:
         return (-1) if (self.isEmpty()) else (numberToLong(31).times(numberToLong(31).times(self.first.xor(self.first.ushr(32))).plus(self.last.xor(self.last.ushr(32)))).plus(self.step.xor(self.step.ushr(32))).toInt())
     
     def toString(self):
-        return (((((str(self.first)) + (str('..'))) + (str(self.last))) + (str(' step '))) + (str(self.step))) if (self.step.compareTo(Long(0, 0)) > 0) else (((((str(self.first)) + (str(' downTo '))) + (str(self.last))) + (str(' step '))) + (str(self.step.unaryMinus())))
+        return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step.compareTo(Long(0, 0)) > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str(self.step.unaryMinus()))
     
 
 class Companion:
@@ -6652,12 +6652,12 @@ class CharProgression:
             tmp0__get_code__0 = self.first
             tmp = imul(31, tmp0__get_code__0.toInt())
             tmp1__get_code__0 = self.last
-            tmp = ((imul(31, ((tmp) + (tmp1__get_code__0.toInt())) | (0))) + (self.step)) | (0)
+            tmp = (imul(31, (tmp + tmp1__get_code__0.toInt()) | 0) + self.step) | 0
         
         return tmp
     
     def toString(self):
-        return (((((str(self.first)) + (str('..'))) + (str(self.last))) + (str(' step '))) + (str(self.step))) if (self.step > 0) else (((((str(self.first)) + (str(' downTo '))) + (str(self.last))) + (str(' step '))) + (str((-(self.step)) | (0))))
+        return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str(-self.step | 0))
     
 
 class ClosedRange:
@@ -6740,10 +6740,10 @@ class IntRange:
         return tmp
     
     def hashCode(self):
-        return (-1) if (self.isEmpty()) else (((imul(31, self._get_first_())) + (self._get_last_())) | (0))
+        return (-1) if (self.isEmpty()) else ((imul(31, self._get_first_()) + self._get_last_()) | 0)
     
     def toString(self):
-        return ((str(self._get_first_())) + (str('..'))) + (str(self._get_last_()))
+        return (str(self._get_first_()) + str('..')) + str(self._get_last_())
     
     def _get_first_(self):
         pass
@@ -6815,7 +6815,7 @@ class LongRange:
         return (-1) if (self.isEmpty()) else (numberToLong(31).times(self._get_first_().xor(self._get_first_().ushr(32))).plus(self._get_last_().xor(self._get_last_().ushr(32))).toInt())
     
     def toString(self):
-        return ((str(self._get_first_())) + (str('..'))) + (str(self._get_last_()))
+        return (str(self._get_first_()) + str('..')) + str(self._get_last_())
     
     def _get_first_(self):
         pass
@@ -6890,12 +6890,12 @@ class CharRange:
             tmp0__get_code__0 = self._get_first_()
             tmp = imul(31, tmp0__get_code__0.toInt())
             tmp1__get_code__0 = self._get_last_()
-            tmp = ((tmp) + (tmp1__get_code__0.toInt())) | (0)
+            tmp = (tmp + tmp1__get_code__0.toInt()) | 0
         
         return tmp
     
     def toString(self):
-        return ((str(self._get_first_())) + (str('..'))) + (str(self._get_last_()))
+        return (str(self._get_first_()) + str('..')) + str(self._get_last_())
     
     def _get_first_(self):
         pass
@@ -7062,7 +7062,7 @@ class MustBeDocumented:
     
 
 def Retention_init__Init_(value, _mask0, _marker, _this):
-    if not ((_mask0) & (1) == 0):
+    if not (_mask0 & 1 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
     super(value)
@@ -7227,9 +7227,9 @@ def AnnotationRetention_RUNTIME_getInstance():
 
 def getProgressionLastElement(start, end, step):
     if step > 0:
-        tmp = (end) if (start >= end) else (((end) - (differenceModulo(end, start, step))) | (0))
+        tmp = (end) if (start >= end) else ((end - differenceModulo(end, start, step)) | 0)
     elif step < 0:
-        tmp = (end) if (start <= end) else (((end) + (differenceModulo(start, end, (-(step)) | (0)))) | (0))
+        tmp = (end) if (start <= end) else ((end + differenceModulo(start, end, -step | 0)) | 0)
     else:
         visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
     
@@ -7246,14 +7246,14 @@ def getProgressionLastElement(start, end, step):
     return tmp
 
 def differenceModulo(a, b, c):
-    return mod(((mod(a, c)) - (mod(b, c))) | (0), c)
+    return mod((mod(a, c) - mod(b, c)) | 0, c)
 
 def differenceModulo(a, b, c):
     return mod(mod(a, c).minus(mod(b, c)), c)
 
 def mod(a, b):
-    mod = (a) % (b)
-    return (mod) if (mod >= 0) else (((mod) + (b)) | (0))
+    mod = a % b
+    return (mod) if (mod >= 0) else ((mod + b) | 0)
 
 def mod(a, b):
     mod = a.rem(b)
@@ -7567,8 +7567,8 @@ def copyToArrayImpl(collection):
 
 def arrayCopy(source, destination, destinationOffset, startIndex, endIndex):
     Companion_getInstance().checkRangeIndexes(startIndex, endIndex, len(source))
-    rangeSize = ((endIndex) - (startIndex)) | (0)
-    Companion_getInstance().checkRangeIndexes(destinationOffset, ((destinationOffset) + (rangeSize)) | (0), len(destination))
+    rangeSize = (endIndex - startIndex) | 0
+    Companion_getInstance().checkRangeIndexes(destinationOffset, (destinationOffset + rangeSize) | 0, len(destination))
     if ANDAND(INVOKE(isView(js('ArrayBuffer')), destination), INVOKE(isView(js('ArrayBuffer')), source)):
         subrange = INVOKE(subarray(source), startIndex, endIndex)
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
@@ -7577,20 +7577,20 @@ def arrayCopy(source, destination, destinationOffset, startIndex, endIndex):
         if inductionVariable < rangeSize:
             while True:
                 index = inductionVariable
-                inductionVariable = ((inductionVariable) + (1)) | (0)
-                destination.__setitem__(((destinationOffset) + (index)) | (0), source[((startIndex) + (index)) | (0)])
+                inductionVariable = (inductionVariable + 1) | 0
+                destination.__setitem__((destinationOffset + index) | 0, source[(startIndex + index) | 0])
                 if inductionVariable < rangeSize:
                     break
                 
             
         
     else:
-        inductionVariable = ((rangeSize) - (1)) | (0)
+        inductionVariable = (rangeSize - 1) | 0
         if 0 <= inductionVariable:
             while True:
                 index = inductionVariable
-                inductionVariable = ((inductionVariable) + (-1)) | (0)
-                destination.__setitem__(((destinationOffset) + (index)) | (0), source[((startIndex) + (index)) | (0)])
+                inductionVariable = (inductionVariable + -1) | 0
+                destination.__setitem__((destinationOffset + index) | 0, source[(startIndex + index) | 0])
                 if 0 <= inductionVariable:
                     break
                 
@@ -7607,7 +7607,7 @@ def copyToArrayImpl(collection, array):
     index = 0
     while iterator.hasNext():
         tmp0 = index
-        index = ((tmp0) + (1)) | (0)
+        index = (tmp0 + 1) | 0
         tmp1_unsafeCast_0 = iterator.next()
         array.__setitem__(tmp0, kotlin_Any_(tmp1_unsafeCast_0))
     
@@ -7633,7 +7633,7 @@ class _no_name_provided_:
         self._elements = _elements
     
     def invoke(self, it):
-        return not (self._elements.contains(it))
+        return not self._elements.contains(it)
     
     def invoke(self, p1):
         return self.invoke((E(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
@@ -7767,19 +7767,19 @@ class IteratorImpl:
         return self.index < self._this._get_size_()
     
     def next(self):
-        if not (self.hasNext()):
+        if not self.hasNext():
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
         tmp = self
         tmp0_this = self
         tmp1 = tmp0_this.index
-        tmp0_this.index = ((tmp1) + (1)) | (0)
+        tmp0_this.index = (tmp1 + 1) | 0
         tmp.last = tmp1
         return self._this.get(self.last)
     
     def remove(self):
         tmp0_check_0 = not (self.last == -1)
-        if not (tmp0_check_0):
+        if not tmp0_check_0:
             message_1 = 'Call next() or previous() before removing element from the iterator.'
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
@@ -7812,22 +7812,22 @@ class ListIteratorImpl:
         return self._get_index_()
     
     def previous(self):
-        if not (self.hasPrevious()):
+        if not self.hasPrevious():
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
         tmp0_this = self
-        tmp0_this._set_index_(((tmp0_this._get_index_()) - (1)) | (0))
+        tmp0_this._set_index_((tmp0_this._get_index_() - 1) | 0)
         self._set_last_(tmp0_this._get_index_())
         return self._this.get(self._get_last_())
     
     def previousIndex(self):
-        return ((self._get_index_()) - (1)) | (0)
+        return (self._get_index_() - 1) | 0
     
     def add(self, element):
         self._this.add(self._get_index_(), element)
         tmp0_this = self
         tmp1 = tmp0_this._get_index_()
-        tmp0_this._set_index_(((tmp1) + (1)) | (0))
+        tmp0_this._set_index_((tmp1 + 1) | 0)
         Unit_getInstance()
         self._set_last_(-1)
     
@@ -7836,7 +7836,7 @@ class ListIteratorImpl:
     
     def set(self, element):
         tmp0_check_0 = not (self._get_last_() == -1)
-        if not (tmp0_check_0):
+        if not tmp0_check_0:
             message_1 = 'Call next() or previous() before updating element value with the iterator.'
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
@@ -7884,32 +7884,32 @@ class SubList:
         self.fromIndex = fromIndex
         self._size = 0
         Companion_getInstance().checkRangeIndexes(self.fromIndex, toIndex, self.list._get_size_())
-        self._size = ((toIndex) - (self.fromIndex)) | (0)
+        self._size = (toIndex - self.fromIndex) | 0
     
     def add(self, index, element):
         Companion_getInstance().checkPositionIndex(index, self._size)
-        self.list.add(((self.fromIndex) + (index)) | (0), element)
+        self.list.add((self.fromIndex + index) | 0, element)
         tmp0_this = self
         tmp1 = tmp0_this._size
-        tmp0_this._size = ((tmp1) + (1)) | (0)
+        tmp0_this._size = (tmp1 + 1) | 0
         Unit_getInstance()
     
     def get(self, index):
         Companion_getInstance().checkElementIndex(index, self._size)
-        return self.list.get(((self.fromIndex) + (index)) | (0))
+        return self.list.get((self.fromIndex + index) | 0)
     
     def removeAt(self, index):
         Companion_getInstance().checkElementIndex(index, self._size)
-        result = self.list.removeAt(((self.fromIndex) + (index)) | (0))
+        result = self.list.removeAt((self.fromIndex + index) | 0)
         tmp0_this = self
         tmp1 = tmp0_this._size
-        tmp0_this._size = ((tmp1) - (1)) | (0)
+        tmp0_this._size = (tmp1 - 1) | 0
         Unit_getInstance()
         return result
     
     def set(self, index, element):
         Companion_getInstance().checkElementIndex(index, self._size)
-        return self.list.set(((self.fromIndex) + (index)) | (0), element)
+        return self.list.set((self.fromIndex + index) | 0, element)
     
     def _get_size_(self):
         return self._size
@@ -8009,7 +8009,7 @@ class _no_name_provided_:
         self._elements = _elements
     
     def invoke(self, it):
-        return not (self._elements.contains(it))
+        return not self._elements.contains(it)
     
     def invoke(self, p1):
         return self.invoke((E(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
@@ -8048,7 +8048,7 @@ class AbstractMutableList:
         while tmp0_iterator.hasNext():
             e = tmp0_iterator.next()
             tmp1 = _index
-            _index = ((tmp1) + (1)) | (0)
+            _index = (tmp1 + 1) | 0
             self.add(tmp1, e)
             changed = True
         
@@ -8078,7 +8078,7 @@ class AbstractMutableList:
         if inductionVariable <= last:
             while True:
                 index = inductionVariable
-                inductionVariable = ((inductionVariable) + (1)) | (0)
+                inductionVariable = (inductionVariable + 1) | 0
                 if equals(self.get(index), element):
                     return index
                 
@@ -8094,7 +8094,7 @@ class AbstractMutableList:
         if 0 <= inductionVariable:
             while True:
                 index = inductionVariable
-                inductionVariable = ((inductionVariable) + (-1)) | (0)
+                inductionVariable = (inductionVariable + -1) | 0
                 if equals(self.get(index), element):
                     return index
                 
@@ -8116,12 +8116,12 @@ class AbstractMutableList:
     
     def removeRange(self, fromIndex, toIndex):
         iterator = self.listIterator(fromIndex)
-        tmp0_repeat_0 = ((toIndex) - (fromIndex)) | (0)
+        tmp0_repeat_0 = (toIndex - fromIndex) | 0
         inductionVariable = 0
         if inductionVariable < tmp0_repeat_0:
             while True:
                 index_2 = inductionVariable
-                inductionVariable = ((inductionVariable) + (1)) | (0)
+                inductionVariable = (inductionVariable + 1) | 0
                 iterator.next()
                 Unit_getInstance()
                 iterator.remove()
@@ -8212,7 +8212,7 @@ def ArrayList_init__Create_(initialCapacity):
     return ArrayList_init__Init_(initialCapacity, Object_create())
 
 def ArrayList_init__Init_(initialCapacity, _mask0, _marker, _this):
-    if not ((_mask0) & (1) == 0):
+    if not (_mask0 & 1 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
     ArrayList_init__Init_(initialCapacity, _this)
@@ -8275,7 +8275,7 @@ class ArrayList:
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount_()
-        tmp0_this._set_modCount_(((tmp1) + (1)) | (0))
+        tmp0_this._set_modCount_((tmp1 + 1) | 0)
         Unit_getInstance()
         return True
     
@@ -8285,7 +8285,7 @@ class ArrayList:
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount_()
-        tmp0_this._set_modCount_(((tmp1) + (1)) | (0))
+        tmp0_this._set_modCount_((tmp1 + 1) | 0)
         Unit_getInstance()
     
     def addAll(self, elements):
@@ -8300,7 +8300,7 @@ class ArrayList:
         tmp.array = kotlin_Array_kotlin_Any__(INVOKE(concat(tmp0_plus_0), tmp1_plus_0))
         tmp1_this = self
         tmp2 = tmp1_this._get_modCount_()
-        tmp1_this._set_modCount_(((tmp2) + (1)) | (0))
+        tmp1_this._set_modCount_((tmp2 + 1) | 0)
         Unit_getInstance()
         return True
     
@@ -8329,7 +8329,7 @@ class ArrayList:
         
         tmp1_this = self
         tmp2 = tmp1_this._get_modCount_()
-        tmp1_this._set_modCount_(((tmp2) + (1)) | (0))
+        tmp1_this._set_modCount_((tmp2 + 1) | 0)
         Unit_getInstance()
         return True
     
@@ -8339,7 +8339,7 @@ class ArrayList:
         Unit_getInstance()
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount_()
-        tmp0_this._set_modCount_(((tmp1) + (1)) | (0))
+        tmp0_this._set_modCount_((tmp1 + 1) | 0)
         Unit_getInstance()
         if index == _get_lastIndex_():
             tmp0_asDynamic_0 = self.array
@@ -8353,17 +8353,17 @@ class ArrayList:
     def remove(self, element):
         self.checkIsMutable()
         inductionVariable = 0
-        last = ((len(self.array)) - (1)) | (0)
+        last = (len(self.array) - 1) | 0
         if inductionVariable <= last:
             while True:
                 index = inductionVariable
-                inductionVariable = ((inductionVariable) + (1)) | (0)
+                inductionVariable = (inductionVariable + 1) | 0
                 if equals(self.array[index], element):
                     tmp0_asDynamic_0 = self.array
                     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
                     tmp1_this = self
                     tmp2 = tmp1_this._get_modCount_()
-                    tmp1_this._set_modCount_(((tmp2) + (1)) | (0))
+                    tmp1_this._set_modCount_((tmp2 + 1) | 0)
                     Unit_getInstance()
                     return True
                 
@@ -8378,7 +8378,7 @@ class ArrayList:
         self.checkIsMutable()
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount_()
-        tmp0_this._set_modCount_(((tmp1) + (1)) | (0))
+        tmp0_this._set_modCount_((tmp1 + 1) | 0)
         Unit_getInstance()
         tmp0_asDynamic_0 = self.array
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
@@ -8389,7 +8389,7 @@ class ArrayList:
         tmp.array = kotlin_Array_kotlin_Any__(js('[]'))
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount_()
-        tmp0_this._set_modCount_(((tmp1) + (1)) | (0))
+        tmp0_this._set_modCount_((tmp1 + 1) | 0)
         Unit_getInstance()
     
     def indexOf(self, element):
@@ -8569,14 +8569,14 @@ class BufferedOutputToConsoleLog:
             tmp0_this = self
             tmp = tmp0_this._get_buffer_()
             tmp1_substring_0 = s
-            tmp0_this._set_buffer_((tmp) + (kotlin_String(INVOKE(substring(tmp1_substring_0), 0, i))))
+            tmp0_this._set_buffer_(tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), 0, i)))
             self.flush()
             tmp2_substring_0 = s
-            tmp3_substring_0 = ((i) + (1)) | (0)
+            tmp3_substring_0 = (i + 1) | 0
             s = kotlin_String(INVOKE(substring(tmp2_substring_0), tmp3_substring_0))
         
         tmp1_this = self
-        tmp1_this._set_buffer_((tmp1_this._get_buffer_()) + (s))
+        tmp1_this._set_buffer_(tmp1_this._get_buffer_() + s)
     
     def flush(self):
         _get_console_().log(self._get_buffer_())
@@ -8622,7 +8622,7 @@ class BufferedOutput:
         tmp0_this = self
         tmp = tmp0_this
         tmp = tmp0_this.buffer
-        tmp.buffer = (tmp) + (kotlin_String(INVOKE(js('String'), message)))
+        tmp.buffer = tmp + kotlin_String(INVOKE(js('String'), message))
     
     def flush(self):
         self.buffer = ''
@@ -8735,7 +8735,7 @@ def INV_2_53_init_():
     return visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(2.0, -53.0)
 
 def _get_js_():
-    return (kotlin_reflect_js_internal_KClassImpl_T_(self)) if (jsInstanceOf(self, jsClass())) else (THROW_CCE())._get_jClass_()
+    return ((kotlin_reflect_js_internal_KClassImpl_T_(self)) if (jsInstanceOf(self, jsClass())) else (THROW_CCE()))._get_jClass_()
 
 class KCallable:
     def _get_name_(self):
@@ -8801,7 +8801,7 @@ class KClassImpl:
         return (0) if (tmp1_elvis_lhs == None) else (tmp1_elvis_lhs)
     
     def toString(self):
-        return (str('class ')) + (str(self._get_simpleName_()))
+        return str('class ') + str(self._get_simpleName_())
     
     def _get_simpleName_(self):
         pass
@@ -8823,7 +8823,7 @@ class PrimitiveKClassImpl:
         self.isInstanceFunction = isInstanceFunction
     
     def equals(self, other):
-        if not (jsInstanceOf(other, jsClass())):
+        if not jsInstanceOf(other, jsClass()):
             return False
         
         return (self.givenSimpleName == kotlin_reflect_js_internal_PrimitiveKClassImpl___(other).givenSimpleName) if (self.equals(other)) else (False)
@@ -9183,7 +9183,7 @@ def asString(_this):
     if self.variance == None:
         return '*'
     
-    return (prefixString()) + (toString())
+    return prefixString() + toString()
 
 class _no_name_provided_:
     def __init__(self, this_0):
@@ -9230,7 +9230,7 @@ class KTypeImpl:
         return tmp
     
     def hashCode(self):
-        return ((imul(((imul(hashCode(self.classifier), 31)) + (hashCode(self.arguments))) | (0), 31)) + ((self.isMarkedNullable) | (0))) | (0)
+        return (imul((imul(hashCode(self.classifier), 31) + hashCode(self.arguments)) | 0, 31) + (self.isMarkedNullable | 0)) | 0
     
     def toString(self):
         tmp = self.classifier
@@ -9243,7 +9243,7 @@ class KTypeImpl:
         
         args = tmp
         nullable = ('?') if (self.isMarkedNullable) else ('')
-        return (plus(args)) + (nullable)
+        return plus(args) + nullable
     
 
 def prefixString():
@@ -9334,42 +9334,42 @@ class KTypeParameterImpl:
         return KTypeParameterImpl(name, upperBounds, variance, isReified)
     
     def copy_default(self, name, upperBounds, variance, isReified, _mask0, _handler):
-        if not ((_mask0) & (1) == 0):
+        if not (_mask0 & 1 == 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
         
-        if not ((_mask0) & (2) == 0):
+        if not (_mask0 & 2 == 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
         
-        if not ((_mask0) & (4) == 0):
+        if not (_mask0 & 4 == 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
         
-        if not ((_mask0) & (8) == 0):
+        if not (_mask0 & 8 == 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
         
         return self.copy(kotlin_String(name), kotlin_collections_List_kotlin_reflect_KType_(upperBounds), kotlin_reflect_KVariance(variance), isReified)
     
     def hashCode(self):
         result = getStringHashCode(self.name)
-        result = ((imul(result, 31)) + (hashCode(self.upperBounds))) | (0)
-        result = ((imul(result, 31)) + (self.variance.hashCode())) | (0)
-        result = ((imul(result, 31)) + ((self.isReified) | (0))) | (0)
+        result = (imul(result, 31) + hashCode(self.upperBounds)) | 0
+        result = (imul(result, 31) + self.variance.hashCode()) | 0
+        result = (imul(result, 31) + (self.isReified | 0)) | 0
         return result
     
     def equals(self, other):
         if self is other:
             return True
         
-        if not (jsInstanceOf(other, jsClass())):
+        if not jsInstanceOf(other, jsClass()):
             return False
         
         tmp0_other_with_cast = (kotlin_reflect_js_internal_KTypeParameterImpl(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
         if not (self.name == tmp0_other_with_cast.name):
             return False
         
-        if not (equals(self.upperBounds, tmp0_other_with_cast.upperBounds)):
+        if not equals(self.upperBounds, tmp0_other_with_cast.upperBounds):
             return False
         
-        if not (self.variance.equals(tmp0_other_with_cast.variance)):
+        if not self.variance.equals(tmp0_other_with_cast.variance):
             return False
         
         if not (self.isReified == tmp0_other_with_cast.isReified):
@@ -9733,7 +9733,7 @@ class PrimitiveClasses:
         tmp0_elvis_lhs = functionClasses[arity]
         if tmp0_elvis_lhs == None:
             tmp0_unsafeCast_0_3 = js('Function')
-            tmp = (str('Function')) + (str(arity))
+            tmp = str('Function') + str(arity)
             result_2 = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_3), tmp, _no_name_provided__factory(arity))
             tmp1_asDynamic_0_5 = functionClasses
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
@@ -10020,12 +10020,12 @@ class StringBuilder:
     
     def append(self, value):
         tmp0_this = self
-        tmp0_this.string = (tmp0_this.string) + (value)
+        tmp0_this.string = tmp0_this.string + value
         return self
     
     def append(self, value):
         tmp0_this = self
-        tmp0_this.string = (tmp0_this.string) + (toString())
+        tmp0_this.string = tmp0_this.string + toString()
         return self
     
     def append(self, value, startIndex, endIndex):
@@ -10034,24 +10034,24 @@ class StringBuilder:
     
     def reverse(self):
         reversed = ''
-        index = ((len(self.string)) - (1)) | (0)
+        index = (len(self.string) - 1) | 0
         while index >= 0:
             tmp = self.string
             tmp0 = index
-            index = ((tmp0) - (1)) | (0)
+            index = (tmp0 - 1) | 0
             low = charSequenceGet(tmp, tmp0)
             if (index >= 0) if (isLowSurrogate()) else (False):
                 tmp = self.string
                 tmp1 = index
-                index = ((tmp1) - (1)) | (0)
+                index = (tmp1 - 1) | 0
                 high = charSequenceGet(tmp, tmp1)
                 if isHighSurrogate():
-                    reversed = ((reversed) + (high)) + (low)
+                    reversed = (reversed + high) + low
                 else:
-                    reversed = ((reversed) + (low)) + (high)
+                    reversed = (reversed + low) + high
                 
             else:
-                reversed = (reversed) + (low)
+                reversed = reversed + low
             
         
         self.string = reversed
@@ -10059,17 +10059,17 @@ class StringBuilder:
     
     def append(self, value):
         tmp0_this = self
-        tmp0_this.string = (tmp0_this.string) + (toString())
+        tmp0_this.string = tmp0_this.string + toString()
         return self
     
     def append(self, value):
         tmp0_this = self
-        tmp0_this.string = (tmp0_this.string) + (value)
+        tmp0_this.string = tmp0_this.string + value
         return self
     
     def append(self, value):
         tmp0_this = self
-        tmp0_this.string = (tmp0_this.string) + (concatToString())
+        tmp0_this.string = tmp0_this.string + concatToString()
         return self
     
     def append(self, value):
@@ -10080,7 +10080,7 @@ class StringBuilder:
         tmp = tmp0_this
         tmp = tmp0_this.string
         tmp1_elvis_lhs = value
-        tmp.string = (tmp) + (('null') if (tmp1_elvis_lhs == None) else (tmp1_elvis_lhs))
+        tmp.string = tmp + (('null') if (tmp1_elvis_lhs == None) else (tmp1_elvis_lhs))
         return self
     
     def capacity(self):
@@ -10117,45 +10117,45 @@ class StringBuilder:
         Companion_getInstance().checkPositionIndex(index, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp = (kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index))) + (value)
+        tmp = kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index)) + value
         tmp1_substring_0 = self.string
-        tmp.string = (tmp) + (kotlin_String(INVOKE(substring(tmp1_substring_0), index)))
+        tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), index))
         return self
     
     def insert(self, index, value):
         Companion_getInstance().checkPositionIndex(index, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp = (kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index))) + (value)
+        tmp = kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index)) + value
         tmp1_substring_0 = self.string
-        tmp.string = (tmp) + (kotlin_String(INVOKE(substring(tmp1_substring_0), index)))
+        tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), index))
         return self
     
     def insert(self, index, value):
         Companion_getInstance().checkPositionIndex(index, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp = (kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index))) + (concatToString())
+        tmp = kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index)) + concatToString()
         tmp1_substring_0 = self.string
-        tmp.string = (tmp) + (kotlin_String(INVOKE(substring(tmp1_substring_0), index)))
+        tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), index))
         return self
     
     def insert(self, index, value):
         Companion_getInstance().checkPositionIndex(index, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp = (kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index))) + (toString())
+        tmp = kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index)) + toString()
         tmp1_substring_0 = self.string
-        tmp.string = (tmp) + (kotlin_String(INVOKE(substring(tmp1_substring_0), index)))
+        tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), index))
         return self
     
     def insert(self, index, value):
         Companion_getInstance().checkPositionIndex(index, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp = (kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index))) + (toString())
+        tmp = kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index)) + toString()
         tmp1_substring_0 = self.string
-        tmp.string = (tmp) + (kotlin_String(INVOKE(substring(tmp1_substring_0), index)))
+        tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), index))
         return self
     
     def insert(self, index, value):
@@ -10167,9 +10167,9 @@ class StringBuilder:
         toInsert = ('null') if (tmp0_elvis_lhs == None) else (tmp0_elvis_lhs)
         tmp = self
         tmp0_substring_0 = self.string
-        tmp = (kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index))) + (toInsert)
+        tmp = kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index)) + toInsert
         tmp1_substring_0 = self.string
-        tmp.string = (tmp) + (kotlin_String(INVOKE(substring(tmp1_substring_0), index)))
+        tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), index))
         return self
     
     def setLength(self, newLength):
@@ -10185,9 +10185,9 @@ class StringBuilder:
             if inductionVariable < newLength:
                 while True:
                     i = inductionVariable
-                    inductionVariable = ((inductionVariable) + (1)) | (0)
+                    inductionVariable = (inductionVariable + 1) | 0
                     tmp1_this = self
-                    tmp1_this.string = (tmp1_this.string) + (Char(0))
+                    tmp1_this.string = tmp1_this.string + Char(0)
                     if inductionVariable < newLength:
                         break
                     
@@ -10219,18 +10219,18 @@ class StringBuilder:
         Companion_getInstance().checkElementIndex(index, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp = (kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index))) + (value)
+        tmp = kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index)) + value
         tmp1_substring_0 = self.string
-        tmp2_substring_0 = ((index) + (1)) | (0)
-        tmp.string = (tmp) + (kotlin_String(INVOKE(substring(tmp1_substring_0), tmp2_substring_0)))
+        tmp2_substring_0 = (index + 1) | 0
+        tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), tmp2_substring_0))
     
     def setRange(self, startIndex, endIndex, value):
         checkReplaceRange(self, startIndex, endIndex, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp = (kotlin_String(INVOKE(substring(tmp0_substring_0), 0, startIndex))) + (value)
+        tmp = kotlin_String(INVOKE(substring(tmp0_substring_0), 0, startIndex)) + value
         tmp1_substring_0 = self.string
-        tmp.string = (tmp) + (kotlin_String(INVOKE(substring(tmp1_substring_0), endIndex)))
+        tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), endIndex))
         return self
     
     def deleteAt(self, index):
@@ -10239,8 +10239,8 @@ class StringBuilder:
         tmp0_substring_0 = self.string
         tmp = kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index))
         tmp1_substring_0 = self.string
-        tmp2_substring_0 = ((index) + (1)) | (0)
-        tmp.string = (tmp) + (kotlin_String(INVOKE(substring(tmp1_substring_0), tmp2_substring_0)))
+        tmp2_substring_0 = (index + 1) | 0
+        tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), tmp2_substring_0))
         return self
     
     def deleteRange(self, startIndex, endIndex):
@@ -10249,20 +10249,20 @@ class StringBuilder:
         tmp0_substring_0 = self.string
         tmp = kotlin_String(INVOKE(substring(tmp0_substring_0), 0, startIndex))
         tmp1_substring_0 = self.string
-        tmp.string = (tmp) + (kotlin_String(INVOKE(substring(tmp1_substring_0), endIndex)))
+        tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), endIndex))
         return self
     
     def toCharArray(self, destination, destinationOffset, startIndex, endIndex):
         Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, self._get_length_())
-        Companion_getInstance().checkBoundsIndexes(destinationOffset, ((((destinationOffset) + (endIndex)) | (0)) - (startIndex)) | (0), len(destination))
+        Companion_getInstance().checkBoundsIndexes(destinationOffset, (((destinationOffset + endIndex) | 0) - startIndex) | 0, len(destination))
         dstIndex = destinationOffset
         inductionVariable = startIndex
         if inductionVariable < endIndex:
             while True:
                 index = inductionVariable
-                inductionVariable = ((inductionVariable) + (1)) | (0)
+                inductionVariable = (inductionVariable + 1) | 0
                 tmp1 = dstIndex
-                dstIndex = ((tmp1) + (1)) | (0)
+                dstIndex = (tmp1 + 1) | 0
                 destination.__setitem__(tmp1, charSequenceGet(self.string, index))
                 if inductionVariable < endIndex:
                     break
@@ -10271,20 +10271,20 @@ class StringBuilder:
         
     
     def toCharArray_default(self, destination, destinationOffset, startIndex, endIndex, _mask0, _handler):
-        if not ((_mask0) & (2) == 0):
+        if not (_mask0 & 2 == 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
         
-        if not ((_mask0) & (4) == 0):
+        if not (_mask0 & 4 == 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
         
-        if not ((_mask0) & (8) == 0):
+        if not (_mask0 & 8 == 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
         
         return self.toCharArray(destination, destinationOffset, startIndex, endIndex)
     
     def appendRange(self, value, startIndex, endIndex):
         tmp0_this = self
-        tmp0_this.string = (tmp0_this.string) + (concatToString(startIndex, endIndex))
+        tmp0_this.string = tmp0_this.string + concatToString(startIndex, endIndex)
         return self
     
     def appendRange(self, value, startIndex, endIndex):
@@ -10293,16 +10293,16 @@ class StringBuilder:
         tmp0_this = self
         tmp = tmp0_this
         tmp = tmp0_this.string
-        tmp.string = (tmp) + (kotlin_String(INVOKE(substring(stringCsq), startIndex, endIndex)))
+        tmp.string = tmp + kotlin_String(INVOKE(substring(stringCsq), startIndex, endIndex))
         return self
     
     def insertRange(self, index, value, startIndex, endIndex):
         Companion_getInstance().checkPositionIndex(index, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp = (kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index))) + (concatToString(startIndex, endIndex))
+        tmp = kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index)) + concatToString(startIndex, endIndex)
         tmp1_substring_0 = self.string
-        tmp.string = (tmp) + (kotlin_String(INVOKE(substring(tmp1_substring_0), index)))
+        tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), index))
         return self
     
     def insertRange(self, index, value, startIndex, endIndex):
@@ -10312,9 +10312,9 @@ class StringBuilder:
         tmp = self
         tmp0_substring_0 = self.string
         tmp = kotlin_String(INVOKE(substring(tmp0_substring_0), 0, index))
-        tmp = (tmp) + (kotlin_String(INVOKE(substring(stringCsq), startIndex, endIndex)))
+        tmp = tmp + kotlin_String(INVOKE(substring(stringCsq), startIndex, endIndex))
         tmp1_substring_0 = self.string
-        tmp.string = (tmp) + (kotlin_String(INVOKE(substring(tmp1_substring_0), index)))
+        tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), index))
         return self
     
     def equals(self, other):
@@ -10371,11 +10371,11 @@ def compareTo(other, ignoreCase):
         n2 = len(other)
         min = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.min(n1, n2)
         if min == 0:
-            return ((n1) - (n2)) | (0)
+            return (n1 - n2) | 0
         
         start = 0
         while True:
-            tmp0_minOf_0 = ((start) + (16)) | (0)
+            tmp0_minOf_0 = (start + 16) | 0
             end = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.min(tmp0_minOf_0, min)
             tmp1_substring_0 = start
             s1 = kotlin_String(INVOKE(substring(self), tmp1_substring_0, end))
@@ -10401,13 +10401,13 @@ def compareTo(other, ignoreCase):
             
             start = end
         
-        return ((n1) - (n2)) | (0)
+        return (n1 - n2) | 0
     else:
         return compareTo(self, other)
     
 
 def compareTo_default(other, ignoreCase, _mask0, _handler):
-    if not ((_mask0) & (2) == 0):
+    if not (_mask0 & 2 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
     return compareTo(other, ignoreCase)
@@ -10425,8 +10425,8 @@ def concatToString():
     last = len(indexedObject)
     while inductionVariable < last:
         char = indexedObject[inductionVariable]
-        inductionVariable = ((inductionVariable) + (1)) | (0)
-        result = (result) + (char)
+        inductionVariable = (inductionVariable + 1) | 0
+        result = result + char
     
     return result
 
@@ -10437,8 +10437,8 @@ def concatToString(startIndex, endIndex):
     if inductionVariable < endIndex:
         while True:
             index = inductionVariable
-            inductionVariable = ((inductionVariable) + (1)) | (0)
-            result = (result) + (self[index])
+            inductionVariable = (inductionVariable + 1) | 0
+            result = result + self[index]
             if inductionVariable < endIndex:
                 break
             
@@ -10447,10 +10447,10 @@ def concatToString(startIndex, endIndex):
     return result
 
 def concatToString_default(startIndex, endIndex, _mask0, _handler):
-    if not ((_mask0) & (1) == 0):
+    if not (_mask0 & 1 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
-    if not ((_mask0) & (2) == 0):
+    if not (_mask0 & 2 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
     return concatToString(startIndex, endIndex)
@@ -10574,28 +10574,28 @@ class Char:
     def __init__(self, code):
         Companion_getInstance()
         tmp = self
-        tmp.value = (kotlin_Int(_UShort___get_data__impl_(code))) & (65535)
+        tmp.value = kotlin_Int(_UShort___get_data__impl_(code)) & 65535
     
     def compareTo(self, other):
-        return ((self.value) - (other.value)) | (0)
+        return (self.value - other.value) | 0
     
     def compareTo(self, other):
         return self.compareTo((kotlin_Char(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
     
     def plus(self, other):
-        return numberToChar(((self.value) + (other)) | (0))
+        return numberToChar((self.value + other) | 0)
     
     def minus(self, other):
-        return ((self.value) - (other.value)) | (0)
+        return (self.value - other.value) | 0
     
     def minus(self, other):
-        return numberToChar(((self.value) - (other)) | (0))
+        return numberToChar((self.value - other) | 0)
     
     def inc(self):
-        return numberToChar(((self.value) + (1)) | (0))
+        return numberToChar((self.value + 1) | 0)
     
     def dec(self):
-        return numberToChar(((self.value) - (1)) | (0))
+        return numberToChar((self.value - 1) | 0)
     
     def rangeTo(self, other):
         return CharRange(self, other)
@@ -10625,7 +10625,7 @@ class Char:
         if other is self:
             return True
         
-        if not (jsInstanceOf(other, jsClass())):
+        if not jsInstanceOf(other, jsClass()):
             return False
         
         return self.value == kotlin_Char(other).value
@@ -11145,7 +11145,7 @@ def plus(other):
     tmp = ('null') if (tmp3_elvis_lhs == None) else (tmp3_elvis_lhs)
     tmp0_safe_receiver = other
     tmp1_elvis_lhs = (None) if (tmp0_safe_receiver == None) else (toString(tmp0_safe_receiver))
-    return (tmp) + (('null') if (tmp1_elvis_lhs == None) else (tmp1_elvis_lhs))
+    return tmp + (('null') if (tmp1_elvis_lhs == None) else (tmp1_elvis_lhs))
 
 def booleanArrayOf(*elements):
     return elements
@@ -11191,11 +11191,11 @@ def DefaultConstructorMarker_getInstance():
 
 def fillArrayVal(array, initValue):
     inductionVariable = 0
-    last = ((len(array)) - (1)) | (0)
+    last = (len(array) - 1) | 0
     if inductionVariable <= last:
         while True:
             i = inductionVariable
-            inductionVariable = ((inductionVariable) + (1)) | (0)
+            inductionVariable = (inductionVariable + 1) | 0
             array.__setitem__(i, initValue)
             if not (i == last):
                 break
@@ -11210,7 +11210,7 @@ def arrayWithFun(size, init):
     i_2 = 0
     while not (i_2 == len(result_1)):
         result_1.__setitem__(i_2, init.invoke(i_2))
-        i_2 = ((i_2) + (1)) | (0)
+        i_2 = (i_2 + 1) | 0
         Unit_getInstance()
     
     return result_1
@@ -11220,7 +11220,7 @@ def fillArrayFun(array, init):
     i = 0
     while not (i == len(result)):
         result.__setitem__(i, init.invoke(i))
-        i = ((i) + (1)) | (0)
+        i = (i + 1) | 0
         Unit_getInstance()
     
     return result
@@ -11319,7 +11319,7 @@ class _no_name_provided_:
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = ((tmp1) + (1)) | (0)
+            tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
@@ -11355,7 +11355,7 @@ class _no_name_provided_:
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = ((tmp1) + (1)) | (0)
+            tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
@@ -11394,7 +11394,7 @@ class _no_name_provided_:
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = ((tmp1) + (1)) | (0)
+            tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
@@ -11433,7 +11433,7 @@ class _no_name_provided_:
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = ((tmp1) + (1)) | (0)
+            tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
@@ -11472,7 +11472,7 @@ class _no_name_provided_:
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = ((tmp1) + (1)) | (0)
+            tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
@@ -11511,7 +11511,7 @@ class _no_name_provided_:
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = ((tmp1) + (1)) | (0)
+            tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
@@ -11550,7 +11550,7 @@ class _no_name_provided_:
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = ((tmp1) + (1)) | (0)
+            tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
@@ -11589,7 +11589,7 @@ class _no_name_provided_:
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = ((tmp1) + (1)) | (0)
+            tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
@@ -11628,7 +11628,7 @@ class _no_name_provided_:
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = ((tmp1) + (1)) | (0)
+            tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
             visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
@@ -11678,7 +11678,7 @@ def getNumberHashCode(obj):
         return numberToInt(obj)
     
     bufFloat64.__setitem__(0, obj)
-    return ((imul(bufInt32[highIndex], 31)) + (bufInt32[lowIndex])) | (0)
+    return (imul(bufInt32[highIndex], 31) + bufInt32[lowIndex]) | 0
 
 def bufFloat64_init_():
     tmp0_unsafeCast_0 = Float64Array(buf)
@@ -11829,7 +11829,7 @@ def identityHashCode(obj):
     return getObjectHashCode(obj)
 
 def getObjectHashCode(obj):
-    if not (jsIn('kotlinHashCodeValue$', kotlin_Any(obj))):
+    if not jsIn('kotlinHashCodeValue$', kotlin_Any(obj)):
         hash = jsBitwiseOr(MUL(INVOKE(random(js('Math'))), 4.294967296E9), 0)
         descriptor = js('new Object()')
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
@@ -11885,13 +11885,13 @@ def getStringHashCode(str):
     hash = 0
     length = len(str)
     inductionVariable = 0
-    last = ((length) - (1)) | (0)
+    last = (length - 1) | 0
     if inductionVariable <= last:
         while True:
             i = inductionVariable
-            inductionVariable = ((inductionVariable) + (1)) | (0)
+            inductionVariable = (inductionVariable + 1) | 0
             code = kotlin_Int(INVOKE(charCodeAt(str), i))
-            hash = ((imul(hash, 31)) + (code)) | (0)
+            hash = (imul(hash, 31) + code) | 0
             if not (i == last):
                 break
             
@@ -11972,7 +11972,7 @@ def extendThrowable(this_, message, cause):
     setPropertiesToThrowableInstance(this_, message, cause)
 
 def setPropertiesToThrowableInstance(this_, message, cause):
-    if not (hasOwnPrototypeProperty(kotlin_Any(this_), 'message')):
+    if not hasOwnPrototypeProperty(kotlin_Any(this_), 'message'):
         if message == None:
             if not (message is None):
                 tmp0_safe_receiver = cause
@@ -11987,7 +11987,7 @@ def setPropertiesToThrowableInstance(this_, message, cause):
         
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     
-    if not (hasOwnPrototypeProperty(kotlin_Any(this_), 'cause')):
+    if not hasOwnPrototypeProperty(kotlin_Any(this_), 'cause'):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
@@ -12154,10 +12154,10 @@ class Long:
         return add(other)
     
     def plus(self, other):
-        return (self.toFloat()) + (other)
+        return self.toFloat() + other
     
     def plus(self, other):
-        return (self.toDouble()) + (other)
+        return self.toDouble() + other
     
     def minus(self, other):
         return self.minus(toLong(other))
@@ -12172,10 +12172,10 @@ class Long:
         return subtract(other)
     
     def minus(self, other):
-        return (self.toFloat()) - (other)
+        return self.toFloat() - other
     
     def minus(self, other):
-        return (self.toDouble()) - (other)
+        return self.toDouble() - other
     
     def times(self, other):
         return self.times(toLong(other))
@@ -12190,10 +12190,10 @@ class Long:
         return multiply(other)
     
     def times(self, other):
-        return (self.toFloat()) * (other)
+        return self.toFloat() * other
     
     def times(self, other):
-        return (self.toDouble()) * (other)
+        return self.toDouble() * other
     
     def div(self, other):
         return self.div(toLong(other))
@@ -12208,10 +12208,10 @@ class Long:
         return divide(other)
     
     def div(self, other):
-        return (self.toFloat()) / (other)
+        return self.toFloat() / other
     
     def div(self, other):
-        return (self.toDouble()) / (other)
+        return self.toDouble() / other
     
     def rem(self, other):
         return self.rem(toLong(other))
@@ -12226,10 +12226,10 @@ class Long:
         return modulo(other)
     
     def rem(self, other):
-        return (self.toFloat()) % (other)
+        return self.toFloat() % other
     
     def rem(self, other):
-        return (self.toDouble()) % (other)
+        return self.toDouble() % other
     
     def inc(self):
         return self.plus(Long(1, 0))
@@ -12265,16 +12265,16 @@ class Long:
         return shiftRightUnsigned(bitCount)
     
     def _and(self, other):
-        return Long((self.low) & (other.low), (self.high) & (other.high))
+        return Long(self.low & other.low, self.high & other.high)
     
     def _or(self, other):
-        return Long((self.low) | (other.low), (self.high) | (other.high))
+        return Long(self.low | other.low, self.high | other.high)
     
     def xor(self, other):
-        return Long((self.low) ^ (other.low), (self.high) ^ (other.high))
+        return Long(self.low ^ other.low, self.high ^ other.high)
     
     def inv(self):
-        return Long(~(self.low), ~(self.high))
+        return Long(~self.low, ~self.high)
     
     def toByte(self):
         return toByte(self.low)
@@ -12345,33 +12345,33 @@ def compare(other):
     
     thisNeg = isNegative()
     otherNeg = isNegative()
-    return (-1) if ((not (otherNeg)) if (thisNeg) else (False)) else ((1) if ((otherNeg) if (not (thisNeg)) else (False)) else ((-1) if (isNegative()) else (1)))
+    return (-1) if ((not otherNeg) if (thisNeg) else (False)) else ((1) if ((otherNeg) if (not thisNeg) else (False)) else ((-1) if (isNegative()) else (1)))
 
 def add(other):
     a48 = jsBitShiftRU(self.high, 16)
-    a32 = (self.high) & (65535)
+    a32 = self.high & 65535
     a16 = jsBitShiftRU(self.low, 16)
-    a00 = (self.low) & (65535)
+    a00 = self.low & 65535
     b48 = jsBitShiftRU(other.high, 16)
-    b32 = (other.high) & (65535)
+    b32 = other.high & 65535
     b16 = jsBitShiftRU(other.low, 16)
-    b00 = (other.low) & (65535)
+    b00 = other.low & 65535
     c48 = 0
     c32 = 0
     c16 = 0
     c00 = 0
-    c00 = ((c00) + (((a00) + (b00)) | (0))) | (0)
-    c16 = ((c16) + (jsBitShiftRU(c00, 16))) | (0)
-    c00 = (c00) & (65535)
-    c16 = ((c16) + (((a16) + (b16)) | (0))) | (0)
-    c32 = ((c32) + (jsBitShiftRU(c16, 16))) | (0)
-    c16 = (c16) & (65535)
-    c32 = ((c32) + (((a32) + (b32)) | (0))) | (0)
-    c48 = ((c48) + (jsBitShiftRU(c32, 16))) | (0)
-    c32 = (c32) & (65535)
-    c48 = ((c48) + (((a48) + (b48)) | (0))) | (0)
-    c48 = (c48) & (65535)
-    return Long(((c16) << (16)) | (c00), ((c48) << (16)) | (c32))
+    c00 = (c00 + ((a00 + b00) | 0)) | 0
+    c16 = (c16 + jsBitShiftRU(c00, 16)) | 0
+    c00 = c00 & 65535
+    c16 = (c16 + ((a16 + b16) | 0)) | 0
+    c32 = (c32 + jsBitShiftRU(c16, 16)) | 0
+    c16 = c16 & 65535
+    c32 = (c32 + ((a32 + b32) | 0)) | 0
+    c48 = (c48 + jsBitShiftRU(c32, 16)) | 0
+    c32 = c32 & 65535
+    c48 = (c48 + ((a48 + b48) | 0)) | 0
+    c48 = c48 & 65535
+    return Long((c16 << 16) | c00, (c48 << 16) | c32)
 
 def subtract(other):
     return add(other.unaryMinus())
@@ -12398,41 +12398,41 @@ def multiply(other):
         return negate()
     
     if (lessThan(TWO_PWR_24_)) if (lessThan(TWO_PWR_24_)) else (False):
-        return fromNumber((toNumber()) * (toNumber()))
+        return fromNumber(toNumber() * toNumber())
     
     a48 = jsBitShiftRU(self.high, 16)
-    a32 = (self.high) & (65535)
+    a32 = self.high & 65535
     a16 = jsBitShiftRU(self.low, 16)
-    a00 = (self.low) & (65535)
+    a00 = self.low & 65535
     b48 = jsBitShiftRU(other.high, 16)
-    b32 = (other.high) & (65535)
+    b32 = other.high & 65535
     b16 = jsBitShiftRU(other.low, 16)
-    b00 = (other.low) & (65535)
+    b00 = other.low & 65535
     c48 = 0
     c32 = 0
     c16 = 0
     c00 = 0
-    c00 = ((c00) + (imul(a00, b00))) | (0)
-    c16 = ((c16) + (jsBitShiftRU(c00, 16))) | (0)
-    c00 = (c00) & (65535)
-    c16 = ((c16) + (imul(a16, b00))) | (0)
-    c32 = ((c32) + (jsBitShiftRU(c16, 16))) | (0)
-    c16 = (c16) & (65535)
-    c16 = ((c16) + (imul(a00, b16))) | (0)
-    c32 = ((c32) + (jsBitShiftRU(c16, 16))) | (0)
-    c16 = (c16) & (65535)
-    c32 = ((c32) + (imul(a32, b00))) | (0)
-    c48 = ((c48) + (jsBitShiftRU(c32, 16))) | (0)
-    c32 = (c32) & (65535)
-    c32 = ((c32) + (imul(a16, b16))) | (0)
-    c48 = ((c48) + (jsBitShiftRU(c32, 16))) | (0)
-    c32 = (c32) & (65535)
-    c32 = ((c32) + (imul(a00, b32))) | (0)
-    c48 = ((c48) + (jsBitShiftRU(c32, 16))) | (0)
-    c32 = (c32) & (65535)
-    c48 = ((c48) + (((((((imul(a48, b00)) + (imul(a32, b16))) | (0)) + (imul(a16, b32))) | (0)) + (imul(a00, b48))) | (0))) | (0)
-    c48 = (c48) & (65535)
-    return Long(((c16) << (16)) | (c00), ((c48) << (16)) | (c32))
+    c00 = (c00 + imul(a00, b00)) | 0
+    c16 = (c16 + jsBitShiftRU(c00, 16)) | 0
+    c00 = c00 & 65535
+    c16 = (c16 + imul(a16, b00)) | 0
+    c32 = (c32 + jsBitShiftRU(c16, 16)) | 0
+    c16 = c16 & 65535
+    c16 = (c16 + imul(a00, b16)) | 0
+    c32 = (c32 + jsBitShiftRU(c16, 16)) | 0
+    c16 = c16 & 65535
+    c32 = (c32 + imul(a32, b00)) | 0
+    c48 = (c48 + jsBitShiftRU(c32, 16)) | 0
+    c32 = c32 & 65535
+    c32 = (c32 + imul(a16, b16)) | 0
+    c48 = (c48 + jsBitShiftRU(c32, 16)) | 0
+    c32 = c32 & 65535
+    c32 = (c32 + imul(a00, b32)) | 0
+    c48 = (c48 + jsBitShiftRU(c32, 16)) | 0
+    c32 = c32 & 65535
+    c48 = (c48 + ((((((imul(a48, b00) + imul(a32, b16)) | 0) + imul(a16, b32)) | 0) + imul(a00, b48)) | 0)) | 0
+    c48 = c48 & 65535
+    return Long((c16 << 16) | c00, (c48 << 16) | c32)
 
 def divide(other):
     if isZero():
@@ -12471,14 +12471,14 @@ def divide(other):
     res = ZERO
     rem = self
     while greaterThanOrEqual(other):
-        approxDouble = (toNumber()) / (toNumber())
+        approxDouble = toNumber() / toNumber()
         approx2 = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.max(1.0, visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.floor(approxDouble))
-        log2 = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.ceil((visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.log(approx2)) / (visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl._get_LN2_()))
-        delta = (1.0) if (log2 <= 48.0) else (visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(2.0, (log2) - (48)))
+        log2 = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.ceil(visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.log(approx2) / visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl._get_LN2_())
+        delta = (1.0) if (log2 <= 48.0) else (visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(2.0, log2 - 48))
         approxRes = fromNumber(approx2)
         approxRem = multiply(other)
         while (True) if (isNegative()) else (greaterThan(rem)):
-            approx2 = (approx2) - (delta)
+            approx2 = approx2 - delta
             approxRes = fromNumber(approx2)
             approxRem = multiply(other)
         
@@ -12494,48 +12494,48 @@ def modulo(other):
     return subtract(multiply(other))
 
 def shiftLeft(numBits):
-    numBits = (numBits) & (63)
+    numBits = numBits & 63
     if numBits == 0:
         return self
     elif numBits < 32:
-        return Long((self.low) << (numBits), ((self.high) << (numBits)) | (jsBitShiftRU(self.low, ((32) - (numBits)) | (0))))
+        return Long(self.low << numBits, (self.high << numBits) | jsBitShiftRU(self.low, (32 - numBits) | 0))
     else:
-        return Long(0, (self.low) << (((numBits) - (32)) | (0)))
+        return Long(0, self.low << ((numBits - 32) | 0))
     
 
 def shiftRight(numBits):
-    numBits = (numBits) & (63)
+    numBits = numBits & 63
     if numBits == 0:
         return self
     elif numBits < 32:
-        return Long((jsBitShiftRU(self.low, numBits)) | ((self.high) << (((32) - (numBits)) | (0))), (self.high) >> (numBits))
+        return Long(jsBitShiftRU(self.low, numBits) | (self.high << ((32 - numBits) | 0)), self.high >> numBits)
     else:
-        return Long((self.high) >> (((numBits) - (32)) | (0)), (0) if (self.high >= 0) else (-1))
+        return Long(self.high >> ((numBits - 32) | 0), (0) if (self.high >= 0) else (-1))
     
 
 def shiftRightUnsigned(numBits):
-    numBits = (numBits) & (63)
+    numBits = numBits & 63
     if numBits == 0:
         return self
     elif numBits < 32:
-        return Long((jsBitShiftRU(self.low, numBits)) | ((self.high) << (((32) - (numBits)) | (0))), jsBitShiftRU(self.high, numBits))
+        return Long(jsBitShiftRU(self.low, numBits) | (self.high << ((32 - numBits) | 0)), jsBitShiftRU(self.high, numBits))
     else:
         if numBits == 32:
             tmp = Long(self.high, 0)
         else:
-            tmp = Long(jsBitShiftRU(self.high, ((numBits) - (32)) | (0)), 0)
+            tmp = Long(jsBitShiftRU(self.high, (numBits - 32) | 0), 0)
         
         return tmp
     
 
 def toNumber():
-    return ((self.high) * (4.294967296E9)) + (getLowBitsUnsigned())
+    return (self.high * 4.294967296E9) + getLowBitsUnsigned()
 
 def equalsLong(other):
     return (self.low == other.low) if (self.high == other.high) else (False)
 
 def hashCode(l):
-    return (l.low) ^ (l.high)
+    return l.low ^ l.high
 
 def toStringImpl(radix):
     if (True) if (radix < 2) else (36 < radix):
@@ -12551,9 +12551,9 @@ def toStringImpl(radix):
             rem = subtract(self).toInt()
             tmp = toStringImpl(radix)
             tmp0_unsafeCast_0 = INVOKE(toString(rem), radix)
-            return (tmp) + (kotlin_Any_(tmp0_unsafeCast_0))
+            return tmp + kotlin_Any_(tmp0_unsafeCast_0)
         else:
-            return (str('-')) + (str(toStringImpl(radix)))
+            return str('-') + str(toStringImpl(radix))
         
     
     radixToPower = fromNumber(visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(kotlin_Double(radix), 6.0))
@@ -12566,12 +12566,12 @@ def toStringImpl(radix):
         digits = kotlin_Any_(tmp1_unsafeCast_0)
         rem = remDiv
         if isZero():
-            return (digits) + (result)
+            return digits + result
         else:
             while len(digits) < 6:
-                digits = ('0') + (digits)
+                digits = '0' + digits
             
-            result = (digits) + (result)
+            result = digits + result
         
     
 
@@ -12585,7 +12585,7 @@ def isZero():
     return (self.low == 0) if (self.high == 0) else (False)
 
 def isOdd():
-    return (self.low) & (1) == 1
+    return self.low & 1 == 1
 
 def negate():
     return self.unaryMinus()
@@ -12598,13 +12598,13 @@ def fromNumber(value):
         return ZERO
     elif value <= -9.223372036854776E18:
         return MIN_VALUE
-    elif (value) + (1) >= 9.223372036854776E18:
+    elif value + 1 >= 9.223372036854776E18:
         return MAX_VALUE
     elif value < 0.0:
         return negate()
     else:
         twoPwr32 = 4.294967296E9
-        return Long(jsBitwiseOr((value) % (twoPwr32), 0), jsBitwiseOr((value) / (twoPwr32), 0))
+        return Long(jsBitwiseOr(value % twoPwr32, 0), jsBitwiseOr(value / twoPwr32, 0))
     
 
 def greaterThan(other):
@@ -12614,7 +12614,7 @@ def greaterThanOrEqual(other):
     return compare(other) >= 0
 
 def getLowBitsUnsigned():
-    return (kotlin_Double(self.low)) if (self.low >= 0) else ((4.294967296E9) + (self.low))
+    return (kotlin_Double(self.low)) if (self.low >= 0) else (4.294967296E9 + self.low)
 
 def _get_TWO_PWR_32_DBL__():
     return TWO_PWR_32_DBL_
@@ -12625,9 +12625,9 @@ def _get_TWO_PWR_63_DBL__():
 
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def imul(a_local, b_local):
-    lhs = (kotlin_Double(jsBitwiseAnd(a_local, js('0xffff0000')))) * (kotlin_Double(jsBitwiseAnd(b_local, 65535)))
-    rhs = (kotlin_Double(jsBitwiseAnd(a_local, 65535))) * (kotlin_Double(b_local))
-    return jsBitwiseOr((lhs) + (rhs), 0)
+    lhs = kotlin_Double(jsBitwiseAnd(a_local, js('0xffff0000'))) * kotlin_Double(jsBitwiseAnd(b_local, 65535))
+    rhs = kotlin_Double(jsBitwiseAnd(a_local, 65535)) * kotlin_Double(b_local)
+    return jsBitwiseOr(lhs + rhs, 0)
 
 def withType(type, array):
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
@@ -12638,11 +12638,11 @@ def arrayConcat(*args):
     tmp0_unsafeCast_0 = js('Array(len)')
     typed = kotlin_Any_(tmp0_unsafeCast_0)
     inductionVariable = 0
-    last = ((len) - (1)) | (0)
+    last = (len - 1) | 0
     if inductionVariable <= last:
         while True:
             i = inductionVariable
-            inductionVariable = ((inductionVariable) + (1)) | (0)
+            inductionVariable = (inductionVariable + 1) | 0
             arr = args[i]
             if not ((isArray(arr)) if (not (arr == None)) else (False)):
                 typed.__setitem__(i, T(INVOKE(call(slice(js('[]'))), arr)))
@@ -12659,14 +12659,14 @@ def arrayConcat(*args):
 def primitiveArrayConcat(*args):
     size_local = 0
     inductionVariable = 0
-    last = ((len(args)) - (1)) | (0)
+    last = (len(args) - 1) | 0
     if inductionVariable <= last:
         while True:
             i = inductionVariable
-            inductionVariable = ((inductionVariable) + (1)) | (0)
+            inductionVariable = (inductionVariable + 1) | 0
             tmp = size_local
             tmp0_unsafeCast_0 = args[i]
-            size_local = ((tmp) + (len(kotlin_Any_(tmp0_unsafeCast_0)))) | (0)
+            size_local = (tmp + len(kotlin_Any_(tmp0_unsafeCast_0))) | 0
             if not (i == last):
                 break
             
@@ -12681,21 +12681,21 @@ def primitiveArrayConcat(*args):
     
     size_local = 0
     inductionVariable = 0
-    last = ((len(args)) - (1)) | (0)
+    last = (len(args) - 1) | 0
     if inductionVariable <= last:
         while True:
             i = inductionVariable
-            inductionVariable = ((inductionVariable) + (1)) | (0)
+            inductionVariable = (inductionVariable + 1) | 0
             tmp3_unsafeCast_0 = args[i]
             arr = kotlin_Any_(tmp3_unsafeCast_0)
             inductionVariable = 0
-            last = ((len(arr)) - (1)) | (0)
+            last = (len(arr) - 1) | 0
             if inductionVariable <= last:
                 while True:
                     j = inductionVariable
-                    inductionVariable = ((inductionVariable) + (1)) | (0)
+                    inductionVariable = (inductionVariable + 1) | 0
                     tmp3 = size_local
-                    size_local = ((tmp3) + (1)) | (0)
+                    size_local = (tmp3 + 1) | 0
                     result.__setitem__(tmp3, arr[j])
                     if not (j == last):
                         break
@@ -12838,7 +12838,7 @@ def isInterfaceImpl(ctor, iface):
         last = len(indexedObject)
         while inductionVariable < last:
             i = indexedObject[inductionVariable]
-            inductionVariable = ((inductionVariable) + (1)) | (0)
+            inductionVariable = (inductionVariable + 1) | 0
             if isInterfaceImpl(i, iface):
                 return True
             
