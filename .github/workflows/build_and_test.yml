@@ -40,6 +40,10 @@ jobs:
         run: diff -u missing.txt python/experiments/missing.txt
         if: always()
 
+      - name: Run end-to-end tests
+        run: JDK_9="$JAVA_HOME" python/e2e-tests/run.sh
+        if: always()
+
       - name: Run box tests (succeed even if they fail)
         run: (JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated" || true) | tee tests-out.txt
         if: always()
