@@ -505,7 +505,7 @@ def Char(code):
         tmp = code > tmp1__get_code__0.toInt()
     
     if tmp:
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalArgumentException_init__Create_(str('Invalid Char code: ') + str(code))
     
     return numberToChar(code)
 
@@ -1008,28 +1008,28 @@ class Companion:
     
     def checkElementIndex(self, index, size):
         if (True) if (index < 0) else (index >= size):
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IndexOutOfBoundsException_init__Create_(((str('index: ') + str(index)) + str(', size: ')) + str(size))
         
     
     def checkPositionIndex(self, index, size):
         if (True) if (index < 0) else (index > size):
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IndexOutOfBoundsException_init__Create_(((str('index: ') + str(index)) + str(', size: ')) + str(size))
         
     
     def checkRangeIndexes(self, fromIndex, toIndex, size):
         if (True) if (fromIndex < 0) else (toIndex > size):
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IndexOutOfBoundsException_init__Create_(((((str('fromIndex: ') + str(fromIndex)) + str(', toIndex: ')) + str(toIndex)) + str(', size: ')) + str(size))
         
         if fromIndex > toIndex:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalArgumentException_init__Create_(((str('fromIndex: ') + str(fromIndex)) + str(' > toIndex: ')) + str(toIndex))
         
     
     def checkBoundsIndexes(self, startIndex, endIndex, size):
         if (True) if (startIndex < 0) else (endIndex > size):
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IndexOutOfBoundsException_init__Create_(((((str('startIndex: ') + str(startIndex)) + str(', endIndex: ')) + str(endIndex)) + str(', size: ')) + str(size))
         
         if startIndex > endIndex:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalArgumentException_init__Create_(((str('startIndex: ') + str(startIndex)) + str(' > endIndex: ')) + str(endIndex))
         
     
     def orderedHashCode(self, c):
@@ -1226,7 +1226,7 @@ class EmptyList:
         return self.containsAll(elements)
     
     def get(self, index):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IndexOutOfBoundsException_init__Create_((str('Empty list doesn\'t contain element at index ') + str(index)) + str('.'))
     
     def indexOf(self, element):
         return -1
@@ -1272,7 +1272,7 @@ class EmptyList:
         if (toIndex == 0) if (fromIndex == 0) else (False):
             return self
         
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IndexOutOfBoundsException_init__Create_(((str('fromIndex: ') + str(fromIndex)) + str(', toIndex: ')) + str(toIndex))
     
 
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
@@ -1299,10 +1299,10 @@ class EmptyIterator:
         return -1
     
     def next(self):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise NoSuchElementException_init__Create_()
     
     def previous(self):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise NoSuchElementException_init__Create_()
     
     def equals(self, other):
         pass
@@ -1656,7 +1656,7 @@ def resume(value):
     return self.resumeWith(_Result___init__impl_(value))
 
 def _get_coroutineContext_():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise NotImplementedError('Implemented as intrinsic')
 
 class _no_name_provided_:
     def __init__(self, _context, _resumeWith):
@@ -1987,7 +1987,7 @@ def writeReplace(_this):
     tmp0_check_0 = _sharedBox_read(index) == n
     if not tmp0_check_0:
         message_2 = 'Check failed.'
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalStateException_init__Create_(toString(message_2))
     
     return Serialized((kotlin_Array_kotlin_coroutines_CoroutineContext_(elements)) if (isArray(elements)) else (THROW_CCE()))
 
@@ -2536,7 +2536,7 @@ class KTypeProjection:
         tmp0_require_0 = self.variance == None == self.type == None
         if not tmp0_require_0:
             message_2 = ('Star projection must have no type specified.') if (self.variance == None) else ((str('The projection variance ') + str(self.variance)) + str(' requires type to be specified.'))
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalArgumentException_init__Create_(toString(message_2))
         
     
     def _get_variance_(self):
@@ -2696,22 +2696,22 @@ def UNDEFINED_RESULT_init_():
 def check(value):
     if not value:
         message_2 = 'Check failed.'
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalStateException_init__Create_(toString(message_2))
     
 
 def check(value, lazyMessage):
     if not value:
         message = lazyMessage.invoke()
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalStateException_init__Create_(toString(message))
     
 
 def error(message):
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise IllegalStateException_init__Create_(toString(message))
 
 def require(value, lazyMessage):
     if not value:
         message = lazyMessage.invoke()
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalArgumentException_init__Create_(toString(message))
     
 
 def _Result___init__impl_(value):
@@ -2850,7 +2850,7 @@ def run(block):
     return block.invoke()
 
 def TODO():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise NotImplementedError_init__Create_(None, 1, None)
 
 def NotImplementedError_init__Init_(message, _mask0, _marker, _this):
     if not (_mask0 & 1 == 0):
@@ -3268,7 +3268,7 @@ class Iterator:
             tmp0_toUByte_0 = self.array[tmp1]
             tmp = _UByte___init__impl_(tmp0_toUByte_0)
         else:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_(self.index.toString())
         
         return tmp
     
@@ -3726,7 +3726,7 @@ class Iterator:
             tmp0_toUInt_0 = self.array[tmp1]
             tmp = _UInt___init__impl_(tmp0_toUInt_0)
         else:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_(self.index.toString())
         
         return tmp
     
@@ -4539,7 +4539,7 @@ class Iterator:
             tmp0_toULong_0 = self.array[tmp1]
             tmp = _ULong___init__impl_(tmp0_toULong_0)
         else:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_(self.index.toString())
         
         return tmp
     
@@ -4942,7 +4942,7 @@ def getProgressionLastElement(start, end, step):
         
         tmp = tmp
     else:
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalArgumentException_init__Create_('Step is zero.')
     
     return tmp
 
@@ -4965,7 +4965,7 @@ def getProgressionLastElement(start, end, step):
         
         tmp = tmp
     else:
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalArgumentException_init__Create_('Step is zero.')
     
     return tmp
 
@@ -5340,7 +5340,7 @@ class Iterator:
             tmp0_toUShort_0 = self.array[tmp1]
             tmp = _UShort___init__impl_(tmp0_toUShort_0)
         else:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_(self.index.toString())
         
         return tmp
     
@@ -7231,7 +7231,7 @@ def getProgressionLastElement(start, end, step):
     elif step < 0:
         tmp = (end) if (start <= end) else ((end + differenceModulo(start, end, -step | 0)) | 0)
     else:
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalArgumentException_init__Create_('Step is zero.')
     
     return tmp
 
@@ -7241,7 +7241,7 @@ def getProgressionLastElement(start, end, step):
     elif step.compareTo(Long(0, 0)) < 0:
         tmp = (end) if (start.compareTo(end) <= 0) else (end.plus(differenceModulo(start, end, step.unaryMinus())))
     else:
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalArgumentException_init__Create_('Step is zero.')
     
     return tmp
 
@@ -7781,7 +7781,7 @@ class IteratorImpl:
         tmp0_check_0 = not (self.last == -1)
         if not tmp0_check_0:
             message_1 = 'Call next() or previous() before removing element from the iterator.'
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalStateException_init__Create_(toString(message_1))
         
         self._this.removeAt(self.last)
         Unit_getInstance()
@@ -7838,7 +7838,7 @@ class ListIteratorImpl:
         tmp0_check_0 = not (self._get_last_() == -1)
         if not tmp0_check_0:
             message_1 = 'Call next() or previous() before updating element value with the iterator.'
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalStateException_init__Create_(toString(message_1))
         
         self._this.set(self._get_last_(), element)
         Unit_getInstance()
@@ -8785,7 +8785,7 @@ class KClassImpl:
         return self.jClass
     
     def _get_qualifiedName_(self):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise NotImplementedError_init__Create_(None, 1, None)
     
     def equals(self, other):
         if jsInstanceOf(other, jsClass()):
@@ -8860,7 +8860,7 @@ class NothingKClassImpl:
         return False
     
     def _get_jClass_(self):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise UnsupportedOperationException_init__Create_('There\'s no native JS class for Nothing type')
     
     def equals(self, other):
         return other is self
@@ -8887,13 +8887,13 @@ class ErrorKClass:
         pass
     
     def _get_simpleName_(self):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalStateException_init__Create_('Unknown simpleName for ErrorKClass')
     
     def _get_qualifiedName_(self):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalStateException_init__Create_('Unknown qualifiedName for ErrorKClass')
     
     def isInstance(self, value):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalStateException_init__Create_('Can\'s check isInstance on ErrorKClass')
     
     def equals(self, other):
         return other is self
@@ -9991,10 +9991,10 @@ def _get_string_(_this):
 
 def checkReplaceRange(_this, startIndex, endIndex, length):
     if (True) if (startIndex < 0) else (startIndex > length):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IndexOutOfBoundsException_init__Create_(((str('startIndex: ') + str(startIndex)) + str(', length: ')) + str(length))
     
     if startIndex > endIndex:
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalArgumentException_init__Create_((((str('startIndex(') + str(startIndex)) + str(') > endIndex(')) + str(endIndex)) + str(')'))
     
 
 class StringBuilder:
@@ -10010,7 +10010,7 @@ class StringBuilder:
         if (index <= _get_lastIndex_()) if (index >= 0) else (False):
             tmp = charSequenceGet(tmp0_getOrElse_0, index)
         else:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IndexOutOfBoundsException_init__Create_((((str('index: ') + str(index)) + str(', length: ')) + str(self._get_length_())) + str('}'))
         
         return tmp
     
@@ -10174,7 +10174,7 @@ class StringBuilder:
     
     def setLength(self, newLength):
         if newLength < 0:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalArgumentException_init__Create_((str('Negative new length: ') + str(newLength)) + str('.'))
         
         if newLength <= self._get_length_():
             tmp = self
@@ -10348,7 +10348,7 @@ def isHighSurrogate():
 
 def checkRadix(radix):
     if not ((radix <= 36) if (2 <= radix) else (False)):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalArgumentException_init__Create_((str('radix ') + str(radix)) + str(' was not in valid range 2..36'))
     
     return radix
 
@@ -11270,7 +11270,7 @@ def charArray(size):
         tmp = 0 > tmp1__get_code__0_2.toInt()
     
     if tmp:
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalArgumentException_init__Create_('Invalid Char code: 0')
     
     tmp0_withType_0 = fillArrayVal(tmp, Char(0))
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
@@ -11322,7 +11322,7 @@ class _no_name_provided_:
             tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_(str(self.index))
         
         return tmp
     
@@ -11358,7 +11358,7 @@ class _no_name_provided_:
             tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_(str(self.index))
         
         return tmp
     
@@ -11397,7 +11397,7 @@ class _no_name_provided_:
             tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_(str(self.index))
         
         return tmp
     
@@ -11436,7 +11436,7 @@ class _no_name_provided_:
             tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_(str(self.index))
         
         return tmp
     
@@ -11475,7 +11475,7 @@ class _no_name_provided_:
             tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_(str(self.index))
         
         return tmp
     
@@ -11514,7 +11514,7 @@ class _no_name_provided_:
             tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_(str(self.index))
         
         return tmp
     
@@ -11553,7 +11553,7 @@ class _no_name_provided_:
             tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_(str(self.index))
         
         return tmp
     
@@ -11592,7 +11592,7 @@ class _no_name_provided_:
             tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_(str(self.index))
         
         return tmp
     
@@ -11631,7 +11631,7 @@ class _no_name_provided_:
             tmp0_this.index = (tmp1 + 1) | 0
             tmp = self._array[tmp1]
         else:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_(str(self.index))
         
         return tmp
     
@@ -11724,7 +11724,7 @@ def charSequenceGet(a, index):
             tmp = tmp1_Char_0 > tmp1__get_code__0_2.toInt()
         
         if tmp:
-            visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalArgumentException_init__Create_(str('Invalid Char code: ') + str(tmp1_Char_0))
         
         tmp = numberToChar(tmp1_Char_0)
     else:
@@ -11932,10 +11932,10 @@ def equals(obj1, obj2):
     return EQEQEQ(obj1, obj2)
 
 def boxIntrinsic(x):
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise IllegalStateException_init__Create_('Should be lowered')
 
 def unboxIntrinsic(x):
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise IllegalStateException_init__Create_('Should be lowered')
 
 def captureStack(instance, constructorFunction):
     if EXCLEQ(captureStackTrace(js('Error')), None):
@@ -11997,10 +11997,10 @@ def hasOwnPrototypeProperty(o, name):
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def getContinuation():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise Exception_init__Create_('Implemented as intrinsic')
 
 def returnIfSuspended(argument):
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise Exception_init__Create_('Implemented as intrinsic')
 
 def suspendCoroutineUninterceptedOrReturnJS(block):
     return block.invoke(getContinuation())
@@ -12013,7 +12013,7 @@ def unreachableDeclarationLog():
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
 
 def unreachableDeclarationException():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise JsError('Unreachable declaration')
 
 def ensureNotNull(v):
     if v == None:
@@ -12024,25 +12024,25 @@ def ensureNotNull(v):
     return tmp
 
 def THROW_NPE():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise NullPointerException_init__Create_()
 
 def noWhenBranchMatchedException():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise NoWhenBranchMatchedException_init__Create_()
 
 def THROW_CCE():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise ClassCastException_init__Create_()
 
 def throwUninitializedPropertyAccessException(name):
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise UninitializedPropertyAccessException_init__Create_((str('lateinit property ') + str(name)) + str(' has not been initialized'))
 
 def throwKotlinNothingValueException():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise KotlinNothingValueException_init__Create_()
 
 def THROW_ISE():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise IllegalStateException_init__Create_()
 
 def THROW_IAE(msg):
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise IllegalArgumentException_init__Create_(msg)
 
 def emptyArray():
     return kotlin_Array_T_(js('[]'))
@@ -12065,10 +12065,10 @@ class JsFun:
     
 
 def enumValueOfIntrinsic(name):
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise IllegalStateException_init__Create_('Should be replaced by compiler')
 
 def enumValuesIntrinsic():
-    visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+    raise IllegalStateException_init__Create_('Should be replaced by compiler')
 
 class Companion:
     def __init__(self):
@@ -12436,7 +12436,7 @@ def multiply(other):
 
 def divide(other):
     if isZero():
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise Exception_init__Create_('division by zero')
     elif isZero():
         return ZERO
     
@@ -12539,7 +12539,7 @@ def hashCode(l):
 
 def toStringImpl(radix):
     if (True) if (radix < 2) else (36 < radix):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise Exception_init__Create_(str('radix out of range: ') + str(radix))
     
     if isZero():
         return '0'
@@ -13077,10 +13077,10 @@ class CoroutineImpl:
         pass
     
     def create(self, completion):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise UnsupportedOperationException_init__Create_('create(Continuation) has not been overridden')
     
     def create(self, value, completion):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise UnsupportedOperationException_init__Create_('create(Any?;Continuation) has not been overridden')
     
     def equals(self, other):
         pass
@@ -13097,10 +13097,10 @@ class CompletedContinuation:
         CompletedContinuation_instance = self
     
     def _get_context_(self):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalStateException_init__Create_('This continuation is already complete')
     
     def resumeWith(self, result):
-        visitThrow_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise IllegalStateException_init__Create_('This continuation is already complete')
     
     def resumeWith(self, result):
         return self.resumeWith(result)

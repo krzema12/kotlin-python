@@ -23,7 +23,7 @@ fun stmt.toPython(): String {
         is If -> toPython()
         is With -> TODO()
         is AsyncWith -> TODO()
-        is Raise -> TODO()
+        is Raise -> toPython()
         is Try -> TODO()
         is Assert -> TODO()
         is Import -> TODO()
@@ -74,3 +74,6 @@ fun If.toPython(): String {
 
 fun ClassDef.toPython() =
     "${if (bases.isNotEmpty()) bases.joinToString("") { "class ${it.toPython()}:\n${"pass".indent()}\n\n" } else ""}class ${name.name}${if (bases.isNotEmpty()) "(${bases.joinToString(", ") { it.toPython() }})" else ""}:\n${(if (body.isNotEmpty()) body.toPython() else "pass").indent()}\n"
+
+fun Raise.toPython() =
+    "raise ${exc?.toPython()}"

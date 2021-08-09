@@ -94,8 +94,10 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     }
 
     override fun visitThrow(expression: IrThrow, context: JsGenerationContext): List<stmt> {
-        // TODO
-        return listOf(Expr(value = Name(id = identifier("visitThrow $expression".toValidPythonSymbol()), ctx = Load)))
+        return listOf(Raise(
+            exc = IrElementToPyExpressionTransformer().visitExpression(expression.value, context).first(),
+            cause = null,
+        ))
     }
 
     override fun visitVariable(declaration: IrVariable, context: JsGenerationContext): List<stmt> {
