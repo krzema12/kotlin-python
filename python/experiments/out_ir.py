@@ -2924,8 +2924,8 @@ def _UByte___get_data__impl_(this):
 class Companion:
     def __init__(self):
         Companion_instance = self
-        self.MIN_VALUE = _UByte___init__impl_(visitConst_other_Byte)
-        self.MAX_VALUE = _UByte___init__impl_(visitConst_other_Byte)
+        self.MIN_VALUE = _UByte___init__impl_(0)
+        self.MAX_VALUE = _UByte___init__impl_(-1)
         self.SIZE_BYTES = 1
         self.SIZE_BITS = 8
     
@@ -5000,8 +5000,8 @@ def _UShort___get_data__impl_(this):
 class Companion:
     def __init__(self):
         Companion_instance = self
-        self.MIN_VALUE = _UShort___init__impl_(visitConst_other_Short)
-        self.MAX_VALUE = _UShort___init__impl_(visitConst_other_Short)
+        self.MIN_VALUE = _UShort___init__impl_(0)
+        self.MAX_VALUE = _UShort___init__impl_(-1)
         self.SIZE_BYTES = 2
         self.SIZE_BITS = 16
     
@@ -7262,8 +7262,8 @@ def mod(a, b):
 class ByteCompanionObject:
     def __init__(self):
         ByteCompanionObject_instance = self
-        self.MIN_VALUE = visitConst_other_Byte
-        self.MAX_VALUE = visitConst_other_Byte
+        self.MIN_VALUE = -128
+        self.MAX_VALUE = 127
         self.SIZE_BYTES = 1
         self.SIZE_BITS = 8
     
@@ -7299,8 +7299,8 @@ def ByteCompanionObject_getInstance():
 class ShortCompanionObject:
     def __init__(self):
         ShortCompanionObject_instance = self
-        self.MIN_VALUE = visitConst_other_Short
-        self.MAX_VALUE = visitConst_other_Short
+        self.MIN_VALUE = -32768
+        self.MAX_VALUE = 32767
         self.SIZE_BYTES = 2
         self.SIZE_BITS = 16
     
@@ -7373,11 +7373,11 @@ def IntCompanionObject_getInstance():
 class FloatCompanionObject:
     def __init__(self):
         FloatCompanionObject_instance = self
-        self.MIN_VALUE = visitConst_other_Float
-        self.MAX_VALUE = visitConst_other_Float
-        self.POSITIVE_INFINITY = visitConst_other_Float
-        self.NEGATIVE_INFINITY = visitConst_other_Float
-        self.NaN = visitConst_other_Float
+        self.MIN_VALUE = 1.4E-45
+        self.MAX_VALUE = 3.4028235E38
+        self.POSITIVE_INFINITY = Infinity
+        self.NEGATIVE_INFINITY = -Infinity
+        self.NaN = NaN
         self.SIZE_BYTES = 4
         self.SIZE_BITS = 32
     
@@ -10503,7 +10503,7 @@ def _get_REPLACEMENT_BYTE_SEQUENCE_():
 
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def REPLACEMENT_BYTE_SEQUENCE_init_():
-    tmp0_byteArrayOf_0 = visitConst_other_Byte
+    tmp0_byteArrayOf_0 = -17
     return tmp0_byteArrayOf_0
 
 def _get_value_(_this):

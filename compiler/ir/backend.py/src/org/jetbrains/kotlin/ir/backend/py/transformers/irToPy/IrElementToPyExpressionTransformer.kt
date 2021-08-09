@@ -67,7 +67,19 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
                 value = constant(value = "${kind.valueOf(expression)}"),
                 kind = null,
             )
+            is IrConstKind.Short -> Constant(
+                value = constant(value = "${kind.valueOf(expression)}"),
+                kind = null,
+            )
+            is IrConstKind.Byte -> Constant(
+                value = constant(value = "${kind.valueOf(expression)}"),
+                kind = null,
+            )
             is IrConstKind.Double -> Constant(
+                value = constant(value = "${kind.valueOf(expression)}"),
+                kind = null,
+            )
+            is IrConstKind.Float -> Constant(
                 value = constant(value = "${kind.valueOf(expression)}"),
                 kind = null,
             )

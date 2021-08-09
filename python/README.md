@@ -54,9 +54,11 @@ Setting `maxParallelForks` isn't required anymore since now Gradle parallelism i
 
 ### Test stats
 
-Current status: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=23&leftFill=) (**1312**/5787 passed)
+Current status: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=23&leftFill=) (**1314**/5787 passed)
 
 ### History (newest on top)
+
+* after supporting short, byte and float: **1314**/5787 passed (+2)
 
 * after supporting do-while, break, continue: **1312**/5787 passed (+14)
 
