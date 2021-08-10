@@ -58,7 +58,7 @@ Current status: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php
 
 ### History (newest on top)
 
-* after supporting short, byte and float: **1314**/5787 passed (+2)
+* after supporting float constants: **1314**/5787 passed (+2)
 
 * after supporting do-while, break, continue: **1312**/5787 passed (+14)
 
