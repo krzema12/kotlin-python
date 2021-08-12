@@ -1,7 +1,3 @@
-from out_ir import returnString
-from out_ir import returnStringFromClass
-from out_ir import returnParameterFromClass
+from out_ir import box
 
-print(returnString())
-print(returnStringFromClass())
-print(returnParameterFromClass())
+print(box())

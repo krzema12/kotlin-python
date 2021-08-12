@@ -10,6 +10,110 @@ def fold(initial, operation):
     
     return accumulator
 
+def contains(element):
+    return indexOf(element) >= 0
+
+def indexOf(element):
+    inductionVariable = 0
+    last = (len(self) - 1) | 0
+    if inductionVariable <= last:
+        while True:
+            index = inductionVariable
+            inductionVariable = (inductionVariable + 1) | 0
+            if kotlin_Int(element) == kotlin_Int(self[index]):
+                return index
+            
+            if inductionVariable <= last:
+                break
+            
+        
+    
+    return -1
+
+def _get_indices_():
+    return IntRange(0, _get_lastIndex_())
+
+def _get_lastIndex_():
+    return (len(self) - 1) | 0
+
+def contains(element):
+    return indexOf(element) >= 0
+
+def indexOf(element):
+    inductionVariable = 0
+    last = (len(self) - 1) | 0
+    if inductionVariable <= last:
+        while True:
+            index = inductionVariable
+            inductionVariable = (inductionVariable + 1) | 0
+            if kotlin_Int(element) == kotlin_Int(self[index]):
+                return index
+            
+            if inductionVariable <= last:
+                break
+            
+        
+    
+    return -1
+
+def _get_indices_():
+    return IntRange(0, _get_lastIndex_())
+
+def _get_lastIndex_():
+    return (len(self) - 1) | 0
+
+def contains(element):
+    return indexOf(element) >= 0
+
+def indexOf(element):
+    inductionVariable = 0
+    last = (len(self) - 1) | 0
+    if inductionVariable <= last:
+        while True:
+            index = inductionVariable
+            inductionVariable = (inductionVariable + 1) | 0
+            if element == self[index]:
+                return index
+            
+            if inductionVariable <= last:
+                break
+            
+        
+    
+    return -1
+
+def _get_indices_():
+    return IntRange(0, _get_lastIndex_())
+
+def _get_lastIndex_():
+    return (len(self) - 1) | 0
+
+def contains(element):
+    return indexOf(element) >= 0
+
+def indexOf(element):
+    inductionVariable = 0
+    last = (len(self) - 1) | 0
+    if inductionVariable <= last:
+        while True:
+            index = inductionVariable
+            inductionVariable = (inductionVariable + 1) | 0
+            if element.equals(self[index]):
+                return index
+            
+            if inductionVariable <= last:
+                break
+            
+        
+    
+    return -1
+
+def _get_indices_():
+    return IntRange(0, _get_lastIndex_())
+
+def _get_lastIndex_():
+    return (len(self) - 1) | 0
+
 def _get_indices_():
     return IntRange(0, _get_lastIndex_())
 
@@ -156,151 +260,6 @@ def joinTo_default(buffer, separator, prefix, postfix, limit, truncated, transfo
     
     return joinTo(buffer, kotlin_CharSequence(separator), kotlin_CharSequence(prefix), kotlin_CharSequence(postfix), limit, kotlin_CharSequence(truncated), transform)
 
-def contains(element):
-    return indexOf(element) >= 0
-
-def indexOf(element):
-    inductionVariable = 0
-    last = (len(self) - 1) | 0
-    if inductionVariable <= last:
-        while True:
-            index = inductionVariable
-            inductionVariable = (inductionVariable + 1) | 0
-            if kotlin_Int(element) == kotlin_Int(self[index]):
-                return index
-            
-            if inductionVariable <= last:
-                break
-            
-        
-    
-    return -1
-
-def _get_indices_():
-    return IntRange(0, _get_lastIndex_())
-
-def _get_lastIndex_():
-    return (len(self) - 1) | 0
-
-def contains(element):
-    return indexOf(element) >= 0
-
-def indexOf(element):
-    inductionVariable = 0
-    last = (len(self) - 1) | 0
-    if inductionVariable <= last:
-        while True:
-            index = inductionVariable
-            inductionVariable = (inductionVariable + 1) | 0
-            if kotlin_Int(element) == kotlin_Int(self[index]):
-                return index
-            
-            if inductionVariable <= last:
-                break
-            
-        
-    
-    return -1
-
-def _get_indices_():
-    return IntRange(0, _get_lastIndex_())
-
-def _get_lastIndex_():
-    return (len(self) - 1) | 0
-
-def contains(element):
-    return indexOf(element) >= 0
-
-def indexOf(element):
-    inductionVariable = 0
-    last = (len(self) - 1) | 0
-    if inductionVariable <= last:
-        while True:
-            index = inductionVariable
-            inductionVariable = (inductionVariable + 1) | 0
-            if element == self[index]:
-                return index
-            
-            if inductionVariable <= last:
-                break
-            
-        
-    
-    return -1
-
-def _get_indices_():
-    return IntRange(0, _get_lastIndex_())
-
-def _get_lastIndex_():
-    return (len(self) - 1) | 0
-
-def contains(element):
-    return indexOf(element) >= 0
-
-def indexOf(element):
-    inductionVariable = 0
-    last = (len(self) - 1) | 0
-    if inductionVariable <= last:
-        while True:
-            index = inductionVariable
-            inductionVariable = (inductionVariable + 1) | 0
-            if element.equals(self[index]):
-                return index
-            
-            if inductionVariable <= last:
-                break
-            
-        
-    
-    return -1
-
-def _get_indices_():
-    return IntRange(0, _get_lastIndex_())
-
-def _get_lastIndex_():
-    return (len(self) - 1) | 0
-
-def indexOfFirst(predicate):
-    index = 0
-    tmp0_iterator = self.iterator()
-    while tmp0_iterator.hasNext():
-        item = tmp0_iterator.next()
-        if predicate.invoke(item):
-            return index
-        
-        tmp1 = index
-        index = (tmp1 + 1) | 0
-        Unit_getInstance()
-    
-    return -1
-
-def indexOfLast(predicate):
-    iterator = self.listIterator(self._get_size_())
-    while iterator.hasPrevious():
-        if predicate.invoke(iterator.previous()):
-            return iterator.nextIndex()
-        
-    
-    return -1
-
-def any(predicate):
-    if isInterface(self, jsClass()):
-        tmp = kotlin_collections_Collection_T_(self).isEmpty()
-    elif True:
-        tmp = False
-    
-    if tmp:
-        return False
-    
-    tmp0_iterator = self.iterator()
-    while tmp0_iterator.hasNext():
-        element = tmp0_iterator.next()
-        if predicate.invoke(element):
-            return True
-        
-    
-    return False
-
 def all(predicate):
     if isInterface(self, jsClass()):
         tmp = kotlin_collections_Collection_T_(self).isEmpty()
@@ -390,40 +349,55 @@ def joinTo_default(buffer, separator, prefix, postfix, limit, truncated, transfo
     
     return joinTo(buffer, kotlin_CharSequence(separator), kotlin_CharSequence(prefix), kotlin_CharSequence(postfix), limit, kotlin_CharSequence(truncated), transform)
 
-def forEach(action):
-    tmp0_iterator = self.iterator()
-    while tmp0_iterator.hasNext():
-        element = tmp0_iterator.next()
-        action.invoke(element)
-    
-
-def map(transform):
-    tmp0_mapTo_0 = ArrayList_init__Create_(collectionSizeOrDefault(10))
-    tmp0_iterator_1 = self.iterator()
-    while tmp0_iterator_1.hasNext():
-        item_2 = tmp0_iterator_1.next()
-        tmp0_mapTo_0.add(transform.invoke(item_2))
-        Unit_getInstance()
-    
-    return tmp0_mapTo_0
-
-def mapTo(destination, transform):
+def indexOfFirst(predicate):
+    index = 0
     tmp0_iterator = self.iterator()
     while tmp0_iterator.hasNext():
         item = tmp0_iterator.next()
-        destination.add(transform.invoke(item))
+        if predicate.invoke(item):
+            return index
+        
+        tmp1 = index
+        index = (tmp1 + 1) | 0
         Unit_getInstance()
     
-    return destination
+    return -1
 
-def downTo(to):
-    return Companion_getInstance().fromClosedRange(self, to, -1)
+def indexOfLast(predicate):
+    iterator = self.listIterator(self._get_size_())
+    while iterator.hasPrevious():
+        if predicate.invoke(iterator.previous()):
+            return iterator.nextIndex()
+        
+    
+    return -1
+
+def any(predicate):
+    if isInterface(self, jsClass()):
+        tmp = kotlin_collections_Collection_T_(self).isEmpty()
+    elif True:
+        tmp = False
+    
+    if tmp:
+        return False
+    
+    tmp0_iterator = self.iterator()
+    while tmp0_iterator.hasNext():
+        element = tmp0_iterator.next()
+        if predicate.invoke(element):
+            return True
+        
+    
+    return False
 
 def until(to):
     if to <= IntCompanionObject_getInstance().MIN_VALUE:
         return Companion_getInstance().EMPTY
     
     return numberRangeToNumber(self, kotlin_Int((to - 1) | 0))
+
+def downTo(to):
+    return Companion_getInstance().fromClosedRange(self, to, -1)
 
 def reversed():
     return Companion_getInstance().fromClosedRange(self.last, self.first, -self.step | 0)
@@ -1168,8 +1142,8 @@ class AbstractList:
         pass
     
 
-def listOf(*elements):
-    return (asList()) if (len(elements) > 0) else (emptyList())
+def _get_lastIndex_():
+    return (self._get_size_() - 1) | 0
 
 def emptyList():
     return EmptyList_getInstance()
@@ -1320,17 +1294,6 @@ def EmptyIterator_getInstance():
         EmptyIterator()
     
     return EmptyIterator_instance
-
-def _get_lastIndex_():
-    return (self._get_size_() - 1) | 0
-
-def collectionSizeOrDefault(default):
-    if isInterface(self, jsClass()):
-        tmp = kotlin_collections_Collection_kotlin_Any__(self)._get_size_()
-    elif True:
-        tmp = default
-    
-    return tmp
 
 def removeAll(predicate):
     return filterInPlace(predicate, True)
@@ -2425,20 +2388,6 @@ class OnlyInputTypes:
         pass
     
 
-class HidesMembers:
-    def __init__(self):
-        pass
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-
 def RequireKotlinVersionKind_LANGUAGE_VERSION_getInstance():
     RequireKotlinVersionKind_initEntries()
     return RequireKotlinVersionKind_LANGUAGE_VERSION_instance
@@ -2898,6 +2847,16 @@ class NotImplementedError:
 def let(block):
     return block.invoke(self)
 
+def also(block):
+    block.invoke(self)
+    return self
+
+def _with(receiver, block):
+    return block.invoke(receiver)
+
+def run(block):
+    return block.invoke(self)
+
 def apply(block):
     block.invoke(self)
     return self
@@ -2914,16 +2873,6 @@ def repeat(times, action):
             
         
     
-
-def _with(receiver, block):
-    return block.invoke(receiver)
-
-def also(block):
-    block.invoke(self)
-    return self
-
-def run(block):
-    return block.invoke(self)
 
 def _UByte___init__impl_(data):
     return kotlin_UByte(data)
@@ -8656,10 +8605,6 @@ class BufferedOutput:
         pass
     
 
-def println(message):
-    init_properties_console_kt()
-    _get_output_().println(message)
-
 properties_initialized_console_kt = False
 def init_properties_console_kt():
     global properties_initialized_console_kt
@@ -10512,10 +10457,6 @@ def concatToString_default(startIndex, endIndex, _mask0, _handler):
     
     return concatToString(startIndex, endIndex)
 
-def toUpperCase():
-    init_properties_string_kt()
-    return kotlin_String(INVOKE(toUpperCase(self)))
-
 class sam_kotlin_Comparator_0:
     def __init__(self, function):
         self.function = function
@@ -10759,6 +10700,35 @@ class Collection:
         pass
     
 
+class Set:
+    def _get_size_(self):
+        pass
+    
+    def isEmpty(self):
+        pass
+    
+    def contains(self, element):
+        pass
+    
+    def iterator(self):
+        pass
+    
+    def containsAll(self, elements):
+        pass
+    
+    def equals(self, other):
+        pass
+    
+    def hashCode(self):
+        pass
+    
+    def toString(self):
+        pass
+    
+    def __init__(self):
+        pass
+    
+
 class List:
     def _get_size_(self):
         pass
@@ -10806,68 +10776,49 @@ class List:
         pass
     
 
-class MutableList:
-    def add(self, element):
+class Entry:
+    def _get_key_(self):
         pass
     
-    def remove(self, element):
+    def _get_value_(self):
         pass
     
-    def addAll(self, elements):
+    def equals(self, other):
         pass
     
-    def addAll(self, index, elements):
+    def hashCode(self):
         pass
     
-    def removeAll(self, elements):
+    def toString(self):
         pass
     
-    def retainAll(self, elements):
+    def __init__(self):
         pass
     
-    def clear(self):
-        pass
-    
-    def set(self, index, element):
-        pass
-    
-    def add(self, index, element):
-        pass
-    
-    def removeAt(self, index):
-        pass
-    
-    def listIterator(self):
-        pass
-    
-    def listIterator(self, index):
-        pass
-    
-    def subList(self, fromIndex, toIndex):
-        pass
-    
+
+class Map:
     def _get_size_(self):
         pass
     
     def isEmpty(self):
         pass
     
-    def contains(self, element):
+    def containsKey(self, key):
         pass
     
-    def iterator(self):
+    def containsValue(self, value):
         pass
     
-    def containsAll(self, elements):
+    def get(self, key):
         pass
     
-    def get(self, index):
+    def _get_keys_(self):
         pass
     
-    def indexOf(self, element):
+    def _get_values_(self):
         pass
     
-    def lastIndexOf(self, element):
+    def _get_entries_(self):
         pass
     
     def equals(self, other):
@@ -10947,93 +10898,6 @@ class MutableIterable:
         pass
     
 
-class Set:
-    def _get_size_(self):
-        pass
-    
-    def isEmpty(self):
-        pass
-    
-    def contains(self, element):
-        pass
-    
-    def iterator(self):
-        pass
-    
-    def containsAll(self, elements):
-        pass
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-    def __init__(self):
-        pass
-    
-
-class Entry:
-    def _get_key_(self):
-        pass
-    
-    def _get_value_(self):
-        pass
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-    def __init__(self):
-        pass
-    
-
-class Map:
-    def _get_size_(self):
-        pass
-    
-    def isEmpty(self):
-        pass
-    
-    def containsKey(self, key):
-        pass
-    
-    def containsValue(self, value):
-        pass
-    
-    def get(self, key):
-        pass
-    
-    def _get_keys_(self):
-        pass
-    
-    def _get_values_(self):
-        pass
-    
-    def _get_entries_(self):
-        pass
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-    def __init__(self):
-        pass
-    
-
 class MutableSet:
     def iterator(self):
         pass
@@ -11066,6 +10930,83 @@ class MutableSet:
         pass
     
     def containsAll(self, elements):
+        pass
+    
+    def equals(self, other):
+        pass
+    
+    def hashCode(self):
+        pass
+    
+    def toString(self):
+        pass
+    
+    def __init__(self):
+        pass
+    
+
+class MutableList:
+    def add(self, element):
+        pass
+    
+    def remove(self, element):
+        pass
+    
+    def addAll(self, elements):
+        pass
+    
+    def addAll(self, index, elements):
+        pass
+    
+    def removeAll(self, elements):
+        pass
+    
+    def retainAll(self, elements):
+        pass
+    
+    def clear(self):
+        pass
+    
+    def set(self, index, element):
+        pass
+    
+    def add(self, index, element):
+        pass
+    
+    def removeAt(self, index):
+        pass
+    
+    def listIterator(self):
+        pass
+    
+    def listIterator(self, index):
+        pass
+    
+    def subList(self, fromIndex, toIndex):
+        pass
+    
+    def _get_size_(self):
+        pass
+    
+    def isEmpty(self):
+        pass
+    
+    def contains(self, element):
+        pass
+    
+    def iterator(self):
+        pass
+    
+    def containsAll(self, elements):
+        pass
+    
+    def get(self, index):
+        pass
+    
+    def indexOf(self, element):
+        pass
+    
+    def lastIndexOf(self, element):
         pass
     
     def equals(self, other):
@@ -11209,11 +11150,6 @@ def byteArrayOf(*elements):
 def arrayOf(*elements):
     return kotlin_Any_(elements)
 
-def toString():
-    tmp0_safe_receiver = self
-    tmp1_elvis_lhs = (None) if (tmp0_safe_receiver == None) else (toString(tmp0_safe_receiver))
-    return ('null') if (tmp1_elvis_lhs == None) else (tmp1_elvis_lhs)
-
 def plus(other):
     tmp2_safe_receiver = self
     tmp3_elvis_lhs = (None) if (tmp2_safe_receiver == None) else (toString(tmp2_safe_receiver))
@@ -11221,6 +11157,11 @@ def plus(other):
     tmp0_safe_receiver = other
     tmp1_elvis_lhs = (None) if (tmp0_safe_receiver == None) else (toString(tmp0_safe_receiver))
     return tmp + (('null') if (tmp1_elvis_lhs == None) else (tmp1_elvis_lhs))
+
+def toString():
+    tmp0_safe_receiver = self
+    tmp1_elvis_lhs = (None) if (tmp0_safe_receiver == None) else (toString(tmp0_safe_receiver))
+    return ('null') if (tmp1_elvis_lhs == None) else (tmp1_elvis_lhs)
 
 def booleanArrayOf(*elements):
     return elements
@@ -11933,17 +11874,6 @@ def _get_POW_2_32_():
     return POW_2_32
 
 POW_2_32 = 4.294967296E9
-def toString(o):
-    if EQEQ(o, None):
-        tmp = 'null'
-    elif isArrayish(o):
-        tmp = '[...]'
-    else:
-        tmp0_unsafeCast_0 = INVOKE(toString(o))
-        tmp = kotlin_Any_(tmp0_unsafeCast_0)
-    
-    return tmp
-
 def hashCode(obj):
     if EQEQ(obj, None):
         return 0
@@ -11984,6 +11914,17 @@ def getStringHashCode(str):
         
     
     return hash
+
+def toString(o):
+    if EQEQ(o, None):
+        tmp = 'null'
+    elif isArrayish(o):
+        tmp = '[...]'
+    else:
+        tmp0_unsafeCast_0 = INVOKE(toString(o))
+        tmp = kotlin_Any_(tmp0_unsafeCast_0)
+    
+    return tmp
 
 def anyToString(o):
     return kotlin_String(INVOKE(call(toString(prototype(js('Object')))), o))
@@ -12950,19 +12891,6 @@ def init_properties_reflectRuntime_kt():
 def Python_workaround_set_properties_initialized_reflectRuntime_kt_to_global():
     pass
 
-def isArrayish(o):
-    if isJsArray(kotlin_Any(o)):
-        tmp = True
-    else:
-        tmp0_unsafeCast_0 = INVOKE(isView(js('ArrayBuffer')), o)
-        tmp = kotlin_Any_(tmp0_unsafeCast_0)
-    
-    return tmp
-
-def isJsArray(obj):
-    tmp0_unsafeCast_0 = INVOKE(isArray(js('Array')), obj)
-    return kotlin_Any_(tmp0_unsafeCast_0)
-
 def isInterface(obj, iface):
     tmp0_elvis_lhs = constructor(obj)
     if tmp0_elvis_lhs == None:
@@ -13002,6 +12930,10 @@ def isArray(obj):
         tmp = False
     
     return tmp
+
+def isJsArray(obj):
+    tmp0_unsafeCast_0 = INVOKE(isArray(js('Array')), obj)
+    return kotlin_Any_(tmp0_unsafeCast_0)
 
 def isObject(obj):
     objTypeOf = jsTypeOf(obj)
@@ -13053,6 +12985,15 @@ def isLongArray(a):
 
 def isDoubleArray(a):
     return jsInstanceOf(a, js('Float64Array'))
+
+def isArrayish(o):
+    if isJsArray(kotlin_Any(o)):
+        tmp = True
+    else:
+        tmp0_unsafeCast_0 = INVOKE(isView(js('ArrayBuffer')), o)
+        tmp = kotlin_Any_(tmp0_unsafeCast_0)
+    
+    return tmp
 
 def jsIsType(obj, jsClass):
     if EQEQEQ(jsClass, js('Object')):
@@ -13609,46 +13550,6 @@ class IllegalStateException:
         captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     
 
-def IndexOutOfBoundsException_init__Init_(_this):
-    RuntimeException_init__Init_(_this)
-    super()
-    return _this
-
-def IndexOutOfBoundsException_init__Create_():
-    tmp = IndexOutOfBoundsException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
-    return tmp
-
-def IndexOutOfBoundsException_init__Init_(message, _this):
-    RuntimeException_init__Init_(message, _this)
-    super()
-    return _this
-
-def IndexOutOfBoundsException_init__Create_(message):
-    tmp = IndexOutOfBoundsException_init__Init_(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
-    return tmp
-
-class IndexOutOfBoundsException:
-    def _get_message_(self):
-        pass
-    
-    def _get_cause_(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def __init__(self):
-        captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
-    
-
 def UnsupportedOperationException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
     super()
@@ -13730,6 +13631,46 @@ def NullPointerException_init__Create_(message):
     return tmp
 
 class NullPointerException:
+    def _get_message_(self):
+        pass
+    
+    def _get_cause_(self):
+        pass
+    
+    def toString(self):
+        pass
+    
+    def equals(self, other):
+        pass
+    
+    def hashCode(self):
+        pass
+    
+    def __init__(self):
+        captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    
+
+def IndexOutOfBoundsException_init__Init_(_this):
+    RuntimeException_init__Init_(_this)
+    super()
+    return _this
+
+def IndexOutOfBoundsException_init__Create_():
+    tmp = IndexOutOfBoundsException_init__Init_(Object_create())
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    return tmp
+
+def IndexOutOfBoundsException_init__Init_(message, _this):
+    RuntimeException_init__Init_(message, _this)
+    super()
+    return _this
+
+def IndexOutOfBoundsException_init__Create_(message):
+    tmp = IndexOutOfBoundsException_init__Init_(message, Object_create())
+    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    return tmp
+
+class IndexOutOfBoundsException:
     def _get_message_(self):
         pass
     
@@ -13932,68 +13873,30 @@ def jsBitwiseAnd(lhs_hack, rhs_hack):
 def toString(radix):
     return toStringImpl(checkRadix(radix))
 
-def pythonTest():
-    println('Hello world')
+def _get_c_():
+    init_properties_python_kt()
+    return c
 
-def exampleFromAstTest():
-    fruits = listOf('apple', 'banana', 'cherry')
-    tmp0_iterator = fruits.iterator()
-    while tmp0_iterator.hasNext():
-        x = tmp0_iterator.next()
-        println(x)
+pass
+def _get_d_():
+    init_properties_python_kt()
+    return d
+
+pass
+def box():
+    init_properties_python_kt()
+    _get_c_()
+    _get_d_()
+    return 'OK'
+
+properties_initialized_python_kt = False
+def init_properties_python_kt():
+    global properties_initialized_python_kt
+    if not properties_initialized_python_kt:
+        properties_initialized_python_kt = True
+        c = Unit_getInstance()
+        d = _get_c_()
     
 
-def a(a1, *a2):
+def Python_workaround_set_properties_initialized_python_kt_to_global():
     pass
-
-def b():
-    a(1, 2, 3)
-
-def newCode():
-    tmp0_map_0 = listOf('apple', 'banana', 'cherry')
-    tmp0_mapTo_0_1 = ArrayList_init__Create_(collectionSizeOrDefault(10))
-    tmp0_iterator_1_2 = tmp0_map_0.iterator()
-    while tmp0_iterator_1_2.hasNext():
-        item_2_3 = tmp0_iterator_1_2.next()
-        tmp0_mapTo_0_1.add(kotlin_String(INVOKE(toUpperCase(item_2_3))))
-        Unit_getInstance()
-    
-    tmp1_forEach_0 = tmp0_mapTo_0_1
-    tmp0_iterator_1 = tmp1_forEach_0.iterator()
-    while tmp0_iterator_1.hasNext():
-        element_2 = tmp0_iterator_1.next()
-        println(element_2)
-    
-
-class TestClass:
-    def __init__(self, classParameter):
-        self.classParameter = classParameter
-    
-    def _get_classParameter_(self):
-        return self.classParameter
-    
-    def getSomeString(self):
-        return 'Hello from Kotlin class!'
-    
-    def functionReturningClassParameter(self):
-        return self.classParameter
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-
-def returnString():
-    return 'Hello from Kotlin!'
-
-def returnStringFromClass():
-    testClass = TestClass('paramVal')
-    return testClass.getSomeString()
-
-def returnParameterFromClass():
-    return TestClass('paramVal').functionReturningClassParameter()

@@ -108,12 +108,12 @@ this['out-ir'] = function (_) {
   NoSuchElementException.prototype.constructor = NoSuchElementException;
   IllegalStateException.prototype = Object.create(RuntimeException.prototype);
   IllegalStateException.prototype.constructor = IllegalStateException;
-  IndexOutOfBoundsException.prototype = Object.create(RuntimeException.prototype);
-  IndexOutOfBoundsException.prototype.constructor = IndexOutOfBoundsException;
   UnsupportedOperationException.prototype = Object.create(RuntimeException.prototype);
   UnsupportedOperationException.prototype.constructor = UnsupportedOperationException;
   NullPointerException.prototype = Object.create(RuntimeException.prototype);
   NullPointerException.prototype.constructor = NullPointerException;
+  IndexOutOfBoundsException.prototype = Object.create(RuntimeException.prototype);
+  IndexOutOfBoundsException.prototype.constructor = IndexOutOfBoundsException;
   NoWhenBranchMatchedException.prototype = Object.create(RuntimeException.prototype);
   NoWhenBranchMatchedException.prototype.constructor = NoWhenBranchMatchedException;
   ClassCastException.prototype = Object.create(RuntimeException.prototype);
@@ -132,10 +132,98 @@ this['out-ir'] = function (_) {
     }
     return accumulator;
   }
+  function contains(_this_, element) {
+    return indexOf(_this_, element) >= 0;
+  }
+  function indexOf(_this_, element) {
+    var inductionVariable = 0;
+    var last = _this_.length - 1 | 0;
+    if (inductionVariable <= last)
+      do {
+        var index = inductionVariable;
+        inductionVariable = inductionVariable + 1 | 0;
+        if (element === _this_[index]) {
+          return index;
+        }}
+       while (inductionVariable <= last);
+    return -1;
+  }
   function _get_indices_(_this_) {
     return new IntRange(0, _get_lastIndex_(_this_));
   }
-  function indexOf(_this_, element) {
+  function _get_lastIndex_(_this_) {
+    return _this_.length - 1 | 0;
+  }
+  function contains_0(_this_, element) {
+    return indexOf_0(_this_, element) >= 0;
+  }
+  function indexOf_0(_this_, element) {
+    var inductionVariable = 0;
+    var last = _this_.length - 1 | 0;
+    if (inductionVariable <= last)
+      do {
+        var index = inductionVariable;
+        inductionVariable = inductionVariable + 1 | 0;
+        if (element === _this_[index]) {
+          return index;
+        }}
+       while (inductionVariable <= last);
+    return -1;
+  }
+  function _get_indices__0(_this_) {
+    return new IntRange(0, _get_lastIndex__0(_this_));
+  }
+  function _get_lastIndex__0(_this_) {
+    return _this_.length - 1 | 0;
+  }
+  function contains_1(_this_, element) {
+    return indexOf_1(_this_, element) >= 0;
+  }
+  function indexOf_1(_this_, element) {
+    var inductionVariable = 0;
+    var last = _this_.length - 1 | 0;
+    if (inductionVariable <= last)
+      do {
+        var index = inductionVariable;
+        inductionVariable = inductionVariable + 1 | 0;
+        if (element === _this_[index]) {
+          return index;
+        }}
+       while (inductionVariable <= last);
+    return -1;
+  }
+  function _get_indices__1(_this_) {
+    return new IntRange(0, _get_lastIndex__1(_this_));
+  }
+  function _get_lastIndex__1(_this_) {
+    return _this_.length - 1 | 0;
+  }
+  function contains_2(_this_, element) {
+    return indexOf_2(_this_, element) >= 0;
+  }
+  function indexOf_2(_this_, element) {
+    var inductionVariable = 0;
+    var last = _this_.length - 1 | 0;
+    if (inductionVariable <= last)
+      do {
+        var index = inductionVariable;
+        inductionVariable = inductionVariable + 1 | 0;
+        if (element.equals(_this_[index])) {
+          return index;
+        }}
+       while (inductionVariable <= last);
+    return -1;
+  }
+  function _get_indices__2(_this_) {
+    return new IntRange(0, _get_lastIndex__2(_this_));
+  }
+  function _get_lastIndex__2(_this_) {
+    return _this_.length - 1 | 0;
+  }
+  function _get_indices__3(_this_) {
+    return new IntRange(0, _get_lastIndex__3(_this_));
+  }
+  function indexOf_3(_this_, element) {
     if (element == null) {
       var inductionVariable = 0;
       var last = _this_.length - 1 | 0;
@@ -185,7 +273,7 @@ this['out-ir'] = function (_) {
     }
     return -1;
   }
-  function _get_lastIndex_(_this_) {
+  function _get_lastIndex__3(_this_) {
     return _this_.length - 1 | 0;
   }
   function joinToString(_this_, separator, prefix, postfix, limit, truncated, transform) {
@@ -248,136 +336,6 @@ this['out-ir'] = function (_) {
     if (!(($mask0 & 64) === 0))
       transform = null;
     return joinTo(_this_, buffer, separator, prefix, postfix, limit, truncated, transform);
-  }
-  function contains(_this_, element) {
-    return indexOf_0(_this_, element) >= 0;
-  }
-  function indexOf_0(_this_, element) {
-    var inductionVariable = 0;
-    var last = _this_.length - 1 | 0;
-    if (inductionVariable <= last)
-      do {
-        var index = inductionVariable;
-        inductionVariable = inductionVariable + 1 | 0;
-        if (element === _this_[index]) {
-          return index;
-        }}
-       while (inductionVariable <= last);
-    return -1;
-  }
-  function _get_indices__0(_this_) {
-    return new IntRange(0, _get_lastIndex__0(_this_));
-  }
-  function _get_lastIndex__0(_this_) {
-    return _this_.length - 1 | 0;
-  }
-  function contains_0(_this_, element) {
-    return indexOf_1(_this_, element) >= 0;
-  }
-  function indexOf_1(_this_, element) {
-    var inductionVariable = 0;
-    var last = _this_.length - 1 | 0;
-    if (inductionVariable <= last)
-      do {
-        var index = inductionVariable;
-        inductionVariable = inductionVariable + 1 | 0;
-        if (element === _this_[index]) {
-          return index;
-        }}
-       while (inductionVariable <= last);
-    return -1;
-  }
-  function _get_indices__1(_this_) {
-    return new IntRange(0, _get_lastIndex__1(_this_));
-  }
-  function _get_lastIndex__1(_this_) {
-    return _this_.length - 1 | 0;
-  }
-  function contains_1(_this_, element) {
-    return indexOf_2(_this_, element) >= 0;
-  }
-  function indexOf_2(_this_, element) {
-    var inductionVariable = 0;
-    var last = _this_.length - 1 | 0;
-    if (inductionVariable <= last)
-      do {
-        var index = inductionVariable;
-        inductionVariable = inductionVariable + 1 | 0;
-        if (element === _this_[index]) {
-          return index;
-        }}
-       while (inductionVariable <= last);
-    return -1;
-  }
-  function _get_indices__2(_this_) {
-    return new IntRange(0, _get_lastIndex__2(_this_));
-  }
-  function _get_lastIndex__2(_this_) {
-    return _this_.length - 1 | 0;
-  }
-  function contains_2(_this_, element) {
-    return indexOf_3(_this_, element) >= 0;
-  }
-  function indexOf_3(_this_, element) {
-    var inductionVariable = 0;
-    var last = _this_.length - 1 | 0;
-    if (inductionVariable <= last)
-      do {
-        var index = inductionVariable;
-        inductionVariable = inductionVariable + 1 | 0;
-        if (element.equals(_this_[index])) {
-          return index;
-        }}
-       while (inductionVariable <= last);
-    return -1;
-  }
-  function _get_indices__3(_this_) {
-    return new IntRange(0, _get_lastIndex__3(_this_));
-  }
-  function _get_lastIndex__3(_this_) {
-    return _this_.length - 1 | 0;
-  }
-  function indexOfFirst(_this_, predicate) {
-    var index = 0;
-    var tmp0_iterator = _this_.iterator_0_k$();
-    while (tmp0_iterator.hasNext_0_k$()) {
-      var item = tmp0_iterator.next_0_k$();
-      if (predicate(item))
-        return index;
-      var tmp1 = index;
-      index = tmp1 + 1 | 0;
-      Unit_getInstance();
-    }
-    return -1;
-  }
-  function indexOfLast(_this_, predicate) {
-    var iterator = _this_.listIterator_ha5a7z_k$(_this_._get_size__0_k$());
-    while (iterator.hasPrevious_0_k$()) {
-      if (predicate(iterator.previous_0_k$())) {
-        return iterator.nextIndex_0_k$();
-      }}
-    return -1;
-  }
-  function any(_this_, predicate) {
-    var tmp;
-    if (isInterface(_this_, Collection)) {
-      tmp = _this_.isEmpty_0_k$();
-    } else {
-      {
-        tmp = false;
-      }
-    }
-    if (tmp)
-      return false;
-    else {
-    }
-    var tmp0_iterator = _this_.iterator_0_k$();
-    while (tmp0_iterator.hasNext_0_k$()) {
-      var element = tmp0_iterator.next_0_k$();
-      if (predicate(element))
-        return true;
-    }
-    return false;
   }
   function all(_this_, predicate) {
     var tmp;
@@ -458,39 +416,55 @@ this['out-ir'] = function (_) {
       transform = null;
     return joinTo_0(_this_, buffer, separator, prefix, postfix, limit, truncated, transform);
   }
-  function forEach(_this_, action) {
-    var tmp0_iterator = _this_.iterator_0_k$();
-    while (tmp0_iterator.hasNext_0_k$()) {
-      var element = tmp0_iterator.next_0_k$();
-      action(element);
-    }
-  }
-  function map(_this_, transform) {
-    var tmp0_mapTo_0 = ArrayList_init_$Create$_0(collectionSizeOrDefault(_this_, 10));
-    var tmp0_iterator_1 = _this_.iterator_0_k$();
-    while (tmp0_iterator_1.hasNext_0_k$()) {
-      var item_2 = tmp0_iterator_1.next_0_k$();
-      tmp0_mapTo_0.add_2bq_k$(transform(item_2));
-      Unit_getInstance();
-    }
-    return tmp0_mapTo_0;
-  }
-  function mapTo(_this_, destination, transform) {
+  function indexOfFirst(_this_, predicate) {
+    var index = 0;
     var tmp0_iterator = _this_.iterator_0_k$();
     while (tmp0_iterator.hasNext_0_k$()) {
       var item = tmp0_iterator.next_0_k$();
-      destination.add_2bq_k$(transform(item));
+      if (predicate(item))
+        return index;
+      var tmp1 = index;
+      index = tmp1 + 1 | 0;
       Unit_getInstance();
     }
-    return destination;
+    return -1;
   }
-  function downTo(_this_, to) {
-    return Companion_getInstance_11().fromClosedRange_fcwjfj_k$(_this_, to, -1);
+  function indexOfLast(_this_, predicate) {
+    var iterator = _this_.listIterator_ha5a7z_k$(_this_._get_size__0_k$());
+    while (iterator.hasPrevious_0_k$()) {
+      if (predicate(iterator.previous_0_k$())) {
+        return iterator.nextIndex_0_k$();
+      }}
+    return -1;
+  }
+  function any(_this_, predicate) {
+    var tmp;
+    if (isInterface(_this_, Collection)) {
+      tmp = _this_.isEmpty_0_k$();
+    } else {
+      {
+        tmp = false;
+      }
+    }
+    if (tmp)
+      return false;
+    else {
+    }
+    var tmp0_iterator = _this_.iterator_0_k$();
+    while (tmp0_iterator.hasNext_0_k$()) {
+      var element = tmp0_iterator.next_0_k$();
+      if (predicate(element))
+        return true;
+    }
+    return false;
   }
   function until(_this_, to) {
     if (to <= IntCompanionObject_getInstance()._MIN_VALUE_5)
       return Companion_getInstance_14()._EMPTY_1;
     return numberRangeToNumber(_this_, to - 1 | 0);
+  }
+  function downTo(_this_, to) {
+    return Companion_getInstance_11().fromClosedRange_fcwjfj_k$(_this_, to, -1);
   }
   function reversed(_this_) {
     return Companion_getInstance_11().fromClosedRange_fcwjfj_k$(_this_._last_1, _this_._first_1, -_this_._step_6 | 0);
@@ -943,9 +917,9 @@ this['out-ir'] = function (_) {
     }if (startIndex > endIndex) {
       throw IllegalArgumentException_init_$Create$_0('' + 'startIndex: ' + startIndex + ' > endIndex: ' + endIndex);
     }};
-  Companion_0.prototype.orderedHashCode_dxd51x_k$ = function (c) {
+  Companion_0.prototype.orderedHashCode_dxd51x_k$ = function (c_0) {
     var hashCode_1 = 1;
-    var tmp0_iterator = c.iterator_0_k$();
+    var tmp0_iterator = c_0.iterator_0_k$();
     while (tmp0_iterator.hasNext_0_k$()) {
       var e = tmp0_iterator.next_0_k$();
       var tmp = imul(31, hashCode_1);
@@ -955,11 +929,11 @@ this['out-ir'] = function (_) {
     }
     return hashCode_1;
   };
-  Companion_0.prototype.orderedEquals_tuq55s_k$ = function (c, other) {
-    if (!(c._get_size__0_k$() === other._get_size__0_k$()))
+  Companion_0.prototype.orderedEquals_tuq55s_k$ = function (c_0, other) {
+    if (!(c_0._get_size__0_k$() === other._get_size__0_k$()))
       return false;
     var otherIterator = other.iterator_0_k$();
-    var tmp0_iterator = c.iterator_0_k$();
+    var tmp0_iterator = c_0.iterator_0_k$();
     while (tmp0_iterator.hasNext_0_k$()) {
       var elem = tmp0_iterator.next_0_k$();
       var elemOther = otherIterator.next_0_k$();
@@ -1050,8 +1024,8 @@ this['out-ir'] = function (_) {
     kind: 'class',
     interfaces: [List]
   };
-  function listOf(elements) {
-    return elements.length > 0 ? asList(elements) : emptyList();
+  function _get_lastIndex__4(_this_) {
+    return _this_._get_size__0_k$() - 1 | 0;
   }
   function emptyList() {
     return EmptyList_getInstance();
@@ -1210,20 +1184,6 @@ this['out-ir'] = function (_) {
     if (EmptyIterator_instance == null)
       new EmptyIterator();
     return EmptyIterator_instance;
-  }
-  function _get_lastIndex__4(_this_) {
-    return _this_._get_size__0_k$() - 1 | 0;
-  }
-  function collectionSizeOrDefault(_this_, default_0) {
-    var tmp;
-    if (isInterface(_this_, Collection)) {
-      tmp = _this_._get_size__0_k$();
-    } else {
-      {
-        tmp = default_0;
-      }
-    }
-    return tmp;
   }
   function removeAll(_this_, predicate) {
     return filterInPlace(_this_, predicate, true);
@@ -2056,13 +2016,6 @@ this['out-ir'] = function (_) {
     kind: 'class',
     interfaces: [Annotation]
   };
-  function HidesMembers() {
-  }
-  HidesMembers.$metadata$ = {
-    simpleName: 'HidesMembers',
-    kind: 'class',
-    interfaces: [Annotation]
-  };
   function RequireKotlinVersionKind_LANGUAGE_VERSION_getInstance() {
     RequireKotlinVersionKind_initEntries();
     return RequireKotlinVersionKind_LANGUAGE_VERSION_instance;
@@ -2468,6 +2421,16 @@ this['out-ir'] = function (_) {
   function let_0(_this_, block) {
     return block(_this_);
   }
+  function also(_this_, block) {
+    block(_this_);
+    return _this_;
+  }
+  function with_0(receiver, block) {
+    return block(receiver);
+  }
+  function run_0(_this_, block) {
+    return block(_this_);
+  }
   function apply(_this_, block) {
     block(_this_);
     return _this_;
@@ -2481,16 +2444,6 @@ this['out-ir'] = function (_) {
         action(index);
       }
        while (inductionVariable < times);
-  }
-  function with_0(receiver, block) {
-    return block(receiver);
-  }
-  function also(_this_, block) {
-    block(_this_);
-    return _this_;
-  }
-  function run_0(_this_, block) {
-    return block(_this_);
   }
   function _UByte___init__impl_(data) {
     return data;
@@ -4472,30 +4425,30 @@ this['out-ir'] = function (_) {
     }
     return tmp;
   }
-  function differenceModulo(a_0, b_0, c) {
-    var ac = uintRemainder(a_0, c);
-    var bc = uintRemainder(b_0, c);
+  function differenceModulo(a, b, c_0) {
+    var ac = uintRemainder(a, c_0);
+    var bc = uintRemainder(b, c_0);
     var tmp;
     if (uintCompare(_UInt___get_data__impl_(ac), _UInt___get_data__impl_(bc)) >= 0) {
       tmp = _UInt___init__impl_(_UInt___get_data__impl_(ac) - _UInt___get_data__impl_(bc) | 0);
     } else {
       {
         var tmp0_plus_0 = _UInt___init__impl_(_UInt___get_data__impl_(ac) - _UInt___get_data__impl_(bc) | 0);
-        tmp = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(c) | 0);
+        tmp = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(c_0) | 0);
       }
     }
     return tmp;
   }
-  function differenceModulo_0(a_0, b_0, c) {
-    var ac = ulongRemainder(a_0, c);
-    var bc = ulongRemainder(b_0, c);
+  function differenceModulo_0(a, b, c_0) {
+    var ac = ulongRemainder(a, c_0);
+    var bc = ulongRemainder(b, c_0);
     var tmp;
     if (ulongCompare(_ULong___get_data__impl_(ac), _ULong___get_data__impl_(bc)) >= 0) {
       tmp = _ULong___init__impl_(_ULong___get_data__impl_(ac).minus_wiekkq_k$(_ULong___get_data__impl_(bc)));
     } else {
       {
         var tmp0_plus_0 = _ULong___init__impl_(_ULong___get_data__impl_(ac).minus_wiekkq_k$(_ULong___get_data__impl_(bc)));
-        tmp = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus_wiekkq_k$(_ULong___get_data__impl_(c)));
+        tmp = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus_wiekkq_k$(_ULong___get_data__impl_(c_0)));
       }
     }
     return tmp;
@@ -6286,19 +6239,19 @@ this['out-ir'] = function (_) {
     }
     return tmp;
   }
-  function differenceModulo_1(a_0, b_0, c) {
-    return mod(mod(a_0, c) - mod(b_0, c) | 0, c);
+  function differenceModulo_1(a, b, c_0) {
+    return mod(mod(a, c_0) - mod(b, c_0) | 0, c_0);
   }
-  function differenceModulo_2(a_0, b_0, c) {
-    return mod_0(mod_0(a_0, c).minus_wiekkq_k$(mod_0(b_0, c)), c);
+  function differenceModulo_2(a, b, c_0) {
+    return mod_0(mod_0(a, c_0).minus_wiekkq_k$(mod_0(b, c_0)), c_0);
   }
-  function mod(a_0, b_0) {
-    var mod_1 = a_0 % b_0;
-    return mod_1 >= 0 ? mod_1 : mod_1 + b_0 | 0;
+  function mod(a, b) {
+    var mod_1 = a % b;
+    return mod_1 >= 0 ? mod_1 : mod_1 + b | 0;
   }
-  function mod_0(a_0, b_0) {
-    var mod_1 = a_0.rem_wiekkq_k$(b_0);
-    return mod_1.compareTo_wiekkq_k$(new Long(0, 0)) >= 0 ? mod_1 : mod_1.plus_wiekkq_k$(b_0);
+  function mod_0(a, b) {
+    var mod_1 = a.rem_wiekkq_k$(b);
+    return mod_1.compareTo_wiekkq_k$(new Long(0, 0)) >= 0 ? mod_1 : mod_1.plus_wiekkq_k$(b);
   }
   function ByteCompanionObject_0() {
     ByteCompanionObject_instance = this;
@@ -7284,7 +7237,7 @@ this['out-ir'] = function (_) {
     Unit_getInstance();
   };
   ArrayList.prototype.indexOf_2bq_k$ = function (element) {
-    return indexOf(this._array_3, element);
+    return indexOf_3(this._array_3, element);
   };
   ArrayList.prototype.lastIndexOf_2bq_k$ = function (element) {
     return lastIndexOf(this._array_3, element);
@@ -7432,10 +7385,6 @@ this['out-ir'] = function (_) {
     kind: 'class',
     interfaces: []
   };
-  function println(message) {
-    init_properties_console_kt();
-    _get_output_().println_qi8yb4_k$(message);
-  }
   var properties_initialized_console_kt;
   function init_properties_console_kt() {
     if (!properties_initialized_console_kt) {
@@ -9213,18 +9162,14 @@ this['out-ir'] = function (_) {
       endIndex = _this_.length;
     return concatToString_0(_this_, startIndex, endIndex);
   }
-  function toUpperCase(_this_) {
-    init_properties_string_kt();
-    return _this_.toUpperCase();
-  }
   function sam$kotlin_Comparator$0(function_0) {
     this._function = function_0;
   }
-  sam$kotlin_Comparator$0.prototype.compare_1qgdm_k$ = function (a_0, b_0) {
-    return this._function(a_0, b_0);
+  sam$kotlin_Comparator$0.prototype.compare_1qgdm_k$ = function (a, b) {
+    return this._function(a, b);
   };
-  sam$kotlin_Comparator$0.prototype.compare = function (a_0, b_0) {
-    return this.compare_1qgdm_k$(a_0, b_0);
+  sam$kotlin_Comparator$0.prototype.compare = function (a, b) {
+    return this.compare_1qgdm_k$(a, b);
   };
   sam$kotlin_Comparator$0.$metadata$ = {
     simpleName: 'sam$kotlin_Comparator$0',
@@ -9233,8 +9178,8 @@ this['out-ir'] = function (_) {
   };
   function _no_name_provided__29() {
   }
-  _no_name_provided__29.prototype.invoke_jg38oy_k$ = function (a_0, b_0) {
-    return compareTo(a_0, b_0, true);
+  _no_name_provided__29.prototype.invoke_jg38oy_k$ = function (a, b) {
+    return compareTo(a, b, true);
   };
   _no_name_provided__29.prototype.invoke_osx4an_k$ = function (p1, p2) {
     var tmp = (!(p1 == null) ? typeof p1 === 'string' : false) ? p1 : THROW_CCE();
@@ -9411,38 +9356,17 @@ this['out-ir'] = function (_) {
     kind: 'interface',
     interfaces: [Iterable]
   };
-  function List() {
-  }
-  List.$metadata$ = {
-    simpleName: 'List',
-    kind: 'interface',
-    interfaces: [Collection]
-  };
-  function MutableList() {
-  }
-  MutableList.$metadata$ = {
-    simpleName: 'MutableList',
-    kind: 'interface',
-    interfaces: [List, MutableCollection]
-  };
-  function MutableCollection() {
-  }
-  MutableCollection.$metadata$ = {
-    simpleName: 'MutableCollection',
-    kind: 'interface',
-    interfaces: [Collection, MutableIterable]
-  };
-  function MutableIterable() {
-  }
-  MutableIterable.$metadata$ = {
-    simpleName: 'MutableIterable',
-    kind: 'interface',
-    interfaces: [Iterable]
-  };
   function Set() {
   }
   Set.$metadata$ = {
     simpleName: 'Set',
+    kind: 'interface',
+    interfaces: [Collection]
+  };
+  function List() {
+  }
+  List.$metadata$ = {
+    simpleName: 'List',
     kind: 'interface',
     interfaces: [Collection]
   };
@@ -9460,12 +9384,33 @@ this['out-ir'] = function (_) {
     kind: 'interface',
     interfaces: []
   };
+  function MutableCollection() {
+  }
+  MutableCollection.$metadata$ = {
+    simpleName: 'MutableCollection',
+    kind: 'interface',
+    interfaces: [Collection, MutableIterable]
+  };
+  function MutableIterable() {
+  }
+  MutableIterable.$metadata$ = {
+    simpleName: 'MutableIterable',
+    kind: 'interface',
+    interfaces: [Iterable]
+  };
   function MutableSet() {
   }
   MutableSet.$metadata$ = {
     simpleName: 'MutableSet',
     kind: 'interface',
     interfaces: [Set, MutableCollection]
+  };
+  function MutableList() {
+  }
+  MutableList.$metadata$ = {
+    simpleName: 'MutableList',
+    kind: 'interface',
+    interfaces: [List, MutableCollection]
   };
   function MutableEntry() {
   }
@@ -9532,11 +9477,6 @@ this['out-ir'] = function (_) {
   function arrayOf(elements) {
     return elements;
   }
-  function toString(_this_) {
-    var tmp0_safe_receiver = _this_;
-    var tmp1_elvis_lhs = tmp0_safe_receiver == null ? null : toString_0(tmp0_safe_receiver);
-    return tmp1_elvis_lhs == null ? 'null' : tmp1_elvis_lhs;
-  }
   function plus(_this_, other) {
     var tmp2_safe_receiver = _this_;
     var tmp3_elvis_lhs = tmp2_safe_receiver == null ? null : toString_0(tmp2_safe_receiver);
@@ -9544,6 +9484,11 @@ this['out-ir'] = function (_) {
     var tmp0_safe_receiver = other;
     var tmp1_elvis_lhs = tmp0_safe_receiver == null ? null : toString_0(tmp0_safe_receiver);
     return tmp + (tmp1_elvis_lhs == null ? 'null' : tmp1_elvis_lhs);
+  }
+  function toString(_this_) {
+    var tmp0_safe_receiver = _this_;
+    var tmp1_elvis_lhs = tmp0_safe_receiver == null ? null : toString_0(tmp0_safe_receiver);
+    return tmp1_elvis_lhs == null ? 'null' : tmp1_elvis_lhs;
   }
   function booleanArrayOf(elements) {
     return elements;
@@ -10024,10 +9969,10 @@ this['out-ir'] = function (_) {
     kind: 'class',
     interfaces: [Annotation]
   };
-  function charSequenceGet(a_0, index) {
+  function charSequenceGet(a, index) {
     var tmp;
-    if (isString(a_0)) {
-      var tmp0_unsafeCast_0 = a_0.charCodeAt(index);
+    if (isString(a)) {
+      var tmp0_unsafeCast_0 = a.charCodeAt(index);
       var tmp1_Char_0 = tmp0_unsafeCast_0;
       var tmp_0;
       Companion_getInstance_17();
@@ -10047,30 +9992,30 @@ this['out-ir'] = function (_) {
       }
       tmp = numberToChar(tmp1_Char_0);
     } else {
-      tmp = a_0.get_ha5a7z_k$(index);
+      tmp = a.get_ha5a7z_k$(index);
     }
     return tmp;
   }
-  function isString(a_0) {
-    return typeof a_0 === 'string';
+  function isString(a) {
+    return typeof a === 'string';
   }
-  function charSequenceLength(a_0) {
+  function charSequenceLength(a) {
     var tmp;
-    if (isString(a_0)) {
-      var tmp0_unsafeCast_0 = a_0.length;
+    if (isString(a)) {
+      var tmp0_unsafeCast_0 = a.length;
       tmp = tmp0_unsafeCast_0;
     } else {
-      tmp = a_0._get_length__0_k$();
+      tmp = a._get_length__0_k$();
     }
     return tmp;
   }
-  function charSequenceSubSequence(a_0, startIndex, endIndex) {
+  function charSequenceSubSequence(a, startIndex, endIndex) {
     var tmp;
-    if (isString(a_0)) {
-      var tmp0_unsafeCast_0 = a_0.substring(startIndex, endIndex);
+    if (isString(a)) {
+      var tmp0_unsafeCast_0 = a.substring(startIndex, endIndex);
       tmp = tmp0_unsafeCast_0;
     } else {
-      tmp = a_0.subSequence_27zxwg_k$(startIndex, endIndex);
+      tmp = a.subSequence_27zxwg_k$(startIndex, endIndex);
     }
     return tmp;
   }
@@ -10095,20 +10040,20 @@ this['out-ir'] = function (_) {
       return i.invoke_wi7j7l_k$(p1);
     };
   }
-  function compareTo_0(a_0, b_0) {
-    var tmp0_subject = typeof a_0;
+  function compareTo_0(a, b) {
+    var tmp0_subject = typeof a;
     var tmp;
     switch (tmp0_subject) {
       case 'number':
         var tmp_0;
-        if (typeof b_0 === 'number') {
-          tmp_0 = doubleCompareTo(a_0, b_0);
+        if (typeof b === 'number') {
+          tmp_0 = doubleCompareTo(a, b);
         } else {
-          if (b_0 instanceof Long) {
-            tmp_0 = doubleCompareTo(a_0, b_0.toDouble_0_k$());
+          if (b instanceof Long) {
+            tmp_0 = doubleCompareTo(a, b.toDouble_0_k$());
           } else {
             {
-              tmp_0 = primitiveCompareTo(a_0, b_0);
+              tmp_0 = primitiveCompareTo(a, b);
             }
           }
         }
@@ -10117,27 +10062,27 @@ this['out-ir'] = function (_) {
         break;
       case 'string':
       case 'boolean':
-        tmp = primitiveCompareTo(a_0, b_0);
+        tmp = primitiveCompareTo(a, b);
         break;
-      default:tmp = compareToDoNotIntrinsicify(a_0, b_0);
+      default:tmp = compareToDoNotIntrinsicify(a, b);
         break;
     }
     return tmp;
   }
-  function doubleCompareTo(a_0, b_0) {
+  function doubleCompareTo(a, b) {
     var tmp;
-    if (a_0 < b_0) {
+    if (a < b) {
       tmp = -1;
-    } else if (a_0 > b_0) {
+    } else if (a > b) {
       tmp = 1;
-    } else if (a_0 === b_0) {
+    } else if (a === b) {
       var tmp_0;
-      if (a_0 !== 0) {
+      if (a !== 0) {
         tmp_0 = 0;
       } else {
-        var ia = 1 / a_0;
+        var ia = 1 / a;
         var tmp_1;
-        if (ia === 1 / b_0) {
+        if (ia === 1 / b) {
           tmp_1 = 0;
         } else {
           if (ia < 0) {
@@ -10151,18 +10096,18 @@ this['out-ir'] = function (_) {
         tmp_0 = tmp_1;
       }
       tmp = tmp_0;
-    } else if (a_0 !== a_0) {
-      tmp = b_0 !== b_0 ? 0 : 1;
+    } else if (a !== a) {
+      tmp = b !== b ? 0 : 1;
     } else {
       tmp = -1;
     }
     return tmp;
   }
-  function primitiveCompareTo(a_0, b_0) {
-    return a_0 < b_0 ? -1 : a_0 > b_0 ? 1 : 0;
+  function primitiveCompareTo(a, b) {
+    return a < b ? -1 : a > b ? 1 : 0;
   }
-  function compareToDoNotIntrinsicify(a_0, b_0) {
-    return a_0.compareTo_2c5_k$(b_0);
+  function compareToDoNotIntrinsicify(a, b) {
+    return a.compareTo_2c5_k$(b);
   }
   function construct(constructorType, resultType, args) {
     return Reflect.construct(constructorType, args, resultType);
@@ -10188,18 +10133,6 @@ this['out-ir'] = function (_) {
     return POW_2_32;
   }
   var POW_2_32;
-  function toString_0(o) {
-    var tmp;
-    if (o == null) {
-      tmp = 'null';
-    } else if (isArrayish(o)) {
-      tmp = '[...]';
-    } else {
-      var tmp0_unsafeCast_0 = o.toString();
-      tmp = tmp0_unsafeCast_0;
-    }
-    return tmp;
-  }
   function hashCode(obj) {
     if (obj == null)
       return 0;
@@ -10246,6 +10179,18 @@ this['out-ir'] = function (_) {
       }
        while (!(i === last));
     return hash;
+  }
+  function toString_0(o) {
+    var tmp;
+    if (o == null) {
+      tmp = 'null';
+    } else if (isArrayish(o)) {
+      tmp = '[...]';
+    } else {
+      var tmp0_unsafeCast_0 = o.toString();
+      tmp = tmp0_unsafeCast_0;
+    }
+    return tmp;
   }
   function anyToString(o) {
     return Object.prototype.toString.call(o);
@@ -11048,11 +10993,11 @@ this['out-ir'] = function (_) {
         size_local = tmp + tmp0_unsafeCast_0.length | 0;
       }
        while (!(i === last));
-    var a_0 = args[0];
-    var tmp1_unsafeCast_0 = primitiveArrayConcat$outlinedJsCode$_0(a_0, size_local);
+    var a = args[0];
+    var tmp1_unsafeCast_0 = primitiveArrayConcat$outlinedJsCode$_0(a, size_local);
     var result = tmp1_unsafeCast_0;
-    if (a_0.$type$ != null) {
-      var tmp2_withType_0 = a_0.$type$;
+    if (a.$type$ != null) {
+      var tmp2_withType_0 = a.$type$;
       result.$type$ = tmp2_withType_0;
     } else {
     }
@@ -11091,55 +11036,55 @@ this['out-ir'] = function (_) {
   function primitiveArrayConcat$outlinedJsCode$_0(a, size_local) {
     return new a.constructor(size_local);
   }
-  function numberToByte(a_0) {
-    return toByte(numberToInt(a_0));
+  function numberToByte(a) {
+    return toByte(numberToInt(a));
   }
-  function toByte(a_0) {
-    var tmp0_unsafeCast_0 = toByte$outlinedJsCode$(a_0);
+  function toByte(a) {
+    var tmp0_unsafeCast_0 = toByte$outlinedJsCode$(a);
     return tmp0_unsafeCast_0;
   }
-  function numberToInt(a_0) {
+  function numberToInt(a) {
     var tmp;
-    if (a_0 instanceof Long) {
-      tmp = a_0.toInt_0_k$();
+    if (a instanceof Long) {
+      tmp = a.toInt_0_k$();
     } else {
       {
-        tmp = doubleToInt(a_0);
+        tmp = doubleToInt(a);
       }
     }
     return tmp;
   }
-  function doubleToInt(a_0) {
-    return a_0 > 2.147483647E9 ? 2147483647 : a_0 < -2.147483648E9 ? -2147483648 : jsBitwiseOr(a_0, 0);
+  function doubleToInt(a) {
+    return a > 2.147483647E9 ? 2147483647 : a < -2.147483648E9 ? -2147483648 : jsBitwiseOr(a, 0);
   }
-  function numberToDouble(a_0) {
-    var tmp0_unsafeCast_0 = numberToDouble$outlinedJsCode$_0(a_0);
+  function numberToDouble(a) {
+    var tmp0_unsafeCast_0 = numberToDouble$outlinedJsCode$_0(a);
     return tmp0_unsafeCast_0;
   }
-  function numberToShort(a_0) {
-    return toShort(numberToInt(a_0));
+  function numberToShort(a) {
+    return toShort(numberToInt(a));
   }
-  function toShort(a_0) {
-    var tmp0_unsafeCast_0 = toShort$outlinedJsCode$_1(a_0);
+  function toShort(a) {
+    var tmp0_unsafeCast_0 = toShort$outlinedJsCode$_1(a);
     return tmp0_unsafeCast_0;
   }
-  function numberToLong(a_0) {
+  function numberToLong(a) {
     var tmp;
-    if (a_0 instanceof Long) {
-      tmp = a_0;
+    if (a instanceof Long) {
+      tmp = a;
     } else {
       {
-        tmp = fromNumber(a_0);
+        tmp = fromNumber(a);
       }
     }
     return tmp;
   }
-  function numberToChar(a_0) {
-    var tmp0_toUShort_0 = numberToInt(a_0);
+  function numberToChar(a) {
+    var tmp0_toUShort_0 = numberToInt(a);
     return new Char_0(_UShort___init__impl_(toShort(tmp0_toUShort_0)));
   }
-  function toLong(a_0) {
-    return fromInt(a_0);
+  function toLong(a) {
+    return fromInt(a);
   }
   function toByte$outlinedJsCode$(a) {
     return a << 24 >> 24;
@@ -11203,20 +11148,6 @@ this['out-ir'] = function (_) {
       var tmp3_arrayOf_0 = [tmp0_arrayOf_0, tmp1_arrayOf_0, tmp2_arrayOf_0];
       propertyRefClassMetadataCache = tmp3_arrayOf_0;
     }}
-  function isArrayish(o) {
-    var tmp;
-    if (isJsArray(o)) {
-      tmp = true;
-    } else {
-      var tmp0_unsafeCast_0 = ArrayBuffer.isView(o);
-      tmp = tmp0_unsafeCast_0;
-    }
-    return tmp;
-  }
-  function isJsArray(obj) {
-    var tmp0_unsafeCast_0 = Array.isArray(obj);
-    return tmp0_unsafeCast_0;
-  }
   function isInterface(obj, iface) {
     var tmp0_elvis_lhs = obj.constructor;
     var tmp;
@@ -11256,6 +11187,10 @@ this['out-ir'] = function (_) {
     }
     return tmp;
   }
+  function isJsArray(obj) {
+    var tmp0_unsafeCast_0 = Array.isArray(obj);
+    return tmp0_unsafeCast_0;
+  }
   function isObject(obj) {
     var objTypeOf = typeof obj;
     var tmp0_subject = objTypeOf;
@@ -11277,12 +11212,12 @@ this['out-ir'] = function (_) {
       return tmp0_unsafeCast_0 === arity;
     }return false;
   }
-  function isNumber(a_0) {
+  function isNumber(a) {
     var tmp;
-    if (typeof a_0 === 'number') {
+    if (typeof a === 'number') {
       tmp = true;
     } else {
-      tmp = a_0 instanceof Long;
+      tmp = a instanceof Long;
     }
     return tmp;
   }
@@ -11293,29 +11228,39 @@ this['out-ir'] = function (_) {
   function isCharSequence(value) {
     return typeof value === 'string' ? true : isInterface(value, _get_js_(getKClass_0(CharSequence)));
   }
-  function isBooleanArray(a_0) {
-    return isJsArray(a_0) ? a_0.$type$ === 'BooleanArray' : false;
+  function isBooleanArray(a) {
+    return isJsArray(a) ? a.$type$ === 'BooleanArray' : false;
   }
-  function isByteArray(a_0) {
-    return jsInstanceOf(a_0, Int8Array);
+  function isByteArray(a) {
+    return jsInstanceOf(a, Int8Array);
   }
-  function isShortArray(a_0) {
-    return jsInstanceOf(a_0, Int16Array);
+  function isShortArray(a) {
+    return jsInstanceOf(a, Int16Array);
   }
-  function isCharArray(a_0) {
-    return isJsArray(a_0) ? a_0.$type$ === 'CharArray' : false;
+  function isCharArray(a) {
+    return isJsArray(a) ? a.$type$ === 'CharArray' : false;
   }
-  function isIntArray(a_0) {
-    return jsInstanceOf(a_0, Int32Array);
+  function isIntArray(a) {
+    return jsInstanceOf(a, Int32Array);
   }
-  function isFloatArray(a_0) {
-    return jsInstanceOf(a_0, Float32Array);
+  function isFloatArray(a) {
+    return jsInstanceOf(a, Float32Array);
   }
-  function isLongArray(a_0) {
-    return isJsArray(a_0) ? a_0.$type$ === 'LongArray' : false;
+  function isLongArray(a) {
+    return isJsArray(a) ? a.$type$ === 'LongArray' : false;
   }
-  function isDoubleArray(a_0) {
-    return jsInstanceOf(a_0, Float64Array);
+  function isDoubleArray(a) {
+    return jsInstanceOf(a, Float64Array);
+  }
+  function isArrayish(o) {
+    var tmp;
+    if (isJsArray(o)) {
+      tmp = true;
+    } else {
+      var tmp0_unsafeCast_0 = ArrayBuffer.isView(o);
+      tmp = tmp0_unsafeCast_0;
+    }
+    return tmp;
   }
   function jsIsType(obj, jsClass_1) {
     if (jsClass_1 === Object) {
@@ -11355,8 +11300,8 @@ this['out-ir'] = function (_) {
     arrayCopy_0(_this_, destination, destinationOffset, startIndex, endIndex);
     return destination;
   }
-  function minOf(a_0, b_0) {
-    return Math.min(a_0, b_0);
+  function minOf(a, b) {
+    return Math.min(a, b);
   }
   function _get_resultContinuation_($this) {
     return $this._resultContinuation;
@@ -11792,34 +11737,6 @@ this['out-ir'] = function (_) {
     kind: 'class',
     interfaces: []
   };
-  function IndexOutOfBoundsException_init_$Init$($this) {
-    RuntimeException_init_$Init$($this);
-    IndexOutOfBoundsException.call($this);
-    return $this;
-  }
-  function IndexOutOfBoundsException_init_$Create$() {
-    var tmp = IndexOutOfBoundsException_init_$Init$(Object.create(IndexOutOfBoundsException.prototype));
-    captureStack(tmp, IndexOutOfBoundsException_init_$Create$);
-    return tmp;
-  }
-  function IndexOutOfBoundsException_init_$Init$_0(message, $this) {
-    RuntimeException_init_$Init$_0(message, $this);
-    IndexOutOfBoundsException.call($this);
-    return $this;
-  }
-  function IndexOutOfBoundsException_init_$Create$_0(message) {
-    var tmp = IndexOutOfBoundsException_init_$Init$_0(message, Object.create(IndexOutOfBoundsException.prototype));
-    captureStack(tmp, IndexOutOfBoundsException_init_$Create$_0);
-    return tmp;
-  }
-  function IndexOutOfBoundsException() {
-    captureStack(this, IndexOutOfBoundsException);
-  }
-  IndexOutOfBoundsException.$metadata$ = {
-    simpleName: 'IndexOutOfBoundsException',
-    kind: 'class',
-    interfaces: []
-  };
   function UnsupportedOperationException_init_$Init$($this) {
     RuntimeException_init_$Init$($this);
     UnsupportedOperationException.call($this);
@@ -11893,6 +11810,34 @@ this['out-ir'] = function (_) {
   }
   NullPointerException.$metadata$ = {
     simpleName: 'NullPointerException',
+    kind: 'class',
+    interfaces: []
+  };
+  function IndexOutOfBoundsException_init_$Init$($this) {
+    RuntimeException_init_$Init$($this);
+    IndexOutOfBoundsException.call($this);
+    return $this;
+  }
+  function IndexOutOfBoundsException_init_$Create$() {
+    var tmp = IndexOutOfBoundsException_init_$Init$(Object.create(IndexOutOfBoundsException.prototype));
+    captureStack(tmp, IndexOutOfBoundsException_init_$Create$);
+    return tmp;
+  }
+  function IndexOutOfBoundsException_init_$Init$_0(message, $this) {
+    RuntimeException_init_$Init$_0(message, $this);
+    IndexOutOfBoundsException.call($this);
+    return $this;
+  }
+  function IndexOutOfBoundsException_init_$Create$_0(message) {
+    var tmp = IndexOutOfBoundsException_init_$Init$_0(message, Object.create(IndexOutOfBoundsException.prototype));
+    captureStack(tmp, IndexOutOfBoundsException_init_$Create$_0);
+    return tmp;
+  }
+  function IndexOutOfBoundsException() {
+    captureStack(this, IndexOutOfBoundsException);
+  }
+  IndexOutOfBoundsException.$metadata$ = {
+    simpleName: 'IndexOutOfBoundsException',
     kind: 'class',
     interfaces: []
   };
@@ -12058,65 +12003,29 @@ this['out-ir'] = function (_) {
   function toString_1(_this_, radix) {
     return toStringImpl(_this_, checkRadix(radix));
   }
-  function pythonTest() {
-    println('Hello world');
+  function _get_c_() {
+    init_properties_python_kt();
+    return c;
   }
-  function exampleFromAstTest() {
-    var fruits = listOf(['apple', 'banana', 'cherry']);
-    var tmp0_iterator = fruits.iterator_0_k$();
-    while (tmp0_iterator.hasNext_0_k$()) {
-      var x = tmp0_iterator.next_0_k$();
-      println(x);
-    }
+  var c;
+  function _get_d_() {
+    init_properties_python_kt();
+    return d;
   }
-  function a(a1, a2) {
+  var d;
+  function box() {
+    init_properties_python_kt();
+    _get_c_();
+    _get_d_();
+    return 'OK';
   }
-  function b() {
-    a(1, new Int32Array([2, 3]));
-  }
-  function newCode() {
-    var tmp0_map_0 = listOf(['apple', 'banana', 'cherry']);
-    var tmp0_mapTo_0_1 = ArrayList_init_$Create$_0(collectionSizeOrDefault(tmp0_map_0, 10));
-    var tmp0_iterator_1_2 = tmp0_map_0.iterator_0_k$();
-    while (tmp0_iterator_1_2.hasNext_0_k$()) {
-      var item_2_3 = tmp0_iterator_1_2.next_0_k$();
-      tmp0_mapTo_0_1.add_2bq_k$(item_2_3.toUpperCase());
-      Unit_getInstance();
-    }
-    var tmp1_forEach_0 = tmp0_mapTo_0_1;
-    var tmp0_iterator_1 = tmp1_forEach_0.iterator_0_k$();
-    while (tmp0_iterator_1.hasNext_0_k$()) {
-      var element_2 = tmp0_iterator_1.next_0_k$();
-      println(element_2);
-    }
-  }
-  function TestClass(classParameter) {
-    this._classParameter = classParameter;
-  }
-  TestClass.prototype._get_classParameter__0_k$ = function () {
-    return this._classParameter;
-  };
-  TestClass.prototype.getSomeString_0_k$ = function () {
-    return 'Hello from Kotlin class!';
-  };
-  TestClass.prototype.functionReturningClassParameter_0_k$ = function () {
-    return this._classParameter;
-  };
-  TestClass.$metadata$ = {
-    simpleName: 'TestClass',
-    kind: 'class',
-    interfaces: []
-  };
-  function returnString() {
-    return 'Hello from Kotlin!';
-  }
-  function returnStringFromClass() {
-    var testClass = new TestClass('paramVal');
-    return testClass.getSomeString_0_k$();
-  }
-  function returnParameterFromClass() {
-    return (new TestClass('paramVal')).functionReturningClassParameter_0_k$();
-  }
+  var properties_initialized_python_kt;
+  function init_properties_python_kt() {
+    if (!properties_initialized_python_kt) {
+      properties_initialized_python_kt = true;
+      c = Unit_getInstance();
+      d = _get_c_();
+    }}
   CombinedContext.prototype.plus_d7pszg_k$ = CoroutineContext.prototype.plus_d7pszg_k$;
   UByteIterator.prototype.hasNext_0_k$ = Iterator_3.prototype.hasNext_0_k$;
   UIntIterator.prototype.hasNext_0_k$ = Iterator_3.prototype.hasNext_0_k$;
