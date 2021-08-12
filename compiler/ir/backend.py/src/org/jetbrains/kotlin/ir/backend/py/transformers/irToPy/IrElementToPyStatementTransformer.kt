@@ -47,6 +47,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
             is IrBreak -> visitBreak(expression, context)
             is IrDoWhileLoop -> visitDoWhileLoop(expression, context)
             is IrContinue -> visitContinue(expression, context)
+            is IrConstructorCall -> visitConstructorCall(expression, context)
             else -> listOf(Expr(value = Name(id = identifier("visitExpression-other--inToPyStatementTransformer $expression".toValidPythonSymbol()), ctx = Load)))
         }
     }
@@ -125,6 +126,11 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     override fun visitCall(expression: IrCall, data: JsGenerationContext): List<stmt> {
         // TODO
         return IrElementToPyExpressionTransformer().visitCall(expression, data)
+            .map { Expr(value = it) }
+    }
+
+    override fun visitConstructorCall(expression: IrConstructorCall, context: JsGenerationContext): List<stmt> {
+        return IrElementToPyExpressionTransformer().visitConstructorCall(expression, context)
             .map { Expr(value = it) }
     }
 
