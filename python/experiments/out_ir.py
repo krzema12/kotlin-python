@@ -1072,7 +1072,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -1278,7 +1278,7 @@ class EmptyList:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def EmptyList_getInstance():
     if EmptyList_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        EmptyList()
     
     return EmptyList_instance
 
@@ -1317,7 +1317,7 @@ class EmptyIterator:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def EmptyIterator_getInstance():
     if EmptyIterator_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        EmptyIterator()
     
     return EmptyIterator_instance
 
@@ -1696,7 +1696,7 @@ class Key:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Key_getInstance():
     if Key_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Key()
     
     return Key_instance
 
@@ -1896,7 +1896,7 @@ class EmptyCoroutineContext:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def EmptyCoroutineContext_getInstance():
     if EmptyCoroutineContext_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        EmptyCoroutineContext()
     
     return EmptyCoroutineContext_instance
 
@@ -1921,7 +1921,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -2524,7 +2524,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -2778,7 +2778,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -2954,7 +2954,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -3430,7 +3430,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -3874,7 +3874,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -3968,7 +3968,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -4240,7 +4240,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -4687,7 +4687,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -4787,7 +4787,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -5030,7 +5030,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -6468,7 +6468,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -6535,7 +6535,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -6603,7 +6603,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -6707,7 +6707,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -6779,7 +6779,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -6851,7 +6851,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -6927,7 +6927,7 @@ class Unit:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Unit_getInstance():
     if Unit_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Unit()
     
     return Unit_instance
 
@@ -7292,7 +7292,7 @@ class ByteCompanionObject:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def ByteCompanionObject_getInstance():
     if ByteCompanionObject_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        ByteCompanionObject()
     
     return ByteCompanionObject_instance
 
@@ -7329,7 +7329,7 @@ class ShortCompanionObject:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def ShortCompanionObject_getInstance():
     if ShortCompanionObject_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        ShortCompanionObject()
     
     return ShortCompanionObject_instance
 
@@ -7366,7 +7366,7 @@ class IntCompanionObject:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def IntCompanionObject_getInstance():
     if IntCompanionObject_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        IntCompanionObject()
     
     return IntCompanionObject_instance
 
@@ -7415,7 +7415,7 @@ class FloatCompanionObject:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def FloatCompanionObject_getInstance():
     if FloatCompanionObject_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        FloatCompanionObject()
     
     return FloatCompanionObject_instance
 
@@ -7464,7 +7464,7 @@ class DoubleCompanionObject:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def DoubleCompanionObject_getInstance():
     if DoubleCompanionObject_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        DoubleCompanionObject()
     
     return DoubleCompanionObject_instance
 
@@ -7485,7 +7485,7 @@ class StringCompanionObject:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def StringCompanionObject_getInstance():
     if StringCompanionObject_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        StringCompanionObject()
     
     return StringCompanionObject_instance
 
@@ -7506,7 +7506,7 @@ class BooleanCompanionObject:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def BooleanCompanionObject_getInstance():
     if BooleanCompanionObject_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        BooleanCompanionObject()
     
     return BooleanCompanionObject_instance
 
@@ -8878,7 +8878,7 @@ class NothingKClassImpl:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def NothingKClassImpl_getInstance():
     if NothingKClassImpl_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        NothingKClassImpl()
     
     return NothingKClassImpl_instance
 
@@ -9288,7 +9288,7 @@ class DynamicKType:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def DynamicKType_getInstance():
     if DynamicKType_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        DynamicKType()
     
     return DynamicKType_instance
 
@@ -9756,7 +9756,7 @@ class PrimitiveClasses:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def PrimitiveClasses_getInstance():
     if PrimitiveClasses_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        PrimitiveClasses()
     
     return PrimitiveClasses_instance
 
@@ -10566,7 +10566,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -11096,7 +11096,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -11185,7 +11185,7 @@ class DefaultConstructorMarker:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def DefaultConstructorMarker_getInstance():
     if DefaultConstructorMarker_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        DefaultConstructorMarker()
     
     return DefaultConstructorMarker_instance
 
@@ -12103,7 +12103,7 @@ class Companion:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def Companion_getInstance():
     if Companion_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        Companion()
     
     return Companion_instance
 
@@ -13118,7 +13118,7 @@ class CompletedContinuation:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def CompletedContinuation_getInstance():
     if CompletedContinuation_instance == None:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstructorCallImpl
+        CompletedContinuation()
     
     return CompletedContinuation_instance
 
