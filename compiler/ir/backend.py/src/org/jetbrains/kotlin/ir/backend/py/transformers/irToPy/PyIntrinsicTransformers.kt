@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
+import org.jetbrains.kotlin.ir.types.*
 
 typealias IrCallTransformer = (IrCall, context: JsGenerationContext) -> List<expr>
 
@@ -64,8 +65,151 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
             unaryOp(intrinsics.jsBitNot, Invert)
 
             binOp(intrinsics.jsBitShiftR, RShift)
-//            binOp(intrinsics.jsBitShiftRU, JsBinaryOperator.SHRU)
-            binOp(intrinsics.jsBitShiftL, LShift)
+
+            fun simulateOverflow(expr: expr, overSigned: String, maxUnsigned: String): expr = Call(
+                func = Attribute(
+                    value = Call(
+                        func = Attribute(
+                            value = Call(
+                                func = Attribute(expr, identifier("__add__"), Load),
+                                args = listOf(Constant(constant(overSigned), null)),
+                                keywords = emptyList(),
+                            ),
+                            attr = identifier("__and__"),
+                            ctx = Load,
+                        ),
+                        args = listOf(Constant(constant(maxUnsigned), null)),
+                        keywords = emptyList(),
+                    ),
+                    attr = identifier("__sub__"),
+                    ctx = Load,
+                ),
+                args = listOf(Constant(constant(overSigned), null)),
+                keywords = emptyList(),
+            )
+
+            fun String.hex() = "0x${this.reversed().chunked(4).joinToString("_").reversed()}"
+
+            fun overSignedMaxUnsigned(type: IrType): Pair<String, String> = when {
+                type.isLong() -> Long.MAX_VALUE.toULong().plus(1u).toString(16).hex() to ULong.MAX_VALUE.toString(16).hex()
+                type.isInt() -> Int.MAX_VALUE.toUInt().plus(1u).toString(16).hex() to UInt.MAX_VALUE.toString(16).hex()
+                type.isShort() -> Short.MAX_VALUE.toUShort().plus(1u).toString(16).hex() to UShort.MAX_VALUE.toString(16).hex()
+                type.isByte() -> Byte.MAX_VALUE.toUByte().plus(1u).toString(16).hex() to UByte.MAX_VALUE.toString(16).hex()
+                else -> throw IllegalArgumentException("Not an integer: $type")
+            }
+
+            fun simulateUshr(maxUnsigned: String): (expr, expr) -> expr = { left, right ->
+                // compile `val >>> n` as `(val && MAX_UNSIGNED) >> n`
+                BinOp(
+                    left = BinOp(
+                        left = left,
+                        op = BitAnd,
+                        right = Constant(constant(maxUnsigned), null),
+                    ),
+                    op = RShift,
+                    right = right,
+                )
+            }
+
+            add(intrinsics.jsBitShiftRU) { call, context ->
+                val (_, maxUnsigned) = overSignedMaxUnsigned(call.symbol.owner.returnType)
+                val (left, right) = translateCallArguments(call, context)
+                listOf(simulateUshr(maxUnsigned)(left, right))
+            }
+            add(intrinsics.jsBitShiftL) { call, context ->
+                // compile `val << n` as `(val << n).simulateOverflow()`
+                val (overSigned, maxUnsigned) = overSignedMaxUnsigned(call.symbol.owner.returnType)
+                val (left, right) = translateCallArguments(call, context)
+                simulateOverflow(BinOp(left = left, op = LShift, right = right), overSigned = overSigned, maxUnsigned = maxUnsigned)
+                    .let(::listOf)
+            }
+
+            // Simulation of overflow for integer numbers:
+            // (number).__add__(HALF_UNSIGNED).__and__(MAX_UNSIGNED).__sub__(HALF_UNSIGNED): From Hacker's Delight (Sign Extension)
+            // Example:
+            // Overflow of a Byte:
+            // (128).__add__(0x80).__and__(0xFF).__sub__(0x80) => -128
+            listOf(
+                intrinsics.jsNumberToLong,
+                intrinsics.jsNumberToInt,
+                intrinsics.jsNumberToShort,
+                intrinsics.jsNumberToByte,
+            ).forEach { f ->
+                val (overSigned, maxUnsigned) = overSignedMaxUnsigned(f.owner.returnType)
+                add(f) { call, context ->
+                    val arg = translateCallArguments(call, context).single()
+                    simulateOverflow(arg, overSigned = overSigned, maxUnsigned = maxUnsigned).let(::listOf)
+                }
+            }
+
+            // don't do anything when converting a small type to a bigger or equal one
+            listOf(
+                intrinsics.byteToByte,
+                intrinsics.byteToShort,
+                intrinsics.byteToInt,
+                intrinsics.byteToLong,
+                intrinsics.shortToShort,
+                intrinsics.shortToInt,
+                intrinsics.shortToLong,
+                intrinsics.intToInt,
+                intrinsics.intToLong,
+                intrinsics.longToLong,
+            ).forEach { f ->
+                add(f) { call, context -> IrElementToPyExpressionTransformer().visitExpression(call.dispatchReceiver!!, context) }
+            }
+
+            // drop bits when converting a big type to a smaller one
+            listOf(
+                intrinsics.shortToByte,
+                intrinsics.intToByte,
+                intrinsics.intToShort,
+                intrinsics.longToByte,
+                intrinsics.longToShort,
+                intrinsics.longToInt,
+            ).forEach { f ->
+                val (overSigned, maxUnsigned) = overSignedMaxUnsigned(f.owner.returnType)
+                add(f) { call, context ->
+                    val arg = IrElementToPyExpressionTransformer().visitExpression(call.dispatchReceiver!!, context).single()
+                    simulateOverflow(arg, overSigned = overSigned, maxUnsigned = maxUnsigned).let(::listOf)
+                }
+            }
+
+            fun replaceLongMethodWithOperator(method: IrSimpleFunctionSymbol, op: (expr, expr) -> expr) {
+                val returnType = method.owner.returnType
+                if (!returnType.isByte() && !returnType.isShort() && !returnType.isInt() && !returnType.isLong()) {
+                    return  // unsupported method
+                }
+
+                val (overSigned, maxUnsigned) = overSignedMaxUnsigned(method.owner.returnType)
+                add(method) { call, context ->
+                    val left = IrElementToPyExpressionTransformer().visitExpression(call.dispatchReceiver!!, context).single()
+                    val right = translateCallArguments(call, context).single()
+                    val binOp = op(left, right)
+                    simulateOverflow(binOp, overSigned = overSigned, maxUnsigned = maxUnsigned).let(::listOf)
+                }
+            }
+
+            fun binOp(op: operator): (expr, expr) -> expr = { left, right -> BinOp(left = left, op = op, right = right) }
+            fun cmpOp(op: cmpop): (expr, expr) -> expr = { left, right ->
+                Compare(left = left, ops = listOf(op), comparators = listOf(right))
+            }
+
+            intrinsics.longPlus.forEach { replaceLongMethodWithOperator(it, binOp(Add)) }
+            intrinsics.longMinus.forEach { replaceLongMethodWithOperator(it, binOp(Sub)) }
+            intrinsics.longMult.forEach { replaceLongMethodWithOperator(it, binOp(Mult)) }
+            intrinsics.longDiv.forEach { replaceLongMethodWithOperator(it, binOp(FloorDiv)) }
+            intrinsics.longMod.forEach { replaceLongMethodWithOperator(it, binOp(Mod)) }
+            intrinsics.longAnd.forEach { replaceLongMethodWithOperator(it, binOp(BitAnd)) }
+            intrinsics.longOr.forEach { replaceLongMethodWithOperator(it, binOp(BitOr)) }
+            intrinsics.longXor.forEach { replaceLongMethodWithOperator(it, binOp(BitXor)) }
+            add(intrinsics.longInv) { call, context ->
+                val arg = IrElementToPyExpressionTransformer().visitExpression(call.dispatchReceiver!!, context).single()
+                UnaryOp(Invert, arg).let(::listOf)
+            }
+            intrinsics.longShl.forEach { replaceLongMethodWithOperator(it, binOp(LShift)) }
+            intrinsics.longShr.forEach { replaceLongMethodWithOperator(it, binOp(RShift)) }
+            intrinsics.longUshr.forEach { replaceLongMethodWithOperator(it, simulateUshr(ULong.MAX_VALUE.toString(16).hex())) }
+            intrinsics.longEquals.forEach { replaceLongMethodWithOperator(it, cmpOp(Eq)) }
 
 //            binOp(intrinsics.jsInstanceOf, JsBinaryOperator.INSTANCEOF)
 //

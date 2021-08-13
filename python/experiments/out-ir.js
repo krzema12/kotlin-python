@@ -12069,6 +12069,30 @@ this['out-ir'] = function (_) {
       println(x);
     }
   }
+  function isPowerOfTwo(n) {
+    return (n & (n - 1 | 0)) === 0;
+  }
+  function factorial(n) {
+    var tmp0_subject = n <= 1;
+    var tmp;
+    switch (tmp0_subject) {
+      case true:
+        tmp = new Long(1, 0);
+        break;
+      case false:
+        tmp = numberToLong(n).times_wiekkq_k$(factorial(n - 1 | 0));
+        break;
+      default:noWhenBranchMatchedException();
+        break;
+    }
+    return tmp;
+  }
+  function numberOfCombinations(n, k) {
+    return factorial(n).div_wiekkq_k$(factorial(k).times_wiekkq_k$(factorial(n - k | 0)));
+  }
+  function sumOverflowDemo(a_0, b_0) {
+    return a_0 + b_0 | 0;
+  }
   function a(a1, a2) {
   }
   function b() {

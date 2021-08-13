@@ -8,11 +8,9 @@ package org.jetbrains.kotlin.ir.backend.py.lower.calls
 import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.backend.py.utils.OperatorNames
-import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrFunctionAccessExpression
 import org.jetbrains.kotlin.ir.expressions.impl.IrCallImpl
-import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.irCall
@@ -29,7 +27,7 @@ class NumberOperatorCallsTransformer(context: JsIrBackendContext) : CallsTransfo
     private val memberToTransformer = MemberToTransformer().apply {
 
         val primitiveNumbers =
-            irBuiltIns.run { listOf(intType, shortType, byteType, floatType, doubleType) }
+            irBuiltIns.run { listOf(longType, intType, shortType, byteType, floatType, doubleType) }
 
         for (type in primitiveNumbers) {
             add(type, OperatorNames.UNARY_PLUS, intrinsics.jsUnaryPlus)
@@ -56,7 +54,7 @@ class NumberOperatorCallsTransformer(context: JsIrBackendContext) : CallsTransfo
 
             add(it, OperatorNames.NOT, intrinsics.jsNot)
 
-            add(it, HASH_CODE_NAME) { call -> toInt32(call.dispatchReceiver!!) }
+            add(it, HASH_CODE_NAME) { call -> intrinsics.jsNumberToInt.call(call.dispatchReceiver!!) }
         }
 
         for (type in primitiveNumbers) {
@@ -123,7 +121,7 @@ class NumberOperatorCallsTransformer(context: JsIrBackendContext) : CallsTransfo
     ): IrExpression {
         val newCall = irCall(call, intrinsic, receiversAsArguments = true)
         if (toInt32)
-            return toInt32(newCall)
+            return intrinsics.jsNumberToInt.call(newCall)
         return newCall
     }
 
@@ -186,9 +184,10 @@ class NumberOperatorCallsTransformer(context: JsIrBackendContext) : CallsTransfo
         )
 
     private fun convertResultToPrimitiveType(e: IrExpression, type: IrType) = when {
-        type.isInt() -> toInt32(e)
         type.isByte() -> intrinsics.jsNumberToByte.call(e)
         type.isShort() -> intrinsics.jsNumberToShort.call(e)
+        type.isInt() -> intrinsics.jsNumberToInt.call(e)
+        type.isLong() -> intrinsics.jsNumberToLong.call(e)
         else -> e
     }
 
@@ -196,8 +195,6 @@ class NumberOperatorCallsTransformer(context: JsIrBackendContext) : CallsTransfo
         { call ->
             assert(call.valueArgumentsCount == 1)
             val arg = call.getValueArgument(0)!!
-
-            var actualCall = call
 
             if (arg.type.isLong()) {
                 val receiverType = call.dispatchReceiver!!.type
@@ -229,37 +226,13 @@ class NumberOperatorCallsTransformer(context: JsIrBackendContext) : CallsTransfo
                             dispatchReceiver = arg
                         })
                     }
-                    // {Byte, Short, Int} OP Long => {Byte, Sort, Int}.toLong() OP Long
-                    !receiverType.isLong() -> {
-                        call.dispatchReceiver = IrCallImpl(
-                            call.startOffset,
-                            call.endOffset,
-                            intrinsics.jsNumberToLong.owner.returnType,
-                            intrinsics.jsNumberToLong,
-                            typeArgumentsCount = 0,
-                            valueArgumentsCount = 1
-                        ).apply {
-                            putValueArgument(0, call.dispatchReceiver)
-                        }
-
-                        // Replace {Byte, Short, Int}.OP with corresponding Long.OP
-                        val declaration = call.symbol.owner as IrSimpleFunction
-                        val replacement = intrinsics.longClassSymbol.owner.declarations.filterIsInstance<IrSimpleFunction>()
-                            .single { member ->
-                                member.name.asString() == declaration.name.asString() &&
-                                        member.valueParameters.size == declaration.valueParameters.size &&
-                                        member.valueParameters.zip(declaration.valueParameters).all { (a, b) -> a.type == b.type }
-                            }.symbol
-
-                        actualCall = irCall(call, replacement)
-                    }
                 }
             }
 
-            if (actualCall.dispatchReceiver!!.type.isLong()) {
-                actualCall
+            if (call.dispatchReceiver!!.type.isLong()) {
+                call
             } else {
-                default(actualCall)
+                default(call)
             }
         }
 
@@ -277,10 +250,4 @@ class NumberOperatorCallsTransformer(context: JsIrBackendContext) : CallsTransfo
 
     private fun toBoolean(e: IrExpression) =
         booleanNegate(booleanNegate(e))
-
-    private fun toInt32(e: IrExpression) =
-        JsIrBuilder.buildCall(intrinsics.jsBitOr, irBuiltIns.intType).apply {
-            putValueArgument(0, e)
-            putValueArgument(1, buildInt(0))
-        }
 }

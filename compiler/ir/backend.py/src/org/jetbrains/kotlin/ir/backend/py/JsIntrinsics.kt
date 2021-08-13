@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.ir.backend.py
 
 import org.jetbrains.kotlin.builtins.PrimitiveType
+import org.jetbrains.kotlin.incremental.components.NoLookupLocation
 import org.jetbrains.kotlin.ir.backend.py.utils.Namer
 import org.jetbrains.kotlin.ir.builders.declarations.addFunction
 import org.jetbrains.kotlin.ir.builders.declarations.addTypeParameter
@@ -179,6 +180,49 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
 
     val jsNumberRangeToNumber = getInternalFunction("numberRangeToNumber")
     val jsNumberRangeToLong = getInternalFunction("numberRangeToLong")
+
+    private fun getMethod(fqClassName: String, function: String) = context
+        .getClass(FqName(fqClassName))
+        .unsubstitutedMemberScope
+        .findSingleFunction(Name.identifier(function))
+        .let(context.symbolTable::referenceSimpleFunction)
+
+    private fun getMethods(fqClassName: String, function: String) = context
+        .getClass(FqName(fqClassName))
+        .unsubstitutedMemberScope
+        .getContributedFunctions(Name.identifier(function), NoLookupLocation.FROM_BACKEND)
+        .map(context.symbolTable::referenceSimpleFunction)
+
+    val byteToByte = getMethod("kotlin.Byte", "toByte")
+    val byteToShort = getMethod("kotlin.Byte", "toShort")
+    val byteToInt = getMethod("kotlin.Byte", "toInt")
+    val byteToLong = getMethod("kotlin.Byte", "toLong")
+    val shortToByte = getMethod("kotlin.Short", "toByte")
+    val shortToShort = getMethod("kotlin.Short", "toShort")
+    val shortToInt = getMethod("kotlin.Short", "toInt")
+    val shortToLong = getMethod("kotlin.Short", "toLong")
+    val intToByte = getMethod("kotlin.Int", "toByte")
+    val intToShort = getMethod("kotlin.Int", "toShort")
+    val intToInt = getMethod("kotlin.Int", "toInt")
+    val intToLong = getMethod("kotlin.Int", "toLong")
+    val longToByte = getMethod("kotlin.Long", "toByte")
+    val longToShort = getMethod("kotlin.Long", "toShort")
+    val longToInt = getMethod("kotlin.Long", "toInt")
+    val longToLong = getMethod("kotlin.Long", "toLong")
+
+    val longPlus = getMethods("kotlin.Long", "plus")
+    val longMinus = getMethods("kotlin.Long", "minus")
+    val longMult = getMethods("kotlin.Long", "times")
+    val longDiv = getMethods("kotlin.Long", "div")
+    val longMod = getMethods("kotlin.Long", "mod")
+    val longAnd = getMethods("kotlin.Long", "and")
+    val longOr = getMethods("kotlin.Long", "or")
+    val longXor = getMethods("kotlin.Long", "xor")
+    val longInv = getMethod("kotlin.Long", "inv")
+    val longShl = getMethods("kotlin.Long", "shl")
+    val longShr = getMethods("kotlin.Long", "shr")
+    val longUshr = getMethods("kotlin.Long", "ushr")
+    val longEquals = getMethods("kotlin.Long", "equals")
 
     val longClassSymbol = getInternalClassWithoutPackage("kotlin.Long")
 

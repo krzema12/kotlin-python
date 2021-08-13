@@ -80,13 +80,6 @@ class EqualityAndComparisonCallsTransformer(context: JsIrBackendContext) : Calls
         val lhs = call.getValueArgument(0)!!
         val rhs = call.getValueArgument(1)!!
 
-
-        val lhsJsType = lhs.type.getPrimitiveType()
-        val rhsJsType = rhs.type.getPrimitiveType()
-
-        val equalsMethod = lhs.type.findEqualsMethod()
-        val isLhsPrimitive = lhsJsType != PrimitiveType.OTHER
-
         return when {
             lhs.type is IrDynamicType ->
                 irCall(call, intrinsics.jsEqeq)
@@ -95,15 +88,8 @@ class EqualityAndComparisonCallsTransformer(context: JsIrBackendContext) : Calls
             lhs.isNullConst() || rhs.isNullConst() ->
                 irCall(call, intrinsics.jsEqeq)
 
-            // For non-float primitives of the same type use JS `==`
-            isLhsPrimitive && lhsJsType == rhsJsType && lhsJsType != PrimitiveType.FLOATING_POINT_NUMBER ->
-                chooseEqualityOperatorForPrimitiveTypes(call)
-
-            !isLhsPrimitive && !lhs.type.isNullable() && equalsMethod != null ->
-                irCall(call, equalsMethod.symbol, argumentsAsReceivers = true)
-
             else ->
-                irCall(call, intrinsics.jsEquals)
+                chooseEqualityOperatorForPrimitiveTypes(call)  // todo: ensure that __eq__ is used to compile equals everywhere
         }
     }
 
