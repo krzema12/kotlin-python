@@ -41,18 +41,18 @@ fun expr.toPython(): String {
     }
 }
 
-private fun expr.needsParentheses() = when (this) {
+private fun expr.needsParentheses(forceEvaluate: Boolean) = when (this) {
     is Name -> false
-    is UnaryOp -> false
+    is UnaryOp -> forceEvaluate
     is List -> false
-    is Constant -> false
+    is Constant -> forceEvaluate
     is Call -> false
     is Attribute -> false
     is Subscript -> false
     else -> true
 }
 
-private fun expr.surroundIfNeeded() = when (needsParentheses()) {
+private fun expr.surroundIfNeeded(forceEvaluate: Boolean = false) = when (needsParentheses(forceEvaluate)) {
     true -> "(${this.toPython()})"
     false -> this.toPython()
 }
@@ -81,10 +81,10 @@ fun Compare.toPython() =
     "${left.toPython()}${ops.zip(comparators).joinToString("") { (op, c) -> " ${op.toPython()} ${c.toPython()}" }}"
 
 fun Call.toPython() =
-    "${func.surroundIfNeeded()}(${args.joinToString(", ") { it.toPython() }})"
+    "${func.surroundIfNeeded(forceEvaluate = true)}(${args.joinToString(", ") { it.toPython() }})"
 
 fun Attribute.toPython() =
-    "${value.surroundIfNeeded()}.${attr.name}"
+    "${value.surroundIfNeeded(forceEvaluate = true)}.${attr.name}"
 
 fun Subscript.toPython() =
-    "${value.surroundIfNeeded()}[${slice.toPython()}]"
+    "${value.surroundIfNeeded(forceEvaluate = true)}[${slice.toPython()}]"

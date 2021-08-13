@@ -63,6 +63,10 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
                 value = constant(value = "'${kind.valueOf(expression).replace("'", "\\'")}'"),
                 kind = null,
             )
+            is IrConstKind.Long -> Constant(
+                value = constant(value = "${kind.valueOf(expression)}"),
+                kind = null,
+            )
             is IrConstKind.Int -> Constant(
                 value = constant(value = "${kind.valueOf(expression)}"),
                 kind = null,

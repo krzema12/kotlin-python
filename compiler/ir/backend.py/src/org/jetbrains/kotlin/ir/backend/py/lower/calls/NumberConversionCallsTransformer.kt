@@ -20,12 +20,12 @@ class NumberConversionCallsTransformer(context: JsIrBackendContext) : CallsTrans
         // TODO: Add Char and Number conversions
 
         irBuiltIns.byteType.let {
-            add(it, ConversionNames.TO_BYTE, ::useDispatchReceiver)
+//            add(it, ConversionNames.TO_BYTE, ::useDispatchReceiver)
             add(it, ConversionNames.TO_DOUBLE, ::useDispatchReceiver)
             add(it, ConversionNames.TO_FLOAT, ::useDispatchReceiver)
-            add(it, ConversionNames.TO_INT, ::useDispatchReceiver)
-            add(it, ConversionNames.TO_SHORT, ::useDispatchReceiver)
-            add(it, ConversionNames.TO_LONG, intrinsics.jsToLong)
+//            add(it, ConversionNames.TO_INT, ::useDispatchReceiver)
+//            add(it, ConversionNames.TO_SHORT, ::useDispatchReceiver)
+//            add(it, ConversionNames.TO_LONG, ::useDispatchReceiver)
         }
 
         for (type in listOf(irBuiltIns.floatType, irBuiltIns.doubleType)) {
@@ -38,21 +38,21 @@ class NumberConversionCallsTransformer(context: JsIrBackendContext) : CallsTrans
         }
 
         irBuiltIns.intType.let {
-            add(it, ConversionNames.TO_BYTE, intrinsics.jsToByte)
+//            add(it, ConversionNames.TO_BYTE, ::useDispatchReceiver)
             add(it, ConversionNames.TO_DOUBLE, ::useDispatchReceiver)
             add(it, ConversionNames.TO_FLOAT, ::useDispatchReceiver)
-            add(it, ConversionNames.TO_INT, ::useDispatchReceiver)
-            add(it, ConversionNames.TO_SHORT, intrinsics.jsToShort)
-            add(it, ConversionNames.TO_LONG, intrinsics.jsToLong)
+//            add(it, ConversionNames.TO_INT, ::useDispatchReceiver)
+//            add(it, ConversionNames.TO_SHORT, ::useDispatchReceiver)
+//            add(it, ConversionNames.TO_LONG, ::useDispatchReceiver)
         }
 
         irBuiltIns.shortType.let {
-            add(it, ConversionNames.TO_BYTE, intrinsics.jsToByte)
+//            add(it, ConversionNames.TO_BYTE, ::useDispatchReceiver)
             add(it, ConversionNames.TO_DOUBLE, ::useDispatchReceiver)
             add(it, ConversionNames.TO_FLOAT, ::useDispatchReceiver)
-            add(it, ConversionNames.TO_INT, ::useDispatchReceiver)
-            add(it, ConversionNames.TO_SHORT, ::useDispatchReceiver)
-            add(it, ConversionNames.TO_LONG, intrinsics.jsToLong)
+//            add(it, ConversionNames.TO_INT, ::useDispatchReceiver)
+//            add(it, ConversionNames.TO_SHORT, ::useDispatchReceiver)
+//            add(it, ConversionNames.TO_LONG, ::useDispatchReceiver)
         }
 
 

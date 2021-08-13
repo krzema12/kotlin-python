@@ -62,9 +62,6 @@ class ConstTransformer(private val context: JsIrBackendContext) : IrElementTrans
                 expression.kind is IrConstKind.Char ->
                     lowerConst(charClassSymbol, IrConstImpl.Companion::int, IrConstKind.Char.valueOf(expression).code)
 
-                expression.kind is IrConstKind.Long ->
-                    createLong(IrConstKind.Long.valueOf(expression))
-
                 else -> super.visitConst(expression)
             }
         }
