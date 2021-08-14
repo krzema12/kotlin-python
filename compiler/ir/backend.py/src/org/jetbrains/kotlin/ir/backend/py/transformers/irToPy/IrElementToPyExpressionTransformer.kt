@@ -7,14 +7,12 @@ package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 
 import generated.Python.*
 import org.jetbrains.kotlin.ir.backend.py.lower.InteropCallableReferenceLowering
-import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
-import org.jetbrains.kotlin.ir.backend.py.utils.asString
-import org.jetbrains.kotlin.ir.backend.py.utils.isJsNativeInvoke
-import org.jetbrains.kotlin.ir.backend.py.utils.realOverrideTarget
+import org.jetbrains.kotlin.ir.backend.py.utils.*
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.expressions.*
+import org.jetbrains.kotlin.ir.util.isEffectivelyExternal
 import org.jetbrains.kotlin.ir.util.isFunctionTypeOrSubtype
 import org.jetbrains.kotlin.ir.util.parentAsClass
 import org.jetbrains.kotlin.util.OperatorNameConventions
@@ -194,16 +192,15 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
     }
 
     override fun visitConstructorCall(expression: IrConstructorCall, context: JsGenerationContext): expr {
-        val noOfArguments = expression.valueArgumentsCount
+        val function = expression.symbol.owner
+        val arguments = translateCallArguments(expression, context, this)
+        val klass = function.parentAsClass
 
-        val arguments = (0 until noOfArguments).mapNotNull { argIndex ->
-            val valueArgument: IrExpression? = expression.getValueArgument(argIndex)
-            valueArgument?.let {
-                IrElementToPyExpressionTransformer().visitExpression(it, context)
-            }
+        require(!klass.isInline) {
+            "All inline class constructor calls must be lowered to static function calls"
         }
 
-        val className = expression.symbol.owner.parentAsClass.name.asString().toValidPythonSymbol()
+        val className = context.getNameForClass(klass).ident.toValidPythonSymbol()
         return Call(
             func = Name(id = identifier(className), ctx = Load),
             args = arguments,
@@ -234,6 +231,22 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
         val pyExtensionReceiver = expression.extensionReceiver?.accept(transformer, context)
         val arguments = translateCallArguments(expression, context, transformer)
 
+        // Transform external property accessor call
+        // @JsName-annotated external property accessors are translated as function calls
+        if (function.getJsName() == null) {
+            val property = function.correspondingPropertySymbol?.owner
+            if (property != null && property.isEffectivelyExternal()) {
+                val name = Name(id = identifier(context.getNameForProperty(property).ident.toValidPythonSymbol()), ctx = Load)
+                return when (function) {
+                    property.getter -> name
+//                    property.setter -> Assign(targets = listOf(name), value = arguments.single(), type_comment = null)
+                    // todo: this is a statement but an expression is required
+                    property.setter -> Name(id = identifier("visitCall set ${context.getNameForProperty(property).ident.toValidPythonSymbol()}"), ctx = Load)
+                    else -> error("Function must be an accessor of corresponding property")
+                }
+            }
+        }
+
         if (isFunctionTypeInvoke(pyDispatchReceiver, expression) || expression.symbol.owner.isJsNativeInvoke()) {
             return Call(
                 func = pyDispatchReceiver ?: pyExtensionReceiver!!,
@@ -243,16 +256,20 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
         }
 
         if (pyDispatchReceiver == null) {
-            return Call(
-                func = Name(id = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Load),
-                args = arguments,
-                keywords = emptyList(),
-            )
+            return try {
+                Call(
+                    func = Name(id = identifier(context.getNameForStaticFunction(function).ident.toValidPythonSymbol()), ctx = Load),
+                    args = arguments,
+                    keywords = emptyList(),
+                )
+            } catch (e: IllegalStateException) {
+                Name(id = identifier("visitCall getNameForStaticFunction ${e.message}".toValidPythonSymbol()), ctx = Load)  // todo
+            }
         } else {
             return Call(
                 func = Attribute(
                     value = pyDispatchReceiver,
-                    attr = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()),
+                    attr = identifier(context.getNameForMemberFunction(function).ident.toValidPythonSymbol()),
                     ctx = Load,
                 ),
                 args = arguments,

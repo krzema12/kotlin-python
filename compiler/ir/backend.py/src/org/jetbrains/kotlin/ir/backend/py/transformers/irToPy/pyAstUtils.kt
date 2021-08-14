@@ -12,10 +12,11 @@ import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.expressions.IrMemberAccessExpression
 import org.jetbrains.kotlin.ir.expressions.IrVararg
 import org.jetbrains.kotlin.ir.util.isVararg
+import org.jetbrains.kotlin.js.backend.ast.JsName
 
 fun expr.makeStmt(): stmt = Expr(value = this)
 
-fun translateFunction(declaration: IrFunction, context: JsGenerationContext): FunctionDef {
+fun translateFunction(declaration: IrFunction, funcName: JsName, context: JsGenerationContext): FunctionDef {
     val isClassMethod = declaration.dispatchReceiverParameter != null
     val isConstructor = declaration is IrConstructor
     val body = declaration.body?.accept(IrElementToPyStatementTransformer(), context) ?: listOf(Pass)
@@ -35,7 +36,7 @@ fun translateFunction(declaration: IrFunction, context: JsGenerationContext): Fu
     )
 
     return FunctionDef(
-        name = identifier(if (isConstructor) "__init__" else declaration.name.asString().toValidPythonSymbol()),
+        name = identifier(if (isConstructor) "__init__" else funcName.ident.toValidPythonSymbol()),
         args = argumentsImpl(
             posonlyargs = emptyList(),
             args = if (isClassMethod || isConstructor) {
