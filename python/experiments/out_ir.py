@@ -1043,7 +1043,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -1249,7 +1249,7 @@ class EmptyList:
         raise IndexOutOfBoundsException_init__Create_(((str('fromIndex: ') + str(fromIndex)) + str(', toIndex: ')) + str(toIndex))
     
 
-pass
+EmptyList_instance = None
 def EmptyList_getInstance():
     if EmptyList_instance == None:
         EmptyList()
@@ -1288,7 +1288,7 @@ class EmptyIterator:
         pass
     
 
-pass
+EmptyIterator_instance = None
 def EmptyIterator_getInstance():
     if EmptyIterator_instance == None:
         EmptyIterator()
@@ -1656,7 +1656,7 @@ class Key:
         pass
     
 
-pass
+Key_instance = None
 def Key_getInstance():
     if Key_instance == None:
         Key()
@@ -1856,7 +1856,7 @@ class EmptyCoroutineContext:
         pass
     
 
-pass
+EmptyCoroutineContext_instance = None
 def EmptyCoroutineContext_getInstance():
     if EmptyCoroutineContext_instance == None:
         EmptyCoroutineContext()
@@ -1881,7 +1881,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -2470,7 +2470,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -2731,7 +2731,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -2907,7 +2907,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -3381,7 +3381,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -3823,7 +3823,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -3917,7 +3917,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -4189,7 +4189,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -4634,7 +4634,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -4734,7 +4734,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -4977,7 +4977,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -6413,7 +6413,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -6480,7 +6480,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -6548,7 +6548,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -6652,7 +6652,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -6724,7 +6724,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -6796,7 +6796,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -7237,7 +7237,7 @@ class ByteCompanionObject:
         pass
     
 
-pass
+ByteCompanionObject_instance = None
 def ByteCompanionObject_getInstance():
     if ByteCompanionObject_instance == None:
         ByteCompanionObject()
@@ -7274,7 +7274,7 @@ class ShortCompanionObject:
         pass
     
 
-pass
+ShortCompanionObject_instance = None
 def ShortCompanionObject_getInstance():
     if ShortCompanionObject_instance == None:
         ShortCompanionObject()
@@ -7311,7 +7311,7 @@ class IntCompanionObject:
         pass
     
 
-pass
+IntCompanionObject_instance = None
 def IntCompanionObject_getInstance():
     if IntCompanionObject_instance == None:
         IntCompanionObject()
@@ -7360,7 +7360,7 @@ class FloatCompanionObject:
         pass
     
 
-pass
+FloatCompanionObject_instance = None
 def FloatCompanionObject_getInstance():
     if FloatCompanionObject_instance == None:
         FloatCompanionObject()
@@ -7409,7 +7409,7 @@ class DoubleCompanionObject:
         pass
     
 
-pass
+DoubleCompanionObject_instance = None
 def DoubleCompanionObject_getInstance():
     if DoubleCompanionObject_instance == None:
         DoubleCompanionObject()
@@ -7430,7 +7430,7 @@ class StringCompanionObject:
         pass
     
 
-pass
+StringCompanionObject_instance = None
 def StringCompanionObject_getInstance():
     if StringCompanionObject_instance == None:
         StringCompanionObject()
@@ -7451,7 +7451,7 @@ class BooleanCompanionObject:
         pass
     
 
-pass
+BooleanCompanionObject_instance = None
 def BooleanCompanionObject_getInstance():
     if BooleanCompanionObject_instance == None:
         BooleanCompanionObject()
@@ -8843,7 +8843,7 @@ class NothingKClassImpl:
         pass
     
 
-pass
+NothingKClassImpl_instance = None
 def NothingKClassImpl_getInstance():
     if NothingKClassImpl_instance == None:
         NothingKClassImpl()
@@ -9253,7 +9253,7 @@ class DynamicKType:
         pass
     
 
-pass
+DynamicKType_instance = None
 def DynamicKType_getInstance():
     if DynamicKType_instance == None:
         DynamicKType()
@@ -9722,7 +9722,7 @@ class PrimitiveClasses:
         pass
     
 
-pass
+PrimitiveClasses_instance = None
 def PrimitiveClasses_getInstance():
     if PrimitiveClasses_instance == None:
         PrimitiveClasses()
@@ -10557,7 +10557,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -11087,7 +11087,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -11176,7 +11176,7 @@ class DefaultConstructorMarker:
         pass
     
 
-pass
+DefaultConstructorMarker_instance = None
 def DefaultConstructorMarker_getInstance():
     if DefaultConstructorMarker_instance == None:
         DefaultConstructorMarker()
@@ -12108,7 +12108,7 @@ class Companion:
         pass
     
 
-pass
+Companion_instance = None
 def Companion_getInstance():
     if Companion_instance == None:
         Companion()
@@ -13185,7 +13185,7 @@ class CompletedContinuation:
         pass
     
 
-pass
+CompletedContinuation_instance = None
 def CompletedContinuation_getInstance():
     if CompletedContinuation_instance == None:
         CompletedContinuation()

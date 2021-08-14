@@ -47,7 +47,7 @@ class ObjectDeclarationLowering(
             origin = IrDeclarationOrigin.FIELD_FOR_OBJECT_INSTANCE
         }.apply {
             parent = declaration.parent
-            initializer = null  // Initialized with 'undefined'
+            initializer = context.irFactory.createExpressionBody(JsIrBuilder.buildNull(context.irBuiltIns.booleanType))
         }
 
         declaration.instanceField = instanceField
