@@ -132,9 +132,6 @@ class AutoboxingTransformer(context: JsCommonBackendContext) : AbstractValueUsag
             }
         }
 
-        val actualInlinedClass = icUtils.getInlinedClass(actualType)
-        val expectedInlinedClass = icUtils.getInlinedClass(expectedType)
-
         // Mimicking behaviour of current JS backend
         // TODO: Revisit
         if (
@@ -142,22 +139,7 @@ class AutoboxingTransformer(context: JsCommonBackendContext) : AbstractValueUsag
             (actualType.makeNotNull().isChar() && expectedType is IrDynamicType)
         ) return this
 
-        val function = when {
-            actualInlinedClass == null && expectedInlinedClass == null -> return this
-            actualInlinedClass != null && expectedInlinedClass == null -> icUtils.boxIntrinsic
-            actualInlinedClass == null && expectedInlinedClass != null -> icUtils.unboxIntrinsic
-            else -> return this
-        }
-
-        return buildSafeCall(this, actualType, expectedType) { arg ->
-            JsIrBuilder.buildCall(
-                function,
-                expectedType,
-                typeArguments = listOf(actualType, expectedType)
-            ).also {
-                it.putValueArgument(0, arg)
-            }
-        }
+        return this
     }
 
     private tailrec fun IrExpression.isGetUnit(): Boolean =

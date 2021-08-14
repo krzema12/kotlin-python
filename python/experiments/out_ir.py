@@ -1630,7 +1630,7 @@ class _no_name_provided_:
         return self._context
     
     def resumeWith(self, result):
-        return self._resumeWith.invoke(boxIntrinsic(result))
+        return self._resumeWith.invoke(result)
     
     def equals(self, other):
         pass
@@ -2637,17 +2637,16 @@ def _get_UNDEFINED_RESULT_():
     init_properties_DeepRecursive_kt()
     return UNDEFINED_RESULT
 
-UNDEFINED_RESULT = unboxIntrinsic(None)
+UNDEFINED_RESULT = None
 properties_initialized_DeepRecursive_kt = False
 def init_properties_DeepRecursive_kt():
     global properties_initialized_DeepRecursive_kt
     if not properties_initialized_DeepRecursive_kt:
         properties_initialized_DeepRecursive_kt = True
-        UNDEFINED_RESULT = unboxIntrinsic('Python workaround: set it to global')
+        global UNDEFINED_RESULT
         tmp0_success_0 = Companion_getInstance()
         tmp1_success_0 = _get_COROUTINE_SUSPENDED_()
         UNDEFINED_RESULT = _Result___init__impl_(tmp1_success_0)
-        boxIntrinsic(Unit_getInstance())
     
 
 def check(value):
@@ -2768,7 +2767,7 @@ def Result__equals_impl(this, other):
     if not jsInstanceOf(other, jsClass()):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
+    tmp0_other_with_cast = (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if not equals(this.value, tmp0_other_with_cast.value):
         return False
     
@@ -2780,13 +2779,13 @@ class Result:
         self.value = value
     
     def toString(self):
-        return Result__toString_impl(unboxIntrinsic(self))
+        return Result__toString_impl(self)
     
     def hashCode(self):
-        return Result__hashCode_impl(unboxIntrinsic(self))
+        return Result__hashCode_impl(self)
     
     def equals(self, other):
-        return Result__equals_impl(unboxIntrinsic(self), other)
+        return Result__equals_impl(self, other)
     
 
 def createFailure(exception):
@@ -2920,8 +2919,7 @@ def UByte__compareTo_impl(this, other):
     return compareTo(tmp, kotlin_Int(_UByte___get_data__impl_(other)) & 255)
 
 def UByte__compareTo_impl(this, other):
-    tmp = unboxIntrinsic(this)
-    return UByte__compareTo_impl(tmp, (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
+    return UByte__compareTo_impl(this, (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
 
 def UByte__compareTo_impl(this, other):
     tmp = kotlin_Int(_UByte___get_data__impl_(this)) & 255
@@ -3136,7 +3134,7 @@ def UByte__equals_impl(this, other):
     if not jsInstanceOf(other, jsClass()):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
+    tmp0_other_with_cast = (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if not (this.data == tmp0_other_with_cast.data):
         return False
     
@@ -3148,19 +3146,19 @@ class UByte:
         self.data = data
     
     def compareTo(self, other):
-        return UByte__compareTo_impl(unboxIntrinsic(self), other)
+        return UByte__compareTo_impl(self, other)
     
     def compareTo(self, other):
         return UByte__compareTo_impl(self, other)
     
     def toString(self):
-        return UByte__toString_impl(unboxIntrinsic(self))
+        return UByte__toString_impl(self)
     
     def hashCode(self):
-        return UByte__hashCode_impl(unboxIntrinsic(self))
+        return UByte__hashCode_impl(self)
     
     def equals(self, other):
-        return UByte__equals_impl(unboxIntrinsic(self), other)
+        return UByte__equals_impl(self, other)
     
 
 def toUByte():
@@ -3243,7 +3241,7 @@ class Iterator:
     
 
 def UByteArray__contains_impl(this, element):
-    tmp = (boxIntrinsic(element)) if (isObject(boxIntrinsic(element))) else (THROW_CCE())
+    tmp = (element) if (isObject(element)) else (THROW_CCE())
     if not jsInstanceOf(tmp, jsClass()):
         return False
     
@@ -3254,8 +3252,7 @@ def UByteArray__contains_impl(this, element):
     if not jsInstanceOf(element, jsClass()):
         return False
     
-    tmp = unboxIntrinsic(this)
-    return UByteArray__contains_impl(tmp, (unboxIntrinsic(element)) if (jsInstanceOf(element, jsClass())) else (THROW_CCE()))
+    return UByteArray__contains_impl(this, (element) if (jsInstanceOf(element, jsClass())) else (THROW_CCE()))
 
 def UByteArray__containsAll_impl(this, elements):
     while True:
@@ -3274,7 +3271,7 @@ def UByteArray__containsAll_impl(this, elements):
             element_2 = tmp0_iterator_1.next()
             if jsInstanceOf(element_2, jsClass()):
                 tmp = _UByteArray___get_storage__impl_(this)
-                tmp0_toByte_0_4 = unboxIntrinsic(element_2)
+                tmp0_toByte_0_4 = element_2
                 tmp = contains(_UByte___get_data__impl_(tmp0_toByte_0_4))
             elif True:
                 tmp = False
@@ -3292,7 +3289,7 @@ def UByteArray__containsAll_impl(this, elements):
     return tmp_ret_0
 
 def UByteArray__containsAll_impl(this, elements):
-    return UByteArray__containsAll_impl(unboxIntrinsic(this), elements)
+    return UByteArray__containsAll_impl(this, elements)
 
 def UByteArray__isEmpty_impl(this):
     return len(_UByteArray___get_storage__impl_(this)) == 0
@@ -3307,7 +3304,7 @@ def UByteArray__equals_impl(this, other):
     if not jsInstanceOf(other, jsClass()):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
+    tmp0_other_with_cast = (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if not equals(this.storage, tmp0_other_with_cast.storage):
         return False
     
@@ -3318,34 +3315,34 @@ class UByteArray:
         self.storage = storage
     
     def _get_size_(self):
-        return _UByteArray___get_size__impl_(unboxIntrinsic(self))
+        return _UByteArray___get_size__impl_(self)
     
     def iterator(self):
-        return UByteArray__iterator_impl(unboxIntrinsic(self))
+        return UByteArray__iterator_impl(self)
     
     def contains(self, element):
-        return UByteArray__contains_impl(unboxIntrinsic(self), element)
+        return UByteArray__contains_impl(self, element)
     
     def contains(self, element):
         return UByteArray__contains_impl(self, element)
     
     def containsAll(self, elements):
-        return UByteArray__containsAll_impl(unboxIntrinsic(self), elements)
+        return UByteArray__containsAll_impl(self, elements)
     
     def containsAll(self, elements):
         return UByteArray__containsAll_impl(self, elements)
     
     def isEmpty(self):
-        return UByteArray__isEmpty_impl(unboxIntrinsic(self))
+        return UByteArray__isEmpty_impl(self)
     
     def toString(self):
-        return UByteArray__toString_impl(unboxIntrinsic(self))
+        return UByteArray__toString_impl(self)
     
     def hashCode(self):
-        return UByteArray__hashCode_impl(unboxIntrinsic(self))
+        return UByteArray__hashCode_impl(self)
     
     def equals(self, other):
-        return UByteArray__equals_impl(unboxIntrinsic(self), other)
+        return UByteArray__equals_impl(self, other)
     
 
 def _UInt___init__impl_(data):
@@ -3403,8 +3400,7 @@ def UInt__compareTo_impl(this, other):
     return uintCompare(_UInt___get_data__impl_(this), _UInt___get_data__impl_(other))
 
 def UInt__compareTo_impl(this, other):
-    tmp = unboxIntrinsic(this)
-    return UInt__compareTo_impl(tmp, (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
+    return UInt__compareTo_impl(this, (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
 
 def UInt__compareTo_impl(this, other):
     tmp0_compareTo_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
@@ -3588,7 +3584,7 @@ def UInt__equals_impl(this, other):
     if not jsInstanceOf(other, jsClass()):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
+    tmp0_other_with_cast = (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if not (this.data == tmp0_other_with_cast.data):
         return False
     
@@ -3600,19 +3596,19 @@ class UInt:
         self.data = data
     
     def compareTo(self, other):
-        return UInt__compareTo_impl(unboxIntrinsic(self), other)
+        return UInt__compareTo_impl(self, other)
     
     def compareTo(self, other):
         return UInt__compareTo_impl(self, other)
     
     def toString(self):
-        return UInt__toString_impl(unboxIntrinsic(self))
+        return UInt__toString_impl(self)
     
     def hashCode(self):
-        return UInt__hashCode_impl(unboxIntrinsic(self))
+        return UInt__hashCode_impl(self)
     
     def equals(self, other):
-        return UInt__equals_impl(unboxIntrinsic(self), other)
+        return UInt__equals_impl(self, other)
     
 
 def toUInt():
@@ -3701,7 +3697,7 @@ class Iterator:
     
 
 def UIntArray__contains_impl(this, element):
-    tmp = (boxIntrinsic(element)) if (isObject(boxIntrinsic(element))) else (THROW_CCE())
+    tmp = (element) if (isObject(element)) else (THROW_CCE())
     if not jsInstanceOf(tmp, jsClass()):
         return False
     
@@ -3712,8 +3708,7 @@ def UIntArray__contains_impl(this, element):
     if not jsInstanceOf(element, jsClass()):
         return False
     
-    tmp = unboxIntrinsic(this)
-    return UIntArray__contains_impl(tmp, (unboxIntrinsic(element)) if (jsInstanceOf(element, jsClass())) else (THROW_CCE()))
+    return UIntArray__contains_impl(this, (element) if (jsInstanceOf(element, jsClass())) else (THROW_CCE()))
 
 def UIntArray__containsAll_impl(this, elements):
     while True:
@@ -3732,7 +3727,7 @@ def UIntArray__containsAll_impl(this, elements):
             element_2 = tmp0_iterator_1.next()
             if jsInstanceOf(element_2, jsClass()):
                 tmp = _UIntArray___get_storage__impl_(this)
-                tmp0_toInt_0_4 = unboxIntrinsic(element_2)
+                tmp0_toInt_0_4 = element_2
                 tmp = contains(_UInt___get_data__impl_(tmp0_toInt_0_4))
             elif True:
                 tmp = False
@@ -3750,7 +3745,7 @@ def UIntArray__containsAll_impl(this, elements):
     return tmp_ret_0
 
 def UIntArray__containsAll_impl(this, elements):
-    return UIntArray__containsAll_impl(unboxIntrinsic(this), elements)
+    return UIntArray__containsAll_impl(this, elements)
 
 def UIntArray__isEmpty_impl(this):
     return len(_UIntArray___get_storage__impl_(this)) == 0
@@ -3765,7 +3760,7 @@ def UIntArray__equals_impl(this, other):
     if not jsInstanceOf(other, jsClass()):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
+    tmp0_other_with_cast = (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if not equals(this.storage, tmp0_other_with_cast.storage):
         return False
     
@@ -3776,34 +3771,34 @@ class UIntArray:
         self.storage = storage
     
     def _get_size_(self):
-        return _UIntArray___get_size__impl_(unboxIntrinsic(self))
+        return _UIntArray___get_size__impl_(self)
     
     def iterator(self):
-        return UIntArray__iterator_impl(unboxIntrinsic(self))
+        return UIntArray__iterator_impl(self)
     
     def contains(self, element):
-        return UIntArray__contains_impl(unboxIntrinsic(self), element)
+        return UIntArray__contains_impl(self, element)
     
     def contains(self, element):
         return UIntArray__contains_impl(self, element)
     
     def containsAll(self, elements):
-        return UIntArray__containsAll_impl(unboxIntrinsic(self), elements)
+        return UIntArray__containsAll_impl(self, elements)
     
     def containsAll(self, elements):
         return UIntArray__containsAll_impl(self, elements)
     
     def isEmpty(self):
-        return UIntArray__isEmpty_impl(unboxIntrinsic(self))
+        return UIntArray__isEmpty_impl(self)
     
     def toString(self):
-        return UIntArray__toString_impl(unboxIntrinsic(self))
+        return UIntArray__toString_impl(self)
     
     def hashCode(self):
-        return UIntArray__hashCode_impl(unboxIntrinsic(self))
+        return UIntArray__hashCode_impl(self)
     
     def equals(self, other):
-        return UIntArray__equals_impl(unboxIntrinsic(self), other)
+        return UIntArray__equals_impl(self, other)
     
 
 class Companion:
@@ -3844,13 +3839,13 @@ class UIntRange:
         return self._get_first_()
     
     def _get_start_(self):
-        return boxIntrinsic(self._get_start_())
+        return self._get_start_()
     
     def _get_endInclusive_(self):
         return self._get_last_()
     
     def _get_endInclusive_(self):
-        return boxIntrinsic(self._get_endInclusive_())
+        return self._get_endInclusive_()
     
     def contains(self, value):
         tmp0_compareTo_0 = self._get_first_()
@@ -3863,7 +3858,7 @@ class UIntRange:
         return tmp
     
     def contains(self, value):
-        return self.contains((unboxIntrinsic(value)) if (jsInstanceOf(value, jsClass())) else (THROW_CCE()))
+        return self.contains((value) if (jsInstanceOf(value, jsClass())) else (THROW_CCE()))
     
     def isEmpty(self):
         tmp0_compareTo_0 = self._get_first_()
@@ -3872,7 +3867,7 @@ class UIntRange:
     
     def equals(self, other):
         if jsInstanceOf(other, jsClass()):
-            tmp = (True) if ((kotlin_ranges_UIntRange(other).isEmpty()) if (self.isEmpty()) else (False)) else ((equals(boxIntrinsic(self._get_last_()), boxIntrinsic(kotlin_ranges_UIntRange(other)._get_last_()))) if (equals(boxIntrinsic(self._get_first_()), boxIntrinsic(kotlin_ranges_UIntRange(other)._get_first_()))) else (False))
+            tmp = (True) if ((kotlin_ranges_UIntRange(other).isEmpty()) if (self.isEmpty()) else (False)) else ((self._get_last_().equals(kotlin_ranges_UIntRange(other)._get_last_())) if (self._get_first_().equals(kotlin_ranges_UIntRange(other)._get_first_())) else (False))
         elif True:
             tmp = False
         
@@ -3890,7 +3885,7 @@ class UIntRange:
         return tmp
     
     def toString(self):
-        return (str(boxIntrinsic(self._get_first_())) + str('..')) + str(boxIntrinsic(self._get_last_()))
+        return (str(self._get_first_()) + str('..')) + str(self._get_last_())
     
     def _get_first_(self):
         pass
@@ -3968,7 +3963,7 @@ class UIntProgression:
     
     def equals(self, other):
         if jsInstanceOf(other, jsClass()):
-            tmp = (True) if ((kotlin_ranges_UIntProgression(other).isEmpty()) if (self.isEmpty()) else (False)) else ((self.step == kotlin_ranges_UIntProgression(other).step) if ((equals(boxIntrinsic(self.last), boxIntrinsic(kotlin_ranges_UIntProgression(other).last))) if (equals(boxIntrinsic(self.first), boxIntrinsic(kotlin_ranges_UIntProgression(other).first))) else (False)) else (False))
+            tmp = (True) if ((kotlin_ranges_UIntProgression(other).isEmpty()) if (self.isEmpty()) else (False)) else ((self.step == kotlin_ranges_UIntProgression(other).step) if ((self.last.equals(kotlin_ranges_UIntProgression(other).last)) if (self.first.equals(kotlin_ranges_UIntProgression(other).first)) else (False)) else (False))
         elif True:
             tmp = False
         
@@ -3986,7 +3981,7 @@ class UIntProgression:
         return tmp
     
     def toString(self):
-        return ((((str(boxIntrinsic(self.first)) + str('..')) + str(boxIntrinsic(self.last))) + str(' step ')) + str(self.step)) if (self.step > 0) else ((((str(boxIntrinsic(self.first)) + str(' downTo ')) + str(boxIntrinsic(self.last))) + str(' step ')) + str(-self.step | 0))
+        return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str(-self.step | 0))
     
 
 def _get_finalElement_(_this):
@@ -4027,7 +4022,7 @@ class UIntProgressionIterator:
     
     def nextUInt(self):
         value = self.next
-        if equals(boxIntrinsic(value), boxIntrinsic(self.finalElement)):
+        if value.equals(self.finalElement):
             if not self.hasNext:
                 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
             
@@ -4062,7 +4057,7 @@ class UIntIterator:
         return self.nextUInt()
     
     def next(self):
-        return boxIntrinsic(self.next())
+        return self.next()
     
     def nextUInt(self):
         pass
@@ -4088,7 +4083,7 @@ class ULongIterator:
         return self.nextULong()
     
     def next(self):
-        return boxIntrinsic(self.next())
+        return self.next()
     
     def nextULong(self):
         pass
@@ -4114,7 +4109,7 @@ class UByteIterator:
         return self.nextUByte()
     
     def next(self):
-        return boxIntrinsic(self.next())
+        return self.next()
     
     def nextUByte(self):
         pass
@@ -4140,7 +4135,7 @@ class UShortIterator:
         return self.nextUShort()
     
     def next(self):
-        return boxIntrinsic(self.next())
+        return self.next()
     
     def nextUShort(self):
         pass
@@ -4217,8 +4212,7 @@ def ULong__compareTo_impl(this, other):
     return ulongCompare(_ULong___get_data__impl_(this), _ULong___get_data__impl_(other))
 
 def ULong__compareTo_impl(this, other):
-    tmp = unboxIntrinsic(this)
-    return ULong__compareTo_impl(tmp, (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
+    return ULong__compareTo_impl(this, (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
 
 def ULong__plus_impl(this, other):
     tmp0_plus_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other))._and(Long(255, 0)))
@@ -4401,7 +4395,7 @@ def ULong__equals_impl(this, other):
     if not jsInstanceOf(other, jsClass()):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
+    tmp0_other_with_cast = (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if not this.data.equals(tmp0_other_with_cast.data):
         return False
     
@@ -4413,19 +4407,19 @@ class ULong:
         self.data = data
     
     def compareTo(self, other):
-        return ULong__compareTo_impl(unboxIntrinsic(self), other)
+        return ULong__compareTo_impl(self, other)
     
     def compareTo(self, other):
         return ULong__compareTo_impl(self, other)
     
     def toString(self):
-        return ULong__toString_impl(unboxIntrinsic(self))
+        return ULong__toString_impl(self)
     
     def hashCode(self):
-        return ULong__hashCode_impl(unboxIntrinsic(self))
+        return ULong__hashCode_impl(self)
     
     def equals(self, other):
-        return ULong__equals_impl(unboxIntrinsic(self), other)
+        return ULong__equals_impl(self, other)
     
 
 def toULong():
@@ -4514,7 +4508,7 @@ class Iterator:
     
 
 def ULongArray__contains_impl(this, element):
-    tmp = (boxIntrinsic(element)) if (isObject(boxIntrinsic(element))) else (THROW_CCE())
+    tmp = (element) if (isObject(element)) else (THROW_CCE())
     if not jsInstanceOf(tmp, jsClass()):
         return False
     
@@ -4525,8 +4519,7 @@ def ULongArray__contains_impl(this, element):
     if not jsInstanceOf(element, jsClass()):
         return False
     
-    tmp = unboxIntrinsic(this)
-    return ULongArray__contains_impl(tmp, (unboxIntrinsic(element)) if (jsInstanceOf(element, jsClass())) else (THROW_CCE()))
+    return ULongArray__contains_impl(this, (element) if (jsInstanceOf(element, jsClass())) else (THROW_CCE()))
 
 def ULongArray__containsAll_impl(this, elements):
     while True:
@@ -4545,7 +4538,7 @@ def ULongArray__containsAll_impl(this, elements):
             element_2 = tmp0_iterator_1.next()
             if jsInstanceOf(element_2, jsClass()):
                 tmp = _ULongArray___get_storage__impl_(this)
-                tmp0_toLong_0_4 = unboxIntrinsic(element_2)
+                tmp0_toLong_0_4 = element_2
                 tmp = contains(_ULong___get_data__impl_(tmp0_toLong_0_4))
             elif True:
                 tmp = False
@@ -4563,7 +4556,7 @@ def ULongArray__containsAll_impl(this, elements):
     return tmp_ret_0
 
 def ULongArray__containsAll_impl(this, elements):
-    return ULongArray__containsAll_impl(unboxIntrinsic(this), elements)
+    return ULongArray__containsAll_impl(this, elements)
 
 def ULongArray__isEmpty_impl(this):
     return len(_ULongArray___get_storage__impl_(this)) == 0
@@ -4578,7 +4571,7 @@ def ULongArray__equals_impl(this, other):
     if not jsInstanceOf(other, jsClass()):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
+    tmp0_other_with_cast = (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if not equals(this.storage, tmp0_other_with_cast.storage):
         return False
     
@@ -4589,34 +4582,34 @@ class ULongArray:
         self.storage = storage
     
     def _get_size_(self):
-        return _ULongArray___get_size__impl_(unboxIntrinsic(self))
+        return _ULongArray___get_size__impl_(self)
     
     def iterator(self):
-        return ULongArray__iterator_impl(unboxIntrinsic(self))
+        return ULongArray__iterator_impl(self)
     
     def contains(self, element):
-        return ULongArray__contains_impl(unboxIntrinsic(self), element)
+        return ULongArray__contains_impl(self, element)
     
     def contains(self, element):
         return ULongArray__contains_impl(self, element)
     
     def containsAll(self, elements):
-        return ULongArray__containsAll_impl(unboxIntrinsic(self), elements)
+        return ULongArray__containsAll_impl(self, elements)
     
     def containsAll(self, elements):
         return ULongArray__containsAll_impl(self, elements)
     
     def isEmpty(self):
-        return ULongArray__isEmpty_impl(unboxIntrinsic(self))
+        return ULongArray__isEmpty_impl(self)
     
     def toString(self):
-        return ULongArray__toString_impl(unboxIntrinsic(self))
+        return ULongArray__toString_impl(self)
     
     def hashCode(self):
-        return ULongArray__hashCode_impl(unboxIntrinsic(self))
+        return ULongArray__hashCode_impl(self)
     
     def equals(self, other):
-        return ULongArray__equals_impl(unboxIntrinsic(self), other)
+        return ULongArray__equals_impl(self, other)
     
 
 class Companion:
@@ -4657,13 +4650,13 @@ class ULongRange:
         return self._get_first_()
     
     def _get_start_(self):
-        return boxIntrinsic(self._get_start_())
+        return self._get_start_()
     
     def _get_endInclusive_(self):
         return self._get_last_()
     
     def _get_endInclusive_(self):
-        return boxIntrinsic(self._get_endInclusive_())
+        return self._get_endInclusive_()
     
     def contains(self, value):
         tmp0_compareTo_0 = self._get_first_()
@@ -4676,7 +4669,7 @@ class ULongRange:
         return tmp
     
     def contains(self, value):
-        return self.contains((unboxIntrinsic(value)) if (jsInstanceOf(value, jsClass())) else (THROW_CCE()))
+        return self.contains((value) if (jsInstanceOf(value, jsClass())) else (THROW_CCE()))
     
     def isEmpty(self):
         tmp0_compareTo_0 = self._get_first_()
@@ -4685,7 +4678,7 @@ class ULongRange:
     
     def equals(self, other):
         if jsInstanceOf(other, jsClass()):
-            tmp = (True) if ((kotlin_ranges_ULongRange(other).isEmpty()) if (self.isEmpty()) else (False)) else ((equals(boxIntrinsic(self._get_last_()), boxIntrinsic(kotlin_ranges_ULongRange(other)._get_last_()))) if (equals(boxIntrinsic(self._get_first_()), boxIntrinsic(kotlin_ranges_ULongRange(other)._get_first_()))) else (False))
+            tmp = (True) if ((kotlin_ranges_ULongRange(other).isEmpty()) if (self.isEmpty()) else (False)) else ((self._get_last_().equals(kotlin_ranges_ULongRange(other)._get_last_())) if (self._get_first_().equals(kotlin_ranges_ULongRange(other)._get_first_())) else (False))
         elif True:
             tmp = False
         
@@ -4709,7 +4702,7 @@ class ULongRange:
         return tmp
     
     def toString(self):
-        return (str(boxIntrinsic(self._get_first_())) + str('..')) + str(boxIntrinsic(self._get_last_()))
+        return (str(self._get_first_()) + str('..')) + str(self._get_last_())
     
     def _get_first_(self):
         pass
@@ -4788,7 +4781,7 @@ class ULongProgression:
     
     def equals(self, other):
         if jsInstanceOf(other, jsClass()):
-            tmp = (True) if ((kotlin_ranges_ULongProgression(other).isEmpty()) if (self.isEmpty()) else (False)) else ((self.step.equals(kotlin_ranges_ULongProgression(other).step)) if ((equals(boxIntrinsic(self.last), boxIntrinsic(kotlin_ranges_ULongProgression(other).last))) if (equals(boxIntrinsic(self.first), boxIntrinsic(kotlin_ranges_ULongProgression(other).first))) else (False)) else (False))
+            tmp = (True) if ((kotlin_ranges_ULongProgression(other).isEmpty()) if (self.isEmpty()) else (False)) else ((self.step.equals(kotlin_ranges_ULongProgression(other).step)) if ((self.last.equals(kotlin_ranges_ULongProgression(other).last)) if (self.first.equals(kotlin_ranges_ULongProgression(other).first)) else (False)) else (False))
         elif True:
             tmp = False
         
@@ -4812,7 +4805,7 @@ class ULongProgression:
         return tmp
     
     def toString(self):
-        return ((((str(boxIntrinsic(self.first)) + str('..')) + str(boxIntrinsic(self.last))) + str(' step ')) + str(self.step)) if (self.step.compareTo(Long(0, 0)) > 0) else ((((str(boxIntrinsic(self.first)) + str(' downTo ')) + str(boxIntrinsic(self.last))) + str(' step ')) + str(self.step.unaryMinus()))
+        return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step.compareTo(Long(0, 0)) > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str(self.step.unaryMinus()))
     
 
 def _get_finalElement_(_this):
@@ -4853,7 +4846,7 @@ class ULongProgressionIterator:
     
     def nextULong(self):
         value = self.next
-        if equals(boxIntrinsic(value), boxIntrinsic(self.finalElement)):
+        if value.equals(self.finalElement):
             if not self.hasNext:
                 visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
             
@@ -5000,8 +4993,7 @@ def UShort__compareTo_impl(this, other):
     return compareTo(tmp, kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
 
 def UShort__compareTo_impl(this, other):
-    tmp = unboxIntrinsic(this)
-    return UShort__compareTo_impl(tmp, (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
+    return UShort__compareTo_impl(this, (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
 
 def UShort__compareTo_impl(this, other):
     tmp0_compareTo_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
@@ -5211,7 +5203,7 @@ def UShort__equals_impl(this, other):
     if not jsInstanceOf(other, jsClass()):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
+    tmp0_other_with_cast = (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if not (this.data == tmp0_other_with_cast.data):
         return False
     
@@ -5223,19 +5215,19 @@ class UShort:
         self.data = data
     
     def compareTo(self, other):
-        return UShort__compareTo_impl(unboxIntrinsic(self), other)
+        return UShort__compareTo_impl(self, other)
     
     def compareTo(self, other):
         return UShort__compareTo_impl(self, other)
     
     def toString(self):
-        return UShort__toString_impl(unboxIntrinsic(self))
+        return UShort__toString_impl(self)
     
     def hashCode(self):
-        return UShort__hashCode_impl(unboxIntrinsic(self))
+        return UShort__hashCode_impl(self)
     
     def equals(self, other):
-        return UShort__equals_impl(unboxIntrinsic(self), other)
+        return UShort__equals_impl(self, other)
     
 
 def toUShort():
@@ -5315,7 +5307,7 @@ class Iterator:
     
 
 def UShortArray__contains_impl(this, element):
-    tmp = (boxIntrinsic(element)) if (isObject(boxIntrinsic(element))) else (THROW_CCE())
+    tmp = (element) if (isObject(element)) else (THROW_CCE())
     if not jsInstanceOf(tmp, jsClass()):
         return False
     
@@ -5326,8 +5318,7 @@ def UShortArray__contains_impl(this, element):
     if not jsInstanceOf(element, jsClass()):
         return False
     
-    tmp = unboxIntrinsic(this)
-    return UShortArray__contains_impl(tmp, (unboxIntrinsic(element)) if (jsInstanceOf(element, jsClass())) else (THROW_CCE()))
+    return UShortArray__contains_impl(this, (element) if (jsInstanceOf(element, jsClass())) else (THROW_CCE()))
 
 def UShortArray__containsAll_impl(this, elements):
     while True:
@@ -5346,7 +5337,7 @@ def UShortArray__containsAll_impl(this, elements):
             element_2 = tmp0_iterator_1.next()
             if jsInstanceOf(element_2, jsClass()):
                 tmp = _UShortArray___get_storage__impl_(this)
-                tmp0_toShort_0_4 = unboxIntrinsic(element_2)
+                tmp0_toShort_0_4 = element_2
                 tmp = contains(_UShort___get_data__impl_(tmp0_toShort_0_4))
             elif True:
                 tmp = False
@@ -5364,7 +5355,7 @@ def UShortArray__containsAll_impl(this, elements):
     return tmp_ret_0
 
 def UShortArray__containsAll_impl(this, elements):
-    return UShortArray__containsAll_impl(unboxIntrinsic(this), elements)
+    return UShortArray__containsAll_impl(this, elements)
 
 def UShortArray__isEmpty_impl(this):
     return len(_UShortArray___get_storage__impl_(this)) == 0
@@ -5379,7 +5370,7 @@ def UShortArray__equals_impl(this, other):
     if not jsInstanceOf(other, jsClass()):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
+    tmp0_other_with_cast = (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE())
     if not equals(this.storage, tmp0_other_with_cast.storage):
         return False
     
@@ -5390,34 +5381,34 @@ class UShortArray:
         self.storage = storage
     
     def _get_size_(self):
-        return _UShortArray___get_size__impl_(unboxIntrinsic(self))
+        return _UShortArray___get_size__impl_(self)
     
     def iterator(self):
-        return UShortArray__iterator_impl(unboxIntrinsic(self))
+        return UShortArray__iterator_impl(self)
     
     def contains(self, element):
-        return UShortArray__contains_impl(unboxIntrinsic(self), element)
+        return UShortArray__contains_impl(self, element)
     
     def contains(self, element):
         return UShortArray__contains_impl(self, element)
     
     def containsAll(self, elements):
-        return UShortArray__containsAll_impl(unboxIntrinsic(self), elements)
+        return UShortArray__containsAll_impl(self, elements)
     
     def containsAll(self, elements):
         return UShortArray__containsAll_impl(self, elements)
     
     def isEmpty(self):
-        return UShortArray__isEmpty_impl(unboxIntrinsic(self))
+        return UShortArray__isEmpty_impl(self)
     
     def toString(self):
-        return UShortArray__toString_impl(unboxIntrinsic(self))
+        return UShortArray__toString_impl(self)
     
     def hashCode(self):
-        return UShortArray__hashCode_impl(unboxIntrinsic(self))
+        return UShortArray__hashCode_impl(self)
     
     def equals(self, other):
-        return UShortArray__equals_impl(unboxIntrinsic(self), other)
+        return UShortArray__equals_impl(self, other)
     
 
 def uintCompare(v1, v2):
@@ -6881,7 +6872,7 @@ class Unit:
         pass
     
 
-pass
+Unit_instance = None
 def Unit_getInstance():
     if Unit_instance == None:
         Unit()
