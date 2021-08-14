@@ -2637,20 +2637,18 @@ def _get_UNDEFINED_RESULT_():
     init_properties_DeepRecursive_kt()
     return UNDEFINED_RESULT
 
-pass
+UNDEFINED_RESULT = unboxIntrinsic(None)
 properties_initialized_DeepRecursive_kt = False
 def init_properties_DeepRecursive_kt():
     global properties_initialized_DeepRecursive_kt
     if not properties_initialized_DeepRecursive_kt:
         properties_initialized_DeepRecursive_kt = True
+        UNDEFINED_RESULT = unboxIntrinsic('Python workaround: set it to global')
         tmp0_success_0 = Companion_getInstance()
         tmp1_success_0 = _get_COROUTINE_SUSPENDED_()
         UNDEFINED_RESULT = _Result___init__impl_(tmp1_success_0)
         boxIntrinsic(Unit_getInstance())
     
-
-def Python_workaround_set_properties_initialized_DeepRecursive_kt_to_global():
-    pass
 
 def check(value):
     if not value:
@@ -8459,7 +8457,7 @@ def _get_output_():
     init_properties_console_kt()
     return output
 
-pass
+output = None
 class BaseOutput:
     def __init__(self):
         pass
@@ -8610,18 +8608,16 @@ def init_properties_console_kt():
     global properties_initialized_console_kt
     if not properties_initialized_console_kt:
         properties_initialized_console_kt = True
+        global output
         isNode_2 = kotlin_Boolean(js('typeof process !== \'undefined\' && process.versions && !!process.versions.node'))
         output = (NodeJsOutput(js('process.stdout'))) if (isNode_2) else (BufferedOutputToConsoleLog())
     
-
-def Python_workaround_set_properties_initialized_console_kt_to_global():
-    pass
 
 def _get_EmptyContinuation_():
     init_properties_EmptyContinuation_kt()
     return EmptyContinuation
 
-pass
+EmptyContinuation = None
 class _no_name_provided__1:
     def __init__(self, _tmp0_Continuation_0):
         self._tmp0_Continuation_0 = _tmp0_Continuation_0
@@ -8660,12 +8656,10 @@ def init_properties_EmptyContinuation_kt():
     global properties_initialized_EmptyContinuation_kt
     if not properties_initialized_EmptyContinuation_kt:
         properties_initialized_EmptyContinuation_kt = True
+        global EmptyContinuation
         tmp0_Continuation_0 = EmptyCoroutineContext_getInstance()
         EmptyContinuation = _no_name_provided__1(tmp0_Continuation_0)
     
-
-def Python_workaround_set_properties_initialized_EmptyContinuation_kt_to_global():
-    pass
 
 def asDynamic():
     return self
@@ -8700,23 +8694,22 @@ def _get_INV_2_26_():
     init_properties_PlatformRandom_kt()
     return INV_2_26
 
-pass
+INV_2_26 = None
 def _get_INV_2_53_():
     init_properties_PlatformRandom_kt()
     return INV_2_53
 
-pass
+INV_2_53 = None
 properties_initialized_PlatformRandom_kt = False
 def init_properties_PlatformRandom_kt():
     global properties_initialized_PlatformRandom_kt
     if not properties_initialized_PlatformRandom_kt:
         properties_initialized_PlatformRandom_kt = True
+        global INV_2_26
         INV_2_26 = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(2.0, -26.0)
+        global INV_2_53
         INV_2_53 = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(2.0, -53.0)
     
-
-def Python_workaround_set_properties_initialized_PlatformRandom_kt_to_global():
-    pass
 
 def _get_js_():
     return ((kotlin_reflect_js_internal_KClassImpl_T_(self)) if (jsInstanceOf(self, jsClass())) else (THROW_CCE()))._get_jClass_()
@@ -9366,7 +9359,7 @@ def _get_functionClasses_():
     init_properties_primitives_kt()
     return functionClasses
 
-pass
+functionClasses = None
 class _no_name_provided_:
     def __init__(self):
         pass
@@ -9830,11 +9823,9 @@ def init_properties_primitives_kt():
     global properties_initialized_primitives_kt
     if not properties_initialized_primitives_kt:
         properties_initialized_primitives_kt = True
+        global functionClasses
         functionClasses = fillArrayVal(Array(0), None)
     
-
-def Python_workaround_set_properties_initialized_primitives_kt_to_global():
-    pass
 
 def getKClass(jClass):
     if kotlin_Boolean(INVOKE(isArray(js('Array')), jClass)):
@@ -10349,7 +10340,7 @@ def _get_STRING_CASE_INSENSITIVE_ORDER_():
     init_properties_string_kt()
     return STRING_CASE_INSENSITIVE_ORDER
 
-pass
+STRING_CASE_INSENSITIVE_ORDER = None
 def nativeLastIndexOf(str, fromIndex):
     init_properties_string_kt()
     return kotlin_Int(INVOKE(lastIndexOf(self), str, fromIndex))
@@ -10498,29 +10489,25 @@ def init_properties_string_kt():
     global properties_initialized_string_kt
     if not properties_initialized_string_kt:
         properties_initialized_string_kt = True
+        global STRING_CASE_INSENSITIVE_ORDER
         tmp = _no_name_provided__factory()
         STRING_CASE_INSENSITIVE_ORDER = sam_kotlin_Comparator_0(tmp)
     
-
-def Python_workaround_set_properties_initialized_string_kt_to_global():
-    pass
 
 def _get_REPLACEMENT_BYTE_SEQUENCE_():
     init_properties_utf8Encoding_kt()
     return REPLACEMENT_BYTE_SEQUENCE
 
-pass
+REPLACEMENT_BYTE_SEQUENCE = None
 properties_initialized_utf8Encoding_kt = False
 def init_properties_utf8Encoding_kt():
     global properties_initialized_utf8Encoding_kt
     if not properties_initialized_utf8Encoding_kt:
         properties_initialized_utf8Encoding_kt = True
+        global REPLACEMENT_BYTE_SEQUENCE
         tmp0_byteArrayOf_0 = -17
         REPLACEMENT_BYTE_SEQUENCE = tmp0_byteArrayOf_0
     
-
-def Python_workaround_set_properties_initialized_utf8Encoding_kt_to_global():
-    pass
 
 def _get_value_(_this):
     return _this.value
@@ -11668,32 +11655,32 @@ def _get_buf_():
     init_properties_bitUtils_kt()
     return buf
 
-pass
+buf = None
 def _get_bufFloat64_():
     init_properties_bitUtils_kt()
     return bufFloat64
 
-pass
+bufFloat64 = None
 def _get_bufFloat32_():
     init_properties_bitUtils_kt()
     return bufFloat32
 
-pass
+bufFloat32 = None
 def _get_bufInt32_():
     init_properties_bitUtils_kt()
     return bufInt32
 
-pass
+bufInt32 = None
 def _get_lowIndex_():
     init_properties_bitUtils_kt()
     return lowIndex
 
-pass
+lowIndex = None
 def _get_highIndex_():
     init_properties_bitUtils_kt()
     return highIndex
 
-pass
+highIndex = None
 def getNumberHashCode(obj):
     init_properties_bitUtils_kt()
     tmp0_unsafeCast_0 = jsBitwiseOr(obj, 0)
@@ -11708,20 +11695,23 @@ def init_properties_bitUtils_kt():
     global properties_initialized_bitUtils_kt
     if not properties_initialized_bitUtils_kt:
         properties_initialized_bitUtils_kt = True
+        global buf
         buf = ArrayBuffer(8)
+        global bufFloat64
         tmp0_unsafeCast_0 = Float64Array(_get_buf_())
         bufFloat64 = kotlin_Any_(tmp0_unsafeCast_0)
+        global bufFloat32
         tmp0_unsafeCast_0 = Float32Array(_get_buf_())
         bufFloat32 = kotlin_Any_(tmp0_unsafeCast_0)
+        global bufInt32
         tmp0_unsafeCast_0 = Int32Array(_get_buf_())
         bufInt32 = kotlin_Any_(tmp0_unsafeCast_0)
+        global lowIndex
         _get_bufFloat64_().__setitem__(0, -1.0)
         lowIndex = (1) if (not (_get_bufInt32_()[0] == 0)) else (0)
+        global highIndex
         highIndex = (1 - _get_lowIndex_()) | 0
     
-
-def Python_workaround_set_properties_initialized_bitUtils_kt_to_global():
-    pass
 
 class DoNotIntrinsify:
     def __init__(self):
@@ -12346,32 +12336,32 @@ def _get_ZERO_():
     init_properties_longjs_kt()
     return ZERO
 
-pass
+ZERO = None
 def _get_ONE_():
     init_properties_longjs_kt()
     return ONE
 
-pass
+ONE = None
 def _get_NEG_ONE_():
     init_properties_longjs_kt()
     return NEG_ONE
 
-pass
+NEG_ONE = None
 def _get_MAX_VALUE_():
     init_properties_longjs_kt()
     return MAX_VALUE
 
-pass
+MAX_VALUE = None
 def _get_MIN_VALUE_():
     init_properties_longjs_kt()
     return MIN_VALUE
 
-pass
+MIN_VALUE = None
 def _get_TWO_PWR_24__():
     init_properties_longjs_kt()
     return TWO_PWR_24_
 
-pass
+TWO_PWR_24_ = None
 def compare(other):
     init_properties_longjs_kt()
     if equalsLong(other):
@@ -12687,16 +12677,19 @@ def init_properties_longjs_kt():
     global properties_initialized_longjs_kt
     if not properties_initialized_longjs_kt:
         properties_initialized_longjs_kt = True
+        global ZERO
         ZERO = fromInt(0)
+        global ONE
         ONE = fromInt(1)
+        global NEG_ONE
         NEG_ONE = fromInt(-1)
+        global MAX_VALUE
         MAX_VALUE = Long(-1, 2147483647)
+        global MIN_VALUE
         MIN_VALUE = Long(0, -2147483648)
+        global TWO_PWR_24_
         TWO_PWR_24_ = fromInt(16777216)
     
-
-def Python_workaround_set_properties_initialized_longjs_kt_to_global():
-    pass
 
 def imul(a_local, b_local):
     lhs = kotlin_Double(jsBitwiseAnd(a_local, js('0xffff0000'))) * kotlin_Double(jsBitwiseAnd(b_local, 65535))
@@ -12842,7 +12835,7 @@ def _get_propertyRefClassMetadataCache_():
     init_properties_reflectRuntime_kt()
     return propertyRefClassMetadataCache
 
-pass
+propertyRefClassMetadataCache = None
 def metadataObject():
     init_properties_reflectRuntime_kt()
     return js('{ kind: \'class\', interfaces: [] }')
@@ -12878,6 +12871,7 @@ def init_properties_reflectRuntime_kt():
     global properties_initialized_reflectRuntime_kt
     if not properties_initialized_reflectRuntime_kt:
         properties_initialized_reflectRuntime_kt = True
+        global propertyRefClassMetadataCache
         tmp = js('{ kind: \'class\', interfaces: [] }')
         tmp0_arrayOf_0 = tmp
         tmp = js('{ kind: \'class\', interfaces: [] }')
@@ -12887,9 +12881,6 @@ def init_properties_reflectRuntime_kt():
         tmp3_arrayOf_0 = kotlin_Any_(tmp0_arrayOf_0)
         propertyRefClassMetadataCache = kotlin_Any_(tmp3_arrayOf_0)
     
-
-def Python_workaround_set_properties_initialized_reflectRuntime_kt_to_global():
-    pass
 
 def isInterface(obj, iface):
     tmp0_elvis_lhs = constructor(obj)
@@ -13877,12 +13868,12 @@ def _get_c_():
     init_properties_python_kt()
     return c
 
-pass
+c = None
 def _get_d_():
     init_properties_python_kt()
     return d
 
-pass
+d = None
 def box():
     init_properties_python_kt()
     _get_c_()
@@ -13894,9 +13885,8 @@ def init_properties_python_kt():
     global properties_initialized_python_kt
     if not properties_initialized_python_kt:
         properties_initialized_python_kt = True
+        global c
         c = Unit_getInstance()
+        global d
         d = _get_c_()
     
-
-def Python_workaround_set_properties_initialized_python_kt_to_global():
-    pass

@@ -41,6 +41,7 @@ import kotlin.collections.mutableListOf
 import kotlin.collections.set
 import kotlin.collections.toList
 import kotlin.collections.toMap
+import kotlin.random.Random
 
 class PropertyLazyInitLowering(
     private val context: JsIrBackendContext
@@ -134,7 +135,6 @@ class PropertyLazyInitLowering(
             origin = JsIrBuilder.SYNTHESIZED_DECLARATION
         }.apply {
             buildPropertiesInitializationBody(
-                file,
                 fieldToInitializer,
                 initializedField
             )
@@ -151,22 +151,26 @@ class PropertyLazyInitLowering(
         }
 
     private fun IrSimpleFunction.buildPropertiesInitializationBody(
-        file: IrFile,
         initializers: Map<IrField, IrExpression>,
         initializedField: IrField
     ) {
         body = irFactory.createBlockBody(
             UNDEFINED_OFFSET,
             UNDEFINED_OFFSET,
-            buildBodyWithIfGuard(file, initializers, initializedField)
+            buildBodyWithIfGuard(initializers, initializedField)
         )
     }
 
     private fun buildBodyWithIfGuard(
-        file: IrFile,
         initializers: Map<IrField, IrExpression>,
         initializedField: IrField
     ): List<IrStatement> {
+        val globalizers = initializers
+            .map { (field) ->
+                // This is a workaround to be able to emit "global ..." Python construct. There's no corresponding IR entity, so we emit a "set
+                // field" entity which then is checked if the value contains some special parts. If yes, it's translated to "Global".
+                createIrSetField(field, JsIrBuilder.buildString(context.irBuiltIns.stringType, "Python workaround: set it to global"))
+            }
         val statements = initializers
             .map { (field, expression) ->
                 createIrSetField(field, expression)
@@ -177,26 +181,27 @@ class PropertyLazyInitLowering(
             JsIrBuilder.buildBoolean(context.irBuiltIns.booleanType, true)
         )
 
-        // This is a workaround to be able to emit "global ..." Python construct. There's no corresponding IR entity, so we emit a function
-        // which then is checked if the name contains some special parts. If yes, it's translated to "Global".
-        val dummyFunction = irFactory.addFunction(file) {
-            name = Name.identifier("Python workaround set ${initializedField.name.identifier} to global")
-            returnType = irBuiltIns.unitType
-            visibility = INTERNAL
-            origin = JsIrBuilder.SYNTHESIZED_DECLARATION
-        }
+        // This is a workaround to be able to emit "global ..." Python construct. There's no corresponding IR entity, so we emit a "set
+        // field" entity which then is checked if the value contains some special parts. If yes, it's translated to "Global".
+        val setInitializedFieldAsGlobal = createIrSetField(
+            initializedField,
+            JsIrBuilder.buildString(context.irBuiltIns.stringType, "Python workaround: set it to global"))
 
-        val settingToGlobal = JsIrBuilder.buildCall(dummyFunction.symbol)
+        val globalizersAndFieldSettersInterleaved = (globalizers zip statements)
+            .flatMap { pair -> listOf(pair.first, pair.second) }
+
         val ifStatement = JsIrBuilder.buildIfElse(
             type = irBuiltIns.unitType,
             cond = calculator.not(createIrGetField(initializedField)),
             thenBranch = JsIrBuilder.buildComposite(
                 type = irBuiltIns.unitType,
-                statements = mutableListOf(upGuard).apply { addAll(statements) }
+                statements = mutableListOf<IrStatement>(upGuard).apply {
+                    addAll(globalizersAndFieldSettersInterleaved)
+                }
             )
         )
 
-        return listOf(settingToGlobal, ifStatement)
+        return listOf(setInitializedFieldAsGlobal, ifStatement)
     }
 }
 
@@ -226,6 +231,9 @@ class RemoveInitializersForLazyProperties(
     private val fileToInitializerPureness
         get() = context.fileToInitializerPureness
 
+    private val irFactory
+        get() = context.irFactory
+
     override fun transformFlat(declaration: IrDeclaration): List<IrDeclaration>? {
         if (declaration !is IrField) return null
 
@@ -246,7 +254,7 @@ class RemoveInitializersForLazyProperties(
             ?.takeIf { it.isForLazyInit() }
             ?.backingField
             ?.let {
-                it.initializer = null
+                it.initializer = irFactory.createExpressionBody(JsIrBuilder.buildNull(context.irBuiltIns.booleanType))
             }
 
         return null

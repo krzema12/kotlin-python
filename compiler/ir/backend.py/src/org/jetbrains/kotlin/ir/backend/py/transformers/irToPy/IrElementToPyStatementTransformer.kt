@@ -64,6 +64,14 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitSetField(expression: IrSetField, context: JsGenerationContext): List<stmt> {
         // TODO
+        // This is a workaround to be able to emit "global ..." Python construct. There's no corresponding IR entity, so we emit a "set
+        // field" entity which then is checked if the value contains some special parts. If yes, it's translated to "Global".
+        if (expression.value is IrConst<*>) {
+            if ((expression.value as IrConst<*>).value == "Python workaround: set it to global")
+            return listOf(Global(names = listOf(
+                identifier(expression.symbol.owner.name.identifier.toValidPythonSymbol()))))
+        }
+
         val receiverAsExpressions = expression.receiver?.accept(IrElementToPyExpressionTransformer(), context)?.get(0)
         return listOf(
             Assign(
@@ -124,14 +132,6 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     }
 
     override fun visitCall(expression: IrCall, data: JsGenerationContext): List<stmt> {
-        val functionName = expression.symbol.owner.name.asString()
-        // This is a workaround to be able to emit "global ..." Python construct. There's no corresponding IR entity, so we emit a function
-        // which then is checked if the name contains some special parts. If yes, it's translated to "Global".
-        if (functionName.startsWith("Python workaround") && functionName.endsWith("to global")) {
-            return listOf(Global(names = listOf(
-                identifier(functionName.toValidPythonSymbol().substringAfter("Python_workaround_set_").substringBefore("_to_global")))))
-        }
-
         // TODO
         return IrElementToPyExpressionTransformer().visitCall(expression, data)
             .map { Expr(value = it) }
