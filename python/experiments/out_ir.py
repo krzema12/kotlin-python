@@ -36,10 +36,10 @@ def _get_indices_():
 def _get_lastIndex_():
     return (len(self) - 1) | 0
 
-def contains(element):
+def contains_0(element):
     return indexOf(element) >= 0
 
-def indexOf(element):
+def indexOf_0(element):
     inductionVariable = 0
     last = (len(self) - 1) | 0
     if inductionVariable <= last:
@@ -56,16 +56,16 @@ def indexOf(element):
     
     return -1
 
-def _get_indices_():
+def _get_indices__0():
     return IntRange(0, _get_lastIndex_())
 
-def _get_lastIndex_():
+def _get_lastIndex__0():
     return (len(self) - 1) | 0
 
-def contains(element):
+def contains_1(element):
     return indexOf(element) >= 0
 
-def indexOf(element):
+def indexOf_1(element):
     inductionVariable = 0
     last = (len(self) - 1) | 0
     if inductionVariable <= last:
@@ -82,16 +82,16 @@ def indexOf(element):
     
     return -1
 
-def _get_indices_():
+def _get_indices__1():
     return IntRange(0, _get_lastIndex_())
 
-def _get_lastIndex_():
+def _get_lastIndex__1():
     return (len(self) - 1) | 0
 
-def contains(element):
+def contains_2(element):
     return indexOf(element) >= 0
 
-def indexOf(element):
+def indexOf_2(element):
     inductionVariable = 0
     last = (len(self) - 1) | 0
     if inductionVariable <= last:
@@ -108,16 +108,16 @@ def indexOf(element):
     
     return -1
 
-def _get_indices_():
+def _get_indices__2():
     return IntRange(0, _get_lastIndex_())
 
-def _get_lastIndex_():
+def _get_lastIndex__2():
     return (len(self) - 1) | 0
 
-def _get_indices_():
+def _get_indices__3():
     return IntRange(0, _get_lastIndex_())
 
-def indexOf(element):
+def indexOf_3(element):
     if element == None:
         inductionVariable = 0
         last = (len(self) - 1) | 0
@@ -183,7 +183,7 @@ def lastIndexOf(element):
     
     return -1
 
-def _get_lastIndex_():
+def _get_lastIndex__3():
     return (len(self) - 1) | 0
 
 def joinToString(separator, prefix, postfix, limit, truncated, transform):
@@ -278,10 +278,10 @@ def all(predicate):
     
     return True
 
-def joinToString(separator, prefix, postfix, limit, truncated, transform):
+def joinToString_0(separator, prefix, postfix, limit, truncated, transform):
     return joinTo(StringBuilder_init__Create_(), separator, prefix, postfix, limit, truncated, transform).toString()
 
-def joinToString_default(separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
+def joinToString_default_0(separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
     if not (_mask0 & 1 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
@@ -302,7 +302,7 @@ def joinToString_default(separator, prefix, postfix, limit, truncated, transform
     
     return joinToString(kotlin_CharSequence(separator), kotlin_CharSequence(prefix), kotlin_CharSequence(postfix), limit, kotlin_CharSequence(truncated), transform)
 
-def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
+def joinTo_0(buffer, separator, prefix, postfix, limit, truncated, transform):
     buffer.append(prefix)
     Unit_getInstance()
     count = 0
@@ -328,7 +328,7 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
     Unit_getInstance()
     return buffer
 
-def joinTo_default(buffer, separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
+def joinTo_default_0(buffer, separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
     if not (_mask0 & 2 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
@@ -415,41 +415,41 @@ def KotlinNothingValueException_init__Create_():
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def KotlinNothingValueException_init__Init_(message, _this):
+def KotlinNothingValueException_init__Init__0(message, _this):
     RuntimeException_init__Init_(message, _this)
     super()
     return _this
 
-def KotlinNothingValueException_init__Create_(message):
+def KotlinNothingValueException_init__Create__0(message):
     tmp = KotlinNothingValueException_init__Init_(message, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def KotlinNothingValueException_init__Init_(message, cause, _this):
+def KotlinNothingValueException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
     super()
     return _this
 
-def KotlinNothingValueException_init__Create_(message, cause):
+def KotlinNothingValueException_init__Create__1(message, cause):
     tmp = KotlinNothingValueException_init__Init_(message, cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def KotlinNothingValueException_init__Init_(cause, _this):
+def KotlinNothingValueException_init__Init__2(cause, _this):
     RuntimeException_init__Init_(cause, _this)
     super()
     return _this
 
-def KotlinNothingValueException_init__Create_(cause):
+def KotlinNothingValueException_init__Create__2(cause):
     tmp = KotlinNothingValueException_init__Init_(cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
 class KotlinNothingValueException:
-    def _get_message_(self):
+    def _get_message__0_k_(self):
         pass
     
-    def _get_cause_(self):
+    def _get_cause__0_k_(self):
         pass
     
     def toString(self):
@@ -521,13 +521,13 @@ class Level:
     def __init__(self, name, ordinal):
         super(name, ordinal)
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
-    def _get_ordinal_(self):
+    def _get_ordinal__0_k_(self):
         pass
     
-    def compareTo(self, other):
+    def compareTo_desqae_k_(self, other):
         pass
     
     def equals(self, other):
@@ -552,7 +552,7 @@ class Experimental:
     def __init__(self, level):
         self.level = level
     
-    def _get_level_(self):
+    def _get_level__0_k_(self):
         return self.level
     
     def equals(self, other):
@@ -569,7 +569,7 @@ class WasExperimental:
     def __init__(self, *markerClass):
         self.markerClass = markerClass
     
-    def _get_markerClass_(self):
+    def _get_markerClass__0_k_(self):
         return self.markerClass
     
     def equals(self, other):
@@ -626,10 +626,10 @@ class ExperimentalMultiplatform:
 
 pass
 pass
-def values():
+def values_0():
     return Level_WARNING_getInstance()
 
-def valueOf(value):
+def valueOf_0(value):
     if 'WARNING' == value:
         return Level_WARNING_getInstance()
     elif 'ERROR' == value:
@@ -640,7 +640,7 @@ def valueOf(value):
     
 
 pass
-def Level_initEntries():
+def Level_initEntries_0():
     if Level_entriesInitialized:
         return Unit_getInstance()
     
@@ -661,17 +661,17 @@ def RequiresOptIn_init__Init_(message, level, _mask0, _marker, _this):
 def RequiresOptIn_init__Create_(message, level, _mask0, _marker):
     return RequiresOptIn_init__Init_(message, level, _mask0, _marker, Object_create())
 
-class Level:
+class Level_0:
     def __init__(self, name, ordinal):
         super(name, ordinal)
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
-    def _get_ordinal_(self):
+    def _get_ordinal__0_k_(self):
         pass
     
-    def compareTo(self, other):
+    def compareTo_desqae_k_(self, other):
         pass
     
     def equals(self, other):
@@ -684,11 +684,11 @@ class Level:
         pass
     
 
-def Level_WARNING_getInstance():
+def Level_WARNING_getInstance_0():
     Level_initEntries()
     return Level_WARNING_instance
 
-def Level_ERROR_getInstance():
+def Level_ERROR_getInstance_0():
     Level_initEntries()
     return Level_ERROR_instance
 
@@ -697,10 +697,10 @@ class RequiresOptIn:
         self.message = message
         self.level = level
     
-    def _get_message_(self):
+    def _get_message__0_k_(self):
         return self.message
     
-    def _get_level_(self):
+    def _get_level__0_k_(self):
         return self.level
     
     def equals(self, other):
@@ -717,7 +717,7 @@ class OptIn:
     def __init__(self, *markerClass):
         self.markerClass = markerClass
     
-    def _get_markerClass_(self):
+    def _get_markerClass__0_k_(self):
         return self.markerClass
     
     def equals(self, other):
@@ -734,10 +734,10 @@ class _no_name_provided_:
     def __init__(self, this_0):
         self.this_0 = this_0
     
-    def invoke(self, it):
+    def invoke_2bq_k_(self, it):
         return ('(this Collection)') if (it is self.this_0) else (toString())
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((E(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
@@ -745,13 +745,13 @@ class AbstractCollection:
     def __init__(self):
         pass
     
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         pass
     
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         while True:
             if isInterface(self, jsClass()):
                 tmp = kotlin_collections_Collection_kotlin_Any__(self).isEmpty()
@@ -777,7 +777,7 @@ class AbstractCollection:
         
         return tmp_ret_0
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         while True:
             if isInterface(elements, jsClass()):
                 tmp = kotlin_collections_Collection_kotlin_Any__(elements).isEmpty()
@@ -803,7 +803,7 @@ class AbstractCollection:
         
         return tmp_ret_0
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         return self._get_size_() == 0
     
     def toString(self):
@@ -812,7 +812,7 @@ class AbstractCollection:
     def toArray(self):
         return copyToArrayImpl(self)
     
-    def toArray(self, array):
+    def toArray_gjotr5_k_(self, array):
         return copyToArrayImpl(self, array)
     
     def equals(self, other):
@@ -847,29 +847,29 @@ class SubList:
         Companion_getInstance().checkRangeIndexes(self.fromIndex, toIndex, self.list._get_size_())
         self._size = (toIndex - self.fromIndex) | 0
     
-    def get(self, index):
+    def get_ha5a7z_k_(self, index):
         Companion_getInstance().checkElementIndex(index, self._size)
         return self.list.get((self.fromIndex + index) | 0)
     
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         return self._size
     
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
-    def indexOf(self, element):
+    def indexOf_2bq_k_(self, element):
         pass
     
-    def lastIndexOf(self, element):
+    def lastIndexOf_2bq_k_(self, element):
         pass
     
-    def listIterator(self):
+    def listIterator_0_k_(self):
         pass
     
-    def listIterator(self, index):
+    def listIterator_ha5a7z_k_(self, index):
         pass
     
-    def subList(self, fromIndex, toIndex):
+    def subList_27zxwg_k_(self, fromIndex, toIndex):
         pass
     
     def equals(self, other):
@@ -878,13 +878,13 @@ class SubList:
     def hashCode(self):
         pass
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         pass
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         pass
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         pass
     
     def toString(self):
@@ -893,7 +893,7 @@ class SubList:
     def toArray(self):
         pass
     
-    def toArray(self, array):
+    def toArray_gjotr5_k_(self, array):
         pass
     
 
@@ -902,16 +902,16 @@ class IteratorImpl:
         self._this = _outer
         self.index = 0
     
-    def _set_index_(self, _set___):
+    def _set_index__majfzk_k_(self, _set___):
         self.index = _set___
     
-    def _get_index_(self):
+    def _get_index__0_k_(self):
         return self.index
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return self.index < self._this._get_size_()
     
-    def next(self):
+    def next_0_k_(self):
         if not self.hasNext():
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
@@ -937,13 +937,13 @@ class ListIteratorImpl:
         Companion_getInstance().checkPositionIndex(index, self._this._get_size_())
         self._set_index_(index)
     
-    def hasPrevious(self):
+    def hasPrevious_0_k_(self):
         return self._get_index_() > 0
     
-    def nextIndex(self):
+    def nextIndex_0_k_(self):
         return self._get_index_()
     
-    def previous(self):
+    def previous_0_k_(self):
         if not self.hasPrevious():
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
@@ -951,19 +951,19 @@ class ListIteratorImpl:
         tmp0_this._set_index_((tmp0_this._get_index_() - 1) | 0)
         return self._this.get(tmp0_this._get_index_())
     
-    def previousIndex(self):
+    def previousIndex_0_k_(self):
         return (self._get_index_() - 1) | 0
     
-    def _set_index_(self, _set___):
+    def _set_index__majfzk_k_(self, _set___):
         pass
     
-    def _get_index_(self):
+    def _get_index__0_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
-    def next(self):
+    def next_0_k_(self):
         pass
     
     def equals(self, other):
@@ -976,21 +976,21 @@ class ListIteratorImpl:
         pass
     
 
-class Companion:
+class Companion_0:
     def __init__(self):
         Companion_instance = self
     
-    def checkElementIndex(self, index, size):
+    def checkElementIndex_rvwcgf_k_(self, index, size):
         if (True) if (index < 0) else (index >= size):
             raise IndexOutOfBoundsException_init__Create_(((str('index: ') + str(index)) + str(', size: ')) + str(size))
         
     
-    def checkPositionIndex(self, index, size):
+    def checkPositionIndex_rvwcgf_k_(self, index, size):
         if (True) if (index < 0) else (index > size):
             raise IndexOutOfBoundsException_init__Create_(((str('index: ') + str(index)) + str(', size: ')) + str(size))
         
     
-    def checkRangeIndexes(self, fromIndex, toIndex, size):
+    def checkRangeIndexes_zd700_k_(self, fromIndex, toIndex, size):
         if (True) if (fromIndex < 0) else (toIndex > size):
             raise IndexOutOfBoundsException_init__Create_(((((str('fromIndex: ') + str(fromIndex)) + str(', toIndex: ')) + str(toIndex)) + str(', size: ')) + str(size))
         
@@ -998,7 +998,7 @@ class Companion:
             raise IllegalArgumentException_init__Create_(((str('fromIndex: ') + str(fromIndex)) + str(' > toIndex: ')) + str(toIndex))
         
     
-    def checkBoundsIndexes(self, startIndex, endIndex, size):
+    def checkBoundsIndexes_zd700_k_(self, startIndex, endIndex, size):
         if (True) if (startIndex < 0) else (endIndex > size):
             raise IndexOutOfBoundsException_init__Create_(((((str('startIndex: ') + str(startIndex)) + str(', endIndex: ')) + str(endIndex)) + str(', size: ')) + str(size))
         
@@ -1006,7 +1006,7 @@ class Companion:
             raise IllegalArgumentException_init__Create_(((str('startIndex: ') + str(startIndex)) + str(' > endIndex: ')) + str(endIndex))
         
     
-    def orderedHashCode(self, c):
+    def orderedHashCode_dxd51x_k_(self, c):
         hashCode = 1
         tmp0_iterator = c.iterator()
         while tmp0_iterator.hasNext():
@@ -1018,7 +1018,7 @@ class Companion:
         
         return hashCode
     
-    def orderedEquals(self, c, other):
+    def orderedEquals_tuq55s_k_(self, c, other):
         if not (c._get_size_() == other._get_size_()):
             return False
         
@@ -1056,16 +1056,16 @@ class AbstractList:
         Companion_getInstance()
         super()
     
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         pass
     
-    def get(self, index):
+    def get_ha5a7z_k_(self, index):
         pass
     
-    def iterator(self):
+    def iterator_0_k_(self):
         return IteratorImpl(self)
     
-    def indexOf(self, element):
+    def indexOf_2bq_k_(self, element):
         while True:
             index_1 = 0
             tmp0_iterator_2 = self.iterator()
@@ -1086,7 +1086,7 @@ class AbstractList:
         
         return tmp_ret_0
     
-    def lastIndexOf(self, element):
+    def lastIndexOf_2bq_k_(self, element):
         while True:
             iterator_1 = self.listIterator(self._get_size_())
             while iterator_1.hasPrevious():
@@ -1103,13 +1103,13 @@ class AbstractList:
         
         return tmp_ret_0
     
-    def listIterator(self):
+    def listIterator_0_k_(self):
         return ListIteratorImpl(self, 0)
     
-    def listIterator(self, index):
+    def listIterator_ha5a7z_k_(self, index):
         return ListIteratorImpl(self, index)
     
-    def subList(self, fromIndex, toIndex):
+    def subList_27zxwg_k_(self, fromIndex, toIndex):
         return SubList(self, fromIndex, toIndex)
     
     def equals(self, other):
@@ -1124,13 +1124,13 @@ class AbstractList:
     def hashCode(self):
         return Companion_getInstance().orderedHashCode(self)
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         pass
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         pass
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         pass
     
     def toString(self):
@@ -1139,11 +1139,11 @@ class AbstractList:
     def toArray(self):
         pass
     
-    def toArray(self, array):
+    def toArray_gjotr5_k_(self, array):
         pass
     
 
-def _get_lastIndex_():
+def _get_lastIndex__4():
     return (self._get_size_() - 1) | 0
 
 def emptyList():
@@ -1174,16 +1174,16 @@ class EmptyList:
     def toString(self):
         return '[]'
     
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         return 0
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         return True
     
-    def contains(self, element):
+    def contains_5jd3j5_k_(self, element):
         return False
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         if not False:
             return False
         
@@ -1194,19 +1194,19 @@ class EmptyList:
         
         return self.contains(tmp)
     
-    def containsAll(self, elements):
+    def containsAll_lwol4p_k_(self, elements):
         return elements.isEmpty()
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         return self.containsAll(elements)
     
-    def get(self, index):
+    def get_ha5a7z_k_(self, index):
         raise IndexOutOfBoundsException_init__Create_((str('Empty list doesn\'t contain element at index ') + str(index)) + str('.'))
     
-    def indexOf(self, element):
+    def indexOf_5jd3j5_k_(self, element):
         return -1
     
-    def indexOf(self, element):
+    def indexOf_2bq_k_(self, element):
         if not False:
             return -1
         
@@ -1217,10 +1217,10 @@ class EmptyList:
         
         return self.indexOf(tmp)
     
-    def lastIndexOf(self, element):
+    def lastIndexOf_5jd3j5_k_(self, element):
         return -1
     
-    def lastIndexOf(self, element):
+    def lastIndexOf_2bq_k_(self, element):
         if not False:
             return -1
         
@@ -1231,19 +1231,19 @@ class EmptyList:
         
         return self.lastIndexOf(tmp)
     
-    def iterator(self):
+    def iterator_0_k_(self):
         return EmptyIterator_getInstance()
     
-    def listIterator(self):
+    def listIterator_0_k_(self):
         return EmptyIterator_getInstance()
     
-    def listIterator(self, index):
+    def listIterator_ha5a7z_k_(self, index):
         if not (index == 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
         return EmptyIterator_getInstance()
     
-    def subList(self, fromIndex, toIndex):
+    def subList_27zxwg_k_(self, fromIndex, toIndex):
         if (toIndex == 0) if (fromIndex == 0) else (False):
             return self
         
@@ -1262,22 +1262,22 @@ class EmptyIterator:
     def __init__(self):
         EmptyIterator_instance = self
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return False
     
-    def hasPrevious(self):
+    def hasPrevious_0_k_(self):
         return False
     
-    def nextIndex(self):
+    def nextIndex_0_k_(self):
         return 0
     
-    def previousIndex(self):
+    def previousIndex_0_k_(self):
         return -1
     
-    def next(self):
+    def next_0_k_(self):
         raise NoSuchElementException_init__Create_()
     
-    def previous(self):
+    def previous_0_k_(self):
         raise NoSuchElementException_init__Create_()
     
     def equals(self, other):
@@ -1301,7 +1301,7 @@ def EmptyIterator_getInstance():
 def removeAll(predicate):
     return filterInPlace(predicate, True)
 
-def removeAll(predicate):
+def removeAll_0(predicate):
     return filterInPlace(predicate, True)
 
 def filterInPlace(predicate, predicateResultToRemove):
@@ -1349,7 +1349,7 @@ def filterInPlace(predicate, predicateResultToRemove):
         return False
     
 
-def filterInPlace(predicate, predicateResultToRemove):
+def filterInPlace_0(predicate, predicateResultToRemove):
     result = False
     tmp0_with_0 = self.iterator()
     while tmp0_with_0.hasNext():
@@ -1361,7 +1361,7 @@ def filterInPlace(predicate, predicateResultToRemove):
     return result
 
 class Sequence:
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
     def equals(self, other):
@@ -1381,19 +1381,19 @@ def contract(builder):
     pass
 
 class ContractBuilder:
-    def returns(self):
+    def returns_0_k_(self):
         pass
     
-    def returns(self, value):
+    def returns_wi7j7l_k_(self, value):
         pass
     
-    def returnsNotNull(self):
+    def returnsNotNull_0_k_(self):
         pass
     
-    def callsInPlace(self, _lambda, kind):
+    def callsInPlace_x6l8zl_k_(self, _lambda, kind):
         pass
     
-    def callsInPlace_default(self, _lambda, kind, _mask0, _handler):
+    def callsInPlace_default_i7jixu_k_(self, _lambda, kind, _mask0, _handler):
         if not (_mask0 & 2 == 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
         
@@ -1416,10 +1416,10 @@ pass
 pass
 pass
 pass
-def values():
+def values_1():
     return InvocationKind_AT_MOST_ONCE_getInstance()
 
-def valueOf(value):
+def valueOf_1(value):
     if 'AT_MOST_ONCE' == value:
         return InvocationKind_AT_MOST_ONCE_getInstance()
     elif 'AT_LEAST_ONCE' == value:
@@ -1448,13 +1448,13 @@ class InvocationKind:
     def __init__(self, name, ordinal):
         super(name, ordinal)
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
-    def _get_ordinal_(self):
+    def _get_ordinal__0_k_(self):
         pass
     
-    def compareTo(self, other):
+    def compareTo_qsy1jz_k_(self, other):
         pass
     
     def equals(self, other):
@@ -1512,7 +1512,7 @@ class CallsInPlace:
     
 
 class Returns:
-    def implies(self, booleanExpression):
+    def implies_vcj5fe_k_(self, booleanExpression):
         pass
     
     def equals(self, other):
@@ -1529,7 +1529,7 @@ class Returns:
     
 
 class ReturnsNotNull:
-    def implies(self, booleanExpression):
+    def implies_vcj5fe_k_(self, booleanExpression):
         pass
     
     def equals(self, other):
@@ -1560,7 +1560,7 @@ class Effect:
     
 
 class SimpleEffect:
-    def implies(self, booleanExpression):
+    def implies_vcj5fe_k_(self, booleanExpression):
         pass
     
     def equals(self, other):
@@ -1591,10 +1591,10 @@ class ConditionalEffect:
     
 
 class Continuation:
-    def _get_context_(self):
+    def _get_context__0_k_(self):
         pass
     
-    def resumeWith(self, result):
+    def resumeWith_bnunh2_k_(self, result):
         pass
     
     def equals(self, other):
@@ -1610,7 +1610,7 @@ class Continuation:
         pass
     
 
-def Continuation(context, resumeWith):
+def Continuation_0(context, resumeWith):
     return _no_name_provided_(context, resumeWith)
 
 def resumeWithException(exception):
@@ -1624,15 +1624,15 @@ def resume(value):
 def _get_coroutineContext_():
     raise NotImplementedError('Implemented as intrinsic')
 
-class _no_name_provided_:
+class _no_name_provided__0:
     def __init__(self, _context, _resumeWith):
         self._context = _context
         self._resumeWith = _resumeWith
     
-    def _get_context_(self):
+    def _get_context__0_k_(self):
         return self._context
     
-    def resumeWith(self, result):
+    def resumeWith_bnunh2_k_(self, result):
         return self._resumeWith.invoke(result)
     
     def equals(self, other):
@@ -1668,13 +1668,13 @@ def Key_getInstance():
     return Key_instance
 
 class ContinuationInterceptor:
-    def interceptContinuation(self, continuation):
+    def interceptContinuation_x4ijla_k_(self, continuation):
         pass
     
-    def releaseInterceptedContinuation(self, continuation):
+    def releaseInterceptedContinuation_h7c6yl_k_(self, continuation):
         pass
     
-    def get(self, key):
+    def get_9uvjra_k_(self, key):
         if jsInstanceOf(key, jsClass()):
             if kotlin_coroutines_AbstractCoroutineContextKey_____(key).isSubKey(self._get_key_()):
                 tmp = kotlin_coroutines_AbstractCoroutineContextKey_____(key).tryCast(self)
@@ -1691,19 +1691,19 @@ class ContinuationInterceptor:
         
         return tmp
     
-    def minusKey(self, key):
+    def minusKey_djuxjq_k_(self, key):
         if jsInstanceOf(key, jsClass()):
             return (EmptyCoroutineContext_getInstance()) if ((not (kotlin_coroutines_AbstractCoroutineContextKey_out_kotlin_coroutines_Element_out_kotlin_coroutines_Element_(key).tryCast(self) == None)) if (kotlin_coroutines_AbstractCoroutineContextKey_out_kotlin_coroutines_Element_out_kotlin_coroutines_Element_(key).isSubKey(self._get_key_())) else (False)) else (self)
         
         return (EmptyCoroutineContext_getInstance()) if (Key_getInstance() is key) else (self)
     
-    def _get_key_(self):
+    def _get_key__0_k_(self):
         pass
     
-    def fold(self, initial, operation):
+    def fold_cq605b_k_(self, initial, operation):
         pass
     
-    def plus(self, context):
+    def plus_d7pszg_k_(self, context):
         pass
     
     def equals(self, other):
@@ -1719,7 +1719,7 @@ class ContinuationInterceptor:
         Key_getInstance()
     
 
-class Key:
+class Key_0:
     def equals(self, other):
         pass
     
@@ -1734,10 +1734,10 @@ class Key:
     
 
 class Element:
-    def _get_key_(self):
+    def _get_key__0_k_(self):
         pass
     
-    def get(self, key):
+    def get_9uvjra_k_(self, key):
         if equals(self._get_key_(), key):
             tmp = (E(self)) if (isInterface(self, jsClass())) else (THROW_CCE())
         else:
@@ -1745,13 +1745,13 @@ class Element:
         
         return tmp
     
-    def fold(self, initial, operation):
+    def fold_cq605b_k_(self, initial, operation):
         return operation.invoke(initial, self)
     
-    def minusKey(self, key):
+    def minusKey_djuxjq_k_(self, key):
         return (EmptyCoroutineContext_getInstance()) if (equals(self._get_key_(), key)) else (self)
     
-    def plus(self, context):
+    def plus_d7pszg_k_(self, context):
         pass
     
     def equals(self, other):
@@ -1767,11 +1767,11 @@ class Element:
         pass
     
 
-class _no_name_provided_:
+class _no_name_provided__1:
     def __init__(self):
         pass
     
-    def invoke(self, acc, element):
+    def invoke_2v6pkd_k_(self, acc, element):
         removed = acc.minusKey(element._get_key_())
         if removed is EmptyCoroutineContext_getInstance():
             tmp = element
@@ -1787,19 +1787,19 @@ class _no_name_provided_:
         
         return tmp
     
-    def invoke(self, p1, p2):
+    def invoke_osx4an_k_(self, p1, p2):
         tmp = (kotlin_coroutines_CoroutineContext(p1)) if ((isInterface(p1, jsClass())) if (not (p1 == None)) else (False)) else (THROW_CCE())
         return self.invoke(tmp, (kotlin_coroutines_Element(p2)) if ((isInterface(p2, jsClass())) if (not (p2 == None)) else (False)) else (THROW_CCE()))
     
 
 class CoroutineContext:
-    def get(self, key):
+    def get_9uvjra_k_(self, key):
         pass
     
-    def fold(self, initial, operation):
+    def fold_cq605b_k_(self, initial, operation):
         pass
     
-    def plus(self, context):
+    def plus_d7pszg_k_(self, context):
         if context is EmptyCoroutineContext_getInstance():
             tmp = self
         else:
@@ -1807,7 +1807,7 @@ class CoroutineContext:
         
         return tmp
     
-    def minusKey(self, key):
+    def minusKey_djuxjq_k_(self, key):
         pass
     
     def equals(self, other):
@@ -1823,14 +1823,14 @@ class CoroutineContext:
         pass
     
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_0():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _get_serialVersionUID_(_this):
+def _get_serialVersionUID__0(_this):
     return _this.serialVersionUID
 
-def readResolve(_this):
+def readResolve_0(_this):
     return EmptyCoroutineContext_getInstance()
 
 class EmptyCoroutineContext:
@@ -1838,16 +1838,16 @@ class EmptyCoroutineContext:
         EmptyCoroutineContext_instance = self
         self.serialVersionUID = Long(0, 0)
     
-    def get(self, key):
+    def get_9uvjra_k_(self, key):
         return None
     
-    def fold(self, initial, operation):
+    def fold_cq605b_k_(self, initial, operation):
         return initial
     
-    def plus(self, context):
+    def plus_d7pszg_k_(self, context):
         return context
     
-    def minusKey(self, key):
+    def minusKey_djuxjq_k_(self, key):
         return self
     
     def hashCode(self):
@@ -1868,10 +1868,10 @@ def EmptyCoroutineContext_getInstance():
     
     return EmptyCoroutineContext_instance
 
-def _get_serialVersionUID_(_this):
+def _get_serialVersionUID__1(_this):
     return _this.serialVersionUID
 
-class Companion:
+class Companion_1:
     def __init__(self):
         Companion_instance = self
         self.serialVersionUID = Long(0, 0)
@@ -1887,14 +1887,14 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_0():
     global Companion_instance
     if Companion_instance == None:
         Companion()
     
     return Companion_instance
 
-def readResolve(_this):
+def readResolve_1(_this):
     tmp0_fold_0 = _this.elements
     tmp1_fold_0 = EmptyCoroutineContext_getInstance()
     accumulator_1 = tmp1_fold_0
@@ -1931,7 +1931,7 @@ def size(_this):
         Unit_getInstance()
     
 
-def contains(_this, element):
+def contains_3(_this, element):
     return equals(_this.get(element._get_key_()), element)
 
 def containsAll(_this, context):
@@ -1965,7 +1965,7 @@ class Serialized:
         Companion_getInstance()
         self.elements = elements
     
-    def _get_elements_(self):
+    def _get_elements__0_k_(self):
         return self.elements
     
     def equals(self, other):
@@ -1978,11 +1978,11 @@ class Serialized:
         pass
     
 
-class _no_name_provided_:
+class _no_name_provided__2:
     def __init__(self):
         pass
     
-    def invoke(self, acc, element):
+    def invoke_mz4o2y_k_(self, acc, element):
         if charSequenceLength(acc) == 0:
             tmp = toString(element)
         elif True:
@@ -1990,22 +1990,22 @@ class _no_name_provided_:
         
         return tmp
     
-    def invoke(self, p1, p2):
+    def invoke_osx4an_k_(self, p1, p2):
         tmp = (kotlin_String(p1)) if ((jsTypeOf(p1) == 'string') if (not (p1 == None)) else (False)) else (THROW_CCE())
         return self.invoke(tmp, (kotlin_coroutines_Element(p2)) if ((isInterface(p2, jsClass())) if (not (p2 == None)) else (False)) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__3:
     def __init__(self, _elements, _index):
         self._elements = _elements
         self._index = _index
     
-    def invoke(self, _anonymous_parameter_0_, element):
+    def invoke_yl4r9k_k_(self, _anonymous_parameter_0_, element):
         tmp0 = _sharedBox_read(self._index)
         _sharedBox_write(self._index, (tmp0 + 1) | 0)
         self._elements.__setitem__(tmp0, element)
     
-    def invoke(self, p1, p2):
+    def invoke_osx4an_k_(self, p1, p2):
         tmp = (kotlin_Unit(p1)) if (jsInstanceOf(p1, jsClass())) else (THROW_CCE())
         self.invoke(tmp, (kotlin_coroutines_Element(p2)) if ((isInterface(p2, jsClass())) if (not (p2 == None)) else (False)) else (THROW_CCE()))
         return Unit_getInstance()
@@ -2016,7 +2016,7 @@ class CombinedContext:
         self.left = left
         self.element = element
     
-    def get(self, key):
+    def get_9uvjra_k_(self, key):
         cur = self
         while True:
             tmp0_safe_receiver = cur.element.get(key)
@@ -2034,10 +2034,10 @@ class CombinedContext:
             
         
     
-    def fold(self, initial, operation):
+    def fold_cq605b_k_(self, initial, operation):
         return operation.invoke(self.left.fold(initial, operation), self.element)
     
-    def minusKey(self, key):
+    def minusKey_djuxjq_k_(self, key):
         tmp0_safe_receiver = self.element.get(key)
         if tmp0_safe_receiver == None:
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstImpl
@@ -2072,7 +2072,7 @@ class CombinedContext:
     def toString(self):
         return ('[' + self.fold('', _no_name_provided__factory())) + ']'
     
-    def plus(self, context):
+    def plus_d7pszg_k_(self, context):
         pass
     
 
@@ -2093,10 +2093,10 @@ class AbstractCoroutineContextKey:
         
         tmp.topmostKey = tmp
     
-    def tryCast(self, element):
+    def tryCast_k332zt_k_(self, element):
         return self.safeCast.invoke(element)
     
-    def isSubKey(self, key):
+    def isSubKey_djuxjq_k_(self, key):
         return (True) if (key is self) else (self.topmostKey is key)
     
     def equals(self, other):
@@ -2109,11 +2109,11 @@ class AbstractCoroutineContextKey:
         pass
     
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_1():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory(_elements, _index):
+def _no_name_provided__factory_2(_elements, _index):
     i = _no_name_provided_(_elements, _index)
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
@@ -2123,10 +2123,10 @@ def _get_COROUTINE_SUSPENDED_():
 pass
 pass
 pass
-def values():
+def values_2():
     return CoroutineSingletons_COROUTINE_SUSPENDED_getInstance()
 
-def valueOf(value):
+def valueOf_2(value):
     if 'COROUTINE_SUSPENDED' == value:
         return CoroutineSingletons_COROUTINE_SUSPENDED_getInstance()
     elif 'UNDECIDED' == value:
@@ -2152,13 +2152,13 @@ class CoroutineSingletons:
     def __init__(self, name, ordinal):
         super(name, ordinal)
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
-    def _get_ordinal_(self):
+    def _get_ordinal__0_k_(self):
         pass
     
-    def compareTo(self, other):
+    def compareTo_w8y6n9_k_(self, other):
         pass
     
     def equals(self, other):
@@ -2195,16 +2195,16 @@ def xor(other):
 def inv():
     return toShort(~kotlin_Int(self))
 
-def _and(other):
+def and_0(other):
     return toByte(kotlin_Int(self) & kotlin_Int(other))
 
-def _or(other):
+def or_0(other):
     return toByte(kotlin_Int(self) | kotlin_Int(other))
 
-def xor(other):
+def xor_0(other):
     return toByte(kotlin_Int(self) ^ kotlin_Int(other))
 
-def inv():
+def inv_0():
     return toByte(~kotlin_Int(self))
 
 class ExperimentalTypeInference:
@@ -2248,19 +2248,19 @@ class RequireKotlin:
         self.versionKind = versionKind
         self.errorCode = errorCode
     
-    def _get_version_(self):
+    def _get_version__0_k_(self):
         return self.version
     
-    def _get_message_(self):
+    def _get_message__0_k_(self):
         return self.message
     
-    def _get_level_(self):
+    def _get_level__0_k_(self):
         return self.level
     
-    def _get_versionKind_(self):
+    def _get_versionKind__0_k_(self):
         return self.versionKind
     
-    def _get_errorCode_(self):
+    def _get_errorCode__0_k_(self):
         return self.errorCode
     
     def equals(self, other):
@@ -2276,10 +2276,10 @@ class RequireKotlin:
 pass
 pass
 pass
-def values():
+def values_3():
     return RequireKotlinVersionKind_LANGUAGE_VERSION_getInstance()
 
-def valueOf(value):
+def valueOf_3(value):
     if 'LANGUAGE_VERSION' == value:
         return RequireKotlinVersionKind_LANGUAGE_VERSION_getInstance()
     elif 'COMPILER_VERSION' == value:
@@ -2305,13 +2305,13 @@ class RequireKotlinVersionKind:
     def __init__(self, name, ordinal):
         super(name, ordinal)
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
-    def _get_ordinal_(self):
+    def _get_ordinal__0_k_(self):
         pass
     
-    def compareTo(self, other):
+    def compareTo_rr53gp_k_(self, other):
         pass
     
     def equals(self, other):
@@ -2421,16 +2421,16 @@ class KClassifier:
     
 
 class KTypeParameter:
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
-    def _get_upperBounds_(self):
+    def _get_upperBounds__0_k_(self):
         pass
     
-    def _get_variance_(self):
+    def _get_variance__0_k_(self):
         pass
     
-    def _get_isReified_(self):
+    def _get_isReified__0_k_(self):
         pass
     
     def equals(self, other):
@@ -2446,24 +2446,24 @@ class KTypeParameter:
         pass
     
 
-class Companion:
+class Companion_2:
     def __init__(self):
         Companion_instance = self
         self.star = KTypeProjection(None, None)
     
-    def _get_star_(self):
+    def _get_star__0_k_(self):
         return self.star
     
-    def _get_STAR_(self):
+    def _get_STAR__0_k_(self):
         return self.star
     
-    def invariant(self, type):
+    def invariant_573d5y_k_(self, type):
         return KTypeProjection(KVariance_INVARIANT_getInstance(), type)
     
-    def contravariant(self, type):
+    def contravariant_573d5y_k_(self, type):
         return KTypeProjection(KVariance_IN_getInstance(), type)
     
-    def covariant(self, type):
+    def covariant_573d5y_k_(self, type):
         return KTypeProjection(KVariance_OUT_getInstance(), type)
     
     def equals(self, other):
@@ -2477,7 +2477,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_1():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -2495,10 +2495,10 @@ class KTypeProjection:
             raise IllegalArgumentException_init__Create_(toString(message_2))
         
     
-    def _get_variance_(self):
+    def _get_variance__0_k_(self):
         return self.variance
     
-    def _get_type_(self):
+    def _get_type__0_k_(self):
         return self.type
     
     def toString(self):
@@ -2516,16 +2516,16 @@ class KTypeProjection:
         
         return tmp
     
-    def component1(self):
+    def component1_0_k_(self):
         return self.variance
     
-    def component2(self):
+    def component2_0_k_(self):
         return self.type
     
-    def copy(self, variance, type):
+    def copy_fey4rp_k_(self, variance, type):
         return KTypeProjection(variance, type)
     
-    def copy_default(self, variance, type, _mask0, _handler):
+    def copy_default_jp35qf_k_(self, variance, type, _mask0, _handler):
         if not (_mask0 & 1 == 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
         
@@ -2559,10 +2559,10 @@ class KTypeProjection:
 pass
 pass
 pass
-def values():
+def values_4():
     return KVariance_INVARIANT_getInstance()
 
-def valueOf(value):
+def valueOf_4(value):
     if 'INVARIANT' == value:
         return KVariance_INVARIANT_getInstance()
     elif 'IN' == value:
@@ -2588,13 +2588,13 @@ class KVariance:
     def __init__(self, name, ordinal):
         super(name, ordinal)
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
-    def _get_ordinal_(self):
+    def _get_ordinal__0_k_(self):
         pass
     
-    def compareTo(self, other):
+    def compareTo_93y5y5_k_(self, other):
         pass
     
     def equals(self, other):
@@ -2637,7 +2637,7 @@ def appendElement(element, transform):
 def isEmpty():
     return charSequenceLength(self) == 0
 
-def _get_lastIndex_():
+def _get_lastIndex__5():
     return (charSequenceLength(self) - 1) | 0
 
 def _get_UNDEFINED_RESULT_():
@@ -2662,7 +2662,7 @@ def check(value):
         raise IllegalStateException_init__Create_(toString(message_2))
     
 
-def check(value, lazyMessage):
+def check_0(value, lazyMessage):
     if not value:
         message = lazyMessage.invoke()
         raise IllegalStateException_init__Create_(toString(message))
@@ -2671,7 +2671,7 @@ def check(value, lazyMessage):
 def error(message):
     raise IllegalStateException_init__Create_(toString(message))
 
-def require(value, lazyMessage):
+def require_0(value, lazyMessage):
     if not value:
         message = lazyMessage.invoke()
         raise IllegalArgumentException_init__Create_(toString(message))
@@ -2718,14 +2718,14 @@ def Result__toString_impl(this):
     
     return tmp
 
-class Companion:
+class Companion_3:
     def __init__(self):
         Companion_instance = self
     
-    def success(self, value):
+    def success_o91zl1_k_(self, value):
         return _Result___init__impl_(value)
     
-    def failure(self, exception):
+    def failure_ml8yr4_k_(self, exception):
         return _Result___init__impl_(createFailure(exception))
     
     def equals(self, other):
@@ -2739,7 +2739,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_2():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -2750,7 +2750,7 @@ class Failure:
     def __init__(self, exception):
         self.exception = exception
     
-    def _get_exception_(self):
+    def _get_exception__0_k_(self):
         return self.exception
     
     def equals(self, other):
@@ -2833,10 +2833,10 @@ class NotImplementedError:
         Error_init__Init_(message, self)
         captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     
-    def _get_message_(self):
+    def _get_message__0_k_(self):
         pass
     
-    def _get_cause_(self):
+    def _get_cause__0_k_(self):
         pass
     
     def toString(self):
@@ -2849,17 +2849,17 @@ class NotImplementedError:
         pass
     
 
-def let(block):
+def let_0(block):
     return block.invoke(self)
 
 def also(block):
     block.invoke(self)
     return self
 
-def _with(receiver, block):
+def with_0(receiver, block):
     return block.invoke(receiver)
 
-def run(block):
+def run_0(block):
     return block.invoke(self)
 
 def apply(block):
@@ -2885,7 +2885,7 @@ def _UByte___init__impl_(data):
 def _UByte___get_data__impl_(this):
     return this.data
 
-class Companion:
+class Companion_4:
     def __init__(self):
         Companion_instance = self
         self.MIN_VALUE = _UByte___init__impl_(0)
@@ -2893,16 +2893,16 @@ class Companion:
         self.SIZE_BYTES = 1
         self.SIZE_BITS = 8
     
-    def _get_MIN_VALUE_(self):
+    def _get_MIN_VALUE__sh428i_k_(self):
         return self.MIN_VALUE
     
-    def _get_MAX_VALUE_(self):
+    def _get_MAX_VALUE__sh428i_k_(self):
         return self.MAX_VALUE
     
-    def _get_SIZE_BYTES_(self):
+    def _get_SIZE_BYTES__0_k_(self):
         return self.SIZE_BYTES
     
-    def _get_SIZE_BITS_(self):
+    def _get_SIZE_BITS__0_k_(self):
         return self.SIZE_BITS
     
     def equals(self, other):
@@ -2916,7 +2916,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_3():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -2927,18 +2927,18 @@ def UByte__compareTo_impl(this, other):
     tmp = kotlin_Int(_UByte___get_data__impl_(this)) & 255
     return compareTo(tmp, kotlin_Int(_UByte___get_data__impl_(other)) & 255)
 
-def UByte__compareTo_impl(this, other):
+def UByte__compareTo_impl_0(this, other):
     return UByte__compareTo_impl(this, (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
 
-def UByte__compareTo_impl(this, other):
+def UByte__compareTo_impl_1(this, other):
     tmp = kotlin_Int(_UByte___get_data__impl_(this)) & 255
     return compareTo(tmp, kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
 
-def UByte__compareTo_impl(this, other):
+def UByte__compareTo_impl_2(this, other):
     tmp0_compareTo_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     return uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(other))
 
-def UByte__compareTo_impl(this, other):
+def UByte__compareTo_impl_3(this, other):
     tmp0_compareTo_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
     return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other))
 
@@ -2947,16 +2947,16 @@ def UByte__plus_impl(this, other):
     tmp1_plus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)) | 0)
 
-def UByte__plus_impl(this, other):
+def UByte__plus_impl_0(this, other):
     tmp0_plus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     tmp1_plus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)) | 0)
 
-def UByte__plus_impl(this, other):
+def UByte__plus_impl_1(this, other):
     tmp0_plus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(other)) | 0)
 
-def UByte__plus_impl(this, other):
+def UByte__plus_impl_2(this, other):
     tmp0_plus_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus(_ULong___get_data__impl_(other)))
 
@@ -2965,16 +2965,16 @@ def UByte__minus_impl(this, other):
     tmp1_minus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0)) | 0)
 
-def UByte__minus_impl(this, other):
+def UByte__minus_impl_0(this, other):
     tmp0_minus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     tmp1_minus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0)) | 0)
 
-def UByte__minus_impl(this, other):
+def UByte__minus_impl_1(this, other):
     tmp0_minus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(other)) | 0)
 
-def UByte__minus_impl(this, other):
+def UByte__minus_impl_2(this, other):
     tmp0_minus_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_minus_0).minus(_ULong___get_data__impl_(other)))
 
@@ -2983,16 +2983,16 @@ def UByte__times_impl(this, other):
     tmp1_times_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)))
 
-def UByte__times_impl(this, other):
+def UByte__times_impl_0(this, other):
     tmp0_times_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     tmp1_times_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)))
 
-def UByte__times_impl(this, other):
+def UByte__times_impl_1(this, other):
     tmp0_times_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(other)))
 
-def UByte__times_impl(this, other):
+def UByte__times_impl_2(this, other):
     tmp0_times_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_times_0).times(_ULong___get_data__impl_(other)))
 
@@ -3001,16 +3001,16 @@ def UByte__div_impl(this, other):
     tmp1_div_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintDivide(tmp0_div_0, tmp1_div_0)
 
-def UByte__div_impl(this, other):
+def UByte__div_impl_0(this, other):
     tmp0_div_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     tmp1_div_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintDivide(tmp0_div_0, tmp1_div_0)
 
-def UByte__div_impl(this, other):
+def UByte__div_impl_1(this, other):
     tmp0_div_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     return uintDivide(tmp0_div_0, other)
 
-def UByte__div_impl(this, other):
+def UByte__div_impl_2(this, other):
     tmp0_div_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
     return ulongDivide(tmp0_div_0, other)
 
@@ -3019,16 +3019,16 @@ def UByte__rem_impl(this, other):
     tmp1_rem_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintRemainder(tmp0_rem_0, tmp1_rem_0)
 
-def UByte__rem_impl(this, other):
+def UByte__rem_impl_0(this, other):
     tmp0_rem_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     tmp1_rem_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintRemainder(tmp0_rem_0, tmp1_rem_0)
 
-def UByte__rem_impl(this, other):
+def UByte__rem_impl_1(this, other):
     tmp0_rem_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     return uintRemainder(tmp0_rem_0, other)
 
-def UByte__rem_impl(this, other):
+def UByte__rem_impl_2(this, other):
     tmp0_rem_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
     return ulongRemainder(tmp0_rem_0, other)
 
@@ -3037,16 +3037,16 @@ def UByte__floorDiv_impl(this, other):
     tmp1_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintDivide(tmp0_floorDiv_0, tmp1_floorDiv_0)
 
-def UByte__floorDiv_impl(this, other):
+def UByte__floorDiv_impl_0(this, other):
     tmp0_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     tmp1_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintDivide(tmp0_floorDiv_0, tmp1_floorDiv_0)
 
-def UByte__floorDiv_impl(this, other):
+def UByte__floorDiv_impl_1(this, other):
     tmp0_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     return uintDivide(tmp0_floorDiv_0, other)
 
-def UByte__floorDiv_impl(this, other):
+def UByte__floorDiv_impl_2(this, other):
     tmp0_floorDiv_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
     return ulongDivide(tmp0_floorDiv_0, other)
 
@@ -3057,18 +3057,18 @@ def UByte__mod_impl(this, other):
     tmp2_toUByte_0 = _UInt___get_data__impl_(tmp3_toUByte_0)
     return _UByte___init__impl_(toByte(tmp2_toUByte_0))
 
-def UByte__mod_impl(this, other):
+def UByte__mod_impl_0(this, other):
     tmp0_mod_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     tmp1_mod_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     tmp3_toUShort_0 = uintRemainder(tmp0_mod_0, tmp1_mod_0)
     tmp2_toUShort_0 = _UInt___get_data__impl_(tmp3_toUShort_0)
     return _UShort___init__impl_(toShort(tmp2_toUShort_0))
 
-def UByte__mod_impl(this, other):
+def UByte__mod_impl_1(this, other):
     tmp0_mod_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(this)) & 255)
     return uintRemainder(tmp0_mod_0, other)
 
-def UByte__mod_impl(this, other):
+def UByte__mod_impl_2(this, other):
     tmp0_mod_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this))._and(Long(255, 0)))
     return ulongRemainder(tmp0_mod_0, other)
 
@@ -3154,10 +3154,10 @@ class UByte:
         Companion_getInstance()
         self.data = data
     
-    def compareTo(self, other):
+    def compareTo_dj4lnz_k_(self, other):
         return UByte__compareTo_impl(self, other)
     
-    def compareTo(self, other):
+    def compareTo_2c5_k_(self, other):
         return UByte__compareTo_impl(self, other)
     
     def toString(self):
@@ -3173,13 +3173,13 @@ class UByte:
 def toUByte():
     return _UByte___init__impl_(toByte(self))
 
-def toUByte():
+def toUByte_0():
     return _UByte___init__impl_(toByte(self))
 
-def toUByte():
+def toUByte_1():
     return _UByte___init__impl_(self.toByte())
 
-def toUByte():
+def toUByte_2():
     return _UByte___init__impl_(self)
 
 def _get_array_(_this):
@@ -3197,7 +3197,7 @@ def _UByteArray___init__impl_(storage):
 def _UByteArray___get_storage__impl_(this):
     return this.storage
 
-def _UByteArray___init__impl_(size):
+def _UByteArray___init__impl__0(size):
     tmp = _UByteArray___init__impl_(int8Array(size))
     return tmp
 
@@ -3221,10 +3221,10 @@ class Iterator:
         self.array = array
         self.index = 0
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return self.index < len(self.array)
     
-    def nextUByte(self):
+    def nextUByte_sh428i_k_(self):
         if self.index < len(self.array):
             tmp0_this = self
             tmp1 = tmp0_this.index
@@ -3236,7 +3236,7 @@ class Iterator:
         
         return tmp
     
-    def next(self):
+    def next_sh428i_k_(self):
         pass
     
     def equals(self, other):
@@ -3257,7 +3257,7 @@ def UByteArray__contains_impl(this, element):
     tmp = _UByteArray___get_storage__impl_(this)
     return contains(_UByte___get_data__impl_(element))
 
-def UByteArray__contains_impl(this, element):
+def UByteArray__contains_impl_0(this, element):
     if not jsInstanceOf(element, jsClass()):
         return False
     
@@ -3297,7 +3297,7 @@ def UByteArray__containsAll_impl(this, elements):
     
     return tmp_ret_0
 
-def UByteArray__containsAll_impl(this, elements):
+def UByteArray__containsAll_impl_0(this, elements):
     return UByteArray__containsAll_impl(this, elements)
 
 def UByteArray__isEmpty_impl(this):
@@ -3323,25 +3323,25 @@ class UByteArray:
     def __init__(self, storage):
         self.storage = storage
     
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         return _UByteArray___get_size__impl_(self)
     
-    def iterator(self):
+    def iterator_0_k_(self):
         return UByteArray__iterator_impl(self)
     
-    def contains(self, element):
+    def contains_dj4lnz_k_(self, element):
         return UByteArray__contains_impl(self, element)
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         return UByteArray__contains_impl(self, element)
     
-    def containsAll(self, elements):
+    def containsAll_wji8mv_k_(self, elements):
         return UByteArray__containsAll_impl(self, elements)
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         return UByteArray__containsAll_impl(self, elements)
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         return UByteArray__isEmpty_impl(self)
     
     def toString(self):
@@ -3360,7 +3360,7 @@ def _UInt___init__impl_(data):
 def _UInt___get_data__impl_(this):
     return this.data
 
-class Companion:
+class Companion_5:
     def __init__(self):
         Companion_instance = self
         self.MIN_VALUE = _UInt___init__impl_(0)
@@ -3368,16 +3368,16 @@ class Companion:
         self.SIZE_BYTES = 4
         self.SIZE_BITS = 32
     
-    def _get_MIN_VALUE_(self):
+    def _get_MIN_VALUE__sv9k7v_k_(self):
         return self.MIN_VALUE
     
-    def _get_MAX_VALUE_(self):
+    def _get_MAX_VALUE__sv9k7v_k_(self):
         return self.MAX_VALUE
     
-    def _get_SIZE_BYTES_(self):
+    def _get_SIZE_BYTES__0_k_(self):
         return self.SIZE_BYTES
     
-    def _get_SIZE_BITS_(self):
+    def _get_SIZE_BITS__0_k_(self):
         return self.SIZE_BITS
     
     def equals(self, other):
@@ -3391,7 +3391,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_4():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -3402,17 +3402,17 @@ def UInt__compareTo_impl(this, other):
     tmp0_compareTo_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintCompare(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_compareTo_0))
 
-def UInt__compareTo_impl(this, other):
+def UInt__compareTo_impl_0(this, other):
     tmp0_compareTo_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintCompare(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_compareTo_0))
 
-def UInt__compareTo_impl(this, other):
+def UInt__compareTo_impl_1(this, other):
     return uintCompare(_UInt___get_data__impl_(this), _UInt___get_data__impl_(other))
 
-def UInt__compareTo_impl(this, other):
+def UInt__compareTo_impl_2(this, other):
     return UInt__compareTo_impl(this, (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
 
-def UInt__compareTo_impl(this, other):
+def UInt__compareTo_impl_3(this, other):
     tmp0_compareTo_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
     return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other))
 
@@ -3420,14 +3420,14 @@ def UInt__plus_impl(this, other):
     tmp0_plus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return _UInt___init__impl_((_UInt___get_data__impl_(this) + _UInt___get_data__impl_(tmp0_plus_0)) | 0)
 
-def UInt__plus_impl(this, other):
+def UInt__plus_impl_0(this, other):
     tmp0_plus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return _UInt___init__impl_((_UInt___get_data__impl_(this) + _UInt___get_data__impl_(tmp0_plus_0)) | 0)
 
-def UInt__plus_impl(this, other):
+def UInt__plus_impl_1(this, other):
     return _UInt___init__impl_((_UInt___get_data__impl_(this) + _UInt___get_data__impl_(other)) | 0)
 
-def UInt__plus_impl(this, other):
+def UInt__plus_impl_2(this, other):
     tmp0_plus_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus(_ULong___get_data__impl_(other)))
 
@@ -3435,14 +3435,14 @@ def UInt__minus_impl(this, other):
     tmp0_minus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return _UInt___init__impl_((_UInt___get_data__impl_(this) - _UInt___get_data__impl_(tmp0_minus_0)) | 0)
 
-def UInt__minus_impl(this, other):
+def UInt__minus_impl_0(this, other):
     tmp0_minus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return _UInt___init__impl_((_UInt___get_data__impl_(this) - _UInt___get_data__impl_(tmp0_minus_0)) | 0)
 
-def UInt__minus_impl(this, other):
+def UInt__minus_impl_1(this, other):
     return _UInt___init__impl_((_UInt___get_data__impl_(this) - _UInt___get_data__impl_(other)) | 0)
 
-def UInt__minus_impl(this, other):
+def UInt__minus_impl_2(this, other):
     tmp0_minus_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_minus_0).minus(_ULong___get_data__impl_(other)))
 
@@ -3450,14 +3450,14 @@ def UInt__times_impl(this, other):
     tmp0_times_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_times_0)))
 
-def UInt__times_impl(this, other):
+def UInt__times_impl_0(this, other):
     tmp0_times_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(this), _UInt___get_data__impl_(tmp0_times_0)))
 
-def UInt__times_impl(this, other):
+def UInt__times_impl_1(this, other):
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(this), _UInt___get_data__impl_(other)))
 
-def UInt__times_impl(this, other):
+def UInt__times_impl_2(this, other):
     tmp0_times_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_times_0).times(_ULong___get_data__impl_(other)))
 
@@ -3465,14 +3465,14 @@ def UInt__div_impl(this, other):
     tmp0_div_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintDivide(this, tmp0_div_0)
 
-def UInt__div_impl(this, other):
+def UInt__div_impl_0(this, other):
     tmp0_div_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintDivide(this, tmp0_div_0)
 
-def UInt__div_impl(this, other):
+def UInt__div_impl_1(this, other):
     return uintDivide(this, other)
 
-def UInt__div_impl(this, other):
+def UInt__div_impl_2(this, other):
     tmp0_div_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
     return ulongDivide(tmp0_div_0, other)
 
@@ -3480,14 +3480,14 @@ def UInt__rem_impl(this, other):
     tmp0_rem_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintRemainder(this, tmp0_rem_0)
 
-def UInt__rem_impl(this, other):
+def UInt__rem_impl_0(this, other):
     tmp0_rem_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintRemainder(this, tmp0_rem_0)
 
-def UInt__rem_impl(this, other):
+def UInt__rem_impl_1(this, other):
     return uintRemainder(this, other)
 
-def UInt__rem_impl(this, other):
+def UInt__rem_impl_2(this, other):
     tmp0_rem_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
     return ulongRemainder(tmp0_rem_0, other)
 
@@ -3495,14 +3495,14 @@ def UInt__floorDiv_impl(this, other):
     tmp0_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintDivide(this, tmp0_floorDiv_0)
 
-def UInt__floorDiv_impl(this, other):
+def UInt__floorDiv_impl_0(this, other):
     tmp0_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintDivide(this, tmp0_floorDiv_0)
 
-def UInt__floorDiv_impl(this, other):
+def UInt__floorDiv_impl_1(this, other):
     return uintDivide(this, other)
 
-def UInt__floorDiv_impl(this, other):
+def UInt__floorDiv_impl_2(this, other):
     tmp0_floorDiv_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
     return ulongDivide(tmp0_floorDiv_0, other)
 
@@ -3512,16 +3512,16 @@ def UInt__mod_impl(this, other):
     tmp1_toUByte_0 = _UInt___get_data__impl_(tmp2_toUByte_0)
     return _UByte___init__impl_(toByte(tmp1_toUByte_0))
 
-def UInt__mod_impl(this, other):
+def UInt__mod_impl_0(this, other):
     tmp0_mod_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     tmp2_toUShort_0 = uintRemainder(this, tmp0_mod_0)
     tmp1_toUShort_0 = _UInt___get_data__impl_(tmp2_toUShort_0)
     return _UShort___init__impl_(toShort(tmp1_toUShort_0))
 
-def UInt__mod_impl(this, other):
+def UInt__mod_impl_1(this, other):
     return uintRemainder(this, other)
 
-def UInt__mod_impl(this, other):
+def UInt__mod_impl_2(this, other):
     tmp0_mod_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this))._and(Long(-1, 0)))
     return ulongRemainder(tmp0_mod_0, other)
 
@@ -3605,10 +3605,10 @@ class UInt:
         Companion_getInstance()
         self.data = data
     
-    def compareTo(self, other):
+    def compareTo_wijjag_k_(self, other):
         return UInt__compareTo_impl(self, other)
     
-    def compareTo(self, other):
+    def compareTo_2c5_k_(self, other):
         return UInt__compareTo_impl(self, other)
     
     def toString(self):
@@ -3624,28 +3624,28 @@ class UInt:
 def toUInt():
     return _UInt___init__impl_(self.toInt())
 
-def toUInt():
+def toUInt_0():
     return _UInt___init__impl_(self)
 
-def toUInt():
+def toUInt_1():
     return _UInt___init__impl_(kotlin_Int(self))
 
-def toUInt():
+def toUInt_2():
     return doubleToUInt(self)
 
-def toUInt():
+def toUInt_3():
     return doubleToUInt(kotlin_Double(self))
 
-def toUInt():
+def toUInt_4():
     return _UInt___init__impl_(kotlin_Int(self))
 
-def _get_array_(_this):
+def _get_array__0(_this):
     return _this.array
 
-def _set_index_(_this, _set___):
+def _set_index__0(_this, _set___):
     _this.index = _set___
 
-def _get_index_(_this):
+def _get_index__0(_this):
     return _this.index
 
 def _UIntArray___init__impl_(storage):
@@ -3654,7 +3654,7 @@ def _UIntArray___init__impl_(storage):
 def _UIntArray___get_storage__impl_(this):
     return this.storage
 
-def _UIntArray___init__impl_(size):
+def _UIntArray___init__impl__0(size):
     tmp = _UIntArray___init__impl_(int32Array(size))
     return tmp
 
@@ -3672,16 +3672,16 @@ def _UIntArray___get_size__impl_(this):
 def UIntArray__iterator_impl(this):
     return Iterator(_UIntArray___get_storage__impl_(this))
 
-class Iterator:
+class Iterator_0:
     def __init__(self, array):
         super()
         self.array = array
         self.index = 0
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return self.index < len(self.array)
     
-    def nextUInt(self):
+    def nextUInt_sv9k7v_k_(self):
         if self.index < len(self.array):
             tmp0_this = self
             tmp1 = tmp0_this.index
@@ -3693,7 +3693,7 @@ class Iterator:
         
         return tmp
     
-    def next(self):
+    def next_sv9k7v_k_(self):
         pass
     
     def equals(self, other):
@@ -3714,7 +3714,7 @@ def UIntArray__contains_impl(this, element):
     tmp = _UIntArray___get_storage__impl_(this)
     return contains(_UInt___get_data__impl_(element))
 
-def UIntArray__contains_impl(this, element):
+def UIntArray__contains_impl_0(this, element):
     if not jsInstanceOf(element, jsClass()):
         return False
     
@@ -3754,7 +3754,7 @@ def UIntArray__containsAll_impl(this, elements):
     
     return tmp_ret_0
 
-def UIntArray__containsAll_impl(this, elements):
+def UIntArray__containsAll_impl_0(this, elements):
     return UIntArray__containsAll_impl(this, elements)
 
 def UIntArray__isEmpty_impl(this):
@@ -3780,25 +3780,25 @@ class UIntArray:
     def __init__(self, storage):
         self.storage = storage
     
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         return _UIntArray___get_size__impl_(self)
     
-    def iterator(self):
+    def iterator_0_k_(self):
         return UIntArray__iterator_impl(self)
     
-    def contains(self, element):
+    def contains_wijjag_k_(self, element):
         return UIntArray__contains_impl(self, element)
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         return UIntArray__contains_impl(self, element)
     
-    def containsAll(self, elements):
+    def containsAll_sjraxa_k_(self, elements):
         return UIntArray__containsAll_impl(self, elements)
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         return UIntArray__containsAll_impl(self, elements)
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         return UIntArray__isEmpty_impl(self)
     
     def toString(self):
@@ -3811,7 +3811,7 @@ class UIntArray:
         return UIntArray__equals_impl(self, other)
     
 
-class Companion:
+class Companion_6:
     def __init__(self):
         Companion_instance = self
         tmp = self
@@ -3820,7 +3820,7 @@ class Companion:
         Companion_getInstance()
         tmp.EMPTY = UIntRange(tmp, _UInt___init__impl_(0))
     
-    def _get_EMPTY_(self):
+    def _get_EMPTY__0_k_(self):
         return self.EMPTY
     
     def equals(self, other):
@@ -3834,7 +3834,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_5():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -3846,19 +3846,19 @@ class UIntRange:
         Companion_getInstance()
         super(start, endInclusive, 1)
     
-    def _get_start_(self):
+    def _get_start__sv9k7v_k_(self):
         return self._get_first_()
     
-    def _get_start_(self):
+    def _get_start__0_k_(self):
         return self._get_start_()
     
-    def _get_endInclusive_(self):
+    def _get_endInclusive__sv9k7v_k_(self):
         return self._get_last_()
     
-    def _get_endInclusive_(self):
+    def _get_endInclusive__0_k_(self):
         return self._get_endInclusive_()
     
-    def contains(self, value):
+    def contains_wijjag_k_(self, value):
         tmp0_compareTo_0 = self._get_first_()
         if uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(value)) <= 0:
             tmp1_compareTo_0 = self._get_last_()
@@ -3868,10 +3868,10 @@ class UIntRange:
         
         return tmp
     
-    def contains(self, value):
+    def contains_2c5_k_(self, value):
         return self.contains((value) if (jsInstanceOf(value, jsClass())) else (THROW_CCE()))
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         tmp0_compareTo_0 = self._get_first_()
         tmp1_compareTo_0 = self._get_last_()
         return uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(tmp1_compareTo_0)) > 0
@@ -3898,24 +3898,24 @@ class UIntRange:
     def toString(self):
         return (str(self._get_first_()) + str('..')) + str(self._get_last_())
     
-    def _get_first_(self):
+    def _get_first__sv9k7v_k_(self):
         pass
     
-    def _get_last_(self):
+    def _get_last__sv9k7v_k_(self):
         pass
     
-    def _get_step_(self):
+    def _get_step__0_k_(self):
         pass
     
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
 
-class Companion:
+class Companion_7:
     def __init__(self):
         Companion_instance = self
     
-    def fromClosedRange(self, rangeStart, rangeEnd, step):
+    def fromClosedRange_rpfvw1_k_(self, rangeStart, rangeEnd, step):
         return UIntProgression(rangeStart, rangeEnd, step)
     
     def equals(self, other):
@@ -3929,7 +3929,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_6():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -3949,19 +3949,19 @@ class UIntProgression:
         self.last = getProgressionLastElement(start, endInclusive, step)
         self.step = step
     
-    def _get_first_(self):
+    def _get_first__sv9k7v_k_(self):
         return self.first
     
-    def _get_last_(self):
+    def _get_last__sv9k7v_k_(self):
         return self.last
     
-    def _get_step_(self):
+    def _get_step__0_k_(self):
         return self.step
     
-    def iterator(self):
+    def iterator_0_k_(self):
         return UIntProgressionIterator(self.first, self.last, self.step)
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         if self.step > 0:
             tmp0_compareTo_0 = self.first
             tmp1_compareTo_0 = self.last
@@ -4029,10 +4029,10 @@ class UIntProgressionIterator:
         tmp.step = _UInt___init__impl_(step)
         self.next = (first) if (self.hasNext) else (self.finalElement)
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return self.hasNext
     
-    def nextUInt(self):
+    def nextUInt_sv9k7v_k_(self):
         value = self.next
         if value.equals(self.finalElement):
             if not self.hasNext:
@@ -4048,7 +4048,7 @@ class UIntProgressionIterator:
         
         return value
     
-    def next(self):
+    def next_sv9k7v_k_(self):
         pass
     
     def equals(self, other):
@@ -4065,16 +4065,16 @@ class UIntIterator:
     def __init__(self):
         pass
     
-    def next(self):
+    def next_sv9k7v_k_(self):
         return self.nextUInt()
     
-    def next(self):
+    def next_0_k_(self):
         return self.next()
     
-    def nextUInt(self):
+    def nextUInt_sv9k7v_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
     def equals(self, other):
@@ -4091,16 +4091,16 @@ class ULongIterator:
     def __init__(self):
         pass
     
-    def next(self):
+    def next_sha8jq_k_(self):
         return self.nextULong()
     
-    def next(self):
+    def next_0_k_(self):
         return self.next()
     
-    def nextULong(self):
+    def nextULong_sha8jq_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
     def equals(self, other):
@@ -4117,16 +4117,16 @@ class UByteIterator:
     def __init__(self):
         pass
     
-    def next(self):
+    def next_sh428i_k_(self):
         return self.nextUByte()
     
-    def next(self):
+    def next_0_k_(self):
         return self.next()
     
-    def nextUByte(self):
+    def nextUByte_sh428i_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
     def equals(self, other):
@@ -4143,16 +4143,16 @@ class UShortIterator:
     def __init__(self):
         pass
     
-    def next(self):
+    def next_um6tma_k_(self):
         return self.nextUShort()
     
-    def next(self):
+    def next_0_k_(self):
         return self.next()
     
-    def nextUShort(self):
+    def nextUShort_um6tma_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
     def equals(self, other):
@@ -4171,7 +4171,7 @@ def _ULong___init__impl_(data):
 def _ULong___get_data__impl_(this):
     return this.data
 
-class Companion:
+class Companion_8:
     def __init__(self):
         Companion_instance = self
         self.MIN_VALUE = _ULong___init__impl_(Long(0, 0))
@@ -4179,16 +4179,16 @@ class Companion:
         self.SIZE_BYTES = 8
         self.SIZE_BITS = 64
     
-    def _get_MIN_VALUE_(self):
+    def _get_MIN_VALUE__sha8jq_k_(self):
         return self.MIN_VALUE
     
-    def _get_MAX_VALUE_(self):
+    def _get_MAX_VALUE__sha8jq_k_(self):
         return self.MAX_VALUE
     
-    def _get_SIZE_BYTES_(self):
+    def _get_SIZE_BYTES__0_k_(self):
         return self.SIZE_BYTES
     
-    def _get_SIZE_BITS_(self):
+    def _get_SIZE_BITS__0_k_(self):
         return self.SIZE_BITS
     
     def equals(self, other):
@@ -4202,7 +4202,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_7():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -4213,108 +4213,108 @@ def ULong__compareTo_impl(this, other):
     tmp0_compareTo_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other))._and(Long(255, 0)))
     return ulongCompare(_ULong___get_data__impl_(this), _ULong___get_data__impl_(tmp0_compareTo_0))
 
-def ULong__compareTo_impl(this, other):
+def ULong__compareTo_impl_0(this, other):
     tmp0_compareTo_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other))._and(Long(65535, 0)))
     return ulongCompare(_ULong___get_data__impl_(this), _ULong___get_data__impl_(tmp0_compareTo_0))
 
-def ULong__compareTo_impl(this, other):
+def ULong__compareTo_impl_1(this, other):
     tmp0_compareTo_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other))._and(Long(-1, 0)))
     return ulongCompare(_ULong___get_data__impl_(this), _ULong___get_data__impl_(tmp0_compareTo_0))
 
-def ULong__compareTo_impl(this, other):
+def ULong__compareTo_impl_2(this, other):
     return ulongCompare(_ULong___get_data__impl_(this), _ULong___get_data__impl_(other))
 
-def ULong__compareTo_impl(this, other):
+def ULong__compareTo_impl_3(this, other):
     return ULong__compareTo_impl(this, (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
 
 def ULong__plus_impl(this, other):
     tmp0_plus_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other))._and(Long(255, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(this).plus(_ULong___get_data__impl_(tmp0_plus_0)))
 
-def ULong__plus_impl(this, other):
+def ULong__plus_impl_0(this, other):
     tmp0_plus_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other))._and(Long(65535, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(this).plus(_ULong___get_data__impl_(tmp0_plus_0)))
 
-def ULong__plus_impl(this, other):
+def ULong__plus_impl_1(this, other):
     tmp0_plus_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other))._and(Long(-1, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(this).plus(_ULong___get_data__impl_(tmp0_plus_0)))
 
-def ULong__plus_impl(this, other):
+def ULong__plus_impl_2(this, other):
     return _ULong___init__impl_(_ULong___get_data__impl_(this).plus(_ULong___get_data__impl_(other)))
 
 def ULong__minus_impl(this, other):
     tmp0_minus_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other))._and(Long(255, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(this).minus(_ULong___get_data__impl_(tmp0_minus_0)))
 
-def ULong__minus_impl(this, other):
+def ULong__minus_impl_0(this, other):
     tmp0_minus_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other))._and(Long(65535, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(this).minus(_ULong___get_data__impl_(tmp0_minus_0)))
 
-def ULong__minus_impl(this, other):
+def ULong__minus_impl_1(this, other):
     tmp0_minus_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other))._and(Long(-1, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(this).minus(_ULong___get_data__impl_(tmp0_minus_0)))
 
-def ULong__minus_impl(this, other):
+def ULong__minus_impl_2(this, other):
     return _ULong___init__impl_(_ULong___get_data__impl_(this).minus(_ULong___get_data__impl_(other)))
 
 def ULong__times_impl(this, other):
     tmp0_times_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other))._and(Long(255, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(this).times(_ULong___get_data__impl_(tmp0_times_0)))
 
-def ULong__times_impl(this, other):
+def ULong__times_impl_0(this, other):
     tmp0_times_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other))._and(Long(65535, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(this).times(_ULong___get_data__impl_(tmp0_times_0)))
 
-def ULong__times_impl(this, other):
+def ULong__times_impl_1(this, other):
     tmp0_times_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other))._and(Long(-1, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(this).times(_ULong___get_data__impl_(tmp0_times_0)))
 
-def ULong__times_impl(this, other):
+def ULong__times_impl_2(this, other):
     return _ULong___init__impl_(_ULong___get_data__impl_(this).times(_ULong___get_data__impl_(other)))
 
 def ULong__div_impl(this, other):
     tmp0_div_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other))._and(Long(255, 0)))
     return ulongDivide(this, tmp0_div_0)
 
-def ULong__div_impl(this, other):
+def ULong__div_impl_0(this, other):
     tmp0_div_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other))._and(Long(65535, 0)))
     return ulongDivide(this, tmp0_div_0)
 
-def ULong__div_impl(this, other):
+def ULong__div_impl_1(this, other):
     tmp0_div_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other))._and(Long(-1, 0)))
     return ulongDivide(this, tmp0_div_0)
 
-def ULong__div_impl(this, other):
+def ULong__div_impl_2(this, other):
     return ulongDivide(this, other)
 
 def ULong__rem_impl(this, other):
     tmp0_rem_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other))._and(Long(255, 0)))
     return ulongRemainder(this, tmp0_rem_0)
 
-def ULong__rem_impl(this, other):
+def ULong__rem_impl_0(this, other):
     tmp0_rem_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other))._and(Long(65535, 0)))
     return ulongRemainder(this, tmp0_rem_0)
 
-def ULong__rem_impl(this, other):
+def ULong__rem_impl_1(this, other):
     tmp0_rem_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other))._and(Long(-1, 0)))
     return ulongRemainder(this, tmp0_rem_0)
 
-def ULong__rem_impl(this, other):
+def ULong__rem_impl_2(this, other):
     return ulongRemainder(this, other)
 
 def ULong__floorDiv_impl(this, other):
     tmp0_floorDiv_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other))._and(Long(255, 0)))
     return ulongDivide(this, tmp0_floorDiv_0)
 
-def ULong__floorDiv_impl(this, other):
+def ULong__floorDiv_impl_0(this, other):
     tmp0_floorDiv_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other))._and(Long(65535, 0)))
     return ulongDivide(this, tmp0_floorDiv_0)
 
-def ULong__floorDiv_impl(this, other):
+def ULong__floorDiv_impl_1(this, other):
     tmp0_floorDiv_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other))._and(Long(-1, 0)))
     return ulongDivide(this, tmp0_floorDiv_0)
 
-def ULong__floorDiv_impl(this, other):
+def ULong__floorDiv_impl_2(this, other):
     return ulongDivide(this, other)
 
 def ULong__mod_impl(this, other):
@@ -4323,19 +4323,19 @@ def ULong__mod_impl(this, other):
     tmp1_toUByte_0 = _ULong___get_data__impl_(tmp2_toUByte_0)
     return _UByte___init__impl_(tmp1_toUByte_0.toByte())
 
-def ULong__mod_impl(this, other):
+def ULong__mod_impl_0(this, other):
     tmp0_mod_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other))._and(Long(65535, 0)))
     tmp2_toUShort_0 = ulongRemainder(this, tmp0_mod_0)
     tmp1_toUShort_0 = _ULong___get_data__impl_(tmp2_toUShort_0)
     return _UShort___init__impl_(tmp1_toUShort_0.toShort())
 
-def ULong__mod_impl(this, other):
+def ULong__mod_impl_1(this, other):
     tmp0_mod_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other))._and(Long(-1, 0)))
     tmp2_toUInt_0 = ulongRemainder(this, tmp0_mod_0)
     tmp1_toUInt_0 = _ULong___get_data__impl_(tmp2_toUInt_0)
     return _UInt___init__impl_(tmp1_toUInt_0.toInt())
 
-def ULong__mod_impl(this, other):
+def ULong__mod_impl_2(this, other):
     return ulongRemainder(this, other)
 
 def ULong__inc_impl(this):
@@ -4419,10 +4419,10 @@ class ULong:
         Companion_getInstance()
         self.data = data
     
-    def compareTo(self, other):
+    def compareTo_djarz7_k_(self, other):
         return ULong__compareTo_impl(self, other)
     
-    def compareTo(self, other):
+    def compareTo_2c5_k_(self, other):
         return ULong__compareTo_impl(self, other)
     
     def toString(self):
@@ -4438,28 +4438,28 @@ class ULong:
 def toULong():
     return _ULong___init__impl_(self)
 
-def toULong():
+def toULong_0():
     return _ULong___init__impl_(toLong(self))
 
-def toULong():
+def toULong_1():
     return doubleToULong(self)
 
-def toULong():
+def toULong_2():
     return doubleToULong(kotlin_Double(self))
 
-def toULong():
+def toULong_3():
     return _ULong___init__impl_(toLong(self))
 
-def toULong():
+def toULong_4():
     return _ULong___init__impl_(toLong(self))
 
-def _get_array_(_this):
+def _get_array__1(_this):
     return _this.array
 
-def _set_index_(_this, _set___):
+def _set_index__1(_this, _set___):
     _this.index = _set___
 
-def _get_index_(_this):
+def _get_index__1(_this):
     return _this.index
 
 def _ULongArray___init__impl_(storage):
@@ -4468,7 +4468,7 @@ def _ULongArray___init__impl_(storage):
 def _ULongArray___get_storage__impl_(this):
     return this.storage
 
-def _ULongArray___init__impl_(size):
+def _ULongArray___init__impl__0(size):
     tmp = _ULongArray___init__impl_(longArray(size))
     return tmp
 
@@ -4486,16 +4486,16 @@ def _ULongArray___get_size__impl_(this):
 def ULongArray__iterator_impl(this):
     return Iterator(_ULongArray___get_storage__impl_(this))
 
-class Iterator:
+class Iterator_1:
     def __init__(self, array):
         super()
         self.array = array
         self.index = 0
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return self.index < len(self.array)
     
-    def nextULong(self):
+    def nextULong_sha8jq_k_(self):
         if self.index < len(self.array):
             tmp0_this = self
             tmp1 = tmp0_this.index
@@ -4507,7 +4507,7 @@ class Iterator:
         
         return tmp
     
-    def next(self):
+    def next_sha8jq_k_(self):
         pass
     
     def equals(self, other):
@@ -4528,7 +4528,7 @@ def ULongArray__contains_impl(this, element):
     tmp = _ULongArray___get_storage__impl_(this)
     return contains(_ULong___get_data__impl_(element))
 
-def ULongArray__contains_impl(this, element):
+def ULongArray__contains_impl_0(this, element):
     if not jsInstanceOf(element, jsClass()):
         return False
     
@@ -4568,7 +4568,7 @@ def ULongArray__containsAll_impl(this, elements):
     
     return tmp_ret_0
 
-def ULongArray__containsAll_impl(this, elements):
+def ULongArray__containsAll_impl_0(this, elements):
     return ULongArray__containsAll_impl(this, elements)
 
 def ULongArray__isEmpty_impl(this):
@@ -4594,25 +4594,25 @@ class ULongArray:
     def __init__(self, storage):
         self.storage = storage
     
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         return _ULongArray___get_size__impl_(self)
     
-    def iterator(self):
+    def iterator_0_k_(self):
         return ULongArray__iterator_impl(self)
     
-    def contains(self, element):
+    def contains_djarz7_k_(self, element):
         return ULongArray__contains_impl(self, element)
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         return ULongArray__contains_impl(self, element)
     
-    def containsAll(self, elements):
+    def containsAll_wotoar_k_(self, elements):
         return ULongArray__containsAll_impl(self, elements)
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         return ULongArray__containsAll_impl(self, elements)
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         return ULongArray__isEmpty_impl(self)
     
     def toString(self):
@@ -4625,7 +4625,7 @@ class ULongArray:
         return ULongArray__equals_impl(self, other)
     
 
-class Companion:
+class Companion_9:
     def __init__(self):
         Companion_instance = self
         tmp = self
@@ -4634,7 +4634,7 @@ class Companion:
         Companion_getInstance()
         tmp.EMPTY = ULongRange(tmp, _ULong___init__impl_(Long(0, 0)))
     
-    def _get_EMPTY_(self):
+    def _get_EMPTY__0_k_(self):
         return self.EMPTY
     
     def equals(self, other):
@@ -4648,7 +4648,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_8():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -4660,19 +4660,19 @@ class ULongRange:
         Companion_getInstance()
         super(start, endInclusive, Long(1, 0))
     
-    def _get_start_(self):
+    def _get_start__sha8jq_k_(self):
         return self._get_first_()
     
-    def _get_start_(self):
+    def _get_start__0_k_(self):
         return self._get_start_()
     
-    def _get_endInclusive_(self):
+    def _get_endInclusive__sha8jq_k_(self):
         return self._get_last_()
     
-    def _get_endInclusive_(self):
+    def _get_endInclusive__0_k_(self):
         return self._get_endInclusive_()
     
-    def contains(self, value):
+    def contains_djarz7_k_(self, value):
         tmp0_compareTo_0 = self._get_first_()
         if ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(value)) <= 0:
             tmp1_compareTo_0 = self._get_last_()
@@ -4682,10 +4682,10 @@ class ULongRange:
         
         return tmp
     
-    def contains(self, value):
+    def contains_2c5_k_(self, value):
         return self.contains((value) if (jsInstanceOf(value, jsClass())) else (THROW_CCE()))
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         tmp0_compareTo_0 = self._get_first_()
         tmp1_compareTo_0 = self._get_last_()
         return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(tmp1_compareTo_0)) > 0
@@ -4718,24 +4718,24 @@ class ULongRange:
     def toString(self):
         return (str(self._get_first_()) + str('..')) + str(self._get_last_())
     
-    def _get_first_(self):
+    def _get_first__sha8jq_k_(self):
         pass
     
-    def _get_last_(self):
+    def _get_last__sha8jq_k_(self):
         pass
     
-    def _get_step_(self):
+    def _get_step__0_k_(self):
         pass
     
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
 
-class Companion:
+class Companion_10:
     def __init__(self):
         Companion_instance = self
     
-    def fromClosedRange(self, rangeStart, rangeEnd, step):
+    def fromClosedRange_19wfq_k_(self, rangeStart, rangeEnd, step):
         return ULongProgression(rangeStart, rangeEnd, step)
     
     def equals(self, other):
@@ -4749,7 +4749,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_9():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -4770,19 +4770,19 @@ class ULongProgression:
         self.last = getProgressionLastElement(start, endInclusive, step)
         self.step = step
     
-    def _get_first_(self):
+    def _get_first__sha8jq_k_(self):
         return self.first
     
-    def _get_last_(self):
+    def _get_last__sha8jq_k_(self):
         return self.last
     
-    def _get_step_(self):
+    def _get_step__0_k_(self):
         return self.step
     
-    def iterator(self):
+    def iterator_0_k_(self):
         return ULongProgressionIterator(self.first, self.last, self.step)
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         if self.step.compareTo(Long(0, 0)) > 0:
             tmp0_compareTo_0 = self.first
             tmp1_compareTo_0 = self.last
@@ -4823,22 +4823,22 @@ class ULongProgression:
         return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step.compareTo(Long(0, 0)) > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str(self.step.unaryMinus()))
     
 
-def _get_finalElement_(_this):
+def _get_finalElement__0(_this):
     return _this.finalElement
 
-def _set_hasNext_(_this, _set___):
+def _set_hasNext__0(_this, _set___):
     _this.hasNext = _set___
 
-def _get_hasNext_(_this):
+def _get_hasNext__0(_this):
     return _this.hasNext
 
-def _get_step_(_this):
+def _get_step__0(_this):
     return _this.step
 
-def _set_next_(_this, _set___):
+def _set_next__0(_this, _set___):
     _this.next = _set___
 
-def _get_next_(_this):
+def _get_next__0(_this):
     return _this.next
 
 class ULongProgressionIterator:
@@ -4856,10 +4856,10 @@ class ULongProgressionIterator:
         tmp.step = _ULong___init__impl_(step)
         self.next = (first) if (self.hasNext) else (self.finalElement)
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return self.hasNext
     
-    def nextULong(self):
+    def nextULong_sha8jq_k_(self):
         value = self.next
         if value.equals(self.finalElement):
             if not self.hasNext:
@@ -4875,7 +4875,7 @@ class ULongProgressionIterator:
         
         return value
     
-    def next(self):
+    def next_sha8jq_k_(self):
         pass
     
     def equals(self, other):
@@ -4911,7 +4911,7 @@ def getProgressionLastElement(start, end, step):
     
     return tmp
 
-def getProgressionLastElement(start, end, step):
+def getProgressionLastElement_0(start, end, step):
     if step.compareTo(Long(0, 0)) > 0:
         if ulongCompare(_ULong___get_data__impl_(start), _ULong___get_data__impl_(end)) >= 0:
             tmp = end
@@ -4945,7 +4945,7 @@ def differenceModulo(a, b, c):
     
     return tmp
 
-def differenceModulo(a, b, c):
+def differenceModulo_0(a, b, c):
     ac = ulongRemainder(a, c)
     bc = ulongRemainder(b, c)
     if ulongCompare(_ULong___get_data__impl_(ac), _ULong___get_data__impl_(bc)) >= 0:
@@ -4962,7 +4962,7 @@ def _UShort___init__impl_(data):
 def _UShort___get_data__impl_(this):
     return this.data
 
-class Companion:
+class Companion_11:
     def __init__(self):
         Companion_instance = self
         self.MIN_VALUE = _UShort___init__impl_(0)
@@ -4970,16 +4970,16 @@ class Companion:
         self.SIZE_BYTES = 2
         self.SIZE_BITS = 16
     
-    def _get_MIN_VALUE_(self):
+    def _get_MIN_VALUE__um6tma_k_(self):
         return self.MIN_VALUE
     
-    def _get_MAX_VALUE_(self):
+    def _get_MAX_VALUE__um6tma_k_(self):
         return self.MAX_VALUE
     
-    def _get_SIZE_BYTES_(self):
+    def _get_SIZE_BYTES__0_k_(self):
         return self.SIZE_BYTES
     
-    def _get_SIZE_BITS_(self):
+    def _get_SIZE_BITS__0_k_(self):
         return self.SIZE_BITS
     
     def equals(self, other):
@@ -4993,7 +4993,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_10():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -5004,18 +5004,18 @@ def UShort__compareTo_impl(this, other):
     tmp = kotlin_Int(_UShort___get_data__impl_(this)) & 65535
     return compareTo(tmp, kotlin_Int(_UByte___get_data__impl_(other)) & 255)
 
-def UShort__compareTo_impl(this, other):
+def UShort__compareTo_impl_0(this, other):
     tmp = kotlin_Int(_UShort___get_data__impl_(this)) & 65535
     return compareTo(tmp, kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
 
-def UShort__compareTo_impl(this, other):
+def UShort__compareTo_impl_1(this, other):
     return UShort__compareTo_impl(this, (other) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
 
-def UShort__compareTo_impl(this, other):
+def UShort__compareTo_impl_2(this, other):
     tmp0_compareTo_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     return uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(other))
 
-def UShort__compareTo_impl(this, other):
+def UShort__compareTo_impl_3(this, other):
     tmp0_compareTo_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
     return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other))
 
@@ -5024,16 +5024,16 @@ def UShort__plus_impl(this, other):
     tmp1_plus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)) | 0)
 
-def UShort__plus_impl(this, other):
+def UShort__plus_impl_0(this, other):
     tmp0_plus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     tmp1_plus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)) | 0)
 
-def UShort__plus_impl(this, other):
+def UShort__plus_impl_1(this, other):
     tmp0_plus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(other)) | 0)
 
-def UShort__plus_impl(this, other):
+def UShort__plus_impl_2(this, other):
     tmp0_plus_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus(_ULong___get_data__impl_(other)))
 
@@ -5042,16 +5042,16 @@ def UShort__minus_impl(this, other):
     tmp1_minus_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0)) | 0)
 
-def UShort__minus_impl(this, other):
+def UShort__minus_impl_0(this, other):
     tmp0_minus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     tmp1_minus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0)) | 0)
 
-def UShort__minus_impl(this, other):
+def UShort__minus_impl_1(this, other):
     tmp0_minus_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(other)) | 0)
 
-def UShort__minus_impl(this, other):
+def UShort__minus_impl_2(this, other):
     tmp0_minus_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_minus_0).minus(_ULong___get_data__impl_(other)))
 
@@ -5060,16 +5060,16 @@ def UShort__times_impl(this, other):
     tmp1_times_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)))
 
-def UShort__times_impl(this, other):
+def UShort__times_impl_0(this, other):
     tmp0_times_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     tmp1_times_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)))
 
-def UShort__times_impl(this, other):
+def UShort__times_impl_1(this, other):
     tmp0_times_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(other)))
 
-def UShort__times_impl(this, other):
+def UShort__times_impl_2(this, other):
     tmp0_times_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
     return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_times_0).times(_ULong___get_data__impl_(other)))
 
@@ -5078,16 +5078,16 @@ def UShort__div_impl(this, other):
     tmp1_div_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintDivide(tmp0_div_0, tmp1_div_0)
 
-def UShort__div_impl(this, other):
+def UShort__div_impl_0(this, other):
     tmp0_div_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     tmp1_div_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintDivide(tmp0_div_0, tmp1_div_0)
 
-def UShort__div_impl(this, other):
+def UShort__div_impl_1(this, other):
     tmp0_div_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     return uintDivide(tmp0_div_0, other)
 
-def UShort__div_impl(this, other):
+def UShort__div_impl_2(this, other):
     tmp0_div_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
     return ulongDivide(tmp0_div_0, other)
 
@@ -5096,16 +5096,16 @@ def UShort__rem_impl(this, other):
     tmp1_rem_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintRemainder(tmp0_rem_0, tmp1_rem_0)
 
-def UShort__rem_impl(this, other):
+def UShort__rem_impl_0(this, other):
     tmp0_rem_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     tmp1_rem_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintRemainder(tmp0_rem_0, tmp1_rem_0)
 
-def UShort__rem_impl(this, other):
+def UShort__rem_impl_1(this, other):
     tmp0_rem_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     return uintRemainder(tmp0_rem_0, other)
 
-def UShort__rem_impl(this, other):
+def UShort__rem_impl_2(this, other):
     tmp0_rem_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
     return ulongRemainder(tmp0_rem_0, other)
 
@@ -5114,16 +5114,16 @@ def UShort__floorDiv_impl(this, other):
     tmp1_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UByte___get_data__impl_(other)) & 255)
     return uintDivide(tmp0_floorDiv_0, tmp1_floorDiv_0)
 
-def UShort__floorDiv_impl(this, other):
+def UShort__floorDiv_impl_0(this, other):
     tmp0_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     tmp1_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     return uintDivide(tmp0_floorDiv_0, tmp1_floorDiv_0)
 
-def UShort__floorDiv_impl(this, other):
+def UShort__floorDiv_impl_1(this, other):
     tmp0_floorDiv_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     return uintDivide(tmp0_floorDiv_0, other)
 
-def UShort__floorDiv_impl(this, other):
+def UShort__floorDiv_impl_2(this, other):
     tmp0_floorDiv_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
     return ulongDivide(tmp0_floorDiv_0, other)
 
@@ -5134,18 +5134,18 @@ def UShort__mod_impl(this, other):
     tmp0_toUByte_0_1 = _UInt___get_data__impl_(tmp2_toUByte_0)
     return _UByte___init__impl_(toByte(tmp0_toUByte_0_1))
 
-def UShort__mod_impl(this, other):
+def UShort__mod_impl_0(this, other):
     tmp0_mod_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     tmp1_mod_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(other)) & 65535)
     tmp2_toUShort_0 = uintRemainder(tmp0_mod_0, tmp1_mod_0)
     tmp0_toUShort_0_1 = _UInt___get_data__impl_(tmp2_toUShort_0)
     return _UShort___init__impl_(toShort(tmp0_toUShort_0_1))
 
-def UShort__mod_impl(this, other):
+def UShort__mod_impl_1(this, other):
     tmp0_mod_0 = _UInt___init__impl_(kotlin_Int(_UShort___get_data__impl_(this)) & 65535)
     return uintRemainder(tmp0_mod_0, other)
 
-def UShort__mod_impl(this, other):
+def UShort__mod_impl_2(this, other):
     tmp0_mod_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this))._and(Long(65535, 0)))
     return ulongRemainder(tmp0_mod_0, other)
 
@@ -5230,10 +5230,10 @@ class UShort:
         Companion_getInstance()
         self.data = data
     
-    def compareTo(self, other):
+    def compareTo_6go47f_k_(self, other):
         return UShort__compareTo_impl(self, other)
     
-    def compareTo(self, other):
+    def compareTo_2c5_k_(self, other):
         return UShort__compareTo_impl(self, other)
     
     def toString(self):
@@ -5249,19 +5249,19 @@ class UShort:
 def toUShort():
     return _UShort___init__impl_(toShort(self))
 
-def toUShort():
+def toUShort_0():
     return _UShort___init__impl_(self.toShort())
 
-def toUShort():
+def toUShort_1():
     return _UShort___init__impl_(self)
 
-def _get_array_(_this):
+def _get_array__2(_this):
     return _this.array
 
-def _set_index_(_this, _set___):
+def _set_index__2(_this, _set___):
     _this.index = _set___
 
-def _get_index_(_this):
+def _get_index__2(_this):
     return _this.index
 
 def _UShortArray___init__impl_(storage):
@@ -5270,7 +5270,7 @@ def _UShortArray___init__impl_(storage):
 def _UShortArray___get_storage__impl_(this):
     return this.storage
 
-def _UShortArray___init__impl_(size):
+def _UShortArray___init__impl__0(size):
     tmp = _UShortArray___init__impl_(int16Array(size))
     return tmp
 
@@ -5288,16 +5288,16 @@ def _UShortArray___get_size__impl_(this):
 def UShortArray__iterator_impl(this):
     return Iterator(_UShortArray___get_storage__impl_(this))
 
-class Iterator:
+class Iterator_2:
     def __init__(self, array):
         super()
         self.array = array
         self.index = 0
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return self.index < len(self.array)
     
-    def nextUShort(self):
+    def nextUShort_um6tma_k_(self):
         if self.index < len(self.array):
             tmp0_this = self
             tmp1 = tmp0_this.index
@@ -5309,7 +5309,7 @@ class Iterator:
         
         return tmp
     
-    def next(self):
+    def next_um6tma_k_(self):
         pass
     
     def equals(self, other):
@@ -5330,7 +5330,7 @@ def UShortArray__contains_impl(this, element):
     tmp = _UShortArray___get_storage__impl_(this)
     return contains(_UShort___get_data__impl_(element))
 
-def UShortArray__contains_impl(this, element):
+def UShortArray__contains_impl_0(this, element):
     if not jsInstanceOf(element, jsClass()):
         return False
     
@@ -5370,7 +5370,7 @@ def UShortArray__containsAll_impl(this, elements):
     
     return tmp_ret_0
 
-def UShortArray__containsAll_impl(this, elements):
+def UShortArray__containsAll_impl_0(this, elements):
     return UShortArray__containsAll_impl(this, elements)
 
 def UShortArray__isEmpty_impl(this):
@@ -5396,25 +5396,25 @@ class UShortArray:
     def __init__(self, storage):
         self.storage = storage
     
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         return _UShortArray___get_size__impl_(self)
     
-    def iterator(self):
+    def iterator_0_k_(self):
         return UShortArray__iterator_impl(self)
     
-    def contains(self, element):
+    def contains_6go47f_k_(self, element):
         return UShortArray__contains_impl(self, element)
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         return UShortArray__contains_impl(self, element)
     
-    def containsAll(self, elements):
+    def containsAll_m5guox_k_(self, elements):
         return UShortArray__containsAll_impl(self, elements)
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         return UShortArray__containsAll_impl(self, elements)
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         return UShortArray__isEmpty_impl(self)
     
     def toString(self):
@@ -5506,7 +5506,7 @@ def ulongToDouble(v):
 def ulongToString(v):
     return ulongToString(v, 10)
 
-def ulongToString(v, base):
+def ulongToString_0(v, base):
     if v.compareTo(Long(0, 0)) >= 0:
         return toString(base)
     
@@ -5610,13 +5610,13 @@ class Annotation:
     
 
 class CharSequence:
-    def _get_length_(self):
+    def _get_length__0_k_(self):
         pass
     
-    def get(self, index):
+    def get_ha5a7z_k_(self, index):
         pass
     
-    def subSequence(self, startIndex, endIndex):
+    def subSequence_27zxwg_k_(self, startIndex, endIndex):
         pass
     
     def equals(self, other):
@@ -5633,7 +5633,7 @@ class CharSequence:
     
 
 class Comparable:
-    def compareTo(self, other):
+    def compareTo_2c5_k_(self, other):
         pass
     
     def equals(self, other):
@@ -5649,11 +5649,11 @@ class Comparable:
         pass
     
 
-class Iterator:
-    def next(self):
+class Iterator_3:
+    def next_0_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
     def equals(self, other):
@@ -5670,22 +5670,22 @@ class Iterator:
     
 
 class ListIterator:
-    def next(self):
+    def next_0_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
-    def hasPrevious(self):
+    def hasPrevious_0_k_(self):
         pass
     
-    def previous(self):
+    def previous_0_k_(self):
         pass
     
-    def nextIndex(self):
+    def nextIndex_0_k_(self):
         pass
     
-    def previousIndex(self):
+    def previousIndex_0_k_(self):
         pass
     
     def equals(self, other):
@@ -5702,13 +5702,13 @@ class ListIterator:
     
 
 class MutableIterator:
-    def remove(self):
+    def remove_sv8swh_k_(self):
         pass
     
-    def next(self):
+    def next_0_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
     def equals(self, other):
@@ -5725,31 +5725,31 @@ class MutableIterator:
     
 
 class MutableListIterator:
-    def next(self):
+    def next_0_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
-    def remove(self):
+    def remove_sv8swh_k_(self):
         pass
     
-    def set(self, element):
+    def set_iav7o_k_(self, element):
         pass
     
-    def add(self, element):
+    def add_iav7o_k_(self, element):
         pass
     
-    def hasPrevious(self):
+    def hasPrevious_0_k_(self):
         pass
     
-    def previous(self):
+    def previous_0_k_(self):
         pass
     
-    def nextIndex(self):
+    def nextIndex_0_k_(self):
         pass
     
-    def previousIndex(self):
+    def previousIndex_0_k_(self):
         pass
     
     def equals(self, other):
@@ -5765,29 +5765,29 @@ class MutableListIterator:
         pass
     
 
-class Number:
+class Number_0:
     def __init__(self):
         pass
     
-    def toDouble(self):
+    def toDouble_0_k_(self):
         pass
     
-    def toFloat(self):
+    def toFloat_0_k_(self):
         pass
     
-    def toLong(self):
+    def toLong_0_k_(self):
         pass
     
-    def toInt(self):
+    def toInt_0_k_(self):
         pass
     
-    def toChar(self):
+    def toChar_0_k_(self):
         pass
     
-    def toShort(self):
+    def toShort_0_k_(self):
         pass
     
-    def toByte(self):
+    def toByte_0_k_(self):
         pass
     
     def equals(self, other):
@@ -5804,7 +5804,7 @@ class SinceKotlin:
     def __init__(self, version):
         self.version = version
     
-    def _get_version_(self):
+    def _get_version__0_k_(self):
         return self.version
     
     def equals(self, other):
@@ -5821,7 +5821,7 @@ class Suppress:
     def __init__(self, *names):
         self.names = names
     
-    def _get_names_(self):
+    def _get_names__0_k_(self):
         return self.names
     
     def equals(self, other):
@@ -5837,10 +5837,10 @@ class Suppress:
 pass
 pass
 pass
-def values():
+def values_5():
     return DeprecationLevel_WARNING_getInstance()
 
-def valueOf(value):
+def valueOf_5(value):
     if 'WARNING' == value:
         return DeprecationLevel_WARNING_getInstance()
     elif 'ERROR' == value:
@@ -5866,13 +5866,13 @@ class DeprecationLevel:
     def __init__(self, name, ordinal):
         super(name, ordinal)
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
-    def _get_ordinal_(self):
+    def _get_ordinal__0_k_(self):
         pass
     
-    def compareTo(self, other):
+    def compareTo_ow4oyq_k_(self, other):
         pass
     
     def equals(self, other):
@@ -5903,7 +5903,7 @@ class ParameterName:
     def __init__(self, name):
         self.name = name
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         return self.name
     
     def equals(self, other):
@@ -5935,13 +5935,13 @@ class Deprecated:
         self.replaceWith = replaceWith
         self.level = level
     
-    def _get_message_(self):
+    def _get_message__0_k_(self):
         return self.message
     
-    def _get_replaceWith_(self):
+    def _get_replaceWith__0_k_(self):
         return self.replaceWith
     
-    def _get_level_(self):
+    def _get_level__0_k_(self):
         return self.level
     
     def equals(self, other):
@@ -5959,10 +5959,10 @@ class ReplaceWith:
         self.expression = expression
         self.imports = imports
     
-    def _get_expression_(self):
+    def _get_expression__0_k_(self):
         return self.expression
     
-    def _get_imports_(self):
+    def _get_imports__0_k_(self):
         return self.imports
     
     def equals(self, other):
@@ -5997,13 +5997,13 @@ class DeprecatedSinceKotlin:
         self.errorSince = errorSince
         self.hiddenSince = hiddenSince
     
-    def _get_warningSince_(self):
+    def _get_warningSince__0_k_(self):
         return self.warningSince
     
-    def _get_errorSince_(self):
+    def _get_errorSince__0_k_(self):
         return self.errorSince
     
-    def _get_hiddenSince_(self):
+    def _get_hiddenSince__0_k_(self):
         return self.hiddenSince
     
     def equals(self, other):
@@ -6060,13 +6060,13 @@ class ByteIterator:
     def __init__(self):
         pass
     
-    def next(self):
+    def next_0_k_(self):
         return self.nextByte()
     
-    def nextByte(self):
+    def nextByte_0_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
     def equals(self, other):
@@ -6083,13 +6083,13 @@ class IntIterator:
     def __init__(self):
         pass
     
-    def next(self):
+    def next_0_k_(self):
         return self.nextInt()
     
-    def nextInt(self):
+    def nextInt_0_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
     def equals(self, other):
@@ -6106,13 +6106,13 @@ class DoubleIterator:
     def __init__(self):
         pass
     
-    def next(self):
+    def next_0_k_(self):
         return self.nextDouble()
     
-    def nextDouble(self):
+    def nextDouble_0_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
     def equals(self, other):
@@ -6129,13 +6129,13 @@ class FloatIterator:
     def __init__(self):
         pass
     
-    def next(self):
+    def next_0_k_(self):
         return self.nextFloat()
     
-    def nextFloat(self):
+    def nextFloat_0_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
     def equals(self, other):
@@ -6152,13 +6152,13 @@ class LongIterator:
     def __init__(self):
         pass
     
-    def next(self):
+    def next_0_k_(self):
         return self.nextLong()
     
-    def nextLong(self):
+    def nextLong_0_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
     def equals(self, other):
@@ -6175,13 +6175,13 @@ class CharIterator:
     def __init__(self):
         pass
     
-    def next(self):
+    def next_0_k_(self):
         return self.nextChar()
     
-    def nextChar(self):
+    def nextChar_0_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
     def equals(self, other):
@@ -6198,13 +6198,13 @@ class BooleanIterator:
     def __init__(self):
         pass
     
-    def next(self):
+    def next_0_k_(self):
         return self.nextBoolean()
     
-    def nextBoolean(self):
+    def nextBoolean_0_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
     def equals(self, other):
@@ -6221,13 +6221,13 @@ class ShortIterator:
     def __init__(self):
         pass
     
-    def next(self):
+    def next_0_k_(self):
         return self.nextShort()
     
-    def nextShort(self):
+    def nextShort_0_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
     def equals(self, other):
@@ -6240,19 +6240,19 @@ class ShortIterator:
         pass
     
 
-def _get_finalElement_(_this):
+def _get_finalElement__1(_this):
     return _this.finalElement
 
-def _set_hasNext_(_this, _set___):
+def _set_hasNext__1(_this, _set___):
     _this.hasNext = _set___
 
-def _get_hasNext_(_this):
+def _get_hasNext__1(_this):
     return _this.hasNext
 
-def _set_next_(_this, _set___):
+def _set_next__1(_this, _set___):
     _this.next = _set___
 
-def _get_next_(_this):
+def _get_next__1(_this):
     return _this.next
 
 class IntProgressionIterator:
@@ -6263,13 +6263,13 @@ class IntProgressionIterator:
         self.hasNext = (first <= last) if (self.step > 0) else (first >= last)
         self.next = (first) if (self.hasNext) else (self.finalElement)
     
-    def _get_step_(self):
+    def _get_step__0_k_(self):
         return self.step
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return self.hasNext
     
-    def nextInt(self):
+    def nextInt_0_k_(self):
         value = self.next
         if value == self.finalElement:
             if not self.hasNext:
@@ -6282,7 +6282,7 @@ class IntProgressionIterator:
         
         return value
     
-    def next(self):
+    def next_0_k_(self):
         pass
     
     def equals(self, other):
@@ -6295,19 +6295,19 @@ class IntProgressionIterator:
         pass
     
 
-def _get_finalElement_(_this):
+def _get_finalElement__2(_this):
     return _this.finalElement
 
-def _set_hasNext_(_this, _set___):
+def _set_hasNext__2(_this, _set___):
     _this.hasNext = _set___
 
-def _get_hasNext_(_this):
+def _get_hasNext__2(_this):
     return _this.hasNext
 
-def _set_next_(_this, _set___):
+def _set_next__2(_this, _set___):
     _this.next = _set___
 
-def _get_next_(_this):
+def _get_next__2(_this):
     return _this.next
 
 class LongProgressionIterator:
@@ -6318,13 +6318,13 @@ class LongProgressionIterator:
         self.hasNext = (first.compareTo(last) <= 0) if (self.step.compareTo(Long(0, 0)) > 0) else (first.compareTo(last) >= 0)
         self.next = (first) if (self.hasNext) else (self.finalElement)
     
-    def _get_step_(self):
+    def _get_step__0_k_(self):
         return self.step
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return self.hasNext
     
-    def nextLong(self):
+    def nextLong_0_k_(self):
         value = self.next
         if value.equals(self.finalElement):
             if not self.hasNext:
@@ -6337,7 +6337,7 @@ class LongProgressionIterator:
         
         return value
     
-    def next(self):
+    def next_0_k_(self):
         pass
     
     def equals(self, other):
@@ -6350,19 +6350,19 @@ class LongProgressionIterator:
         pass
     
 
-def _get_finalElement_(_this):
+def _get_finalElement__3(_this):
     return _this.finalElement
 
-def _set_hasNext_(_this, _set___):
+def _set_hasNext__3(_this, _set___):
     _this.hasNext = _set___
 
-def _get_hasNext_(_this):
+def _get_hasNext__3(_this):
     return _this.hasNext
 
-def _set_next_(_this, _set___):
+def _set_next__3(_this, _set___):
     _this.next = _set___
 
-def _get_next_(_this):
+def _get_next__3(_this):
     return _this.next
 
 class CharProgressionIterator:
@@ -6380,13 +6380,13 @@ class CharProgressionIterator:
         
         tmp.next = tmp
     
-    def _get_step_(self):
+    def _get_step__0_k_(self):
         return self.step
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return self.hasNext
     
-    def nextChar(self):
+    def nextChar_0_k_(self):
         value = self.next
         if value == self.finalElement:
             if not self.hasNext:
@@ -6399,7 +6399,7 @@ class CharProgressionIterator:
         
         return numberToChar(value)
     
-    def next(self):
+    def next_0_k_(self):
         pass
     
     def equals(self, other):
@@ -6412,11 +6412,11 @@ class CharProgressionIterator:
         pass
     
 
-class Companion:
+class Companion_12:
     def __init__(self):
         Companion_instance = self
     
-    def fromClosedRange(self, rangeStart, rangeEnd, step):
+    def fromClosedRange_fcwjfj_k_(self, rangeStart, rangeEnd, step):
         return IntProgression(rangeStart, rangeEnd, step)
     
     def equals(self, other):
@@ -6430,7 +6430,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_11():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -6450,19 +6450,19 @@ class IntProgression:
         self.last = getProgressionLastElement(start, endInclusive, step)
         self.step = step
     
-    def _get_first_(self):
+    def _get_first__0_k_(self):
         return self.first
     
-    def _get_last_(self):
+    def _get_last__0_k_(self):
         return self.last
     
-    def _get_step_(self):
+    def _get_step__0_k_(self):
         return self.step
     
-    def iterator(self):
+    def iterator_0_k_(self):
         return IntProgressionIterator(self.first, self.last, self.step)
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         return (self.first > self.last) if (self.step > 0) else (self.first < self.last)
     
     def equals(self, other):
@@ -6480,11 +6480,11 @@ class IntProgression:
         return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str(-self.step | 0))
     
 
-class Companion:
+class Companion_13:
     def __init__(self):
         Companion_instance = self
     
-    def fromClosedRange(self, rangeStart, rangeEnd, step):
+    def fromClosedRange_k3cbgi_k_(self, rangeStart, rangeEnd, step):
         return LongProgression(rangeStart, rangeEnd, step)
     
     def equals(self, other):
@@ -6498,7 +6498,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_12():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -6519,19 +6519,19 @@ class LongProgression:
         self.last = getProgressionLastElement(start, endInclusive, step)
         self.step = step
     
-    def _get_first_(self):
+    def _get_first__0_k_(self):
         return self.first
     
-    def _get_last_(self):
+    def _get_last__0_k_(self):
         return self.last
     
-    def _get_step_(self):
+    def _get_step__0_k_(self):
         return self.step
     
-    def iterator(self):
+    def iterator_0_k_(self):
         return LongProgressionIterator(self.first, self.last, self.step)
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         return (self.first.compareTo(self.last) > 0) if (self.step.compareTo(Long(0, 0)) > 0) else (self.first.compareTo(self.last) < 0)
     
     def equals(self, other):
@@ -6549,11 +6549,11 @@ class LongProgression:
         return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step.compareTo(Long(0, 0)) > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str(self.step.unaryMinus()))
     
 
-class Companion:
+class Companion_14:
     def __init__(self):
         Companion_instance = self
     
-    def fromClosedRange(self, rangeStart, rangeEnd, step):
+    def fromClosedRange_gtcn47_k_(self, rangeStart, rangeEnd, step):
         return CharProgression(rangeStart, rangeEnd, step)
     
     def equals(self, other):
@@ -6567,7 +6567,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_13():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -6589,19 +6589,19 @@ class CharProgression:
         tmp.last = numberToChar(getProgressionLastElement(tmp, endInclusive.toInt(), step))
         self.step = step
     
-    def _get_first_(self):
+    def _get_first__0_k_(self):
         return self.first
     
-    def _get_last_(self):
+    def _get_last__0_k_(self):
         return self.last
     
-    def _get_step_(self):
+    def _get_step__0_k_(self):
         return self.step
     
-    def iterator(self):
+    def iterator_0_k_(self):
         return CharProgressionIterator(self.first, self.last, self.step)
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         return (self.first.compareTo(self.last) > 0) if (self.step > 0) else (self.first.compareTo(self.last) < 0)
     
     def equals(self, other):
@@ -6628,16 +6628,16 @@ class CharProgression:
     
 
 class ClosedRange:
-    def _get_start_(self):
+    def _get_start__0_k_(self):
         pass
     
-    def _get_endInclusive_(self):
+    def _get_endInclusive__0_k_(self):
         pass
     
-    def contains(self, value):
+    def contains_2c5_k_(self, value):
         return (compareTo(value, self._get_endInclusive_()) <= 0) if (compareTo(value, self._get_start_()) >= 0) else (False)
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         return compareTo(self._get_start_(), self._get_endInclusive_()) > 0
     
     def equals(self, other):
@@ -6653,12 +6653,12 @@ class ClosedRange:
         pass
     
 
-class Companion:
+class Companion_15:
     def __init__(self):
         Companion_instance = self
         self.EMPTY = IntRange(1, 0)
     
-    def _get_EMPTY_(self):
+    def _get_EMPTY__0_k_(self):
         return self.EMPTY
     
     def equals(self, other):
@@ -6672,7 +6672,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_14():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -6684,19 +6684,19 @@ class IntRange:
         Companion_getInstance()
         super(start, endInclusive, 1)
     
-    def _get_start_(self):
+    def _get_start__0_k_(self):
         return self._get_first_()
     
-    def _get_endInclusive_(self):
+    def _get_endInclusive__0_k_(self):
         return self._get_last_()
     
-    def contains(self, value):
+    def contains_ha5a7z_k_(self, value):
         return (value <= self._get_last_()) if (self._get_first_() <= value) else (False)
     
-    def contains(self, value):
+    def contains_2c5_k_(self, value):
         return self.contains((kotlin_Int(value)) if (jsTypeOf(value) == 'number') else (THROW_CCE()))
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         return self._get_first_() > self._get_last_()
     
     def equals(self, other):
@@ -6713,25 +6713,25 @@ class IntRange:
     def toString(self):
         return (str(self._get_first_()) + str('..')) + str(self._get_last_())
     
-    def _get_first_(self):
+    def _get_first__0_k_(self):
         pass
     
-    def _get_last_(self):
+    def _get_last__0_k_(self):
         pass
     
-    def _get_step_(self):
+    def _get_step__0_k_(self):
         pass
     
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
 
-class Companion:
+class Companion_16:
     def __init__(self):
         Companion_instance = self
         self.EMPTY = LongRange(Long(1, 0), Long(0, 0))
     
-    def _get_EMPTY_(self):
+    def _get_EMPTY__0_k_(self):
         return self.EMPTY
     
     def equals(self, other):
@@ -6745,7 +6745,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_15():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -6757,19 +6757,19 @@ class LongRange:
         Companion_getInstance()
         super(start, endInclusive, Long(1, 0))
     
-    def _get_start_(self):
+    def _get_start__0_k_(self):
         return self._get_first_()
     
-    def _get_endInclusive_(self):
+    def _get_endInclusive__0_k_(self):
         return self._get_last_()
     
-    def contains(self, value):
+    def contains_wiekkq_k_(self, value):
         return (value.compareTo(self._get_last_()) <= 0) if (self._get_first_().compareTo(value) <= 0) else (False)
     
-    def contains(self, value):
+    def contains_2c5_k_(self, value):
         return self.contains((kotlin_Long(value)) if (jsInstanceOf(value, jsClass())) else (THROW_CCE()))
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         return self._get_first_().compareTo(self._get_last_()) > 0
     
     def equals(self, other):
@@ -6786,25 +6786,25 @@ class LongRange:
     def toString(self):
         return (str(self._get_first_()) + str('..')) + str(self._get_last_())
     
-    def _get_first_(self):
+    def _get_first__0_k_(self):
         pass
     
-    def _get_last_(self):
+    def _get_last__0_k_(self):
         pass
     
-    def _get_step_(self):
+    def _get_step__0_k_(self):
         pass
     
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
 
-class Companion:
+class Companion_17:
     def __init__(self):
         Companion_instance = self
         self.EMPTY = CharRange(Char(1), Char(0))
     
-    def _get_EMPTY_(self):
+    def _get_EMPTY__0_k_(self):
         return self.EMPTY
     
     def equals(self, other):
@@ -6818,7 +6818,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_16():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -6830,19 +6830,19 @@ class CharRange:
         Companion_getInstance()
         super(start, endInclusive, 1)
     
-    def _get_start_(self):
+    def _get_start__0_k_(self):
         return self._get_first_()
     
-    def _get_endInclusive_(self):
+    def _get_endInclusive__0_k_(self):
         return self._get_last_()
     
-    def contains(self, value):
+    def contains_wi8o78_k_(self, value):
         return (value.compareTo(self._get_last_()) <= 0) if (self._get_first_().compareTo(value) <= 0) else (False)
     
-    def contains(self, value):
+    def contains_2c5_k_(self, value):
         return self.contains((kotlin_Char(value)) if (jsInstanceOf(value, jsClass())) else (THROW_CCE()))
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         return self._get_first_().compareTo(self._get_last_()) > 0
     
     def equals(self, other):
@@ -6867,16 +6867,16 @@ class CharRange:
     def toString(self):
         return (str(self._get_first_()) + str('..')) + str(self._get_last_())
     
-    def _get_first_(self):
+    def _get_first__0_k_(self):
         pass
     
-    def _get_last_(self):
+    def _get_last__0_k_(self):
         pass
     
-    def _get_step_(self):
+    def _get_step__0_k_(self):
         pass
     
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
 
@@ -6906,7 +6906,7 @@ class Target:
     def __init__(self, *allowedTargets):
         self.allowedTargets = allowedTargets
     
-    def _get_allowedTargets_(self):
+    def _get_allowedTargets__0_k_(self):
         return self.allowedTargets
     
     def equals(self, other):
@@ -6934,10 +6934,10 @@ pass
 pass
 pass
 pass
-def values():
+def values_6():
     return AnnotationTarget_CLASS_getInstance()
 
-def valueOf(value):
+def valueOf_6(value):
     if 'CLASS' == value:
         return AnnotationTarget_CLASS_getInstance()
     elif 'ANNOTATION_CLASS' == value:
@@ -6999,13 +6999,13 @@ class AnnotationTarget:
     def __init__(self, name, ordinal):
         super(name, ordinal)
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
-    def _get_ordinal_(self):
+    def _get_ordinal__0_k_(self):
         pass
     
-    def compareTo(self, other):
+    def compareTo_h5tgwh_k_(self, other):
         pass
     
     def equals(self, other):
@@ -7046,7 +7046,7 @@ class Retention:
     def __init__(self, value):
         self.value = value
     
-    def _get_value_(self):
+    def _get_value__0_k_(self):
         return self.value
     
     def equals(self, other):
@@ -7062,10 +7062,10 @@ class Retention:
 pass
 pass
 pass
-def values():
+def values_7():
     return AnnotationRetention_SOURCE_getInstance()
 
-def valueOf(value):
+def valueOf_7(value):
     if 'SOURCE' == value:
         return AnnotationRetention_SOURCE_getInstance()
     elif 'BINARY' == value:
@@ -7091,13 +7091,13 @@ class AnnotationRetention:
     def __init__(self, name, ordinal):
         super(name, ordinal)
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
-    def _get_ordinal_(self):
+    def _get_ordinal__0_k_(self):
         pass
     
-    def compareTo(self, other):
+    def compareTo_rvtl42_k_(self, other):
         pass
     
     def equals(self, other):
@@ -7196,7 +7196,7 @@ def AnnotationRetention_RUNTIME_getInstance():
     AnnotationRetention_initEntries()
     return AnnotationRetention_RUNTIME_instance
 
-def getProgressionLastElement(start, end, step):
+def getProgressionLastElement_1(start, end, step):
     if step > 0:
         tmp = (end) if (start >= end) else ((end - differenceModulo(end, start, step)) | 0)
     elif step < 0:
@@ -7206,7 +7206,7 @@ def getProgressionLastElement(start, end, step):
     
     return tmp
 
-def getProgressionLastElement(start, end, step):
+def getProgressionLastElement_2(start, end, step):
     if step.compareTo(Long(0, 0)) > 0:
         tmp = (end) if (start.compareTo(end) >= 0) else (end.minus(differenceModulo(end, start, step)))
     elif step.compareTo(Long(0, 0)) < 0:
@@ -7216,21 +7216,21 @@ def getProgressionLastElement(start, end, step):
     
     return tmp
 
-def differenceModulo(a, b, c):
+def differenceModulo_1(a, b, c):
     return mod((mod(a, c) - mod(b, c)) | 0, c)
 
-def differenceModulo(a, b, c):
+def differenceModulo_2(a, b, c):
     return mod(mod(a, c).minus(mod(b, c)), c)
 
 def mod(a, b):
     mod = a % b
     return (mod) if (mod >= 0) else ((mod + b) | 0)
 
-def mod(a, b):
+def mod_0(a, b):
     mod = a.rem(b)
     return (mod) if (mod.compareTo(Long(0, 0)) >= 0) else (mod.plus(b))
 
-class ByteCompanionObject:
+class ByteCompanionObject_0:
     def __init__(self):
         ByteCompanionObject_instance = self
         self.MIN_VALUE = -128
@@ -7238,16 +7238,16 @@ class ByteCompanionObject:
         self.SIZE_BYTES = 1
         self.SIZE_BITS = 8
     
-    def _get_MIN_VALUE_(self):
+    def _get_MIN_VALUE__0_k_(self):
         return self.MIN_VALUE
     
-    def _get_MAX_VALUE_(self):
+    def _get_MAX_VALUE__0_k_(self):
         return self.MAX_VALUE
     
-    def _get_SIZE_BYTES_(self):
+    def _get_SIZE_BYTES__0_k_(self):
         return self.SIZE_BYTES
     
-    def _get_SIZE_BITS_(self):
+    def _get_SIZE_BITS__0_k_(self):
         return self.SIZE_BITS
     
     def equals(self, other):
@@ -7268,7 +7268,7 @@ def ByteCompanionObject_getInstance():
     
     return ByteCompanionObject_instance
 
-class ShortCompanionObject:
+class ShortCompanionObject_0:
     def __init__(self):
         ShortCompanionObject_instance = self
         self.MIN_VALUE = -32768
@@ -7276,16 +7276,16 @@ class ShortCompanionObject:
         self.SIZE_BYTES = 2
         self.SIZE_BITS = 16
     
-    def _get_MIN_VALUE_(self):
+    def _get_MIN_VALUE__0_k_(self):
         return self.MIN_VALUE
     
-    def _get_MAX_VALUE_(self):
+    def _get_MAX_VALUE__0_k_(self):
         return self.MAX_VALUE
     
-    def _get_SIZE_BYTES_(self):
+    def _get_SIZE_BYTES__0_k_(self):
         return self.SIZE_BYTES
     
-    def _get_SIZE_BITS_(self):
+    def _get_SIZE_BITS__0_k_(self):
         return self.SIZE_BITS
     
     def equals(self, other):
@@ -7306,7 +7306,7 @@ def ShortCompanionObject_getInstance():
     
     return ShortCompanionObject_instance
 
-class IntCompanionObject:
+class IntCompanionObject_0:
     def __init__(self):
         IntCompanionObject_instance = self
         self.MIN_VALUE = -2147483648
@@ -7314,16 +7314,16 @@ class IntCompanionObject:
         self.SIZE_BYTES = 4
         self.SIZE_BITS = 32
     
-    def _get_MIN_VALUE_(self):
+    def _get_MIN_VALUE__0_k_(self):
         return self.MIN_VALUE
     
-    def _get_MAX_VALUE_(self):
+    def _get_MAX_VALUE__0_k_(self):
         return self.MAX_VALUE
     
-    def _get_SIZE_BYTES_(self):
+    def _get_SIZE_BYTES__0_k_(self):
         return self.SIZE_BYTES
     
-    def _get_SIZE_BITS_(self):
+    def _get_SIZE_BITS__0_k_(self):
         return self.SIZE_BITS
     
     def equals(self, other):
@@ -7344,7 +7344,7 @@ def IntCompanionObject_getInstance():
     
     return IntCompanionObject_instance
 
-class FloatCompanionObject:
+class FloatCompanionObject_0:
     def __init__(self):
         FloatCompanionObject_instance = self
         self.MIN_VALUE = 1.4E-45
@@ -7355,25 +7355,25 @@ class FloatCompanionObject:
         self.SIZE_BYTES = 4
         self.SIZE_BITS = 32
     
-    def _get_MIN_VALUE_(self):
+    def _get_MIN_VALUE__0_k_(self):
         return self.MIN_VALUE
     
-    def _get_MAX_VALUE_(self):
+    def _get_MAX_VALUE__0_k_(self):
         return self.MAX_VALUE
     
-    def _get_POSITIVE_INFINITY_(self):
+    def _get_POSITIVE_INFINITY__0_k_(self):
         return self.POSITIVE_INFINITY
     
-    def _get_NEGATIVE_INFINITY_(self):
+    def _get_NEGATIVE_INFINITY__0_k_(self):
         return self.NEGATIVE_INFINITY
     
-    def _get_NaN_(self):
+    def _get_NaN__0_k_(self):
         return self.NaN
     
-    def _get_SIZE_BYTES_(self):
+    def _get_SIZE_BYTES__0_k_(self):
         return self.SIZE_BYTES
     
-    def _get_SIZE_BITS_(self):
+    def _get_SIZE_BITS__0_k_(self):
         return self.SIZE_BITS
     
     def equals(self, other):
@@ -7394,7 +7394,7 @@ def FloatCompanionObject_getInstance():
     
     return FloatCompanionObject_instance
 
-class DoubleCompanionObject:
+class DoubleCompanionObject_0:
     def __init__(self):
         DoubleCompanionObject_instance = self
         self.MIN_VALUE = 4.9E-324
@@ -7405,25 +7405,25 @@ class DoubleCompanionObject:
         self.SIZE_BYTES = 8
         self.SIZE_BITS = 64
     
-    def _get_MIN_VALUE_(self):
+    def _get_MIN_VALUE__0_k_(self):
         return self.MIN_VALUE
     
-    def _get_MAX_VALUE_(self):
+    def _get_MAX_VALUE__0_k_(self):
         return self.MAX_VALUE
     
-    def _get_POSITIVE_INFINITY_(self):
+    def _get_POSITIVE_INFINITY__0_k_(self):
         return self.POSITIVE_INFINITY
     
-    def _get_NEGATIVE_INFINITY_(self):
+    def _get_NEGATIVE_INFINITY__0_k_(self):
         return self.NEGATIVE_INFINITY
     
-    def _get_NaN_(self):
+    def _get_NaN__0_k_(self):
         return self.NaN
     
-    def _get_SIZE_BYTES_(self):
+    def _get_SIZE_BYTES__0_k_(self):
         return self.SIZE_BYTES
     
-    def _get_SIZE_BITS_(self):
+    def _get_SIZE_BITS__0_k_(self):
         return self.SIZE_BITS
     
     def equals(self, other):
@@ -7509,7 +7509,7 @@ class JsName:
     def __init__(self, name):
         self.name = name
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         return self.name
     
     def equals(self, other):
@@ -7525,7 +7525,7 @@ class JsName:
 def toTypedArray():
     return copyToArray(self)
 
-def copyToArray(collection):
+def copyToArray_0(collection):
     if EXCLEQEQ(toArray(collection), _get_undefined_()):
         tmp0_unsafeCast_0 = INVOKE(toArray(collection))
         tmp = kotlin_Any_(tmp0_unsafeCast_0)
@@ -7535,7 +7535,7 @@ def copyToArray(collection):
     
     return tmp
 
-def copyToArrayImpl(collection):
+def copyToArrayImpl_0(collection):
     array = kotlin_Array_kotlin_Any__(js('[]'))
     iterator = collection.iterator()
     while iterator.hasNext():
@@ -7543,7 +7543,7 @@ def copyToArrayImpl(collection):
     
     return array
 
-def arrayCopy(source, destination, destinationOffset, startIndex, endIndex):
+def arrayCopy_0(source, destination, destinationOffset, startIndex, endIndex):
     Companion_getInstance().checkRangeIndexes(startIndex, endIndex, len(source))
     rangeSize = (endIndex - startIndex) | 0
     Companion_getInstance().checkRangeIndexes(destinationOffset, (destinationOffset + rangeSize) | 0, len(destination))
@@ -7576,7 +7576,7 @@ def arrayCopy(source, destination, destinationOffset, startIndex, endIndex):
         
     
 
-def copyToArrayImpl(collection, array):
+def copyToArrayImpl_1(collection, array):
     if len(array) < collection._get_size_():
         tmp0_unsafeCast_0 = copyToArrayImpl(collection)
         return kotlin_Any_(tmp0_unsafeCast_0)
@@ -7595,25 +7595,25 @@ def copyToArrayImpl(collection, array):
     
     return array
 
-class _no_name_provided_:
+class _no_name_provided__4:
     def __init__(self, _elements):
         self._elements = _elements
     
-    def invoke(self, it):
+    def invoke_2bq_k_(self, it):
         return self._elements.contains(it)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((E(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__5:
     def __init__(self, _elements):
         self._elements = _elements
     
-    def invoke(self, it):
+    def invoke_2bq_k_(self, it):
         return not self._elements.contains(it)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((E(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
@@ -7621,10 +7621,10 @@ class AbstractMutableCollection:
     def __init__(self):
         super()
     
-    def add(self, element):
+    def add_2bq_k_(self, element):
         pass
     
-    def remove(self, element):
+    def remove_2bq_k_(self, element):
         self.checkIsMutable()
         iterator = self.iterator()
         while iterator.hasNext():
@@ -7635,7 +7635,7 @@ class AbstractMutableCollection:
         
         return False
     
-    def addAll(self, elements):
+    def addAll_dxd4eo_k_(self, elements):
         self.checkIsMutable()
         modified = False
         tmp0_iterator = elements.iterator()
@@ -7647,17 +7647,17 @@ class AbstractMutableCollection:
         
         return modified
     
-    def removeAll(self, elements):
+    def removeAll_dxd4eo_k_(self, elements):
         self.checkIsMutable()
         tmp = (kotlin_collections_MutableIterable_E_(self)) if (isInterface(self, jsClass())) else (THROW_CCE())
         return removeAll(_no_name_provided__factory(elements))
     
-    def retainAll(self, elements):
+    def retainAll_dxd4eo_k_(self, elements):
         self.checkIsMutable()
         tmp = (kotlin_collections_MutableIterable_E_(self)) if (isInterface(self, jsClass())) else (THROW_CCE())
         return removeAll(_no_name_provided__factory(elements))
     
-    def clear(self):
+    def clear_sv8swh_k_(self):
         self.checkIsMutable()
         iterator = self.iterator()
         while iterator.hasNext():
@@ -7669,22 +7669,22 @@ class AbstractMutableCollection:
     def toJSON(self):
         return self.toArray()
     
-    def checkIsMutable(self):
+    def checkIsMutable_sv8swh_k_(self):
         pass
     
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         pass
     
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         pass
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         pass
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         pass
     
     def toString(self):
@@ -7693,7 +7693,7 @@ class AbstractMutableCollection:
     def toArray(self):
         pass
     
-    def toArray(self, array):
+    def toArray_gjotr5_k_(self, array):
         pass
     
     def equals(self, other):
@@ -7703,48 +7703,48 @@ class AbstractMutableCollection:
         pass
     
 
-def _no_name_provided__factory(_elements):
+def _no_name_provided__factory_3(_elements):
     i = _no_name_provided_(_elements)
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory(_elements):
+def _no_name_provided__factory_4(_elements):
     i = _no_name_provided_(_elements)
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _get_list_(_this):
+def _get_list__0(_this):
     return _this.list
 
-def _get_fromIndex_(_this):
+def _get_fromIndex__0(_this):
     return _this.fromIndex
 
-def _set__size_(_this, _set___):
+def _set__size__0(_this, _set___):
     _this._size = _set___
 
-def _get__size_(_this):
+def _get__size__0(_this):
     return _this._size
 
-class IteratorImpl:
+class IteratorImpl_0:
     def __init__(self, _outer):
         self._this = _outer
         self.index = 0
         self.last = -1
     
-    def _set_index_(self, _set___):
+    def _set_index__majfzk_k_(self, _set___):
         self.index = _set___
     
-    def _get_index_(self):
+    def _get_index__0_k_(self):
         return self.index
     
-    def _set_last_(self, _set___):
+    def _set_last__majfzk_k_(self, _set___):
         self.last = _set___
     
-    def _get_last_(self):
+    def _get_last__0_k_(self):
         return self.last
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return self.index < self._this._get_size_()
     
-    def next(self):
+    def next_0_k_(self):
         if not self.hasNext():
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
@@ -7755,7 +7755,7 @@ class IteratorImpl:
         tmp.last = tmp1
         return self._this.get(self.last)
     
-    def remove(self):
+    def remove_sv8swh_k_(self):
         tmp0_check_0 = not (self.last == -1)
         if not tmp0_check_0:
             message_1 = 'Call next() or previous() before removing element from the iterator.'
@@ -7776,20 +7776,20 @@ class IteratorImpl:
         pass
     
 
-class ListIteratorImpl:
+class ListIteratorImpl_0:
     def __init__(self, _outer, index):
         self._this = _outer
         super(_outer)
         Companion_getInstance().checkPositionIndex(index, self._this._get_size_())
         self._set_index_(index)
     
-    def hasPrevious(self):
+    def hasPrevious_0_k_(self):
         return self._get_index_() > 0
     
-    def nextIndex(self):
+    def nextIndex_0_k_(self):
         return self._get_index_()
     
-    def previous(self):
+    def previous_0_k_(self):
         if not self.hasPrevious():
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
@@ -7798,10 +7798,10 @@ class ListIteratorImpl:
         self._set_last_(tmp0_this._get_index_())
         return self._this.get(self._get_last_())
     
-    def previousIndex(self):
+    def previousIndex_0_k_(self):
         return (self._get_index_() - 1) | 0
     
-    def add(self, element):
+    def add_jxzaet_k_(self, element):
         self._this.add(self._get_index_(), element)
         tmp0_this = self
         tmp1 = tmp0_this._get_index_()
@@ -7809,10 +7809,10 @@ class ListIteratorImpl:
         Unit_getInstance()
         self._set_last_(-1)
     
-    def add(self, element):
+    def add_iav7o_k_(self, element):
         return self.add((E(element)) if ((True) if (element == None) else (isObject(element))) else (THROW_CCE()))
     
-    def set(self, element):
+    def set_jxzaet_k_(self, element):
         tmp0_check_0 = not (self._get_last_() == -1)
         if not tmp0_check_0:
             message_1 = 'Call next() or previous() before updating element value with the iterator.'
@@ -7821,28 +7821,28 @@ class ListIteratorImpl:
         self._this.set(self._get_last_(), element)
         Unit_getInstance()
     
-    def set(self, element):
+    def set_iav7o_k_(self, element):
         return self.set((E(element)) if ((True) if (element == None) else (isObject(element))) else (THROW_CCE()))
     
-    def _set_index_(self, _set___):
+    def _set_index__majfzk_k_(self, _set___):
         pass
     
-    def _get_index_(self):
+    def _get_index__0_k_(self):
         pass
     
-    def _set_last_(self, _set___):
+    def _set_last__majfzk_k_(self, _set___):
         pass
     
-    def _get_last_(self):
+    def _get_last__0_k_(self):
         pass
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         pass
     
-    def next(self):
+    def next_0_k_(self):
         pass
     
-    def remove(self):
+    def remove_sv8swh_k_(self):
         pass
     
     def equals(self, other):
@@ -7855,7 +7855,7 @@ class ListIteratorImpl:
         pass
     
 
-class SubList:
+class SubList_0:
     def __init__(self, list, fromIndex, toIndex):
         super()
         self.list = list
@@ -7864,7 +7864,7 @@ class SubList:
         Companion_getInstance().checkRangeIndexes(self.fromIndex, toIndex, self.list._get_size_())
         self._size = (toIndex - self.fromIndex) | 0
     
-    def add(self, index, element):
+    def add_vz2mgm_k_(self, index, element):
         Companion_getInstance().checkPositionIndex(index, self._size)
         self.list.add((self.fromIndex + index) | 0, element)
         tmp0_this = self
@@ -7872,11 +7872,11 @@ class SubList:
         tmp0_this._size = (tmp1 + 1) | 0
         Unit_getInstance()
     
-    def get(self, index):
+    def get_ha5a7z_k_(self, index):
         Companion_getInstance().checkElementIndex(index, self._size)
         return self.list.get((self.fromIndex + index) | 0)
     
-    def removeAt(self, index):
+    def removeAt_ha5a7z_k_(self, index):
         Companion_getInstance().checkElementIndex(index, self._size)
         result = self.list.removeAt((self.fromIndex + index) | 0)
         tmp0_this = self
@@ -7885,62 +7885,62 @@ class SubList:
         Unit_getInstance()
         return result
     
-    def set(self, index, element):
+    def set_ddb1qf_k_(self, index, element):
         Companion_getInstance().checkElementIndex(index, self._size)
         return self.list.set((self.fromIndex + index) | 0, element)
     
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         return self._size
     
-    def checkIsMutable(self):
+    def checkIsMutable_sv8swh_k_(self):
         return self.list.checkIsMutable()
     
-    def _set_modCount_(self, _set___):
+    def _set_modCount__majfzk_k_(self, _set___):
         pass
     
-    def _get_modCount_(self):
+    def _get_modCount__0_k_(self):
         pass
     
-    def add(self, element):
+    def add_2bq_k_(self, element):
         pass
     
-    def addAll(self, index, elements):
+    def addAll_xggsjz_k_(self, index, elements):
         pass
     
-    def addAll(self, elements):
+    def addAll_dxd4eo_k_(self, elements):
         pass
     
-    def clear(self):
+    def clear_sv8swh_k_(self):
         pass
     
-    def removeAll(self, elements):
+    def removeAll_dxd4eo_k_(self, elements):
         pass
     
-    def retainAll(self, elements):
+    def retainAll_dxd4eo_k_(self, elements):
         pass
     
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         pass
     
-    def indexOf(self, element):
+    def indexOf_2bq_k_(self, element):
         pass
     
-    def lastIndexOf(self, element):
+    def lastIndexOf_2bq_k_(self, element):
         pass
     
-    def listIterator(self):
+    def listIterator_0_k_(self):
         pass
     
-    def listIterator(self, index):
+    def listIterator_ha5a7z_k_(self, index):
         pass
     
-    def subList(self, fromIndex, toIndex):
+    def subList_27zxwg_k_(self, fromIndex, toIndex):
         pass
     
-    def removeRange(self, fromIndex, toIndex):
+    def removeRange_rvwcgf_k_(self, fromIndex, toIndex):
         pass
     
     def equals(self, other):
@@ -7949,16 +7949,16 @@ class SubList:
     def hashCode(self):
         pass
     
-    def remove(self, element):
+    def remove_2bq_k_(self, element):
         pass
     
     def toJSON(self):
         pass
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         pass
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         pass
     
     def toString(self):
@@ -7967,29 +7967,29 @@ class SubList:
     def toArray(self):
         pass
     
-    def toArray(self, array):
+    def toArray_gjotr5_k_(self, array):
         pass
     
 
-class _no_name_provided_:
+class _no_name_provided__6:
     def __init__(self, _elements):
         self._elements = _elements
     
-    def invoke(self, it):
+    def invoke_2bq_k_(self, it):
         return self._elements.contains(it)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((E(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__7:
     def __init__(self, _elements):
         self._elements = _elements
     
-    def invoke(self, it):
+    def invoke_2bq_k_(self, it):
         return not self._elements.contains(it)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((E(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
@@ -7998,27 +7998,27 @@ class AbstractMutableList:
         super()
         self.modCount = 0
     
-    def _set_modCount_(self, _set___):
+    def _set_modCount__majfzk_k_(self, _set___):
         self.modCount = _set___
     
-    def _get_modCount_(self):
+    def _get_modCount__0_k_(self):
         return self.modCount
     
-    def add(self, index, element):
+    def add_vz2mgm_k_(self, index, element):
         pass
     
-    def removeAt(self, index):
+    def removeAt_ha5a7z_k_(self, index):
         pass
     
-    def set(self, index, element):
+    def set_ddb1qf_k_(self, index, element):
         pass
     
-    def add(self, element):
+    def add_2bq_k_(self, element):
         self.checkIsMutable()
         self.add(self._get_size_(), element)
         return True
     
-    def addAll(self, index, elements):
+    def addAll_xggsjz_k_(self, index, elements):
         self.checkIsMutable()
         _index = index
         changed = False
@@ -8032,25 +8032,25 @@ class AbstractMutableList:
         
         return changed
     
-    def clear(self):
+    def clear_sv8swh_k_(self):
         self.checkIsMutable()
         self.removeRange(0, self._get_size_())
     
-    def removeAll(self, elements):
+    def removeAll_dxd4eo_k_(self, elements):
         self.checkIsMutable()
         return removeAll(_no_name_provided__factory(elements))
     
-    def retainAll(self, elements):
+    def retainAll_dxd4eo_k_(self, elements):
         self.checkIsMutable()
         return removeAll(_no_name_provided__factory(elements))
     
-    def iterator(self):
+    def iterator_0_k_(self):
         return IteratorImpl(self)
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         return self.indexOf(element) >= 0
     
-    def indexOf(self, element):
+    def indexOf_2bq_k_(self, element):
         inductionVariable = 0
         last = _get_lastIndex_()
         if inductionVariable <= last:
@@ -8067,7 +8067,7 @@ class AbstractMutableList:
         
         return -1
     
-    def lastIndexOf(self, element):
+    def lastIndexOf_2bq_k_(self, element):
         inductionVariable = _get_lastIndex_()
         if 0 <= inductionVariable:
             while True:
@@ -8083,16 +8083,16 @@ class AbstractMutableList:
         
         return -1
     
-    def listIterator(self):
+    def listIterator_0_k_(self):
         return self.listIterator(0)
     
-    def listIterator(self, index):
+    def listIterator_ha5a7z_k_(self, index):
         return ListIteratorImpl(self, index)
     
-    def subList(self, fromIndex, toIndex):
+    def subList_27zxwg_k_(self, fromIndex, toIndex):
         return SubList(self, fromIndex, toIndex)
     
-    def removeRange(self, fromIndex, toIndex):
+    def removeRange_rvwcgf_k_(self, fromIndex, toIndex):
         iterator = self.listIterator(fromIndex)
         tmp0_repeat_0 = (toIndex - fromIndex) | 0
         inductionVariable = 0
@@ -8121,25 +8121,25 @@ class AbstractMutableList:
     def hashCode(self):
         return Companion_getInstance().orderedHashCode(self)
     
-    def remove(self, element):
+    def remove_2bq_k_(self, element):
         pass
     
-    def addAll(self, elements):
+    def addAll_dxd4eo_k_(self, elements):
         pass
     
     def toJSON(self):
         pass
     
-    def checkIsMutable(self):
+    def checkIsMutable_sv8swh_k_(self):
         pass
     
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         pass
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         pass
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         pass
     
     def toString(self):
@@ -8148,25 +8148,25 @@ class AbstractMutableList:
     def toArray(self):
         pass
     
-    def toArray(self, array):
+    def toArray_gjotr5_k_(self, array):
         pass
     
-    def get(self, index):
+    def get_ha5a7z_k_(self, index):
         pass
     
 
-def _no_name_provided__factory(_elements):
+def _no_name_provided__factory_5(_elements):
     i = _no_name_provided_(_elements)
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory(_elements):
+def _no_name_provided__factory_6(_elements):
     i = _no_name_provided_(_elements)
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
 def _set_array_(_this, _set___):
     _this.array = _set___
 
-def _get_array_(_this):
+def _get_array__3(_this):
     return _this.array
 
 def _set_isReadOnly_(_this, _set___):
@@ -8182,28 +8182,28 @@ def ArrayList_init__Init_(_this):
 def ArrayList_init__Create_():
     return ArrayList_init__Init_(Object_create())
 
-def ArrayList_init__Init_(initialCapacity, _this):
+def ArrayList_init__Init__0(initialCapacity, _this):
     super(kotlin_Array_kotlin_Any__(js('[]')))
     return _this
 
-def ArrayList_init__Create_(initialCapacity):
+def ArrayList_init__Create__0(initialCapacity):
     return ArrayList_init__Init_(initialCapacity, Object_create())
 
-def ArrayList_init__Init_(initialCapacity, _mask0, _marker, _this):
+def ArrayList_init__Init__1(initialCapacity, _mask0, _marker, _this):
     if not (_mask0 & 1 == 0):
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
     
     ArrayList_init__Init_(initialCapacity, _this)
     return _this
 
-def ArrayList_init__Create_(initialCapacity, _mask0, _marker):
+def ArrayList_init__Create__1(initialCapacity, _mask0, _marker):
     return ArrayList_init__Init_(initialCapacity, _mask0, _marker, Object_create())
 
-def ArrayList_init__Init_(elements, _this):
+def ArrayList_init__Init__2(elements, _this):
     super(copyToArray(elements))
     return _this
 
-def ArrayList_init__Create_(elements):
+def ArrayList_init__Create__2(elements):
     return ArrayList_init__Init_(elements, Object_create())
 
 def rangeCheck(_this, index):
@@ -8220,25 +8220,25 @@ class ArrayList:
         self.array = array
         self.isReadOnly = False
     
-    def build(self):
+    def build_0_k_(self):
         self.checkIsMutable()
         self.isReadOnly = True
         return self
     
-    def trimToSize(self):
+    def trimToSize_sv8swh_k_(self):
         pass
     
-    def ensureCapacity(self, minCapacity):
+    def ensureCapacity_majfzk_k_(self, minCapacity):
         pass
     
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         return len(self.array)
     
-    def get(self, index):
+    def get_ha5a7z_k_(self, index):
         tmp = self.array[rangeCheck(self, index)]
         return (E(tmp)) if ((True) if (tmp == None) else (isObject(tmp))) else (THROW_CCE())
     
-    def set(self, index, element):
+    def set_ddb1qf_k_(self, index, element):
         self.checkIsMutable()
         rangeCheck(self, index)
         Unit_getInstance()
@@ -8247,7 +8247,7 @@ class ArrayList:
         tmp = tmp0_apply_0
         return (E(tmp)) if ((True) if (tmp == None) else (isObject(tmp))) else (THROW_CCE())
     
-    def add(self, element):
+    def add_2bq_k_(self, element):
         self.checkIsMutable()
         tmp0_asDynamic_0 = self.array
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
@@ -8257,7 +8257,7 @@ class ArrayList:
         Unit_getInstance()
         return True
     
-    def add(self, index, element):
+    def add_vz2mgm_k_(self, index, element):
         self.checkIsMutable()
         tmp0_asDynamic_0 = self.array
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
@@ -8266,7 +8266,7 @@ class ArrayList:
         tmp0_this._set_modCount_((tmp1 + 1) | 0)
         Unit_getInstance()
     
-    def addAll(self, elements):
+    def addAll_dxd4eo_k_(self, elements):
         self.checkIsMutable()
         if elements.isEmpty():
             return False
@@ -8282,7 +8282,7 @@ class ArrayList:
         Unit_getInstance()
         return True
     
-    def addAll(self, index, elements):
+    def addAll_xggsjz_k_(self, index, elements):
         self.checkIsMutable()
         insertionRangeCheck(self, index)
         Unit_getInstance()
@@ -8311,7 +8311,7 @@ class ArrayList:
         Unit_getInstance()
         return True
     
-    def removeAt(self, index):
+    def removeAt_ha5a7z_k_(self, index):
         self.checkIsMutable()
         rangeCheck(self, index)
         Unit_getInstance()
@@ -8328,7 +8328,7 @@ class ArrayList:
         
         return tmp
     
-    def remove(self, element):
+    def remove_2bq_k_(self, element):
         self.checkIsMutable()
         inductionVariable = 0
         last = (len(self.array) - 1) | 0
@@ -8352,7 +8352,7 @@ class ArrayList:
         
         return False
     
-    def removeRange(self, fromIndex, toIndex):
+    def removeRange_rvwcgf_k_(self, fromIndex, toIndex):
         self.checkIsMutable()
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount_()
@@ -8361,7 +8361,7 @@ class ArrayList:
         tmp0_asDynamic_0 = self.array
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     
-    def clear(self):
+    def clear_sv8swh_k_(self):
         self.checkIsMutable()
         tmp = self
         tmp.array = kotlin_Array_kotlin_Any__(js('[]'))
@@ -8370,16 +8370,16 @@ class ArrayList:
         tmp0_this._set_modCount_((tmp1 + 1) | 0)
         Unit_getInstance()
     
-    def indexOf(self, element):
+    def indexOf_2bq_k_(self, element):
         return indexOf(element)
     
-    def lastIndexOf(self, element):
+    def lastIndexOf_2bq_k_(self, element):
         return lastIndexOf(element)
     
     def toString(self):
         return arrayToString(self.array)
     
-    def toArray(self, array):
+    def toArray_gjotr5_k_(self, array):
         if len(array) < self._get_size_():
             tmp = self.toArray()
             return (kotlin_Array_T_(tmp)) if (isArray(tmp)) else (THROW_CCE())
@@ -8395,42 +8395,42 @@ class ArrayList:
         
         return array
     
-    def toArray(self):
+    def toArray_0_k_(self):
         return kotlin_Array_kotlin_Any__(INVOKE(call(slice(js('[]'))), self.array))
     
     def toArray(self):
         return self.toArray()
     
-    def checkIsMutable(self):
+    def checkIsMutable_sv8swh_k_(self):
         if self.isReadOnly:
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
         
     
-    def _set_modCount_(self, _set___):
+    def _set_modCount__majfzk_k_(self, _set___):
         pass
     
-    def _get_modCount_(self):
+    def _get_modCount__0_k_(self):
         pass
     
-    def removeAll(self, elements):
+    def removeAll_dxd4eo_k_(self, elements):
         pass
     
-    def retainAll(self, elements):
+    def retainAll_dxd4eo_k_(self, elements):
         pass
     
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         pass
     
-    def listIterator(self):
+    def listIterator_0_k_(self):
         pass
     
-    def listIterator(self, index):
+    def listIterator_ha5a7z_k_(self, index):
         pass
     
-    def subList(self, fromIndex, toIndex):
+    def subList_27zxwg_k_(self, fromIndex, toIndex):
         pass
     
     def equals(self, other):
@@ -8442,10 +8442,10 @@ class ArrayList:
     def toJSON(self):
         pass
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         pass
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         pass
     
 
@@ -8483,17 +8483,17 @@ class BaseOutput:
     def __init__(self):
         pass
     
-    def println(self):
+    def println_sv8swh_k_(self):
         self.print('\n')
     
-    def println(self, message):
+    def println_qi8yb4_k_(self, message):
         self.print(message)
         self.println()
     
-    def print(self, message):
+    def print_qi8yb4_k_(self, message):
         pass
     
-    def flush(self):
+    def flush_sv8swh_k_(self):
         pass
     
     def equals(self, other):
@@ -8506,25 +8506,25 @@ class BaseOutput:
         pass
     
 
-class NodeJsOutput:
+class NodeJsOutput_0:
     def __init__(self, outputStream):
         super()
         self.outputStream = outputStream
     
-    def _get_outputStream_(self):
+    def _get_outputStream__0_k_(self):
         return self.outputStream
     
-    def print(self, message):
+    def print_qi8yb4_k_(self, message):
         messageString = kotlin_String(INVOKE(js('String'), message))
         visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     
-    def println(self):
+    def println_sv8swh_k_(self):
         pass
     
-    def println(self, message):
+    def println_qi8yb4_k_(self, message):
         pass
     
-    def flush(self):
+    def flush_sv8swh_k_(self):
         pass
     
     def equals(self, other):
@@ -8537,11 +8537,11 @@ class NodeJsOutput:
         pass
     
 
-class BufferedOutputToConsoleLog:
+class BufferedOutputToConsoleLog_0:
     def __init__(self):
         super()
     
-    def print(self, message):
+    def print_qi8yb4_k_(self, message):
         s = kotlin_String(INVOKE(js('String'), message))
         tmp0_nativeLastIndexOf_0 = s
         i = kotlin_Int(INVOKE(lastIndexOf(tmp0_nativeLastIndexOf_0), '\n', 0))
@@ -8558,20 +8558,20 @@ class BufferedOutputToConsoleLog:
         tmp1_this = self
         tmp1_this._set_buffer_(tmp1_this._get_buffer_() + s)
     
-    def flush(self):
+    def flush_sv8swh_k_(self):
         _get_console_().log(self._get_buffer_())
         self._set_buffer_('')
     
-    def _set_buffer_(self, _set___):
+    def _set_buffer__a4enbm_k_(self, _set___):
         pass
     
-    def _get_buffer_(self):
+    def _get_buffer__0_k_(self):
         pass
     
-    def println(self):
+    def println_sv8swh_k_(self):
         pass
     
-    def println(self, message):
+    def println_qi8yb4_k_(self, message):
         pass
     
     def equals(self, other):
@@ -8584,34 +8584,34 @@ class BufferedOutputToConsoleLog:
         pass
     
 
-def String(value):
+def String_0(value):
     init_properties_console_kt()
     return kotlin_String(INVOKE(js('String'), value))
 
-class BufferedOutput:
+class BufferedOutput_0:
     def __init__(self):
         super()
         self.buffer = ''
     
-    def _set_buffer_(self, _set___):
+    def _set_buffer__a4enbm_k_(self, _set___):
         self.buffer = _set___
     
-    def _get_buffer_(self):
+    def _get_buffer__0_k_(self):
         return self.buffer
     
-    def print(self, message):
+    def print_qi8yb4_k_(self, message):
         tmp0_this = self
         tmp = tmp0_this
         tmp = tmp0_this.buffer
         tmp.buffer = tmp + kotlin_String(INVOKE(js('String'), message))
     
-    def flush(self):
+    def flush_sv8swh_k_(self):
         self.buffer = ''
     
-    def println(self):
+    def println_sv8swh_k_(self):
         pass
     
-    def println(self, message):
+    def println_qi8yb4_k_(self, message):
         pass
     
     def equals(self, other):
@@ -8639,17 +8639,17 @@ def _get_EmptyContinuation_():
     return EmptyContinuation
 
 EmptyContinuation = None
-class _no_name_provided__1:
+class _no_name_provided__1_0:
     def __init__(self, _tmp0_Continuation_0):
         self._tmp0_Continuation_0 = _tmp0_Continuation_0
     
-    def _get_context__2(self):
+    def _get_context__2_0_k_(self):
         return self._tmp0_Continuation_0
     
-    def _get_context_(self):
+    def _get_context__0_k_(self):
         return self._get_context__2()
     
-    def resumeWith_3(self, result):
+    def resumeWith_3_jccoe6_k_(self, result):
         throwOnFailure()
         tmp = _Result___get_value__impl_(result)
         if (True) if (tmp == None) else (isObject(tmp)):
@@ -8659,7 +8659,7 @@ class _no_name_provided__1:
         
         return Unit_getInstance()
     
-    def resumeWith(self, result):
+    def resumeWith_bnunh2_k_(self, result):
         return self.resumeWith_3(result)
     
     def equals_4(self, other):
@@ -8688,7 +8688,7 @@ def asDynamic():
 def unsafeCast():
     return T(self)
 
-def unsafeCast():
+def unsafeCast_0():
     return T(self)
 
 class Serializable:
@@ -8708,7 +8708,7 @@ class Serializable:
 def pow(n):
     return visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(self, kotlin_Double(n))
 
-def isNaN():
+def isNaN_0():
     return not (self == self)
 
 def _get_INV_2_26_():
@@ -8736,7 +8736,7 @@ def _get_js_():
     return ((kotlin_reflect_js_internal_KClassImpl_T_(self)) if (jsInstanceOf(self, jsClass())) else (THROW_CCE()))._get_jClass_()
 
 class KCallable:
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
     def equals(self, other):
@@ -8753,13 +8753,13 @@ class KCallable:
     
 
 class KClass:
-    def _get_simpleName_(self):
+    def _get_simpleName__0_k_(self):
         pass
     
-    def _get_qualifiedName_(self):
+    def _get_qualifiedName__0_k_(self):
         pass
     
-    def isInstance(self, value):
+    def isInstance_wi7j7l_k_(self, value):
         pass
     
     def equals(self, other):
@@ -8779,10 +8779,10 @@ class KClassImpl:
     def __init__(self, jClass):
         self.jClass = jClass
     
-    def _get_jClass_(self):
+    def _get_jClass__0_k_(self):
         return self.jClass
     
-    def _get_qualifiedName_(self):
+    def _get_qualifiedName__0_k_(self):
         raise NotImplementedError_init__Create_(None, 1, None)
     
     def equals(self, other):
@@ -8801,10 +8801,10 @@ class KClassImpl:
     def toString(self):
         return str('class ') + str(self._get_simpleName_())
     
-    def _get_simpleName_(self):
+    def _get_simpleName__0_k_(self):
         pass
     
-    def isInstance(self, value):
+    def isInstance_wi7j7l_k_(self, value):
         pass
     
 
@@ -8826,16 +8826,16 @@ class PrimitiveKClassImpl:
         
         return (self.givenSimpleName == kotlin_reflect_js_internal_PrimitiveKClassImpl___(other).givenSimpleName) if (self.equals(other)) else (False)
     
-    def _get_simpleName_(self):
+    def _get_simpleName__0_k_(self):
         return self.givenSimpleName
     
-    def isInstance(self, value):
+    def isInstance_wi7j7l_k_(self, value):
         return self.isInstanceFunction.invoke(value)
     
-    def _get_jClass_(self):
+    def _get_jClass__0_k_(self):
         pass
     
-    def _get_qualifiedName_(self):
+    def _get_qualifiedName__0_k_(self):
         pass
     
     def hashCode(self):
@@ -8851,13 +8851,13 @@ class NothingKClassImpl:
         super(kotlin_js_JsClass_kotlin_Nothing_(js('Object')))
         self.simpleName = 'Nothing'
     
-    def _get_simpleName_(self):
+    def _get_simpleName__0_k_(self):
         return self.simpleName
     
-    def isInstance(self, value):
+    def isInstance_wi7j7l_k_(self, value):
         return False
     
-    def _get_jClass_(self):
+    def _get_jClass__0_k_(self):
         raise UnsupportedOperationException_init__Create_('There\'s no native JS class for Nothing type')
     
     def equals(self, other):
@@ -8866,7 +8866,7 @@ class NothingKClassImpl:
     def hashCode(self):
         return 0
     
-    def _get_qualifiedName_(self):
+    def _get_qualifiedName__0_k_(self):
         pass
     
     def toString(self):
@@ -8885,13 +8885,13 @@ class ErrorKClass:
     def __init__(self):
         pass
     
-    def _get_simpleName_(self):
+    def _get_simpleName__0_k_(self):
         raise IllegalStateException_init__Create_('Unknown simpleName for ErrorKClass')
     
-    def _get_qualifiedName_(self):
+    def _get_qualifiedName__0_k_(self):
         raise IllegalStateException_init__Create_('Unknown qualifiedName for ErrorKClass')
     
-    def isInstance(self, value):
+    def isInstance_wi7j7l_k_(self, value):
         raise IllegalStateException_init__Create_('Can\'s check isInstance on ErrorKClass')
     
     def equals(self, other):
@@ -8912,16 +8912,16 @@ class SimpleKClassImpl:
         tmp0_unsafeCast_0 = (None) if (tmp0_safe_receiver == None) else (simpleName(tmp0_safe_receiver))
         tmp.simpleName = kotlin_Any_(tmp0_unsafeCast_0)
     
-    def _get_simpleName_(self):
+    def _get_simpleName__0_k_(self):
         return self.simpleName
     
-    def isInstance(self, value):
+    def isInstance_wi7j7l_k_(self, value):
         return jsIsType(value, self._get_jClass_())
     
-    def _get_jClass_(self):
+    def _get_jClass__0_k_(self):
         pass
     
-    def _get_qualifiedName_(self):
+    def _get_qualifiedName__0_k_(self):
         pass
     
     def equals(self, other):
@@ -8935,7 +8935,7 @@ class SimpleKClassImpl:
     
 
 class KFunction:
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
     def equals(self, other):
@@ -8952,7 +8952,7 @@ class KFunction:
     
 
 class KProperty:
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
     def equals(self, other):
@@ -8969,10 +8969,10 @@ class KProperty:
     
 
 class KProperty0:
-    def get(self):
+    def get_0_k_(self):
         pass
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
     def equals(self, other):
@@ -8984,7 +8984,7 @@ class KProperty0:
     def toString(self):
         pass
     
-    def invoke(self):
+    def invoke_0_k_(self):
         pass
     
     def __init__(self):
@@ -8992,10 +8992,10 @@ class KProperty0:
     
 
 class KProperty1:
-    def get(self, receiver):
+    def get_2c5_k_(self, receiver):
         pass
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
     def equals(self, other):
@@ -9007,7 +9007,7 @@ class KProperty1:
     def toString(self):
         pass
     
-    def invoke(self, p1):
+    def invoke_2c5_k_(self, p1):
         pass
     
     def __init__(self):
@@ -9015,10 +9015,10 @@ class KProperty1:
     
 
 class KProperty2:
-    def get(self, receiver1, receiver2):
+    def get_1q4i3_k_(self, receiver1, receiver2):
         pass
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
     def equals(self, other):
@@ -9030,7 +9030,7 @@ class KProperty2:
     def toString(self):
         pass
     
-    def invoke(self, p1, p2):
+    def invoke_1q4i3_k_(self, p1, p2):
         pass
     
     def __init__(self):
@@ -9038,13 +9038,13 @@ class KProperty2:
     
 
 class KMutableProperty0:
-    def set(self, value):
+    def set_prcxve_k_(self, value):
         pass
     
-    def get(self):
+    def get_0_k_(self):
         pass
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
     def equals(self, other):
@@ -9056,7 +9056,7 @@ class KMutableProperty0:
     def toString(self):
         pass
     
-    def invoke(self):
+    def invoke_0_k_(self):
         pass
     
     def __init__(self):
@@ -9064,7 +9064,7 @@ class KMutableProperty0:
     
 
 class KMutableProperty:
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
     def equals(self, other):
@@ -9081,13 +9081,13 @@ class KMutableProperty:
     
 
 class KMutableProperty1:
-    def set(self, receiver, value):
+    def set_5l00ez_k_(self, receiver, value):
         pass
     
-    def get(self, receiver):
+    def get_2c5_k_(self, receiver):
         pass
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
     def equals(self, other):
@@ -9099,7 +9099,7 @@ class KMutableProperty1:
     def toString(self):
         pass
     
-    def invoke(self, p1):
+    def invoke_2c5_k_(self, p1):
         pass
     
     def __init__(self):
@@ -9107,13 +9107,13 @@ class KMutableProperty1:
     
 
 class KMutableProperty2:
-    def set(self, receiver1, receiver2, value):
+    def set_kx3mz5_k_(self, receiver1, receiver2, value):
         pass
     
-    def get(self, receiver1, receiver2):
+    def get_1q4i3_k_(self, receiver1, receiver2):
         pass
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         pass
     
     def equals(self, other):
@@ -9125,7 +9125,7 @@ class KMutableProperty2:
     def toString(self):
         pass
     
-    def invoke(self, p1, p2):
+    def invoke_1q4i3_k_(self, p1, p2):
         pass
     
     def __init__(self):
@@ -9133,13 +9133,13 @@ class KMutableProperty2:
     
 
 class KType:
-    def _get_classifier_(self):
+    def _get_classifier__0_k_(self):
         pass
     
-    def _get_arguments_(self):
+    def _get_arguments__0_k_(self):
         pass
     
-    def _get_isMarkedNullable_(self):
+    def _get_isMarkedNullable__0_k_(self):
         pass
     
     def equals(self, other):
@@ -9155,27 +9155,27 @@ class KType:
         pass
     
 
-def createKType(classifier, arguments, isMarkedNullable):
+def createKType_0(classifier, arguments, isMarkedNullable):
     return KTypeImpl(classifier, asList(), isMarkedNullable)
 
-def createDynamicKType():
+def createDynamicKType_0():
     return DynamicKType_getInstance()
 
-def createKTypeParameter(name, upperBounds, variance):
+def createKTypeParameter_0(name, upperBounds, variance):
     tmp0_subject = variance
     kVariance = (KVariance_IN_getInstance()) if (tmp0_subject == 'in') else ((KVariance_OUT_getInstance()) if (tmp0_subject == 'out') else (KVariance_INVARIANT_getInstance()))
     return KTypeParameterImpl(name, asList(), kVariance, False)
 
-def getStarKTypeProjection():
+def getStarKTypeProjection_0():
     return Companion_getInstance()._get_STAR_()
 
-def createCovariantKTypeProjection(type):
+def createCovariantKTypeProjection_0(type):
     return Companion_getInstance().covariant(type)
 
-def createInvariantKTypeProjection(type):
+def createInvariantKTypeProjection_0(type):
     return Companion_getInstance().invariant(type)
 
-def createContravariantKTypeProjection(type):
+def createContravariantKTypeProjection_0(type):
     return Companion_getInstance().contravariant(type)
 
 def asString(_this):
@@ -9184,14 +9184,14 @@ def asString(_this):
     
     return prefixString() + toString()
 
-class _no_name_provided_:
+class _no_name_provided__8:
     def __init__(self, this_0):
         self.this_0 = this_0
     
-    def invoke(self, it):
+    def invoke_xpnw45_k_(self, it):
         return asString(self.this_0)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_reflect_KTypeProjection(p1)) if (jsInstanceOf(p1, jsClass())) else (THROW_CCE()))
     
 
@@ -9201,13 +9201,13 @@ class KTypeImpl:
         self.arguments = arguments
         self.isMarkedNullable = isMarkedNullable
     
-    def _get_classifier_(self):
+    def _get_classifier__0_k_(self):
         return self.classifier
     
-    def _get_arguments_(self):
+    def _get_arguments__0_k_(self):
         return self.arguments
     
-    def _get_isMarkedNullable_(self):
+    def _get_isMarkedNullable__0_k_(self):
         return self.isMarkedNullable
     
     def equals(self, other):
@@ -9265,13 +9265,13 @@ class DynamicKType:
         self.arguments = emptyList()
         self.isMarkedNullable = False
     
-    def _get_classifier_(self):
+    def _get_classifier__0_k_(self):
         return self.classifier
     
-    def _get_arguments_(self):
+    def _get_arguments__0_k_(self):
         return self.arguments
     
-    def _get_isMarkedNullable_(self):
+    def _get_isMarkedNullable__0_k_(self):
         return self.isMarkedNullable
     
     def toString(self):
@@ -9292,7 +9292,7 @@ def DynamicKType_getInstance():
     
     return DynamicKType_instance
 
-def _no_name_provided__factory(this_0):
+def _no_name_provided__factory_7(this_0):
     i = _no_name_provided_(this_0)
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
@@ -9303,37 +9303,37 @@ class KTypeParameterImpl:
         self.variance = variance
         self.isReified = isReified
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         return self.name
     
-    def _get_upperBounds_(self):
+    def _get_upperBounds__0_k_(self):
         return self.upperBounds
     
-    def _get_variance_(self):
+    def _get_variance__0_k_(self):
         return self.variance
     
-    def _get_isReified_(self):
+    def _get_isReified__0_k_(self):
         return self.isReified
     
     def toString(self):
         return self.name
     
-    def component1(self):
+    def component1_0_k_(self):
         return self.name
     
-    def component2(self):
+    def component2_0_k_(self):
         return self.upperBounds
     
-    def component3(self):
+    def component3_0_k_(self):
         return self.variance
     
-    def component4(self):
+    def component4_0_k_(self):
         return self.isReified
     
-    def copy(self, name, upperBounds, variance, isReified):
+    def copy_367z8c_k_(self, name, upperBounds, variance, isReified):
         return KTypeParameterImpl(name, upperBounds, variance, isReified)
     
-    def copy_default(self, name, upperBounds, variance, isReified, _mask0, _handler):
+    def copy_default_dg98nz_k_(self, name, upperBounds, variance, isReified, _mask0, _handler):
         if not (_mask0 & 1 == 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
         
@@ -9383,220 +9383,220 @@ def _get_functionClasses_():
     return functionClasses
 
 functionClasses = None
-class _no_name_provided_:
+class _no_name_provided__9:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return isObject(it)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__10:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return isNumber(it)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__11:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return (jsTypeOf(it) == 'boolean') if (not (it == None)) else (False)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__12:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return (jsTypeOf(it) == 'number') if (not (it == None)) else (False)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__13:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return (jsTypeOf(it) == 'number') if (not (it == None)) else (False)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__14:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return (jsTypeOf(it) == 'number') if (not (it == None)) else (False)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__15:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return (jsTypeOf(it) == 'number') if (not (it == None)) else (False)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__16:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return (jsTypeOf(it) == 'number') if (not (it == None)) else (False)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__17:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return (isArray(it)) if (not (it == None)) else (False)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__18:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return (jsTypeOf(it) == 'string') if (not (it == None)) else (False)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__19:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return jsInstanceOf(it, jsClass())
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__20:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return (isBooleanArray(it)) if (not (it == None)) else (False)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__21:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return (isCharArray(it)) if (not (it == None)) else (False)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__22:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return (isByteArray(it)) if (not (it == None)) else (False)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__23:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return (isShortArray(it)) if (not (it == None)) else (False)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__24:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return (isIntArray(it)) if (not (it == None)) else (False)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__25:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return (isLongArray(it)) if (not (it == None)) else (False)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__26:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return (isFloatArray(it)) if (not (it == None)) else (False)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__27:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return (isDoubleArray(it)) if (not (it == None)) else (False)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class _no_name_provided_:
+class _no_name_provided__28:
     def __init__(self, _arity):
         self._arity = _arity
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         if jsTypeOf(it) is 'function':
             tmp = EQEQEQ(length(it), self._arity)
         else:
@@ -9604,11 +9604,11 @@ class _no_name_provided_:
         
         return tmp
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-class PrimitiveClasses:
+class PrimitiveClasses_0:
     def __init__(self):
         PrimitiveClasses_instance = self
         tmp = self
@@ -9670,64 +9670,64 @@ class PrimitiveClasses:
         tmp0_unsafeCast_0 = js('Float64Array')
         tmp.doubleArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'DoubleArray', _no_name_provided__factory())
     
-    def _get_anyClass_(self):
+    def _get_anyClass__0_k_(self):
         return self.anyClass
     
-    def _get_numberClass_(self):
+    def _get_numberClass__0_k_(self):
         return self.numberClass
     
-    def _get_nothingClass_(self):
+    def _get_nothingClass__0_k_(self):
         return self.nothingClass
     
-    def _get_booleanClass_(self):
+    def _get_booleanClass__0_k_(self):
         return self.booleanClass
     
-    def _get_byteClass_(self):
+    def _get_byteClass__0_k_(self):
         return self.byteClass
     
-    def _get_shortClass_(self):
+    def _get_shortClass__0_k_(self):
         return self.shortClass
     
-    def _get_intClass_(self):
+    def _get_intClass__0_k_(self):
         return self.intClass
     
-    def _get_floatClass_(self):
+    def _get_floatClass__0_k_(self):
         return self.floatClass
     
-    def _get_doubleClass_(self):
+    def _get_doubleClass__0_k_(self):
         return self.doubleClass
     
-    def _get_arrayClass_(self):
+    def _get_arrayClass__0_k_(self):
         return self.arrayClass
     
-    def _get_stringClass_(self):
+    def _get_stringClass__0_k_(self):
         return self.stringClass
     
-    def _get_throwableClass_(self):
+    def _get_throwableClass__0_k_(self):
         return self.throwableClass
     
-    def _get_booleanArrayClass_(self):
+    def _get_booleanArrayClass__0_k_(self):
         return self.booleanArrayClass
     
-    def _get_charArrayClass_(self):
+    def _get_charArrayClass__0_k_(self):
         return self.charArrayClass
     
-    def _get_byteArrayClass_(self):
+    def _get_byteArrayClass__0_k_(self):
         return self.byteArrayClass
     
-    def _get_shortArrayClass_(self):
+    def _get_shortArrayClass__0_k_(self):
         return self.shortArrayClass
     
-    def _get_intArrayClass_(self):
+    def _get_intArrayClass__0_k_(self):
         return self.intArrayClass
     
-    def _get_longArrayClass_(self):
+    def _get_longArrayClass__0_k_(self):
         return self.longArrayClass
     
-    def _get_floatArrayClass_(self):
+    def _get_floatArrayClass__0_k_(self):
         return self.floatArrayClass
     
-    def _get_doubleArrayClass_(self):
+    def _get_doubleArrayClass__0_k_(self):
         return self.doubleArrayClass
     
     def functionClass(self, arity):
@@ -9762,83 +9762,83 @@ def PrimitiveClasses_getInstance():
     
     return PrimitiveClasses_instance
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_8():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_9():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_10():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_11():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_12():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_13():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_14():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_15():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_16():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_17():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_18():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_19():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_20():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_21():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_22():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_23():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_24():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_25():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_26():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def _no_name_provided__factory(_arity):
+def _no_name_provided__factory_27(_arity):
     i = _no_name_provided_(_arity)
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
@@ -9851,7 +9851,7 @@ def init_properties_primitives_kt():
         functionClasses = fillArrayVal(Array(0), None)
     
 
-def getKClass(jClass):
+def getKClass_0(jClass):
     if kotlin_Boolean(INVOKE(isArray(js('Array')), jClass)):
         tmp = getKClassM(kotlin_Any_(jClass))
     else:
@@ -9859,7 +9859,7 @@ def getKClass(jClass):
     
     return tmp
 
-def getKClassM(jClasses):
+def getKClassM_0(jClasses):
     tmp0_subject = len(jClasses)
     if tmp0_subject == 1:
         tmp = getKClass1(jClasses[0])
@@ -9872,7 +9872,7 @@ def getKClassM(jClasses):
     
     return tmp
 
-def getKClass1(jClass):
+def getKClass1_0(jClass):
     if jClass is js('String'):
         tmp0_unsafeCast_0 = PrimitiveClasses_getInstance().stringClass
         return kotlin_Any_(tmp0_unsafeCast_0)
@@ -9892,7 +9892,7 @@ def getKClass1(jClass):
     
     return tmp
 
-def getKClassFromExpression(e):
+def getKClassFromExpression_0(e):
     tmp0_subject = jsTypeOf(e)
     if tmp0_subject == 'string':
         tmp = PrimitiveClasses_getInstance().stringClass
@@ -9948,13 +9948,13 @@ def getKClassFromExpression(e):
     return kotlin_Any_(tmp1_unsafeCast_0)
 
 class Appendable:
-    def append(self, value):
+    def append_wi8o78_k_(self, value):
         pass
     
-    def append(self, value):
+    def append_v1o70a_k_(self, value):
         pass
     
-    def append(self, value, startIndex, endIndex):
+    def append_n5ylwa_k_(self, value, startIndex, endIndex):
         pass
     
     def equals(self, other):
@@ -9977,18 +9977,18 @@ def StringBuilder_init__Init_(capacity, _this):
 def StringBuilder_init__Create_(capacity):
     return StringBuilder_init__Init_(capacity, Object_create())
 
-def StringBuilder_init__Init_(content, _this):
+def StringBuilder_init__Init__0(content, _this):
     super(toString(content))
     return _this
 
-def StringBuilder_init__Create_(content):
+def StringBuilder_init__Create__0(content):
     return StringBuilder_init__Init_(content, Object_create())
 
-def StringBuilder_init__Init_(_this):
+def StringBuilder_init__Init__1(_this):
     super('')
     return _this
 
-def StringBuilder_init__Create_():
+def StringBuilder_init__Create__1():
     return StringBuilder_init__Init_(Object_create())
 
 def _set_string_(_this, _set___):
@@ -10009,11 +10009,11 @@ class StringBuilder:
     def __init__(self, content):
         self.string = (content) if (not (content is _get_undefined_())) else ('')
     
-    def _get_length_(self):
+    def _get_length__0_k_(self):
         tmp0_asDynamic_0 = self.string
         return kotlin_Int(length(tmp0_asDynamic_0))
     
-    def get(self, index):
+    def get_ha5a7z_k_(self, index):
         tmp0_getOrElse_0 = self.string
         if (index <= _get_lastIndex_()) if (index >= 0) else (False):
             tmp = charSequenceGet(tmp0_getOrElse_0, index)
@@ -10022,25 +10022,25 @@ class StringBuilder:
         
         return tmp
     
-    def subSequence(self, startIndex, endIndex):
+    def subSequence_27zxwg_k_(self, startIndex, endIndex):
         tmp0_substring_0 = self.string
         return kotlin_String(INVOKE(substring(tmp0_substring_0), startIndex, endIndex))
     
-    def append(self, value):
+    def append_wi8o78_k_(self, value):
         tmp0_this = self
         tmp0_this.string = tmp0_this.string + value
         return self
     
-    def append(self, value):
+    def append_v1o70a_k_(self, value):
         tmp0_this = self
         tmp0_this.string = tmp0_this.string + toString()
         return self
     
-    def append(self, value, startIndex, endIndex):
+    def append_n5ylwa_k_(self, value, startIndex, endIndex):
         tmp0_elvis_lhs = value
         return self.appendRange(('null') if (tmp0_elvis_lhs == None) else (tmp0_elvis_lhs), startIndex, endIndex)
     
-    def reverse(self):
+    def reverse_0_k_(self):
         reversed = ''
         index = (len(self.string) - 1) | 0
         while index >= 0:
@@ -10065,25 +10065,25 @@ class StringBuilder:
         self.string = reversed
         return self
     
-    def append(self, value):
+    def append_wi7j7l_k_(self, value):
         tmp0_this = self
         tmp0_this.string = tmp0_this.string + toString()
         return self
     
-    def append(self, value):
+    def append_vcj5fe_k_(self, value):
         tmp0_this = self
         tmp0_this.string = tmp0_this.string + value
         return self
     
-    def append(self, value):
+    def append_84823_k_(self, value):
         tmp0_this = self
         tmp0_this.string = tmp0_this.string + concatToString()
         return self
     
-    def append(self, value):
+    def append_6wfw3l_k_(self, value):
         return self.append(value)
     
-    def append(self, value):
+    def append_uch40_k_(self, value):
         tmp0_this = self
         tmp = tmp0_this
         tmp = tmp0_this.string
@@ -10091,25 +10091,25 @@ class StringBuilder:
         tmp.string = tmp + (('null') if (tmp1_elvis_lhs == None) else (tmp1_elvis_lhs))
         return self
     
-    def capacity(self):
+    def capacity_0_k_(self):
         return self._get_length_()
     
-    def ensureCapacity(self, minimumCapacity):
+    def ensureCapacity_majfzk_k_(self, minimumCapacity):
         pass
     
-    def indexOf(self, string):
+    def indexOf_6wfw3l_k_(self, string):
         tmp0_asDynamic_0 = self.string
         return kotlin_Int(INVOKE(indexOf(tmp0_asDynamic_0), string))
     
-    def indexOf(self, string, startIndex):
+    def indexOf_8i7b4u_k_(self, string, startIndex):
         tmp0_asDynamic_0 = self.string
         return kotlin_Int(INVOKE(indexOf(tmp0_asDynamic_0), string, startIndex))
     
-    def lastIndexOf(self, string):
+    def lastIndexOf_6wfw3l_k_(self, string):
         tmp0_asDynamic_0 = self.string
         return kotlin_Int(INVOKE(lastIndexOf(tmp0_asDynamic_0), string))
     
-    def lastIndexOf(self, string, startIndex):
+    def lastIndexOf_8i7b4u_k_(self, string, startIndex):
         if charSequenceLength(string) == 0:
             tmp = startIndex < 0
         elif True:
@@ -10121,7 +10121,7 @@ class StringBuilder:
         tmp0_asDynamic_0 = self.string
         return kotlin_Int(INVOKE(lastIndexOf(tmp0_asDynamic_0), string, startIndex))
     
-    def insert(self, index, value):
+    def insert_sv7uuf_k_(self, index, value):
         Companion_getInstance().checkPositionIndex(index, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
@@ -10130,7 +10130,7 @@ class StringBuilder:
         tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), index))
         return self
     
-    def insert(self, index, value):
+    def insert_259trv_k_(self, index, value):
         Companion_getInstance().checkPositionIndex(index, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
@@ -10139,7 +10139,7 @@ class StringBuilder:
         tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), index))
         return self
     
-    def insert(self, index, value):
+    def insert_n2q82c_k_(self, index, value):
         Companion_getInstance().checkPositionIndex(index, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
@@ -10148,7 +10148,7 @@ class StringBuilder:
         tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), index))
         return self
     
-    def insert(self, index, value):
+    def insert_59w5qx_k_(self, index, value):
         Companion_getInstance().checkPositionIndex(index, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
@@ -10157,7 +10157,7 @@ class StringBuilder:
         tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), index))
         return self
     
-    def insert(self, index, value):
+    def insert_25ayri_k_(self, index, value):
         Companion_getInstance().checkPositionIndex(index, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
@@ -10166,10 +10166,10 @@ class StringBuilder:
         tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), index))
         return self
     
-    def insert(self, index, value):
+    def insert_4wk0sg_k_(self, index, value):
         return self.insert(index, value)
     
-    def insert(self, index, value):
+    def insert_9z0klb_k_(self, index, value):
         Companion_getInstance().checkPositionIndex(index, self._get_length_())
         tmp0_elvis_lhs = value
         toInsert = ('null') if (tmp0_elvis_lhs == None) else (tmp0_elvis_lhs)
@@ -10180,7 +10180,7 @@ class StringBuilder:
         tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), index))
         return self
     
-    def setLength(self, newLength):
+    def setLength_majfzk_k_(self, newLength):
         if newLength < 0:
             raise IllegalArgumentException_init__Create_((str('Negative new length: ') + str(newLength)) + str('.'))
         
@@ -10203,27 +10203,27 @@ class StringBuilder:
             
         
     
-    def substring(self, startIndex):
+    def substring_ha5a7z_k_(self, startIndex):
         Companion_getInstance().checkPositionIndex(startIndex, self._get_length_())
         tmp0_substring_0 = self.string
         return kotlin_String(INVOKE(substring(tmp0_substring_0), startIndex))
     
-    def substring(self, startIndex, endIndex):
+    def substring_27zxwg_k_(self, startIndex, endIndex):
         Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, self._get_length_())
         tmp0_substring_0 = self.string
         return kotlin_String(INVOKE(substring(tmp0_substring_0), startIndex, endIndex))
     
-    def trimToSize(self):
+    def trimToSize_sv8swh_k_(self):
         pass
     
     def toString(self):
         return self.string
     
-    def clear(self):
+    def clear_0_k_(self):
         self.string = ''
         return self
     
-    def set(self, index, value):
+    def set_vljvec_k_(self, index, value):
         Companion_getInstance().checkElementIndex(index, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
@@ -10232,7 +10232,7 @@ class StringBuilder:
         tmp2_substring_0 = (index + 1) | 0
         tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), tmp2_substring_0))
     
-    def setRange(self, startIndex, endIndex, value):
+    def setRange_sfallt_k_(self, startIndex, endIndex, value):
         checkReplaceRange(self, startIndex, endIndex, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
@@ -10241,7 +10241,7 @@ class StringBuilder:
         tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), endIndex))
         return self
     
-    def deleteAt(self, index):
+    def deleteAt_ha5a7z_k_(self, index):
         Companion_getInstance().checkElementIndex(index, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
@@ -10251,7 +10251,7 @@ class StringBuilder:
         tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), tmp2_substring_0))
         return self
     
-    def deleteRange(self, startIndex, endIndex):
+    def deleteRange_27zxwg_k_(self, startIndex, endIndex):
         checkReplaceRange(self, startIndex, endIndex, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
@@ -10260,7 +10260,7 @@ class StringBuilder:
         tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), endIndex))
         return self
     
-    def toCharArray(self, destination, destinationOffset, startIndex, endIndex):
+    def toCharArray_tnuj0b_k_(self, destination, destinationOffset, startIndex, endIndex):
         Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, self._get_length_())
         Companion_getInstance().checkBoundsIndexes(destinationOffset, (((destinationOffset + endIndex) | 0) - startIndex) | 0, len(destination))
         dstIndex = destinationOffset
@@ -10278,7 +10278,7 @@ class StringBuilder:
             
         
     
-    def toCharArray_default(self, destination, destinationOffset, startIndex, endIndex, _mask0, _handler):
+    def toCharArray_default_pd3mhx_k_(self, destination, destinationOffset, startIndex, endIndex, _mask0, _handler):
         if not (_mask0 & 2 == 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
         
@@ -10290,12 +10290,12 @@ class StringBuilder:
         
         return self.toCharArray(destination, destinationOffset, startIndex, endIndex)
     
-    def appendRange(self, value, startIndex, endIndex):
+    def appendRange_4l12y3_k_(self, value, startIndex, endIndex):
         tmp0_this = self
         tmp0_this.string = tmp0_this.string + concatToString(startIndex, endIndex)
         return self
     
-    def appendRange(self, value, startIndex, endIndex):
+    def appendRange_icedxh_k_(self, value, startIndex, endIndex):
         stringCsq = toString(value)
         Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, len(stringCsq))
         tmp0_this = self
@@ -10304,7 +10304,7 @@ class StringBuilder:
         tmp.string = tmp + kotlin_String(INVOKE(substring(stringCsq), startIndex, endIndex))
         return self
     
-    def insertRange(self, index, value, startIndex, endIndex):
+    def insertRange_nw7vlg_k_(self, index, value, startIndex, endIndex):
         Companion_getInstance().checkPositionIndex(index, self._get_length_())
         tmp = self
         tmp0_substring_0 = self.string
@@ -10313,7 +10313,7 @@ class StringBuilder:
         tmp.string = tmp + kotlin_String(INVOKE(substring(tmp1_substring_0), index))
         return self
     
-    def insertRange(self, index, value, startIndex, endIndex):
+    def insertRange_nws7cq_k_(self, index, value, startIndex, endIndex):
         Companion_getInstance().checkPositionIndex(index, self._get_length_())
         stringCsq = toString(value)
         Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, len(stringCsq))
@@ -10373,7 +10373,7 @@ def substring(startIndex, endIndex):
     init_properties_string_kt()
     return kotlin_String(INVOKE(substring(self), startIndex, endIndex))
 
-def substring(startIndex):
+def substring_0(startIndex):
     init_properties_string_kt()
     return kotlin_String(INVOKE(substring(self), startIndex))
 
@@ -10446,7 +10446,7 @@ def concatToString():
     
     return result
 
-def concatToString(startIndex, endIndex):
+def concatToString_0(startIndex, endIndex):
     init_properties_string_kt()
     Companion_getInstance().checkBoundsIndexes(startIndex, endIndex, len(self))
     result = ''
@@ -10476,7 +10476,7 @@ class sam_kotlin_Comparator_0:
     def __init__(self, function):
         self.function = function
     
-    def compare(self, a, b):
+    def compare_1qgdm_k_(self, a, b):
         return self.function.invoke(a, b)
     
     def compare(self, a, b):
@@ -10492,19 +10492,19 @@ class sam_kotlin_Comparator_0:
         pass
     
 
-class _no_name_provided_:
+class _no_name_provided__29:
     def __init__(self):
         pass
     
-    def invoke(self, a, b):
+    def invoke_jg38oy_k_(self, a, b):
         return compareTo(b, True)
     
-    def invoke(self, p1, p2):
+    def invoke_osx4an_k_(self, p1, p2):
         tmp = (kotlin_String(p1)) if ((jsTypeOf(p1) == 'string') if (not (p1 == None)) else (False)) else (THROW_CCE())
         return self.invoke(tmp, (kotlin_String(p2)) if ((jsTypeOf(p2) == 'string') if (not (p2 == None)) else (False)) else (THROW_CCE()))
     
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_28():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
@@ -10536,7 +10536,7 @@ def init_properties_utf8Encoding_kt():
 def _get_value_(_this):
     return _this.value
 
-class Companion:
+class Companion_18:
     def __init__(self):
         Companion_instance = self
         self.MIN_VALUE = Char(0)
@@ -10550,34 +10550,34 @@ class Companion:
         self.SIZE_BYTES = 2
         self.SIZE_BITS = 16
     
-    def _get_MIN_VALUE_(self):
+    def _get_MIN_VALUE__0_k_(self):
         return self.MIN_VALUE
     
-    def _get_MAX_VALUE_(self):
+    def _get_MAX_VALUE__0_k_(self):
         return self.MAX_VALUE
     
-    def _get_MIN_HIGH_SURROGATE_(self):
+    def _get_MIN_HIGH_SURROGATE__0_k_(self):
         return self.MIN_HIGH_SURROGATE
     
-    def _get_MAX_HIGH_SURROGATE_(self):
+    def _get_MAX_HIGH_SURROGATE__0_k_(self):
         return self.MAX_HIGH_SURROGATE
     
-    def _get_MIN_LOW_SURROGATE_(self):
+    def _get_MIN_LOW_SURROGATE__0_k_(self):
         return self.MIN_LOW_SURROGATE
     
-    def _get_MAX_LOW_SURROGATE_(self):
+    def _get_MAX_LOW_SURROGATE__0_k_(self):
         return self.MAX_LOW_SURROGATE
     
-    def _get_MIN_SURROGATE_(self):
+    def _get_MIN_SURROGATE__0_k_(self):
         return self.MIN_SURROGATE
     
-    def _get_MAX_SURROGATE_(self):
+    def _get_MAX_SURROGATE__0_k_(self):
         return self.MAX_SURROGATE
     
-    def _get_SIZE_BYTES_(self):
+    def _get_SIZE_BYTES__0_k_(self):
         return self.SIZE_BYTES
     
-    def _get_SIZE_BITS_(self):
+    def _get_SIZE_BITS__0_k_(self):
         return self.SIZE_BITS
     
     def equals(self, other):
@@ -10591,62 +10591,62 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_17():
     global Companion_instance
     if Companion_instance == None:
         Companion()
     
     return Companion_instance
 
-class Char:
+class Char_0:
     def __init__(self, code):
         Companion_getInstance()
         tmp = self
         tmp.value = kotlin_Int(_UShort___get_data__impl_(code)) & 65535
     
-    def compareTo(self, other):
+    def compareTo_wi8o78_k_(self, other):
         return (self.value - other.value) | 0
     
-    def compareTo(self, other):
+    def compareTo_2c5_k_(self, other):
         return self.compareTo((kotlin_Char(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
     
-    def plus(self, other):
+    def plus_ha5a7z_k_(self, other):
         return numberToChar((self.value + other) | 0)
     
-    def minus(self, other):
+    def minus_wi8o78_k_(self, other):
         return (self.value - other.value) | 0
     
-    def minus(self, other):
+    def minus_ha5a7z_k_(self, other):
         return numberToChar((self.value - other) | 0)
     
-    def inc(self):
+    def inc_0_k_(self):
         return numberToChar((self.value + 1) | 0)
     
-    def dec(self):
+    def dec_0_k_(self):
         return numberToChar((self.value - 1) | 0)
     
-    def rangeTo(self, other):
+    def rangeTo_wi8o78_k_(self, other):
         return CharRange(self, other)
     
-    def toByte(self):
+    def toByte_0_k_(self):
         return toByte(self.value)
     
-    def toChar(self):
+    def toChar_0_k_(self):
         return self
     
-    def toShort(self):
+    def toShort_0_k_(self):
         return toShort(self.value)
     
-    def toInt(self):
+    def toInt_0_k_(self):
         return self.value
     
-    def toLong(self):
+    def toLong_0_k_(self):
         return toLong(self.value)
     
-    def toFloat(self):
+    def toFloat_0_k_(self):
         return kotlin_Float(self.value)
     
-    def toDouble(self):
+    def toDouble_0_k_(self):
         return kotlin_Double(self.value)
     
     def equals(self, other):
@@ -10667,7 +10667,7 @@ class Char:
     
 
 class Iterable:
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
     def equals(self, other):
@@ -10684,19 +10684,19 @@ class Iterable:
     
 
 class Collection:
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         pass
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         pass
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         pass
     
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         pass
     
     def equals(self, other):
@@ -10713,19 +10713,19 @@ class Collection:
     
 
 class Set:
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         pass
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         pass
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         pass
     
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         pass
     
     def equals(self, other):
@@ -10742,37 +10742,37 @@ class Set:
     
 
 class List:
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         pass
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         pass
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         pass
     
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         pass
     
-    def get(self, index):
+    def get_ha5a7z_k_(self, index):
         pass
     
-    def indexOf(self, element):
+    def indexOf_2bq_k_(self, element):
         pass
     
-    def lastIndexOf(self, element):
+    def lastIndexOf_2bq_k_(self, element):
         pass
     
-    def listIterator(self):
+    def listIterator_0_k_(self):
         pass
     
-    def listIterator(self, index):
+    def listIterator_ha5a7z_k_(self, index):
         pass
     
-    def subList(self, fromIndex, toIndex):
+    def subList_27zxwg_k_(self, fromIndex, toIndex):
         pass
     
     def equals(self, other):
@@ -10789,10 +10789,10 @@ class List:
     
 
 class Entry:
-    def _get_key_(self):
+    def _get_key__0_k_(self):
         pass
     
-    def _get_value_(self):
+    def _get_value__0_k_(self):
         pass
     
     def equals(self, other):
@@ -10808,29 +10808,29 @@ class Entry:
         pass
     
 
-class Map:
-    def _get_size_(self):
+class Map_0:
+    def _get_size__0_k_(self):
         pass
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         pass
     
-    def containsKey(self, key):
+    def containsKey_2bw_k_(self, key):
         pass
     
-    def containsValue(self, value):
+    def containsValue_2c7_k_(self, value):
         pass
     
-    def get(self, key):
+    def get_2bw_k_(self, key):
         pass
     
-    def _get_keys_(self):
+    def _get_keys__0_k_(self):
         pass
     
-    def _get_values_(self):
+    def _get_values__0_k_(self):
         pass
     
-    def _get_entries_(self):
+    def _get_entries__0_k_(self):
         pass
     
     def equals(self, other):
@@ -10847,37 +10847,37 @@ class Map:
     
 
 class MutableCollection:
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
-    def add(self, element):
+    def add_2bq_k_(self, element):
         pass
     
-    def remove(self, element):
+    def remove_2bq_k_(self, element):
         pass
     
-    def addAll(self, elements):
+    def addAll_dxd4eo_k_(self, elements):
         pass
     
-    def removeAll(self, elements):
+    def removeAll_dxd4eo_k_(self, elements):
         pass
     
-    def retainAll(self, elements):
+    def retainAll_dxd4eo_k_(self, elements):
         pass
     
-    def clear(self):
+    def clear_sv8swh_k_(self):
         pass
     
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         pass
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         pass
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         pass
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         pass
     
     def equals(self, other):
@@ -10894,7 +10894,7 @@ class MutableCollection:
     
 
 class MutableIterable:
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
     def equals(self, other):
@@ -10911,37 +10911,37 @@ class MutableIterable:
     
 
 class MutableSet:
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
-    def add(self, element):
+    def add_2bq_k_(self, element):
         pass
     
-    def remove(self, element):
+    def remove_2bq_k_(self, element):
         pass
     
-    def addAll(self, elements):
+    def addAll_dxd4eo_k_(self, elements):
         pass
     
-    def removeAll(self, elements):
+    def removeAll_dxd4eo_k_(self, elements):
         pass
     
-    def retainAll(self, elements):
+    def retainAll_dxd4eo_k_(self, elements):
         pass
     
-    def clear(self):
+    def clear_sv8swh_k_(self):
         pass
     
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         pass
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         pass
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         pass
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         pass
     
     def equals(self, other):
@@ -10958,67 +10958,67 @@ class MutableSet:
     
 
 class MutableList:
-    def add(self, element):
+    def add_2bq_k_(self, element):
         pass
     
-    def remove(self, element):
+    def remove_2bq_k_(self, element):
         pass
     
-    def addAll(self, elements):
+    def addAll_dxd4eo_k_(self, elements):
         pass
     
-    def addAll(self, index, elements):
+    def addAll_xggsjz_k_(self, index, elements):
         pass
     
-    def removeAll(self, elements):
+    def removeAll_dxd4eo_k_(self, elements):
         pass
     
-    def retainAll(self, elements):
+    def retainAll_dxd4eo_k_(self, elements):
         pass
     
-    def clear(self):
+    def clear_sv8swh_k_(self):
         pass
     
-    def set(self, index, element):
+    def set_ddb1qf_k_(self, index, element):
         pass
     
-    def add(self, index, element):
+    def add_vz2mgm_k_(self, index, element):
         pass
     
-    def removeAt(self, index):
+    def removeAt_ha5a7z_k_(self, index):
         pass
     
-    def listIterator(self):
+    def listIterator_0_k_(self):
         pass
     
-    def listIterator(self, index):
+    def listIterator_ha5a7z_k_(self, index):
         pass
     
-    def subList(self, fromIndex, toIndex):
+    def subList_27zxwg_k_(self, fromIndex, toIndex):
         pass
     
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         pass
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         pass
     
-    def contains(self, element):
+    def contains_2bq_k_(self, element):
         pass
     
-    def iterator(self):
+    def iterator_0_k_(self):
         pass
     
-    def containsAll(self, elements):
+    def containsAll_dxd4eo_k_(self, elements):
         pass
     
-    def get(self, index):
+    def get_ha5a7z_k_(self, index):
         pass
     
-    def indexOf(self, element):
+    def indexOf_2bq_k_(self, element):
         pass
     
-    def lastIndexOf(self, element):
+    def lastIndexOf_2bq_k_(self, element):
         pass
     
     def equals(self, other):
@@ -11035,13 +11035,13 @@ class MutableList:
     
 
 class MutableEntry:
-    def setValue(self, newValue):
+    def setValue_2c7_k_(self, newValue):
         pass
     
-    def _get_key_(self):
+    def _get_key__0_k_(self):
         pass
     
-    def _get_value_(self):
+    def _get_value__0_k_(self):
         pass
     
     def equals(self, other):
@@ -11058,40 +11058,40 @@ class MutableEntry:
     
 
 class MutableMap:
-    def put(self, key, value):
+    def put_1q9pf_k_(self, key, value):
         pass
     
-    def remove(self, key):
+    def remove_2bw_k_(self, key):
         pass
     
-    def putAll(self, _from):
+    def putAll_nn707j_k_(self, _from):
         pass
     
-    def clear(self):
+    def clear_sv8swh_k_(self):
         pass
     
-    def _get_keys_(self):
+    def _get_keys__0_k_(self):
         pass
     
-    def _get_values_(self):
+    def _get_values__0_k_(self):
         pass
     
-    def _get_entries_(self):
+    def _get_entries__0_k_(self):
         pass
     
-    def _get_size_(self):
+    def _get_size__0_k_(self):
         pass
     
-    def isEmpty(self):
+    def isEmpty_0_k_(self):
         pass
     
-    def containsKey(self, key):
+    def containsKey_2bw_k_(self, key):
         pass
     
-    def containsValue(self, value):
+    def containsValue_2c7_k_(self, value):
         pass
     
-    def get(self, key):
+    def get_2bw_k_(self, key):
         pass
     
     def equals(self, other):
@@ -11107,7 +11107,7 @@ class MutableMap:
         pass
     
 
-class Companion:
+class Companion_19:
     def __init__(self):
         Companion_instance = self
     
@@ -11122,7 +11122,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_18():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -11135,16 +11135,16 @@ class Enum:
         self.name = name
         self.ordinal = ordinal
     
-    def _get_name_(self):
+    def _get_name__0_k_(self):
         return self.name
     
-    def _get_ordinal_(self):
+    def _get_ordinal__0_k_(self):
         return self.ordinal
     
-    def compareTo(self, other):
+    def compareTo_2bq_k_(self, other):
         return compareTo(self.ordinal, other.ordinal)
     
-    def compareTo(self, other):
+    def compareTo_2c5_k_(self, other):
         return self.compareTo((E(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
     
     def equals(self, other):
@@ -11313,39 +11313,39 @@ def longArray(size):
     tmp1_unsafeCast_0 = tmp0_withType_0
     return kotlin_Any_(tmp1_unsafeCast_0)
 
-def booleanArrayOf(arr):
+def booleanArrayOf_0(arr):
     tmp0_withType_0 = INVOKE(slice(arr))
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     tmp1_unsafeCast_0 = tmp0_withType_0
     return kotlin_Any_(tmp1_unsafeCast_0)
 
-def charArrayOf(arr):
+def charArrayOf_0(arr):
     tmp0_withType_0 = INVOKE(slice(arr))
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     tmp1_unsafeCast_0 = tmp0_withType_0
     return kotlin_Any_(tmp1_unsafeCast_0)
 
-def longArrayOf(arr):
+def longArrayOf_0(arr):
     tmp0_withType_0 = INVOKE(slice(arr))
     visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
     tmp1_unsafeCast_0 = tmp0_withType_0
     return kotlin_Any_(tmp1_unsafeCast_0)
 
-class _no_name_provided_:
+class _no_name_provided__30:
     def __init__(self, _array):
         self._array = _array
         self.index = 0
     
-    def _set_index_(self, _set___):
+    def _set_index__majfzk_k_(self, _set___):
         self.index = _set___
     
-    def _get_index_(self):
+    def _get_index__0_k_(self):
         return self.index
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return not (self.index == len(self._array))
     
-    def next(self):
+    def next_0_k_(self):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
@@ -11366,22 +11366,22 @@ class _no_name_provided_:
         pass
     
 
-class _no_name_provided_:
+class _no_name_provided__31:
     def __init__(self, _array):
         self._array = _array
         super()
         self.index = 0
     
-    def _set_index_(self, _set___):
+    def _set_index__majfzk_k_(self, _set___):
         self.index = _set___
     
-    def _get_index_(self):
+    def _get_index__0_k_(self):
         return self.index
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return not (self.index == len(self._array))
     
-    def nextBoolean(self):
+    def nextBoolean_0_k_(self):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
@@ -11392,7 +11392,7 @@ class _no_name_provided_:
         
         return tmp
     
-    def next(self):
+    def next_0_k_(self):
         pass
     
     def equals(self, other):
@@ -11405,22 +11405,22 @@ class _no_name_provided_:
         pass
     
 
-class _no_name_provided_:
+class _no_name_provided__32:
     def __init__(self, _array):
         self._array = _array
         super()
         self.index = 0
     
-    def _set_index_(self, _set___):
+    def _set_index__majfzk_k_(self, _set___):
         self.index = _set___
     
-    def _get_index_(self):
+    def _get_index__0_k_(self):
         return self.index
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return not (self.index == len(self._array))
     
-    def nextChar(self):
+    def nextChar_0_k_(self):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
@@ -11431,7 +11431,7 @@ class _no_name_provided_:
         
         return tmp
     
-    def next(self):
+    def next_0_k_(self):
         pass
     
     def equals(self, other):
@@ -11444,22 +11444,22 @@ class _no_name_provided_:
         pass
     
 
-class _no_name_provided_:
+class _no_name_provided__33:
     def __init__(self, _array):
         self._array = _array
         super()
         self.index = 0
     
-    def _set_index_(self, _set___):
+    def _set_index__majfzk_k_(self, _set___):
         self.index = _set___
     
-    def _get_index_(self):
+    def _get_index__0_k_(self):
         return self.index
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return not (self.index == len(self._array))
     
-    def nextByte(self):
+    def nextByte_0_k_(self):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
@@ -11470,7 +11470,7 @@ class _no_name_provided_:
         
         return tmp
     
-    def next(self):
+    def next_0_k_(self):
         pass
     
     def equals(self, other):
@@ -11483,22 +11483,22 @@ class _no_name_provided_:
         pass
     
 
-class _no_name_provided_:
+class _no_name_provided__34:
     def __init__(self, _array):
         self._array = _array
         super()
         self.index = 0
     
-    def _set_index_(self, _set___):
+    def _set_index__majfzk_k_(self, _set___):
         self.index = _set___
     
-    def _get_index_(self):
+    def _get_index__0_k_(self):
         return self.index
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return not (self.index == len(self._array))
     
-    def nextShort(self):
+    def nextShort_0_k_(self):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
@@ -11509,7 +11509,7 @@ class _no_name_provided_:
         
         return tmp
     
-    def next(self):
+    def next_0_k_(self):
         pass
     
     def equals(self, other):
@@ -11522,22 +11522,22 @@ class _no_name_provided_:
         pass
     
 
-class _no_name_provided_:
+class _no_name_provided__35:
     def __init__(self, _array):
         self._array = _array
         super()
         self.index = 0
     
-    def _set_index_(self, _set___):
+    def _set_index__majfzk_k_(self, _set___):
         self.index = _set___
     
-    def _get_index_(self):
+    def _get_index__0_k_(self):
         return self.index
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return not (self.index == len(self._array))
     
-    def nextInt(self):
+    def nextInt_0_k_(self):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
@@ -11548,7 +11548,7 @@ class _no_name_provided_:
         
         return tmp
     
-    def next(self):
+    def next_0_k_(self):
         pass
     
     def equals(self, other):
@@ -11561,22 +11561,22 @@ class _no_name_provided_:
         pass
     
 
-class _no_name_provided_:
+class _no_name_provided__36:
     def __init__(self, _array):
         self._array = _array
         super()
         self.index = 0
     
-    def _set_index_(self, _set___):
+    def _set_index__majfzk_k_(self, _set___):
         self.index = _set___
     
-    def _get_index_(self):
+    def _get_index__0_k_(self):
         return self.index
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return not (self.index == len(self._array))
     
-    def nextFloat(self):
+    def nextFloat_0_k_(self):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
@@ -11587,7 +11587,7 @@ class _no_name_provided_:
         
         return tmp
     
-    def next(self):
+    def next_0_k_(self):
         pass
     
     def equals(self, other):
@@ -11600,22 +11600,22 @@ class _no_name_provided_:
         pass
     
 
-class _no_name_provided_:
+class _no_name_provided__37:
     def __init__(self, _array):
         self._array = _array
         super()
         self.index = 0
     
-    def _set_index_(self, _set___):
+    def _set_index__majfzk_k_(self, _set___):
         self.index = _set___
     
-    def _get_index_(self):
+    def _get_index__0_k_(self):
         return self.index
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return not (self.index == len(self._array))
     
-    def nextLong(self):
+    def nextLong_0_k_(self):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
@@ -11626,7 +11626,7 @@ class _no_name_provided_:
         
         return tmp
     
-    def next(self):
+    def next_0_k_(self):
         pass
     
     def equals(self, other):
@@ -11639,22 +11639,22 @@ class _no_name_provided_:
         pass
     
 
-class _no_name_provided_:
+class _no_name_provided__38:
     def __init__(self, _array):
         self._array = _array
         super()
         self.index = 0
     
-    def _set_index_(self, _set___):
+    def _set_index__majfzk_k_(self, _set___):
         self.index = _set___
     
-    def _get_index_(self):
+    def _get_index__0_k_(self):
         return self.index
     
-    def hasNext(self):
+    def hasNext_0_k_(self):
         return not (self.index == len(self._array))
     
-    def nextDouble(self):
+    def nextDouble_0_k_(self):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
@@ -11665,7 +11665,7 @@ class _no_name_provided_:
         
         return tmp
     
-    def next(self):
+    def next_0_k_(self):
         pass
     
     def equals(self, other):
@@ -11800,22 +11800,22 @@ def charSequenceSubSequence(a, startIndex, endIndex):
 def arrayToString(array):
     return joinToString_default(', ', '[', ']', 0, None, _no_name_provided__factory(), 24, None)
 
-class _no_name_provided_:
+class _no_name_provided__39:
     def __init__(self):
         pass
     
-    def invoke(self, it):
+    def invoke_wi7j7l_k_(self, it):
         return toString(it)
     
-    def invoke(self, p1):
+    def invoke_20e8_k_(self, p1):
         return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
     
 
-def _no_name_provided__factory():
+def _no_name_provided__factory_29():
     i = _no_name_provided_()
     return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
-def compareTo(a, b):
+def compareTo_0(a, b):
     tmp0_subject = jsTypeOf(a)
     if tmp0_subject == 'number':
         if jsTypeOf(b) == 'number':
@@ -11932,7 +11932,7 @@ def getStringHashCode(str):
     
     return hash
 
-def toString(o):
+def toString_0(o):
     if EQEQ(o, None):
         tmp = 'null'
     elif isArrayish(o):
@@ -12095,7 +12095,7 @@ class JsFun:
     def __init__(self, code):
         self.code = code
     
-    def _get_code_(self):
+    def _get_code__0_k_(self):
         return self.code
     
     def equals(self, other):
@@ -12114,7 +12114,7 @@ def enumValueOfIntrinsic(name):
 def enumValuesIntrinsic():
     raise IllegalStateException_init__Create_('Should be replaced by compiler')
 
-class Companion:
+class Companion_20:
     def __init__(self):
         Companion_instance = self
         self.MIN_VALUE = Long(0, -2147483648)
@@ -12122,16 +12122,16 @@ class Companion:
         self.SIZE_BYTES = 8
         self.SIZE_BITS = 64
     
-    def _get_MIN_VALUE_(self):
+    def _get_MIN_VALUE__0_k_(self):
         return self.MIN_VALUE
     
-    def _get_MAX_VALUE_(self):
+    def _get_MAX_VALUE__0_k_(self):
         return self.MAX_VALUE
     
-    def _get_SIZE_BYTES_(self):
+    def _get_SIZE_BYTES__0_k_(self):
         return self.SIZE_BYTES
     
-    def _get_SIZE_BITS_(self):
+    def _get_SIZE_BITS__0_k_(self):
         return self.SIZE_BITS
     
     def equals(self, other):
@@ -12145,7 +12145,7 @@ class Companion:
     
 
 Companion_instance = None
-def Companion_getInstance():
+def Companion_getInstance_19():
     global Companion_instance
     if Companion_instance == None:
         Companion()
@@ -12159,187 +12159,187 @@ class Long:
         self.low = low
         self.high = high
     
-    def _get_low_(self):
+    def _get_low__0_k_(self):
         return self.low
     
-    def _get_high_(self):
+    def _get_high__0_k_(self):
         return self.high
     
-    def compareTo(self, other):
+    def compareTo_wi8e9i_k_(self, other):
         return self.compareTo(toLong(other))
     
-    def compareTo(self, other):
+    def compareTo_dip2j2_k_(self, other):
         return self.compareTo(toLong(other))
     
-    def compareTo(self, other):
+    def compareTo_ha5a7z_k_(self, other):
         return self.compareTo(toLong(other))
     
-    def compareTo(self, other):
+    def compareTo_wiekkq_k_(self, other):
         return compare(other)
     
-    def compareTo(self, other):
+    def compareTo_2c5_k_(self, other):
         return self.compareTo((kotlin_Long(other)) if (jsInstanceOf(other, jsClass())) else (THROW_CCE()))
     
-    def compareTo(self, other):
+    def compareTo_dbmacu_k_(self, other):
         return compareTo(self.toFloat(), other)
     
-    def compareTo(self, other):
+    def compareTo_e2tf9d_k_(self, other):
         return compareTo(self.toDouble(), other)
     
-    def plus(self, other):
+    def plus_wi8e9i_k_(self, other):
         return self.plus(toLong(other))
     
-    def plus(self, other):
+    def plus_dip2j2_k_(self, other):
         return self.plus(toLong(other))
     
-    def plus(self, other):
+    def plus_ha5a7z_k_(self, other):
         return self.plus(toLong(other))
     
-    def plus(self, other):
+    def plus_wiekkq_k_(self, other):
         return add(other)
     
-    def plus(self, other):
+    def plus_dbmacu_k_(self, other):
         return self.toFloat() + other
     
-    def plus(self, other):
+    def plus_e2tf9d_k_(self, other):
         return self.toDouble() + other
     
-    def minus(self, other):
+    def minus_wi8e9i_k_(self, other):
         return self.minus(toLong(other))
     
-    def minus(self, other):
+    def minus_dip2j2_k_(self, other):
         return self.minus(toLong(other))
     
-    def minus(self, other):
+    def minus_ha5a7z_k_(self, other):
         return self.minus(toLong(other))
     
-    def minus(self, other):
+    def minus_wiekkq_k_(self, other):
         return subtract(other)
     
-    def minus(self, other):
+    def minus_dbmacu_k_(self, other):
         return self.toFloat() - other
     
-    def minus(self, other):
+    def minus_e2tf9d_k_(self, other):
         return self.toDouble() - other
     
-    def times(self, other):
+    def times_wi8e9i_k_(self, other):
         return self.times(toLong(other))
     
-    def times(self, other):
+    def times_dip2j2_k_(self, other):
         return self.times(toLong(other))
     
-    def times(self, other):
+    def times_ha5a7z_k_(self, other):
         return self.times(toLong(other))
     
-    def times(self, other):
+    def times_wiekkq_k_(self, other):
         return multiply(other)
     
-    def times(self, other):
+    def times_dbmacu_k_(self, other):
         return self.toFloat() * other
     
-    def times(self, other):
+    def times_e2tf9d_k_(self, other):
         return self.toDouble() * other
     
-    def div(self, other):
+    def div_wi8e9i_k_(self, other):
         return self.div(toLong(other))
     
-    def div(self, other):
+    def div_dip2j2_k_(self, other):
         return self.div(toLong(other))
     
-    def div(self, other):
+    def div_ha5a7z_k_(self, other):
         return self.div(toLong(other))
     
-    def div(self, other):
+    def div_wiekkq_k_(self, other):
         return divide(other)
     
-    def div(self, other):
+    def div_dbmacu_k_(self, other):
         return self.toFloat() / other
     
-    def div(self, other):
+    def div_e2tf9d_k_(self, other):
         return self.toDouble() / other
     
-    def rem(self, other):
+    def rem_wi8e9i_k_(self, other):
         return self.rem(toLong(other))
     
-    def rem(self, other):
+    def rem_dip2j2_k_(self, other):
         return self.rem(toLong(other))
     
-    def rem(self, other):
+    def rem_ha5a7z_k_(self, other):
         return self.rem(toLong(other))
     
-    def rem(self, other):
+    def rem_wiekkq_k_(self, other):
         return modulo(other)
     
-    def rem(self, other):
+    def rem_dbmacu_k_(self, other):
         return self.toFloat() % other
     
-    def rem(self, other):
+    def rem_e2tf9d_k_(self, other):
         return self.toDouble() % other
     
-    def inc(self):
+    def inc_0_k_(self):
         return self.plus(Long(1, 0))
     
-    def dec(self):
+    def dec_0_k_(self):
         return self.minus(Long(1, 0))
     
-    def unaryPlus(self):
+    def unaryPlus_0_k_(self):
         return self
     
-    def unaryMinus(self):
+    def unaryMinus_0_k_(self):
         return self.inv().plus(Long(1, 0))
     
-    def rangeTo(self, other):
+    def rangeTo_wi8e9i_k_(self, other):
         return self.rangeTo(toLong(other))
     
-    def rangeTo(self, other):
+    def rangeTo_dip2j2_k_(self, other):
         return self.rangeTo(toLong(other))
     
-    def rangeTo(self, other):
+    def rangeTo_ha5a7z_k_(self, other):
         return self.rangeTo(toLong(other))
     
-    def rangeTo(self, other):
+    def rangeTo_wiekkq_k_(self, other):
         return LongRange(self, other)
     
-    def shl(self, bitCount):
+    def shl_ha5a7z_k_(self, bitCount):
         return shiftLeft(bitCount)
     
-    def shr(self, bitCount):
+    def shr_ha5a7z_k_(self, bitCount):
         return shiftRight(bitCount)
     
-    def ushr(self, bitCount):
+    def ushr_ha5a7z_k_(self, bitCount):
         return shiftRightUnsigned(bitCount)
     
-    def _and(self, other):
+    def and_wiekkq_k_(self, other):
         return Long(self.low & other.low, self.high & other.high)
     
-    def _or(self, other):
+    def or_wiekkq_k_(self, other):
         return Long(self.low | other.low, self.high | other.high)
     
-    def xor(self, other):
+    def xor_wiekkq_k_(self, other):
         return Long(self.low ^ other.low, self.high ^ other.high)
     
-    def inv(self):
+    def inv_0_k_(self):
         return Long(~self.low, ~self.high)
     
-    def toByte(self):
+    def toByte_0_k_(self):
         return toByte(self.low)
     
-    def toChar(self):
+    def toChar_0_k_(self):
         return numberToChar(self.low)
     
-    def toShort(self):
+    def toShort_0_k_(self):
         return toShort(self.low)
     
-    def toInt(self):
+    def toInt_0_k_(self):
         return self.low
     
-    def toLong(self):
+    def toLong_0_k_(self):
         return self
     
-    def toFloat(self):
+    def toFloat_0_k_(self):
         return kotlin_Float(self.toDouble())
     
-    def toDouble(self):
+    def toDouble_0_k_(self):
         return toNumber()
     
     def valueOf(self):
@@ -12596,7 +12596,7 @@ def equalsLong(other):
     init_properties_longjs_kt()
     return (self.low == other.low) if (self.high == other.high) else (False)
 
-def hashCode(l):
+def hashCode_0(l):
     init_properties_longjs_kt()
     return l.low ^ l.high
 
@@ -13048,7 +13048,7 @@ def jsGetPrototypeOf(jsClass):
 def asList():
     return ArrayList(kotlin_Any_(self))
 
-def plus(elements):
+def plus_0(elements):
     return kotlin_Array_T_(INVOKE(concat(self), elements))
 
 def copyOfRange(fromIndex, toIndex):
@@ -13081,7 +13081,7 @@ def releaseIntercepted(_this):
     
     _this.intercepted_ = CompletedContinuation_getInstance()
 
-class CoroutineImpl:
+class CoroutineImpl_0:
     def __init__(self, resultContinuation):
         self.resultContinuation = resultContinuation
         self.state = 0
@@ -13094,40 +13094,40 @@ class CoroutineImpl:
         tmp._context = (None) if (tmp0_safe_receiver == None) else (tmp0_safe_receiver._get_context_())
         self.intercepted_ = None
     
-    def _set_state_(self, _set___):
+    def _set_state__majfzk_k_(self, _set___):
         self.state = _set___
     
-    def _get_state_(self):
+    def _get_state__0_k_(self):
         return self.state
     
-    def _set_exceptionState_(self, _set___):
+    def _set_exceptionState__majfzk_k_(self, _set___):
         self.exceptionState = _set___
     
-    def _get_exceptionState_(self):
+    def _get_exceptionState__0_k_(self):
         return self.exceptionState
     
-    def _set_result_(self, _set___):
+    def _set_result__h9nkbz_k_(self, _set___):
         self.result = _set___
     
-    def _get_result_(self):
+    def _get_result__0_k_(self):
         return self.result
     
-    def _set_exception_(self, _set___):
+    def _set_exception__h9nkbz_k_(self, _set___):
         self.exception = _set___
     
-    def _get_exception_(self):
+    def _get_exception__0_k_(self):
         return self.exception
     
-    def _set_finallyPath_(self, _set___):
+    def _set_finallyPath__52zbur_k_(self, _set___):
         self.finallyPath = _set___
     
-    def _get_finallyPath_(self):
+    def _get_finallyPath__0_k_(self):
         return self.finallyPath
     
-    def _get_context_(self):
+    def _get_context__0_k_(self):
         return ensureNotNull(self._context)
     
-    def intercepted(self):
+    def intercepted_0_k_(self):
         tmp2_elvis_lhs = self.intercepted_
         if tmp2_elvis_lhs == None:
             tmp0_safe_receiver = self._get_context_().get(Key_getInstance())
@@ -13140,7 +13140,7 @@ class CoroutineImpl:
         
         return tmp
     
-    def resumeWith(self, result):
+    def resumeWith_jccoe6_k_(self, result):
         current = self
         if _Result___get_isFailure__impl_(result):
             tmp = None
@@ -13177,16 +13177,16 @@ class CoroutineImpl:
             
         
     
-    def resumeWith(self, result):
+    def resumeWith_bnunh2_k_(self, result):
         return self.resumeWith(result)
     
-    def doResume(self):
+    def doResume_0_k_(self):
         pass
     
-    def create(self, completion):
+    def create_s8oglw_k_(self, completion):
         raise UnsupportedOperationException_init__Create_('create(Continuation) has not been overridden')
     
-    def create(self, value, completion):
+    def create_wbutx_k_(self, value, completion):
         raise UnsupportedOperationException_init__Create_('create(Any?;Continuation) has not been overridden')
     
     def equals(self, other):
@@ -13203,13 +13203,13 @@ class CompletedContinuation:
     def __init__(self):
         CompletedContinuation_instance = self
     
-    def _get_context_(self):
+    def _get_context__0_k_(self):
         raise IllegalStateException_init__Create_('This continuation is already complete')
     
-    def resumeWith(self, result):
+    def resumeWith_jccoe6_k_(self, result):
         raise IllegalStateException_init__Create_('This continuation is already complete')
     
-    def resumeWith(self, result):
+    def resumeWith_bnunh2_k_(self, result):
         return self.resumeWith(result)
     
     def toString(self):
@@ -13240,41 +13240,41 @@ def Exception_init__Create_():
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def Exception_init__Init_(message, _this):
+def Exception_init__Init__0(message, _this):
     extendThrowable(_this, message, _undefined())
     super()
     return _this
 
-def Exception_init__Create_(message):
+def Exception_init__Create__0(message):
     tmp = Exception_init__Init_(message, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def Exception_init__Init_(message, cause, _this):
+def Exception_init__Init__1(message, cause, _this):
     extendThrowable(_this, message, cause)
     super()
     return _this
 
-def Exception_init__Create_(message, cause):
+def Exception_init__Create__1(message, cause):
     tmp = Exception_init__Init_(message, cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def Exception_init__Init_(cause, _this):
+def Exception_init__Init__2(cause, _this):
     extendThrowable(_this, _undefined(), cause)
     super()
     return _this
 
-def Exception_init__Create_(cause):
+def Exception_init__Create__2(cause):
     tmp = Exception_init__Init_(cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
 class Exception:
-    def _get_message_(self):
+    def _get_message__0_k_(self):
         pass
     
-    def _get_cause_(self):
+    def _get_cause__0_k_(self):
         pass
     
     def toString(self):
@@ -13300,41 +13300,41 @@ def Error_init__Create_():
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def Error_init__Init_(message, _this):
+def Error_init__Init__0(message, _this):
     extendThrowable(_this, message, _undefined())
     super()
     return _this
 
-def Error_init__Create_(message):
+def Error_init__Create__0(message):
     tmp = Error_init__Init_(message, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def Error_init__Init_(message, cause, _this):
+def Error_init__Init__1(message, cause, _this):
     extendThrowable(_this, message, cause)
     super()
     return _this
 
-def Error_init__Create_(message, cause):
+def Error_init__Create__1(message, cause):
     tmp = Error_init__Init_(message, cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def Error_init__Init_(cause, _this):
+def Error_init__Init__2(cause, _this):
     extendThrowable(_this, _undefined(), cause)
     super()
     return _this
 
-def Error_init__Create_(cause):
+def Error_init__Create__2(cause):
     tmp = Error_init__Init_(cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-class Error:
-    def _get_message_(self):
+class Error_0:
+    def _get_message__0_k_(self):
         pass
     
-    def _get_cause_(self):
+    def _get_cause__0_k_(self):
         pass
     
     def toString(self):
@@ -13360,41 +13360,41 @@ def IllegalArgumentException_init__Create_():
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def IllegalArgumentException_init__Init_(message, _this):
+def IllegalArgumentException_init__Init__0(message, _this):
     RuntimeException_init__Init_(message, _this)
     super()
     return _this
 
-def IllegalArgumentException_init__Create_(message):
+def IllegalArgumentException_init__Create__0(message):
     tmp = IllegalArgumentException_init__Init_(message, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def IllegalArgumentException_init__Init_(message, cause, _this):
+def IllegalArgumentException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
     super()
     return _this
 
-def IllegalArgumentException_init__Create_(message, cause):
+def IllegalArgumentException_init__Create__1(message, cause):
     tmp = IllegalArgumentException_init__Init_(message, cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def IllegalArgumentException_init__Init_(cause, _this):
+def IllegalArgumentException_init__Init__2(cause, _this):
     RuntimeException_init__Init_(cause, _this)
     super()
     return _this
 
-def IllegalArgumentException_init__Create_(cause):
+def IllegalArgumentException_init__Create__2(cause):
     tmp = IllegalArgumentException_init__Init_(cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
 class IllegalArgumentException:
-    def _get_message_(self):
+    def _get_message__0_k_(self):
         pass
     
-    def _get_cause_(self):
+    def _get_cause__0_k_(self):
         pass
     
     def toString(self):
@@ -13420,41 +13420,41 @@ def RuntimeException_init__Create_():
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def RuntimeException_init__Init_(message, _this):
+def RuntimeException_init__Init__0(message, _this):
     Exception_init__Init_(message, _this)
     super()
     return _this
 
-def RuntimeException_init__Create_(message):
+def RuntimeException_init__Create__0(message):
     tmp = RuntimeException_init__Init_(message, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def RuntimeException_init__Init_(message, cause, _this):
+def RuntimeException_init__Init__1(message, cause, _this):
     Exception_init__Init_(message, cause, _this)
     super()
     return _this
 
-def RuntimeException_init__Create_(message, cause):
+def RuntimeException_init__Create__1(message, cause):
     tmp = RuntimeException_init__Init_(message, cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def RuntimeException_init__Init_(cause, _this):
+def RuntimeException_init__Init__2(cause, _this):
     Exception_init__Init_(cause, _this)
     super()
     return _this
 
-def RuntimeException_init__Create_(cause):
+def RuntimeException_init__Create__2(cause):
     tmp = RuntimeException_init__Init_(cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
 class RuntimeException:
-    def _get_message_(self):
+    def _get_message__0_k_(self):
         pass
     
-    def _get_cause_(self):
+    def _get_cause__0_k_(self):
         pass
     
     def toString(self):
@@ -13480,21 +13480,21 @@ def NoSuchElementException_init__Create_():
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def NoSuchElementException_init__Init_(message, _this):
+def NoSuchElementException_init__Init__0(message, _this):
     RuntimeException_init__Init_(message, _this)
     super()
     return _this
 
-def NoSuchElementException_init__Create_(message):
+def NoSuchElementException_init__Create__0(message):
     tmp = NoSuchElementException_init__Init_(message, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
 class NoSuchElementException:
-    def _get_message_(self):
+    def _get_message__0_k_(self):
         pass
     
-    def _get_cause_(self):
+    def _get_cause__0_k_(self):
         pass
     
     def toString(self):
@@ -13520,41 +13520,41 @@ def IllegalStateException_init__Create_():
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def IllegalStateException_init__Init_(message, _this):
+def IllegalStateException_init__Init__0(message, _this):
     RuntimeException_init__Init_(message, _this)
     super()
     return _this
 
-def IllegalStateException_init__Create_(message):
+def IllegalStateException_init__Create__0(message):
     tmp = IllegalStateException_init__Init_(message, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def IllegalStateException_init__Init_(message, cause, _this):
+def IllegalStateException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
     super()
     return _this
 
-def IllegalStateException_init__Create_(message, cause):
+def IllegalStateException_init__Create__1(message, cause):
     tmp = IllegalStateException_init__Init_(message, cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def IllegalStateException_init__Init_(cause, _this):
+def IllegalStateException_init__Init__2(cause, _this):
     RuntimeException_init__Init_(cause, _this)
     super()
     return _this
 
-def IllegalStateException_init__Create_(cause):
+def IllegalStateException_init__Create__2(cause):
     tmp = IllegalStateException_init__Init_(cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
 class IllegalStateException:
-    def _get_message_(self):
+    def _get_message__0_k_(self):
         pass
     
-    def _get_cause_(self):
+    def _get_cause__0_k_(self):
         pass
     
     def toString(self):
@@ -13580,41 +13580,41 @@ def UnsupportedOperationException_init__Create_():
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def UnsupportedOperationException_init__Init_(message, _this):
+def UnsupportedOperationException_init__Init__0(message, _this):
     RuntimeException_init__Init_(message, _this)
     super()
     return _this
 
-def UnsupportedOperationException_init__Create_(message):
+def UnsupportedOperationException_init__Create__0(message):
     tmp = UnsupportedOperationException_init__Init_(message, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def UnsupportedOperationException_init__Init_(message, cause, _this):
+def UnsupportedOperationException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
     super()
     return _this
 
-def UnsupportedOperationException_init__Create_(message, cause):
+def UnsupportedOperationException_init__Create__1(message, cause):
     tmp = UnsupportedOperationException_init__Init_(message, cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def UnsupportedOperationException_init__Init_(cause, _this):
+def UnsupportedOperationException_init__Init__2(cause, _this):
     RuntimeException_init__Init_(cause, _this)
     super()
     return _this
 
-def UnsupportedOperationException_init__Create_(cause):
+def UnsupportedOperationException_init__Create__2(cause):
     tmp = UnsupportedOperationException_init__Init_(cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
 class UnsupportedOperationException:
-    def _get_message_(self):
+    def _get_message__0_k_(self):
         pass
     
-    def _get_cause_(self):
+    def _get_cause__0_k_(self):
         pass
     
     def toString(self):
@@ -13640,21 +13640,21 @@ def NullPointerException_init__Create_():
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def NullPointerException_init__Init_(message, _this):
+def NullPointerException_init__Init__0(message, _this):
     RuntimeException_init__Init_(message, _this)
     super()
     return _this
 
-def NullPointerException_init__Create_(message):
+def NullPointerException_init__Create__0(message):
     tmp = NullPointerException_init__Init_(message, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
 class NullPointerException:
-    def _get_message_(self):
+    def _get_message__0_k_(self):
         pass
     
-    def _get_cause_(self):
+    def _get_cause__0_k_(self):
         pass
     
     def toString(self):
@@ -13680,21 +13680,21 @@ def IndexOutOfBoundsException_init__Create_():
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def IndexOutOfBoundsException_init__Init_(message, _this):
+def IndexOutOfBoundsException_init__Init__0(message, _this):
     RuntimeException_init__Init_(message, _this)
     super()
     return _this
 
-def IndexOutOfBoundsException_init__Create_(message):
+def IndexOutOfBoundsException_init__Create__0(message):
     tmp = IndexOutOfBoundsException_init__Init_(message, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
 class IndexOutOfBoundsException:
-    def _get_message_(self):
+    def _get_message__0_k_(self):
         pass
     
-    def _get_cause_(self):
+    def _get_cause__0_k_(self):
         pass
     
     def toString(self):
@@ -13720,41 +13720,41 @@ def NoWhenBranchMatchedException_init__Create_():
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def NoWhenBranchMatchedException_init__Init_(message, _this):
+def NoWhenBranchMatchedException_init__Init__0(message, _this):
     RuntimeException_init__Init_(message, _this)
     super()
     return _this
 
-def NoWhenBranchMatchedException_init__Create_(message):
+def NoWhenBranchMatchedException_init__Create__0(message):
     tmp = NoWhenBranchMatchedException_init__Init_(message, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def NoWhenBranchMatchedException_init__Init_(message, cause, _this):
+def NoWhenBranchMatchedException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
     super()
     return _this
 
-def NoWhenBranchMatchedException_init__Create_(message, cause):
+def NoWhenBranchMatchedException_init__Create__1(message, cause):
     tmp = NoWhenBranchMatchedException_init__Init_(message, cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def NoWhenBranchMatchedException_init__Init_(cause, _this):
+def NoWhenBranchMatchedException_init__Init__2(cause, _this):
     RuntimeException_init__Init_(cause, _this)
     super()
     return _this
 
-def NoWhenBranchMatchedException_init__Create_(cause):
+def NoWhenBranchMatchedException_init__Create__2(cause):
     tmp = NoWhenBranchMatchedException_init__Init_(cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
 class NoWhenBranchMatchedException:
-    def _get_message_(self):
+    def _get_message__0_k_(self):
         pass
     
-    def _get_cause_(self):
+    def _get_cause__0_k_(self):
         pass
     
     def toString(self):
@@ -13780,21 +13780,21 @@ def ClassCastException_init__Create_():
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def ClassCastException_init__Init_(message, _this):
+def ClassCastException_init__Init__0(message, _this):
     RuntimeException_init__Init_(message, _this)
     super()
     return _this
 
-def ClassCastException_init__Create_(message):
+def ClassCastException_init__Create__0(message):
     tmp = ClassCastException_init__Init_(message, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
 class ClassCastException:
-    def _get_message_(self):
+    def _get_message__0_k_(self):
         pass
     
-    def _get_cause_(self):
+    def _get_cause__0_k_(self):
         pass
     
     def toString(self):
@@ -13820,41 +13820,41 @@ def UninitializedPropertyAccessException_init__Create_():
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def UninitializedPropertyAccessException_init__Init_(message, _this):
+def UninitializedPropertyAccessException_init__Init__0(message, _this):
     RuntimeException_init__Init_(message, _this)
     super()
     return _this
 
-def UninitializedPropertyAccessException_init__Create_(message):
+def UninitializedPropertyAccessException_init__Create__0(message):
     tmp = UninitializedPropertyAccessException_init__Init_(message, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def UninitializedPropertyAccessException_init__Init_(message, cause, _this):
+def UninitializedPropertyAccessException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init_(message, cause, _this)
     super()
     return _this
 
-def UninitializedPropertyAccessException_init__Create_(message, cause):
+def UninitializedPropertyAccessException_init__Create__1(message, cause):
     tmp = UninitializedPropertyAccessException_init__Init_(message, cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
-def UninitializedPropertyAccessException_init__Init_(cause, _this):
+def UninitializedPropertyAccessException_init__Init__2(cause, _this):
     RuntimeException_init__Init_(cause, _this)
     super()
     return _this
 
-def UninitializedPropertyAccessException_init__Create_(cause):
+def UninitializedPropertyAccessException_init__Create__2(cause):
     tmp = UninitializedPropertyAccessException_init__Init_(cause, Object_create())
     captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
     return tmp
 
 class UninitializedPropertyAccessException:
-    def _get_message_(self):
+    def _get_message__0_k_(self):
         pass
     
-    def _get_cause_(self):
+    def _get_cause__0_k_(self):
         pass
     
     def toString(self):
@@ -13890,7 +13890,7 @@ def jsBitwiseAnd(lhs_hack, rhs_hack):
     tmp0_unsafeCast_0 = js('lhs_hack & rhs_hack')
     return kotlin_Any_(tmp0_unsafeCast_0)
 
-def toString(radix):
+def toString_1(radix):
     return toStringImpl(checkRadix(radix))
 
 def _get_zint_():
