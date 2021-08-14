@@ -15,8 +15,9 @@ import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.util.render
 
 fun IrClass.toPythonStatement(context: JsGenerationContext): stmt {
+    val name = context.getNameForClass(this)
     return ClassDef(
-        name = identifier(name.asString().toValidPythonSymbol()),
+        name = identifier(name.ident.toValidPythonSymbol()),
         // TODO declarations of base classes have to happen BEFORE declaring them as bases in some child classes!
         bases = superTypes
             .map { it.asString().toValidPythonSymbol() }
