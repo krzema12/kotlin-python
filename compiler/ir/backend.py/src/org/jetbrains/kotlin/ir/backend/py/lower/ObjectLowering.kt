@@ -56,6 +56,7 @@ class ObjectDeclarationLowering(
 
         getInstanceFun.body = context.irFactory.createBlockBody(UNDEFINED_OFFSET, UNDEFINED_OFFSET) {
             statements += context.createIrBuilder(getInstanceFun.symbol).irBlockBody(getInstanceFun) {
+                +irSetField(null, instanceField, JsIrBuilder.buildString(context.irBuiltIns.stringType, "Python workaround: set it to global"))
                 +irIfThen(
                     irEqualsNull(irGetField(null, instanceField)),
                     // Instance field initialized inside constructor

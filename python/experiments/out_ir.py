@@ -1045,6 +1045,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -1251,6 +1252,7 @@ class EmptyList:
 
 EmptyList_instance = None
 def EmptyList_getInstance():
+    global EmptyList_instance
     if EmptyList_instance == None:
         EmptyList()
     
@@ -1290,6 +1292,7 @@ class EmptyIterator:
 
 EmptyIterator_instance = None
 def EmptyIterator_getInstance():
+    global EmptyIterator_instance
     if EmptyIterator_instance == None:
         EmptyIterator()
     
@@ -1658,6 +1661,7 @@ class Key:
 
 Key_instance = None
 def Key_getInstance():
+    global Key_instance
     if Key_instance == None:
         Key()
     
@@ -1858,6 +1862,7 @@ class EmptyCoroutineContext:
 
 EmptyCoroutineContext_instance = None
 def EmptyCoroutineContext_getInstance():
+    global EmptyCoroutineContext_instance
     if EmptyCoroutineContext_instance == None:
         EmptyCoroutineContext()
     
@@ -1883,6 +1888,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -2472,6 +2478,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -2733,6 +2740,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -2909,6 +2917,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -3383,6 +3392,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -3825,6 +3835,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -3919,6 +3930,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -4191,6 +4203,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -4636,6 +4649,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -4736,6 +4750,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -4979,6 +4994,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -6415,6 +6431,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -6482,6 +6499,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -6550,6 +6568,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -6654,6 +6673,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -6726,6 +6746,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -6798,6 +6819,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -6874,6 +6896,7 @@ class Unit:
 
 Unit_instance = None
 def Unit_getInstance():
+    global Unit_instance
     if Unit_instance == None:
         Unit()
     
@@ -7239,6 +7262,7 @@ class ByteCompanionObject:
 
 ByteCompanionObject_instance = None
 def ByteCompanionObject_getInstance():
+    global ByteCompanionObject_instance
     if ByteCompanionObject_instance == None:
         ByteCompanionObject()
     
@@ -7276,6 +7300,7 @@ class ShortCompanionObject:
 
 ShortCompanionObject_instance = None
 def ShortCompanionObject_getInstance():
+    global ShortCompanionObject_instance
     if ShortCompanionObject_instance == None:
         ShortCompanionObject()
     
@@ -7313,6 +7338,7 @@ class IntCompanionObject:
 
 IntCompanionObject_instance = None
 def IntCompanionObject_getInstance():
+    global IntCompanionObject_instance
     if IntCompanionObject_instance == None:
         IntCompanionObject()
     
@@ -7362,6 +7388,7 @@ class FloatCompanionObject:
 
 FloatCompanionObject_instance = None
 def FloatCompanionObject_getInstance():
+    global FloatCompanionObject_instance
     if FloatCompanionObject_instance == None:
         FloatCompanionObject()
     
@@ -7411,6 +7438,7 @@ class DoubleCompanionObject:
 
 DoubleCompanionObject_instance = None
 def DoubleCompanionObject_getInstance():
+    global DoubleCompanionObject_instance
     if DoubleCompanionObject_instance == None:
         DoubleCompanionObject()
     
@@ -7432,6 +7460,7 @@ class StringCompanionObject:
 
 StringCompanionObject_instance = None
 def StringCompanionObject_getInstance():
+    global StringCompanionObject_instance
     if StringCompanionObject_instance == None:
         StringCompanionObject()
     
@@ -7453,6 +7482,7 @@ class BooleanCompanionObject:
 
 BooleanCompanionObject_instance = None
 def BooleanCompanionObject_getInstance():
+    global BooleanCompanionObject_instance
     if BooleanCompanionObject_instance == None:
         BooleanCompanionObject()
     
@@ -8845,6 +8875,7 @@ class NothingKClassImpl:
 
 NothingKClassImpl_instance = None
 def NothingKClassImpl_getInstance():
+    global NothingKClassImpl_instance
     if NothingKClassImpl_instance == None:
         NothingKClassImpl()
     
@@ -9255,6 +9286,7 @@ class DynamicKType:
 
 DynamicKType_instance = None
 def DynamicKType_getInstance():
+    global DynamicKType_instance
     if DynamicKType_instance == None:
         DynamicKType()
     
@@ -9724,6 +9756,7 @@ class PrimitiveClasses:
 
 PrimitiveClasses_instance = None
 def PrimitiveClasses_getInstance():
+    global PrimitiveClasses_instance
     if PrimitiveClasses_instance == None:
         PrimitiveClasses()
     
@@ -10559,6 +10592,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -11089,6 +11123,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -11178,6 +11213,7 @@ class DefaultConstructorMarker:
 
 DefaultConstructorMarker_instance = None
 def DefaultConstructorMarker_getInstance():
+    global DefaultConstructorMarker_instance
     if DefaultConstructorMarker_instance == None:
         DefaultConstructorMarker()
     
@@ -12110,6 +12146,7 @@ class Companion:
 
 Companion_instance = None
 def Companion_getInstance():
+    global Companion_instance
     if Companion_instance == None:
         Companion()
     
@@ -13187,6 +13224,7 @@ class CompletedContinuation:
 
 CompletedContinuation_instance = None
 def CompletedContinuation_getInstance():
+    global CompletedContinuation_instance
     if CompletedContinuation_instance == None:
         CompletedContinuation()
     
