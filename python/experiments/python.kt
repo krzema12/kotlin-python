@@ -1,10 +1,11 @@
-// DONT_TARGET_EXACT_BACKEND: WASM
-// WASM_MUTE_REASON: UNIT_ISSUES
-val c = Unit
-val d = c
+val zint : Int? = 1
+val zlong : Long? = 2
+val zbyte : Byte? = 3
+val zshort : Short? = 4
+val zchar : Char? = 'c'
+val zdouble : Double? = 1.0
+val zfloat : Float? = 2.0.toFloat()
 
 fun box(): String {
-    c
-    d
     return "OK"
 }

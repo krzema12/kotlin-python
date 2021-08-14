@@ -13893,29 +13893,33 @@ def jsBitwiseAnd(lhs_hack, rhs_hack):
 def toString(radix):
     return toStringImpl(checkRadix(radix))
 
-def _get_c_():
-    init_properties_python_kt()
-    return c
+def _get_zint_():
+    return zint
 
-c = None
-def _get_d_():
-    init_properties_python_kt()
-    return d
+zint = 1
+def _get_zlong_():
+    return zlong
 
-d = None
+zlong = Long(2, 0)
+def _get_zbyte_():
+    return zbyte
+
+zbyte = 3
+def _get_zshort_():
+    return zshort
+
+zshort = 4
+def _get_zchar_():
+    return zchar
+
+zchar = Char(99)
+def _get_zdouble_():
+    return zdouble
+
+zdouble = 1.0
+def _get_zfloat_():
+    return zfloat
+
+zfloat = 2.0
 def box():
-    init_properties_python_kt()
-    _get_c_()
-    _get_d_()
     return 'OK'
-
-properties_initialized_python_kt = False
-def init_properties_python_kt():
-    global properties_initialized_python_kt
-    if not properties_initialized_python_kt:
-        properties_initialized_python_kt = True
-        global c
-        c = Unit_getInstance()
-        global d
-        d = _get_c_()
-    
