@@ -13,6 +13,7 @@ import java.io.InputStreamReader
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
+import kotlin.system.measureTimeMillis
 
 fun createScriptEngine(): ScriptEngine {
     return ScriptEngineNashorn()
@@ -76,7 +77,7 @@ abstract class AbstractJsTestChecker {
     protected abstract fun run(files: List<String>, f: ScriptEngine.() -> Any?): Any?
 }
 
-class PythonException(override val message: String) : RuntimeException(message)
+class PythonExecutionException(override val message: String) : RuntimeException(message)
 
 object PythonTestChecker : AbstractJsTestChecker() {
     override fun run(files: List<String>, f: ScriptEngine.() -> Any?): Any? {
@@ -104,15 +105,25 @@ object PythonTestChecker : AbstractJsTestChecker() {
 
     private fun runPython(scriptPath: String): String {
         val process = Runtime.getRuntime().exec("python3.8 $scriptPath")
-        process.waitFor(10, TimeUnit.SECONDS)
+        val runningTime = measureTimeMillis {
+            process.waitFor(10, TimeUnit.SECONDS)
+        }
+        val runningTimeMessage = "Python running time: $runningTime ms"
+        val exitValue = try {
+            process.exitValue()
+        } catch (e: IllegalThreadStateException) {
+            // If the process hasn't finished yet.
+            process.destroyForcibly()
+            123 // Some non-zero value, doesn't matter what.
+        }
 
-        if (process.exitValue() == 0) {
+        if (exitValue != 0) {
+            val stderrReader = BufferedReader(InputStreamReader(process.errorStream))
+            val stderr = stderrReader.lineSequence().toList().takeLast(10).joinToString("\n")
+            throw PythonExecutionException("$runningTimeMessage\n$stderr")
+        } else {
             val stdoutReader = BufferedReader(InputStreamReader(process.inputStream))
             return stdoutReader.lineSequence().joinToString("\n")
-        } else {
-            val stderrReader = BufferedReader(InputStreamReader(process.errorStream))
-            val stderr = stderrReader.lineSequence().joinToString("\n")
-            throw PythonException(stderr)
         }
     }
 }

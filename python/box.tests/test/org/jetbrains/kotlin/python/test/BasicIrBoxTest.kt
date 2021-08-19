@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.cli.js.messageCollectorLogger
 import org.jetbrains.kotlin.ir.backend.js.MainModule
 import org.jetbrains.kotlin.ir.backend.js.generateKLib
 import org.jetbrains.kotlin.ir.backend.js.jsResolveLibraries
+import org.jetbrains.kotlin.ir.backend.py.CompilerResult
 import org.jetbrains.kotlin.ir.backend.py.JsCode
 import org.jetbrains.kotlin.ir.backend.py.compile
 import org.jetbrains.kotlin.ir.backend.py.jsPhases
@@ -25,6 +26,7 @@ import org.jetbrains.kotlin.js.facade.TranslationUnit
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.parsing.parseBoolean
 import org.jetbrains.kotlin.test.TargetBackend
+import org.jetbrains.kotlin.utils.addToStdlib.measureTimeMillisWithResult
 import org.jetbrains.kotlin.utils.fileUtils.withReplacedExtensionOrNull
 import java.io.File
 import java.lang.Boolean.getBoolean
@@ -33,6 +35,8 @@ import java.util.*
 private val fullRuntimeKlib: String = System.getProperty("kotlin.js.full.stdlib.path")
 private val defaultRuntimeKlib = System.getProperty("kotlin.js.reduced.stdlib.path")
 private val kotlinTestKLib = System.getProperty("kotlin.js.kotlin.test.path")
+
+class KotlinCompilationException(override val message: String, override val cause: Throwable) : RuntimeException(message, cause)
 
 abstract class BasicIrBoxTest(
     pathToTestDir: String,
@@ -138,23 +142,37 @@ abstract class BasicIrBoxTest(
             }
 
             if (!skipRegularMode) {
-                val compiledModule = compile(
-                    project = config.project,
-                    mainModule = MainModule.SourceFiles(filesToCompile),
-                    analyzer = AnalyzerWithCompilerReport(config.configuration),
-                    configuration = config.configuration,
-                    phaseConfig = phaseConfig,
-                    irFactory = IrFactoryImpl,
-                    allDependencies = resolvedLibraries,
-                    friendDependencies = emptyList(),
-                    mainArguments = mainCallParameters.run { if (shouldBeGenerated()) arguments() else null },
-                    exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, testFunction))),
-                    generateFullJs = true,
-                    generateDceJs = runIrDce,
-                    es6mode = runEs6Mode,
-                    multiModule = splitPerModule || perModule,
-                    propertyLazyInitialization = propertyLazyInitialization,
-                )
+                var compilationException: KotlinCompilationException? = null
+                val compiledModuleWithDuration: Pair<Long, CompilerResult?> = measureTimeMillisWithResult {
+                    try {
+                        compile(
+                            project = config.project,
+                            mainModule = MainModule.SourceFiles(filesToCompile),
+                            analyzer = AnalyzerWithCompilerReport(config.configuration),
+                            configuration = config.configuration,
+                            phaseConfig = phaseConfig,
+                            irFactory = IrFactoryImpl,
+                            allDependencies = resolvedLibraries,
+                            friendDependencies = emptyList(),
+                            mainArguments = mainCallParameters.run { if (shouldBeGenerated()) arguments() else null },
+                            exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, testFunction))),
+                            generateFullJs = true,
+                            generateDceJs = runIrDce,
+                            es6mode = runEs6Mode,
+                            multiModule = splitPerModule || perModule,
+                            propertyLazyInitialization = propertyLazyInitialization,
+                        )
+                    } catch (e: Throwable) {
+                        compilationException = KotlinCompilationException("Message should be set later. If you see this, it's a bug!", e)
+                        null
+                    }
+                }
+                val compilationTimeMessage = "Kotlin compilation time: ${compiledModuleWithDuration.first} ms"
+
+                if (compilationException != null) {
+                    throw KotlinCompilationException(compilationTimeMessage, compilationException!!.cause)
+                }
+                val compiledModule = compiledModuleWithDuration.second!!
 
                 compiledModule.jsCode!!.writeTo(outputFile, config)
 
