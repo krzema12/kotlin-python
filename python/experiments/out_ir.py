@@ -512,7 +512,7 @@ def Char(code):
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def values():
-    return Level_WARNING_getInstance()
+    return (Level_WARNING_getInstance(), Level_ERROR_getInstance())
 
 def valueOf(value):
     if 'WARNING' == value:
@@ -653,7 +653,7 @@ class ExperimentalMultiplatform:
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def values():
-    return Level_WARNING_getInstance()
+    return (Level_WARNING_getInstance(), Level_ERROR_getInstance())
 
 def valueOf(value):
     if 'WARNING' == value:
@@ -1436,7 +1436,7 @@ visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def values():
-    return InvocationKind_AT_MOST_ONCE_getInstance()
+    return (InvocationKind_AT_MOST_ONCE_getInstance(), InvocationKind_AT_LEAST_ONCE_getInstance(), InvocationKind_EXACTLY_ONCE_getInstance(), InvocationKind_UNKNOWN_getInstance())
 
 def valueOf(value):
     if 'AT_MOST_ONCE' == value:
@@ -2065,7 +2065,7 @@ visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def values():
-    return CoroutineSingletons_COROUTINE_SUSPENDED_getInstance()
+    return (CoroutineSingletons_COROUTINE_SUSPENDED_getInstance(), CoroutineSingletons_UNDECIDED_getInstance(), CoroutineSingletons_RESUMED_getInstance())
 
 def valueOf(value):
     if 'COROUTINE_SUSPENDED' == value:
@@ -2218,7 +2218,7 @@ visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def values():
-    return RequireKotlinVersionKind_LANGUAGE_VERSION_getInstance()
+    return (RequireKotlinVersionKind_LANGUAGE_VERSION_getInstance(), RequireKotlinVersionKind_COMPILER_VERSION_getInstance(), RequireKotlinVersionKind_API_VERSION_getInstance())
 
 def valueOf(value):
     if 'LANGUAGE_VERSION' == value:
@@ -2514,7 +2514,7 @@ visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def values():
-    return KVariance_INVARIANT_getInstance()
+    return (KVariance_INVARIANT_getInstance(), KVariance_IN_getInstance(), KVariance_OUT_getInstance())
 
 def valueOf(value):
     if 'INVARIANT' == value:
@@ -5784,7 +5784,7 @@ visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def values():
-    return DeprecationLevel_WARNING_getInstance()
+    return (DeprecationLevel_WARNING_getInstance(), DeprecationLevel_ERROR_getInstance(), DeprecationLevel_HIDDEN_getInstance())
 
 def valueOf(value):
     if 'WARNING' == value:
@@ -6874,7 +6874,7 @@ visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def values():
-    return AnnotationTarget_CLASS_getInstance()
+    return (AnnotationTarget_CLASS_getInstance(), AnnotationTarget_ANNOTATION_CLASS_getInstance(), AnnotationTarget_TYPE_PARAMETER_getInstance(), AnnotationTarget_PROPERTY_getInstance(), AnnotationTarget_FIELD_getInstance(), AnnotationTarget_LOCAL_VARIABLE_getInstance(), AnnotationTarget_VALUE_PARAMETER_getInstance(), AnnotationTarget_CONSTRUCTOR_getInstance(), AnnotationTarget_FUNCTION_getInstance(), AnnotationTarget_PROPERTY_GETTER_getInstance(), AnnotationTarget_PROPERTY_SETTER_getInstance(), AnnotationTarget_TYPE_getInstance(), AnnotationTarget_EXPRESSION_getInstance(), AnnotationTarget_FILE_getInstance(), AnnotationTarget_TYPEALIAS_getInstance())
 
 def valueOf(value):
     if 'CLASS' == value:
@@ -7002,7 +7002,7 @@ visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def values():
-    return AnnotationRetention_SOURCE_getInstance()
+    return (AnnotationRetention_SOURCE_getInstance(), AnnotationRetention_BINARY_getInstance(), AnnotationRetention_RUNTIME_getInstance())
 
 def valueOf(value):
     if 'SOURCE' == value:
@@ -8427,7 +8427,7 @@ class BufferedOutputToConsoleLog:
         tmp1_this._set_buffer_(tmp1_this._get_buffer_() + s)
     
     def flush(self):
-        _get_console_().log(self._get_buffer_())
+        _get_console_().log(*(self._get_buffer_(),))
         self._set_buffer_('')
     
     def _set_buffer_(self, _set___):
@@ -9896,14 +9896,14 @@ def compareTo(other, ignoreCase):
     if ignoreCase:
         n1 = len(self)
         n2 = len(other)
-        min = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.min(n1, n2)
+        min = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.min(*(n1, n2))
         if min == 0:
             return (n1 - n2).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
         
         start = 0
         while True:
             tmp0_minOf_0 = (start + 16).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-            end = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.min(tmp0_minOf_0, min)
+            end = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.min(*(tmp0_minOf_0, min))
             tmp1_substring_0 = start
             s1 = kotlin_String(INVOKE(substring(self), tmp1_substring_0, end))
             tmp2_substring_0 = start
@@ -10014,7 +10014,7 @@ def _get_REPLACEMENT_BYTE_SEQUENCE_():
 
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
 def REPLACEMENT_BYTE_SEQUENCE_init_():
-    tmp0_byteArrayOf_0 = -17
+    tmp0_byteArrayOf_0 = (-17, -65, -67)
     return tmp0_byteArrayOf_0
 
 def _get_value_(_this):
@@ -11968,7 +11968,7 @@ def divide(other):
     rem = self
     while greaterThanOrEqual(other):
         approxDouble = toNumber() / toNumber()
-        approx2 = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.max(1.0, visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.floor(approxDouble))
+        approx2 = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.max(*(1.0, visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.floor(approxDouble)))
         log2 = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.ceil(visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.log(approx2) / visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl._get_LN2_())
         delta = (1.0) if (log2 <= 48.0) else (visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(2.0, log2 - 48))
         approxRes = fromNumber(approx2)
@@ -12291,12 +12291,12 @@ def getLocalDelegateReference(name, type, mutable, _lambda):
 
 def propertyRefClassMetadataCache_init_():
     tmp = js('{ kind: \'class\', interfaces: [] }')
-    tmp0_arrayOf_0 = tmp
+    tmp0_arrayOf_0 = (tmp, js('{ kind: \'class\', interfaces: [] }'))
     tmp = js('{ kind: \'class\', interfaces: [] }')
-    tmp1_arrayOf_0 = tmp
+    tmp1_arrayOf_0 = (tmp, js('{ kind: \'class\', interfaces: [] }'))
     tmp = js('{ kind: \'class\', interfaces: [] }')
-    tmp2_arrayOf_0 = tmp
-    tmp3_arrayOf_0 = kotlin_Any_(tmp0_arrayOf_0)
+    tmp2_arrayOf_0 = (tmp, js('{ kind: \'class\', interfaces: [] }'))
+    tmp3_arrayOf_0 = (kotlin_Any_(tmp0_arrayOf_0), kotlin_Any_(tmp1_arrayOf_0), kotlin_Any_(tmp2_arrayOf_0))
     return kotlin_Any_(tmp3_arrayOf_0)
 
 def isArrayish(o):
@@ -12449,7 +12449,7 @@ def copyInto(destination, destinationOffset, startIndex, endIndex):
     return destination
 
 def minOf(a, b):
-    return visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.min(a, b)
+    return visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.min(*(a, b))
 
 def _get_resultContinuation_(_this):
     return _this.resultContinuation
@@ -13285,7 +13285,7 @@ def pythonTest():
     println('Hello world')
 
 def exampleFromAstTest():
-    fruits = listOf('apple', 'banana', 'cherry')
+    fruits = listOf(*('apple', 'banana', 'cherry'))
     tmp0_iterator = fruits.iterator()
     while tmp0_iterator.hasNext():
         x = tmp0_iterator.next()
@@ -13322,10 +13322,10 @@ def a(a1, *a2):
     pass
 
 def b():
-    a(1, 2, 3)
+    a(1, *(2, 3))
 
 def newCode():
-    tmp0_map_0 = listOf('apple', 'banana', 'cherry')
+    tmp0_map_0 = listOf(*('apple', 'banana', 'cherry'))
     tmp0_mapTo_0_1 = ArrayList_init__Create_(collectionSizeOrDefault(10))
     tmp0_iterator_1_2 = tmp0_map_0.iterator()
     while tmp0_iterator_1_2.hasNext():

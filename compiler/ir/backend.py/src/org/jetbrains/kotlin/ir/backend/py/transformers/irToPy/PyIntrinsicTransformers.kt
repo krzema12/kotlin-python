@@ -13,7 +13,7 @@ import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
 import org.jetbrains.kotlin.ir.types.*
 
-typealias IrCallTransformer = (IrCall, context: JsGenerationContext) -> List<expr>
+typealias IrCallTransformer = (IrCall, context: JsGenerationContext) -> expr
 
 class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
     private val transformers: Map<IrSymbol, IrCallTransformer>
@@ -114,14 +114,13 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
             add(intrinsics.jsBitShiftRU) { call, context ->
                 val (_, maxUnsigned) = overSignedMaxUnsigned(call.symbol.owner.returnType)
                 val (left, right) = translateCallArguments(call, context)
-                listOf(simulateUshr(maxUnsigned)(left, right))
+                simulateUshr(maxUnsigned)(left, right)
             }
             add(intrinsics.jsBitShiftL) { call, context ->
                 // compile `val << n` as `(val << n).simulateOverflow()`
                 val (overSigned, maxUnsigned) = overSignedMaxUnsigned(call.symbol.owner.returnType)
                 val (left, right) = translateCallArguments(call, context)
                 simulateOverflow(BinOp(left = left, op = LShift, right = right), overSigned = overSigned, maxUnsigned = maxUnsigned)
-                    .let(::listOf)
             }
 
             // Simulation of overflow for integer numbers:
@@ -138,7 +137,7 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
                 val (overSigned, maxUnsigned) = overSignedMaxUnsigned(f.owner.returnType)
                 add(f) { call, context ->
                     val arg = translateCallArguments(call, context).single()
-                    simulateOverflow(arg, overSigned = overSigned, maxUnsigned = maxUnsigned).let(::listOf)
+                    simulateOverflow(arg, overSigned = overSigned, maxUnsigned = maxUnsigned)
                 }
             }
 
@@ -169,8 +168,8 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
             ).forEach { f ->
                 val (overSigned, maxUnsigned) = overSignedMaxUnsigned(f.owner.returnType)
                 add(f) { call, context ->
-                    val arg = IrElementToPyExpressionTransformer().visitExpression(call.dispatchReceiver!!, context).single()
-                    simulateOverflow(arg, overSigned = overSigned, maxUnsigned = maxUnsigned).let(::listOf)
+                    val arg = IrElementToPyExpressionTransformer().visitExpression(call.dispatchReceiver!!, context)
+                    simulateOverflow(arg, overSigned = overSigned, maxUnsigned = maxUnsigned)
                 }
             }
 
@@ -182,10 +181,10 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
 
                 val (overSigned, maxUnsigned) = overSignedMaxUnsigned(method.owner.returnType)
                 add(method) { call, context ->
-                    val left = IrElementToPyExpressionTransformer().visitExpression(call.dispatchReceiver!!, context).single()
+                    val left = IrElementToPyExpressionTransformer().visitExpression(call.dispatchReceiver!!, context)
                     val right = translateCallArguments(call, context).single()
                     val binOp = op(left, right)
-                    simulateOverflow(binOp, overSigned = overSigned, maxUnsigned = maxUnsigned).let(::listOf)
+                    simulateOverflow(binOp, overSigned = overSigned, maxUnsigned = maxUnsigned)
                 }
             }
 
@@ -203,8 +202,8 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
             intrinsics.longOr.forEach { replaceLongMethodWithOperator(it, binOp(BitOr)) }
             intrinsics.longXor.forEach { replaceLongMethodWithOperator(it, binOp(BitXor)) }
             add(intrinsics.longInv) { call, context ->
-                val arg = IrElementToPyExpressionTransformer().visitExpression(call.dispatchReceiver!!, context).single()
-                UnaryOp(Invert, arg).let(::listOf)
+                val arg = IrElementToPyExpressionTransformer().visitExpression(call.dispatchReceiver!!, context)
+                UnaryOp(Invert, arg)
             }
             intrinsics.longShl.forEach { replaceLongMethodWithOperator(it, binOp(LShift)) }
             intrinsics.longShr.forEach { replaceLongMethodWithOperator(it, binOp(RShift)) }
@@ -285,12 +284,11 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
 
             add(intrinsics.jsArrayLength) { call, context ->
                 val args = translateCallArguments(call, context)
-                listOf(
-                    Call(
-                        func = Name(identifier("len"), Load),
-                        args = args,
-                        keywords = emptyList(),
-                    )
+
+                Call(
+                    func = Name(identifier("len"), Load),
+                    args = args,
+                    keywords = emptyList(),
                 )
             }
 
@@ -298,7 +296,7 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
                 val args = translateCallArguments(call, context)
                 val array = args[0]
                 val index = args[1]
-                listOf(Subscript(value = array, slice = index, ctx = Load))
+                Subscript(value = array, slice = index, ctx = Load)
             }
 
             add(intrinsics.jsArraySet) { call, context ->
@@ -306,23 +304,19 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
                 val array = args[0]
                 val index = args[1]
                 val value = args[2]
-//                listOf(  // todo: this is a statement but an expression is required, so using __setitem__ call below for now
-//                    Assign(
-//                        targets = listOf(Subscript(value = array, slice = index, ctx = Store)),
-//                        value = value,
-//                        type_comment = null,
-//                    )
+//                Assign(  // todo: this is a statement but an expression is required, so using __setitem__ call below for now
+//                    targets = listOf(Subscript(value = array, slice = index, ctx = Store)),
+//                    value = value,
+//                    type_comment = null,
 //                )
-                listOf(
-                    Call(
-                        func = Attribute(
-                            value = array,
-                            attr = identifier("__setitem__"),
-                            ctx = Load,
-                        ),
-                        args = listOf(index, value),
-                        keywords = emptyList(),
-                    )
+                Call(
+                    func = Attribute(
+                        value = array,
+                        attr = identifier("__setitem__"),
+                        ctx = Load,
+                    ),
+                    args = listOf(index, value),
+                    keywords = emptyList(),
                 )
             }
 
@@ -419,15 +413,15 @@ private fun MutableMap<IrSymbol, IrCallTransformer>.add(functionSymbol: IrSymbol
 //}
 
 private fun MutableMap<IrSymbol, IrCallTransformer>.compareOp(function: IrSimpleFunctionSymbol, op: cmpop) {
-    withTranslatedArgs(function) { listOf(Compare(left = it[0], ops = listOf(op), comparators = listOf(it[1]))) }
+    withTranslatedArgs(function) { Compare(left = it[0], ops = listOf(op), comparators = listOf(it[1])) }
 }
 
 private fun MutableMap<IrSymbol, IrCallTransformer>.unaryOp(function: IrSimpleFunctionSymbol, op: unaryop) {
-    withTranslatedArgs(function) { listOf(UnaryOp(op = op, operand = it[0])) }
+    withTranslatedArgs(function) { UnaryOp(op = op, operand = it[0]) }
 }
 
 private fun MutableMap<IrSymbol, IrCallTransformer>.binOp(function: IrSimpleFunctionSymbol, op: operator) {
-    withTranslatedArgs(function) { listOf(BinOp(left = it[0], op = op, right = it[1])) }
+    withTranslatedArgs(function) { BinOp(left = it[0], op = op, right = it[1]) }
 }
 
 //private fun MutableMap<IrSymbol, IrCallTransformer>.postfixOp(function: IrSimpleFunctionSymbol, op: JsUnaryOperator) {
@@ -436,7 +430,7 @@ private fun MutableMap<IrSymbol, IrCallTransformer>.binOp(function: IrSimpleFunc
 
 private inline fun MutableMap<IrSymbol, IrCallTransformer>.withTranslatedArgs(
     function: IrSimpleFunctionSymbol,
-    crossinline t: (List<expr>) -> List<expr>
+    crossinline t: (List<expr>) -> expr
 ) {
     put(function) { call, context -> t(translateCallArguments(call, context)) }
 }
