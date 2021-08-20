@@ -6,13 +6,18 @@
 package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 
 import generated.Python.*
+import org.jetbrains.kotlin.ir.backend.py.lower.InteropCallableReferenceLowering
 import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
 import org.jetbrains.kotlin.ir.backend.py.utils.asString
+import org.jetbrains.kotlin.ir.backend.py.utils.isJsNativeInvoke
 import org.jetbrains.kotlin.ir.backend.py.utils.realOverrideTarget
+import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.expressions.*
+import org.jetbrains.kotlin.ir.util.isFunctionTypeOrSubtype
 import org.jetbrains.kotlin.ir.util.parentAsClass
+import org.jetbrains.kotlin.util.OperatorNameConventions
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List<expr>, JsGenerationContext> {
@@ -38,6 +43,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
             is IrDynamicOperatorExpression -> visitDynamicOperatorExpression(expression, data)
             is IrDynamicMemberExpression -> visitDynamicMemberExpression(expression, data)
             is IrStringConcatenation -> visitStringConcatenation(expression, data)
+            is IrFunctionExpression -> visitFunctionExpression(expression, data)
             else -> listOf(Name(id = identifier("visitExpression-other $expression".toValidPythonSymbol()), ctx = Load))
         }
     }
@@ -53,8 +59,31 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
     }
 
     override fun visitFunctionExpression(expression: IrFunctionExpression, context: JsGenerationContext): List<expr> {
-        // TODO
-        return listOf(Name(id = identifier("visitFunctionExpression $expression".toValidPythonSymbol()), ctx = Load))
+        // TODO: create lowering: if there is one statement, use IrExpressionBody, otherwise, create a _no_name_provided_function_ and call it.
+        //       for now, the code doesn't support some cases
+
+        return Lambda(
+            args = argumentsImpl(
+                posonlyargs = emptyList(),
+                args = expression.function.valueParameters.map { argImpl(identifier(it.name.asString().toValidPythonSymbol()), null, null) },
+                kwonlyargs = emptyList(),
+                kw_defaults = emptyList(),
+                defaults = emptyList(),
+                vararg = null,
+                kwarg = null,
+            ),
+            body = when (val body = expression.function.body) {
+                is IrBlockBody -> {
+                    val statements = IrElementToPyStatementTransformer().visitBlockBody(body, context)
+                    when (val single = statements.singleOrNull() as? Return) {
+                        null -> Name(id = identifier("visitExpressionFunctionBodyStatements x${statements.size} ${statements.map { it::class.simpleName }}".toValidPythonSymbol()), ctx = Load)
+                        else -> single.value ?: Name(id = identifier("visitExpressionFunctionBodyStatementsReturn null".toValidPythonSymbol()), ctx = Load)
+                    }
+                }
+                else -> Name(id = identifier("visitExpressionFunctionBody $body".toValidPythonSymbol()), ctx = Load)
+            }
+        )
+            .let(::listOf)
     }
 
     override fun <T> visitConst(expression: IrConst<T>, context: JsGenerationContext): List<expr> {
@@ -187,24 +216,37 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
 
     override fun visitCall(expression: IrCall, context: JsGenerationContext): List<expr> {
         // TODO
+        fun isFunctionTypeInvoke(receiver: expr?, call: IrCall): Boolean {
+            if (receiver == null) return false
+            val simpleFunction = call.symbol.owner as? IrSimpleFunction ?: return false
+            val receiverType = simpleFunction.dispatchReceiverParameter?.type ?: return false
+
+            if (call.origin === InteropCallableReferenceLowering.Companion.EXPLICIT_INVOKE) return false
+
+            return simpleFunction.name == OperatorNameConventions.INVOKE && receiverType.isFunctionTypeOrSubtype()
+        }
+
         val function = expression.symbol.owner.realOverrideTarget
 
         context.staticContext.intrinsics[function.symbol]?.let {
             return it(expression, context)
         }
 
-        val noOfArguments = expression.valueArgumentsCount
+        val transformer = IrElementToPyExpressionTransformer()
+        val pyDispatchReceiver = expression.dispatchReceiver?.accept(transformer, context)
+        val pyExtensionReceiver = expression.extensionReceiver?.accept(transformer, context)
+        val arguments = translateCallArguments(expression, context, transformer)
 
-        val arguments = (0 until noOfArguments).mapNotNull { argIndex ->
-            val valueArgument: IrExpression? = expression.getValueArgument(argIndex)
-            valueArgument?.let {
-                IrElementToPyExpressionTransformer().visitExpression(it, context)
-            }
-        }.flatten()
+        if (isFunctionTypeInvoke(pyDispatchReceiver?.single(), expression) || expression.symbol.owner.isJsNativeInvoke()) {
+            return Call(
+                func = pyDispatchReceiver?.single() ?: pyExtensionReceiver!!.single(),
+                args = arguments,
+                keywords = emptyList(),
+            )
+                .let(::listOf)
+        }
 
-        val test: List<expr>? = expression.dispatchReceiver?.accept(this, context)
-
-        if (test == null) {
+        if (pyDispatchReceiver == null) {
             return listOf(
                 Call(
                     func = Name(id = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Load),
@@ -216,7 +258,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<List
             return listOf(
                 Call(
                     func = Attribute(
-                        value = test[0],
+                        value = pyDispatchReceiver.single(),
                         attr = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()),
                         ctx = Load,
                     ),

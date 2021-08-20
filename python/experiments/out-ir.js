@@ -12093,6 +12093,12 @@ this['out-ir'] = function (_) {
   function sumOverflowDemo(a_0, b_0) {
     return a_0 + b_0 | 0;
   }
+  function execute20(f) {
+    return f(20);
+  }
+  function execute20Doubled() {
+    return execute20(_no_name_provided_$factory_30());
+  }
   function a(a1, a2) {
   }
   function b() {
@@ -12140,6 +12146,24 @@ this['out-ir'] = function (_) {
   }
   function returnParameterFromClass() {
     return (new TestClass('paramVal')).functionReturningClassParameter_0_k$();
+  }
+  function _no_name_provided__40() {
+  }
+  _no_name_provided__40.prototype.invoke_ha5a7z_k$ = function (it) {
+    return it + it | 0;
+  };
+  _no_name_provided__40.prototype.invoke_20e8_k$ = function (p1) {
+    return this.invoke_ha5a7z_k$((!(p1 == null) ? typeof p1 === 'number' : false) ? p1 : THROW_CCE());
+  };
+  _no_name_provided__40.$metadata$ = {
+    kind: 'class',
+    interfaces: []
+  };
+  function _no_name_provided_$factory_30() {
+    var i = new _no_name_provided__40();
+    return function (p1) {
+      return i.invoke_ha5a7z_k$(p1);
+    };
   }
   CombinedContext.prototype.plus_d7pszg_k$ = CoroutineContext.prototype.plus_d7pszg_k$;
   UByteIterator.prototype.hasNext_0_k$ = Iterator_3.prototype.hasNext_0_k$;

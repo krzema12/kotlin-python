@@ -462,7 +462,7 @@ private val interopCallableReferenceLoweringPhase = makeBodyLoweringPhase(
         suspendFunctionsLoweringPhase,
         localDeclarationsLoweringPhase,
         localDelegatedPropertiesLoweringPhase,
-        callableReferenceLowering
+//        callableReferenceLowering
     )
 )
 
@@ -733,7 +733,7 @@ private val loweringList = listOf<Lowering>(
     copyInlineFunctionBodyLoweringPhase,
     removeInlineDeclarationsWithReifiedTypeParametersLoweringPhase,
     createScriptFunctionsPhase,
-    callableReferenceLowering,
+//    callableReferenceLowering,
     singleAbstractMethodPhase,
     tailrecLoweringPhase,
     enumClassConstructorLoweringPhase,
