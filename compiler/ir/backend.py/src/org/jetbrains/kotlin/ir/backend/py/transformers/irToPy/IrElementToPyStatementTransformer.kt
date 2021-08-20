@@ -64,7 +64,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitSetField(expression: IrSetField, context: JsGenerationContext): List<stmt> {
         // TODO
-        val receiverAsExpressions = expression.receiver?.accept(IrElementToPyExpressionTransformer(), context)?.get(0)
+        val receiverAsExpressions = expression.receiver?.accept(IrElementToPyExpressionTransformer(), context)
         return listOf(
             Assign(
                 targets = if (receiverAsExpressions != null) {
@@ -72,7 +72,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
                 } else {
                     listOf(Name(id = identifier(expression.symbol.owner.name.identifier.toValidPythonSymbol()), ctx = Store))
                 },
-                value = IrElementToPyExpressionTransformer().visitExpression(expression.value, context).first(),
+                value = IrElementToPyExpressionTransformer().visitExpression(expression.value, context),
                 type_comment = null,
             )
         )
@@ -82,7 +82,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         return listOf(
             Assign(
                 targets = listOf(Name(id = identifier(expression.symbol.owner.name.identifier.toValidPythonSymbol()), ctx = Store)),
-                value = IrElementToPyExpressionTransformer().visitExpression(expression.value, context).first(),
+                value = IrElementToPyExpressionTransformer().visitExpression(expression.value, context),
                 type_comment = null,
             )
         )
@@ -90,13 +90,13 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitReturn(expression: IrReturn, context: JsGenerationContext): List<stmt> {
         return listOf(Return(
-            value = IrElementToPyExpressionTransformer().visitExpression(expression.value, context).first(),
+            value = IrElementToPyExpressionTransformer().visitExpression(expression.value, context),
         ))
     }
 
     override fun visitThrow(expression: IrThrow, context: JsGenerationContext): List<stmt> {
         return listOf(Raise(
-            exc = IrElementToPyExpressionTransformer().visitExpression(expression.value, context).first(),
+            exc = IrElementToPyExpressionTransformer().visitExpression(expression.value, context),
             cause = null,
         ))
     }
@@ -106,7 +106,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         return declaration.initializer?.let { initializer ->
             Assign(
                 targets = listOf(Name(id = identifier(declaration.name.identifier.toValidPythonSymbol()), ctx = Store)),
-                value = IrElementToPyExpressionTransformer().visitExpression(initializer, context).first(),
+                value = IrElementToPyExpressionTransformer().visitExpression(initializer, context),
                 type_comment = null,
             )
         }
@@ -119,19 +119,16 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         if (expression.symbol.owner.constructedClassType.isAny()) {
             return listOf()
         }
-        val expressions: List<expr> = expression.accept(IrElementToPyExpressionTransformer(), context)
-        return expressions.map { Expr(value = it) }
+        return expression.accept(IrElementToPyExpressionTransformer(), context).makeStmt().let(::listOf)
     }
 
     override fun visitCall(expression: IrCall, data: JsGenerationContext): List<stmt> {
         // TODO
-        return IrElementToPyExpressionTransformer().visitCall(expression, data)
-            .map { Expr(value = it) }
+        return IrElementToPyExpressionTransformer().visitCall(expression, data).makeStmt().let(::listOf)
     }
 
     override fun visitConstructorCall(expression: IrConstructorCall, context: JsGenerationContext): List<stmt> {
-        return IrElementToPyExpressionTransformer().visitConstructorCall(expression, context)
-            .map { Expr(value = it) }
+        return IrElementToPyExpressionTransformer().visitConstructorCall(expression, context).makeStmt().let(::listOf)
     }
 
     override fun visitInstanceInitializerCall(expression: IrInstanceInitializerCall, context: JsGenerationContext): List<stmt> {
@@ -150,7 +147,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
                 .branches
                 .map { branch ->
                     If(
-                        test = IrElementToPyExpressionTransformer().visitExpression(branch.condition, context).first(),
+                        test = IrElementToPyExpressionTransformer().visitExpression(branch.condition, context),
                         body = IrElementToPyStatementTransformer().visitExpression(branch.result, context),
                         orelse = emptyList(),
                     )
@@ -179,7 +176,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     override fun visitWhileLoop(loop: IrWhileLoop, context: JsGenerationContext): List<stmt> {
         // TODO
         return listOf(While(
-            test = IrElementToPyExpressionTransformer().visitExpression(loop.condition, context).first(),
+            test = IrElementToPyExpressionTransformer().visitExpression(loop.condition, context),
             body = loop.body?.accept(this, context) ?: emptyList(),
             orelse = emptyList(),
         ))
@@ -194,8 +191,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         //         break
         val body = loop.body?.accept(this, context).orEmpty()
         val condition = If(
-            test = IrElementToPyExpressionTransformer().visitExpression(loop.condition, context).singleOrNull()
-                ?: Name(id = identifier("visitDoWhileLoop ${loop.condition}".toValidPythonSymbol()), ctx = Load),
+            test = IrElementToPyExpressionTransformer().visitExpression(loop.condition, context),
             body = listOf(Break),
             orelse = emptyList(),
         )

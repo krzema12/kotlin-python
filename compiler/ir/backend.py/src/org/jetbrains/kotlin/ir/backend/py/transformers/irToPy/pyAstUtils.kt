@@ -10,7 +10,10 @@ import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.expressions.IrMemberAccessExpression
+import org.jetbrains.kotlin.ir.expressions.IrVararg
 import org.jetbrains.kotlin.ir.util.isVararg
+
+fun expr.makeStmt(): stmt = Expr(value = this)
 
 fun translateFunction(declaration: IrFunction, context: JsGenerationContext): FunctionDef {
     val isClassMethod = declaration.dispatchReceiverParameter != null
@@ -64,17 +67,20 @@ fun translateCallArguments(expression: IrMemberAccessExpression<*>, context: JsG
         val argument = expression.getValueArgument(index)
         val result = argument?.accept(transformer, context)
         if (result == null) {
-            emptyList()  // todo
+            Name(id = identifier("translateCallArguments $index".toValidPythonSymbol()), ctx = Load)  // todo
 //            if (context.staticContext.backendContext.es6mode) return@mapTo JsPrefixOperation(JsUnaryOperator.VOID, JsIntLiteral(2))
 //
 //            assert(expression is IrFunctionAccessExpression && expression.symbol.owner.isExternalOrInheritedFromExternal())
 //            JsPrefixOperation(JsUnaryOperator.VOID, JsIntLiteral(1))
-        } else
+        } else if (argument is IrVararg) {
+            Starred(value = result, ctx = Load)  // todo: it's not pretty to have *(1, 2, 3) -- we can flatten vararg here
+        } else {
             result
+        }
     }
 
 //    return if (expression.symbol.isSuspend) {
 //        arguments + context.continuation
 //    } else arguments
-    return arguments.flatten()  // todo
+    return arguments  // todo
 }

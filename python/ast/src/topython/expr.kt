@@ -34,9 +34,9 @@ fun expr.toPython(): String {
         is Constant -> toPython()
         is Attribute -> toPython()
         is Subscript -> toPython()
-        is Starred -> TODO()
+        is Starred -> toPython()
         is List -> toPython()
-        is Tuple -> TODO()
+        is Tuple -> toPython()
         is Slice -> TODO()
     }
 }
@@ -77,6 +77,12 @@ fun List.toPython() =
         it.toPython()
     }
 
+fun Tuple.toPython() =
+    when (val single = elts.singleOrNull()) {
+        null -> elts.joinToString(separator = ", ", prefix = "(", postfix = ")") { it.toPython() }
+        else -> "(${single.toPython()},)"
+    }
+
 fun Constant.toPython() =
     value.value.replace("\n", "\\n")
 
@@ -91,3 +97,6 @@ fun Attribute.toPython() =
 
 fun Subscript.toPython() =
     "${value.surroundIfNeeded(forceEvaluate = true)}[${slice.toPython()}]"
+
+fun Starred.toPython() =
+    "*${value.toPython()}"
