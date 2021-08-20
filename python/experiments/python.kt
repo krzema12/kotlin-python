@@ -23,6 +23,10 @@ fun numberOfCombinations(n: Int, k: Int): Long = factorial(n) / (factorial(k) * 
 
 fun sumOverflowDemo(a: Int, b: Int): Int = a + b
 
+fun execute20(f: (Int) -> Int): Int = f(20)
+
+fun execute20Doubled() = execute20 { it + it }
+
 fun a(a1: Int, vararg a2: Int) {
 
 }

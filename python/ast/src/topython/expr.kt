@@ -16,7 +16,7 @@ fun expr.toPython(): String {
         is NamedExpr -> TODO()
         is BinOp -> toPython()
         is UnaryOp -> toPython()
-        is Lambda -> TODO()
+        is Lambda -> toPython()
         is IfExp -> toPython()
         is Dict -> TODO()
         is Set -> TODO()
@@ -65,6 +65,9 @@ fun BinOp.toPython() =
 
 fun UnaryOp.toPython() =
     "${op.toPython()}${operand.surroundIfNeeded()}"
+
+fun Lambda.toPython() =
+    "lambda ${args.toPython()}: ${body.toPython()}"
 
 fun IfExp.toPython() =
     "(${body.toPython()}) if (${test.toPython()}) else (${orelse.toPython()})"

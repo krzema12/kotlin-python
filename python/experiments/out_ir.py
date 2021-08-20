@@ -6,7 +6,7 @@ def fold(initial, operation):
     while inductionVariable < last:
         element = indexedObject[inductionVariable]
         inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-        accumulator = operation.invoke(accumulator, element)
+        accumulator = operation(accumulator, element)
     
     return accumulator
 
@@ -265,7 +265,7 @@ def indexOfFirst(predicate):
     tmp0_iterator = self.iterator()
     while tmp0_iterator.hasNext():
         item = tmp0_iterator.next()
-        if predicate.invoke(item):
+        if predicate(item):
             return index
         
         tmp1 = index
@@ -277,7 +277,7 @@ def indexOfFirst(predicate):
 def indexOfLast(predicate):
     iterator = self.listIterator(self._get_size_())
     while iterator.hasPrevious():
-        if predicate.invoke(iterator.previous()):
+        if predicate(iterator.previous()):
             return iterator.nextIndex()
         
     
@@ -295,7 +295,7 @@ def any(predicate):
     tmp0_iterator = self.iterator()
     while tmp0_iterator.hasNext():
         element = tmp0_iterator.next()
-        if predicate.invoke(element):
+        if predicate(element):
             return True
         
     
@@ -313,7 +313,7 @@ def all(predicate):
     tmp0_iterator = self.iterator()
     while tmp0_iterator.hasNext():
         element = tmp0_iterator.next()
-        if not predicate.invoke(element):
+        if not predicate(element):
             return False
         
     
@@ -394,7 +394,7 @@ def forEach(action):
     tmp0_iterator = self.iterator()
     while tmp0_iterator.hasNext():
         element = tmp0_iterator.next()
-        action.invoke(element)
+        action(element)
     
 
 def map(transform):
@@ -402,7 +402,7 @@ def map(transform):
     tmp0_iterator_1 = self.iterator()
     while tmp0_iterator_1.hasNext():
         item_2 = tmp0_iterator_1.next()
-        tmp0_mapTo_0.add(transform.invoke(item_2))
+        tmp0_mapTo_0.add(transform(item_2))
         Unit_getInstance()
     
     return tmp0_mapTo_0
@@ -411,7 +411,7 @@ def mapTo(destination, transform):
     tmp0_iterator = self.iterator()
     while tmp0_iterator.hasNext():
         item = tmp0_iterator.next()
-        destination.add(transform.invoke(item))
+        destination.add(transform(item))
         Unit_getInstance()
     
     return destination
@@ -429,7 +429,7 @@ def reversed():
     return Companion_getInstance().fromClosedRange(self.last, self.first, (-self.step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
 
 def getOrElse(index, defaultValue):
-    return (charSequenceGet(self, index)) if ((index <= _get_lastIndex_()) if (index >= 0) else (False)) else (defaultValue.invoke(index))
+    return (charSequenceGet(self, index)) if ((index <= _get_lastIndex_()) if (index >= 0) else (False)) else (defaultValue(index))
 
 def KotlinNothingValueException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
@@ -756,17 +756,6 @@ class OptIn:
         pass
     
 
-class _no_name_provided_:
-    def __init__(self, this_0):
-        self.this_0 = this_0
-    
-    def invoke(self, it):
-        return ('(this Collection)') if (it is self.this_0) else (toString())
-    
-    def invoke(self, p1):
-        return self.invoke((E(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
 class AbstractCollection:
     def __init__(self):
         pass
@@ -833,7 +822,7 @@ class AbstractCollection:
         return self._get_size_() == 0
     
     def toString(self):
-        return joinToString_default(', ', '[', ']', 0, None, _no_name_provided__factory(self), 24, None)
+        return joinToString_default(', ', '[', ']', 0, None, lambda it: ('(this Collection)') if (it is self) else (toString()), 24, None)
     
     def toArray(self):
         return copyToArrayImpl(self)
@@ -847,10 +836,6 @@ class AbstractCollection:
     def hashCode(self):
         pass
     
-
-def _no_name_provided__factory(this_0):
-    i = _no_name_provided_(this_0)
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
 def _get_list_(_this):
     return _this.list
@@ -1350,7 +1335,7 @@ def filterInPlace(predicate, predicateResultToRemove):
             readIndex = inductionVariable
             inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
             element = self.get(readIndex)
-            if predicate.invoke(element) == predicateResultToRemove:
+            if predicate(element) == predicateResultToRemove:
                 continue
             
             if not (writeIndex == readIndex):
@@ -1387,7 +1372,7 @@ def filterInPlace(predicate, predicateResultToRemove):
     result = False
     tmp0_with_0 = self.iterator()
     while tmp0_with_0.hasNext():
-        if predicate.invoke(tmp0_with_0.next()) == predicateResultToRemove:
+        if predicate(tmp0_with_0.next()) == predicateResultToRemove:
             tmp0_with_0.remove()
             result = True
         
@@ -1431,7 +1416,7 @@ class ContractBuilder:
         if not (_mask0 & 2 == 0):
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
         
-        return (self.callsInPlace(_lambda, kotlin_contracts_InvocationKind(kind))) if (_handler == None) else (kotlin_Function2_kotlin_Function2_kotlin_Function2_kotlin_Function2_(_handler).invoke(_lambda, kind))
+        return (self.callsInPlace(_lambda, kotlin_contracts_InvocationKind(kind))) if (_handler == None) else (kotlin_Function2_kotlin_Function2_kotlin_Function2_kotlin_Function2_(_handler)(_lambda, kind))
     
     def equals(self, other):
         pass
@@ -1667,7 +1652,7 @@ class _no_name_provided_:
         return self._context
     
     def resumeWith(self, result):
-        return self._resumeWith.invoke(boxIntrinsic(result))
+        return self._resumeWith(boxIntrinsic(result))
     
     def equals(self, other):
         pass
@@ -1779,7 +1764,7 @@ class Element:
         return tmp
     
     def fold(self, initial, operation):
-        return operation.invoke(initial, self)
+        return operation(initial, self)
     
     def minusKey(self, key):
         return (EmptyCoroutineContext_getInstance()) if (self._get_key_() == key) else (self)
@@ -1800,31 +1785,6 @@ class Element:
         pass
     
 
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, acc, element):
-        removed = acc.minusKey(element._get_key_())
-        if removed is EmptyCoroutineContext_getInstance():
-            tmp = element
-        else:
-            interceptor = removed.get(Key_getInstance())
-            if interceptor == None:
-                tmp = CombinedContext(removed, element)
-            else:
-                left = removed.minusKey(Key_getInstance())
-                tmp = (CombinedContext(element, interceptor)) if (left is EmptyCoroutineContext_getInstance()) else (CombinedContext(CombinedContext(left, element), interceptor))
-            
-            tmp = tmp
-        
-        return tmp
-    
-    def invoke(self, p1, p2):
-        tmp = (kotlin_coroutines_CoroutineContext(p1)) if ((isInterface(p1, jsClass())) if (not (p1 == None)) else (False)) else (THROW_CCE())
-        return self.invoke(tmp, (kotlin_coroutines_Element(p2)) if ((isInterface(p2, jsClass())) if (not (p2 == None)) else (False)) else (THROW_CCE()))
-    
-
 class CoroutineContext:
     def get(self, key):
         pass
@@ -1833,12 +1793,7 @@ class CoroutineContext:
         pass
     
     def plus(self, context):
-        if context is EmptyCoroutineContext_getInstance():
-            tmp = self
-        else:
-            tmp = context.fold(self, _no_name_provided__factory())
-        
-        return tmp
+        return (self) if (context is EmptyCoroutineContext_getInstance()) else (context.fold(self, lambda acc, element: visitExpressionFunctionBodyStatements_x4__Assign__Expr__If__Return_))
     
     def minusKey(self, key):
         pass
@@ -1855,10 +1810,6 @@ class CoroutineContext:
     def __init__(self):
         pass
     
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
 def _get_serialVersionUID_(_this):
     return _this.serialVersionUID
@@ -1983,7 +1934,7 @@ def writeReplace(_this):
     n = size(_this)
     elements = fillArrayVal(Array(n), None)
     index = _sharedBox_create(0)
-    _this.fold(Unit_getInstance(), _no_name_provided__factory(elements, index))
+    _this.fold(Unit_getInstance(), lambda _anonymous_parameter_0_, element: visitExpressionFunctionBodyStatements_x3__Assign__Expr__Expr_)
     tmp0_check_0 = _sharedBox_read(index) == n
     if not tmp0_check_0:
         message_2 = 'Check failed.'
@@ -2007,39 +1958,6 @@ class Serialized:
     
     def toString(self):
         pass
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, acc, element):
-        if charSequenceLength(acc) == 0:
-            tmp = toString(element)
-        elif True:
-            tmp = (str(acc) + str(', ')) + str(element)
-        
-        return tmp
-    
-    def invoke(self, p1, p2):
-        tmp = (kotlin_String(p1)) if ((jsTypeOf(p1) == 'string') if (not (p1 == None)) else (False)) else (THROW_CCE())
-        return self.invoke(tmp, (kotlin_coroutines_Element(p2)) if ((isInterface(p2, jsClass())) if (not (p2 == None)) else (False)) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self, _elements, _index):
-        self._elements = _elements
-        self._index = _index
-    
-    def invoke(self, _anonymous_parameter_0_, element):
-        tmp0 = _sharedBox_read(self._index)
-        _sharedBox_write(self._index, (tmp0 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
-        self._elements.__setitem__(tmp0, element)
-    
-    def invoke(self, p1, p2):
-        tmp = (kotlin_Unit(p1)) if (jsInstanceOf(p1, jsClass())) else (THROW_CCE())
-        self.invoke(tmp, (kotlin_coroutines_Element(p2)) if ((isInterface(p2, jsClass())) if (not (p2 == None)) else (False)) else (THROW_CCE()))
-        return Unit_getInstance()
     
 
 class CombinedContext:
@@ -2066,7 +1984,7 @@ class CombinedContext:
         
     
     def fold(self, initial, operation):
-        return operation.invoke(self.left.fold(initial, operation), self.element)
+        return operation(self.left.fold(initial, operation), self.element)
     
     def minusKey(self, key):
         tmp0_safe_receiver = self.element.get(key)
@@ -2101,7 +2019,7 @@ class CombinedContext:
         return (hashCode(self.left) + hashCode(self.element)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
     
     def toString(self):
-        return ('[' + self.fold('', _no_name_provided__factory())) + ']'
+        return ('[' + self.fold('', lambda acc, element: visitExpressionFunctionBodyStatements_x2__If__Return_)) + ']'
     
     def plus(self, context):
         pass
@@ -2125,7 +2043,7 @@ class AbstractCoroutineContextKey:
         tmp.topmostKey = tmp
     
     def tryCast(self, element):
-        return self.safeCast.invoke(element)
+        return self.safeCast(element)
     
     def isSubKey(self, key):
         return (True) if (key is self) else (self.topmostKey is key)
@@ -2139,14 +2057,6 @@ class AbstractCoroutineContextKey:
     def toString(self):
         pass
     
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory(_elements, _index):
-    i = _no_name_provided_(_elements, _index)
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
 def _get_COROUTINE_SUSPENDED_():
     return CoroutineSingletons_COROUTINE_SUSPENDED_getInstance()
@@ -2665,7 +2575,7 @@ def KVariance_OUT_getInstance():
 
 def appendElement(element, transform):
     if not (transform == None):
-        self.append(transform.invoke(element))
+        self.append(transform(element))
         Unit_getInstance()
     elif (True) if (element == None) else (isCharSequence(element)):
         self.append(kotlin_CharSequence_(element))
@@ -2701,7 +2611,7 @@ def check(value):
 
 def check(value, lazyMessage):
     if not value:
-        message = lazyMessage.invoke()
+        message = lazyMessage()
         raise IllegalStateException_init__Create_(toString(message))
     
 
@@ -2710,7 +2620,7 @@ def error(message):
 
 def require(value, lazyMessage):
     if not value:
-        message = lazyMessage.invoke()
+        message = lazyMessage()
         raise IllegalArgumentException_init__Create_(toString(message))
     
 
@@ -2847,7 +2757,7 @@ def throwOnFailure():
     
 
 def run(block):
-    return block.invoke()
+    return block()
 
 def TODO():
     raise NotImplementedError_init__Create_(None, 1, None)
@@ -2886,10 +2796,10 @@ class NotImplementedError:
     
 
 def let(block):
-    return block.invoke(self)
+    return block(self)
 
 def apply(block):
-    block.invoke(self)
+    block(self)
     return self
 
 def repeat(times, action):
@@ -2898,7 +2808,7 @@ def repeat(times, action):
         while True:
             index = inductionVariable
             inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-            action.invoke(index)
+            action(index)
             if inductionVariable < times:
                 break
             
@@ -2906,14 +2816,14 @@ def repeat(times, action):
     
 
 def _with(receiver, block):
-    return block.invoke(receiver)
+    return block(receiver)
 
 def also(block):
-    block.invoke(self)
+    block(self)
     return self
 
 def run(block):
-    return block.invoke(self)
+    return block(self)
 
 def _UByte___init__impl_(data):
     return kotlin_UByte(data)
@@ -7617,28 +7527,6 @@ def copyToArrayImpl(collection, array):
     
     return array
 
-class _no_name_provided_:
-    def __init__(self, _elements):
-        self._elements = _elements
-    
-    def invoke(self, it):
-        return self._elements.contains(it)
-    
-    def invoke(self, p1):
-        return self.invoke((E(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self, _elements):
-        self._elements = _elements
-    
-    def invoke(self, it):
-        return not self._elements.contains(it)
-    
-    def invoke(self, p1):
-        return self.invoke((E(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
 class AbstractMutableCollection:
     def __init__(self):
         super()
@@ -7671,13 +7559,11 @@ class AbstractMutableCollection:
     
     def removeAll(self, elements):
         self.checkIsMutable()
-        tmp = (kotlin_collections_MutableIterable_E_(self)) if (isInterface(self, jsClass())) else (THROW_CCE())
-        return removeAll(_no_name_provided__factory(elements))
+        return removeAll(lambda it: elements.contains(it))
     
     def retainAll(self, elements):
         self.checkIsMutable()
-        tmp = (kotlin_collections_MutableIterable_E_(self)) if (isInterface(self, jsClass())) else (THROW_CCE())
-        return removeAll(_no_name_provided__factory(elements))
+        return removeAll(lambda it: not elements.contains(it))
     
     def clear(self):
         self.checkIsMutable()
@@ -7724,14 +7610,6 @@ class AbstractMutableCollection:
     def hashCode(self):
         pass
     
-
-def _no_name_provided__factory(_elements):
-    i = _no_name_provided_(_elements)
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory(_elements):
-    i = _no_name_provided_(_elements)
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
 def _get_list_(_this):
     return _this.list
@@ -7993,28 +7871,6 @@ class SubList:
         pass
     
 
-class _no_name_provided_:
-    def __init__(self, _elements):
-        self._elements = _elements
-    
-    def invoke(self, it):
-        return self._elements.contains(it)
-    
-    def invoke(self, p1):
-        return self.invoke((E(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self, _elements):
-        self._elements = _elements
-    
-    def invoke(self, it):
-        return not self._elements.contains(it)
-    
-    def invoke(self, p1):
-        return self.invoke((E(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
 class AbstractMutableList:
     def __init__(self):
         super()
@@ -8060,11 +7916,11 @@ class AbstractMutableList:
     
     def removeAll(self, elements):
         self.checkIsMutable()
-        return removeAll(_no_name_provided__factory(elements))
+        return removeAll(lambda it: elements.contains(it))
     
     def retainAll(self, elements):
         self.checkIsMutable()
-        return removeAll(_no_name_provided__factory(elements))
+        return removeAll(lambda it: not elements.contains(it))
     
     def iterator(self):
         return IteratorImpl(self)
@@ -8176,14 +8032,6 @@ class AbstractMutableList:
     def get(self, index):
         pass
     
-
-def _no_name_provided__factory(_elements):
-    i = _no_name_provided_(_elements)
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory(_elements):
-    i = _no_name_provided_(_elements)
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
 def _set_array_(_this, _set___):
     _this.array = _set___
@@ -8832,7 +8680,7 @@ class PrimitiveKClassImpl:
         return self.givenSimpleName
     
     def isInstance(self, value):
-        return self.isInstanceFunction.invoke(value)
+        return self.isInstanceFunction(value)
     
     def _get_jClass_(self):
         pass
@@ -9185,17 +9033,6 @@ def asString(_this):
     
     return prefixString() + toString()
 
-class _no_name_provided_:
-    def __init__(self, this_0):
-        self.this_0 = this_0
-    
-    def invoke(self, it):
-        return asString(self.this_0)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_reflect_KTypeProjection(p1)) if (jsInstanceOf(p1, jsClass())) else (THROW_CCE()))
-    
-
 class KTypeImpl:
     def __init__(self, classifier, arguments, isMarkedNullable):
         self.classifier = classifier
@@ -9239,7 +9076,7 @@ class KTypeImpl:
         if self.arguments.isEmpty():
             tmp = ''
         else:
-            tmp = joinToString_default(', ', '<', '>', 0, None, _no_name_provided__factory(self), 24, None)
+            tmp = joinToString_default(', ', '<', '>', 0, None, lambda it: asString(self), 24, None)
         
         args = tmp
         nullable = ('?') if (self.isMarkedNullable) else ('')
@@ -9291,10 +9128,6 @@ def DynamicKType_getInstance():
         DynamicKType()
     
     return DynamicKType_instance
-
-def _no_name_provided__factory(this_0):
-    i = _no_name_provided_(this_0)
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
 class KTypeParameterImpl:
     def __init__(self, name, upperBounds, variance, isReified):
@@ -9382,292 +9215,67 @@ def _get_functionClasses_():
     return functionClasses
 
 visitField_org_jetbrains_kotlin_ir_declarations_impl_IrFieldImpl = 0
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return isObject(it)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return isNumber(it)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return (jsTypeOf(it) == 'boolean') if (not (it == None)) else (False)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return (jsTypeOf(it) == 'number') if (not (it == None)) else (False)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return (jsTypeOf(it) == 'number') if (not (it == None)) else (False)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return (jsTypeOf(it) == 'number') if (not (it == None)) else (False)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return (jsTypeOf(it) == 'number') if (not (it == None)) else (False)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return (jsTypeOf(it) == 'number') if (not (it == None)) else (False)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return (isArray(it)) if (not (it == None)) else (False)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return (jsTypeOf(it) == 'string') if (not (it == None)) else (False)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return jsInstanceOf(it, jsClass())
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return (isBooleanArray(it)) if (not (it == None)) else (False)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return (isCharArray(it)) if (not (it == None)) else (False)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return (isByteArray(it)) if (not (it == None)) else (False)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return (isShortArray(it)) if (not (it == None)) else (False)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return (isIntArray(it)) if (not (it == None)) else (False)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return (isLongArray(it)) if (not (it == None)) else (False)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return (isFloatArray(it)) if (not (it == None)) else (False)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return (isDoubleArray(it)) if (not (it == None)) else (False)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-class _no_name_provided_:
-    def __init__(self, _arity):
-        self._arity = _arity
-    
-    def invoke(self, it):
-        if jsTypeOf(it) is 'function':
-            tmp = EQEQEQ(length(it), self._arity)
-        else:
-            tmp = False
-        
-        return tmp
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
 class PrimitiveClasses:
     def __init__(self):
         PrimitiveClasses_instance = self
         tmp = self
         tmp0_unsafeCast_0 = js('Object')
-        tmp.anyClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Any', _no_name_provided__factory())
+        tmp.anyClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Any', lambda it: isObject(it))
         tmp = self
         tmp0_unsafeCast_0 = js('Number')
-        tmp.numberClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Number', _no_name_provided__factory())
+        tmp.numberClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Number', lambda it: isNumber(it))
         self.nothingClass = NothingKClassImpl_getInstance()
         tmp = self
         tmp0_unsafeCast_0 = js('Boolean')
-        tmp.booleanClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Boolean', _no_name_provided__factory())
+        tmp.booleanClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Boolean', lambda it: (jsTypeOf(it) == 'boolean') if (not (it == None)) else (False))
         tmp = self
         tmp0_unsafeCast_0 = js('Number')
-        tmp.byteClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Byte', _no_name_provided__factory())
+        tmp.byteClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Byte', lambda it: (jsTypeOf(it) == 'number') if (not (it == None)) else (False))
         tmp = self
         tmp0_unsafeCast_0 = js('Number')
-        tmp.shortClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Short', _no_name_provided__factory())
+        tmp.shortClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Short', lambda it: (jsTypeOf(it) == 'number') if (not (it == None)) else (False))
         tmp = self
         tmp0_unsafeCast_0 = js('Number')
-        tmp.intClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Int', _no_name_provided__factory())
+        tmp.intClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Int', lambda it: (jsTypeOf(it) == 'number') if (not (it == None)) else (False))
         tmp = self
         tmp0_unsafeCast_0 = js('Number')
-        tmp.floatClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Float', _no_name_provided__factory())
+        tmp.floatClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Float', lambda it: (jsTypeOf(it) == 'number') if (not (it == None)) else (False))
         tmp = self
         tmp0_unsafeCast_0 = js('Number')
-        tmp.doubleClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Double', _no_name_provided__factory())
+        tmp.doubleClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Double', lambda it: (jsTypeOf(it) == 'number') if (not (it == None)) else (False))
         tmp = self
         tmp0_unsafeCast_0 = js('Array')
-        tmp.arrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Array', _no_name_provided__factory())
+        tmp.arrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Array', lambda it: (isArray(it)) if (not (it == None)) else (False))
         tmp = self
         tmp0_unsafeCast_0 = js('String')
-        tmp.stringClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'String', _no_name_provided__factory())
+        tmp.stringClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'String', lambda it: (jsTypeOf(it) == 'string') if (not (it == None)) else (False))
         tmp = self
         tmp0_unsafeCast_0 = js('Error')
-        tmp.throwableClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Throwable', _no_name_provided__factory())
+        tmp.throwableClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Throwable', lambda it: jsInstanceOf(it, jsClass()))
         tmp = self
         tmp0_unsafeCast_0 = js('Array')
-        tmp.booleanArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'BooleanArray', _no_name_provided__factory())
+        tmp.booleanArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'BooleanArray', lambda it: (isBooleanArray(it)) if (not (it == None)) else (False))
         tmp = self
         tmp0_unsafeCast_0 = js('Uint16Array')
-        tmp.charArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'CharArray', _no_name_provided__factory())
+        tmp.charArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'CharArray', lambda it: (isCharArray(it)) if (not (it == None)) else (False))
         tmp = self
         tmp0_unsafeCast_0 = js('Int8Array')
-        tmp.byteArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'ByteArray', _no_name_provided__factory())
+        tmp.byteArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'ByteArray', lambda it: (isByteArray(it)) if (not (it == None)) else (False))
         tmp = self
         tmp0_unsafeCast_0 = js('Int16Array')
-        tmp.shortArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'ShortArray', _no_name_provided__factory())
+        tmp.shortArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'ShortArray', lambda it: (isShortArray(it)) if (not (it == None)) else (False))
         tmp = self
         tmp0_unsafeCast_0 = js('Int32Array')
-        tmp.intArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'IntArray', _no_name_provided__factory())
+        tmp.intArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'IntArray', lambda it: (isIntArray(it)) if (not (it == None)) else (False))
         tmp = self
         tmp0_unsafeCast_0 = js('Array')
-        tmp.longArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'LongArray', _no_name_provided__factory())
+        tmp.longArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'LongArray', lambda it: (isLongArray(it)) if (not (it == None)) else (False))
         tmp = self
         tmp0_unsafeCast_0 = js('Float32Array')
-        tmp.floatArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'FloatArray', _no_name_provided__factory())
+        tmp.floatArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'FloatArray', lambda it: (isFloatArray(it)) if (not (it == None)) else (False))
         tmp = self
         tmp0_unsafeCast_0 = js('Float64Array')
-        tmp.doubleArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'DoubleArray', _no_name_provided__factory())
+        tmp.doubleArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'DoubleArray', lambda it: (isDoubleArray(it)) if (not (it == None)) else (False))
     
     def _get_anyClass_(self):
         return self.anyClass
@@ -9733,8 +9341,7 @@ class PrimitiveClasses:
         tmp0_elvis_lhs = functionClasses[arity]
         if tmp0_elvis_lhs == None:
             tmp0_unsafeCast_0_3 = js('Function')
-            tmp = str('Function') + str(arity)
-            result_2 = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_3), tmp, _no_name_provided__factory(arity))
+            result_2 = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_3), str('Function') + str(arity), lambda it: visitExpressionFunctionBodyStatements_x2__If__Return_)
             tmp1_asDynamic_0_5 = functionClasses
             visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
             tmp = result_2
@@ -9759,86 +9366,6 @@ def PrimitiveClasses_getInstance():
         PrimitiveClasses()
     
     return PrimitiveClasses_instance
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
-def _no_name_provided__factory(_arity):
-    i = _no_name_provided_(_arity)
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
 
 def functionClasses_init_():
     return fillArrayVal(Array(0), None)
@@ -10463,7 +9990,7 @@ class sam_kotlin_Comparator_0:
         self.function = function
     
     def compare(self, a, b):
-        return self.function.invoke(a, b)
+        return self.function(a, b)
     
     def compare(self, a, b):
         return self.compare(a, b)
@@ -10478,24 +10005,8 @@ class sam_kotlin_Comparator_0:
         pass
     
 
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, a, b):
-        return compareTo(b, True)
-    
-    def invoke(self, p1, p2):
-        tmp = (kotlin_String(p1)) if ((jsTypeOf(p1) == 'string') if (not (p1 == None)) else (False)) else (THROW_CCE())
-        return self.invoke(tmp, (kotlin_String(p2)) if ((jsTypeOf(p2) == 'string') if (not (p2 == None)) else (False)) else (THROW_CCE()))
-    
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
-
 def STRING_CASE_INSENSITIVE_ORDER_init_():
-    tmp = _no_name_provided__factory()
+    tmp = lambda a, b: compareTo(b, True)
     return sam_kotlin_Comparator_0(tmp)
 
 def _get_REPLACEMENT_BYTE_SEQUENCE_():
@@ -11209,7 +10720,7 @@ def arrayWithFun(size, init):
     result_1 = kotlin_Any_(tmp0_fillArrayFun_0)
     i_2 = 0
     while not (i_2 == len(result_1)):
-        result_1.__setitem__(i_2, init.invoke(i_2))
+        result_1.__setitem__(i_2, init(i_2))
         i_2 = (i_2 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
         Unit_getInstance()
     
@@ -11219,7 +10730,7 @@ def fillArrayFun(array, init):
     result = kotlin_Any_(array)
     i = 0
     while not (i == len(result)):
-        result.__setitem__(i, init.invoke(i))
+        result.__setitem__(i, init(i))
         i = (i + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
         Unit_getInstance()
     
@@ -11754,22 +11265,7 @@ def charSequenceSubSequence(a, startIndex, endIndex):
     return tmp
 
 def arrayToString(array):
-    return joinToString_default(', ', '[', ']', 0, None, _no_name_provided__factory(), 24, None)
-
-class _no_name_provided_:
-    def __init__(self):
-        pass
-    
-    def invoke(self, it):
-        return toString(it)
-    
-    def invoke(self, p1):
-        return self.invoke((kotlin_Any_(p1)) if ((True) if (p1 == None) else (isObject(p1))) else (THROW_CCE()))
-    
-
-def _no_name_provided__factory():
-    i = _no_name_provided_()
-    return visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl
+    return joinToString_default(', ', '[', ']', 0, None, lambda it: toString(it), 24, None)
 
 def compareTo(a, b):
     tmp0_subject = jsTypeOf(a)
@@ -12003,7 +11499,7 @@ def returnIfSuspended(argument):
     raise Exception_init__Create_('Implemented as intrinsic')
 
 def suspendCoroutineUninterceptedOrReturnJS(block):
-    return block.invoke(getContinuation())
+    return block(getContinuation())
 
 def getCoroutineContext():
     return getContinuation()._get_context_()
@@ -13815,6 +13311,12 @@ def numberOfCombinations(n, k):
 
 def sumOverflowDemo(a, b):
     return (a + b).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+
+def execute20(f):
+    return f(20)
+
+def execute20Doubled():
+    return execute20(lambda it: (it + it).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
 
 def a(a1, *a2):
     pass
