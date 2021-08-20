@@ -118,8 +118,12 @@ object PythonTestChecker : AbstractJsTestChecker() {
         }
 
         if (exitValue != 0) {
-            val stderrReader = BufferedReader(InputStreamReader(process.errorStream))
-            val stderr = stderrReader.lineSequence().toList().takeLast(10).joinToString("\n")
+            val stderr = try {
+                val stderrReader = BufferedReader(InputStreamReader(process.errorStream))
+                stderrReader.lineSequence().toList().takeLast(10).joinToString("\n")
+            } catch (e: Exception) {
+                "There was a problem when extracting the contents of STDERR. Details: $e"
+            }
             throw PythonExecutionException("$runningTimeMessage\n$stderr")
         } else {
             val stdoutReader = BufferedReader(InputStreamReader(process.inputStream))
