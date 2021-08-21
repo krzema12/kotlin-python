@@ -142,7 +142,7 @@ abstract class BasicIrBoxTest(
             }
 
             if (!skipRegularMode) {
-                var compilationException: KotlinCompilationException? = null
+                var compilationException: Throwable? = null
                 val compiledModuleWithDuration: Pair<Long, CompilerResult?> = measureTimeMillisWithResult {
                     try {
                         compile(
@@ -163,14 +163,14 @@ abstract class BasicIrBoxTest(
                             propertyLazyInitialization = propertyLazyInitialization,
                         )
                     } catch (e: Throwable) {
-                        compilationException = KotlinCompilationException("Message should be set later. If you see this, it's a bug!", e)
+                        compilationException = e
                         null
                     }
                 }
                 val compilationTimeMessage = "Kotlin compilation time: ${compiledModuleWithDuration.first} ms"
 
-                if (compilationException != null) {
-                    throw KotlinCompilationException(compilationTimeMessage, compilationException!!.cause)
+                compilationException?.let {
+                    throw KotlinCompilationException(compilationTimeMessage, it)
                 }
                 val compiledModule = compiledModuleWithDuration.second!!
 
