@@ -52,6 +52,17 @@ sudo umount /tmp  # unmount
 
 Setting `maxParallelForks` isn't required anymore since now Gradle parallelism is used.
 
+### Generating reports
+
+Go to the repository root and call:
+
+```
+python/experiments/generate-box-tests-reports.main.kts
+```
+
+It will generate various reports and summaries:
+* `box-tests-report.tsv` - for each test, some useful info are produced, in particular about the reason why it failed
+
 ### Test stats
 
 Current status: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=25&leftFill=) (**1456**/5787 passed)
