@@ -185,22 +185,37 @@ abstract class BasicIrBoxTest(
             }
 
             if (runIrPir && !skipDceDriven) {
-                compile(
-                    project = config.project,
-                    mainModule = MainModule.SourceFiles(filesToCompile),
-                    analyzer = AnalyzerWithCompilerReport(config.configuration),
-                    configuration = config.configuration,
-                    phaseConfig = phaseConfig,
-                    irFactory = PersistentIrFactory(),
-                    allDependencies = resolvedLibraries,
-                    friendDependencies = emptyList(),
-                    mainArguments = mainCallParameters.run { if (shouldBeGenerated()) arguments() else null },
-                    exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, testFunction))),
-                    dceDriven = true,
-                    es6mode = runEs6Mode,
-                    multiModule = splitPerModule || perModule,
-                    propertyLazyInitialization = propertyLazyInitialization
-                ).jsCode!!.writeTo(pirOutputFile, config)
+                var compilationException: Throwable? = null
+                val compiledModuleWithDuration: Pair<Long, CompilerResult?> = measureTimeMillisWithResult {
+                    try {
+                        compile(
+                            project = config.project,
+                            mainModule = MainModule.SourceFiles(filesToCompile),
+                            analyzer = AnalyzerWithCompilerReport(config.configuration),
+                            configuration = config.configuration,
+                            phaseConfig = phaseConfig,
+                            irFactory = PersistentIrFactory(),
+                            allDependencies = resolvedLibraries,
+                            friendDependencies = emptyList(),
+                            mainArguments = mainCallParameters.run { if (shouldBeGenerated()) arguments() else null },
+                            exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, testFunction))),
+                            dceDriven = true,
+                            es6mode = runEs6Mode,
+                            multiModule = splitPerModule || perModule,
+                            propertyLazyInitialization = propertyLazyInitialization
+                        )
+                    } catch (e: Throwable) {
+                        compilationException = e
+                        null
+                    }
+                }
+                val compilationTimeMessage = "Kotlin compilation time: ${compiledModuleWithDuration.first} ms"
+
+                compilationException?.let {
+                    throw KotlinCompilationException(compilationTimeMessage, it)
+                }
+                val compiledModule = compiledModuleWithDuration.second!!
+                compiledModule.jsCode!!.writeTo(pirOutputFile, config)
             }
         } else {
             generateKLib(
