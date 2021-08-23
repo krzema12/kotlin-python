@@ -33,9 +33,7 @@ See discussion at https://discuss.kotlinlang.org/t/idea-python-backend/19852
 ## Running box tests
 
 ```shell script
-./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated" | tee tests-out.txt
-export LC_ALL=C  # set locale for sorting
-less tests-out.txt | grep "FAILED" | grep "Codegen" | sort > python/experiments/failed-tests.txt
+./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated"
 ```
 
 To speed up tests:
@@ -62,6 +60,9 @@ python/experiments/generate-box-tests-reports.main.kts
 
 It will generate various reports and summaries:
 * `box-tests-report.tsv` - for each test, some useful info are produced, in particular about the reason why it failed
+* `failed-tests.txt` - one failed test per line. It provides much less data, but it's still useful because it gives
+   a cleaner diff comparing to `box-tests-report.tsv` when something changes. E.g. when the failure reason changes,
+   this file won't be affected for a given test - all that matters is that it still fails
 
 ### Test stats
 

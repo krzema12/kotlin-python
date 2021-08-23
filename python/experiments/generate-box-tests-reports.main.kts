@@ -8,12 +8,21 @@ fun pathFromNamedArgument(argumentName: String): Path? =
     args.firstOrNull { it.startsWith("--$argumentName=") }
         ?.let { Paths.get(it.split("=")[1]) }
 
+val targetFailedTestsReportPath: Path = pathFromNamedArgument("failed-tests-report-path")
+    ?: Paths.get("python/experiments/failed-tests.txt")
 val targetBoxTestsReportPath: Path = pathFromNamedArgument("box-tests-report-path")
     ?: Paths.get("python/experiments/box-tests-report.tsv")
 
 val testResults = getTestResults(Paths.get("python/box.tests/build/test-results/pythonTest"))
 
+testResults.writeFailedTestsSummary(targetFailedTestsReportPath)
 testResults.writeSummaryTsvToFile(targetBoxTestsReportPath)
+
+fun List<TestResult>.writeFailedTestsSummary(targetFile: Path) = targetFile.toFile().printWriter().use { out ->
+    this
+        .filter { it.status is TestStatus.Failed }
+        .forEach { out.println("${it.name} FAILED") }
+}
 
 fun List<TestResult>.writeSummaryTsvToFile(targetFile: Path) = targetFile.toFile().printWriter().use { out ->
     out.println(listOf(

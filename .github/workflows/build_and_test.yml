@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v2
+      - name: Install Kotlin for scripting
+        run: sudo snap install --classic kotlin
       - name: Clean
         run: JDK_9="$JAVA_HOME" ./gradlew clean
       - name: Run ast tests
@@ -45,10 +47,10 @@ jobs:
         if: always()
 
       - name: Run box tests (succeed even if they fail)
-        run: (JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated" || true) | tee tests-out.txt
+        run: JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated" || true
         if: always()
-      - name: Generate failed-tests.txt
-        run: less tests-out.txt | grep "FAILED" | grep "Codegen" | sort > failed-tests.txt
+      - name: Generate box tests reports
+        run: python/experiments/generate-box-tests-reports.main.kts --failed-tests-report-path=failed-tests.txt
         if: always()
       - name: Compare failed-tests.txt
         run: diff -u failed-tests.txt python/experiments/failed-tests.txt
