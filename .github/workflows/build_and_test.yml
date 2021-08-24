@@ -50,8 +50,11 @@ jobs:
         run: JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated" || true
         if: always()
       - name: Generate box tests reports
-        run: python/experiments/generate-box-tests-reports.main.kts --failed-tests-report-path=failed-tests.txt
+        run: python/experiments/generate-box-tests-reports.main.kts --failed-tests-report-path=failed-tests.txt --box-tests-report-path=box-tests-report.tsv
         if: always()
       - name: Compare failed-tests.txt
         run: diff -u failed-tests.txt python/experiments/failed-tests.txt
+        if: always()
+      - name: Partially compare box-tests-report.tsv
+        run: diff -u <(less box-tests-report.tsv | cut -d$'\t' -f1-2,4) <(less python/experiments/box-tests-report.tsv | cut -d$'\t' -f1-2,4)
         if: always()
