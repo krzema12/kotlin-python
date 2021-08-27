@@ -6,12 +6,29 @@
 package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 
 import generated.Python.*
+import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.types.isAny
 import org.jetbrains.kotlin.ir.util.constructedClassType
+
+private fun List<IrStatement>.translate(context: JsGenerationContext): List<stmt> {
+    val globals = this
+        .filterIsInstance<IrSetField>()
+        .filter { it.symbol.owner.isStatic }
+        .map { it.symbol.owner.name.asString().toValidPythonSymbol().let(::identifier) }
+        .let { globals ->
+            when (globals.isEmpty()) {
+                true -> emptyList()
+                else -> Global(globals).let(::listOf)
+            }
+        }
+    val body = this.flatMap { it.accept(IrElementToPyStatementTransformer(), context) }
+
+    return globals + body
+}
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<stmt>, JsGenerationContext> {
@@ -22,21 +39,15 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     }
 
     override fun visitBlockBody(body: IrBlockBody, context: JsGenerationContext): List<stmt> {
-        // TODO
-        return body.statements.flatMap { it.accept(this, context) }
+        return body.statements.translate(context)
     }
 
     override fun visitBlock(expression: IrBlock, context: JsGenerationContext): List<stmt> {
-        // TODO
-        return expression.statements.flatMap {
-            it.accept(this, context)
-        }
+        return expression.statements.translate(context)
     }
 
     override fun visitComposite(expression: IrComposite, context: JsGenerationContext): List<stmt> {
-        return expression.statements.flatMap {
-            it.accept(this, context)
-        }
+        return expression.statements.translate(context)
     }
 
     override fun visitExpression(expression: IrExpression, context: JsGenerationContext): List<stmt> {

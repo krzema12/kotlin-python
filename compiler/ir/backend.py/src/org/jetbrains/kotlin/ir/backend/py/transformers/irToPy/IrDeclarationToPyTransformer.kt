@@ -32,10 +32,9 @@ class IrDeclarationToPyTransformer : BaseIrElementToPyNodeTransformer<stmt, JsGe
     }
 
     override fun visitField(declaration: IrField, context: JsGenerationContext): stmt {
-        // TODO
         return Assign(
-            targets = listOf(Name(id = identifier("visitField $declaration".toValidPythonSymbol()), ctx = Store)),
-            value = Constant(value = constant("0"), kind = null),
+            targets = listOf(Name(id = identifier(declaration.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Store)),
+            value = Constant(value = constant("None"), kind = null),  // todo: move the field to the bottom of the file and use actual initializer
             type_comment = null,
         )
     }

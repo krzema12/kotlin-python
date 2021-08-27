@@ -66,9 +66,11 @@ It will generate various reports and summaries:
 
 ### Test stats
 
-Current status: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=25&leftFill=) (**1456**/5787 passed)
+Current status: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=29&leftFill=) (**1665**/5787 passed)
 
 ### History (newest on top)
+
+* after adding initial support for static fields: **1665**/5787 passed (+209)
 
 * after changing varargs a bit (due to refactoring expr transformer): **1456**/5787 passed (+1)
 
