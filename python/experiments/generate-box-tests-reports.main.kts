@@ -28,11 +28,11 @@ fun List<TestResult>.writeSummaryTsvToFile(targetFile: Path) = targetFile.toFile
     out.println(listOf(
         "Name",
         "Status",
-        "Time (s)",
+//        "Time (s)",
         "Failure general reason",
         "Failure detailed reason",
-        "Failed Kotlin compilation time (s)",
-        "Failed Python execution time (s)",
+//        "Failed Kotlin compilation time (s)",
+//        "Failed Python execution time (s)",
     ).joinToString("\t"))
     forEach { testResult ->
         val statusAsString = when (testResult.status) {
@@ -52,14 +52,22 @@ fun List<TestResult>.writeSummaryTsvToFile(targetFile: Path) = targetFile.toFile
         out.println(listOf(
             testResult.name,
             statusAsString,
-            testResult.timeSeconds,
+//            testResult.timeSeconds,
             failureGeneralReason ?: "",
-            failureDetailedReason ?: "",
-            kotlinCompilationTime ?: "",
-            pythonExecutionTime ?: "",
+            failureDetailedReason?.removeVaryingParts() ?: "",
+//            kotlinCompilationTime ?: "",
+//            pythonExecutionTime ?: "",
         ).joinToString("\t"))
     }
 }
+
+fun String.removeVaryingParts() =
+    // The exception message is sometimes provided locally and not provided on CI, so trying to normalize it.
+    (if (startsWith("java.lang.ClassCastException")) "java.lang.ClassCastException" else this)
+        .replace(Regex("\\S+\\.kt"), "<path-truncated>")
+        .replace(Regex("\\S+\\.py"), "<path-truncated>")
+        .replace(Regex("@[a-f0-9]{7,8}"), "@...")
+        .replace(Regex("0x[a-f0-9]{12}"), "[address]")
 
 fun TestStatus.extractFailureGeneralReason(): FailureGeneralReason? {
     return if (this is TestStatus.Failed) {

@@ -55,6 +55,6 @@ jobs:
       - name: Compare failed-tests.txt
         run: diff -u failed-tests.txt python/experiments/failed-tests.txt
         if: always()
-      - name: Partially compare box-tests-report.tsv
-        run: diff -u <(less box-tests-report.tsv | cut -d$'\t' -f1-2,4) <(less python/experiments/box-tests-report.tsv | cut -d$'\t' -f1-2,4)
+      - name: Compare box-tests-report.tsv
+        run: diff -u box-tests-report.tsv python/experiments/box-tests-report.tsv
         if: always()
