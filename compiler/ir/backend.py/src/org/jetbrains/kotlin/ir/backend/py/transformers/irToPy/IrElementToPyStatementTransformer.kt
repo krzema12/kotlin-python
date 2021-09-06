@@ -59,6 +59,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
             is IrDoWhileLoop -> visitDoWhileLoop(expression, context)
             is IrContinue -> visitContinue(expression, context)
             is IrConstructorCall -> visitConstructorCall(expression, context)
+            is IrThrow -> visitThrow(expression, context)
             else -> listOf(Expr(value = Name(id = identifier("visitExpression-other--inToPyStatementTransformer $expression".toValidPythonSymbol()), ctx = Load)))
         }
     }
