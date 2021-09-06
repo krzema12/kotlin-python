@@ -926,7 +926,7 @@ class IteratorImpl:
     
     def next_0_k_(self):
         if not self.hasNext_0_k_():
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_()
         
         tmp0_this = self
         tmp1 = tmp0_this.index
@@ -958,7 +958,7 @@ class ListIteratorImpl:
     
     def previous_0_k_(self):
         if not self.hasPrevious_0_k_():
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_()
         
         tmp0_this = self
         tmp0_this._set_index__majfzk_k_((tmp0_this._get_index__0_k_() - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
@@ -1253,7 +1253,7 @@ class EmptyList:
     
     def listIterator_ha5a7z_k_(self, index):
         if not (index == 0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IndexOutOfBoundsException_init__Create__0(str('Index: ') + str(index))
         
         return EmptyIterator_getInstance()
     
@@ -2767,7 +2767,7 @@ def getOrThrow():
 def throwOnFailure():
     tmp = _Result___get_value__impl_(self)
     if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+        raise kotlin_Failure(_Result___get_value__impl_(self)).exception
     
 
 def run(block):
@@ -3904,10 +3904,10 @@ class UIntProgression:
     def __init__(self, start, endInclusive, step):
         Companion_getInstance_6()
         if step == 0:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalArgumentException_init__Create__0('Step must be non-zero.')
         
         if step == IntCompanionObject_getInstance().MIN_VALUE:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalArgumentException_init__Create__0('Step must be greater than Int.MIN_VALUE to avoid overflow on negation.')
         
         self.first = start
         self.last = getProgressionLastElement(start, endInclusive, step)
@@ -4000,7 +4000,7 @@ class UIntProgressionIterator:
         value = self.next
         if boxIntrinsic(value) == boxIntrinsic(self.finalElement):
             if not self.hasNext:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+                raise NoSuchElementException_init__Create_()
             
             self.hasNext = False
         else:
@@ -4726,11 +4726,11 @@ class ULongProgression:
     def __init__(self, start, endInclusive, step):
         Companion_getInstance_9()
         if step == 0:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalArgumentException_init__Create__0('Step must be non-zero.')
         
         Companion_getInstance_19()
         if step == -9223372036854775808:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalArgumentException_init__Create__0('Step must be greater than Long.MIN_VALUE to avoid overflow on negation.')
         
         self.first = start
         self.last = getProgressionLastElement_0(start, endInclusive, step)
@@ -4829,7 +4829,7 @@ class ULongProgressionIterator:
         value = self.next
         if boxIntrinsic(value) == boxIntrinsic(self.finalElement):
             if not self.hasNext:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+                raise NoSuchElementException_init__Create_()
             
             self.hasNext = False
         else:
@@ -6242,7 +6242,7 @@ class IntProgressionIterator:
         value = self.next
         if value == self.finalElement:
             if not self.hasNext:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+                raise NoSuchElementException_init__Create_()
             
             self.hasNext = False
         else:
@@ -6297,7 +6297,7 @@ class LongProgressionIterator:
         value = self.next
         if value == self.finalElement:
             if not self.hasNext:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+                raise NoSuchElementException_init__Create_()
             
             self.hasNext = False
         else:
@@ -6359,7 +6359,7 @@ class CharProgressionIterator:
         value = self.next
         if value == self.finalElement:
             if not self.hasNext:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+                raise NoSuchElementException_init__Create_()
             
             self.hasNext = False
         else:
@@ -6410,10 +6410,10 @@ class IntProgression:
     def __init__(self, start, endInclusive, step):
         Companion_getInstance_11()
         if step == 0:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalArgumentException_init__Create__0('Step must be non-zero.')
         
         if step == IntCompanionObject_getInstance().MIN_VALUE:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalArgumentException_init__Create__0('Step must be greater than Int.MIN_VALUE to avoid overflow on negation.')
         
         self.first = start
         self.last = getProgressionLastElement_1(start, endInclusive, step)
@@ -6478,11 +6478,11 @@ class LongProgression:
     def __init__(self, start, endInclusive, step):
         Companion_getInstance_12()
         if step == 0:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalArgumentException_init__Create__0('Step must be non-zero.')
         
         Companion_getInstance_19()
         if step == -9223372036854775808:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalArgumentException_init__Create__0('Step must be greater than Long.MIN_VALUE to avoid overflow on negation.')
         
         self.first = start
         self.last = getProgressionLastElement_2(start, endInclusive, step)
@@ -6547,10 +6547,10 @@ class CharProgression:
     def __init__(self, start, endInclusive, step):
         Companion_getInstance_13()
         if step == 0:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalArgumentException_init__Create__0('Step must be non-zero.')
         
         if step == IntCompanionObject_getInstance().MIN_VALUE:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise IllegalArgumentException_init__Create__0('Step must be greater than Int.MIN_VALUE to avoid overflow on negation.')
         
         self.first = start
         tmp = self
@@ -7685,7 +7685,7 @@ class IteratorImpl_0:
     
     def next_0_k_(self):
         if not self.hasNext_0_k_():
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_()
         
         tmp = self
         tmp0_this = self
@@ -7730,7 +7730,7 @@ class ListIteratorImpl_0:
     
     def previous_0_k_(self):
         if not self.hasPrevious_0_k_():
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise NoSuchElementException_init__Create_()
         
         tmp0_this = self
         tmp0_this._set_index__majfzk_k_((tmp0_this._get_index__0_k_() - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
@@ -8312,7 +8312,7 @@ class ArrayList:
     
     def checkIsMutable_sv8swh_k_(self):
         if self.isReadOnly:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrThrowImpl
+            raise UnsupportedOperationException_init__Create_()
         
     
     def _set_modCount__majfzk_k_(self, _set___):
