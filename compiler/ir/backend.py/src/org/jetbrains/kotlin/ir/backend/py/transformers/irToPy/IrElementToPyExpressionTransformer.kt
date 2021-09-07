@@ -160,8 +160,8 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
     }
 
     override fun visitGetObjectValue(expression: IrGetObjectValue, context: JsGenerationContext): expr {
-        // TODO
-        return Name(id = identifier("visitGetObjectValue $expression".toValidPythonSymbol()), ctx = Load)
+        val field = expression.symbol.owner
+        return Name(id = identifier(field.name.asString().toValidPythonSymbol()), ctx = Load)
     }
 
     override fun visitSetField(expression: IrSetField, context: JsGenerationContext): expr {

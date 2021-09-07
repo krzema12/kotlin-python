@@ -8604,7 +8604,7 @@ class Serializable:
     
 
 def pow(n):
-    return visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(self, kotlin_Double(n))
+    return JsMath.pow(self, kotlin_Double(n))
 
 def isNaN_0():
     return not (self == self)
@@ -8618,10 +8618,10 @@ def _get_INV_2_53_():
 
 INV_2_53 = None
 def INV_2_26_init_():
-    return visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(2.0, -26.0)
+    return JsMath.pow(2.0, -26.0)
 
 def INV_2_53_init_():
-    return visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(2.0, -53.0)
+    return JsMath.pow(2.0, -53.0)
 
 def _get_js_():
     return ((kotlin_reflect_js_internal_KClassImpl_T_(self)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))._get_jClass__0_k_()
@@ -9940,14 +9940,14 @@ def compareTo(other, ignoreCase):
     if ignoreCase:
         n1 = len(self)
         n2 = len(other)
-        min = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.min(*(n1, n2))
+        min = JsMath.min(*(n1, n2))
         if min == 0:
             return (n1 - n2).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
         
         start = 0
         while True:
             tmp0_minOf_0 = (start + 16).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-            end = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.min(*(tmp0_minOf_0, min))
+            end = JsMath.min(*(tmp0_minOf_0, min))
             tmp1_substring_0 = start
             s1 = kotlin_String(INVOKE(substring(self), tmp1_substring_0, end))
             tmp2_substring_0 = start
@@ -11533,10 +11533,10 @@ def setPropertiesToThrowableInstance(this_, message, cause):
     if not hasOwnPrototypeProperty(kotlin_Any(this_), 'cause'):
         EQ(cause(this_), cause)
     
-    EQ(name(this_), name(constructor(visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.getPrototypeOf(this_))))
+    EQ(name(this_), name(constructor(Companion.getPrototypeOf(this_))))
 
 def hasOwnPrototypeProperty(o, name):
-    tmp0_unsafeCast_0 = INVOKE(hasOwnProperty(visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.getPrototypeOf(o)), name)
+    tmp0_unsafeCast_0 = INVOKE(hasOwnProperty(Companion.getPrototypeOf(o)), name)
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def getContinuation():
@@ -12016,9 +12016,9 @@ def divide(other):
     rem = self
     while greaterThanOrEqual(other):
         approxDouble = toNumber() / toNumber()
-        approx2 = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.max(*(1.0, visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.floor(approxDouble)))
-        log2 = visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.ceil(visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.log(approx2) / LN2)
-        delta = (1.0) if (log2 <= 48.0) else (visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(2.0, log2 - 48))
+        approx2 = JsMath.max(*(1.0, JsMath.floor(approxDouble)))
+        log2 = JsMath.ceil(JsMath.log(approx2) / LN2)
+        delta = (1.0) if (log2 <= 48.0) else (JsMath.pow(2.0, log2 - 48))
         approxRes = fromNumber(approx2)
         approxRem = multiply(other)
         while (True) if (isNegative()) else (greaterThan(rem)):
@@ -12100,7 +12100,7 @@ def toStringImpl(radix):
             return str('-') + str(toStringImpl(radix))
         
     
-    radixToPower = fromNumber(visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.pow(kotlin_Double(radix), 6.0))
+    radixToPower = fromNumber(JsMath.pow(kotlin_Double(radix), 6.0))
     rem = self
     result = ''
     while True:
@@ -12497,7 +12497,7 @@ def copyInto(destination, destinationOffset, startIndex, endIndex):
     return destination
 
 def minOf(a, b):
-    return visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.min(*(a, b))
+    return JsMath.min(*(a, b))
 
 def _get_resultContinuation_(_this):
     return _this.resultContinuation
