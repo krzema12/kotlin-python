@@ -66,9 +66,11 @@ It will generate various reports and summaries:
 
 ### Test stats
 
-Current status: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=29&leftFill=) (**1705**/5787 passed)
+Current status: ![coverage](http://www.yarntomato.com/percentbarmaker/button.php?barPosition=29&leftFill=) (**1709**/5787 passed)
 
 ### History (newest on top)
+
+* after supporting const statements: **1709**/5787 passed (+4)
 
 * after supporting set value statements: **1705**/5787 passed (+20)
 

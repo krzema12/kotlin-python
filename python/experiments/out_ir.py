@@ -1979,7 +1979,7 @@ class CombinedContext:
         while True:
             tmp0_safe_receiver = cur.element.get_9uvjra_k_(key)
             if tmp0_safe_receiver == None:
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstImpl
+                None
             else:
                 return tmp0_safe_receiver
             
@@ -1998,7 +1998,7 @@ class CombinedContext:
     def minusKey_djuxjq_k_(self, key):
         tmp0_safe_receiver = self.element.get_9uvjra_k_(key)
         if tmp0_safe_receiver == None:
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstImpl
+            None
         else:
             return self.left
         

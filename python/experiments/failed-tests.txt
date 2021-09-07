@@ -3277,7 +3277,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Re
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reified > testVarargs FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reified$ArraysReification > testJaggedArray FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reified$ArraysReification > testJaggedDeep FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testGenericNull FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt1572 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt247 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt3430 FAILED
@@ -3781,9 +3780,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining$CallableReferences > testPropertyReferenceFromClass FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining$CallableReferences > testPropertyReferenceFromObject FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining$CallableReferences > testWithInlineClassParameter FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$MaskElimination > testKt19679 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$MaskElimination > testKt19679_2 FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$MaskElimination > testKt19679_3 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DelegatedProperty > testKt16864 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DelegatedProperty > testLocal FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DelegatedProperty > testLocalDeclaredInLambda FAILED
