@@ -87,22 +87,22 @@ def joinToString(separator, prefix, postfix, limit, truncated, transform):
 
 def joinToString_default(separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
     if not (_mask0 & 1 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        separator = ', '
     
     if not (_mask0 & 2 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        prefix = ''
     
     if not (_mask0 & 4 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        postfix = ''
     
     if not (_mask0 & 8 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        limit = -1
     
     if not (_mask0 & 16 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        truncated = '...'
     
     if not (_mask0 & 32 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        transform = None
     
     return joinToString(kotlin_CharSequence(separator), kotlin_CharSequence(prefix), kotlin_CharSequence(postfix), limit, kotlin_CharSequence(truncated), transform)
 
@@ -137,22 +137,22 @@ def joinTo(buffer, separator, prefix, postfix, limit, truncated, transform):
 
 def joinTo_default(buffer, separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
     if not (_mask0 & 2 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        separator = ', '
     
     if not (_mask0 & 4 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        prefix = ''
     
     if not (_mask0 & 8 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        postfix = ''
     
     if not (_mask0 & 16 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        limit = -1
     
     if not (_mask0 & 32 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        truncated = '...'
     
     if not (_mask0 & 64 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        transform = None
     
     return joinTo(buffer, kotlin_CharSequence(separator), kotlin_CharSequence(prefix), kotlin_CharSequence(postfix), limit, kotlin_CharSequence(truncated), transform)
 
@@ -324,22 +324,22 @@ def joinToString_0(separator, prefix, postfix, limit, truncated, transform):
 
 def joinToString_default_0(separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
     if not (_mask0 & 1 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        separator = ', '
     
     if not (_mask0 & 2 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        prefix = ''
     
     if not (_mask0 & 4 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        postfix = ''
     
     if not (_mask0 & 8 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        limit = -1
     
     if not (_mask0 & 16 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        truncated = '...'
     
     if not (_mask0 & 32 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        transform = None
     
     return joinToString_0(kotlin_CharSequence(separator), kotlin_CharSequence(prefix), kotlin_CharSequence(postfix), limit, kotlin_CharSequence(truncated), transform)
 
@@ -371,22 +371,22 @@ def joinTo_0(buffer, separator, prefix, postfix, limit, truncated, transform):
 
 def joinTo_default_0(buffer, separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
     if not (_mask0 & 2 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        separator = ', '
     
     if not (_mask0 & 4 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        prefix = ''
     
     if not (_mask0 & 8 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        postfix = ''
     
     if not (_mask0 & 16 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        limit = -1
     
     if not (_mask0 & 32 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        truncated = '...'
     
     if not (_mask0 & 64 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        transform = None
     
     return joinTo_0(buffer, kotlin_CharSequence(separator), kotlin_CharSequence(prefix), kotlin_CharSequence(postfix), limit, kotlin_CharSequence(truncated), transform)
 
@@ -536,7 +536,7 @@ def Level_initEntries():
 
 def Experimental_init__Init_(level, _mask0, _marker, _this):
     if not (_mask0 & 1 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        level = Level_ERROR_getInstance()
     
     super(level)
     return _this
@@ -678,10 +678,10 @@ def Level_initEntries_0():
 
 def RequiresOptIn_init__Init_(message, level, _mask0, _marker, _this):
     if not (_mask0 & 1 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        message = ''
     
     if not (_mask0 & 2 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        level = Level_ERROR_getInstance_0()
     
     super(message, level)
     return _this
@@ -1419,7 +1419,7 @@ class ContractBuilder:
     
     def callsInPlace_default_i7jixu_k_(self, _lambda, kind, _mask0, _handler):
         if not (_mask0 & 2 == 0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+            kind = InvocationKind_UNKNOWN_getInstance()
         
         return (self.callsInPlace_x6l8zl_k_(_lambda, kotlin_contracts_InvocationKind(kind))) if (_handler == None) else (kotlin_Function2_kotlin_Function2_kotlin_Function2_kotlin_Function2_(_handler)(_lambda, kind))
     
@@ -2174,16 +2174,16 @@ class ExperimentalTypeInference:
 
 def RequireKotlin_init__Init_(version, message, level, versionKind, errorCode, _mask0, _marker, _this):
     if not (_mask0 & 2 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        message = ''
     
     if not (_mask0 & 4 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        level = DeprecationLevel_ERROR_getInstance()
     
     if not (_mask0 & 8 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        versionKind = RequireKotlinVersionKind_LANGUAGE_VERSION_getInstance()
     
     if not (_mask0 & 16 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        errorCode = -1
     
     super(version, message, level, versionKind, errorCode)
     return _this
@@ -2493,10 +2493,10 @@ class KTypeProjection:
     
     def copy_default_jp35qf_k_(self, variance, type, _mask0, _handler):
         if not (_mask0 & 1 == 0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+            variance = self.variance
         
         if not (_mask0 & 2 == 0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+            type = self.type
         
         return self.copy_fey4rp_k_(variance, type)
     
@@ -2778,7 +2778,7 @@ def TODO():
 
 def NotImplementedError_init__Init_(message, _mask0, _marker, _this):
     if not (_mask0 & 1 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        message = 'An operation is not implemented.'
     
     super(message)
     return _this
@@ -5887,10 +5887,10 @@ class ParameterName:
 
 def Deprecated_init__Init_(message, replaceWith, level, _mask0, _marker, _this):
     if not (_mask0 & 2 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        replaceWith = ReplaceWith('', *())
     
     if not (_mask0 & 4 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        level = DeprecationLevel_WARNING_getInstance()
     
     super(message, replaceWith, level)
     return _this
@@ -5946,13 +5946,13 @@ class ReplaceWith:
 
 def DeprecatedSinceKotlin_init__Init_(warningSince, errorSince, hiddenSince, _mask0, _marker, _this):
     if not (_mask0 & 1 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        warningSince = ''
     
     if not (_mask0 & 2 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        errorSince = ''
     
     if not (_mask0 & 4 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        hiddenSince = ''
     
     super(warningSince, errorSince, hiddenSince)
     return _this
@@ -7004,7 +7004,7 @@ class MustBeDocumented:
 
 def Retention_init__Init_(value, _mask0, _marker, _this):
     if not (_mask0 & 1 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        value = AnnotationRetention_RUNTIME_getInstance()
     
     super(value)
     return _this
@@ -7591,7 +7591,7 @@ class AbstractMutableCollection:
         while tmp0_iterator.hasNext_0_k_():
             element = tmp0_iterator.next_0_k_()
             if self.add_2bq_k_(element):
-                visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+                modified = True
             
         
         return modified
@@ -8100,7 +8100,7 @@ def ArrayList_init__Create__0(initialCapacity):
 
 def ArrayList_init__Init__1(initialCapacity, _mask0, _marker, _this):
     if not (_mask0 & 1 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        initialCapacity = 0
     
     ArrayList_init__Init__0(initialCapacity, _this)
     return _this
@@ -9211,16 +9211,16 @@ class KTypeParameterImpl:
     
     def copy_default_dg98nz_k_(self, name, upperBounds, variance, isReified, _mask0, _handler):
         if not (_mask0 & 1 == 0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+            name = self.name
         
         if not (_mask0 & 2 == 0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+            upperBounds = self.upperBounds
         
         if not (_mask0 & 4 == 0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+            variance = self.variance
         
         if not (_mask0 & 8 == 0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+            isReified = self.isReified
         
         return self.copy_367z8c_k_(kotlin_String(name), kotlin_collections_List_kotlin_reflect_KType_(upperBounds), kotlin_reflect_KVariance(variance), isReified)
     
@@ -9843,13 +9843,13 @@ class StringBuilder:
     
     def toCharArray_default_pd3mhx_k_(self, destination, destinationOffset, startIndex, endIndex, _mask0, _handler):
         if not (_mask0 & 2 == 0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+            destinationOffset = 0
         
         if not (_mask0 & 4 == 0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+            startIndex = 0
         
         if not (_mask0 & 8 == 0):
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+            endIndex = self._get_length__0_k_()
         
         return self.toCharArray_tnuj0b_k_(destination, destinationOffset, startIndex, endIndex)
     
@@ -9979,7 +9979,7 @@ def compareTo(other, ignoreCase):
 
 def compareTo_default(other, ignoreCase, _mask0, _handler):
     if not (_mask0 & 2 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        ignoreCase = False
     
     return compareTo(other, ignoreCase)
 
@@ -10019,10 +10019,10 @@ def concatToString_0(startIndex, endIndex):
 
 def concatToString_default(startIndex, endIndex, _mask0, _handler):
     if not (_mask0 & 1 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        startIndex = 0
     
     if not (_mask0 & 2 == 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetValueImpl
+        endIndex = len(self)
     
     return concatToString_0(startIndex, endIndex)
 
