@@ -7510,7 +7510,7 @@ def copyToArrayImpl_0(collection):
     array = kotlin_Array_kotlin_Any__(js('[]'))
     iterator = collection.iterator_0_k_()
     while iterator.hasNext_0_k_():
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        INVOKE(push(array), iterator.next_0_k_())
     
     return array
 
@@ -7520,7 +7520,7 @@ def arrayCopy_0(source, destination, destinationOffset, startIndex, endIndex):
     Companion_getInstance().checkRangeIndexes_zd700_k_(destinationOffset, (destinationOffset + rangeSize).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000), len(destination))
     if ANDAND(INVOKE(isView(js('ArrayBuffer')), destination), INVOKE(isView(js('ArrayBuffer')), source)):
         subrange = INVOKE(subarray(source), startIndex, endIndex)
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        INVOKE(set(destination), subrange, destinationOffset)
     elif (True) if (not (source is destination)) else (destinationOffset <= startIndex):
         inductionVariable = 0
         if inductionVariable < rangeSize:
@@ -8159,7 +8159,7 @@ class ArrayList:
     def add_2bq_k_(self, element):
         self.checkIsMutable_sv8swh_k_()
         tmp0_asDynamic_0 = self.array
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        INVOKE(push(tmp0_asDynamic_0), element)
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount__0_k_()
         tmp0_this._set_modCount__majfzk_k_((tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
@@ -8169,7 +8169,7 @@ class ArrayList:
     def add_vz2mgm_k_(self, index, element):
         self.checkIsMutable_sv8swh_k_()
         tmp0_asDynamic_0 = self.array
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        INVOKE(splice(tmp0_asDynamic_0), insertionRangeCheck(self, index), 0, element)
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount__0_k_()
         tmp0_this._set_modCount__majfzk_k_((tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
@@ -8247,7 +8247,7 @@ class ArrayList:
                 inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
                 if self.array[index] == element:
                     tmp0_asDynamic_0 = self.array
-                    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+                    INVOKE(splice(tmp0_asDynamic_0), index, 1)
                     tmp1_this = self
                     tmp2 = tmp1_this._get_modCount__0_k_()
                     tmp1_this._set_modCount__majfzk_k_((tmp2 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
@@ -8268,7 +8268,7 @@ class ArrayList:
         tmp0_this._set_modCount__majfzk_k_((tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
         Unit_getInstance()
         tmp0_asDynamic_0 = self.array
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        INVOKE(splice(tmp0_asDynamic_0), fromIndex, (toIndex - fromIndex).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
     
     def clear_sv8swh_k_(self):
         self.checkIsMutable_sv8swh_k_()
@@ -8425,7 +8425,7 @@ class NodeJsOutput_0:
     
     def print_qi8yb4_k_(self, message):
         messageString = kotlin_String(INVOKE(js('String'), message))
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        INVOKE(write(self.outputStream), messageString)
     
     def println_sv8swh_k_(self):
         pass
@@ -9387,7 +9387,7 @@ class PrimitiveClasses_0:
             tmp0_unsafeCast_0_3 = js('Function')
             result_2 = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_3), str('Function') + str(arity), lambda it: visitExpressionFunctionBodyStatements_x2__If__Return_)
             tmp1_asDynamic_0_5 = functionClasses
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+            EQ(ARRAY_ACCESS(tmp1_asDynamic_0_5, arity), result_2)
             tmp = result_2
         else:
             tmp = tmp0_elvis_lhs
@@ -9444,7 +9444,7 @@ def getKClass1_0(jClass):
     if EXCLEQ(metadata, None):
         if EQEQ(_kClass_(metadata), None):
             kClass = SimpleKClassImpl(jClass)
-            visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+            EQ(_kClass_(metadata), kClass)
             tmp = kClass
         else:
             tmp = _kClass_(metadata)
@@ -10812,7 +10812,7 @@ def doubleArrayIterator(array):
 
 def booleanArray(size):
     tmp0_withType_0 = fillArrayVal(Array(size), False)
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    EQ(_type_(tmp0_withType_0), 'BooleanArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
     return kotlin_Any_(tmp1_unsafeCast_0)
 
@@ -10831,31 +10831,31 @@ def charArray(size):
         raise IllegalArgumentException_init__Create__0('Invalid Char code: 0')
     
     tmp0_withType_0 = fillArrayVal(tmp, Char_0(0))
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    EQ(_type_(tmp0_withType_0), 'CharArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
     return kotlin_Any_(tmp1_unsafeCast_0)
 
 def longArray(size):
     tmp0_withType_0 = fillArrayVal(Array(size), 0)
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    EQ(_type_(tmp0_withType_0), 'LongArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
     return kotlin_Any_(tmp1_unsafeCast_0)
 
 def booleanArrayOf_0(arr):
     tmp0_withType_0 = INVOKE(slice(arr))
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    EQ(_type_(tmp0_withType_0), 'BooleanArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
     return kotlin_Any_(tmp1_unsafeCast_0)
 
 def charArrayOf_0(arr):
     tmp0_withType_0 = INVOKE(slice(arr))
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    EQ(_type_(tmp0_withType_0), 'CharArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
     return kotlin_Any_(tmp1_unsafeCast_0)
 
 def longArrayOf_0(arr):
     tmp0_withType_0 = INVOKE(slice(arr))
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    EQ(_type_(tmp0_withType_0), 'LongArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
     return kotlin_Any_(tmp1_unsafeCast_0)
 
@@ -11375,9 +11375,9 @@ def getObjectHashCode(obj):
     if not jsIn('kotlinHashCodeValue$', kotlin_Any(obj)):
         hash = jsBitwiseOr(MUL(INVOKE(random(js('Math'))), 4.294967296E9), 0)
         descriptor = js('new Object()')
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        EQ(value(descriptor), hash)
+        EQ(enumerable(descriptor), False)
+        INVOKE(defineProperty(js('Object')), obj, 'kotlinHashCodeValue$', descriptor)
     
     tmp0_unsafeCast_0 = ARRAY_ACCESS(obj, 'kotlinHashCodeValue$')
     return kotlin_Any_(tmp0_unsafeCast_0)
@@ -11482,9 +11482,9 @@ def unboxIntrinsic(x):
 
 def captureStack(instance, constructorFunction):
     if EXCLEQ(captureStackTrace(js('Error')), None):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        INVOKE(captureStackTrace(js('Error')), instance, constructorFunction)
     else:
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        EQ(stack(instance), stack(js('new Error()')))
     
 
 def newThrowable(message, cause):
@@ -11502,16 +11502,16 @@ def newThrowable(message, cause):
         tmp2_elvis_lhs = message
         tmp = (undefined) if (tmp2_elvis_lhs == None) else (tmp2_elvis_lhs)
     
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    EQ(message(throwable), tmp)
+    EQ(cause(throwable), cause)
+    EQ(name(throwable), 'Throwable')
     return kotlin_Any_(throwable)
 
 def isUndefined(value):
     return EQEQEQ(value, undefined)
 
 def extendThrowable(this_, message, cause):
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    INVOKE(call(js('Error')), this_)
     setPropertiesToThrowableInstance(this_, message, cause)
 
 def setPropertiesToThrowableInstance(this_, message, cause):
@@ -11528,12 +11528,12 @@ def setPropertiesToThrowableInstance(this_, message, cause):
         else:
             tmp = message
         
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        EQ(message(this_), tmp)
     
     if not hasOwnPrototypeProperty(kotlin_Any(this_), 'cause'):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        EQ(cause(this_), cause)
     
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    EQ(name(this_), name(constructor(visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.getPrototypeOf(this_))))
 
 def hasOwnPrototypeProperty(o, name):
     tmp0_unsafeCast_0 = INVOKE(hasOwnProperty(visitGetObjectValue_org_jetbrains_kotlin_ir_expressions_impl_IrGetObjectValueImpl.getPrototypeOf(o)), name)
@@ -11553,7 +11553,7 @@ def getCoroutineContext():
 
 def unreachableDeclarationLog():
     tmp0_asDynamic_0 = console
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    INVOKE(trace(tmp0_asDynamic_0), 'Unreachable declaration')
 
 def unreachableDeclarationException():
     raise Error('Unreachable declaration')
@@ -12174,7 +12174,7 @@ def imul(a_local, b_local):
     return jsBitwiseOr(lhs + rhs, 0)
 
 def withType(type, array):
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    EQ(_type_(array), type)
     return array
 
 def arrayConcat(*args):
@@ -12221,7 +12221,7 @@ def primitiveArrayConcat(*args):
     result = kotlin_Any_(tmp1_unsafeCast_0)
     if EXCLEQ(_type_(a), None):
         tmp2_withType_0 = kotlin_String(_type_(a))
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        EQ(_type_(result), tmp2_withType_0)
     
     size_local = 0
     inductionVariable = 0
@@ -12255,7 +12255,7 @@ def primitiveArrayConcat(*args):
 
 def taggedArrayCopy(array):
     res = INVOKE(slice(array))
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    EQ(_type_(res), _type_(array))
     return kotlin_Any_(res)
 
 def numberToByte(a):
@@ -12316,21 +12316,21 @@ def metadataObject():
     return js('{ kind: \'class\', interfaces: [] }')
 
 def getPropertyCallableRef(name, paramCount, type, getter, setter):
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    EQ(get(getter), getter)
+    EQ(set(getter), setter)
+    EQ(callableName(getter), name)
     tmp0_unsafeCast_0 = getPropertyRefClass(getter, getKPropMetadata(paramCount, setter, type))
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def getPropertyRefClass(obj, metadata):
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
-    visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+    EQ(_metadata_(obj), metadata)
+    EQ(constructor(obj), obj)
     return obj
 
 def getKPropMetadata(paramCount, setter, type):
     mdata = propertyRefClassMetadataCache[paramCount][(0) if (setter == None) else (1)]
     if EQEQ(length(interfaces(mdata)), 0):
-        visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrDynamicOperatorExpressionImpl
+        INVOKE(push(interfaces(mdata)), type)
     
     return mdata
 
