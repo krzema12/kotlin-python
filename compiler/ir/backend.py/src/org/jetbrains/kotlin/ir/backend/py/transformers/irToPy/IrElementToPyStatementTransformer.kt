@@ -62,6 +62,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
             is IrThrow -> visitThrow(expression, context)
             is IrSetValue -> visitSetValue(expression, context)
             is IrDynamicOperatorExpression -> visitDynamicOperatorExpression(expression, context)
+            is IrConst<*> -> visitConst(expression, context)
             else -> listOf(Expr(value = Name(id = identifier("visitExpression-other--inToPyStatementTransformer $expression".toValidPythonSymbol()), ctx = Load)))
         }
     }
@@ -220,5 +221,9 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitDynamicOperatorExpression(expression: IrDynamicOperatorExpression, data: JsGenerationContext): List<stmt> {
         return IrElementToPyExpressionTransformer().visitDynamicOperatorExpression(expression, data).makeStmt().let(::listOf)
+    }
+
+    override fun <T> visitConst(expression: IrConst<T>, data: JsGenerationContext): List<stmt> {
+        return IrElementToPyExpressionTransformer().visitConst(expression, data).makeStmt().let(::listOf)
     }
 }

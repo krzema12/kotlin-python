@@ -952,9 +952,9 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt1899	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt2147	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt2259	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt2291	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstImpl' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt2291	Failed	PythonExecution	NameError: name 'kotlin_Int' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt237	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt2416	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstImpl' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt2416	Failed	PythonExecution	NameError: name 'kotlin_Int' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt2577	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt2597	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt299	Succeeded		
@@ -4567,7 +4567,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Re
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reified$ArraysReification > testJaggedArray	Failed	PythonExecution	NameError: name 'Array' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reified$ArraysReification > testJaggedDeep	Failed	PythonExecution	NameError: name 'Array' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testAllFilesPresentInSafeCall	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testGenericNull	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstImpl' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testGenericNull	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt1572	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt232	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt245	Succeeded		
@@ -5327,9 +5327,9 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$MaskElimination > test33Parameters	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$MaskElimination > testAllFilesPresentInMaskElimination	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$MaskElimination > testKt18792	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$MaskElimination > testKt19679	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$MaskElimination > testKt19679_2	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$MaskElimination > testKt19679_3	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrConstImpl' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$MaskElimination > testKt19679	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$MaskElimination > testKt19679_2	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$MaskElimination > testKt19679_3	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$MaskElimination > testSimple	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DelegatedProperty > testAllFilesPresentInDelegatedProperty	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DelegatedProperty > testKt16864	Failed	PythonExecution	NameError: name 'jsClass' is not defined
