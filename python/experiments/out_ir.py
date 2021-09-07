@@ -438,7 +438,7 @@ def KotlinNothingValueException_init__Init_(_this):
 
 def KotlinNothingValueException_init__Create_():
     tmp = KotlinNothingValueException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, KotlinNothingValueException_init__Create_)
     return tmp
 
 def KotlinNothingValueException_init__Init__0(message, _this):
@@ -448,7 +448,7 @@ def KotlinNothingValueException_init__Init__0(message, _this):
 
 def KotlinNothingValueException_init__Create__0(message):
     tmp = KotlinNothingValueException_init__Init__0(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, KotlinNothingValueException_init__Create_)
     return tmp
 
 def KotlinNothingValueException_init__Init__1(message, cause, _this):
@@ -458,7 +458,7 @@ def KotlinNothingValueException_init__Init__1(message, cause, _this):
 
 def KotlinNothingValueException_init__Create__1(message, cause):
     tmp = KotlinNothingValueException_init__Init__1(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, KotlinNothingValueException_init__Create_)
     return tmp
 
 def KotlinNothingValueException_init__Init__2(cause, _this):
@@ -468,7 +468,7 @@ def KotlinNothingValueException_init__Init__2(cause, _this):
 
 def KotlinNothingValueException_init__Create__2(cause):
     tmp = KotlinNothingValueException_init__Init__2(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, KotlinNothingValueException_init__Create_)
     return tmp
 
 class KotlinNothingValueException:
@@ -488,7 +488,7 @@ class KotlinNothingValueException:
         pass
     
     def __init__(self):
-        captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+        captureStack(self, _init_)
     
 
 def _get_code_():
@@ -2785,13 +2785,13 @@ def NotImplementedError_init__Init_(message, _mask0, _marker, _this):
 
 def NotImplementedError_init__Create_(message, _mask0, _marker):
     tmp = NotImplementedError_init__Init_(message, _mask0, _marker, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, NotImplementedError_init__Create_)
     return tmp
 
 class NotImplementedError:
     def __init__(self, message):
         Error_init__Init__0(message, self)
-        captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+        captureStack(self, _init_)
     
     def _get_message__0_k_(self):
         pass
@@ -12674,7 +12674,7 @@ def Exception_init__Init_(_this):
 
 def Exception_init__Create_():
     tmp = Exception_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, Exception_init__Create_)
     return tmp
 
 def Exception_init__Init__0(message, _this):
@@ -12684,7 +12684,7 @@ def Exception_init__Init__0(message, _this):
 
 def Exception_init__Create__0(message):
     tmp = Exception_init__Init__0(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, Exception_init__Create_)
     return tmp
 
 def Exception_init__Init__1(message, cause, _this):
@@ -12694,7 +12694,7 @@ def Exception_init__Init__1(message, cause, _this):
 
 def Exception_init__Create__1(message, cause):
     tmp = Exception_init__Init__1(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, Exception_init__Create_)
     return tmp
 
 def Exception_init__Init__2(cause, _this):
@@ -12704,7 +12704,7 @@ def Exception_init__Init__2(cause, _this):
 
 def Exception_init__Create__2(cause):
     tmp = Exception_init__Init__2(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, Exception_init__Create_)
     return tmp
 
 class Exception:
@@ -12724,7 +12724,7 @@ class Exception:
         pass
     
     def __init__(self):
-        captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+        captureStack(self, _init_)
     
 
 def Error_init__Init_(_this):
@@ -12734,7 +12734,7 @@ def Error_init__Init_(_this):
 
 def Error_init__Create_():
     tmp = Error_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, Error_init__Create_)
     return tmp
 
 def Error_init__Init__0(message, _this):
@@ -12744,7 +12744,7 @@ def Error_init__Init__0(message, _this):
 
 def Error_init__Create__0(message):
     tmp = Error_init__Init__0(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, Error_init__Create_)
     return tmp
 
 def Error_init__Init__1(message, cause, _this):
@@ -12754,7 +12754,7 @@ def Error_init__Init__1(message, cause, _this):
 
 def Error_init__Create__1(message, cause):
     tmp = Error_init__Init__1(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, Error_init__Create_)
     return tmp
 
 def Error_init__Init__2(cause, _this):
@@ -12764,7 +12764,7 @@ def Error_init__Init__2(cause, _this):
 
 def Error_init__Create__2(cause):
     tmp = Error_init__Init__2(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, Error_init__Create_)
     return tmp
 
 class Error_0:
@@ -12784,7 +12784,7 @@ class Error_0:
         pass
     
     def __init__(self):
-        captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+        captureStack(self, _init_)
     
 
 def IllegalArgumentException_init__Init_(_this):
@@ -12794,7 +12794,7 @@ def IllegalArgumentException_init__Init_(_this):
 
 def IllegalArgumentException_init__Create_():
     tmp = IllegalArgumentException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, IllegalArgumentException_init__Create_)
     return tmp
 
 def IllegalArgumentException_init__Init__0(message, _this):
@@ -12804,7 +12804,7 @@ def IllegalArgumentException_init__Init__0(message, _this):
 
 def IllegalArgumentException_init__Create__0(message):
     tmp = IllegalArgumentException_init__Init__0(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, IllegalArgumentException_init__Create_)
     return tmp
 
 def IllegalArgumentException_init__Init__1(message, cause, _this):
@@ -12814,7 +12814,7 @@ def IllegalArgumentException_init__Init__1(message, cause, _this):
 
 def IllegalArgumentException_init__Create__1(message, cause):
     tmp = IllegalArgumentException_init__Init__1(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, IllegalArgumentException_init__Create_)
     return tmp
 
 def IllegalArgumentException_init__Init__2(cause, _this):
@@ -12824,7 +12824,7 @@ def IllegalArgumentException_init__Init__2(cause, _this):
 
 def IllegalArgumentException_init__Create__2(cause):
     tmp = IllegalArgumentException_init__Init__2(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, IllegalArgumentException_init__Create_)
     return tmp
 
 class IllegalArgumentException:
@@ -12844,7 +12844,7 @@ class IllegalArgumentException:
         pass
     
     def __init__(self):
-        captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+        captureStack(self, _init_)
     
 
 def RuntimeException_init__Init_(_this):
@@ -12854,7 +12854,7 @@ def RuntimeException_init__Init_(_this):
 
 def RuntimeException_init__Create_():
     tmp = RuntimeException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, RuntimeException_init__Create_)
     return tmp
 
 def RuntimeException_init__Init__0(message, _this):
@@ -12864,7 +12864,7 @@ def RuntimeException_init__Init__0(message, _this):
 
 def RuntimeException_init__Create__0(message):
     tmp = RuntimeException_init__Init__0(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, RuntimeException_init__Create_)
     return tmp
 
 def RuntimeException_init__Init__1(message, cause, _this):
@@ -12874,7 +12874,7 @@ def RuntimeException_init__Init__1(message, cause, _this):
 
 def RuntimeException_init__Create__1(message, cause):
     tmp = RuntimeException_init__Init__1(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, RuntimeException_init__Create_)
     return tmp
 
 def RuntimeException_init__Init__2(cause, _this):
@@ -12884,7 +12884,7 @@ def RuntimeException_init__Init__2(cause, _this):
 
 def RuntimeException_init__Create__2(cause):
     tmp = RuntimeException_init__Init__2(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, RuntimeException_init__Create_)
     return tmp
 
 class RuntimeException:
@@ -12904,7 +12904,7 @@ class RuntimeException:
         pass
     
     def __init__(self):
-        captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+        captureStack(self, _init_)
     
 
 def NoSuchElementException_init__Init_(_this):
@@ -12914,7 +12914,7 @@ def NoSuchElementException_init__Init_(_this):
 
 def NoSuchElementException_init__Create_():
     tmp = NoSuchElementException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, NoSuchElementException_init__Create_)
     return tmp
 
 def NoSuchElementException_init__Init__0(message, _this):
@@ -12924,7 +12924,7 @@ def NoSuchElementException_init__Init__0(message, _this):
 
 def NoSuchElementException_init__Create__0(message):
     tmp = NoSuchElementException_init__Init__0(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, NoSuchElementException_init__Create_)
     return tmp
 
 class NoSuchElementException:
@@ -12944,7 +12944,7 @@ class NoSuchElementException:
         pass
     
     def __init__(self):
-        captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+        captureStack(self, _init_)
     
 
 def IllegalStateException_init__Init_(_this):
@@ -12954,7 +12954,7 @@ def IllegalStateException_init__Init_(_this):
 
 def IllegalStateException_init__Create_():
     tmp = IllegalStateException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, IllegalStateException_init__Create_)
     return tmp
 
 def IllegalStateException_init__Init__0(message, _this):
@@ -12964,7 +12964,7 @@ def IllegalStateException_init__Init__0(message, _this):
 
 def IllegalStateException_init__Create__0(message):
     tmp = IllegalStateException_init__Init__0(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, IllegalStateException_init__Create_)
     return tmp
 
 def IllegalStateException_init__Init__1(message, cause, _this):
@@ -12974,7 +12974,7 @@ def IllegalStateException_init__Init__1(message, cause, _this):
 
 def IllegalStateException_init__Create__1(message, cause):
     tmp = IllegalStateException_init__Init__1(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, IllegalStateException_init__Create_)
     return tmp
 
 def IllegalStateException_init__Init__2(cause, _this):
@@ -12984,7 +12984,7 @@ def IllegalStateException_init__Init__2(cause, _this):
 
 def IllegalStateException_init__Create__2(cause):
     tmp = IllegalStateException_init__Init__2(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, IllegalStateException_init__Create_)
     return tmp
 
 class IllegalStateException:
@@ -13004,7 +13004,7 @@ class IllegalStateException:
         pass
     
     def __init__(self):
-        captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+        captureStack(self, _init_)
     
 
 def IndexOutOfBoundsException_init__Init_(_this):
@@ -13014,7 +13014,7 @@ def IndexOutOfBoundsException_init__Init_(_this):
 
 def IndexOutOfBoundsException_init__Create_():
     tmp = IndexOutOfBoundsException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, IndexOutOfBoundsException_init__Create_)
     return tmp
 
 def IndexOutOfBoundsException_init__Init__0(message, _this):
@@ -13024,7 +13024,7 @@ def IndexOutOfBoundsException_init__Init__0(message, _this):
 
 def IndexOutOfBoundsException_init__Create__0(message):
     tmp = IndexOutOfBoundsException_init__Init__0(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, IndexOutOfBoundsException_init__Create_)
     return tmp
 
 class IndexOutOfBoundsException:
@@ -13044,7 +13044,7 @@ class IndexOutOfBoundsException:
         pass
     
     def __init__(self):
-        captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+        captureStack(self, _init_)
     
 
 def UnsupportedOperationException_init__Init_(_this):
@@ -13054,7 +13054,7 @@ def UnsupportedOperationException_init__Init_(_this):
 
 def UnsupportedOperationException_init__Create_():
     tmp = UnsupportedOperationException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, UnsupportedOperationException_init__Create_)
     return tmp
 
 def UnsupportedOperationException_init__Init__0(message, _this):
@@ -13064,7 +13064,7 @@ def UnsupportedOperationException_init__Init__0(message, _this):
 
 def UnsupportedOperationException_init__Create__0(message):
     tmp = UnsupportedOperationException_init__Init__0(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, UnsupportedOperationException_init__Create_)
     return tmp
 
 def UnsupportedOperationException_init__Init__1(message, cause, _this):
@@ -13074,7 +13074,7 @@ def UnsupportedOperationException_init__Init__1(message, cause, _this):
 
 def UnsupportedOperationException_init__Create__1(message, cause):
     tmp = UnsupportedOperationException_init__Init__1(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, UnsupportedOperationException_init__Create_)
     return tmp
 
 def UnsupportedOperationException_init__Init__2(cause, _this):
@@ -13084,7 +13084,7 @@ def UnsupportedOperationException_init__Init__2(cause, _this):
 
 def UnsupportedOperationException_init__Create__2(cause):
     tmp = UnsupportedOperationException_init__Init__2(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, UnsupportedOperationException_init__Create_)
     return tmp
 
 class UnsupportedOperationException:
@@ -13104,7 +13104,7 @@ class UnsupportedOperationException:
         pass
     
     def __init__(self):
-        captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+        captureStack(self, _init_)
     
 
 def NullPointerException_init__Init_(_this):
@@ -13114,7 +13114,7 @@ def NullPointerException_init__Init_(_this):
 
 def NullPointerException_init__Create_():
     tmp = NullPointerException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, NullPointerException_init__Create_)
     return tmp
 
 def NullPointerException_init__Init__0(message, _this):
@@ -13124,7 +13124,7 @@ def NullPointerException_init__Init__0(message, _this):
 
 def NullPointerException_init__Create__0(message):
     tmp = NullPointerException_init__Init__0(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, NullPointerException_init__Create_)
     return tmp
 
 class NullPointerException:
@@ -13144,7 +13144,7 @@ class NullPointerException:
         pass
     
     def __init__(self):
-        captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+        captureStack(self, _init_)
     
 
 def NoWhenBranchMatchedException_init__Init_(_this):
@@ -13154,7 +13154,7 @@ def NoWhenBranchMatchedException_init__Init_(_this):
 
 def NoWhenBranchMatchedException_init__Create_():
     tmp = NoWhenBranchMatchedException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, NoWhenBranchMatchedException_init__Create_)
     return tmp
 
 def NoWhenBranchMatchedException_init__Init__0(message, _this):
@@ -13164,7 +13164,7 @@ def NoWhenBranchMatchedException_init__Init__0(message, _this):
 
 def NoWhenBranchMatchedException_init__Create__0(message):
     tmp = NoWhenBranchMatchedException_init__Init__0(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, NoWhenBranchMatchedException_init__Create_)
     return tmp
 
 def NoWhenBranchMatchedException_init__Init__1(message, cause, _this):
@@ -13174,7 +13174,7 @@ def NoWhenBranchMatchedException_init__Init__1(message, cause, _this):
 
 def NoWhenBranchMatchedException_init__Create__1(message, cause):
     tmp = NoWhenBranchMatchedException_init__Init__1(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, NoWhenBranchMatchedException_init__Create_)
     return tmp
 
 def NoWhenBranchMatchedException_init__Init__2(cause, _this):
@@ -13184,7 +13184,7 @@ def NoWhenBranchMatchedException_init__Init__2(cause, _this):
 
 def NoWhenBranchMatchedException_init__Create__2(cause):
     tmp = NoWhenBranchMatchedException_init__Init__2(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, NoWhenBranchMatchedException_init__Create_)
     return tmp
 
 class NoWhenBranchMatchedException:
@@ -13204,7 +13204,7 @@ class NoWhenBranchMatchedException:
         pass
     
     def __init__(self):
-        captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+        captureStack(self, _init_)
     
 
 def ClassCastException_init__Init_(_this):
@@ -13214,7 +13214,7 @@ def ClassCastException_init__Init_(_this):
 
 def ClassCastException_init__Create_():
     tmp = ClassCastException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, ClassCastException_init__Create_)
     return tmp
 
 def ClassCastException_init__Init__0(message, _this):
@@ -13224,7 +13224,7 @@ def ClassCastException_init__Init__0(message, _this):
 
 def ClassCastException_init__Create__0(message):
     tmp = ClassCastException_init__Init__0(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, ClassCastException_init__Create_)
     return tmp
 
 class ClassCastException:
@@ -13244,7 +13244,7 @@ class ClassCastException:
         pass
     
     def __init__(self):
-        captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+        captureStack(self, _init_)
     
 
 def UninitializedPropertyAccessException_init__Init_(_this):
@@ -13254,7 +13254,7 @@ def UninitializedPropertyAccessException_init__Init_(_this):
 
 def UninitializedPropertyAccessException_init__Create_():
     tmp = UninitializedPropertyAccessException_init__Init_(Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, UninitializedPropertyAccessException_init__Create_)
     return tmp
 
 def UninitializedPropertyAccessException_init__Init__0(message, _this):
@@ -13264,7 +13264,7 @@ def UninitializedPropertyAccessException_init__Init__0(message, _this):
 
 def UninitializedPropertyAccessException_init__Create__0(message):
     tmp = UninitializedPropertyAccessException_init__Init__0(message, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, UninitializedPropertyAccessException_init__Create_)
     return tmp
 
 def UninitializedPropertyAccessException_init__Init__1(message, cause, _this):
@@ -13274,7 +13274,7 @@ def UninitializedPropertyAccessException_init__Init__1(message, cause, _this):
 
 def UninitializedPropertyAccessException_init__Create__1(message, cause):
     tmp = UninitializedPropertyAccessException_init__Init__1(message, cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, UninitializedPropertyAccessException_init__Create_)
     return tmp
 
 def UninitializedPropertyAccessException_init__Init__2(cause, _this):
@@ -13284,7 +13284,7 @@ def UninitializedPropertyAccessException_init__Init__2(cause, _this):
 
 def UninitializedPropertyAccessException_init__Create__2(cause):
     tmp = UninitializedPropertyAccessException_init__Init__2(cause, Object_create())
-    captureStack(tmp, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+    captureStack(tmp, UninitializedPropertyAccessException_init__Create_)
     return tmp
 
 class UninitializedPropertyAccessException:
@@ -13304,7 +13304,7 @@ class UninitializedPropertyAccessException:
         pass
     
     def __init__(self):
-        captureStack(self, visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrRawFunctionReferenceImpl)
+        captureStack(self, _init_)
     
 
 def jsIn(lhs_hack, rhs_hack):

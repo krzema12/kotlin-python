@@ -42,6 +42,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
             is IrDynamicMemberExpression -> visitDynamicMemberExpression(expression, data)
             is IrStringConcatenation -> visitStringConcatenation(expression, data)
             is IrFunctionExpression -> visitFunctionExpression(expression, data)
+            is IrRawFunctionReference -> visitRawFunctionReference(expression, data)
             else -> Name(id = identifier("visitExpression-other $expression".toValidPythonSymbol()), ctx = Load)
         }
     }
@@ -341,5 +342,9 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
     override fun visitComposite(expression: IrComposite, data: JsGenerationContext): expr {
         // TODO
         return Name(id = identifier("visitComposite-inToPyExpressionTransformer $expression".toValidPythonSymbol()), ctx = Load)
+    }
+
+    override fun visitRawFunctionReference(expression: IrRawFunctionReference, data: JsGenerationContext): expr {
+        return Name(id = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Load)
     }
 }
