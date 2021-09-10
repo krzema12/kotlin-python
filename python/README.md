@@ -107,9 +107,11 @@ It will generate various reports and summaries:
 
 #### Test stats
 
-Current status: **1867**/5787 passed
+Current status: **1937**/5787 passed
 
 #### History (newest on top)
+
+* after supporting extension functions: **1937**/5787 passed (+70: +71 passed, +1 failed because no support for intRange)
 
 * after supporting super classes: **1867**/5787 passed (+98: +99 passed, +1 failed because no support for instanceOf)
 
