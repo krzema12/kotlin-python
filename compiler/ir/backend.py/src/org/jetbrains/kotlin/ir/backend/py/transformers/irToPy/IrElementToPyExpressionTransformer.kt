@@ -260,7 +260,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
             return try {
                 Call(
                     func = Name(id = identifier(context.getNameForStaticFunction(function).ident.toValidPythonSymbol()), ctx = Load),
-                    args = arguments,
+                    args = listOfNotNull(pyExtensionReceiver) + arguments,
                     keywords = emptyList(),
                 )
             } catch (e: IllegalStateException) {

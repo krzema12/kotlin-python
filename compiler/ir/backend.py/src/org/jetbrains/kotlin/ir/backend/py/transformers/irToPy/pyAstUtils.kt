@@ -19,6 +19,7 @@ fun expr.makeStmt(): stmt = Expr(value = this)
 fun translateFunction(declaration: IrFunction, funcName: JsName, context: JsGenerationContext): FunctionDef {
     val isClassMethod = declaration.dispatchReceiverParameter != null
     val isConstructor = declaration is IrConstructor
+    val extensionReceiverParameter = declaration.extensionReceiverParameter
     val body = declaration.body?.accept(IrElementToPyStatementTransformer(), context) ?: listOf(Pass)
     val args = declaration.valueParameters
         .filter { !it.isVararg }
@@ -29,19 +30,29 @@ fun translateFunction(declaration: IrFunction, funcName: JsName, context: JsGene
                 type_comment = null,
             )
         }
-    val selfArg = argImpl(
-        arg = identifier("self"),
-        annotation = null,
-        type_comment = null,
-    )
+
+    val selfArg = when {
+        isClassMethod || isConstructor -> "self"
+        extensionReceiverParameter != null -> extensionReceiverParameter.name.asString().toValidPythonSymbol()
+        else -> null
+    }?.let {
+        val corrected = when (it) {
+            "_this_" -> "self"
+            else -> it
+        }
+
+        argImpl(
+            arg = identifier(corrected),
+            annotation = null,
+            type_comment = null,
+        )
+    }
 
     return FunctionDef(
         name = identifier(if (isConstructor) "__init__" else funcName.ident.toValidPythonSymbol()),
         args = argumentsImpl(
             posonlyargs = emptyList(),
-            args = if (isClassMethod || isConstructor) {
-                listOf(selfArg) + args
-            } else args,
+            args = listOfNotNull(selfArg) + args,
             vararg = declaration.valueParameters.firstOrNull { it.isVararg }?.let {
                 argImpl(
                     arg = identifier(it.name.asString().toValidPythonSymbol()),
