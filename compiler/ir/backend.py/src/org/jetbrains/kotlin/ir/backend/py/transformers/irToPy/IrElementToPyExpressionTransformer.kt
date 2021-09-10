@@ -175,19 +175,19 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
     }
 
     override fun visitDelegatingConstructorCall(expression: IrDelegatingConstructorCall, context: JsGenerationContext): expr {
-        // TODO
-        val noOfArguments = expression.valueArgumentsCount
+        // compile `super(arg1, arg2, arg...)` as `SuperClassName.__init__(self, arg1, arg2, arg...)`
+        val function = expression.symbol.owner
+        val arguments = translateCallArguments(expression, context, this)
+        val klass = function.parentAsClass
 
-        val arguments = (0 until noOfArguments).mapNotNull { argIndex ->
-            val valueArgument: IrExpression? = expression.getValueArgument(argIndex)
-            valueArgument?.let {
-                IrElementToPyExpressionTransformer().visitExpression(it, context)
-            }
-        }
-
+        val className = context.getNameForClass(klass).ident.toValidPythonSymbol()
         return Call(
-            func = Name(id = identifier("super"), ctx = Load),
-            args = arguments,
+            func = Attribute(
+                value = Name(identifier(className), Load),
+                attr = identifier("__init__"),
+                ctx = Load,
+            ),
+            args = listOf(Name(identifier("self"), Load)) + arguments,
             keywords = emptyList(),
         )
     }
