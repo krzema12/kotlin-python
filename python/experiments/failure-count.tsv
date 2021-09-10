@@ -1,26 +1,25 @@
-844	NameError: name 'Object_create' is not defined
-385	java.lang.ClassCastException
+851	NameError: name 'Object_create' is not defined
+406	NameError: name '_sharedBox_create' is not defined
 226	NameError: name 'jsClass' is not defined
-183	NameError: name 'self' is not defined
-178	TypeError: super() argument 1 must be type, not str
+185	NameError: name 'self' is not defined
+179	TypeError: super() argument 1 must be type, not str
 167	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-161	NameError: name '_sharedBox_create' is not defined
 160	NameError: name 'js' is not defined
-133	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
+134	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
+115	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean' is not defined
+81	TypeError: super() argument 1 must be type, not EmptyCoroutineContext
 73	java.lang.IllegalStateException: Can't find compiled module for dependency <path-truncated>
-67	NameError: name 'Array' is not defined
-62	AttributeError: 'int' object has no attribute 'data'
-61	NameError: name 'kotlin_Any_' is not defined
-54	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean' is not defined
+68	NameError: name 'Array' is not defined
+63	AttributeError: 'int' object has no attribute 'data'
+62	NameError: name 'kotlin_Any_' is not defined
 49	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 37	NameError: name 'kotlin_UInt' is not defined
 35	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 35	NameError: name 'kotlin_Int' is not defined
+35	SyntaxError: invalid syntax
 30	TypeError: super() argument 1 must be type, not function
+29	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
 28	NameError: name 'INVOKE' is not defined
-28	SyntaxError: invalid syntax
-28	TypeError: super() argument 1 must be type, not EmptyCoroutineContext
-28	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
 26	AttributeError: 'NoneType' object has no attribute 'append_uch40_k_'
 26	NameError: name 'EQEQ' is not defined
 26	NameError: name 'kotlin_Double' is not defined
@@ -28,7 +27,6 @@
 23	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
 19	UnboundLocalError: local variable 'test1' referenced before assignment
 19	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
-18	NameError: name 'R' is not defined
 17	TypeError: 'NoneType' object is not callable
 16	TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 15	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_int32Array_visibility_public_modality_FINAL_____arg0_kotlin_Any___returnType_kotlin_Any_' is not defined
@@ -37,7 +35,6 @@
 15	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
 14	NameError: name 'kotlin_Result_T_' is not defined
 14	RecursionError: maximum recursion depth exceeded
-12	NameError: name 'Z' is not defined
 12	UnboundLocalError: local variable 'test0' referenced before assignment
 10	ImportError: cannot import name 'box' from 'compiled_module' <path-truncated>)
 10	NameError: name 'visitExpressionFunctionBodyStatements_x2__Expr__Return_' is not defined
@@ -46,14 +43,12 @@
 9	NameError: name 'visitExpressionFunctionBodyStatements_x1__Expr_' is not defined
 9	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' is not defined
 9	TypeError: super() argument 1 must be type, not _no_name_provided__9
-8	NameError: name 'S' is not defined
 8	NameError: name 'undefined' is not defined
 8	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Expr_' is not defined
 8	TypeError: unsupported operand type(s) for +: 'NoneType' and 'NoneType'
 8	java.lang.IllegalArgumentException: List has more than one element.
 7	AttributeError: 'NoneType' object has no attribute 'data'
 7	AttributeError: 'int' object has no attribute 'toString'
-7	NameError: name 'A' is not defined
 7	NameError: name 'Object' is not defined
 7	NameError: name 'kotlin_UByte' is not defined
 7	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1]>
@@ -94,10 +89,7 @@
 3	AttributeError: 'NoneType' object has no attribute 'iterator_0_k_'
 3	AttributeError: 'float' object has no attribute '__and__'
 3	MemoryError
-3	NameError: name 'Foo' is not defined
 3	NameError: name 'Foo_T_' is not defined
-3	NameError: name 'Id' is not defined
-3	NameError: name 'Str' is not defined
 3	NameError: name 'T' is not defined
 3	NameError: name '_undefined' is not defined
 3	NameError: name 'kotlin_Any' is not defined
@@ -130,6 +122,7 @@
 2	AttributeError: 'tuple' object has no attribute '__setitem__'
 2	NameError: name 'UNARY_PLUS' is not defined
 2	NameError: name 'Value_' is not defined
+2	NameError: name 'kotlin_CharSequence' is not defined
 2	NameError: name 'kotlin_UShort' is not defined
 2	NameError: name 'test_Inner_kotlin_String_kotlin_String_' is not defined
 2	NameError: name 'translateCallArguments_0' is not defined
@@ -138,6 +131,7 @@
 2	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_float32Array_visibility_public_modality_FINAL_____arg0_kotlin_Any___returnType_kotlin_Any_' is not defined
 2	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_float64Array_visibility_public_modality_FINAL_____arg0_kotlin_Any___returnType_kotlin_Any_' is not defined
 2	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_int16Array_visibility_public_modality_FINAL_____arg0_kotlin_Any___returnType_kotlin_Any_' is not defined
+2	NameError: name 'visitExpressionFunctionBodyStatements_x3__Expr__Expr__Expr_' is not defined
 2	NameError: name 'visitExpressionFunctionBodyStatements_x3__Global__Assign__Expr_' is not defined
 2	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetFieldImpl' is not defined
 2	SyntaxError: name 'xs' is used prior to global declaration
@@ -208,6 +202,7 @@
 1	AttributeError: 'NoneType' object has no attribute '_get_size__0_k_'
 1	AttributeError: 'NoneType' object has no attribute 'add_2bq_k_'
 1	AttributeError: 'NoneType' object has no attribute 'call_0_k_'
+1	AttributeError: 'NoneType' object has no attribute 'check_hwwcoo_k_'
 1	AttributeError: 'NoneType' object has no attribute 'contains_2c5_k_'
 1	AttributeError: 'NoneType' object has no attribute 'f_2bq_k_'
 1	AttributeError: 'NoneType' object has no attribute 'first'
@@ -238,16 +233,9 @@
 1	IndentationError: expected an indented block
 1	NameError: name 'AsAny_T_' is not defined
 1	NameError: name 'C' is not defined
-1	NameError: name 'Composed' is not defined
 1	NameError: name 'GCmp_T_' is not defined
-1	NameError: name 'IC' is not defined
-1	NameError: name 'IC1' is not defined
-1	NameError: name 'S1' is not defined
-1	NameError: name 'Test' is not defined
-1	NameError: name 'WrappingInt' is not defined
 1	NameError: name '_jsBind_' is not defined
 1	NameError: name 'kotlin_Char' is not defined
-1	NameError: name 'kotlin_CharSequence' is not defined
 1	NameError: name 'kotlin_DoubleArray' is not defined
 1	NameError: name 'kotlin_Function0_kotlin_Boolean_' is not defined
 1	NameError: name 'kotlin_Function1_X_kotlin_String_' is not defined
@@ -261,13 +249,13 @@
 1	NameError: name 'visitExpressionFunctionBodyStatements_x31__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__E' is not defined
 1	NameError: name 'visitExpressionFunctionBodyStatements_x3__Assign__Expr__If_' is not defined
 1	NameError: name 'visitExpressionFunctionBodyStatements_x3__Expr__Assign__Expr_' is not defined
-1	NameError: name 'visitExpressionFunctionBodyStatements_x3__Expr__Expr__Expr_' is not defined
 1	NameError: name 'visitExpressionFunctionBodyStatements_x3__If__Expr__Return_' is not defined
 1	NameError: name 'visitExpressionFunctionBodyStatements_x4__Assign__Assign__Assign__Return_' is not defined
 1	NameError: name 'visitExpressionFunctionBodyStatements_x4__Assign__Expr__Assign__Return_' is not defined
 1	NameError: name 'visitExpressionFunctionBodyStatements_x4__Global__Assign__Assign__Return_' is not defined
 1	NameError: name 'visitExpressionFunctionBodyStatements_x4__If__Assign__If__Expr_' is not defined
 1	NameError: name 'visitExpressionFunctionBodyStatements_x4__If__Expr__If__If_' is not defined
+1	NameError: name 'visitExpressionFunctionBodyStatements_x5__Assign__Expr__Expr__Expr__Expr_' is not defined
 1	NameError: name 'visitExpressionFunctionBodyStatements_x5__Global__Assign__Assign__Expr__Return_' is not defined
 1	NameError: name 'visitExpressionFunctionBodyStatements_x7__Assign__Expr__Assign__Expr__Assign__Expr__Return_' is not defined
 1	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined

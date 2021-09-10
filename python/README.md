@@ -107,9 +107,11 @@ It will generate various reports and summaries:
 
 #### Test stats
 
-Current status: **1709**/5787 passed
+Current status: **1769**/5787 passed
 
 #### History (newest on top)
+
+* after disabling DCE and PIR compilation: **1769**/5787 passed (+60)
 
 * after supporting const statements: **1709**/5787 passed (+4)
 
