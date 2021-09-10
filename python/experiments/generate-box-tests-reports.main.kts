@@ -1,7 +1,7 @@
 #!/usr/bin/env kotlin
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.Locale
+import java.util.*
 import javax.xml.parsers.DocumentBuilderFactory
 
 fun pathFromNamedArgument(argumentName: String): Path? =
@@ -12,11 +12,14 @@ val targetFailedTestsReportPath: Path = pathFromNamedArgument("failed-tests-repo
     ?: Paths.get("python/experiments/failed-tests.txt")
 val targetBoxTestsReportPath: Path = pathFromNamedArgument("box-tests-report-path")
     ?: Paths.get("python/experiments/box-tests-report.tsv")
+val failureCountReportPath: Path = pathFromNamedArgument("failure-count-report-path")
+    ?: Paths.get("python/experiments/failure-count.tsv")
 
 val testResults = getTestResults(Paths.get("python/box.tests/build/test-results/pythonTest"))
 
 testResults.writeFailedTestsSummary(targetFailedTestsReportPath)
 testResults.writeSummaryTsvToFile(targetBoxTestsReportPath)
+testResults.writeFailureCount(failureCountReportPath)
 
 fun List<TestResult>.writeFailedTestsSummary(targetFile: Path) = targetFile.toFile().printWriter().use { out ->
     this
@@ -59,6 +62,24 @@ fun List<TestResult>.writeSummaryTsvToFile(targetFile: Path) = targetFile.toFile
 //            pythonExecutionTime ?: "",
         ).joinToString("\t"))
     }
+}
+
+fun List<TestResult>.writeFailureCount(targetFile: Path) = targetFile.toFile().printWriter().use { out ->
+    this
+        .asSequence()
+        .map { it.status }
+        .filterIsInstance<TestStatus.Failed>()
+        .map { it.extractFailureGeneralReason()?.let { reason -> it.extractFailureDetailedReason(reason)?.removeVaryingParts() }  }
+        .filter { it != null && it.isNotEmpty() }
+        .groupBy { it }
+        .map { (reason, list) -> reason to list.size }
+        .sortedWith(
+            compareBy(
+                { (_, count) -> -count },
+                { (reason, _) -> reason },
+            )
+        )
+        .forEach { (reason, count) -> out.println("$count\t$reason") }
 }
 
 fun String.removeVaryingParts() =
