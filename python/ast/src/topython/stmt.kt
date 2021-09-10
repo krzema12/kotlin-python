@@ -73,7 +73,7 @@ fun If.toPython(): String {
 }
 
 fun ClassDef.toPython() =
-    "${if (bases.isNotEmpty()) bases.joinToString("") { "class ${it.toPython()}:\n${"pass".indent()}\n\n" } else ""}class ${name.name}${if (bases.isNotEmpty()) "(${bases.joinToString(", ") { it.toPython() }})" else ""}:\n${(if (body.isNotEmpty()) body.toPython() else "pass").indent()}\n"
+    "class ${name.name}${if (bases.isNotEmpty()) "(${bases.joinToString(", ") { it.toPython() }})" else ""}:\n${(if (body.isNotEmpty()) body.toPython() else "pass").indent()}\n"
 
 fun Raise.toPython() =
     "raise ${exc?.toPython()}"

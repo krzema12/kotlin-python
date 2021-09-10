@@ -5,13 +5,13 @@
 
 package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 
-import generated.Python.*
+import generated.Python.stmt
 import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
 import org.jetbrains.kotlin.ir.declarations.IrFile
 
 class IrFileToPyTransformer : BaseIrElementToPyNodeTransformer<List<stmt>, JsGenerationContext> {
     override fun visitFile(declaration: IrFile, data: JsGenerationContext): List<stmt> {
-        return declaration.declarations.map {
+        return declaration.declarations.flatMap {
             it.accept(IrDeclarationToPyTransformer(), data)
         }
     }

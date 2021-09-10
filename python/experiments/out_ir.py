@@ -433,7 +433,7 @@ def getOrElse(index, defaultValue):
 
 def KotlinNothingValueException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    super()
+    KotlinNothingValueException.__init__(self)
     return _this
 
 def KotlinNothingValueException_init__Create_():
@@ -443,7 +443,7 @@ def KotlinNothingValueException_init__Create_():
 
 def KotlinNothingValueException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    super()
+    KotlinNothingValueException.__init__(self)
     return _this
 
 def KotlinNothingValueException_init__Create__0(message):
@@ -453,7 +453,7 @@ def KotlinNothingValueException_init__Create__0(message):
 
 def KotlinNothingValueException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init__1(message, cause, _this)
-    super()
+    KotlinNothingValueException.__init__(self)
     return _this
 
 def KotlinNothingValueException_init__Create__1(message, cause):
@@ -463,7 +463,7 @@ def KotlinNothingValueException_init__Create__1(message, cause):
 
 def KotlinNothingValueException_init__Init__2(cause, _this):
     RuntimeException_init__Init__2(cause, _this)
-    super()
+    KotlinNothingValueException.__init__(self)
     return _this
 
 def KotlinNothingValueException_init__Create__2(cause):
@@ -471,7 +471,10 @@ def KotlinNothingValueException_init__Create__2(cause):
     captureStack(tmp, KotlinNothingValueException_init__Create_)
     return tmp
 
-class KotlinNothingValueException:
+class RuntimeException:
+    pass
+
+class KotlinNothingValueException(RuntimeException):
     def _get_message__0_k_(self):
         pass
     
@@ -538,15 +541,18 @@ def Experimental_init__Init_(level, _mask0, _marker, _this):
     if not (_mask0 & 1 == 0):
         level = Level_ERROR_getInstance()
     
-    super(level)
+    Experimental.__init__(self, level)
     return _this
 
 def Experimental_init__Create_(level, _mask0, _marker):
     return Experimental_init__Init_(level, _mask0, _marker, Object_create())
 
-class Level:
+class Enum:
+    pass
+
+class Level(Enum):
     def __init__(self, name, ordinal):
-        super(name, ordinal)
+        Enum.__init__(self, name, ordinal)
     
     def _get_name__0_k_(self):
         pass
@@ -575,7 +581,10 @@ def Level_ERROR_getInstance():
     Level_initEntries()
     return Level_ERROR_instance
 
-class Experimental:
+class Annotation:
+    pass
+
+class Experimental(Annotation):
     def __init__(self, level):
         self.level = level
     
@@ -592,7 +601,7 @@ class Experimental:
         pass
     
 
-class WasExperimental:
+class WasExperimental(Annotation):
     def __init__(self, *markerClass):
         self.markerClass = markerClass
     
@@ -609,7 +618,7 @@ class WasExperimental:
         pass
     
 
-class ExperimentalStdlibApi:
+class ExperimentalStdlibApi(Annotation):
     def __init__(self):
         pass
     
@@ -623,7 +632,7 @@ class ExperimentalStdlibApi:
         pass
     
 
-class OptionalExpectation:
+class OptionalExpectation(Annotation):
     def __init__(self):
         pass
     
@@ -637,7 +646,7 @@ class OptionalExpectation:
         pass
     
 
-class ExperimentalMultiplatform:
+class ExperimentalMultiplatform(Annotation):
     def __init__(self):
         pass
     
@@ -683,15 +692,15 @@ def RequiresOptIn_init__Init_(message, level, _mask0, _marker, _this):
     if not (_mask0 & 2 == 0):
         level = Level_ERROR_getInstance_0()
     
-    super(message, level)
+    RequiresOptIn.__init__(self, message, level)
     return _this
 
 def RequiresOptIn_init__Create_(message, level, _mask0, _marker):
     return RequiresOptIn_init__Init_(message, level, _mask0, _marker, Object_create())
 
-class Level_0:
+class Level_0(Enum):
     def __init__(self, name, ordinal):
-        super(name, ordinal)
+        Enum.__init__(self, name, ordinal)
     
     def _get_name__0_k_(self):
         pass
@@ -720,7 +729,7 @@ def Level_ERROR_getInstance_0():
     Level_initEntries_0()
     return Level_ERROR_instance
 
-class RequiresOptIn:
+class RequiresOptIn(Annotation):
     def __init__(self, message, level):
         self.message = message
         self.level = level
@@ -741,7 +750,7 @@ class RequiresOptIn:
         pass
     
 
-class OptIn:
+class OptIn(Annotation):
     def __init__(self, *markerClass):
         self.markerClass = markerClass
     
@@ -758,7 +767,10 @@ class OptIn:
         pass
     
 
-class AbstractCollection:
+class Collection:
+    pass
+
+class AbstractCollection(Collection):
     def __init__(self):
         pass
     
@@ -851,9 +863,15 @@ def _set__size_(_this, _set___):
 def _get__size_(_this):
     return _this._size
 
-class SubList:
+class AbstractList:
+    pass
+
+class RandomAccess:
+    pass
+
+class SubList(AbstractList, RandomAccess):
     def __init__(self, list, fromIndex, toIndex):
-        super()
+        AbstractList.__init__(self)
         self.list = list
         self.fromIndex = fromIndex
         self._size = 0
@@ -910,7 +928,10 @@ class SubList:
         pass
     
 
-class IteratorImpl:
+class Iterator_3:
+    pass
+
+class IteratorImpl(Iterator_3):
     def __init__(self, _outer):
         self._this = _outer
         self.index = 0
@@ -943,10 +964,13 @@ class IteratorImpl:
         pass
     
 
-class ListIteratorImpl:
+class ListIterator:
+    pass
+
+class ListIteratorImpl(IteratorImpl, ListIterator):
     def __init__(self, _outer, index):
         self._this = _outer
-        super(_outer)
+        IteratorImpl.__init__(self, _outer)
         Companion_getInstance().checkPositionIndex_rvwcgf_k_(index, self._this._get_size__0_k_())
         self._set_index__majfzk_k_(index)
     
@@ -989,7 +1013,10 @@ class ListIteratorImpl:
         pass
     
 
-class Companion_0:
+class Any:
+    pass
+
+class Companion_0(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -1064,10 +1091,13 @@ def Companion_getInstance():
     
     return Companion_instance
 
-class AbstractList:
+class List:
+    pass
+
+class AbstractList(AbstractCollection, List):
     def __init__(self):
         Companion_getInstance()
-        super()
+        AbstractCollection.__init__(self)
     
     def _get_size__0_k_(self):
         pass
@@ -1168,7 +1198,10 @@ def _get_serialVersionUID_(_this):
 def readResolve(_this):
     return EmptyList_getInstance()
 
-class EmptyList:
+class Serializable:
+    pass
+
+class EmptyList(List, Serializable, RandomAccess):
     def __init__(self):
         global EmptyList_instance
         EmptyList_instance = self
@@ -1271,7 +1304,7 @@ def EmptyList_getInstance():
     
     return EmptyList_instance
 
-class EmptyIterator:
+class EmptyIterator(ListIterator):
     def __init__(self):
         global EmptyIterator_instance
         EmptyIterator_instance = self
@@ -1384,7 +1417,7 @@ def filterInPlace_0(predicate, predicateResultToRemove):
     
     return result
 
-class Sequence:
+class Sequence(Any):
     def iterator_0_k_(self):
         pass
     
@@ -1404,7 +1437,7 @@ class Sequence:
 def contract(builder):
     pass
 
-class ContractBuilder:
+class ContractBuilder(Any):
     def returns_0_k_(self):
         pass
     
@@ -1469,9 +1502,9 @@ def InvocationKind_initEntries():
     InvocationKind_EXACTLY_ONCE_instance = InvocationKind('EXACTLY_ONCE', 2)
     InvocationKind_UNKNOWN_instance = InvocationKind('UNKNOWN', 3)
 
-class InvocationKind:
+class InvocationKind(Enum):
     def __init__(self, name, ordinal):
-        super(name, ordinal)
+        Enum.__init__(self, name, ordinal)
     
     def _get_name__0_k_(self):
         pass
@@ -1492,7 +1525,7 @@ class InvocationKind:
         pass
     
 
-class ExperimentalContracts:
+class ExperimentalContracts(Annotation):
     def __init__(self):
         pass
     
@@ -1522,55 +1555,10 @@ def InvocationKind_UNKNOWN_getInstance():
     InvocationKind_initEntries()
     return InvocationKind_UNKNOWN_instance
 
-class CallsInPlace:
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-    def __init__(self):
-        pass
-    
-
-class Returns:
-    def implies_vcj5fe_k_(self, booleanExpression):
-        pass
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-    def __init__(self):
-        pass
-    
-
-class ReturnsNotNull:
-    def implies_vcj5fe_k_(self, booleanExpression):
-        pass
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-    def __init__(self):
-        pass
-    
-
 class Effect:
+    pass
+
+class CallsInPlace(Effect):
     def equals(self, other):
         pass
     
@@ -1585,6 +1573,9 @@ class Effect:
     
 
 class SimpleEffect:
+    pass
+
+class Returns(SimpleEffect):
     def implies_vcj5fe_k_(self, booleanExpression):
         pass
     
@@ -1601,7 +1592,10 @@ class SimpleEffect:
         pass
     
 
-class ConditionalEffect:
+class ReturnsNotNull(SimpleEffect):
+    def implies_vcj5fe_k_(self, booleanExpression):
+        pass
+    
     def equals(self, other):
         pass
     
@@ -1615,7 +1609,52 @@ class ConditionalEffect:
         pass
     
 
-class Continuation:
+class Effect(Any):
+    def equals(self, other):
+        pass
+    
+    def hashCode(self):
+        pass
+    
+    def toString(self):
+        pass
+    
+    def __init__(self):
+        pass
+    
+
+class SimpleEffect(Effect):
+    def implies_vcj5fe_k_(self, booleanExpression):
+        pass
+    
+    def equals(self, other):
+        pass
+    
+    def hashCode(self):
+        pass
+    
+    def toString(self):
+        pass
+    
+    def __init__(self):
+        pass
+    
+
+class ConditionalEffect(Effect):
+    def equals(self, other):
+        pass
+    
+    def hashCode(self):
+        pass
+    
+    def toString(self):
+        pass
+    
+    def __init__(self):
+        pass
+    
+
+class Continuation(Any):
     def _get_context__0_k_(self):
         pass
     
@@ -1649,7 +1688,7 @@ def resume(value):
 def _get_coroutineContext_():
     raise NotImplementedError('Implemented as intrinsic')
 
-class _no_name_provided_:
+class _no_name_provided_(Continuation):
     def __init__(self, _context, _resumeWith):
         self._context = _context
         self._resumeWith = _resumeWith
@@ -1670,7 +1709,10 @@ class _no_name_provided_:
         pass
     
 
-class Key:
+class Key_0:
+    pass
+
+class Key(Key_0):
     def __init__(self):
         global Key_instance
         Key_instance = self
@@ -1692,7 +1734,10 @@ def Key_getInstance():
     
     return Key_instance
 
-class ContinuationInterceptor:
+class Element:
+    pass
+
+class ContinuationInterceptor(Element):
     def interceptContinuation_x4ijla_k_(self, continuation):
         pass
     
@@ -1744,7 +1789,7 @@ class ContinuationInterceptor:
         Key_getInstance()
     
 
-class Key_0:
+class Key_0(Any):
     def equals(self, other):
         pass
     
@@ -1758,7 +1803,10 @@ class Key_0:
         pass
     
 
-class Element:
+class CoroutineContext:
+    pass
+
+class Element(CoroutineContext):
     def _get_key__0_k_(self):
         pass
     
@@ -1792,7 +1840,7 @@ class Element:
         pass
     
 
-class CoroutineContext:
+class CoroutineContext(Any):
     def get_9uvjra_k_(self, key):
         pass
     
@@ -1824,7 +1872,7 @@ def _get_serialVersionUID__0(_this):
 def readResolve_0(_this):
     return EmptyCoroutineContext_getInstance()
 
-class EmptyCoroutineContext:
+class EmptyCoroutineContext(CoroutineContext, Serializable):
     def __init__(self):
         global EmptyCoroutineContext_instance
         EmptyCoroutineContext_instance = self
@@ -1862,7 +1910,7 @@ def EmptyCoroutineContext_getInstance():
 def _get_serialVersionUID__1(_this):
     return _this.serialVersionUID
 
-class Companion_1:
+class Companion_1(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -1951,7 +1999,7 @@ def writeReplace(_this):
     
     return Serialized((kotlin_Array_kotlin_coroutines_CoroutineContext_(elements)) if (isArray(elements)) else (THROW_CCE()))
 
-class Serialized:
+class Serialized(Serializable):
     def __init__(self, elements):
         Companion_getInstance_0()
         self.elements = elements
@@ -1969,7 +2017,7 @@ class Serialized:
         pass
     
 
-class CombinedContext:
+class CombinedContext(CoroutineContext, Serializable):
     def __init__(self, left, element):
         self.left = left
         self.element = element
@@ -2040,7 +2088,7 @@ def _get_safeCast_(_this):
 def _get_topmostKey_(_this):
     return _this.topmostKey
 
-class AbstractCoroutineContextKey:
+class AbstractCoroutineContextKey(Key_0):
     def __init__(self, baseKey, safeCast):
         self.safeCast = safeCast
         tmp = self
@@ -2099,9 +2147,9 @@ def CoroutineSingletons_initEntries():
     CoroutineSingletons_UNDECIDED_instance = CoroutineSingletons('UNDECIDED', 1)
     CoroutineSingletons_RESUMED_instance = CoroutineSingletons('RESUMED', 2)
 
-class CoroutineSingletons:
+class CoroutineSingletons(Enum):
     def __init__(self, name, ordinal):
-        super(name, ordinal)
+        Enum.__init__(self, name, ordinal)
     
     def _get_name__0_k_(self):
         pass
@@ -2158,7 +2206,7 @@ def xor_0(other):
 def inv_0():
     return (~self).__add__(0x80).__and__(0xff).__sub__(0x80)
 
-class ExperimentalTypeInference:
+class ExperimentalTypeInference(Annotation):
     def __init__(self):
         pass
     
@@ -2185,13 +2233,13 @@ def RequireKotlin_init__Init_(version, message, level, versionKind, errorCode, _
     if not (_mask0 & 16 == 0):
         errorCode = -1
     
-    super(version, message, level, versionKind, errorCode)
+    RequireKotlin.__init__(self, version, message, level, versionKind, errorCode)
     return _this
 
 def RequireKotlin_init__Create_(version, message, level, versionKind, errorCode, _mask0, _marker):
     return RequireKotlin_init__Init_(version, message, level, versionKind, errorCode, _mask0, _marker, Object_create())
 
-class RequireKotlin:
+class RequireKotlin(Annotation):
     def __init__(self, version, message, level, versionKind, errorCode):
         self.version = version
         self.message = message
@@ -2253,9 +2301,9 @@ def RequireKotlinVersionKind_initEntries():
     RequireKotlinVersionKind_COMPILER_VERSION_instance = RequireKotlinVersionKind('COMPILER_VERSION', 1)
     RequireKotlinVersionKind_API_VERSION_instance = RequireKotlinVersionKind('API_VERSION', 2)
 
-class RequireKotlinVersionKind:
+class RequireKotlinVersionKind(Enum):
     def __init__(self, name, ordinal):
-        super(name, ordinal)
+        Enum.__init__(self, name, ordinal)
     
     def _get_name__0_k_(self):
         pass
@@ -2276,7 +2324,7 @@ class RequireKotlinVersionKind:
         pass
     
 
-class InlineOnly:
+class InlineOnly(Annotation):
     def __init__(self):
         pass
     
@@ -2290,7 +2338,7 @@ class InlineOnly:
         pass
     
 
-class NoInfer:
+class NoInfer(Annotation):
     def __init__(self):
         pass
     
@@ -2304,7 +2352,7 @@ class NoInfer:
         pass
     
 
-class DynamicExtension:
+class DynamicExtension(Annotation):
     def __init__(self):
         pass
     
@@ -2318,7 +2366,7 @@ class DynamicExtension:
         pass
     
 
-class ContractsDsl:
+class ContractsDsl(Annotation):
     def __init__(self):
         pass
     
@@ -2332,7 +2380,7 @@ class ContractsDsl:
         pass
     
 
-class OnlyInputTypes:
+class OnlyInputTypes(Annotation):
     def __init__(self):
         pass
     
@@ -2346,7 +2394,7 @@ class OnlyInputTypes:
         pass
     
 
-class HidesMembers:
+class HidesMembers(Annotation):
     def __init__(self):
         pass
     
@@ -2372,7 +2420,7 @@ def RequireKotlinVersionKind_API_VERSION_getInstance():
     RequireKotlinVersionKind_initEntries()
     return RequireKotlinVersionKind_API_VERSION_instance
 
-class KClassifier:
+class KClassifier(Any):
     def equals(self, other):
         pass
     
@@ -2386,7 +2434,7 @@ class KClassifier:
         pass
     
 
-class KTypeParameter:
+class KTypeParameter(KClassifier):
     def _get_name__0_k_(self):
         pass
     
@@ -2412,7 +2460,7 @@ class KTypeParameter:
         pass
     
 
-class Companion_2:
+class Companion_2(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -2450,7 +2498,7 @@ def Companion_getInstance_1():
     
     return Companion_instance
 
-class KTypeProjection:
+class KTypeProjection(Any):
     def __init__(self, variance, type):
         Companion_getInstance_1()
         self.variance = variance
@@ -2551,9 +2599,9 @@ def KVariance_initEntries():
     KVariance_IN_instance = KVariance('IN', 1)
     KVariance_OUT_instance = KVariance('OUT', 2)
 
-class KVariance:
+class KVariance(Enum):
     def __init__(self, name, ordinal):
-        super(name, ordinal)
+        Enum.__init__(self, name, ordinal)
     
     def _get_name__0_k_(self):
         pass
@@ -2678,7 +2726,7 @@ def Result__toString_impl(this):
     
     return tmp
 
-class Companion_3:
+class Companion_3(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -2706,7 +2754,7 @@ def Companion_getInstance_2():
     
     return Companion_instance
 
-class Failure:
+class Failure(Serializable):
     def __init__(self, exception):
         self.exception = exception
     
@@ -2741,7 +2789,7 @@ def Result__equals_impl(this, other):
     
     return True
 
-class Result:
+class Result(Serializable):
     def __init__(self, value):
         Companion_getInstance_2()
         self.value = value
@@ -2780,7 +2828,7 @@ def NotImplementedError_init__Init_(message, _mask0, _marker, _this):
     if not (_mask0 & 1 == 0):
         message = 'An operation is not implemented.'
     
-    super(message)
+    NotImplementedError.__init__(self, message)
     return _this
 
 def NotImplementedError_init__Create_(message, _mask0, _marker):
@@ -2788,7 +2836,10 @@ def NotImplementedError_init__Create_(message, _mask0, _marker):
     captureStack(tmp, NotImplementedError_init__Create_)
     return tmp
 
-class NotImplementedError:
+class Error_0:
+    pass
+
+class NotImplementedError(Error_0):
     def __init__(self, message):
         Error_init__Init__0(message, self)
         captureStack(self, _init_)
@@ -2845,7 +2896,7 @@ def _UByte___init__impl_(data):
 def _UByte___get_data__impl_(this):
     return this.data
 
-class Companion_4:
+class Companion_4(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -3110,7 +3161,10 @@ def UByte__equals_impl(this, other):
     
     return True
 
-class UByte:
+class Comparable:
+    pass
+
+class UByte(Comparable):
     def __init__(self, data):
         Companion_getInstance_3()
         self.data = data
@@ -3176,9 +3230,12 @@ def _UByteArray___get_size__impl_(this):
 def UByteArray__iterator_impl(this):
     return Iterator(_UByteArray___get_storage__impl_(this))
 
-class Iterator:
+class UByteIterator:
+    pass
+
+class Iterator(UByteIterator):
     def __init__(self, array):
-        super()
+        UByteIterator.__init__(self)
         self.array = array
         self.index = 0
     
@@ -3281,7 +3338,7 @@ def UByteArray__equals_impl(this, other):
     
     return True
 
-class UByteArray:
+class UByteArray(Collection):
     def __init__(self, storage):
         self.storage = storage
     
@@ -3322,7 +3379,7 @@ def _UInt___init__impl_(data):
 def _UInt___get_data__impl_(this):
     return this.data
 
-class Companion_5:
+class Companion_5(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -3563,7 +3620,7 @@ def UInt__equals_impl(this, other):
     
     return True
 
-class UInt:
+class UInt(Comparable):
     def __init__(self, data):
         Companion_getInstance_4()
         self.data = data
@@ -3635,9 +3692,12 @@ def _UIntArray___get_size__impl_(this):
 def UIntArray__iterator_impl(this):
     return Iterator_0(_UIntArray___get_storage__impl_(this))
 
-class Iterator_0:
+class UIntIterator:
+    pass
+
+class Iterator_0(UIntIterator):
     def __init__(self, array):
-        super()
+        UIntIterator.__init__(self)
         self.array = array
         self.index = 0
     
@@ -3740,7 +3800,7 @@ def UIntArray__equals_impl(this, other):
     
     return True
 
-class UIntArray:
+class UIntArray(Collection):
     def __init__(self, storage):
         self.storage = storage
     
@@ -3775,7 +3835,7 @@ class UIntArray:
         return UIntArray__equals_impl(unboxIntrinsic(self), other)
     
 
-class Companion_6:
+class Companion_6(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -3805,10 +3865,16 @@ def Companion_getInstance_5():
     
     return Companion_instance
 
-class UIntRange:
+class UIntProgression:
+    pass
+
+class ClosedRange:
+    pass
+
+class UIntRange(UIntProgression, ClosedRange):
     def __init__(self, start, endInclusive):
         Companion_getInstance_5()
-        super(start, endInclusive, 1)
+        UIntProgression.__init__(self, start, endInclusive, 1)
     
     def _get_start__sv9k7v_k_(self):
         return self._get_first__sv9k7v_k_()
@@ -3875,7 +3941,7 @@ class UIntRange:
         pass
     
 
-class Companion_7:
+class Companion_7(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -3900,7 +3966,10 @@ def Companion_getInstance_6():
     
     return Companion_instance
 
-class UIntProgression:
+class Iterable:
+    pass
+
+class UIntProgression(Iterable):
     def __init__(self, start, endInclusive, step):
         Companion_getInstance_6()
         if step == 0:
@@ -3978,9 +4047,9 @@ def _set_next_(_this, _set___):
 def _get_next_(_this):
     return _this.next
 
-class UIntProgressionIterator:
+class UIntProgressionIterator(UIntIterator):
     def __init__(self, first, last, step):
-        super()
+        UIntIterator.__init__(self)
         self.finalElement = last
         tmp = self
         if step > 0:
@@ -4025,7 +4094,7 @@ class UIntProgressionIterator:
         pass
     
 
-class UIntIterator:
+class UIntIterator(Iterator_3):
     def __init__(self):
         pass
     
@@ -4051,7 +4120,7 @@ class UIntIterator:
         pass
     
 
-class ULongIterator:
+class ULongIterator(Iterator_3):
     def __init__(self):
         pass
     
@@ -4077,7 +4146,7 @@ class ULongIterator:
         pass
     
 
-class UByteIterator:
+class UByteIterator(Iterator_3):
     def __init__(self):
         pass
     
@@ -4103,7 +4172,7 @@ class UByteIterator:
         pass
     
 
-class UShortIterator:
+class UShortIterator(Iterator_3):
     def __init__(self):
         pass
     
@@ -4135,7 +4204,7 @@ def _ULong___init__impl_(data):
 def _ULong___get_data__impl_(this):
     return this.data
 
-class Companion_8:
+class Companion_8(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -4379,7 +4448,7 @@ def ULong__equals_impl(this, other):
     
     return True
 
-class ULong:
+class ULong(Comparable):
     def __init__(self, data):
         Companion_getInstance_7()
         self.data = data
@@ -4451,9 +4520,9 @@ def _ULongArray___get_size__impl_(this):
 def ULongArray__iterator_impl(this):
     return Iterator_1(_ULongArray___get_storage__impl_(this))
 
-class Iterator_1:
+class Iterator_1(ULongIterator):
     def __init__(self, array):
-        super()
+        ULongIterator.__init__(self)
         self.array = array
         self.index = 0
     
@@ -4556,7 +4625,7 @@ def ULongArray__equals_impl(this, other):
     
     return True
 
-class ULongArray:
+class ULongArray(Collection):
     def __init__(self, storage):
         self.storage = storage
     
@@ -4591,7 +4660,7 @@ class ULongArray:
         return ULongArray__equals_impl(unboxIntrinsic(self), other)
     
 
-class Companion_9:
+class Companion_9(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -4621,10 +4690,13 @@ def Companion_getInstance_8():
     
     return Companion_instance
 
-class ULongRange:
+class ULongProgression:
+    pass
+
+class ULongRange(ULongProgression, ClosedRange):
     def __init__(self, start, endInclusive):
         Companion_getInstance_8()
-        super(start, endInclusive, 1)
+        ULongProgression.__init__(self, start, endInclusive, 1)
     
     def _get_start__sha8jq_k_(self):
         return self._get_first__sha8jq_k_()
@@ -4697,7 +4769,7 @@ class ULongRange:
         pass
     
 
-class Companion_10:
+class Companion_10(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -4722,7 +4794,7 @@ def Companion_getInstance_9():
     
     return Companion_instance
 
-class ULongProgression:
+class ULongProgression(Iterable):
     def __init__(self, start, endInclusive, step):
         Companion_getInstance_9()
         if step == 0:
@@ -4807,9 +4879,9 @@ def _set_next__0(_this, _set___):
 def _get_next__0(_this):
     return _this.next
 
-class ULongProgressionIterator:
+class ULongProgressionIterator(ULongIterator):
     def __init__(self, first, last, step):
-        super()
+        ULongIterator.__init__(self)
         self.finalElement = last
         tmp = self
         if step.compareTo_wiekkq_k_(0) > 0:
@@ -4928,7 +5000,7 @@ def _UShort___init__impl_(data):
 def _UShort___get_data__impl_(this):
     return this.data
 
-class Companion_11:
+class Companion_11(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -5192,7 +5264,7 @@ def UShort__equals_impl(this, other):
     
     return True
 
-class UShort:
+class UShort(Comparable):
     def __init__(self, data):
         Companion_getInstance_10()
         self.data = data
@@ -5255,9 +5327,9 @@ def _UShortArray___get_size__impl_(this):
 def UShortArray__iterator_impl(this):
     return Iterator_2(_UShortArray___get_storage__impl_(this))
 
-class Iterator_2:
+class Iterator_2(UShortIterator):
     def __init__(self, array):
-        super()
+        UShortIterator.__init__(self)
         self.array = array
         self.index = 0
     
@@ -5360,7 +5432,7 @@ def UShortArray__equals_impl(this, other):
     
     return True
 
-class UShortArray:
+class UShortArray(Collection):
     def __init__(self, storage):
         self.storage = storage
     
@@ -5549,7 +5621,7 @@ def doubleToULong(v):
     
     return tmp
 
-class ExperimentalUnsignedTypes:
+class ExperimentalUnsignedTypes(Annotation):
     def __init__(self):
         pass
     
@@ -5563,7 +5635,7 @@ class ExperimentalUnsignedTypes:
         pass
     
 
-class Annotation:
+class Annotation(Any):
     def equals(self, other):
         pass
     
@@ -5577,7 +5649,7 @@ class Annotation:
         pass
     
 
-class CharSequence:
+class CharSequence(Any):
     def _get_length__0_k_(self):
         pass
     
@@ -5600,7 +5672,7 @@ class CharSequence:
         pass
     
 
-class Comparable:
+class Comparable(Any):
     def compareTo_2c5_k_(self, other):
         pass
     
@@ -5617,7 +5689,7 @@ class Comparable:
         pass
     
 
-class Iterator_3:
+class Iterator_3(Any):
     def next_0_k_(self):
         pass
     
@@ -5637,7 +5709,7 @@ class Iterator_3:
         pass
     
 
-class ListIterator:
+class ListIterator(Iterator_3):
     def next_0_k_(self):
         pass
     
@@ -5669,7 +5741,7 @@ class ListIterator:
         pass
     
 
-class MutableIterator:
+class MutableIterator(Iterator_3):
     def remove_sv8swh_k_(self):
         pass
     
@@ -5692,7 +5764,7 @@ class MutableIterator:
         pass
     
 
-class MutableListIterator:
+class MutableListIterator(ListIterator, MutableIterator):
     def next_0_k_(self):
         pass
     
@@ -5733,7 +5805,7 @@ class MutableListIterator:
         pass
     
 
-class Number_0:
+class Number_0(Any):
     def __init__(self):
         pass
     
@@ -5768,7 +5840,7 @@ class Number_0:
         pass
     
 
-class SinceKotlin:
+class SinceKotlin(Annotation):
     def __init__(self, version):
         self.version = version
     
@@ -5785,7 +5857,7 @@ class SinceKotlin:
         pass
     
 
-class Suppress:
+class Suppress(Annotation):
     def __init__(self, *names):
         self.names = names
     
@@ -5831,9 +5903,9 @@ def DeprecationLevel_initEntries():
     DeprecationLevel_ERROR_instance = DeprecationLevel('ERROR', 1)
     DeprecationLevel_HIDDEN_instance = DeprecationLevel('HIDDEN', 2)
 
-class DeprecationLevel:
+class DeprecationLevel(Enum):
     def __init__(self, name, ordinal):
-        super(name, ordinal)
+        Enum.__init__(self, name, ordinal)
     
     def _get_name__0_k_(self):
         pass
@@ -5854,7 +5926,7 @@ class DeprecationLevel:
         pass
     
 
-class PublishedApi:
+class PublishedApi(Annotation):
     def __init__(self):
         pass
     
@@ -5868,7 +5940,7 @@ class PublishedApi:
         pass
     
 
-class ParameterName:
+class ParameterName(Annotation):
     def __init__(self, name):
         self.name = name
     
@@ -5892,13 +5964,13 @@ def Deprecated_init__Init_(message, replaceWith, level, _mask0, _marker, _this):
     if not (_mask0 & 4 == 0):
         level = DeprecationLevel_WARNING_getInstance()
     
-    super(message, replaceWith, level)
+    Deprecated.__init__(self, message, replaceWith, level)
     return _this
 
 def Deprecated_init__Create_(message, replaceWith, level, _mask0, _marker):
     return Deprecated_init__Init_(message, replaceWith, level, _mask0, _marker, Object_create())
 
-class Deprecated:
+class Deprecated(Annotation):
     def __init__(self, message, replaceWith, level):
         self.message = message
         self.replaceWith = replaceWith
@@ -5923,7 +5995,7 @@ class Deprecated:
         pass
     
 
-class ReplaceWith:
+class ReplaceWith(Annotation):
     def __init__(self, expression, *imports):
         self.expression = expression
         self.imports = imports
@@ -5954,13 +6026,13 @@ def DeprecatedSinceKotlin_init__Init_(warningSince, errorSince, hiddenSince, _ma
     if not (_mask0 & 4 == 0):
         hiddenSince = ''
     
-    super(warningSince, errorSince, hiddenSince)
+    DeprecatedSinceKotlin.__init__(self, warningSince, errorSince, hiddenSince)
     return _this
 
 def DeprecatedSinceKotlin_init__Create_(warningSince, errorSince, hiddenSince, _mask0, _marker):
     return DeprecatedSinceKotlin_init__Init_(warningSince, errorSince, hiddenSince, _mask0, _marker, Object_create())
 
-class DeprecatedSinceKotlin:
+class DeprecatedSinceKotlin(Annotation):
     def __init__(self, warningSince, errorSince, hiddenSince):
         self.warningSince = warningSince
         self.errorSince = errorSince
@@ -5985,7 +6057,7 @@ class DeprecatedSinceKotlin:
         pass
     
 
-class ExtensionFunctionType:
+class ExtensionFunctionType(Annotation):
     def __init__(self):
         pass
     
@@ -5999,7 +6071,7 @@ class ExtensionFunctionType:
         pass
     
 
-class UnsafeVariance:
+class UnsafeVariance(Annotation):
     def __init__(self):
         pass
     
@@ -6025,7 +6097,7 @@ def DeprecationLevel_HIDDEN_getInstance():
     DeprecationLevel_initEntries()
     return DeprecationLevel_HIDDEN_instance
 
-class ByteIterator:
+class ByteIterator(Iterator_3):
     def __init__(self):
         pass
     
@@ -6048,7 +6120,7 @@ class ByteIterator:
         pass
     
 
-class IntIterator:
+class IntIterator(Iterator_3):
     def __init__(self):
         pass
     
@@ -6071,7 +6143,7 @@ class IntIterator:
         pass
     
 
-class DoubleIterator:
+class DoubleIterator(Iterator_3):
     def __init__(self):
         pass
     
@@ -6094,7 +6166,7 @@ class DoubleIterator:
         pass
     
 
-class FloatIterator:
+class FloatIterator(Iterator_3):
     def __init__(self):
         pass
     
@@ -6117,7 +6189,7 @@ class FloatIterator:
         pass
     
 
-class LongIterator:
+class LongIterator(Iterator_3):
     def __init__(self):
         pass
     
@@ -6140,7 +6212,7 @@ class LongIterator:
         pass
     
 
-class CharIterator:
+class CharIterator(Iterator_3):
     def __init__(self):
         pass
     
@@ -6163,7 +6235,7 @@ class CharIterator:
         pass
     
 
-class BooleanIterator:
+class BooleanIterator(Iterator_3):
     def __init__(self):
         pass
     
@@ -6186,7 +6258,7 @@ class BooleanIterator:
         pass
     
 
-class ShortIterator:
+class ShortIterator(Iterator_3):
     def __init__(self):
         pass
     
@@ -6224,9 +6296,9 @@ def _set_next__1(_this, _set___):
 def _get_next__1(_this):
     return _this.next
 
-class IntProgressionIterator:
+class IntProgressionIterator(IntIterator):
     def __init__(self, first, last, step):
-        super()
+        IntIterator.__init__(self)
         self.step = step
         self.finalElement = last
         self.hasNext = (first <= last) if (self.step > 0) else (first >= last)
@@ -6279,9 +6351,9 @@ def _set_next__2(_this, _set___):
 def _get_next__2(_this):
     return _this.next
 
-class LongProgressionIterator:
+class LongProgressionIterator(LongIterator):
     def __init__(self, first, last, step):
-        super()
+        LongIterator.__init__(self)
         self.step = step
         self.finalElement = last
         self.hasNext = (first.compareTo_wiekkq_k_(last) <= 0) if (self.step.compareTo_wiekkq_k_(0) > 0) else (first.compareTo_wiekkq_k_(last) >= 0)
@@ -6334,9 +6406,9 @@ def _set_next__3(_this, _set___):
 def _get_next__3(_this):
     return _this.next
 
-class CharProgressionIterator:
+class CharProgressionIterator(CharIterator):
     def __init__(self, first, last, step):
-        super()
+        CharIterator.__init__(self)
         self.step = step
         tmp = self
         tmp.finalElement = last.toInt_0_k_()
@@ -6381,7 +6453,7 @@ class CharProgressionIterator:
         pass
     
 
-class Companion_12:
+class Companion_12(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -6406,7 +6478,7 @@ def Companion_getInstance_11():
     
     return Companion_instance
 
-class IntProgression:
+class IntProgression(Iterable):
     def __init__(self, start, endInclusive, step):
         Companion_getInstance_11()
         if step == 0:
@@ -6449,7 +6521,7 @@ class IntProgression:
         return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str((-self.step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)))
     
 
-class Companion_13:
+class Companion_13(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -6474,7 +6546,7 @@ def Companion_getInstance_12():
     
     return Companion_instance
 
-class LongProgression:
+class LongProgression(Iterable):
     def __init__(self, start, endInclusive, step):
         Companion_getInstance_12()
         if step == 0:
@@ -6518,7 +6590,7 @@ class LongProgression:
         return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step.compareTo_wiekkq_k_(0) > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str((-self.step).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)))
     
 
-class Companion_14:
+class Companion_14(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -6543,7 +6615,7 @@ def Companion_getInstance_13():
     
     return Companion_instance
 
-class CharProgression:
+class CharProgression(Iterable):
     def __init__(self, start, endInclusive, step):
         Companion_getInstance_13()
         if step == 0:
@@ -6596,7 +6668,7 @@ class CharProgression:
         return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str((-self.step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)))
     
 
-class ClosedRange:
+class ClosedRange(Any):
     def _get_start__0_k_(self):
         pass
     
@@ -6622,7 +6694,7 @@ class ClosedRange:
         pass
     
 
-class Companion_15:
+class Companion_15(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -6648,10 +6720,10 @@ def Companion_getInstance_14():
     
     return Companion_instance
 
-class IntRange:
+class IntRange(IntProgression, ClosedRange):
     def __init__(self, start, endInclusive):
         Companion_getInstance_14()
-        super(start, endInclusive, 1)
+        IntProgression.__init__(self, start, endInclusive, 1)
     
     def _get_start__0_k_(self):
         return self._get_first__0_k_()
@@ -6695,7 +6767,7 @@ class IntRange:
         pass
     
 
-class Companion_16:
+class Companion_16(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -6721,10 +6793,10 @@ def Companion_getInstance_15():
     
     return Companion_instance
 
-class LongRange:
+class LongRange(LongProgression, ClosedRange):
     def __init__(self, start, endInclusive):
         Companion_getInstance_15()
-        super(start, endInclusive, 1)
+        LongProgression.__init__(self, start, endInclusive, 1)
     
     def _get_start__0_k_(self):
         return self._get_first__0_k_()
@@ -6768,7 +6840,7 @@ class LongRange:
         pass
     
 
-class Companion_17:
+class Companion_17(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -6794,10 +6866,10 @@ def Companion_getInstance_16():
     
     return Companion_instance
 
-class CharRange:
+class CharRange(CharProgression, ClosedRange):
     def __init__(self, start, endInclusive):
         Companion_getInstance_16()
-        super(start, endInclusive, 1)
+        CharProgression.__init__(self, start, endInclusive, 1)
     
     def _get_start__0_k_(self):
         return self._get_first__0_k_()
@@ -6849,7 +6921,7 @@ class CharRange:
         pass
     
 
-class Unit:
+class Unit(Any):
     def __init__(self):
         global Unit_instance
         Unit_instance = self
@@ -6871,7 +6943,7 @@ def Unit_getInstance():
     
     return Unit_instance
 
-class Target:
+class Target(Annotation):
     def __init__(self, *allowedTargets):
         self.allowedTargets = allowedTargets
     
@@ -6965,9 +7037,9 @@ def AnnotationTarget_initEntries():
     AnnotationTarget_FILE_instance = AnnotationTarget('FILE', 13)
     AnnotationTarget_TYPEALIAS_instance = AnnotationTarget('TYPEALIAS', 14)
 
-class AnnotationTarget:
+class AnnotationTarget(Enum):
     def __init__(self, name, ordinal):
-        super(name, ordinal)
+        Enum.__init__(self, name, ordinal)
     
     def _get_name__0_k_(self):
         pass
@@ -6988,7 +7060,7 @@ class AnnotationTarget:
         pass
     
 
-class MustBeDocumented:
+class MustBeDocumented(Annotation):
     def __init__(self):
         pass
     
@@ -7006,13 +7078,13 @@ def Retention_init__Init_(value, _mask0, _marker, _this):
     if not (_mask0 & 1 == 0):
         value = AnnotationRetention_RUNTIME_getInstance()
     
-    super(value)
+    Retention.__init__(self, value)
     return _this
 
 def Retention_init__Create_(value, _mask0, _marker):
     return Retention_init__Init_(value, _mask0, _marker, Object_create())
 
-class Retention:
+class Retention(Annotation):
     def __init__(self, value):
         self.value = value
     
@@ -7058,9 +7130,9 @@ def AnnotationRetention_initEntries():
     AnnotationRetention_BINARY_instance = AnnotationRetention('BINARY', 1)
     AnnotationRetention_RUNTIME_instance = AnnotationRetention('RUNTIME', 2)
 
-class AnnotationRetention:
+class AnnotationRetention(Enum):
     def __init__(self, name, ordinal):
-        super(name, ordinal)
+        Enum.__init__(self, name, ordinal)
     
     def _get_name__0_k_(self):
         pass
@@ -7081,7 +7153,7 @@ class AnnotationRetention:
         pass
     
 
-class Repeatable:
+class Repeatable(Annotation):
     def __init__(self):
         pass
     
@@ -7201,7 +7273,7 @@ def mod_0(a, b):
     mod = a.rem_wiekkq_k_(b)
     return (mod) if (mod.compareTo_wiekkq_k_(0) >= 0) else ((mod + b).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
 
-class ByteCompanionObject_0:
+class ByteCompanionObject_0(Any):
     def __init__(self):
         global ByteCompanionObject_instance
         ByteCompanionObject_instance = self
@@ -7239,7 +7311,7 @@ def ByteCompanionObject_getInstance():
     
     return ByteCompanionObject_instance
 
-class ShortCompanionObject_0:
+class ShortCompanionObject_0(Any):
     def __init__(self):
         global ShortCompanionObject_instance
         ShortCompanionObject_instance = self
@@ -7277,7 +7349,7 @@ def ShortCompanionObject_getInstance():
     
     return ShortCompanionObject_instance
 
-class IntCompanionObject_0:
+class IntCompanionObject_0(Any):
     def __init__(self):
         global IntCompanionObject_instance
         IntCompanionObject_instance = self
@@ -7315,7 +7387,7 @@ def IntCompanionObject_getInstance():
     
     return IntCompanionObject_instance
 
-class FloatCompanionObject_0:
+class FloatCompanionObject_0(Any):
     def __init__(self):
         global FloatCompanionObject_instance
         FloatCompanionObject_instance = self
@@ -7365,7 +7437,7 @@ def FloatCompanionObject_getInstance():
     
     return FloatCompanionObject_instance
 
-class DoubleCompanionObject_0:
+class DoubleCompanionObject_0(Any):
     def __init__(self):
         global DoubleCompanionObject_instance
         DoubleCompanionObject_instance = self
@@ -7415,7 +7487,7 @@ def DoubleCompanionObject_getInstance():
     
     return DoubleCompanionObject_instance
 
-class StringCompanionObject:
+class StringCompanionObject(Any):
     def __init__(self):
         global StringCompanionObject_instance
         StringCompanionObject_instance = self
@@ -7437,7 +7509,7 @@ def StringCompanionObject_getInstance():
     
     return StringCompanionObject_instance
 
-class BooleanCompanionObject:
+class BooleanCompanionObject(Any):
     def __init__(self):
         global BooleanCompanionObject_instance
         BooleanCompanionObject_instance = self
@@ -7459,7 +7531,7 @@ def BooleanCompanionObject_getInstance():
     
     return BooleanCompanionObject_instance
 
-class Comparator:
+class Comparator(Any):
     def compare(self, a, b):
         pass
     
@@ -7476,7 +7548,7 @@ class Comparator:
         pass
     
 
-class JsName:
+class JsName(Annotation):
     def __init__(self, name):
         self.name = name
     
@@ -7566,9 +7638,12 @@ def copyToArrayImpl_1(collection, array):
     
     return array
 
-class AbstractMutableCollection:
+class MutableCollection:
+    pass
+
+class AbstractMutableCollection(AbstractCollection, MutableCollection):
     def __init__(self):
-        super()
+        AbstractCollection.__init__(self)
     
     def add_2bq_k_(self, element):
         pass
@@ -7662,7 +7737,7 @@ def _set__size__0(_this, _set___):
 def _get__size__0(_this):
     return _this._size
 
-class IteratorImpl_0:
+class IteratorImpl_0(MutableIterator):
     def __init__(self, _outer):
         self._this = _outer
         self.index = 0
@@ -7715,10 +7790,10 @@ class IteratorImpl_0:
         pass
     
 
-class ListIteratorImpl_0:
+class ListIteratorImpl_0(IteratorImpl_0, MutableListIterator):
     def __init__(self, _outer, index):
         self._this = _outer
-        super(_outer)
+        IteratorImpl_0.__init__(self, _outer)
         Companion_getInstance().checkPositionIndex_rvwcgf_k_(index, self._this._get_size__0_k_())
         self._set_index__majfzk_k_(index)
     
@@ -7794,9 +7869,12 @@ class ListIteratorImpl_0:
         pass
     
 
-class SubList_0:
+class AbstractMutableList:
+    pass
+
+class SubList_0(AbstractMutableList, RandomAccess):
     def __init__(self, list, fromIndex, toIndex):
-        super()
+        AbstractMutableList.__init__(self)
         self.list = list
         self.fromIndex = fromIndex
         self._size = 0
@@ -7910,9 +7988,12 @@ class SubList_0:
         pass
     
 
-class AbstractMutableList:
+class MutableList:
+    pass
+
+class AbstractMutableList(AbstractMutableCollection, MutableList):
     def __init__(self):
-        super()
+        AbstractMutableCollection.__init__(self)
         self.modCount = 0
     
     def _set_modCount__majfzk_k_(self, _set___):
@@ -8085,14 +8166,14 @@ def _get_isReadOnly_(_this):
     return _this.isReadOnly
 
 def ArrayList_init__Init_(_this):
-    super(kotlin_Array_kotlin_Any__(js('[]')))
+    ArrayList.__init__(self, kotlin_Array_kotlin_Any__(js('[]')))
     return _this
 
 def ArrayList_init__Create_():
     return ArrayList_init__Init_(Object_create())
 
 def ArrayList_init__Init__0(initialCapacity, _this):
-    super(kotlin_Array_kotlin_Any__(js('[]')))
+    ArrayList.__init__(self, kotlin_Array_kotlin_Any__(js('[]')))
     return _this
 
 def ArrayList_init__Create__0(initialCapacity):
@@ -8109,7 +8190,7 @@ def ArrayList_init__Create__1(initialCapacity, _mask0, _marker):
     return ArrayList_init__Init__1(initialCapacity, _mask0, _marker, Object_create())
 
 def ArrayList_init__Init__2(elements, _this):
-    super(copyToArray_0(elements))
+    ArrayList.__init__(self, copyToArray_0(elements))
     return _this
 
 def ArrayList_init__Create__2(elements):
@@ -8123,9 +8204,9 @@ def insertionRangeCheck(_this, index):
     Companion_getInstance().checkPositionIndex_rvwcgf_k_(index, _this._get_size__0_k_())
     return index
 
-class ArrayList:
+class ArrayList(AbstractMutableList, MutableList, RandomAccess):
     def __init__(self, array):
-        super()
+        AbstractMutableList.__init__(self)
         self.array = array
         self.isReadOnly = False
     
@@ -8366,7 +8447,7 @@ def _get__stableSortingIsSupported_():
     return _stableSortingIsSupported
 
 _stableSortingIsSupported = None
-class RandomAccess:
+class RandomAccess(Any):
     def equals(self, other):
         pass
     
@@ -8388,7 +8469,7 @@ def _get_output_():
     return output
 
 output = None
-class BaseOutput:
+class BaseOutput(Any):
     def __init__(self):
         pass
     
@@ -8415,9 +8496,9 @@ class BaseOutput:
         pass
     
 
-class NodeJsOutput_0:
+class NodeJsOutput_0(BaseOutput):
     def __init__(self, outputStream):
-        super()
+        BaseOutput.__init__(self)
         self.outputStream = outputStream
     
     def _get_outputStream__0_k_(self):
@@ -8446,9 +8527,12 @@ class NodeJsOutput_0:
         pass
     
 
-class BufferedOutputToConsoleLog_0:
+class BufferedOutput_0:
+    pass
+
+class BufferedOutputToConsoleLog_0(BufferedOutput_0):
     def __init__(self):
-        super()
+        BufferedOutput_0.__init__(self)
     
     def print_qi8yb4_k_(self, message):
         s = kotlin_String(INVOKE(js('String'), message))
@@ -8496,9 +8580,9 @@ class BufferedOutputToConsoleLog_0:
 def String_0(value):
     return kotlin_String(INVOKE(js('String'), value))
 
-class BufferedOutput_0:
+class BufferedOutput_0(BaseOutput):
     def __init__(self):
-        super()
+        BaseOutput.__init__(self)
         self.buffer = ''
     
     def _set_buffer__a4enbm_k_(self, _set___):
@@ -8543,7 +8627,7 @@ def _get_EmptyContinuation_():
     return EmptyContinuation
 
 EmptyContinuation = None
-class _no_name_provided__1:
+class _no_name_provided__1(Continuation):
     def __init__(self, _tmp0_Continuation_0):
         self._tmp0_Continuation_0 = _tmp0_Continuation_0
     
@@ -8589,7 +8673,7 @@ def unsafeCast():
 def unsafeCast_0():
     return T(self)
 
-class Serializable:
+class Serializable(Any):
     def equals(self, other):
         pass
     
@@ -8626,7 +8710,7 @@ def INV_2_53_init_():
 def _get_js_():
     return ((kotlin_reflect_js_internal_KClassImpl_T_(self)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))._get_jClass__0_k_()
 
-class KCallable:
+class KCallable(Any):
     def _get_name__0_k_(self):
         pass
     
@@ -8643,7 +8727,7 @@ class KCallable:
         pass
     
 
-class KClass:
+class KClass(KClassifier):
     def _get_simpleName__0_k_(self):
         pass
     
@@ -8666,7 +8750,7 @@ class KClass:
         pass
     
 
-class KClassImpl:
+class KClassImpl(KClass):
     def __init__(self, jClass):
         self.jClass = jClass
     
@@ -8705,9 +8789,9 @@ def _get_givenSimpleName_(_this):
 def _get_isInstanceFunction_(_this):
     return _this.isInstanceFunction
 
-class PrimitiveKClassImpl:
+class PrimitiveKClassImpl(KClassImpl):
     def __init__(self, jClass, givenSimpleName, isInstanceFunction):
-        super(jClass)
+        KClassImpl.__init__(self, jClass)
         self.givenSimpleName = givenSimpleName
         self.isInstanceFunction = isInstanceFunction
     
@@ -8736,11 +8820,11 @@ class PrimitiveKClassImpl:
         pass
     
 
-class NothingKClassImpl:
+class NothingKClassImpl(KClassImpl):
     def __init__(self):
         global NothingKClassImpl_instance
         NothingKClassImpl_instance = self
-        super(kotlin_js_JsClass_kotlin_Nothing_(js('Object')))
+        KClassImpl.__init__(self, kotlin_js_JsClass_kotlin_Nothing_(js('Object')))
         self.simpleName = 'Nothing'
     
     def _get_simpleName__0_k_(self):
@@ -8772,7 +8856,7 @@ def NothingKClassImpl_getInstance():
     
     return NothingKClassImpl_instance
 
-class ErrorKClass:
+class ErrorKClass(KClass):
     def __init__(self):
         pass
     
@@ -8795,9 +8879,9 @@ class ErrorKClass:
         pass
     
 
-class SimpleKClassImpl:
+class SimpleKClassImpl(KClassImpl):
     def __init__(self, jClass):
-        super(jClass)
+        KClassImpl.__init__(self, jClass)
         tmp = self
         tmp0_safe_receiver = _metadata_(jClass)
         tmp0_unsafeCast_0 = (None) if (tmp0_safe_receiver == None) else (simpleName(tmp0_safe_receiver))
@@ -8825,7 +8909,10 @@ class SimpleKClassImpl:
         pass
     
 
-class KFunction:
+class Function:
+    pass
+
+class KFunction(KCallable, Function):
     def _get_name__0_k_(self):
         pass
     
@@ -8842,7 +8929,7 @@ class KFunction:
         pass
     
 
-class KProperty:
+class KProperty(KCallable):
     def _get_name__0_k_(self):
         pass
     
@@ -8859,7 +8946,7 @@ class KProperty:
         pass
     
 
-class KProperty0:
+class KProperty0(KProperty):
     def get_0_k_(self):
         pass
     
@@ -8882,7 +8969,7 @@ class KProperty0:
         pass
     
 
-class KProperty1:
+class KProperty1(KProperty):
     def get_2c5_k_(self, receiver):
         pass
     
@@ -8905,7 +8992,7 @@ class KProperty1:
         pass
     
 
-class KProperty2:
+class KProperty2(KProperty):
     def get_1q4i3_k_(self, receiver1, receiver2):
         pass
     
@@ -8928,7 +9015,10 @@ class KProperty2:
         pass
     
 
-class KMutableProperty0:
+class KMutableProperty:
+    pass
+
+class KMutableProperty0(KProperty0, KMutableProperty):
     def set_prcxve_k_(self, value):
         pass
     
@@ -8954,7 +9044,7 @@ class KMutableProperty0:
         pass
     
 
-class KMutableProperty:
+class KMutableProperty(KProperty):
     def _get_name__0_k_(self):
         pass
     
@@ -8971,7 +9061,7 @@ class KMutableProperty:
         pass
     
 
-class KMutableProperty1:
+class KMutableProperty1(KProperty1, KMutableProperty):
     def set_5l00ez_k_(self, receiver, value):
         pass
     
@@ -8997,7 +9087,7 @@ class KMutableProperty1:
         pass
     
 
-class KMutableProperty2:
+class KMutableProperty2(KProperty2, KMutableProperty):
     def set_kx3mz5_k_(self, receiver1, receiver2, value):
         pass
     
@@ -9023,7 +9113,7 @@ class KMutableProperty2:
         pass
     
 
-class KType:
+class KType(Any):
     def _get_classifier__0_k_(self):
         pass
     
@@ -9075,7 +9165,7 @@ def asString(_this):
     
     return prefixString() + toString()
 
-class KTypeImpl:
+class KTypeImpl(KType):
     def __init__(self, classifier, arguments, isMarkedNullable):
         self.classifier = classifier
         self.arguments = arguments
@@ -9138,7 +9228,7 @@ def prefixString():
     
     return tmp
 
-class DynamicKType:
+class DynamicKType(KType):
     def __init__(self):
         global DynamicKType_instance
         DynamicKType_instance = self
@@ -9172,7 +9262,7 @@ def DynamicKType_getInstance():
     
     return DynamicKType_instance
 
-class KTypeParameterImpl:
+class KTypeParameterImpl(KTypeParameter):
     def __init__(self, name, upperBounds, variance, isReified):
         self.name = name
         self.upperBounds = upperBounds
@@ -9258,7 +9348,7 @@ def _get_functionClasses_():
     return functionClasses
 
 functionClasses = None
-class PrimitiveClasses_0:
+class PrimitiveClasses_0(Any):
     def __init__(self):
         global PrimitiveClasses_instance
         PrimitiveClasses_instance = self
@@ -9510,7 +9600,7 @@ def getKClassFromExpression_0(e):
     tmp1_unsafeCast_0 = tmp
     return kotlin_Any_(tmp1_unsafeCast_0)
 
-class Appendable:
+class Appendable(Any):
     def append_wi8o78_k_(self, value):
         pass
     
@@ -9541,14 +9631,14 @@ def StringBuilder_init__Create_(capacity):
     return StringBuilder_init__Init_(capacity, Object_create())
 
 def StringBuilder_init__Init__0(content, _this):
-    super(toString_0(content))
+    StringBuilder.__init__(self, toString_0(content))
     return _this
 
 def StringBuilder_init__Create__0(content):
     return StringBuilder_init__Init__0(content, Object_create())
 
 def StringBuilder_init__Init__1(_this):
-    super('')
+    StringBuilder.__init__(self, '')
     return _this
 
 def StringBuilder_init__Create__1():
@@ -9568,7 +9658,7 @@ def checkReplaceRange(_this, startIndex, endIndex, length):
         raise IllegalArgumentException_init__Create__0((((str('startIndex(') + str(startIndex)) + str(') > endIndex(')) + str(endIndex)) + str(')'))
     
 
-class StringBuilder:
+class StringBuilder(Appendable, CharSequence):
     def __init__(self, content):
         self.string = (content) if (not (content is undefined)) else ('')
     
@@ -10029,7 +10119,7 @@ def concatToString_default(startIndex, endIndex, _mask0, _handler):
 def toUpperCase():
     return kotlin_String(INVOKE(toUpperCase(self)))
 
-class sam_kotlin_Comparator_0:
+class sam_kotlin_Comparator_0(Comparator):
     def __init__(self, function):
         self.function = function
     
@@ -10064,7 +10154,7 @@ def REPLACEMENT_BYTE_SEQUENCE_init_():
 def _get_value_(_this):
     return _this.value
 
-class Companion_18:
+class Companion_18(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -10126,7 +10216,7 @@ def Companion_getInstance_17():
     
     return Companion_instance
 
-class Char_0:
+class Char_0(Comparable):
     def __init__(self, code):
         Companion_getInstance_17()
         tmp = self
@@ -10194,7 +10284,7 @@ class Char_0:
         return kotlin_Any_(tmp0_unsafeCast_0)
     
 
-class Iterable:
+class Iterable(Any):
     def iterator_0_k_(self):
         pass
     
@@ -10211,7 +10301,7 @@ class Iterable:
         pass
     
 
-class Collection:
+class Collection(Iterable):
     def _get_size__0_k_(self):
         pass
     
@@ -10240,7 +10330,7 @@ class Collection:
         pass
     
 
-class List:
+class List(Collection):
     def _get_size__0_k_(self):
         pass
     
@@ -10287,7 +10377,7 @@ class List:
         pass
     
 
-class MutableList:
+class MutableList(List, MutableCollection):
     def add_2bq_k_(self, element):
         pass
     
@@ -10364,7 +10454,10 @@ class MutableList:
         pass
     
 
-class MutableCollection:
+class MutableIterable:
+    pass
+
+class MutableCollection(Collection, MutableIterable):
     def iterator_0_k_(self):
         pass
     
@@ -10411,7 +10504,7 @@ class MutableCollection:
         pass
     
 
-class MutableIterable:
+class MutableIterable(Iterable):
     def iterator_0_k_(self):
         pass
     
@@ -10428,7 +10521,7 @@ class MutableIterable:
         pass
     
 
-class Set:
+class Set(Collection):
     def _get_size__0_k_(self):
         pass
     
@@ -10457,7 +10550,7 @@ class Set:
         pass
     
 
-class Entry:
+class Entry(Any):
     def _get_key__0_k_(self):
         pass
     
@@ -10477,7 +10570,7 @@ class Entry:
         pass
     
 
-class Map_0:
+class Map_0(Any):
     def _get_size__0_k_(self):
         pass
     
@@ -10515,7 +10608,7 @@ class Map_0:
         pass
     
 
-class MutableSet:
+class MutableSet(Set, MutableCollection):
     def iterator_0_k_(self):
         pass
     
@@ -10562,7 +10655,7 @@ class MutableSet:
         pass
     
 
-class MutableEntry:
+class MutableEntry(Entry):
     def setValue_2c7_k_(self, newValue):
         pass
     
@@ -10585,7 +10678,7 @@ class MutableEntry:
         pass
     
 
-class MutableMap:
+class MutableMap(Map_0):
     def put_1q9pf_k_(self, key, value):
         pass
     
@@ -10635,7 +10728,7 @@ class MutableMap:
         pass
     
 
-class Companion_19:
+class Companion_19(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -10657,7 +10750,7 @@ def Companion_getInstance_18():
     
     return Companion_instance
 
-class Enum:
+class Enum(Comparable):
     def __init__(self, name, ordinal):
         Companion_getInstance_18()
         self.name = name
@@ -10725,7 +10818,7 @@ def longArrayOf(*elements):
 def doubleArrayOf(*elements):
     return elements
 
-class DefaultConstructorMarker:
+class DefaultConstructorMarker(Any):
     def __init__(self):
         global DefaultConstructorMarker_instance
         DefaultConstructorMarker_instance = self
@@ -10859,7 +10952,7 @@ def longArrayOf_0(arr):
     tmp1_unsafeCast_0 = tmp0_withType_0
     return kotlin_Any_(tmp1_unsafeCast_0)
 
-class _no_name_provided__0:
+class _no_name_provided__0(Iterator_3):
     def __init__(self, _array):
         self._array = _array
         self.index = 0
@@ -10894,10 +10987,10 @@ class _no_name_provided__0:
         pass
     
 
-class _no_name_provided__2:
+class _no_name_provided__2(BooleanIterator):
     def __init__(self, _array):
         self._array = _array
-        super()
+        BooleanIterator.__init__(self)
         self.index = 0
     
     def _set_index__majfzk_k_(self, _set___):
@@ -10933,10 +11026,10 @@ class _no_name_provided__2:
         pass
     
 
-class _no_name_provided__3:
+class _no_name_provided__3(CharIterator):
     def __init__(self, _array):
         self._array = _array
-        super()
+        CharIterator.__init__(self)
         self.index = 0
     
     def _set_index__majfzk_k_(self, _set___):
@@ -10972,10 +11065,10 @@ class _no_name_provided__3:
         pass
     
 
-class _no_name_provided__4:
+class _no_name_provided__4(ByteIterator):
     def __init__(self, _array):
         self._array = _array
-        super()
+        ByteIterator.__init__(self)
         self.index = 0
     
     def _set_index__majfzk_k_(self, _set___):
@@ -11011,10 +11104,10 @@ class _no_name_provided__4:
         pass
     
 
-class _no_name_provided__5:
+class _no_name_provided__5(ShortIterator):
     def __init__(self, _array):
         self._array = _array
-        super()
+        ShortIterator.__init__(self)
         self.index = 0
     
     def _set_index__majfzk_k_(self, _set___):
@@ -11050,10 +11143,10 @@ class _no_name_provided__5:
         pass
     
 
-class _no_name_provided__6:
+class _no_name_provided__6(IntIterator):
     def __init__(self, _array):
         self._array = _array
-        super()
+        IntIterator.__init__(self)
         self.index = 0
     
     def _set_index__majfzk_k_(self, _set___):
@@ -11089,10 +11182,10 @@ class _no_name_provided__6:
         pass
     
 
-class _no_name_provided__7:
+class _no_name_provided__7(FloatIterator):
     def __init__(self, _array):
         self._array = _array
-        super()
+        FloatIterator.__init__(self)
         self.index = 0
     
     def _set_index__majfzk_k_(self, _set___):
@@ -11128,10 +11221,10 @@ class _no_name_provided__7:
         pass
     
 
-class _no_name_provided__8:
+class _no_name_provided__8(LongIterator):
     def __init__(self, _array):
         self._array = _array
-        super()
+        LongIterator.__init__(self)
         self.index = 0
     
     def _set_index__majfzk_k_(self, _set___):
@@ -11167,10 +11260,10 @@ class _no_name_provided__8:
         pass
     
 
-class _no_name_provided__9:
+class _no_name_provided__9(DoubleIterator):
     def __init__(self, _array):
         self._array = _array
-        super()
+        DoubleIterator.__init__(self)
         self.index = 0
     
     def _set_index__majfzk_k_(self, _set___):
@@ -11254,7 +11347,7 @@ def lowIndex_init_():
     bufFloat64.__setitem__(0, -1.0)
     return (1) if (not (bufInt32[0] == 0)) else (0)
 
-class DoNotIntrinsify:
+class DoNotIntrinsify(Annotation):
     def __init__(self):
         pass
     
@@ -11590,7 +11683,7 @@ def THROW_IAE(msg):
 def emptyArray():
     return kotlin_Array_T_(js('[]'))
 
-class JsFun:
+class JsFun(Annotation):
     def __init__(self, code):
         self.code = code
     
@@ -11613,7 +11706,7 @@ def enumValueOfIntrinsic(name):
 def enumValuesIntrinsic():
     raise IllegalStateException_init__Create__0('Should be replaced by compiler')
 
-class Companion_20:
+class Companion_20(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
@@ -11651,10 +11744,10 @@ def Companion_getInstance_19():
     
     return Companion_instance
 
-class Long:
+class Long(Number_0, Comparable):
     def __init__(self, low, high):
         Companion_getInstance_19()
-        super()
+        Number_0.__init__(self)
         self.low = low
         self.high = high
     
@@ -12518,7 +12611,7 @@ def releaseIntercepted(_this):
     
     _this.intercepted_ = CompletedContinuation_getInstance()
 
-class CoroutineImpl_0:
+class CoroutineImpl_0(Continuation):
     def __init__(self, resultContinuation):
         self.resultContinuation = resultContinuation
         self.state = 0
@@ -12636,7 +12729,7 @@ class CoroutineImpl_0:
         pass
     
 
-class CompletedContinuation:
+class CompletedContinuation(Continuation):
     def __init__(self):
         global CompletedContinuation_instance
         CompletedContinuation_instance = self
@@ -12669,7 +12762,7 @@ def CompletedContinuation_getInstance():
 
 def Exception_init__Init_(_this):
     extendThrowable(_this, _undefined(), _undefined())
-    super()
+    Exception.__init__(self)
     return _this
 
 def Exception_init__Create_():
@@ -12679,7 +12772,7 @@ def Exception_init__Create_():
 
 def Exception_init__Init__0(message, _this):
     extendThrowable(_this, message, _undefined())
-    super()
+    Exception.__init__(self)
     return _this
 
 def Exception_init__Create__0(message):
@@ -12689,7 +12782,7 @@ def Exception_init__Create__0(message):
 
 def Exception_init__Init__1(message, cause, _this):
     extendThrowable(_this, message, cause)
-    super()
+    Exception.__init__(self)
     return _this
 
 def Exception_init__Create__1(message, cause):
@@ -12699,7 +12792,7 @@ def Exception_init__Create__1(message, cause):
 
 def Exception_init__Init__2(cause, _this):
     extendThrowable(_this, _undefined(), cause)
-    super()
+    Exception.__init__(self)
     return _this
 
 def Exception_init__Create__2(cause):
@@ -12707,7 +12800,10 @@ def Exception_init__Create__2(cause):
     captureStack(tmp, Exception_init__Create_)
     return tmp
 
-class Exception:
+class Error:
+    pass
+
+class Exception(Error):
     def _get_message__0_k_(self):
         pass
     
@@ -12729,7 +12825,7 @@ class Exception:
 
 def Error_init__Init_(_this):
     extendThrowable(_this, _undefined(), _undefined())
-    super()
+    Error_0.__init__(self)
     return _this
 
 def Error_init__Create_():
@@ -12739,7 +12835,7 @@ def Error_init__Create_():
 
 def Error_init__Init__0(message, _this):
     extendThrowable(_this, message, _undefined())
-    super()
+    Error_0.__init__(self)
     return _this
 
 def Error_init__Create__0(message):
@@ -12749,7 +12845,7 @@ def Error_init__Create__0(message):
 
 def Error_init__Init__1(message, cause, _this):
     extendThrowable(_this, message, cause)
-    super()
+    Error_0.__init__(self)
     return _this
 
 def Error_init__Create__1(message, cause):
@@ -12759,7 +12855,7 @@ def Error_init__Create__1(message, cause):
 
 def Error_init__Init__2(cause, _this):
     extendThrowable(_this, _undefined(), cause)
-    super()
+    Error_0.__init__(self)
     return _this
 
 def Error_init__Create__2(cause):
@@ -12767,7 +12863,7 @@ def Error_init__Create__2(cause):
     captureStack(tmp, Error_init__Create_)
     return tmp
 
-class Error_0:
+class Error_0(Error):
     def _get_message__0_k_(self):
         pass
     
@@ -12789,7 +12885,7 @@ class Error_0:
 
 def IllegalArgumentException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    super()
+    IllegalArgumentException.__init__(self)
     return _this
 
 def IllegalArgumentException_init__Create_():
@@ -12799,7 +12895,7 @@ def IllegalArgumentException_init__Create_():
 
 def IllegalArgumentException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    super()
+    IllegalArgumentException.__init__(self)
     return _this
 
 def IllegalArgumentException_init__Create__0(message):
@@ -12809,7 +12905,7 @@ def IllegalArgumentException_init__Create__0(message):
 
 def IllegalArgumentException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init__1(message, cause, _this)
-    super()
+    IllegalArgumentException.__init__(self)
     return _this
 
 def IllegalArgumentException_init__Create__1(message, cause):
@@ -12819,7 +12915,7 @@ def IllegalArgumentException_init__Create__1(message, cause):
 
 def IllegalArgumentException_init__Init__2(cause, _this):
     RuntimeException_init__Init__2(cause, _this)
-    super()
+    IllegalArgumentException.__init__(self)
     return _this
 
 def IllegalArgumentException_init__Create__2(cause):
@@ -12827,7 +12923,7 @@ def IllegalArgumentException_init__Create__2(cause):
     captureStack(tmp, IllegalArgumentException_init__Create_)
     return tmp
 
-class IllegalArgumentException:
+class IllegalArgumentException(RuntimeException):
     def _get_message__0_k_(self):
         pass
     
@@ -12849,7 +12945,7 @@ class IllegalArgumentException:
 
 def RuntimeException_init__Init_(_this):
     Exception_init__Init_(_this)
-    super()
+    RuntimeException.__init__(self)
     return _this
 
 def RuntimeException_init__Create_():
@@ -12859,7 +12955,7 @@ def RuntimeException_init__Create_():
 
 def RuntimeException_init__Init__0(message, _this):
     Exception_init__Init__0(message, _this)
-    super()
+    RuntimeException.__init__(self)
     return _this
 
 def RuntimeException_init__Create__0(message):
@@ -12869,7 +12965,7 @@ def RuntimeException_init__Create__0(message):
 
 def RuntimeException_init__Init__1(message, cause, _this):
     Exception_init__Init__1(message, cause, _this)
-    super()
+    RuntimeException.__init__(self)
     return _this
 
 def RuntimeException_init__Create__1(message, cause):
@@ -12879,7 +12975,7 @@ def RuntimeException_init__Create__1(message, cause):
 
 def RuntimeException_init__Init__2(cause, _this):
     Exception_init__Init__2(cause, _this)
-    super()
+    RuntimeException.__init__(self)
     return _this
 
 def RuntimeException_init__Create__2(cause):
@@ -12887,7 +12983,7 @@ def RuntimeException_init__Create__2(cause):
     captureStack(tmp, RuntimeException_init__Create_)
     return tmp
 
-class RuntimeException:
+class RuntimeException(Exception):
     def _get_message__0_k_(self):
         pass
     
@@ -12909,7 +13005,7 @@ class RuntimeException:
 
 def NoSuchElementException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    super()
+    NoSuchElementException.__init__(self)
     return _this
 
 def NoSuchElementException_init__Create_():
@@ -12919,7 +13015,7 @@ def NoSuchElementException_init__Create_():
 
 def NoSuchElementException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    super()
+    NoSuchElementException.__init__(self)
     return _this
 
 def NoSuchElementException_init__Create__0(message):
@@ -12927,7 +13023,7 @@ def NoSuchElementException_init__Create__0(message):
     captureStack(tmp, NoSuchElementException_init__Create_)
     return tmp
 
-class NoSuchElementException:
+class NoSuchElementException(RuntimeException):
     def _get_message__0_k_(self):
         pass
     
@@ -12949,7 +13045,7 @@ class NoSuchElementException:
 
 def IllegalStateException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    super()
+    IllegalStateException.__init__(self)
     return _this
 
 def IllegalStateException_init__Create_():
@@ -12959,7 +13055,7 @@ def IllegalStateException_init__Create_():
 
 def IllegalStateException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    super()
+    IllegalStateException.__init__(self)
     return _this
 
 def IllegalStateException_init__Create__0(message):
@@ -12969,7 +13065,7 @@ def IllegalStateException_init__Create__0(message):
 
 def IllegalStateException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init__1(message, cause, _this)
-    super()
+    IllegalStateException.__init__(self)
     return _this
 
 def IllegalStateException_init__Create__1(message, cause):
@@ -12979,7 +13075,7 @@ def IllegalStateException_init__Create__1(message, cause):
 
 def IllegalStateException_init__Init__2(cause, _this):
     RuntimeException_init__Init__2(cause, _this)
-    super()
+    IllegalStateException.__init__(self)
     return _this
 
 def IllegalStateException_init__Create__2(cause):
@@ -12987,7 +13083,7 @@ def IllegalStateException_init__Create__2(cause):
     captureStack(tmp, IllegalStateException_init__Create_)
     return tmp
 
-class IllegalStateException:
+class IllegalStateException(RuntimeException):
     def _get_message__0_k_(self):
         pass
     
@@ -13009,7 +13105,7 @@ class IllegalStateException:
 
 def IndexOutOfBoundsException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    super()
+    IndexOutOfBoundsException.__init__(self)
     return _this
 
 def IndexOutOfBoundsException_init__Create_():
@@ -13019,7 +13115,7 @@ def IndexOutOfBoundsException_init__Create_():
 
 def IndexOutOfBoundsException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    super()
+    IndexOutOfBoundsException.__init__(self)
     return _this
 
 def IndexOutOfBoundsException_init__Create__0(message):
@@ -13027,7 +13123,7 @@ def IndexOutOfBoundsException_init__Create__0(message):
     captureStack(tmp, IndexOutOfBoundsException_init__Create_)
     return tmp
 
-class IndexOutOfBoundsException:
+class IndexOutOfBoundsException(RuntimeException):
     def _get_message__0_k_(self):
         pass
     
@@ -13049,7 +13145,7 @@ class IndexOutOfBoundsException:
 
 def UnsupportedOperationException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    super()
+    UnsupportedOperationException.__init__(self)
     return _this
 
 def UnsupportedOperationException_init__Create_():
@@ -13059,7 +13155,7 @@ def UnsupportedOperationException_init__Create_():
 
 def UnsupportedOperationException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    super()
+    UnsupportedOperationException.__init__(self)
     return _this
 
 def UnsupportedOperationException_init__Create__0(message):
@@ -13069,7 +13165,7 @@ def UnsupportedOperationException_init__Create__0(message):
 
 def UnsupportedOperationException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init__1(message, cause, _this)
-    super()
+    UnsupportedOperationException.__init__(self)
     return _this
 
 def UnsupportedOperationException_init__Create__1(message, cause):
@@ -13079,7 +13175,7 @@ def UnsupportedOperationException_init__Create__1(message, cause):
 
 def UnsupportedOperationException_init__Init__2(cause, _this):
     RuntimeException_init__Init__2(cause, _this)
-    super()
+    UnsupportedOperationException.__init__(self)
     return _this
 
 def UnsupportedOperationException_init__Create__2(cause):
@@ -13087,7 +13183,7 @@ def UnsupportedOperationException_init__Create__2(cause):
     captureStack(tmp, UnsupportedOperationException_init__Create_)
     return tmp
 
-class UnsupportedOperationException:
+class UnsupportedOperationException(RuntimeException):
     def _get_message__0_k_(self):
         pass
     
@@ -13109,7 +13205,7 @@ class UnsupportedOperationException:
 
 def NullPointerException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    super()
+    NullPointerException.__init__(self)
     return _this
 
 def NullPointerException_init__Create_():
@@ -13119,7 +13215,7 @@ def NullPointerException_init__Create_():
 
 def NullPointerException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    super()
+    NullPointerException.__init__(self)
     return _this
 
 def NullPointerException_init__Create__0(message):
@@ -13127,7 +13223,7 @@ def NullPointerException_init__Create__0(message):
     captureStack(tmp, NullPointerException_init__Create_)
     return tmp
 
-class NullPointerException:
+class NullPointerException(RuntimeException):
     def _get_message__0_k_(self):
         pass
     
@@ -13149,7 +13245,7 @@ class NullPointerException:
 
 def NoWhenBranchMatchedException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    super()
+    NoWhenBranchMatchedException.__init__(self)
     return _this
 
 def NoWhenBranchMatchedException_init__Create_():
@@ -13159,7 +13255,7 @@ def NoWhenBranchMatchedException_init__Create_():
 
 def NoWhenBranchMatchedException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    super()
+    NoWhenBranchMatchedException.__init__(self)
     return _this
 
 def NoWhenBranchMatchedException_init__Create__0(message):
@@ -13169,7 +13265,7 @@ def NoWhenBranchMatchedException_init__Create__0(message):
 
 def NoWhenBranchMatchedException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init__1(message, cause, _this)
-    super()
+    NoWhenBranchMatchedException.__init__(self)
     return _this
 
 def NoWhenBranchMatchedException_init__Create__1(message, cause):
@@ -13179,7 +13275,7 @@ def NoWhenBranchMatchedException_init__Create__1(message, cause):
 
 def NoWhenBranchMatchedException_init__Init__2(cause, _this):
     RuntimeException_init__Init__2(cause, _this)
-    super()
+    NoWhenBranchMatchedException.__init__(self)
     return _this
 
 def NoWhenBranchMatchedException_init__Create__2(cause):
@@ -13187,7 +13283,7 @@ def NoWhenBranchMatchedException_init__Create__2(cause):
     captureStack(tmp, NoWhenBranchMatchedException_init__Create_)
     return tmp
 
-class NoWhenBranchMatchedException:
+class NoWhenBranchMatchedException(RuntimeException):
     def _get_message__0_k_(self):
         pass
     
@@ -13209,7 +13305,7 @@ class NoWhenBranchMatchedException:
 
 def ClassCastException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    super()
+    ClassCastException.__init__(self)
     return _this
 
 def ClassCastException_init__Create_():
@@ -13219,7 +13315,7 @@ def ClassCastException_init__Create_():
 
 def ClassCastException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    super()
+    ClassCastException.__init__(self)
     return _this
 
 def ClassCastException_init__Create__0(message):
@@ -13227,7 +13323,7 @@ def ClassCastException_init__Create__0(message):
     captureStack(tmp, ClassCastException_init__Create_)
     return tmp
 
-class ClassCastException:
+class ClassCastException(RuntimeException):
     def _get_message__0_k_(self):
         pass
     
@@ -13249,7 +13345,7 @@ class ClassCastException:
 
 def UninitializedPropertyAccessException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    super()
+    UninitializedPropertyAccessException.__init__(self)
     return _this
 
 def UninitializedPropertyAccessException_init__Create_():
@@ -13259,7 +13355,7 @@ def UninitializedPropertyAccessException_init__Create_():
 
 def UninitializedPropertyAccessException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    super()
+    UninitializedPropertyAccessException.__init__(self)
     return _this
 
 def UninitializedPropertyAccessException_init__Create__0(message):
@@ -13269,7 +13365,7 @@ def UninitializedPropertyAccessException_init__Create__0(message):
 
 def UninitializedPropertyAccessException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init__1(message, cause, _this)
-    super()
+    UninitializedPropertyAccessException.__init__(self)
     return _this
 
 def UninitializedPropertyAccessException_init__Create__1(message, cause):
@@ -13279,7 +13375,7 @@ def UninitializedPropertyAccessException_init__Create__1(message, cause):
 
 def UninitializedPropertyAccessException_init__Init__2(cause, _this):
     RuntimeException_init__Init__2(cause, _this)
-    super()
+    UninitializedPropertyAccessException.__init__(self)
     return _this
 
 def UninitializedPropertyAccessException_init__Create__2(cause):
@@ -13287,7 +13383,7 @@ def UninitializedPropertyAccessException_init__Create__2(cause):
     captureStack(tmp, UninitializedPropertyAccessException_init__Create_)
     return tmp
 
-class UninitializedPropertyAccessException:
+class UninitializedPropertyAccessException(RuntimeException):
     def _get_message__0_k_(self):
         pass
     
@@ -13389,7 +13485,7 @@ def newCode():
         println(element_2)
     
 
-class TestClass:
+class TestClass(Any):
     def __init__(self, classParameter):
         self.classParameter = classParameter
     
