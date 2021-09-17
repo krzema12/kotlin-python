@@ -74,7 +74,7 @@ python/e2e-tests/run.sh  # e2e tests
 ### Running box tests
 
 ```shell script
-./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated"
+./gradlew :python:box.tests:pythonTest
 ```
 
 To speed up tests:
@@ -178,6 +178,6 @@ less python/experiments/out_ir.py | grep -Po "visit[a-zA-Z0-9_]+" | sort | uniq 
 
 dist/kotlinc/bin/kotlinc-js -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -Xir-property-lazy-initialization -output python/experiments/out-ir.js python/experiments/python.kt
 
-./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated"
+./gradlew :python:box.tests:pythonTest
 python/experiments/generate-box-tests-reports.main.kts
 ```

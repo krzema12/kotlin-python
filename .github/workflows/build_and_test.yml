@@ -47,7 +47,7 @@ jobs:
         if: always()
 
       - name: Run box tests (succeed even if they fail)
-        run: JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:pythonTest --tests "org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated" || true
+        run: JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:pythonTest || true
         if: always()
       - name: Generate box tests reports
         run: python/experiments/generate-box-tests-reports.main.kts --failed-tests-report-path=failed-tests.txt --box-tests-report-path=box-tests-report.tsv --failure-count-report-path=failure-count.tsv
