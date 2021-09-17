@@ -277,24 +277,6 @@ public class K2JSCompiler extends CLICompiler<K2JSCompilerArguments> {
         assert analysisResult instanceof JsAnalysisResult : "analysisResult should be instance of JsAnalysisResult, but " + analysisResult;
         JsAnalysisResult jsAnalysisResult = (JsAnalysisResult) analysisResult;
 
-        File outputPrefixFile = null;
-        if (arguments.getOutputPrefix() != null) {
-            outputPrefixFile = new File(arguments.getOutputPrefix());
-            if (!outputPrefixFile.exists()) {
-                messageCollector.report(ERROR, "Output prefix file '" + arguments.getOutputPrefix() + "' not found", null);
-                return ExitCode.COMPILATION_ERROR;
-            }
-        }
-
-        File outputPostfixFile = null;
-        if (arguments.getOutputPostfix() != null) {
-            outputPostfixFile = new File(arguments.getOutputPostfix());
-            if (!outputPostfixFile.exists()) {
-                messageCollector.report(ERROR, "Output postfix file '" + arguments.getOutputPostfix() + "' not found", null);
-                return ExitCode.COMPILATION_ERROR;
-            }
-        }
-
         File outputDir = outputFile.getParentFile();
         if (outputDir == null) {
             outputDir = outputFile.getAbsoluteFile().getParentFile();
@@ -329,7 +311,7 @@ public class K2JSCompiler extends CLICompiler<K2JSCompilerArguments> {
         if (translationResult instanceof TranslationResult.Fail) return ExitCode.COMPILATION_ERROR;
 
         TranslationResult.SuccessBase successResult = (TranslationResult.SuccessBase) translationResult;
-        OutputFileCollection outputFiles = successResult.getOutputFiles(outputFile, outputPrefixFile, outputPostfixFile);
+        OutputFileCollection outputFiles = successResult.getOutputFiles(outputFile);
 
         if (outputFile.isDirectory()) {
             messageCollector.report(ERROR, "Cannot open output file '" + outputFile.getPath() + "': is a directory", null);
