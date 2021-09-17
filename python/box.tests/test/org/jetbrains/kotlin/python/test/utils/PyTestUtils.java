@@ -24,9 +24,9 @@ import java.io.File;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public final class JsTestUtils {
+public final class PyTestUtils {
 
-    private JsTestUtils() {
+    private PyTestUtils() {
     }
 
     @NotNull

@@ -18,19 +18,14 @@ import org.jetbrains.kotlin.ir.backend.py.JsCode
 import org.jetbrains.kotlin.ir.backend.py.compile
 import org.jetbrains.kotlin.ir.backend.py.jsPhases
 import org.jetbrains.kotlin.ir.declarations.impl.IrFactoryImpl
-import org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFactory
 import org.jetbrains.kotlin.js.config.JSConfigurationKeys
 import org.jetbrains.kotlin.js.config.JsConfig
-import org.jetbrains.kotlin.js.facade.MainCallParameters
-import org.jetbrains.kotlin.js.facade.TranslationUnit
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.parsing.parseBoolean
-import org.jetbrains.kotlin.test.TargetBackend
+import org.jetbrains.kotlin.py.facade.MainCallParameters
+import org.jetbrains.kotlin.py.facade.TranslationUnit
 import org.jetbrains.kotlin.utils.addToStdlib.measureTimeMillisWithResult
-import org.jetbrains.kotlin.utils.fileUtils.withReplacedExtensionOrNull
 import java.io.File
 import java.lang.Boolean.getBoolean
-import java.util.*
 
 private val fullRuntimeKlib: String = System.getProperty("kotlin.js.full.stdlib.path")
 private val defaultRuntimeKlib = System.getProperty("kotlin.js.reduced.stdlib.path")
@@ -42,68 +37,31 @@ abstract class BasicIrBoxTest(
     pathToTestDir: String,
     testGroupOutputDirPrefix: String,
     pathToRootOutputDir: String = TEST_DATA_DIR_PATH,
-    generateSourceMap: Boolean = false,
-    generateNodeJsRunner: Boolean = false,
-    targetBackend: TargetBackend = TargetBackend.JS_IR
 ) : BasicBoxTest(
     pathToTestDir,
     testGroupOutputDirPrefix,
     pathToRootOutputDir = pathToRootOutputDir,
-    typedArraysEnabled = true,
-    generateSourceMap = generateSourceMap,
-    generateNodeJsRunner = generateNodeJsRunner,
-    targetBackend = targetBackend
 ) {
-    open val generateDts = false
-
-    override val skipMinification = true
-
-    private fun getBoolean(s: String, default: Boolean) = System.getProperty(s)?.let { parseBoolean(it) } ?: default
-
-    override val skipRegularMode: Boolean = getBoolean("kotlin.js.ir.skipRegularMode")
-
-    override val runIrDce: Boolean = false  //getBoolean("kotlin.js.ir.dce", true)  // todo
-
-    override val runIrPir: Boolean = false  //getBoolean("kotlin.js.ir.pir", true)  // todo
-
-    val runEs6Mode: Boolean = getBoolean("kotlin.js.ir.es6", false)
-
-    val perModule: Boolean = getBoolean("kotlin.js.ir.perModule")
-
-    private val osName: String = System.getProperty("os.name").lowercase(Locale.getDefault())
-
-    // TODO Design incremental compilation for IR and add test support
-    override val incrementalCompilationChecksEnabled = false
-
     private val compilationCache = mutableMapOf<String, String>()
 
     private val cachedDependencies = mutableMapOf<String, Collection<String>>()
 
-    override fun doTest(filePath: String, expectedResult: String, mainCallParameters: MainCallParameters,) {
+    override fun doTest(filePath: String, expectedResult: String, mainCallParameters: MainCallParameters) {
         compilationCache.clear()
         cachedDependencies.clear()
         super.doTest(filePath, expectedResult, mainCallParameters)
     }
 
-    override val testChecker get() = PythonTestChecker
-
-    @Suppress("ConstantConditionIf")
     override fun translateFiles(
         units: List<TranslationUnit>,
         outputFile: File,
-        dceOutputFile: File,
-        pirOutputFile: File,
         config: JsConfig,
-        outputPrefixFile: File?,
-        outputPostfixFile: File?,
         mainCallParameters: MainCallParameters,
-        incrementalData: IncrementalData,
         remap: Boolean,
         testPackage: String?,
         testFunction: String,
         needsFullIrRuntime: Boolean,
         isMainModule: Boolean,
-        skipDceDriven: Boolean,
         splitPerModule: Boolean,
         propertyLazyInitialization: Boolean,
     ) {
@@ -124,7 +82,7 @@ abstract class BasicIrBoxTest(
         }
 
         if (isMainModule) {
-            val debugMode = getBoolean("kotlin.js.debugMode")
+            val debugMode = getBoolean("kotlin.py.debugMode")
 
             val phaseConfig = if (debugMode) {
                 val allPhasesSet = jsPhases.toPhaseMap().values.toSet()
@@ -141,82 +99,37 @@ abstract class BasicIrBoxTest(
                 PhaseConfig(jsPhases)
             }
 
-            if (!skipRegularMode) {
-                var compilationException: Throwable? = null
-                val compiledModuleWithDuration: Pair<Long, CompilerResult?> = measureTimeMillisWithResult {
-                    try {
-                        compile(
-                            project = config.project,
-                            mainModule = MainModule.SourceFiles(filesToCompile),
-                            analyzer = AnalyzerWithCompilerReport(config.configuration),
-                            configuration = config.configuration,
-                            phaseConfig = phaseConfig,
-                            irFactory = IrFactoryImpl,
-                            allDependencies = resolvedLibraries,
-                            friendDependencies = emptyList(),
-                            mainArguments = mainCallParameters.run { if (shouldBeGenerated()) arguments() else null },
-                            exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, testFunction))),
-                            generateFullJs = true,
-                            generateDceJs = runIrDce,
-                            es6mode = runEs6Mode,
-                            multiModule = splitPerModule || perModule,
-                            propertyLazyInitialization = propertyLazyInitialization,
-                        )
-                    } catch (e: Throwable) {
-                        compilationException = e
-                        null
-                    }
-                }
-                val compilationTimeMessage = "Kotlin compilation time: ${compiledModuleWithDuration.first} ms"
-
-                compilationException?.let {
-                    throw KotlinCompilationException(compilationTimeMessage, it)
-                }
-                val compiledModule = compiledModuleWithDuration.second!!
-
-                compiledModule.jsCode!!.writeTo(outputFile, config)
-
-                compiledModule.dceJsCode?.writeTo(dceOutputFile, config)
-
-                if (generateDts) {
-                    val dtsFile = outputFile.withReplacedExtensionOrNull("_v5.js", ".d.ts")
-                    dtsFile?.write(compiledModule.tsDefinitions ?: error("No ts definitions"))
+            var compilationException: Throwable? = null
+            val compiledModuleWithDuration: Pair<Long, CompilerResult?> = measureTimeMillisWithResult {
+                try {
+                    compile(
+                        project = config.project,
+                        mainModule = MainModule.SourceFiles(filesToCompile),
+                        analyzer = AnalyzerWithCompilerReport(config.configuration),
+                        configuration = config.configuration,
+                        phaseConfig = phaseConfig,
+                        irFactory = IrFactoryImpl,
+                        allDependencies = resolvedLibraries,
+                        friendDependencies = emptyList(),
+                        mainArguments = mainCallParameters.run { if (shouldBeGenerated()) arguments() else null },
+                        exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, testFunction))),
+                        generateFullJs = true,
+                        multiModule = splitPerModule,
+                        propertyLazyInitialization = propertyLazyInitialization,
+                    )
+                } catch (e: Throwable) {
+                    compilationException = e
+                    null
                 }
             }
+            val compilationTimeMessage = "Kotlin compilation time: ${compiledModuleWithDuration.first} ms"
 
-            if (runIrPir && !skipDceDriven) {
-                var compilationException: Throwable? = null
-                val compiledModuleWithDuration: Pair<Long, CompilerResult?> = measureTimeMillisWithResult {
-                    try {
-                        compile(
-                            project = config.project,
-                            mainModule = MainModule.SourceFiles(filesToCompile),
-                            analyzer = AnalyzerWithCompilerReport(config.configuration),
-                            configuration = config.configuration,
-                            phaseConfig = phaseConfig,
-                            irFactory = PersistentIrFactory(),
-                            allDependencies = resolvedLibraries,
-                            friendDependencies = emptyList(),
-                            mainArguments = mainCallParameters.run { if (shouldBeGenerated()) arguments() else null },
-                            exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, testFunction))),
-                            dceDriven = true,
-                            es6mode = runEs6Mode,
-                            multiModule = splitPerModule || perModule,
-                            propertyLazyInitialization = propertyLazyInitialization
-                        )
-                    } catch (e: Throwable) {
-                        compilationException = e
-                        null
-                    }
-                }
-                val compilationTimeMessage = "Kotlin compilation time: ${compiledModuleWithDuration.first} ms"
-
-                compilationException?.let {
-                    throw KotlinCompilationException(compilationTimeMessage, it)
-                }
-                val compiledModule = compiledModuleWithDuration.second!!
-                compiledModule.jsCode!!.writeTo(pirOutputFile, config)
+            compilationException?.let {
+                throw KotlinCompilationException(compilationTimeMessage, it)
             }
+            val compiledModule = compiledModuleWithDuration.second!!
+
+            compiledModule.jsCode!!.writeTo(outputFile, config)
         } else {
             generateKLib(
                 project = config.project,
@@ -235,8 +148,7 @@ abstract class BasicIrBoxTest(
     }
 
     private fun JsCode.writeTo(outputFile: File, config: JsConfig) {
-        val wrappedCode =
-            wrapWithModuleEmulationMarkers(mainModule, moduleId = config.moduleId, moduleKind = config.moduleKind)
+        val wrappedCode = wrapWithModuleEmulationMarkers(mainModule, moduleId = config.moduleId, moduleKind = config.moduleKind)
         outputFile.write(wrappedCode)
 
         val dependencyPaths = mutableListOf<String>()
@@ -251,15 +163,9 @@ abstract class BasicIrBoxTest(
         cachedDependencies[outputFile.absolutePath] = dependencyPaths
     }
 
-    override fun dontRunOnSpecificPlatform(targetBackend: TargetBackend): Boolean {
-        if (targetBackend != TargetBackend.JS_IR_ES6) return false
-        if (!runEs6Mode) return false
-
-        // TODO: Since j2v8 does not support ES6 on mac and windows, temporary don't run such test on those platforms.
-        if (osName.indexOf("win") >= 0) return true
-        if (osName.indexOf("mac") >= 0 || osName.indexOf("darwin") >= 0) return true
-
-        return false
+    private fun File.write(text: String) {
+        parentFile.mkdirs()
+        writeText(text)
     }
 
     override fun runGeneratedCode(
@@ -276,10 +182,4 @@ abstract class BasicIrBoxTest(
         val allFiles = jsFiles.flatMap { file -> cachedDependencies[File(file).absolutePath]?.let { deps -> deps + file } ?: listOf(file) }
         testChecker.check(allFiles, expectedResult)
     }
-}
-
-
-private fun File.write(text: String) {
-    parentFile.mkdirs()
-    writeText(text)
 }

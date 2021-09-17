@@ -18,12 +18,12 @@ import org.jetbrains.kotlin.js.backend.ast.JsProgram
 import org.jetbrains.kotlin.js.config.JSConfigurationKeys
 import org.jetbrains.kotlin.js.config.JsConfig
 import org.jetbrains.kotlin.js.config.SourceMapSourceEmbedding
-import org.jetbrains.kotlin.py.sourceMap.SourceFilePathResolver
-import org.jetbrains.kotlin.py.sourceMap.SourceMap3Builder
 import org.jetbrains.kotlin.js.util.TextOutput
 import org.jetbrains.kotlin.js.util.TextOutputImpl
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.py.sourceMap.SourceFilePathResolver
+import org.jetbrains.kotlin.py.sourceMap.SourceMap3Builder
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.diagnostics.Diagnostics
 import org.jetbrains.kotlin.serialization.js.JsModuleDescriptor
@@ -32,7 +32,6 @@ import org.jetbrains.kotlin.serialization.js.KotlinJavascriptSerializationUtil
 import org.jetbrains.kotlin.utils.JsMetadataVersion
 import org.jetbrains.kotlin.utils.KotlinJavascriptMetadataUtils
 import java.io.File
-import java.util.*
 
 abstract class TranslationResult protected constructor(val diagnostics: Diagnostics) {
     class Fail(diagnostics: Diagnostics) : TranslationResult(diagnostics)
@@ -47,7 +46,7 @@ abstract class TranslationResult protected constructor(val diagnostics: Diagnost
         val packageMetadata: Map<FqName, ByteArray>
     ) : TranslationResult(diagnostics) {
 
-        abstract fun getOutputFiles(outputFile: File, outputPrefixFile: File?, outputPostfixFile: File?): OutputFileCollection
+        abstract fun getOutputFiles(outputFile: File): OutputFileCollection
 
         protected val sourceFiles = files.map {
             val virtualFile = it.originalFile.virtualFile
@@ -112,7 +111,7 @@ abstract class TranslationResult protected constructor(val diagnostics: Diagnost
             return output.toString()
         }
 
-        override fun getOutputFiles(outputFile: File, outputPrefixFile: File?, outputPostfixFile: File?): OutputFileCollection {
+        override fun getOutputFiles(outputFile: File): OutputFileCollection {
             val output = TextOutputImpl()
 
             val sourceMapBuilder = SourceMap3Builder(outputFile, output, config.sourceMapPrefix)
@@ -137,8 +136,8 @@ abstract class TranslationResult protected constructor(val diagnostics: Diagnost
             }
             val code = output.toString()
 
-            val prefix = outputPrefixFile?.readText() ?: ""
-            val postfix = outputPostfixFile?.readText() ?: ""
+            val prefix = ""
+            val postfix = ""
 
             val jsFile = SimpleOutputFile(sourceFiles, outputFile.name, prefix + code + postfix)
             val outputFiles = arrayListOf<OutputFile>(jsFile)
@@ -170,7 +169,7 @@ abstract class TranslationResult protected constructor(val diagnostics: Diagnost
         packageMetadata: Map<FqName, ByteArray>
     ) : SuccessBase(config, files, diagnostics, importedModules, moduleDescriptor, bindingContext, packageMetadata) {
 
-        override fun getOutputFiles(outputFile: File, outputPrefixFile: File?, outputPostfixFile: File?): OutputFileCollection {
+        override fun getOutputFiles(outputFile: File): OutputFileCollection {
             return SimpleOutputFileCollection(metadataFiles(outputFile))
         }
     }

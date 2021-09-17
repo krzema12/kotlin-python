@@ -5,7 +5,7 @@
 
 package org.jetbrains.kotlin.python.test
 
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.nio.file.Files
@@ -14,12 +14,9 @@ import java.util.concurrent.TimeUnit
 import kotlin.system.measureTimeMillis
 
 abstract class AbstractPyTestChecker {
-    fun check(
-        files: List<String>,
-        expectedResult: String,
-    ) {
+    fun check(files: List<String>, expectedResult: String) {
         val actualResult = run(files)
-        Assert.assertEquals(expectedResult, actualResult)
+        assertEquals(expectedResult, actualResult)
     }
 
     protected abstract fun run(files: List<String>): Any
