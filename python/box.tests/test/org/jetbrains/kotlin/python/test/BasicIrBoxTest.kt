@@ -242,10 +242,10 @@ abstract class BasicIrBoxTest(
         val dependencyPaths = mutableListOf<String>()
 
         dependencies.forEach { (moduleId, code) ->
-            val wrappedCode = wrapWithModuleEmulationMarkers(code, config.moduleKind, moduleId)
+            val wrappedCode2 = wrapWithModuleEmulationMarkers(code, config.moduleKind, moduleId)
             val dependencyPath = outputFile.absolutePath.replace("_v5.js", "-${moduleId}_v5.js")
             dependencyPaths += dependencyPath
-            File(dependencyPath).write(wrappedCode)
+            File(dependencyPath).write(wrappedCode2)
         }
 
         cachedDependencies[outputFile.absolutePath] = dependencyPaths
@@ -274,7 +274,7 @@ abstract class BasicIrBoxTest(
         // TODO: return list of js from translateFiles and provide then to this function with other js files
 
         val allFiles = jsFiles.flatMap { file -> cachedDependencies[File(file).absolutePath]?.let { deps -> deps + file } ?: listOf(file) }
-        testChecker.check(allFiles, testModuleName, testPackage, testFunction, expectedResult, withModuleSystem)
+        testChecker.check(allFiles, expectedResult)
     }
 }
 
