@@ -5,8 +5,6 @@
 
 package org.jetbrains.kotlin.python.test
 
-import org.jetbrains.kotlin.js.engine.ScriptEngine
-import org.jetbrains.kotlin.js.engine.ScriptEngineNashorn
 import org.junit.Assert
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -15,72 +13,22 @@ import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 import kotlin.system.measureTimeMillis
 
-fun createScriptEngine(): ScriptEngine {
-    return ScriptEngineNashorn()
-}
-
-fun ScriptEngine.overrideAsserter() {
-    eval("this['kotlin-test'].kotlin.test.overrideAsserter_wbnzx$(this['kotlin-test'].kotlin.test.DefaultAsserter);")
-}
-
-fun ScriptEngine.runTestFunction(
-    testModuleName: String?,
-    testPackageName: String?,
-    testFunctionName: String,
-    withModuleSystem: Boolean
-): String {
-    var script = when {
-        withModuleSystem -> BasicBoxTest.KOTLIN_TEST_INTERNAL + ".require('" + testModuleName!! + "')"
-        testModuleName === null -> "this"
-        else -> testModuleName
-    }
-
-    if (testPackageName !== null) {
-        script += ".$testPackageName"
-    }
-
-    script += ".$testFunctionName()"
-
-    return eval(script)
-}
-
-abstract class AbstractJsTestChecker {
+abstract class AbstractPyTestChecker {
     fun check(
         files: List<String>,
-        testModuleName: String?,
-        testPackageName: String?,
-        testFunctionName: String,
         expectedResult: String,
-        withModuleSystem: Boolean
     ) {
-        val actualResult = run(files, testModuleName, testPackageName, testFunctionName, withModuleSystem)
+        val actualResult = run(files)
         Assert.assertEquals(expectedResult, actualResult)
     }
 
-    private fun run(
-        files: List<String>,
-        testModuleName: String?,
-        testPackageName: String?,
-        testFunctionName: String,
-        withModuleSystem: Boolean
-    ) = run(files) {
-        runTestFunction(testModuleName, testPackageName, testFunctionName, withModuleSystem)
-    }
-
-
-    fun run(files: List<String>) {
-        run(files) { null }
-    }
-
-    abstract fun checkStdout(files: List<String>, expectedResult: String)
-
-    protected abstract fun run(files: List<String>, f: ScriptEngine.() -> Any?): Any?
+    protected abstract fun run(files: List<String>): Any
 }
 
 class PythonExecutionException(override val message: String) : RuntimeException(message)
 
-object PythonTestChecker : AbstractJsTestChecker() {
-    override fun run(files: List<String>, f: ScriptEngine.() -> Any?): Any? {
+object PythonTestChecker : AbstractPyTestChecker() {
+    override fun run(files: List<String>): Any {
         assert(files.size == 1) { "For now the test checker supports a single output from the compiler!" }
         val fileToRun = files[0]
         val pathToFileToRun = Paths.get(fileToRun)
@@ -97,10 +45,6 @@ object PythonTestChecker : AbstractJsTestChecker() {
         val pythonOutput = runPython(consumerScriptPath.toString())
         temporaryDirectory.toFile().deleteRecursively()
         return pythonOutput
-    }
-
-    override fun checkStdout(files: List<String>, expectedResult: String) {
-        TODO("Not yet implemented")
     }
 
     private fun runPython(scriptPath: String): String {
@@ -129,14 +73,5 @@ object PythonTestChecker : AbstractJsTestChecker() {
             val stdoutReader = BufferedReader(InputStreamReader(process.inputStream))
             return stdoutReader.lineSequence().joinToString("\n")
         }
-    }
-}
-
-fun ScriptEngine.runAndRestoreContext(f: ScriptEngine.() -> Any?): Any? {
-    return try {
-        saveGlobalState()
-        f()
-    } finally {
-        restoreGlobalState()
     }
 }
