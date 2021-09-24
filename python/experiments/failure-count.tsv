@@ -75,7 +75,7 @@
 4	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_int8Array_visibility_public_modality_FINAL_____arg0_kotlin_Any___returnType_kotlin_Any_' is not defined
 4	NameError: name 'visitExpressionFunctionBodyStatements_x5__Assign__Expr__Assign__Expr__Return_' is not defined
 4	TypeError: object of type 'NoneType' has no len()
-4	java.lang.IllegalStateException: No module with name "main"
+4	java.lang.AssertionError: For now the test checker supports a single output from the compiler!
 4	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun assertTrue(x: Boolean): Unit defined in kotlin.test (10,34) in <path-truncated>
 4	java.lang.IllegalStateException: UNRESOLVED_REFERENCE_WRONG_RECEIVER: Unresolved reference. None of the following candidates is applicable because of receiver type mismatch: 
 4	kotlin.UninitializedPropertyAccessException: lateinit property parent has not been initialized
