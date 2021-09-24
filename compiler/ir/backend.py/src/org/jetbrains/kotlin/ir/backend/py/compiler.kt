@@ -28,12 +28,11 @@ import org.jetbrains.kotlin.library.resolver.KotlinLibraryResolveResult
 import org.jetbrains.kotlin.name.FqName
 
 class CompilerResult(
-    val jsCode: JsCode?,
-    val dceJsCode: JsCode?,
-    val tsDefinitions: String? = null
+    val pyCode: PyCode?,
+    val dcePyCode: PyCode?,
 )
 
-class JsCode(val mainModule: String, val dependencies: Iterable<Pair<String, String>> = emptyList())
+class PyCode(val mainModule: String, val dependencies: Iterable<Pair<String, String>> = emptyList())
 
 fun compile(
     project: Project,
@@ -135,5 +134,5 @@ fun generateJsCode(
     jsPhases.invokeToplevel(PhaseConfig(jsPhases), context, listOf(moduleFragment))
 
     val transformer = IrModuleToPyTransformer(context, null, true, nameTables)
-    return transformer.generateModule(listOf(moduleFragment)).jsCode!!.mainModule
+    return transformer.generateModule(listOf(moduleFragment)).pyCode!!.mainModule
 }

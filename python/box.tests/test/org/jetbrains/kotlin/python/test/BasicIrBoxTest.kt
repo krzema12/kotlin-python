@@ -6,7 +6,6 @@
 package org.jetbrains.kotlin.python.test
 
 import com.intellij.openapi.util.io.FileUtil
-import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.StandardFileSystems
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.psi.PsiManager
@@ -26,11 +25,14 @@ import org.jetbrains.kotlin.ir.backend.js.MainModule
 import org.jetbrains.kotlin.ir.backend.js.generateKLib
 import org.jetbrains.kotlin.ir.backend.js.jsResolveLibraries
 import org.jetbrains.kotlin.ir.backend.py.CompilerResult
-import org.jetbrains.kotlin.ir.backend.py.JsCode
+import org.jetbrains.kotlin.ir.backend.py.PyCode
 import org.jetbrains.kotlin.ir.backend.py.compile
 import org.jetbrains.kotlin.ir.backend.py.jsPhases
 import org.jetbrains.kotlin.ir.declarations.impl.IrFactoryImpl
-import org.jetbrains.kotlin.js.config.*
+import org.jetbrains.kotlin.js.config.ErrorTolerancePolicy
+import org.jetbrains.kotlin.js.config.JSConfigurationKeys
+import org.jetbrains.kotlin.js.config.JsConfig
+import org.jetbrains.kotlin.js.config.SourceMapSourceEmbedding
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtNamedFunction
@@ -41,7 +43,6 @@ import org.jetbrains.kotlin.python.test.utils.PyTestUtils
 import org.jetbrains.kotlin.resolve.CompilerEnvironment
 import org.jetbrains.kotlin.serialization.js.JsModuleDescriptor
 import org.jetbrains.kotlin.serialization.js.KotlinJavascriptSerializationUtil
-import org.jetbrains.kotlin.serialization.js.ModuleKind
 import org.jetbrains.kotlin.test.*
 import org.jetbrains.kotlin.test.util.KtTestUtil
 import org.jetbrains.kotlin.utils.DFS
@@ -160,21 +161,12 @@ abstract class BasicIrBoxTest(
 
             val additionalFiles = mutableListOf<String>()
 
-            val moduleKindMatcher = MODULE_KIND_PATTERN.matcher(fileContent)
-            val moduleKind = if (moduleKindMatcher.find()) ModuleKind.valueOf(moduleKindMatcher.group(1)) else ModuleKind.PLAIN
-
-            val withModuleSystem = moduleKind != ModuleKind.PLAIN && !NO_MODULE_SYSTEM_PATTERN.matcher(fileContent).find()
-
-            if (withModuleSystem) {
-                additionalFiles += MODULE_EMULATION_FILE
-            }
-
             val allPyFiles = additionalFiles + inputPyFiles + generatedPyFiles.map { (outputFileName, _) -> outputFileName }
 
             val skipRunningGeneratedCode = InTextDirectivesUtils.dontRunGeneratedCode(pythonBackend, file)
 
             if (!skipRunningGeneratedCode) {
-                runGeneratedCode(allPyFiles, testModuleName, testPackage, testFunction, expectedResult, withModuleSystem)
+                runGeneratedCode(allPyFiles, testModuleName, testPackage, testFunction, expectedResult)
             } else {
                 val ignored = InTextDirectivesUtils.isIgnoredTarget(
                     pythonBackend, file,
@@ -226,7 +218,7 @@ abstract class BasicIrBoxTest(
         val kotlinFiles = module.files.filter { it.fileName.endsWith(".kt") }
         val testFiles = kotlinFiles.map { it.fileName }
         val globalCommonFiles = PyTestUtils.getFilesInDirectoryByExtension(COMMON_FILES_DIR_PATH, KotlinFileType.EXTENSION)
-        val localCommonFile = directory + "/" + COMMON_FILES_NAME + "." + KotlinFileType.EXTENSION
+        val localCommonFile = "$directory/$COMMON_FILES_NAME.${KotlinFileType.EXTENSION}"
         val localCommonFiles = if (File(localCommonFile).exists()) listOf(localCommonFile) else emptyList()
         val additionalFiles = globalCommonFiles + localCommonFiles
         val allSourceFiles = (testFiles + additionalFiles).map(::File)
@@ -241,27 +233,6 @@ abstract class BasicIrBoxTest(
             mainCallParameters, remap, testPackage, testFunction, needsFullIrRuntime, isMainModule, splitPerModule,
             propertyLazyInitialization,
         )
-    }
-
-    private fun wrapWithModuleEmulationMarkers(
-        content: String,
-        moduleKind: ModuleKind,
-        moduleId: String
-    ): String {
-        val escapedModuleId = StringUtil.escapeStringCharacters(moduleId)
-
-        return when (moduleKind) {
-            ModuleKind.COMMON_JS -> "${KOTLIN_TEST_INTERNAL}.beginModule();\n" +
-                    "$content\n" +
-                    "${KOTLIN_TEST_INTERNAL}.endModule(\"$escapedModuleId\");"
-
-            ModuleKind.AMD, ModuleKind.UMD ->
-                "if (typeof ${KOTLIN_TEST_INTERNAL} !== \"undefined\") { " +
-                        "${KOTLIN_TEST_INTERNAL}.setModuleId(\"$escapedModuleId\"); }\n" +
-                        "$content\n"
-
-            ModuleKind.PLAIN -> content
-        }
     }
 
     private fun createPsiFile(fileName: String): KtFile {
@@ -293,8 +264,6 @@ abstract class BasicIrBoxTest(
         configuration.put(JSConfigurationKeys.FRIEND_PATHS, friends)
 
         configuration.put(CommonConfigurationKeys.MODULE_NAME, module.name.removeSuffix(OLD_MODULE_SUFFIX))
-        configuration.put(JSConfigurationKeys.MODULE_KIND, module.moduleKind)
-        configuration.put(JSConfigurationKeys.TARGET, EcmaVersion.v5)
         configuration.put(JSConfigurationKeys.ERROR_TOLERANCE_POLICY, errorIgnorancePolicy)
 
         if (errorIgnorancePolicy.allowErrors) {
@@ -338,11 +307,6 @@ abstract class BasicIrBoxTest(
                 if (testPackage?.isEmpty() == true) {
                     testPackage = null
                 }
-            }
-
-            val moduleKindMatcher = MODULE_KIND_PATTERN.matcher(text)
-            if (moduleKindMatcher.find()) {
-                currentModule.moduleKind = ModuleKind.valueOf(moduleKindMatcher.group(1))
             }
 
             if (NO_INLINE_PATTERN.matcher(text).find()) {
@@ -407,7 +371,6 @@ abstract class BasicIrBoxTest(
         dependencies: List<String>,
         friends: List<String>
     ): KotlinBaseTest.TestModule(name, dependencies, friends) {
-        var moduleKind = ModuleKind.PLAIN
         var inliningDisabled = false
         val files = mutableListOf<TestFile>()
         var languageVersionSettings: LanguageVersionSettings? = null
@@ -496,7 +459,7 @@ abstract class BasicIrBoxTest(
             }
             val compiledModule = compiledModuleWithDuration.second!!
 
-            compiledModule.jsCode!!.writeTo(outputFile, config)
+            compiledModule.pyCode!!.writeTo(outputFile)
         } else {
             generateKLib(
                 project = config.project,
@@ -514,17 +477,16 @@ abstract class BasicIrBoxTest(
         }
     }
 
-    private fun JsCode.writeTo(outputFile: File, config: JsConfig) {
-        val wrappedCode = wrapWithModuleEmulationMarkers(mainModule, moduleId = config.moduleId, moduleKind = config.moduleKind)
+    private fun PyCode.writeTo(outputFile: File) {
+        val wrappedCode = mainModule
         outputFile.write(wrappedCode)
 
         val dependencyPaths = mutableListOf<String>()
 
         dependencies.forEach { (moduleId, code) ->
-            val wrappedCode2 = wrapWithModuleEmulationMarkers(code, config.moduleKind, moduleId)
-            val dependencyPath = outputFile.absolutePath.replace("_v5.js", "-${moduleId}_v5.js")
+            val dependencyPath = outputFile.absolutePath.replace(".py", "-${moduleId}.py")
             dependencyPaths += dependencyPath
-            File(dependencyPath).write(wrappedCode2)
+            File(dependencyPath).write(code)
         }
 
         cachedDependencies[outputFile.absolutePath] = dependencyPaths
@@ -541,7 +503,6 @@ abstract class BasicIrBoxTest(
         testPackage: String?,
         testFunction: String,
         expectedResult: String,
-        withModuleSystem: Boolean
     ) {
         // TODO: should we do anything special for module systems?
         // TODO: return list of js from translateFiles and provide then to this function with other js files
@@ -563,11 +524,6 @@ abstract class BasicIrBoxTest(
         private const val COMMON_FILES_NAME = "_common"
         private const val COMMON_FILES_DIR = "_commonFiles/"
         const val COMMON_FILES_DIR_PATH = TEST_DATA_DIR_PATH + COMMON_FILES_DIR
-
-        private const val MODULE_EMULATION_FILE = "$TEST_DATA_DIR_PATH/moduleEmulation.js"
-
-        private val MODULE_KIND_PATTERN = Pattern.compile("^// *MODULE_KIND: *(.+)$", Pattern.MULTILINE)
-        private val NO_MODULE_SYSTEM_PATTERN = Pattern.compile("^// *NO_JS_MODULE_SYSTEM", Pattern.MULTILINE)
 
         // Infer main module using dependency graph
         private val INFER_MAIN_MODULE = Pattern.compile("^// *INFER_MAIN_MODULE", Pattern.MULTILINE)
@@ -592,7 +548,5 @@ abstract class BasicIrBoxTest(
         private const val DEFAULT_MODULE = "main"
         private const val TEST_FUNCTION = "box"
         private const val OLD_MODULE_SUFFIX = "-old"
-
-        private const val KOTLIN_TEST_INTERNAL = "\$kotlin_test_internal\$"
     }
 }

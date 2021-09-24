@@ -8,11 +8,9 @@ package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 import generated.Python.Module
 import generated.Python.stmt
 import org.jetbrains.kotlin.ir.backend.py.CompilerResult
-import org.jetbrains.kotlin.ir.backend.py.JsCode
 import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyCode
 import org.jetbrains.kotlin.ir.backend.py.eliminateDeadDeclarations
-import org.jetbrains.kotlin.ir.backend.py.export.ExportModelGenerator
-import org.jetbrains.kotlin.ir.backend.py.export.toTypeScript
 import org.jetbrains.kotlin.ir.backend.py.lower.StaticMembersLowering
 import org.jetbrains.kotlin.ir.backend.py.utils.*
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
@@ -37,9 +35,6 @@ class IrModuleToPyTransformer(
             ) + packageLevelJsModules
         }
 
-        val exportedModule = ExportModelGenerator(backendContext).generateExport(modules)
-        val dts = exportedModule.toTypeScript()
-
         modules.forEach { module ->
             module.files.forEach { StaticMembersLowering(backendContext).lower(it) }
         }
@@ -63,10 +58,10 @@ class IrModuleToPyTransformer(
             generateWrappedModuleBody(modules, namer)
         } else null
 
-        return CompilerResult(jsCode, dceJsCode, dts)
+        return CompilerResult(jsCode, dceJsCode)
     }
 
-    private fun generateWrappedModuleBody(modules: Iterable<IrModuleFragment>, namer: NameTables): JsCode {
+    private fun generateWrappedModuleBody(modules: Iterable<IrModuleFragment>, namer: NameTables): PyCode {
         if (multiModule) {
 
             val refInfo = buildCrossModuleReferenceInfo(modules)
@@ -92,9 +87,9 @@ class IrModuleToPyTransformer(
                 )
             }.reversed()
 
-            return JsCode(mainModule, dependencies)
+            return PyCode(mainModule, dependencies)
         } else {
-            return JsCode(
+            return PyCode(
                 generateWrappedModuleBody2(
                     modules,
                     namer,

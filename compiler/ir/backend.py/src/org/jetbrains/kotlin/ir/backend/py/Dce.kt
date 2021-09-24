@@ -8,7 +8,6 @@ package org.jetbrains.kotlin.ir.backend.py
 import org.jetbrains.kotlin.backend.common.ir.isMemberOfOpenClass
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
-import org.jetbrains.kotlin.ir.backend.py.export.isExported
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.backend.py.utils.*
 import org.jetbrains.kotlin.ir.declarations.*
@@ -60,19 +59,19 @@ private fun IrDeclaration.addRootsTo(to: MutableCollection<IrDeclaration>, conte
         isEffectivelyExternal() -> {
             to += this
         }
-        isExported(context) -> {
-            to += this
-        }
+//        isExported(context) -> {
+//            to += this
+//        }
         this is IrField -> {
             // TODO: simplify
-            if ((initializer != null && !isKotlinPackage() || correspondingPropertySymbol?.owner?.isExported(context) == true) && !isConstant()) {
+            if ((initializer != null && !isKotlinPackage()/* || correspondingPropertySymbol?.owner?.isExported(context) == true*/) && !isConstant()) {
                 to += this
             }
         }
         this is IrSimpleFunction -> {
-            if (correspondingPropertySymbol?.owner?.isExported(context) == true) {
-                to += this
-            }
+//            if (correspondingPropertySymbol?.owner?.isExported(context) == true) {
+//                to += this
+//            }
         }
     }
 }
@@ -310,7 +309,7 @@ fun usefulDeclarations(roots: Iterable<IrDeclaration>, context: JsIrBackendConte
                     (it.classifierOrNull as? IrClassSymbol)?.owner?.enqueue("superTypes")
                 }
 
-                if (declaration.isObject && declaration.isExported(context)) {
+                if (declaration.isObject/* && declaration.isExported(context)*/) {
                     context.mapping.objectToGetInstanceFunction[declaration]!!
                         .enqueue(declaration, "Exported object getInstance function")
                 }

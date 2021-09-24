@@ -280,14 +280,10 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
             )
 
 
-            val jsCode = if (arguments.irDce && !arguments.irDceDriven) compiledModule.dceJsCode!! else compiledModule.jsCode!!
+            val jsCode = if (arguments.irDce && !arguments.irDceDriven) compiledModule.dcePyCode!! else compiledModule.pyCode!!
             outputFile.writeText(jsCode.mainModule)
             jsCode.dependencies.forEach { (name, content) ->
                 outputFile.resolveSibling("$name.js").writeText(content)
-            }
-            if (arguments.generateDts) {
-                val dtsFile = outputFile.withReplacedExtensionOrNull(outputFile.extension, "d.ts")!!
-                dtsFile.writeText(compiledModule.tsDefinitions ?: error("No ts definitions"))
             }
         }
 
