@@ -10,7 +10,6 @@ import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.JsLoweredDeclarationOrigin
-import org.jetbrains.kotlin.ir.backend.py.export.isExported
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
@@ -24,6 +23,7 @@ import org.jetbrains.kotlin.name.Name
 
 fun TODO(element: IrElement): Nothing = TODO(element::class.java.simpleName + " is not supported yet here")
 
+@Suppress("UNUSED_PARAMETER")  // todo: ensure the parameter is not needed and remove
 fun IrFunction.hasStableJsName(context: JsIrBackendContext?): Boolean {
     if (
         origin == JsLoweredDeclarationOrigin.BRIDGE_WITH_STABLE_NAME ||
@@ -52,7 +52,7 @@ fun IrFunction.hasStableJsName(context: JsIrBackendContext?): Boolean {
         else -> true
     }
 
-    return (isEffectivelyExternal() || getJsName() != null || isExported(context)) && namedOrMissingGetter
+    return (isEffectivelyExternal() || getJsName() != null/* || isExported(context)*/) && namedOrMissingGetter
 }
 
 fun IrFunction.isEqualsInheritedFromAny() =

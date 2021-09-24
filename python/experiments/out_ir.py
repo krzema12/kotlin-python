@@ -8650,13 +8650,13 @@ class _no_name_provided__1(Continuation):
     def resumeWith_bnunh2_k_(self, result):
         return self.resumeWith_3_jccoe6_k_(result)
     
-    def equals_4(self, other):
+    def equals_4_wi7j7l_k_(self, other):
         pass
     
-    def hashCode_5(self):
+    def hashCode_5_0_k_(self):
         pass
     
-    def toString_6(self):
+    def toString_6_0_k_(self):
         pass
     
 
