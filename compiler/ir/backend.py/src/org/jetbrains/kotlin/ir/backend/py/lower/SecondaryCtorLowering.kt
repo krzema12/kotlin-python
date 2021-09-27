@@ -24,13 +24,9 @@ import org.jetbrains.kotlin.ir.expressions.impl.*
 import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.types.impl.IrSimpleTypeImpl
-import org.jetbrains.kotlin.ir.util.deepCopyWithSymbols
-import org.jetbrains.kotlin.ir.util.defaultType
-import org.jetbrains.kotlin.ir.util.isSubclassOf
-import org.jetbrains.kotlin.ir.util.parentAsClass
+import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformer
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
-import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 import org.jetbrains.kotlin.name.Name
 
 class SecondaryConstructorLowering(val context: JsIrBackendContext) : DeclarationTransformer {
@@ -78,15 +74,13 @@ class SecondaryConstructorLowering(val context: JsIrBackendContext) : Declaratio
         //   val t = Object.create(Foo.prototype);
         //   return Foo_init_$Init$(..., t)
         // }
-        generateInitBody(constructor, irClass, delegate)
-        generateFactoryBody(constructor, irClass, factory, delegate)
+        generateInitBody(constructor, delegate)
+        generateFactoryBody(irClass, factory, delegate)
     }
 
-    private fun generateFactoryBody(constructor: IrConstructor, irClass: IrClass, stub: IrSimpleFunction, delegate: IrSimpleFunction) {
+    private fun generateFactoryBody(irClass: IrClass, stub: IrSimpleFunction, delegate: IrSimpleFunction) {
         stub.body = context.irFactory.createBlockBody(UNDEFINED_OFFSET, UNDEFINED_OFFSET) {
             val type = irClass.defaultType
-            val createFunctionIntrinsic = context.intrinsics.jsObjectCreate
-            val irCreateCall = JsIrBuilder.buildCall(createFunctionIntrinsic.symbol, type, listOf(type))
             val irDelegateCall = JsIrBuilder.buildCall(delegate.symbol, type).also { call ->
                 for (i in 0 until stub.typeParameters.size) {
                     call.putTypeArgument(i, stub.typeParameters[i].toIrType())
@@ -95,8 +89,6 @@ class SecondaryConstructorLowering(val context: JsIrBackendContext) : Declaratio
                 for (i in 0 until stub.valueParameters.size) {
                     call.putValueArgument(i, JsIrBuilder.buildGetValue(stub.valueParameters[i].symbol))
                 }
-
-                call.putValueArgument(constructor.valueParameters.size, irCreateCall)
             }
 
             if (irClass.isSubclassOf(context.irBuiltIns.throwableClass.owner)) {
@@ -119,49 +111,17 @@ class SecondaryConstructorLowering(val context: JsIrBackendContext) : Declaratio
                 val irReturn = JsIrBuilder.buildReturn(stub.symbol, irDelegateCall, context.irBuiltIns.nothingType)
                 statements += irReturn
             }
-
         }
     }
 
-    private fun generateInitBody(constructor: IrConstructor, irClass: IrClass, delegate: IrSimpleFunction) {
-        val thisParam = delegate.valueParameters.last()
-        val oldThisReceiver = irClass.thisReceiver!!
+    private fun generateInitBody(constructor: IrConstructor, delegate: IrSimpleFunction) {
         val constructorBody = constructor.body!!
-        val oldValueParameters = constructor.valueParameters + oldThisReceiver
 
         // TODO: replace parameters as well
         delegate.body = context.irFactory.createBlockBody(UNDEFINED_OFFSET, UNDEFINED_OFFSET) {
-            statements += (constructorBody.deepCopyWithSymbols(delegate) as IrStatementContainer).statements
-            statements += JsIrBuilder.buildReturn(delegate.symbol, JsIrBuilder.buildGetValue(thisParam.symbol), context.irBuiltIns.nothingType)
-            transformChildrenVoid(ThisUsageReplaceTransformer(delegate.symbol, oldValueParameters.zip(delegate.valueParameters).toMap()))
-        }
-    }
-
-
-    private class ThisUsageReplaceTransformer(
-        val function: IrFunctionSymbol,
-        val symbolMapping: Map<IrValueParameter, IrValueParameter>
-    ) : IrElementTransformerVoid() {
-
-        val newThisSymbol = symbolMapping.values.last().symbol
-
-        override fun visitReturn(expression: IrReturn): IrExpression = IrReturnImpl(
-            expression.startOffset,
-            expression.endOffset,
-            expression.type,
-            function,
-            IrGetValueImpl(expression.startOffset, expression.endOffset, newThisSymbol.owner.type, newThisSymbol)
-        )
-
-        override fun visitGetValue(expression: IrGetValue) = symbolMapping[expression.symbol.owner]?.let {
-            expression.run { IrGetValueImpl(startOffset, endOffset, type, it.symbol, origin) }
-        } ?: expression
-
-        override fun visitSetValue(expression: IrSetValue): IrExpression {
-            expression.transformChildrenVoid()
-            return symbolMapping[expression.symbol.owner]?.let {
-                expression.run { IrSetValueImpl(startOffset, endOffset, type, it.symbol, expression.value, origin) }
-            } ?: expression
+            val stats = (constructorBody.deepCopyWithSymbols(delegate) as IrStatementContainer).statements
+            statements += stats.subList(0, stats.size - 1)
+            statements += JsIrBuilder.buildReturn(constructor.symbol, stats.last() as IrExpression, context.irBuiltIns.nothingType)
         }
     }
 }
@@ -186,7 +146,6 @@ private fun JsIrBackendContext.buildInitDeclaration(constructor: IrConstructor, 
         it.copyTypeParametersFrom(constructor.parentAsClass)
 
         it.valueParameters = constructor.valueParameters.map { p -> p.copyTo(it) }
-        it.valueParameters += JsIrBuilder.buildValueParameter(it, "\$this", constructor.valueParameters.size, type)
     }
 }
 
@@ -280,18 +239,7 @@ private class CallsiteRedirectionTransformer(private val context: JsIrBackendCon
             if (context.es6mode) {
                 return newCall
             }
-
-            val readThis = expression.run {
-                if (data!! is IrConstructor) {
-                    val thisReceiver = klass.thisReceiver!!
-                    IrGetValueImpl(startOffset, endOffset, thisReceiver.type, thisReceiver.symbol)
-                } else {
-                    val lastValueParameter = data.valueParameters.last()
-                    IrGetValueImpl(startOffset, endOffset, lastValueParameter.type, lastValueParameter.symbol)
-                }
-            }
-
-            newCall.apply { putValueArgument(expression.valueArgumentsCount, readThis) }
+            newCall
         } else expression
     }
 

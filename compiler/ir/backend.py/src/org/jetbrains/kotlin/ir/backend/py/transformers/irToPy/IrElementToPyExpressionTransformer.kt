@@ -43,6 +43,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
             is IrStringConcatenation -> visitStringConcatenation(expression, data)
             is IrFunctionExpression -> visitFunctionExpression(expression, data)
             is IrRawFunctionReference -> visitRawFunctionReference(expression, data)
+            is IrDelegatingConstructorCall -> visitDelegatingConstructorCall(expression, data)
             else -> Name(id = identifier("visitExpression-other $expression".toValidPythonSymbol()), ctx = Load)
         }
     }
@@ -175,19 +176,15 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
     }
 
     override fun visitDelegatingConstructorCall(expression: IrDelegatingConstructorCall, context: JsGenerationContext): expr {
-        // compile `super(arg1, arg2, arg...)` as `SuperClassName.__init__(self, arg1, arg2, arg...)`
+        // compile `super(arg1, arg2, arg...)` as `SuperClassName(arg1, arg2, arg...)`
         val function = expression.symbol.owner
         val arguments = translateCallArguments(expression, context, this)
         val klass = function.parentAsClass
 
         val className = context.getNameForClass(klass).ident.toValidPythonSymbol()
         return Call(
-            func = Attribute(
-                value = Name(identifier(className), Load),
-                attr = identifier("__init__"),
-                ctx = Load,
-            ),
-            args = listOf(Name(identifier("self"), Load)) + arguments,
+            func = Name(identifier(className), ctx = Load),
+            args = arguments,
             keywords = emptyList(),
         )
     }

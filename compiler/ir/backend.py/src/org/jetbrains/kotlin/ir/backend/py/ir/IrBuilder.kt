@@ -21,6 +21,20 @@ object JsIrBuilder {
     object SYNTHESIZED_STATEMENT : IrStatementOriginImpl("SYNTHESIZED_STATEMENT")
     object SYNTHESIZED_DECLARATION : IrDeclarationOriginImpl("SYNTHESIZED_DECLARATION")
 
+    fun buildConstructorCall(target: IrConstructorSymbol): IrConstructorCall {
+        val owner = target.owner
+        return IrConstructorCallImpl(
+            UNDEFINED_OFFSET,
+            UNDEFINED_OFFSET,
+            owner.returnType,
+            target,
+            typeArgumentsCount = owner.typeParameters.size,
+            valueArgumentsCount = owner.valueParameters.size,
+            constructorTypeArgumentsCount = 0, // TODO
+            origin = SYNTHESIZED_STATEMENT,
+        )
+    }
+
     fun buildCall(target: IrSimpleFunctionSymbol, type: IrType? = null, typeArguments: List<IrType>? = null): IrCall {
         val owner = target.owner
         return IrCallImpl(
