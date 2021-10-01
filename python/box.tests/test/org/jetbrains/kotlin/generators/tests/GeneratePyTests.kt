@@ -5,17 +5,17 @@
 
 package org.jetbrains.kotlin.generators.tests
 
-import org.jetbrains.kotlin.generators.impl.generateTestGroupSuite
 import org.jetbrains.kotlin.python.test.ir.semantics.AbstractIrPythonCodegenBoxErrorTest
 import org.jetbrains.kotlin.python.test.ir.semantics.AbstractIrPythonCodegenBoxTest
 import org.jetbrains.kotlin.python.test.ir.semantics.AbstractIrPythonCodegenInlineTest
 import org.jetbrains.kotlin.test.TargetBackend
+import org.jetbrains.kotlin.test.generators.generateTestGroupSuiteWithJUnit5
 
 fun main(args: Array<String>) {
     System.setProperty("java.awt.headless", "true")
 
-    generateTestGroupSuite(args) {
-        testGroup("python/box.tests/test", "compiler/testData", testRunnerMethodName = "runTest0") {
+    generateTestGroupSuiteWithJUnit5(args) {
+        testGroup("python/box.tests/test", "compiler/testData") {
             testClass<AbstractIrPythonCodegenBoxTest> {
                 model("codegen/box", targetBackend = TargetBackend.PYTHON)
             }

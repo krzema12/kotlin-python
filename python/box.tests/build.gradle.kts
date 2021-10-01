@@ -18,7 +18,9 @@ dependencies {
     testRuntime(intellijDep())
 
     testCompile(protobufFull())
-    testCompile(projectTests(":compiler:tests-common"))
+    testImplementation(projectTests(":compiler:tests-common"))
+    testImplementation(projectTests(":compiler:test-infrastructure"))
+    testImplementation(projectTests(":compiler:tests-common-new"))
     testCompileOnly(project(":compiler:frontend"))
     testCompileOnly(project(":compiler:cli"))
     testCompileOnly(project(":compiler:cli-js"))
@@ -35,7 +37,7 @@ dependencies {
     testCompile(project(":js:js.dce"))
     testCompile(project(":js:js.engines"))
     testCompile(project(":compiler:incremental-compilation-impl"))
-    testCompile(commonDep("junit:junit"))
+    testApiJUnit5()
     testCompile(projectTests(":kotlin-build-common"))
     testCompile(projectTests(":generators:test-generator"))
 
@@ -67,11 +69,13 @@ sourceSets {
     "test" { projectDefault() }
 }
 
-projectTest("pythonTest", parallel = true) {
+projectTest("pythonTest", jUnit5Enabled = true) {
     dependsOn(":dist")
     workingDir = rootDir
     jvmArgs!!.removeIf { it.contains("-Xmx") }
     maxHeapSize = "3g"
+
+    useJUnitPlatform()
 
     dependsOn(":kotlin-stdlib-js-ir:compileKotlinJs")  // todo: remove js stuff
     systemProperty("kotlin.js.full.stdlib.path", "libraries/stdlib/js-ir/build/classes/kotlin/js/main")  // todo: remove js stuff

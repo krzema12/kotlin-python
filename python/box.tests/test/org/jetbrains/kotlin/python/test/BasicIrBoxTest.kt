@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.python.test
 
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.StandardFileSystems
 import com.intellij.openapi.vfs.VirtualFileManager
@@ -48,6 +49,9 @@ import org.jetbrains.kotlin.test.util.KtTestUtil
 import org.jetbrains.kotlin.utils.DFS
 import org.jetbrains.kotlin.utils.KotlinJavascriptMetadataUtils
 import org.jetbrains.kotlin.utils.addToStdlib.measureTimeMillisWithResult
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.TestInfo
 import java.io.Closeable
 import java.io.File
 import java.lang.Boolean.getBoolean
@@ -63,12 +67,30 @@ abstract class BasicIrBoxTest(
     private val pathToTestDir: String,
     testGroupOutputDirPrefix: String,
     pathToRootOutputDir: String = TEST_DATA_DIR_PATH,
-) : KotlinTestWithEnvironment() {
+) {
     private val pythonBackend = TargetBackend.PYTHON
 
     private val testGroupOutputDirForCompilation = File(pathToRootOutputDir + "out/" + testGroupOutputDirPrefix)
 
-    fun doTest(filePath: String) {
+    private val myTestRootDisposable: Disposable = TestDisposable()
+
+    private var environment: KotlinCoreEnvironment? = null
+    private lateinit var testInfo: TestInfo
+
+    @BeforeEach
+    fun setUp(testInfo: TestInfo) {
+        environment = createEnvironment()
+        this.testInfo = testInfo
+    }
+
+    @AfterEach
+    fun tearDown() {
+        environment = null
+    }
+
+    private val project get() = environment!!.project
+
+    protected fun runTest(filePath: String) {
         val pars = MainCallParameters.noCall()
         doTest(filePath, "OK", pars)
     }
@@ -190,7 +212,7 @@ abstract class BasicIrBoxTest(
     }
 
     private fun outputFileSimpleName(): String {
-        return getTestName(true)
+        return testInfo.displayName
     }
 
     private fun outputFileName(directory: File) = directory.absolutePath + "/" + outputFileSimpleName()
@@ -250,7 +272,7 @@ abstract class BasicIrBoxTest(
         sourceDirs: List<String>, module: TestModule, dependencies: List<String>, allDependencies: List<String>, friends: List<String>,
         multiModule: Boolean, tmpDir: File, expectActualLinker: Boolean, errorIgnorancePolicy: ErrorTolerancePolicy
     ): JsConfig {
-        val configuration = environment.configuration.copy()
+        val configuration = environment!!.configuration.copy()
 
         configuration.put(CommonConfigurationKeys.DISABLE_INLINE, module.inliningDisabled)
         module.languageVersionSettings?.let { languageVersionSettings ->
@@ -379,8 +401,8 @@ abstract class BasicIrBoxTest(
         val hasFilesToRecompile get() = files.any { it.recompile }
     }
 
-    override fun createEnvironment() =
-        KotlinCoreEnvironment.createForTests(testRootDisposable, CompilerConfiguration(), EnvironmentConfigFiles.JS_CONFIG_FILES)
+    private fun createEnvironment() =
+        KotlinCoreEnvironment.createForTests(myTestRootDisposable, CompilerConfiguration(), EnvironmentConfigFiles.JS_CONFIG_FILES)
 
     private fun translateFiles(
         units: List<TranslationUnit>,
@@ -512,6 +534,10 @@ abstract class BasicIrBoxTest(
     }
 
     companion object {
+        init {
+            System.setProperty("java.awt.headless", "true")
+        }
+
         val METADATA_CACHE = (JsConfig.JS_STDLIB + JsConfig.JS_KOTLIN_TEST).flatMap { path ->
             KotlinJavascriptMetadataUtils.loadMetadata(path).map { metadata ->
                 val parts = KotlinJavascriptSerializationUtil.readModuleAsProto(metadata.body, metadata.version)
@@ -548,5 +574,15 @@ abstract class BasicIrBoxTest(
         private const val DEFAULT_MODULE = "main"
         private const val TEST_FUNCTION = "box"
         private const val OLD_MODULE_SUFFIX = "-old"
+    }
+
+    protected class TestDisposable : Disposable {
+        @Volatile
+        var isDisposed = false
+            private set
+
+        override fun dispose() {
+            isDisposed = true
+        }
     }
 }
