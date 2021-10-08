@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 import generated.Python.*
 import org.jetbrains.kotlin.ir.backend.py.lower.InteropCallableReferenceLowering
 import org.jetbrains.kotlin.ir.backend.py.utils.*
+import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.declarations.IrVariable
@@ -179,6 +180,11 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
         val function = expression.symbol.owner
         val arguments = translateCallArguments(expression, context, this)
         val klass = function.parentAsClass
+        val fromPrimary = context.currentFunction is IrConstructor
+        val receiver = when (fromPrimary) {
+            true -> "self"
+            false -> context.currentFunction!!.valueParameters.last().name.asString().toValidPythonSymbol()
+        }
 
         val className = context.getNameForClass(klass).ident.toValidPythonSymbol()
         return Call(
@@ -187,7 +193,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
                 attr = identifier("__init__"),
                 ctx = Load,
             ),
-            args = listOf(Name(identifier("self"), Load)) + arguments,
+            args = listOf(Name(identifier(receiver), Load)) + arguments,
             keywords = emptyList(),
         )
     }
