@@ -433,41 +433,41 @@ def getOrElse(self, index, defaultValue):
 
 def KotlinNothingValueException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    KotlinNothingValueException.__init__(self)
+    KotlinNothingValueException.__init__(_this)
     return _this
 
 def KotlinNothingValueException_init__Create_():
-    tmp = KotlinNothingValueException_init__Init_(Object_create())
+    tmp = KotlinNothingValueException_init__Init_(KotlinNothingValueException.__new__(KotlinNothingValueException))
     captureStack(tmp, KotlinNothingValueException_init__Create_)
     return tmp
 
 def KotlinNothingValueException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    KotlinNothingValueException.__init__(self)
+    KotlinNothingValueException.__init__(_this)
     return _this
 
 def KotlinNothingValueException_init__Create__0(message):
-    tmp = KotlinNothingValueException_init__Init__0(message, Object_create())
+    tmp = KotlinNothingValueException_init__Init__0(message, KotlinNothingValueException.__new__(KotlinNothingValueException))
     captureStack(tmp, KotlinNothingValueException_init__Create_)
     return tmp
 
 def KotlinNothingValueException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init__1(message, cause, _this)
-    KotlinNothingValueException.__init__(self)
+    KotlinNothingValueException.__init__(_this)
     return _this
 
 def KotlinNothingValueException_init__Create__1(message, cause):
-    tmp = KotlinNothingValueException_init__Init__1(message, cause, Object_create())
+    tmp = KotlinNothingValueException_init__Init__1(message, cause, KotlinNothingValueException.__new__(KotlinNothingValueException))
     captureStack(tmp, KotlinNothingValueException_init__Create_)
     return tmp
 
 def KotlinNothingValueException_init__Init__2(cause, _this):
     RuntimeException_init__Init__2(cause, _this)
-    KotlinNothingValueException.__init__(self)
+    KotlinNothingValueException.__init__(_this)
     return _this
 
 def KotlinNothingValueException_init__Create__2(cause):
-    tmp = KotlinNothingValueException_init__Init__2(cause, Object_create())
+    tmp = KotlinNothingValueException_init__Init__2(cause, KotlinNothingValueException.__new__(KotlinNothingValueException))
     captureStack(tmp, KotlinNothingValueException_init__Create_)
     return tmp
 
@@ -541,11 +541,11 @@ def Experimental_init__Init_(level, _mask0, _marker, _this):
     if not (_mask0 & 1 == 0):
         level = Level_ERROR_getInstance()
     
-    Experimental.__init__(self, level)
+    Experimental.__init__(_this, level)
     return _this
 
 def Experimental_init__Create_(level, _mask0, _marker):
-    return Experimental_init__Init_(level, _mask0, _marker, Object_create())
+    return Experimental_init__Init_(level, _mask0, _marker, Experimental.__new__(Experimental))
 
 class Enum:
     pass
@@ -692,11 +692,11 @@ def RequiresOptIn_init__Init_(message, level, _mask0, _marker, _this):
     if not (_mask0 & 2 == 0):
         level = Level_ERROR_getInstance_0()
     
-    RequiresOptIn.__init__(self, message, level)
+    RequiresOptIn.__init__(_this, message, level)
     return _this
 
 def RequiresOptIn_init__Create_(message, level, _mask0, _marker):
-    return RequiresOptIn_init__Init_(message, level, _mask0, _marker, Object_create())
+    return RequiresOptIn_init__Init_(message, level, _mask0, _marker, RequiresOptIn.__new__(RequiresOptIn))
 
 class Level_0(Enum):
     def __init__(self, name, ordinal):
@@ -2233,11 +2233,11 @@ def RequireKotlin_init__Init_(version, message, level, versionKind, errorCode, _
     if not (_mask0 & 16 == 0):
         errorCode = -1
     
-    RequireKotlin.__init__(self, version, message, level, versionKind, errorCode)
+    RequireKotlin.__init__(_this, version, message, level, versionKind, errorCode)
     return _this
 
 def RequireKotlin_init__Create_(version, message, level, versionKind, errorCode, _mask0, _marker):
-    return RequireKotlin_init__Init_(version, message, level, versionKind, errorCode, _mask0, _marker, Object_create())
+    return RequireKotlin_init__Init_(version, message, level, versionKind, errorCode, _mask0, _marker, RequireKotlin.__new__(RequireKotlin))
 
 class RequireKotlin(Annotation):
     def __init__(self, version, message, level, versionKind, errorCode):
@@ -2828,11 +2828,11 @@ def NotImplementedError_init__Init_(message, _mask0, _marker, _this):
     if not (_mask0 & 1 == 0):
         message = 'An operation is not implemented.'
     
-    NotImplementedError.__init__(self, message)
+    NotImplementedError.__init__(_this, message)
     return _this
 
 def NotImplementedError_init__Create_(message, _mask0, _marker):
-    tmp = NotImplementedError_init__Init_(message, _mask0, _marker, Object_create())
+    tmp = NotImplementedError_init__Init_(message, _mask0, _marker, NotImplementedError.__new__(NotImplementedError))
     captureStack(tmp, NotImplementedError_init__Create_)
     return tmp
 
@@ -5964,11 +5964,11 @@ def Deprecated_init__Init_(message, replaceWith, level, _mask0, _marker, _this):
     if not (_mask0 & 4 == 0):
         level = DeprecationLevel_WARNING_getInstance()
     
-    Deprecated.__init__(self, message, replaceWith, level)
+    Deprecated.__init__(_this, message, replaceWith, level)
     return _this
 
 def Deprecated_init__Create_(message, replaceWith, level, _mask0, _marker):
-    return Deprecated_init__Init_(message, replaceWith, level, _mask0, _marker, Object_create())
+    return Deprecated_init__Init_(message, replaceWith, level, _mask0, _marker, Deprecated.__new__(Deprecated))
 
 class Deprecated(Annotation):
     def __init__(self, message, replaceWith, level):
@@ -6026,11 +6026,11 @@ def DeprecatedSinceKotlin_init__Init_(warningSince, errorSince, hiddenSince, _ma
     if not (_mask0 & 4 == 0):
         hiddenSince = ''
     
-    DeprecatedSinceKotlin.__init__(self, warningSince, errorSince, hiddenSince)
+    DeprecatedSinceKotlin.__init__(_this, warningSince, errorSince, hiddenSince)
     return _this
 
 def DeprecatedSinceKotlin_init__Create_(warningSince, errorSince, hiddenSince, _mask0, _marker):
-    return DeprecatedSinceKotlin_init__Init_(warningSince, errorSince, hiddenSince, _mask0, _marker, Object_create())
+    return DeprecatedSinceKotlin_init__Init_(warningSince, errorSince, hiddenSince, _mask0, _marker, DeprecatedSinceKotlin.__new__(DeprecatedSinceKotlin))
 
 class DeprecatedSinceKotlin(Annotation):
     def __init__(self, warningSince, errorSince, hiddenSince):
@@ -7078,11 +7078,11 @@ def Retention_init__Init_(value, _mask0, _marker, _this):
     if not (_mask0 & 1 == 0):
         value = AnnotationRetention_RUNTIME_getInstance()
     
-    Retention.__init__(self, value)
+    Retention.__init__(_this, value)
     return _this
 
 def Retention_init__Create_(value, _mask0, _marker):
-    return Retention_init__Init_(value, _mask0, _marker, Object_create())
+    return Retention_init__Init_(value, _mask0, _marker, Retention.__new__(Retention))
 
 class Retention(Annotation):
     def __init__(self, value):
@@ -8166,18 +8166,18 @@ def _get_isReadOnly_(_this):
     return _this.isReadOnly
 
 def ArrayList_init__Init_(_this):
-    ArrayList.__init__(self, kotlin_Array_kotlin_Any__(js('[]')))
+    ArrayList.__init__(_this, kotlin_Array_kotlin_Any__(js('[]')))
     return _this
 
 def ArrayList_init__Create_():
-    return ArrayList_init__Init_(Object_create())
+    return ArrayList_init__Init_(ArrayList.__new__(ArrayList))
 
 def ArrayList_init__Init__0(initialCapacity, _this):
-    ArrayList.__init__(self, kotlin_Array_kotlin_Any__(js('[]')))
+    ArrayList.__init__(_this, kotlin_Array_kotlin_Any__(js('[]')))
     return _this
 
 def ArrayList_init__Create__0(initialCapacity):
-    return ArrayList_init__Init__0(initialCapacity, Object_create())
+    return ArrayList_init__Init__0(initialCapacity, ArrayList.__new__(ArrayList))
 
 def ArrayList_init__Init__1(initialCapacity, _mask0, _marker, _this):
     if not (_mask0 & 1 == 0):
@@ -8187,14 +8187,14 @@ def ArrayList_init__Init__1(initialCapacity, _mask0, _marker, _this):
     return _this
 
 def ArrayList_init__Create__1(initialCapacity, _mask0, _marker):
-    return ArrayList_init__Init__1(initialCapacity, _mask0, _marker, Object_create())
+    return ArrayList_init__Init__1(initialCapacity, _mask0, _marker, ArrayList.__new__(ArrayList))
 
 def ArrayList_init__Init__2(elements, _this):
-    ArrayList.__init__(self, copyToArray_0(elements))
+    ArrayList.__init__(_this, copyToArray_0(elements))
     return _this
 
 def ArrayList_init__Create__2(elements):
-    return ArrayList_init__Init__2(elements, Object_create())
+    return ArrayList_init__Init__2(elements, ArrayList.__new__(ArrayList))
 
 def rangeCheck(_this, index):
     Companion_getInstance().checkElementIndex_rvwcgf_k_(index, _this._get_size__0_k_())
@@ -9628,21 +9628,21 @@ def StringBuilder_init__Init_(capacity, _this):
     return _this
 
 def StringBuilder_init__Create_(capacity):
-    return StringBuilder_init__Init_(capacity, Object_create())
+    return StringBuilder_init__Init_(capacity, StringBuilder.__new__(StringBuilder))
 
 def StringBuilder_init__Init__0(content, _this):
-    StringBuilder.__init__(self, toString_0(content))
+    StringBuilder.__init__(_this, toString_0(content))
     return _this
 
 def StringBuilder_init__Create__0(content):
-    return StringBuilder_init__Init__0(content, Object_create())
+    return StringBuilder_init__Init__0(content, StringBuilder.__new__(StringBuilder))
 
 def StringBuilder_init__Init__1(_this):
-    StringBuilder.__init__(self, '')
+    StringBuilder.__init__(_this, '')
     return _this
 
 def StringBuilder_init__Create__1():
-    return StringBuilder_init__Init__1(Object_create())
+    return StringBuilder_init__Init__1(StringBuilder.__new__(StringBuilder))
 
 def _set_string_(_this, _set___):
     _this.string = _set___
@@ -12762,41 +12762,41 @@ def CompletedContinuation_getInstance():
 
 def Exception_init__Init_(_this):
     extendThrowable(_this, _undefined(), _undefined())
-    Exception.__init__(self)
+    Exception.__init__(_this)
     return _this
 
 def Exception_init__Create_():
-    tmp = Exception_init__Init_(Object_create())
+    tmp = Exception_init__Init_(Exception.__new__(Exception))
     captureStack(tmp, Exception_init__Create_)
     return tmp
 
 def Exception_init__Init__0(message, _this):
     extendThrowable(_this, message, _undefined())
-    Exception.__init__(self)
+    Exception.__init__(_this)
     return _this
 
 def Exception_init__Create__0(message):
-    tmp = Exception_init__Init__0(message, Object_create())
+    tmp = Exception_init__Init__0(message, Exception.__new__(Exception))
     captureStack(tmp, Exception_init__Create_)
     return tmp
 
 def Exception_init__Init__1(message, cause, _this):
     extendThrowable(_this, message, cause)
-    Exception.__init__(self)
+    Exception.__init__(_this)
     return _this
 
 def Exception_init__Create__1(message, cause):
-    tmp = Exception_init__Init__1(message, cause, Object_create())
+    tmp = Exception_init__Init__1(message, cause, Exception.__new__(Exception))
     captureStack(tmp, Exception_init__Create_)
     return tmp
 
 def Exception_init__Init__2(cause, _this):
     extendThrowable(_this, _undefined(), cause)
-    Exception.__init__(self)
+    Exception.__init__(_this)
     return _this
 
 def Exception_init__Create__2(cause):
-    tmp = Exception_init__Init__2(cause, Object_create())
+    tmp = Exception_init__Init__2(cause, Exception.__new__(Exception))
     captureStack(tmp, Exception_init__Create_)
     return tmp
 
@@ -12825,41 +12825,41 @@ class Exception(Error):
 
 def Error_init__Init_(_this):
     extendThrowable(_this, _undefined(), _undefined())
-    Error_0.__init__(self)
+    Error_0.__init__(_this)
     return _this
 
 def Error_init__Create_():
-    tmp = Error_init__Init_(Object_create())
+    tmp = Error_init__Init_(Error_0.__new__(Error_0))
     captureStack(tmp, Error_init__Create_)
     return tmp
 
 def Error_init__Init__0(message, _this):
     extendThrowable(_this, message, _undefined())
-    Error_0.__init__(self)
+    Error_0.__init__(_this)
     return _this
 
 def Error_init__Create__0(message):
-    tmp = Error_init__Init__0(message, Object_create())
+    tmp = Error_init__Init__0(message, Error_0.__new__(Error_0))
     captureStack(tmp, Error_init__Create_)
     return tmp
 
 def Error_init__Init__1(message, cause, _this):
     extendThrowable(_this, message, cause)
-    Error_0.__init__(self)
+    Error_0.__init__(_this)
     return _this
 
 def Error_init__Create__1(message, cause):
-    tmp = Error_init__Init__1(message, cause, Object_create())
+    tmp = Error_init__Init__1(message, cause, Error_0.__new__(Error_0))
     captureStack(tmp, Error_init__Create_)
     return tmp
 
 def Error_init__Init__2(cause, _this):
     extendThrowable(_this, _undefined(), cause)
-    Error_0.__init__(self)
+    Error_0.__init__(_this)
     return _this
 
 def Error_init__Create__2(cause):
-    tmp = Error_init__Init__2(cause, Object_create())
+    tmp = Error_init__Init__2(cause, Error_0.__new__(Error_0))
     captureStack(tmp, Error_init__Create_)
     return tmp
 
@@ -12885,41 +12885,41 @@ class Error_0(Error):
 
 def IllegalArgumentException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    IllegalArgumentException.__init__(self)
+    IllegalArgumentException.__init__(_this)
     return _this
 
 def IllegalArgumentException_init__Create_():
-    tmp = IllegalArgumentException_init__Init_(Object_create())
+    tmp = IllegalArgumentException_init__Init_(IllegalArgumentException.__new__(IllegalArgumentException))
     captureStack(tmp, IllegalArgumentException_init__Create_)
     return tmp
 
 def IllegalArgumentException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    IllegalArgumentException.__init__(self)
+    IllegalArgumentException.__init__(_this)
     return _this
 
 def IllegalArgumentException_init__Create__0(message):
-    tmp = IllegalArgumentException_init__Init__0(message, Object_create())
+    tmp = IllegalArgumentException_init__Init__0(message, IllegalArgumentException.__new__(IllegalArgumentException))
     captureStack(tmp, IllegalArgumentException_init__Create_)
     return tmp
 
 def IllegalArgumentException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init__1(message, cause, _this)
-    IllegalArgumentException.__init__(self)
+    IllegalArgumentException.__init__(_this)
     return _this
 
 def IllegalArgumentException_init__Create__1(message, cause):
-    tmp = IllegalArgumentException_init__Init__1(message, cause, Object_create())
+    tmp = IllegalArgumentException_init__Init__1(message, cause, IllegalArgumentException.__new__(IllegalArgumentException))
     captureStack(tmp, IllegalArgumentException_init__Create_)
     return tmp
 
 def IllegalArgumentException_init__Init__2(cause, _this):
     RuntimeException_init__Init__2(cause, _this)
-    IllegalArgumentException.__init__(self)
+    IllegalArgumentException.__init__(_this)
     return _this
 
 def IllegalArgumentException_init__Create__2(cause):
-    tmp = IllegalArgumentException_init__Init__2(cause, Object_create())
+    tmp = IllegalArgumentException_init__Init__2(cause, IllegalArgumentException.__new__(IllegalArgumentException))
     captureStack(tmp, IllegalArgumentException_init__Create_)
     return tmp
 
@@ -12945,41 +12945,41 @@ class IllegalArgumentException(RuntimeException):
 
 def RuntimeException_init__Init_(_this):
     Exception_init__Init_(_this)
-    RuntimeException.__init__(self)
+    RuntimeException.__init__(_this)
     return _this
 
 def RuntimeException_init__Create_():
-    tmp = RuntimeException_init__Init_(Object_create())
+    tmp = RuntimeException_init__Init_(RuntimeException.__new__(RuntimeException))
     captureStack(tmp, RuntimeException_init__Create_)
     return tmp
 
 def RuntimeException_init__Init__0(message, _this):
     Exception_init__Init__0(message, _this)
-    RuntimeException.__init__(self)
+    RuntimeException.__init__(_this)
     return _this
 
 def RuntimeException_init__Create__0(message):
-    tmp = RuntimeException_init__Init__0(message, Object_create())
+    tmp = RuntimeException_init__Init__0(message, RuntimeException.__new__(RuntimeException))
     captureStack(tmp, RuntimeException_init__Create_)
     return tmp
 
 def RuntimeException_init__Init__1(message, cause, _this):
     Exception_init__Init__1(message, cause, _this)
-    RuntimeException.__init__(self)
+    RuntimeException.__init__(_this)
     return _this
 
 def RuntimeException_init__Create__1(message, cause):
-    tmp = RuntimeException_init__Init__1(message, cause, Object_create())
+    tmp = RuntimeException_init__Init__1(message, cause, RuntimeException.__new__(RuntimeException))
     captureStack(tmp, RuntimeException_init__Create_)
     return tmp
 
 def RuntimeException_init__Init__2(cause, _this):
     Exception_init__Init__2(cause, _this)
-    RuntimeException.__init__(self)
+    RuntimeException.__init__(_this)
     return _this
 
 def RuntimeException_init__Create__2(cause):
-    tmp = RuntimeException_init__Init__2(cause, Object_create())
+    tmp = RuntimeException_init__Init__2(cause, RuntimeException.__new__(RuntimeException))
     captureStack(tmp, RuntimeException_init__Create_)
     return tmp
 
@@ -13005,21 +13005,21 @@ class RuntimeException(Exception):
 
 def NoSuchElementException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    NoSuchElementException.__init__(self)
+    NoSuchElementException.__init__(_this)
     return _this
 
 def NoSuchElementException_init__Create_():
-    tmp = NoSuchElementException_init__Init_(Object_create())
+    tmp = NoSuchElementException_init__Init_(NoSuchElementException.__new__(NoSuchElementException))
     captureStack(tmp, NoSuchElementException_init__Create_)
     return tmp
 
 def NoSuchElementException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    NoSuchElementException.__init__(self)
+    NoSuchElementException.__init__(_this)
     return _this
 
 def NoSuchElementException_init__Create__0(message):
-    tmp = NoSuchElementException_init__Init__0(message, Object_create())
+    tmp = NoSuchElementException_init__Init__0(message, NoSuchElementException.__new__(NoSuchElementException))
     captureStack(tmp, NoSuchElementException_init__Create_)
     return tmp
 
@@ -13045,41 +13045,41 @@ class NoSuchElementException(RuntimeException):
 
 def IllegalStateException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    IllegalStateException.__init__(self)
+    IllegalStateException.__init__(_this)
     return _this
 
 def IllegalStateException_init__Create_():
-    tmp = IllegalStateException_init__Init_(Object_create())
+    tmp = IllegalStateException_init__Init_(IllegalStateException.__new__(IllegalStateException))
     captureStack(tmp, IllegalStateException_init__Create_)
     return tmp
 
 def IllegalStateException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    IllegalStateException.__init__(self)
+    IllegalStateException.__init__(_this)
     return _this
 
 def IllegalStateException_init__Create__0(message):
-    tmp = IllegalStateException_init__Init__0(message, Object_create())
+    tmp = IllegalStateException_init__Init__0(message, IllegalStateException.__new__(IllegalStateException))
     captureStack(tmp, IllegalStateException_init__Create_)
     return tmp
 
 def IllegalStateException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init__1(message, cause, _this)
-    IllegalStateException.__init__(self)
+    IllegalStateException.__init__(_this)
     return _this
 
 def IllegalStateException_init__Create__1(message, cause):
-    tmp = IllegalStateException_init__Init__1(message, cause, Object_create())
+    tmp = IllegalStateException_init__Init__1(message, cause, IllegalStateException.__new__(IllegalStateException))
     captureStack(tmp, IllegalStateException_init__Create_)
     return tmp
 
 def IllegalStateException_init__Init__2(cause, _this):
     RuntimeException_init__Init__2(cause, _this)
-    IllegalStateException.__init__(self)
+    IllegalStateException.__init__(_this)
     return _this
 
 def IllegalStateException_init__Create__2(cause):
-    tmp = IllegalStateException_init__Init__2(cause, Object_create())
+    tmp = IllegalStateException_init__Init__2(cause, IllegalStateException.__new__(IllegalStateException))
     captureStack(tmp, IllegalStateException_init__Create_)
     return tmp
 
@@ -13105,21 +13105,21 @@ class IllegalStateException(RuntimeException):
 
 def IndexOutOfBoundsException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    IndexOutOfBoundsException.__init__(self)
+    IndexOutOfBoundsException.__init__(_this)
     return _this
 
 def IndexOutOfBoundsException_init__Create_():
-    tmp = IndexOutOfBoundsException_init__Init_(Object_create())
+    tmp = IndexOutOfBoundsException_init__Init_(IndexOutOfBoundsException.__new__(IndexOutOfBoundsException))
     captureStack(tmp, IndexOutOfBoundsException_init__Create_)
     return tmp
 
 def IndexOutOfBoundsException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    IndexOutOfBoundsException.__init__(self)
+    IndexOutOfBoundsException.__init__(_this)
     return _this
 
 def IndexOutOfBoundsException_init__Create__0(message):
-    tmp = IndexOutOfBoundsException_init__Init__0(message, Object_create())
+    tmp = IndexOutOfBoundsException_init__Init__0(message, IndexOutOfBoundsException.__new__(IndexOutOfBoundsException))
     captureStack(tmp, IndexOutOfBoundsException_init__Create_)
     return tmp
 
@@ -13145,41 +13145,41 @@ class IndexOutOfBoundsException(RuntimeException):
 
 def UnsupportedOperationException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    UnsupportedOperationException.__init__(self)
+    UnsupportedOperationException.__init__(_this)
     return _this
 
 def UnsupportedOperationException_init__Create_():
-    tmp = UnsupportedOperationException_init__Init_(Object_create())
+    tmp = UnsupportedOperationException_init__Init_(UnsupportedOperationException.__new__(UnsupportedOperationException))
     captureStack(tmp, UnsupportedOperationException_init__Create_)
     return tmp
 
 def UnsupportedOperationException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    UnsupportedOperationException.__init__(self)
+    UnsupportedOperationException.__init__(_this)
     return _this
 
 def UnsupportedOperationException_init__Create__0(message):
-    tmp = UnsupportedOperationException_init__Init__0(message, Object_create())
+    tmp = UnsupportedOperationException_init__Init__0(message, UnsupportedOperationException.__new__(UnsupportedOperationException))
     captureStack(tmp, UnsupportedOperationException_init__Create_)
     return tmp
 
 def UnsupportedOperationException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init__1(message, cause, _this)
-    UnsupportedOperationException.__init__(self)
+    UnsupportedOperationException.__init__(_this)
     return _this
 
 def UnsupportedOperationException_init__Create__1(message, cause):
-    tmp = UnsupportedOperationException_init__Init__1(message, cause, Object_create())
+    tmp = UnsupportedOperationException_init__Init__1(message, cause, UnsupportedOperationException.__new__(UnsupportedOperationException))
     captureStack(tmp, UnsupportedOperationException_init__Create_)
     return tmp
 
 def UnsupportedOperationException_init__Init__2(cause, _this):
     RuntimeException_init__Init__2(cause, _this)
-    UnsupportedOperationException.__init__(self)
+    UnsupportedOperationException.__init__(_this)
     return _this
 
 def UnsupportedOperationException_init__Create__2(cause):
-    tmp = UnsupportedOperationException_init__Init__2(cause, Object_create())
+    tmp = UnsupportedOperationException_init__Init__2(cause, UnsupportedOperationException.__new__(UnsupportedOperationException))
     captureStack(tmp, UnsupportedOperationException_init__Create_)
     return tmp
 
@@ -13205,21 +13205,21 @@ class UnsupportedOperationException(RuntimeException):
 
 def NullPointerException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    NullPointerException.__init__(self)
+    NullPointerException.__init__(_this)
     return _this
 
 def NullPointerException_init__Create_():
-    tmp = NullPointerException_init__Init_(Object_create())
+    tmp = NullPointerException_init__Init_(NullPointerException.__new__(NullPointerException))
     captureStack(tmp, NullPointerException_init__Create_)
     return tmp
 
 def NullPointerException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    NullPointerException.__init__(self)
+    NullPointerException.__init__(_this)
     return _this
 
 def NullPointerException_init__Create__0(message):
-    tmp = NullPointerException_init__Init__0(message, Object_create())
+    tmp = NullPointerException_init__Init__0(message, NullPointerException.__new__(NullPointerException))
     captureStack(tmp, NullPointerException_init__Create_)
     return tmp
 
@@ -13245,41 +13245,41 @@ class NullPointerException(RuntimeException):
 
 def NoWhenBranchMatchedException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    NoWhenBranchMatchedException.__init__(self)
+    NoWhenBranchMatchedException.__init__(_this)
     return _this
 
 def NoWhenBranchMatchedException_init__Create_():
-    tmp = NoWhenBranchMatchedException_init__Init_(Object_create())
+    tmp = NoWhenBranchMatchedException_init__Init_(NoWhenBranchMatchedException.__new__(NoWhenBranchMatchedException))
     captureStack(tmp, NoWhenBranchMatchedException_init__Create_)
     return tmp
 
 def NoWhenBranchMatchedException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    NoWhenBranchMatchedException.__init__(self)
+    NoWhenBranchMatchedException.__init__(_this)
     return _this
 
 def NoWhenBranchMatchedException_init__Create__0(message):
-    tmp = NoWhenBranchMatchedException_init__Init__0(message, Object_create())
+    tmp = NoWhenBranchMatchedException_init__Init__0(message, NoWhenBranchMatchedException.__new__(NoWhenBranchMatchedException))
     captureStack(tmp, NoWhenBranchMatchedException_init__Create_)
     return tmp
 
 def NoWhenBranchMatchedException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init__1(message, cause, _this)
-    NoWhenBranchMatchedException.__init__(self)
+    NoWhenBranchMatchedException.__init__(_this)
     return _this
 
 def NoWhenBranchMatchedException_init__Create__1(message, cause):
-    tmp = NoWhenBranchMatchedException_init__Init__1(message, cause, Object_create())
+    tmp = NoWhenBranchMatchedException_init__Init__1(message, cause, NoWhenBranchMatchedException.__new__(NoWhenBranchMatchedException))
     captureStack(tmp, NoWhenBranchMatchedException_init__Create_)
     return tmp
 
 def NoWhenBranchMatchedException_init__Init__2(cause, _this):
     RuntimeException_init__Init__2(cause, _this)
-    NoWhenBranchMatchedException.__init__(self)
+    NoWhenBranchMatchedException.__init__(_this)
     return _this
 
 def NoWhenBranchMatchedException_init__Create__2(cause):
-    tmp = NoWhenBranchMatchedException_init__Init__2(cause, Object_create())
+    tmp = NoWhenBranchMatchedException_init__Init__2(cause, NoWhenBranchMatchedException.__new__(NoWhenBranchMatchedException))
     captureStack(tmp, NoWhenBranchMatchedException_init__Create_)
     return tmp
 
@@ -13305,21 +13305,21 @@ class NoWhenBranchMatchedException(RuntimeException):
 
 def ClassCastException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    ClassCastException.__init__(self)
+    ClassCastException.__init__(_this)
     return _this
 
 def ClassCastException_init__Create_():
-    tmp = ClassCastException_init__Init_(Object_create())
+    tmp = ClassCastException_init__Init_(ClassCastException.__new__(ClassCastException))
     captureStack(tmp, ClassCastException_init__Create_)
     return tmp
 
 def ClassCastException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    ClassCastException.__init__(self)
+    ClassCastException.__init__(_this)
     return _this
 
 def ClassCastException_init__Create__0(message):
-    tmp = ClassCastException_init__Init__0(message, Object_create())
+    tmp = ClassCastException_init__Init__0(message, ClassCastException.__new__(ClassCastException))
     captureStack(tmp, ClassCastException_init__Create_)
     return tmp
 
@@ -13345,41 +13345,41 @@ class ClassCastException(RuntimeException):
 
 def UninitializedPropertyAccessException_init__Init_(_this):
     RuntimeException_init__Init_(_this)
-    UninitializedPropertyAccessException.__init__(self)
+    UninitializedPropertyAccessException.__init__(_this)
     return _this
 
 def UninitializedPropertyAccessException_init__Create_():
-    tmp = UninitializedPropertyAccessException_init__Init_(Object_create())
+    tmp = UninitializedPropertyAccessException_init__Init_(UninitializedPropertyAccessException.__new__(UninitializedPropertyAccessException))
     captureStack(tmp, UninitializedPropertyAccessException_init__Create_)
     return tmp
 
 def UninitializedPropertyAccessException_init__Init__0(message, _this):
     RuntimeException_init__Init__0(message, _this)
-    UninitializedPropertyAccessException.__init__(self)
+    UninitializedPropertyAccessException.__init__(_this)
     return _this
 
 def UninitializedPropertyAccessException_init__Create__0(message):
-    tmp = UninitializedPropertyAccessException_init__Init__0(message, Object_create())
+    tmp = UninitializedPropertyAccessException_init__Init__0(message, UninitializedPropertyAccessException.__new__(UninitializedPropertyAccessException))
     captureStack(tmp, UninitializedPropertyAccessException_init__Create_)
     return tmp
 
 def UninitializedPropertyAccessException_init__Init__1(message, cause, _this):
     RuntimeException_init__Init__1(message, cause, _this)
-    UninitializedPropertyAccessException.__init__(self)
+    UninitializedPropertyAccessException.__init__(_this)
     return _this
 
 def UninitializedPropertyAccessException_init__Create__1(message, cause):
-    tmp = UninitializedPropertyAccessException_init__Init__1(message, cause, Object_create())
+    tmp = UninitializedPropertyAccessException_init__Init__1(message, cause, UninitializedPropertyAccessException.__new__(UninitializedPropertyAccessException))
     captureStack(tmp, UninitializedPropertyAccessException_init__Create_)
     return tmp
 
 def UninitializedPropertyAccessException_init__Init__2(cause, _this):
     RuntimeException_init__Init__2(cause, _this)
-    UninitializedPropertyAccessException.__init__(self)
+    UninitializedPropertyAccessException.__init__(_this)
     return _this
 
 def UninitializedPropertyAccessException_init__Create__2(cause):
-    tmp = UninitializedPropertyAccessException_init__Init__2(cause, Object_create())
+    tmp = UninitializedPropertyAccessException_init__Init__2(cause, UninitializedPropertyAccessException.__new__(UninitializedPropertyAccessException))
     captureStack(tmp, UninitializedPropertyAccessException_init__Create_)
     return tmp
 

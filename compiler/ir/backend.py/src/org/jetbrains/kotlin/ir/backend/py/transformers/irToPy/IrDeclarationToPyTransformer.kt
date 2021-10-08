@@ -23,7 +23,7 @@ class IrDeclarationToPyTransformer : BaseIrElementToPyNodeTransformer<List<stmt>
     }
 
     override fun visitClass(declaration: IrClass, context: JsGenerationContext): List<stmt> {
-        return declaration.toPythonStatement(context)
+        return declaration.toPythonStatement(context.newDeclaration())
     }
 
     override fun visitErrorDeclaration(declaration: IrErrorDeclaration, data: JsGenerationContext): List<stmt> {

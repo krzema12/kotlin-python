@@ -26,9 +26,18 @@ val emptyScope: JsScope
 class JsGenerationContext(
     val currentFunction: IrFunction?,
     val staticContext: JsStaticContext,
-    val localNames: LocalNameGenerator? = null
+    val localNames: LocalNameGenerator? = null,
+    val definedTypes: MutableSet<String> = mutableSetOf(),
 ): IrNamer by staticContext {
-    val definedTypes = mutableSetOf<String>()
+
+    fun newDeclaration(func: IrFunction? = null, localNames: LocalNameGenerator? = null): JsGenerationContext {
+        return JsGenerationContext(
+            currentFunction = func,
+            staticContext = staticContext,
+            localNames = localNames,
+            definedTypes = definedTypes,
+        )
+    }
 
     val continuation
         get() = if (isCoroutineDoResume()) {

@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationWithName
+import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
@@ -224,13 +225,18 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
             }
 
 //            prefixOp(intrinsics.jsTypeOf, JsUnaryOperator.TYPEOF)
-//
-//            add(intrinsics.jsObjectCreate) { call, context ->
-//                val classToCreate = call.getTypeArgument(0)!!.classifierOrFail.owner as IrClass
-//                val className = context.getNameForClass(classToCreate)
-//                val prototype = prototypeOf(className.makeRef())
-//                JsInvocation(Namer.JS_OBJECT_CREATE_FUNCTION, prototype)
-//            }
+
+            add(intrinsics.jsObjectCreate) { call, context ->
+                val classToCreate = call.getTypeArgument(0)!!.classifierOrFail.owner as IrClass
+                val className = context.getNameForClass(classToCreate).ident.toValidPythonSymbol()
+                val pythonName = Name(identifier(className), Load)
+
+                Call(
+                    func = Attribute(pythonName, identifier("__new__"), Load),
+                    args = listOf(pythonName),
+                    keywords = emptyList(),
+                )
+            }
 
             add(intrinsics.jsClass) { call, context ->
                 val classifier: IrClassifierSymbol = call.getTypeArgument(0)!!.classifierOrFail
@@ -414,10 +420,10 @@ private fun MutableMap<IrSymbol, IrCallTransformer>.add(functionSymbol: IrSymbol
     put(functionSymbol, t)
 }
 
-//private fun MutableMap<IrSymbol, IrCallTransformer>.add(function: IrSimpleFunction, t: IrCallTransformer) {
-//    put(function.symbol, t)
-//}
-//
+private fun MutableMap<IrSymbol, IrCallTransformer>.add(function: IrSimpleFunction, t: IrCallTransformer) {
+    put(function.symbol, t)
+}
+
 //private fun MutableMap<IrSymbol, IrCallTransformer>.addIfNotNull(symbol: IrSymbol?, t: IrCallTransformer) {
 //    if (symbol == null) return
 //    put(symbol, t)

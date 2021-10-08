@@ -17,10 +17,12 @@ import org.jetbrains.kotlin.js.backend.ast.JsName
 fun expr.makeStmt(): stmt = Expr(value = this)
 
 fun translateFunction(declaration: IrFunction, funcName: JsName, context: JsGenerationContext): FunctionDef {
+    val functionContext = context.newDeclaration(declaration)  // todo: pass local name generator parameter
+
     val isClassMethod = declaration.dispatchReceiverParameter != null
     val isConstructor = declaration is IrConstructor
     val extensionReceiverParameter = declaration.extensionReceiverParameter
-    val body = declaration.body?.accept(IrElementToPyStatementTransformer(), context) ?: listOf(Pass)
+    val body = declaration.body?.accept(IrElementToPyStatementTransformer(), functionContext) ?: listOf(Pass)
     val args = declaration.valueParameters
         .filter { !it.isVararg }
         .map { valueParameter ->
