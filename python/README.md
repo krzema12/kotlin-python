@@ -110,9 +110,11 @@ It will generate various reports and summaries:
 
 ![git-history-plot](experiments/git-history-plot.svg)
 
-Current status: **1937**/5787 passed
+Current status: **1952**/5787 passed
 
 #### History (newest on top)
+
+* after supporting some type checks: **1952**/5787 passed (+15)
 
 * after supporting extension functions: **1937**/5787 passed (+70: +71 passed, +1 failed because no support for intRange)
 

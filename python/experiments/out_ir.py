@@ -284,7 +284,7 @@ def indexOfLast(self, predicate):
     return -1
 
 def any(self, predicate):
-    if isInterface(self, jsClass()):
+    if isInterface(self, Collection):
         tmp = kotlin_collections_Collection_T_(self).isEmpty_0_k_()
     elif True:
         tmp = False
@@ -302,7 +302,7 @@ def any(self, predicate):
     return False
 
 def all(self, predicate):
-    if isInterface(self, jsClass()):
+    if isInterface(self, Collection):
         tmp = kotlin_collections_Collection_T_(self).isEmpty_0_k_()
     elif True:
         tmp = False
@@ -782,7 +782,7 @@ class AbstractCollection(Collection):
     
     def contains_2bq_k_(self, element):
         while True:
-            if isInterface(self, jsClass()):
+            if isInterface(self, Collection):
                 tmp = kotlin_collections_Collection_kotlin_Any__(self).isEmpty_0_k_()
             elif True:
                 tmp = False
@@ -808,7 +808,7 @@ class AbstractCollection(Collection):
     
     def containsAll_dxd4eo_k_(self, elements):
         while True:
-            if isInterface(elements, jsClass()):
+            if isInterface(elements, Collection):
                 tmp = kotlin_collections_Collection_kotlin_Any__(elements).isEmpty_0_k_()
             elif True:
                 tmp = False
@@ -1159,7 +1159,7 @@ class AbstractList(AbstractCollection, List):
         if other is self:
             return True
         
-        if not ((isInterface(other, jsClass())) if (not (other == None)) else (False)):
+        if not ((isInterface(other, List)) if (not (other == None)) else (False)):
             return False
         
         return Companion_getInstance().orderedEquals_tuq55s_k_(self, kotlin_collections_Collection___(other))
@@ -1208,7 +1208,7 @@ class EmptyList(List, Serializable, RandomAccess):
         self.serialVersionUID = -7390468764508069838
     
     def equals(self, other):
-        if (isInterface(other, jsClass())) if (not (other == None)) else (False):
+        if (isInterface(other, List)) if (not (other == None)) else (False):
             tmp = kotlin_collections_List___(other).isEmpty_0_k_()
         elif True:
             tmp = False
@@ -1348,7 +1348,7 @@ def _get_lastIndex__4(self):
     return (self._get_size__0_k_() - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
 
 def collectionSizeOrDefault(self, default):
-    if isInterface(self, jsClass()):
+    if isInterface(self, Collection):
         tmp = kotlin_collections_Collection_kotlin_Any__(self)._get_size__0_k_()
     elif True:
         tmp = default
@@ -1362,8 +1362,8 @@ def removeAll_0(self, predicate):
     return filterInPlace_0(self, predicate, True)
 
 def filterInPlace(self, predicate, predicateResultToRemove):
-    if not isInterface(self, jsClass()):
-        return filterInPlace_0((kotlin_collections_MutableIterable_T_(self)) if (isInterface(self, jsClass())) else (THROW_CCE()), predicate, predicateResultToRemove)
+    if not isInterface(self, RandomAccess):
+        return filterInPlace_0((kotlin_collections_MutableIterable_T_(self)) if (isInterface(self, MutableIterable)) else (THROW_CCE()), predicate, predicateResultToRemove)
     
     writeIndex = 0
     inductionVariable = 0
@@ -1745,24 +1745,24 @@ class ContinuationInterceptor(Element):
         pass
     
     def get_9uvjra_k_(self, key):
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(key, AbstractCoroutineContextKey):
             if kotlin_coroutines_AbstractCoroutineContextKey_____(key).isSubKey_djuxjq_k_(self._get_key__0_k_()):
                 tmp = kotlin_coroutines_AbstractCoroutineContextKey_____(key).tryCast_k332zt_k_(self)
-                tmp = (E(tmp)) if ((isInterface(tmp, jsClass())) if (not (tmp == None)) else (False)) else (None)
+                tmp = (E(tmp)) if ((isInterface(tmp, Element)) if (not (tmp == None)) else (False)) else (None)
             else:
                 tmp = None
             
             return tmp
         
         if Key_getInstance() is key:
-            tmp = (E(self)) if (isInterface(self, jsClass())) else (THROW_CCE())
+            tmp = (E(self)) if (isInterface(self, Element)) else (THROW_CCE())
         else:
             tmp = None
         
         return tmp
     
     def minusKey_djuxjq_k_(self, key):
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(key, AbstractCoroutineContextKey):
             return (EmptyCoroutineContext_getInstance()) if ((not (kotlin_coroutines_AbstractCoroutineContextKey_out_kotlin_coroutines_Element_out_kotlin_coroutines_Element_(key).tryCast_k332zt_k_(self) == None)) if (kotlin_coroutines_AbstractCoroutineContextKey_out_kotlin_coroutines_Element_out_kotlin_coroutines_Element_(key).isSubKey_djuxjq_k_(self._get_key__0_k_())) else (False)) else (self)
         
         return (EmptyCoroutineContext_getInstance()) if (Key_getInstance() is key) else (self)
@@ -1812,7 +1812,7 @@ class Element(CoroutineContext):
     
     def get_9uvjra_k_(self, key):
         if self._get_key__0_k_() == key:
-            tmp = (E(self)) if (isInterface(self, jsClass())) else (THROW_CCE())
+            tmp = (E(self)) if (isInterface(self, Element)) else (THROW_CCE())
         else:
             tmp = None
         
@@ -1958,7 +1958,7 @@ def size(_this):
     size = 2
     while True:
         tmp = cur.left
-        tmp0_elvis_lhs = (kotlin_coroutines_CombinedContext(tmp)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (None)
+        tmp0_elvis_lhs = (kotlin_coroutines_CombinedContext(tmp)) if (isinstance(tmp, CombinedContext)) else (None)
         if tmp0_elvis_lhs == None:
             return size
         else:
@@ -1980,10 +1980,10 @@ def containsAll(_this, context):
             return False
         
         next = cur.left
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(next, CombinedContext):
             cur = kotlin_coroutines_CombinedContext(next)
         elif True:
-            return contains_3(_this, (kotlin_coroutines_Element(next)) if (isInterface(next, jsClass())) else (THROW_CCE()))
+            return contains_3(_this, (kotlin_coroutines_Element(next)) if (isInterface(next, Element)) else (THROW_CCE()))
         
     
 
@@ -2033,7 +2033,7 @@ class CombinedContext(CoroutineContext, Serializable):
             
             Unit_getInstance()
             next = cur.left
-            if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+            if isinstance(next, CombinedContext):
                 cur = kotlin_coroutines_CombinedContext(next)
             elif True:
                 return next.get_9uvjra_k_(key)
@@ -2058,7 +2058,7 @@ class CombinedContext(CoroutineContext, Serializable):
         if self is other:
             tmp = True
         else:
-            if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+            if isinstance(other, CombinedContext):
                 tmp = size(kotlin_coroutines_CombinedContext(other)) == size(self)
             elif True:
                 tmp = False
@@ -2092,7 +2092,7 @@ class AbstractCoroutineContextKey(Key_0):
     def __init__(self, baseKey, safeCast):
         self.safeCast = safeCast
         tmp = self
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(baseKey, AbstractCoroutineContextKey):
             tmp = kotlin_coroutines_AbstractCoroutineContextKey_____(baseKey).topmostKey
         elif True:
             tmp = baseKey
@@ -2557,10 +2557,10 @@ class KTypeProjection(Any):
         if self is other:
             return True
         
-        if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if not isinstance(other, KTypeProjection):
             return False
         
-        tmp0_other_with_cast = (kotlin_reflect_KTypeProjection(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE())
+        tmp0_other_with_cast = (kotlin_reflect_KTypeProjection(other)) if (isinstance(other, KTypeProjection)) else (THROW_CCE())
         if not (self.variance == tmp0_other_with_cast.variance):
             return False
         
@@ -2641,7 +2641,7 @@ def appendElement(self, element, transform):
     elif (True) if (element == None) else (isCharSequence(element)):
         self.append_v1o70a_k_(kotlin_CharSequence_(element))
         Unit_getInstance()
-    elif visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    elif isinstance(element, Char_0):
         self.append_wi8o78_k_(kotlin_Char(element))
         Unit_getInstance()
     elif True:
@@ -2693,11 +2693,11 @@ def _Result___get_value__impl_(this):
 
 def _Result___get_isSuccess__impl_(this):
     tmp = _Result___get_value__impl_(this)
-    return not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean
+    return not isinstance(tmp, Failure)
 
 def _Result___get_isFailure__impl_(this):
     tmp = _Result___get_value__impl_(this)
-    return visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean
+    return isinstance(tmp, Failure)
 
 def Result__getOrNull_impl(this):
     if _Result___get_isFailure__impl_(this):
@@ -2710,7 +2710,7 @@ def Result__getOrNull_impl(this):
 
 def Result__exceptionOrNull_impl(this):
     tmp0_subject = _Result___get_value__impl_(this)
-    if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if isinstance(tmp0_subject, Failure):
         tmp = kotlin_Failure(_Result___get_value__impl_(this)).exception
     elif True:
         tmp = None
@@ -2719,7 +2719,7 @@ def Result__exceptionOrNull_impl(this):
 
 def Result__toString_impl(this):
     tmp0_subject = _Result___get_value__impl_(this)
-    if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if isinstance(tmp0_subject, Failure):
         tmp = toString_0(_Result___get_value__impl_(this))
     elif True:
         tmp = (str('Success(') + str(_Result___get_value__impl_(this))) + str(')')
@@ -2762,7 +2762,7 @@ class Failure(Serializable):
         return self.exception
     
     def equals(self, other):
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(other, Failure):
             tmp = self.exception == kotlin_Failure(other).exception
         elif True:
             tmp = False
@@ -2780,10 +2780,10 @@ def Result__hashCode_impl(this):
     return (0) if (this.value == None) else (hashCode(this.value))
 
 def Result__equals_impl(this, other):
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(other, Result):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE())
+    tmp0_other_with_cast = (unboxIntrinsic(other)) if (isinstance(other, Result)) else (THROW_CCE())
     if not (this.value == tmp0_other_with_cast.value):
         return False
     
@@ -2814,7 +2814,7 @@ def getOrThrow(self):
 
 def throwOnFailure(self):
     tmp = _Result___get_value__impl_(self)
-    if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if isinstance(tmp, Failure):
         raise kotlin_Failure(_Result___get_value__impl_(self)).exception
     
 
@@ -2940,7 +2940,7 @@ def UByte__compareTo_impl(this, other):
 
 def UByte__compareTo_impl_0(this, other):
     tmp = unboxIntrinsic(this)
-    return UByte__compareTo_impl(tmp, (unboxIntrinsic(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))
+    return UByte__compareTo_impl(tmp, (unboxIntrinsic(other)) if (isinstance(other, UByte)) else (THROW_CCE()))
 
 def UByte__compareTo_impl_1(this, other):
     tmp = _UByte___get_data__impl_(this) & 255
@@ -3152,10 +3152,10 @@ def UByte__hashCode_impl(this):
     return this.data
 
 def UByte__equals_impl(this, other):
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(other, UByte):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE())
+    tmp0_other_with_cast = (unboxIntrinsic(other)) if (isinstance(other, UByte)) else (THROW_CCE())
     if not (this.data == tmp0_other_with_cast.data):
         return False
     
@@ -3269,23 +3269,23 @@ class Iterator(UByteIterator):
 
 def UByteArray__contains_impl(this, element):
     tmp = (boxIntrinsic(element)) if (isObject(boxIntrinsic(element))) else (THROW_CCE())
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(tmp, UByte):
         return False
     
     tmp = _UByteArray___get_storage__impl_(this)
     return contains(tmp, _UByte___get_data__impl_(element))
 
 def UByteArray__contains_impl_0(this, element):
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(element, UByte):
         return False
     
     tmp = unboxIntrinsic(this)
-    return UByteArray__contains_impl(tmp, (unboxIntrinsic(element)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))
+    return UByteArray__contains_impl(tmp, (unboxIntrinsic(element)) if (isinstance(element, UByte)) else (THROW_CCE()))
 
 def UByteArray__containsAll_impl(this, elements):
     while True:
-        tmp0_all_0 = (kotlin_collections_Collection___(elements)) if (isInterface(elements, jsClass())) else (THROW_CCE())
-        if isInterface(tmp0_all_0, jsClass()):
+        tmp0_all_0 = (kotlin_collections_Collection___(elements)) if (isInterface(elements, Collection)) else (THROW_CCE())
+        if isInterface(tmp0_all_0, Collection):
             tmp = kotlin_collections_Collection_kotlin_Any__(tmp0_all_0).isEmpty_0_k_()
         elif True:
             tmp = False
@@ -3297,7 +3297,7 @@ def UByteArray__containsAll_impl(this, elements):
         tmp0_iterator_1 = tmp0_all_0.iterator_0_k_()
         while tmp0_iterator_1.hasNext_0_k_():
             element_2 = tmp0_iterator_1.next_0_k_()
-            if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+            if isinstance(element_2, UByte):
                 tmp = _UByteArray___get_storage__impl_(this)
                 tmp0_toByte_0_4 = unboxIntrinsic(element_2)
                 tmp = contains(tmp, _UByte___get_data__impl_(tmp0_toByte_0_4))
@@ -3329,10 +3329,10 @@ def UByteArray__hashCode_impl(this):
     return hashCode(this.storage)
 
 def UByteArray__equals_impl(this, other):
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(other, UByteArray):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE())
+    tmp0_other_with_cast = (unboxIntrinsic(other)) if (isinstance(other, UByteArray)) else (THROW_CCE())
     if not (this.storage == tmp0_other_with_cast.storage):
         return False
     
@@ -3430,7 +3430,7 @@ def UInt__compareTo_impl_1(this, other):
 
 def UInt__compareTo_impl_2(this, other):
     tmp = unboxIntrinsic(this)
-    return UInt__compareTo_impl_1(tmp, (unboxIntrinsic(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))
+    return UInt__compareTo_impl_1(tmp, (unboxIntrinsic(other)) if (isinstance(other, UInt)) else (THROW_CCE()))
 
 def UInt__compareTo_impl_3(this, other):
     tmp0_compareTo_0 = _ULong___init__impl_((_UInt___get_data__impl_(this) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
@@ -3611,10 +3611,10 @@ def UInt__hashCode_impl(this):
     return this.data
 
 def UInt__equals_impl(this, other):
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(other, UInt):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE())
+    tmp0_other_with_cast = (unboxIntrinsic(other)) if (isinstance(other, UInt)) else (THROW_CCE())
     if not (this.data == tmp0_other_with_cast.data):
         return False
     
@@ -3731,23 +3731,23 @@ class Iterator_0(UIntIterator):
 
 def UIntArray__contains_impl(this, element):
     tmp = (boxIntrinsic(element)) if (isObject(boxIntrinsic(element))) else (THROW_CCE())
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(tmp, UInt):
         return False
     
     tmp = _UIntArray___get_storage__impl_(this)
     return contains_1(tmp, _UInt___get_data__impl_(element))
 
 def UIntArray__contains_impl_0(this, element):
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(element, UInt):
         return False
     
     tmp = unboxIntrinsic(this)
-    return UIntArray__contains_impl(tmp, (unboxIntrinsic(element)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))
+    return UIntArray__contains_impl(tmp, (unboxIntrinsic(element)) if (isinstance(element, UInt)) else (THROW_CCE()))
 
 def UIntArray__containsAll_impl(this, elements):
     while True:
-        tmp0_all_0 = (kotlin_collections_Collection___(elements)) if (isInterface(elements, jsClass())) else (THROW_CCE())
-        if isInterface(tmp0_all_0, jsClass()):
+        tmp0_all_0 = (kotlin_collections_Collection___(elements)) if (isInterface(elements, Collection)) else (THROW_CCE())
+        if isInterface(tmp0_all_0, Collection):
             tmp = kotlin_collections_Collection_kotlin_Any__(tmp0_all_0).isEmpty_0_k_()
         elif True:
             tmp = False
@@ -3759,7 +3759,7 @@ def UIntArray__containsAll_impl(this, elements):
         tmp0_iterator_1 = tmp0_all_0.iterator_0_k_()
         while tmp0_iterator_1.hasNext_0_k_():
             element_2 = tmp0_iterator_1.next_0_k_()
-            if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+            if isinstance(element_2, UInt):
                 tmp = _UIntArray___get_storage__impl_(this)
                 tmp0_toInt_0_4 = unboxIntrinsic(element_2)
                 tmp = contains_1(tmp, _UInt___get_data__impl_(tmp0_toInt_0_4))
@@ -3791,10 +3791,10 @@ def UIntArray__hashCode_impl(this):
     return hashCode(this.storage)
 
 def UIntArray__equals_impl(this, other):
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(other, UIntArray):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE())
+    tmp0_other_with_cast = (unboxIntrinsic(other)) if (isinstance(other, UIntArray)) else (THROW_CCE())
     if not (this.storage == tmp0_other_with_cast.storage):
         return False
     
@@ -3899,7 +3899,7 @@ class UIntRange(UIntProgression, ClosedRange):
         return tmp
     
     def contains_2c5_k_(self, value):
-        return self.contains_wijjag_k_((unboxIntrinsic(value)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))
+        return self.contains_wijjag_k_((unboxIntrinsic(value)) if (isinstance(value, UInt)) else (THROW_CCE()))
     
     def isEmpty_0_k_(self):
         tmp0_compareTo_0 = self._get_first__sv9k7v_k_()
@@ -3907,7 +3907,7 @@ class UIntRange(UIntProgression, ClosedRange):
         return uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(tmp1_compareTo_0)) > 0
     
     def equals(self, other):
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(other, UIntRange):
             tmp = (True) if ((kotlin_ranges_UIntRange(other).isEmpty_0_k_()) if (self.isEmpty_0_k_()) else (False)) else ((boxIntrinsic(self._get_last__sv9k7v_k_()) == boxIntrinsic(kotlin_ranges_UIntRange(other)._get_last__sv9k7v_k_())) if (boxIntrinsic(self._get_first__sv9k7v_k_()) == boxIntrinsic(kotlin_ranges_UIntRange(other)._get_first__sv9k7v_k_())) else (False))
         elif True:
             tmp = False
@@ -4007,7 +4007,7 @@ class UIntProgression(Iterable):
         return tmp
     
     def equals(self, other):
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(other, UIntProgression):
             tmp = (True) if ((kotlin_ranges_UIntProgression(other).isEmpty_0_k_()) if (self.isEmpty_0_k_()) else (False)) else ((self.step == kotlin_ranges_UIntProgression(other).step) if ((boxIntrinsic(self.last) == boxIntrinsic(kotlin_ranges_UIntProgression(other).last)) if (boxIntrinsic(self.first) == boxIntrinsic(kotlin_ranges_UIntProgression(other).first)) else (False)) else (False))
         elif True:
             tmp = False
@@ -4259,7 +4259,7 @@ def ULong__compareTo_impl_2(this, other):
 
 def ULong__compareTo_impl_3(this, other):
     tmp = unboxIntrinsic(this)
-    return ULong__compareTo_impl_2(tmp, (unboxIntrinsic(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))
+    return ULong__compareTo_impl_2(tmp, (unboxIntrinsic(other)) if (isinstance(other, ULong)) else (THROW_CCE()))
 
 def ULong__plus_impl(this, other):
     tmp0_plus_0 = _ULong___init__impl_((_UByte___get_data__impl_(other) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
@@ -4439,10 +4439,10 @@ def ULong__hashCode_impl(this):
     return this.data.hashCode()
 
 def ULong__equals_impl(this, other):
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(other, ULong):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE())
+    tmp0_other_with_cast = (unboxIntrinsic(other)) if (isinstance(other, ULong)) else (THROW_CCE())
     if not (this.data == tmp0_other_with_cast.data):
         return False
     
@@ -4556,23 +4556,23 @@ class Iterator_1(ULongIterator):
 
 def ULongArray__contains_impl(this, element):
     tmp = (boxIntrinsic(element)) if (isObject(boxIntrinsic(element))) else (THROW_CCE())
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(tmp, ULong):
         return False
     
     tmp = _ULongArray___get_storage__impl_(this)
     return contains_2(tmp, _ULong___get_data__impl_(element))
 
 def ULongArray__contains_impl_0(this, element):
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(element, ULong):
         return False
     
     tmp = unboxIntrinsic(this)
-    return ULongArray__contains_impl(tmp, (unboxIntrinsic(element)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))
+    return ULongArray__contains_impl(tmp, (unboxIntrinsic(element)) if (isinstance(element, ULong)) else (THROW_CCE()))
 
 def ULongArray__containsAll_impl(this, elements):
     while True:
-        tmp0_all_0 = (kotlin_collections_Collection___(elements)) if (isInterface(elements, jsClass())) else (THROW_CCE())
-        if isInterface(tmp0_all_0, jsClass()):
+        tmp0_all_0 = (kotlin_collections_Collection___(elements)) if (isInterface(elements, Collection)) else (THROW_CCE())
+        if isInterface(tmp0_all_0, Collection):
             tmp = kotlin_collections_Collection_kotlin_Any__(tmp0_all_0).isEmpty_0_k_()
         elif True:
             tmp = False
@@ -4584,7 +4584,7 @@ def ULongArray__containsAll_impl(this, elements):
         tmp0_iterator_1 = tmp0_all_0.iterator_0_k_()
         while tmp0_iterator_1.hasNext_0_k_():
             element_2 = tmp0_iterator_1.next_0_k_()
-            if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+            if isinstance(element_2, ULong):
                 tmp = _ULongArray___get_storage__impl_(this)
                 tmp0_toLong_0_4 = unboxIntrinsic(element_2)
                 tmp = contains_2(tmp, _ULong___get_data__impl_(tmp0_toLong_0_4))
@@ -4616,10 +4616,10 @@ def ULongArray__hashCode_impl(this):
     return hashCode(this.storage)
 
 def ULongArray__equals_impl(this, other):
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(other, ULongArray):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE())
+    tmp0_other_with_cast = (unboxIntrinsic(other)) if (isinstance(other, ULongArray)) else (THROW_CCE())
     if not (this.storage == tmp0_other_with_cast.storage):
         return False
     
@@ -4721,7 +4721,7 @@ class ULongRange(ULongProgression, ClosedRange):
         return tmp
     
     def contains_2c5_k_(self, value):
-        return self.contains_djarz7_k_((unboxIntrinsic(value)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))
+        return self.contains_djarz7_k_((unboxIntrinsic(value)) if (isinstance(value, ULong)) else (THROW_CCE()))
     
     def isEmpty_0_k_(self):
         tmp0_compareTo_0 = self._get_first__sha8jq_k_()
@@ -4729,7 +4729,7 @@ class ULongRange(ULongProgression, ClosedRange):
         return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(tmp1_compareTo_0)) > 0
     
     def equals(self, other):
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(other, ULongRange):
             tmp = (True) if ((kotlin_ranges_ULongRange(other).isEmpty_0_k_()) if (self.isEmpty_0_k_()) else (False)) else ((boxIntrinsic(self._get_last__sha8jq_k_()) == boxIntrinsic(kotlin_ranges_ULongRange(other)._get_last__sha8jq_k_())) if (boxIntrinsic(self._get_first__sha8jq_k_()) == boxIntrinsic(kotlin_ranges_ULongRange(other)._get_first__sha8jq_k_())) else (False))
         elif True:
             tmp = False
@@ -4833,7 +4833,7 @@ class ULongProgression(Iterable):
         return tmp
     
     def equals(self, other):
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(other, ULongProgression):
             tmp = (True) if ((kotlin_ranges_ULongProgression(other).isEmpty_0_k_()) if (self.isEmpty_0_k_()) else (False)) else ((self.step == kotlin_ranges_ULongProgression(other).step) if ((boxIntrinsic(self.last) == boxIntrinsic(kotlin_ranges_ULongProgression(other).last)) if (boxIntrinsic(self.first) == boxIntrinsic(kotlin_ranges_ULongProgression(other).first)) else (False)) else (False))
         elif True:
             tmp = False
@@ -5048,7 +5048,7 @@ def UShort__compareTo_impl_0(this, other):
 
 def UShort__compareTo_impl_1(this, other):
     tmp = unboxIntrinsic(this)
-    return UShort__compareTo_impl_0(tmp, (unboxIntrinsic(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))
+    return UShort__compareTo_impl_0(tmp, (unboxIntrinsic(other)) if (isinstance(other, UShort)) else (THROW_CCE()))
 
 def UShort__compareTo_impl_2(this, other):
     tmp0_compareTo_0 = _UInt___init__impl_(_UShort___get_data__impl_(this) & 65535)
@@ -5255,10 +5255,10 @@ def UShort__hashCode_impl(this):
     return this.data
 
 def UShort__equals_impl(this, other):
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(other, UShort):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE())
+    tmp0_other_with_cast = (unboxIntrinsic(other)) if (isinstance(other, UShort)) else (THROW_CCE())
     if not (this.data == tmp0_other_with_cast.data):
         return False
     
@@ -5363,23 +5363,23 @@ class Iterator_2(UShortIterator):
 
 def UShortArray__contains_impl(this, element):
     tmp = (boxIntrinsic(element)) if (isObject(boxIntrinsic(element))) else (THROW_CCE())
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(tmp, UShort):
         return False
     
     tmp = _UShortArray___get_storage__impl_(this)
     return contains_0(tmp, _UShort___get_data__impl_(element))
 
 def UShortArray__contains_impl_0(this, element):
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(element, UShort):
         return False
     
     tmp = unboxIntrinsic(this)
-    return UShortArray__contains_impl(tmp, (unboxIntrinsic(element)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))
+    return UShortArray__contains_impl(tmp, (unboxIntrinsic(element)) if (isinstance(element, UShort)) else (THROW_CCE()))
 
 def UShortArray__containsAll_impl(this, elements):
     while True:
-        tmp0_all_0 = (kotlin_collections_Collection___(elements)) if (isInterface(elements, jsClass())) else (THROW_CCE())
-        if isInterface(tmp0_all_0, jsClass()):
+        tmp0_all_0 = (kotlin_collections_Collection___(elements)) if (isInterface(elements, Collection)) else (THROW_CCE())
+        if isInterface(tmp0_all_0, Collection):
             tmp = kotlin_collections_Collection_kotlin_Any__(tmp0_all_0).isEmpty_0_k_()
         elif True:
             tmp = False
@@ -5391,7 +5391,7 @@ def UShortArray__containsAll_impl(this, elements):
         tmp0_iterator_1 = tmp0_all_0.iterator_0_k_()
         while tmp0_iterator_1.hasNext_0_k_():
             element_2 = tmp0_iterator_1.next_0_k_()
-            if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+            if isinstance(element_2, UShort):
                 tmp = _UShortArray___get_storage__impl_(this)
                 tmp0_toShort_0_4 = unboxIntrinsic(element_2)
                 tmp = contains_0(tmp, _UShort___get_data__impl_(tmp0_toShort_0_4))
@@ -5423,10 +5423,10 @@ def UShortArray__hashCode_impl(this):
     return hashCode(this.storage)
 
 def UShortArray__equals_impl(this, other):
-    if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if not isinstance(other, UShortArray):
         return False
     
-    tmp0_other_with_cast = (unboxIntrinsic(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE())
+    tmp0_other_with_cast = (unboxIntrinsic(other)) if (isinstance(other, UShortArray)) else (THROW_CCE())
     if not (this.storage == tmp0_other_with_cast.storage):
         return False
     
@@ -6507,7 +6507,7 @@ class IntProgression(Iterable):
         return (self.first > self.last) if (self.step > 0) else (self.first < self.last)
     
     def equals(self, other):
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(other, IntProgression):
             tmp = (True) if ((kotlin_ranges_IntProgression(other).isEmpty_0_k_()) if (self.isEmpty_0_k_()) else (False)) else ((self.step == kotlin_ranges_IntProgression(other).step) if ((self.last == kotlin_ranges_IntProgression(other).last) if (self.first == kotlin_ranges_IntProgression(other).first) else (False)) else (False))
         elif True:
             tmp = False
@@ -6576,7 +6576,7 @@ class LongProgression(Iterable):
         return (self.first.compareTo_wiekkq_k_(self.last) > 0) if (self.step.compareTo_wiekkq_k_(0) > 0) else (self.first.compareTo_wiekkq_k_(self.last) < 0)
     
     def equals(self, other):
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(other, LongProgression):
             tmp = (True) if ((kotlin_ranges_LongProgression(other).isEmpty_0_k_()) if (self.isEmpty_0_k_()) else (False)) else ((self.step == kotlin_ranges_LongProgression(other).step) if ((self.last == kotlin_ranges_LongProgression(other).last) if (self.first == kotlin_ranges_LongProgression(other).first) else (False)) else (False))
         elif True:
             tmp = False
@@ -6646,7 +6646,7 @@ class CharProgression(Iterable):
         return (self.first.compareTo_wi8o78_k_(self.last) > 0) if (self.step > 0) else (self.first.compareTo_wi8o78_k_(self.last) < 0)
     
     def equals(self, other):
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(other, CharProgression):
             tmp = (True) if ((kotlin_ranges_CharProgression(other).isEmpty_0_k_()) if (self.isEmpty_0_k_()) else (False)) else ((self.step == kotlin_ranges_CharProgression(other).step) if ((self.last == kotlin_ranges_CharProgression(other).last) if (self.first == kotlin_ranges_CharProgression(other).first) else (False)) else (False))
         elif True:
             tmp = False
@@ -6741,7 +6741,7 @@ class IntRange(IntProgression, ClosedRange):
         return self._get_first__0_k_() > self._get_last__0_k_()
     
     def equals(self, other):
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(other, IntRange):
             tmp = (True) if ((kotlin_ranges_IntRange(other).isEmpty_0_k_()) if (self.isEmpty_0_k_()) else (False)) else ((self._get_last__0_k_() == kotlin_ranges_IntRange(other)._get_last__0_k_()) if (self._get_first__0_k_() == kotlin_ranges_IntRange(other)._get_first__0_k_()) else (False))
         elif True:
             tmp = False
@@ -6808,13 +6808,13 @@ class LongRange(LongProgression, ClosedRange):
         return (value.compareTo_wiekkq_k_(self._get_last__0_k_()) <= 0) if (self._get_first__0_k_().compareTo_wiekkq_k_(value) <= 0) else (False)
     
     def contains_2c5_k_(self, value):
-        return self.contains_wiekkq_k_((kotlin_Long(value)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))
+        return self.contains_wiekkq_k_((kotlin_Long(value)) if (isinstance(value, Long)) else (THROW_CCE()))
     
     def isEmpty_0_k_(self):
         return self._get_first__0_k_().compareTo_wiekkq_k_(self._get_last__0_k_()) > 0
     
     def equals(self, other):
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(other, LongRange):
             tmp = (True) if ((kotlin_ranges_LongRange(other).isEmpty_0_k_()) if (self.isEmpty_0_k_()) else (False)) else ((self._get_last__0_k_() == kotlin_ranges_LongRange(other)._get_last__0_k_()) if (self._get_first__0_k_() == kotlin_ranges_LongRange(other)._get_first__0_k_()) else (False))
         elif True:
             tmp = False
@@ -6881,13 +6881,13 @@ class CharRange(CharProgression, ClosedRange):
         return (value.compareTo_wi8o78_k_(self._get_last__0_k_()) <= 0) if (self._get_first__0_k_().compareTo_wi8o78_k_(value) <= 0) else (False)
     
     def contains_2c5_k_(self, value):
-        return self.contains_wi8o78_k_((kotlin_Char(value)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))
+        return self.contains_wi8o78_k_((kotlin_Char(value)) if (isinstance(value, Char_0)) else (THROW_CCE()))
     
     def isEmpty_0_k_(self):
         return self._get_first__0_k_().compareTo_wi8o78_k_(self._get_last__0_k_()) > 0
     
     def equals(self, other):
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(other, CharRange):
             tmp = (True) if ((kotlin_ranges_CharRange(other).isEmpty_0_k_()) if (self.isEmpty_0_k_()) else (False)) else ((self._get_last__0_k_() == kotlin_ranges_CharRange(other)._get_last__0_k_()) if (self._get_first__0_k_() == kotlin_ranges_CharRange(other)._get_first__0_k_()) else (False))
         elif True:
             tmp = False
@@ -7673,11 +7673,11 @@ class AbstractMutableCollection(AbstractCollection, MutableCollection):
     
     def removeAll_dxd4eo_k_(self, elements):
         self.checkIsMutable_sv8swh_k_()
-        return removeAll_0((kotlin_collections_MutableIterable_E_(self)) if (isInterface(self, jsClass())) else (THROW_CCE()), lambda it: elements.contains_2bq_k_(it))
+        return removeAll_0((kotlin_collections_MutableIterable_E_(self)) if (isInterface(self, MutableIterable)) else (THROW_CCE()), lambda it: elements.contains_2bq_k_(it))
     
     def retainAll_dxd4eo_k_(self, elements):
         self.checkIsMutable_sv8swh_k_()
-        return removeAll_0((kotlin_collections_MutableIterable_E_(self)) if (isInterface(self, jsClass())) else (THROW_CCE()), lambda it: not elements.contains_2bq_k_(it))
+        return removeAll_0((kotlin_collections_MutableIterable_E_(self)) if (isInterface(self, MutableIterable)) else (THROW_CCE()), lambda it: not elements.contains_2bq_k_(it))
     
     def clear_sv8swh_k_(self):
         self.checkIsMutable_sv8swh_k_()
@@ -8111,7 +8111,7 @@ class AbstractMutableList(AbstractMutableCollection, MutableList):
         if other is self:
             return True
         
-        if not ((isInterface(other, jsClass())) if (not (other == None)) else (False)):
+        if not ((isInterface(other, List)) if (not (other == None)) else (False)):
             return False
         
         return Companion_getInstance().orderedEquals_tuq55s_k_(self, kotlin_collections_Collection___(other))
@@ -8708,7 +8708,7 @@ def INV_2_53_init_():
     return JsMath.pow(2.0, -53.0)
 
 def _get_js_(self):
-    return ((kotlin_reflect_js_internal_KClassImpl_T_(self)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))._get_jClass__0_k_()
+    return ((kotlin_reflect_js_internal_KClassImpl_T_(self)) if (isinstance(self, KClassImpl)) else (THROW_CCE()))._get_jClass__0_k_()
 
 class KCallable(Any):
     def _get_name__0_k_(self):
@@ -8761,7 +8761,7 @@ class KClassImpl(KClass):
         raise NotImplementedError_init__Create_(None, 1, None)
     
     def equals(self, other):
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(other, KClassImpl):
             tmp = self._get_jClass__0_k_() == kotlin_reflect_js_internal_KClassImpl___(other)._get_jClass__0_k_()
         elif True:
             tmp = False
@@ -8796,7 +8796,7 @@ class PrimitiveKClassImpl(KClassImpl):
         self.isInstanceFunction = isInstanceFunction
     
     def equals(self, other):
-        if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if not isinstance(other, PrimitiveKClassImpl):
             return False
         
         return (self.givenSimpleName == kotlin_reflect_js_internal_PrimitiveKClassImpl___(other).givenSimpleName) if (self.equals(other)) else (False)
@@ -9181,7 +9181,7 @@ class KTypeImpl(KType):
         return self.isMarkedNullable
     
     def equals(self, other):
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(other, KTypeImpl):
             tmp = self.classifier == kotlin_reflect_js_internal_KTypeImpl(other).classifier
         elif True:
             tmp = False
@@ -9203,7 +9203,7 @@ class KTypeImpl(KType):
     
     def toString(self):
         tmp = self.classifier
-        kClass = (kotlin_reflect_KClass___(tmp)) if (isInterface(tmp, jsClass())) else (None)
+        kClass = (kotlin_reflect_KClass___(tmp)) if (isInterface(tmp, KClass)) else (None)
         classifierName = (toString_0(self.classifier)) if (kClass == None) else ((kClass._get_simpleName__0_k_()) if (not (kClass._get_simpleName__0_k_() == None)) else ('(non-denotable type)'))
         if self.arguments.isEmpty_0_k_():
             tmp = ''
@@ -9325,10 +9325,10 @@ class KTypeParameterImpl(KTypeParameter):
         if self is other:
             return True
         
-        if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if not isinstance(other, KTypeParameterImpl):
             return False
         
-        tmp0_other_with_cast = (kotlin_reflect_js_internal_KTypeParameterImpl(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE())
+        tmp0_other_with_cast = (kotlin_reflect_js_internal_KTypeParameterImpl(other)) if (isinstance(other, KTypeParameterImpl)) else (THROW_CCE())
         if not (self.name == tmp0_other_with_cast.name):
             return False
         
@@ -9385,7 +9385,7 @@ class PrimitiveClasses_0(Any):
         tmp.stringClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'String', lambda it: (jsTypeOf(it) == 'string') if (not (it == None)) else (False))
         tmp = self
         tmp0_unsafeCast_0 = js('Error')
-        tmp.throwableClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Throwable', lambda it: visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean)
+        tmp.throwableClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Throwable', lambda it: isinstance(it, Error))
         tmp = self
         tmp0_unsafeCast_0 = js('Array')
         tmp.booleanArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'BooleanArray', lambda it: (isBooleanArray(it)) if (not (it == None)) else (False))
@@ -9579,8 +9579,8 @@ def getKClassFromExpression_0(e):
             tmp = PrimitiveClasses_getInstance().floatArrayClass
         elif isDoubleArray(e):
             tmp = PrimitiveClasses_getInstance().doubleArrayClass
-        elif isInterface(e, jsClass()):
-            tmp = getKClass_0(jsClass())
+        elif isInterface(e, KClass):
+            tmp = getKClass_0(KClass)
         elif isArray(e):
             tmp = PrimitiveClasses_getInstance().arrayClass
         elif True:
@@ -10226,7 +10226,7 @@ class Char_0(Comparable):
         return (self.value - other.value).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
     
     def compareTo_2c5_k_(self, other):
-        return self.compareTo_wi8o78_k_((kotlin_Char(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))
+        return self.compareTo_wi8o78_k_((kotlin_Char(other)) if (isinstance(other, Char_0)) else (THROW_CCE()))
     
     def plus_ha5a7z_k_(self, other):
         return numberToChar((self.value + other).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
@@ -10271,7 +10271,7 @@ class Char_0(Comparable):
         if other is self:
             return True
         
-        if not visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if not isinstance(other, Char_0):
             return False
         
         return self.value == kotlin_Char(other).value
@@ -10766,7 +10766,7 @@ class Enum(Comparable):
         return compareTo_0(self.ordinal, other.ordinal)
     
     def compareTo_2c5_k_(self, other):
-        return self.compareTo_2bq_k_((E(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))
+        return self.compareTo_2bq_k_((E(other)) if (isinstance(other, Enum)) else (THROW_CCE()))
     
     def equals(self, other):
         return self is other
@@ -11412,7 +11412,7 @@ def compareTo_0(a, b):
     if tmp0_subject == 'number':
         if jsTypeOf(b) == 'number':
             tmp = doubleCompareTo(a, b)
-        elif visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        elif isinstance(b, Long):
             tmp = doubleCompareTo(a, kotlin_Long(b).toDouble_0_k_())
         elif True:
             tmp = primitiveCompareTo(a, b)
@@ -11770,7 +11770,7 @@ class Long(Number_0, Comparable):
         return compare(self, other)
     
     def compareTo_2c5_k_(self, other):
-        return self.compareTo_wiekkq_k_((kotlin_Long(other)) if (visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean) else (THROW_CCE()))
+        return self.compareTo_wiekkq_k_((kotlin_Long(other)) if (isinstance(other, Long)) else (THROW_CCE()))
     
     def compareTo_dbmacu_k_(self, other):
         return compareTo_0(self.toFloat_0_k_(), other)
@@ -11938,7 +11938,7 @@ class Long(Number_0, Comparable):
         return self.toDouble_0_k_()
     
     def equals(self, other):
-        if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+        if isinstance(other, Long):
             tmp = equalsLong(self, kotlin_Long(other))
         elif True:
             tmp = False
@@ -12359,7 +12359,7 @@ def toByte(a):
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def numberToInt(a):
-    if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if isinstance(a, Long):
         tmp = kotlin_Long(a).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
     elif True:
         tmp = doubleToInt(kotlin_Double(a))
@@ -12381,7 +12381,7 @@ def toShort(a):
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def numberToLong(a):
-    if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+    if isinstance(a, Long):
         tmp = kotlin_Long(a)
     elif True:
         tmp = fromNumber(kotlin_Double(a))
@@ -12509,16 +12509,16 @@ def isNumber(a):
     if jsTypeOf(a) == 'number':
         tmp = True
     else:
-        tmp = visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean
+        tmp = isinstance(a, Long)
     
     return tmp
 
 def isComparable(value):
     type = jsTypeOf(value)
-    return (True) if ((True) if ((True) if (type == 'string') else (type == 'boolean')) else (isNumber(value))) else (isInterface(value, _get_js_(getKClass_0(jsClass()))))
+    return (True) if ((True) if ((True) if (type == 'string') else (type == 'boolean')) else (isNumber(value))) else (isInterface(value, _get_js_(getKClass_0(Comparable))))
 
 def isCharSequence(value):
-    return (True) if (jsTypeOf(value) == 'string') else (isInterface(value, _get_js_(getKClass_0(jsClass()))))
+    return (True) if (jsTypeOf(value) == 'string') else (isInterface(value, _get_js_(getKClass_0(CharSequence))))
 
 def isBooleanArray(a):
     return (EQEQEQ(_type_(a), 'BooleanArray')) if (isJsArray(kotlin_Any(a))) else (False)
@@ -12691,7 +12691,7 @@ class CoroutineImpl_0(Continuation):
             visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl
             releaseIntercepted(tmp0_with_0)
             completion_4 = ensureNotNull(tmp0_with_0.resultContinuation)
-            if visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean:
+            if isinstance(completion_4, CoroutineImpl_0):
                 current = kotlin_coroutines_CoroutineImpl(completion_4)
             elif True:
                 if not (currentException == None):
