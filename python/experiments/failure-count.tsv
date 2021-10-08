@@ -1,28 +1,29 @@
-880	NameError: name 'Object_create' is not defined
+885	NameError: name 'Object_create' is not defined
 408	NameError: name '_sharedBox_create' is not defined
-319	NameError: name 'jsClass' is not defined
-177	NameError: name 'js' is not defined
+179	NameError: name 'js' is not defined
 170	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-135	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
+136	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
+124	NameError: name 'EQ' is not defined
+116	NameError: name 'constructor' is not defined
 108	NameError: name 'self' is not defined
 80	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
+78	NameError: name 'kotlin_Boolean' is not defined
 73	java.lang.IllegalStateException: Can't find compiled module for dependency <path-truncated>
 69	NameError: name 'Array' is not defined
 67	NameError: name 'kotlin_Any_' is not defined
 65	AttributeError: 'int' object has no attribute 'data'
-48	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_jsInstanceOf_visibility_public_modality_FINAL_____arg0_kotlin_Any___arg1_kotlin_Any___returnType_kotlin_Boolean' is not defined
 44	NameError: name 'kotlin_Int' is not defined
 43	NameError: name 'EQEQ' is not defined
-42	NameError: name 'kotlin_String' is not defined
+43	NameError: name 'kotlin_String' is not defined
 41	TypeError: 'NoneType' object is not callable
 39	NameError: name 'kotlin_UInt' is not defined
+36	SyntaxError: invalid syntax
 35	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
-35	SyntaxError: invalid syntax
 35	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
 34	NameError: name 'kotlin_Double' is not defined
 31	AttributeError: 'NoneType' object has no attribute 'append_uch40_k_'
 30	NameError: name 'INVOKE' is not defined
-25	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
+26	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
 23	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
 19	RecursionError: maximum recursion depth exceeded
 19	TypeError: <lambda>() takes 0 positional arguments but 1 was given
@@ -35,6 +36,7 @@
 13	TypeError: can only concatenate str (not "int") to str
 12	TypeError: unsupported operand type(s) for +: 'NoneType' and 'NoneType'
 12	UnboundLocalError: local variable 'test0' referenced before assignment
+11	TypeError: __init__() takes 1 positional argument but 2 were given
 10	ImportError: cannot import name 'box' from 'compiled_module' <path-truncated>)
 10	NameError: name 'visitExpressionFunctionBodyStatements_x2__Expr__Return_' is not defined
 9	AttributeError: 'NoneType' object has no attribute 'invoke_0_k_'
@@ -42,11 +44,11 @@
 9	NameError: name 'undefined' is not defined
 9	NameError: name 'visitExpressionFunctionBodyStatements_x1__Expr_' is not defined
 9	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' is not defined
+9	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail]>
 8	AttributeError: 'NoneType' object has no attribute 'foo_0_k_'
 8	AttributeError: 'int' object has no attribute 'toString'
 8	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Expr_' is not defined
 8	java.lang.IllegalArgumentException: List has more than one element.
-8	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail]>
 8	org.junit.ComparisonFailure: expected:<[O]K> but was:<[K]K>
 7	AttributeError: 'NoneType' object has no attribute 'data'
 7	NameError: name 'Object' is not defined
@@ -64,7 +66,7 @@
 5	AttributeError: 'NoneType' object has no attribute 'getValue_1kobyo_k_'
 5	NameError: name 'callableName' is not defined
 5	NameError: name 'kotlin_Float' is not defined
-5	TypeError: __init__() takes 1 positional argument but 2 were given
+5	NameError: name 'test_A' is not defined
 5	TypeError: can only concatenate str (not "NoneType") to str
 4	AttributeError: 'Companion_20' object has no attribute 'getO_0_k_'
 4	NameError: name 'Infinity' is not defined
@@ -99,6 +101,7 @@
 3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl' is not defined
 3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetFieldImpl' is not defined
 3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetValueImpl' is not defined
+3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrTypeOperatorCallImpl' is not defined
 3	SyntaxError: name 'properties_initialized_DeepRecursive_kt' is used prior to global declaration
 3	UnboundLocalError: local variable 'step' referenced before assignment
 3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<compiled_module.A object at [address]>]>
@@ -123,6 +126,7 @@
 2	SyntaxError: EOL while scanning string literal
 2	SyntaxError: name 'xs' is used prior to global declaration
 2	TypeError: 'NoneType' object is not subscriptable
+2	TypeError: __init__() missing 1 required positional argument: 'ordinal'
 2	TypeError: __init__() takes 2 positional arguments but 4 were given
 2	UnboundLocalError: local variable 'invokeOnA' referenced before assignment
 2	java.lang.IllegalStateException: TYPE_MISMATCH: Type mismatch: inferred type is String but Int was expected (6,37) in <path-truncated>
@@ -144,6 +148,7 @@
 2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1: None]>
 2	org.junit.ComparisonFailure: expected:<[]OK> but was:<[fail: ]OK>
 1	AttributeError: 'A' object has no attribute 's'
+1	AttributeError: 'C' object has no attribute '_get_a__0_k_'
 1	AttributeError: 'ClassB' object has no attribute 'invoke_1r174_k_'
 1	AttributeError: 'Companion_17' object has no attribute 'K'
 1	AttributeError: 'Companion_17' object has no attribute 'fromClosedRange_fcwjfj_k_'
@@ -190,9 +195,12 @@
 1	AttributeError: 'int' object has no attribute 'hashCode'
 1	AttributeError: 'int' object has no attribute 's'
 1	IndentationError: expected an indented block
+1	NameError: name 'A_' is not defined
 1	NameError: name 'AsAny_T_' is not defined
+1	NameError: name 'Base_kotlin_String_' is not defined
 1	NameError: name 'C' is not defined
 1	NameError: name 'GCmp_T_' is not defined
+1	NameError: name 'MPair___' is not defined
 1	NameError: name '_jsBind_' is not defined
 1	NameError: name 'a_Base' is not defined
 1	NameError: name 'kotlin_Char' is not defined
@@ -202,9 +210,10 @@
 1	NameError: name 'kotlin_Function1_X_kotlin_String_' is not defined
 1	NameError: name 'kotlin_Number' is not defined
 1	NameError: name 'kotlin_String_' is not defined
-1	NameError: name 'test_A' is not defined
+1	NameError: name 'kotlin_collections_HashMap__kotlin_String_kotlin_Any__' is not defined
 1	NameError: name 'test_Base' is not defined
 1	NameError: name 'test_C' is not defined
+1	NameError: name 'test_Child' is not defined
 1	NameError: name 'test_IC' is not defined
 1	NameError: name 'test_IC1' is not defined
 1	NameError: name 'visitExpressionFunctionBodyStatements_x1__If_' is not defined
@@ -224,7 +233,6 @@
 1	NameError: name 'visitExpressionFunctionBodyStatements_x5__If__If__Assign__Expr__If_' is not defined
 1	NameError: name 'visitExpressionFunctionBodyStatements_x7__Assign__Expr__Assign__Expr__Assign__Expr__Return_' is not defined
 1	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
-1	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrTypeOperatorCallImpl' is not defined
 1	SyntaxError: can't use starred expression here
 1	SyntaxError: duplicate argument 'name' in function definition
 1	SyntaxError: name 'result' is assigned to before global declaration
@@ -244,6 +252,7 @@
 1	TypeError: unsupported operand type(s) for +: 'ExtProvider' and 'int'
 1	TypeError: unsupported operand type(s) for +: 'Outer' and 'str'
 1	TypeError: unsupported operand type(s) for +: 'Test' and 'int'
+1	TypeError: unsupported operand type(s) for +: 'X' and 'str'
 1	UnboundLocalError: local variable 'call' referenced before assignment
 1	UnboundLocalError: local variable 'changeObject' referenced before assignment
 1	UnboundLocalError: local variable 'nullableK' referenced before assignment
@@ -321,6 +330,7 @@
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1: 16 != None]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1; r = BBB.baz]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1; r = None]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail <compiled_module.Num object at [address]>]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail None]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail template]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail1]>

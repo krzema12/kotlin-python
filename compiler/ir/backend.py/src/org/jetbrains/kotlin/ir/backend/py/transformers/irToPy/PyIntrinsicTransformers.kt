@@ -8,10 +8,14 @@ package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 import generated.Python.*
 import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
+import org.jetbrains.kotlin.ir.declarations.IrClass
+import org.jetbrains.kotlin.ir.declarations.IrDeclarationWithName
 import org.jetbrains.kotlin.ir.expressions.IrCall
+import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
 import org.jetbrains.kotlin.ir.types.*
+import org.jetbrains.kotlin.ir.util.isEffectivelyExternal
 
 typealias IrCallTransformer = (IrCall, context: JsGenerationContext) -> expr
 
@@ -210,8 +214,15 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
             intrinsics.longUshr.forEach { replaceLongMethodWithOperator(it, simulateUshr(ULong.MAX_VALUE.toString(16).hex())) }
             intrinsics.longEquals.forEach { replaceLongMethodWithOperator(it, cmpOp(Eq)) }
 
-//            binOp(intrinsics.jsInstanceOf, JsBinaryOperator.INSTANCEOF)
-//
+            add(intrinsics.jsInstanceOf) { call, context ->
+                val args = translateCallArguments(call, context)
+                Call(
+                    func = Name(identifier("isinstance"), Load),
+                    args = args,
+                    keywords = emptyList(),
+                )
+            }
+
 //            prefixOp(intrinsics.jsTypeOf, JsUnaryOperator.TYPEOF)
 //
 //            add(intrinsics.jsObjectCreate) { call, context ->
@@ -220,20 +231,20 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
 //                val prototype = prototypeOf(className.makeRef())
 //                JsInvocation(Namer.JS_OBJECT_CREATE_FUNCTION, prototype)
 //            }
-//
-//            add(intrinsics.jsClass) { call, context ->
-//                val classifier: IrClassifierSymbol = call.getTypeArgument(0)!!.classifierOrFail
-//                val owner = classifier.owner
-//
-//                when {
-//                    owner is IrClass && owner.isEffectivelyExternal() ->
-//                        context.getRefForExternalClass(owner)
-//
-//                    else ->
-//                        context.getNameForStaticDeclaration(owner as IrDeclarationWithName).makeRef()
-//                }
-//            }
-//
+
+            add(intrinsics.jsClass) { call, context ->
+                val classifier: IrClassifierSymbol = call.getTypeArgument(0)!!.classifierOrFail
+                val owner = classifier.owner
+
+                when {
+                    owner is IrClass && owner.isEffectivelyExternal() ->
+                        Name(identifier(context.getRefForExternalClass(owner).ident), Load)
+
+                    else ->
+                        Name(identifier(context.getNameForStaticDeclaration(owner as IrDeclarationWithName).makeRef().ident), Load)
+                }
+            }
+
 //            add(intrinsics.jsNewTarget) { _, _ ->
 //                JsNameRef(JsName("target"), JsNameRef(JsName("new")))
 //            }
