@@ -107,6 +107,8 @@ It will generate various reports and summaries:
 
 #### Test stats
 
+![git-history-plot](experiments/git-history-plot.svg)
+
 Current status: **1937**/5787 passed
 
 #### History (newest on top)
