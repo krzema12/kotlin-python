@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Fetch the whole git history, to be able to calculate some stats based on it.
       - name: Install Kotlin for scripting
         run: sudo snap install --classic kotlin
       - name: Clean
