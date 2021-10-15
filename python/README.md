@@ -104,8 +104,11 @@ It will generate various reports and summaries:
    a cleaner diff comparing to `box-tests-report.tsv` when something changes. E.g. when the failure reason changes,
    this file won't be affected for a given test - all that matters is that it still fails
 * `failure-count.tsv` - aggregated test failure reasons
+* `git-history-plot.svg` - a visual history of the number of box tests (passed VS all)
 
 #### Test stats
+
+![git-history-plot](experiments/git-history-plot.svg)
 
 Current status: **1937**/5787 passed
 
