@@ -63,7 +63,7 @@ jobs:
       - name: Compare failure-count.tsv
         run: diff -u failure-count.tsv python/experiments/failure-count.tsv
         if: always()
-      - name: Compare git-history-plot.svg
-        # Processing with 'sed' is needed to remove random parts in the SVGs.
-        run: diff -u <(cat git-history-plot.svg | sed "s/url(#[A-Za-z0-9]*)//" | sed "s/clipPath id=\"[A-Za-z0-9]*\"//") <(cat python/experiments/git-history-plot.svg  | sed "s/url(#[A-Za-z0-9]*)//" | sed "s/clipPath id=\"[A-Za-z0-9]*\"//")
-        if: always()
+#      - name: Compare git-history-plot.svg
+#        # Processing with 'sed' is needed to remove random parts in the SVGs.
+#        run: diff -u <(cat git-history-plot.svg | sed "s/url(#[A-Za-z0-9]*)//" | sed "s/clipPath id=\"[A-Za-z0-9]*\"//") <(cat python/experiments/git-history-plot.svg  | sed "s/url(#[A-Za-z0-9]*)//" | sed "s/clipPath id=\"[A-Za-z0-9]*\"//")
+#        if: always()
