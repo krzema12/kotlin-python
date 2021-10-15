@@ -415,3 +415,22 @@ text {
     </g>
   </g>
 </svg>
+<!--
+Data used to generate the graph:
+
+DataPoint(date=Mon Nov 23 22:29:16 CET 2020, testsAll=5368, testsPassed=938)
+DataPoint(date=Thu Nov 26 09:28:49 CET 2020, testsAll=5368, testsPassed=938)
+DataPoint(date=Sat Nov 28 19:51:53 CET 2020, testsAll=5368, testsPassed=966)
+DataPoint(date=Mon Nov 30 20:19:39 CET 2020, testsAll=5368, testsPassed=1041)
+DataPoint(date=Fri Jul 16 20:24:30 CEST 2021, testsAll=5787, testsPassed=1060)
+DataPoint(date=Sat Jul 17 22:27:24 CEST 2021, testsAll=5787, testsPassed=1077)
+DataPoint(date=Sat Jul 24 10:45:48 CEST 2021, testsAll=5787, testsPassed=1196)
+DataPoint(date=Tue Aug 10 07:32:05 CEST 2021, testsAll=5787, testsPassed=1313)
+DataPoint(date=Sat Aug 14 15:25:22 CEST 2021, testsAll=5787, testsPassed=1365)
+DataPoint(date=Sat Aug 21 15:27:29 CEST 2021, testsAll=5787, testsPassed=1454)
+DataPoint(date=Mon Aug 23 11:25:15 CEST 2021, testsAll=5787, testsPassed=1455)
+DataPoint(date=Fri Sep 03 23:26:54 CEST 2021, testsAll=5787, testsPassed=1684)
+DataPoint(date=Tue Sep 07 18:20:20 CEST 2021, testsAll=5787, testsPassed=1704)
+DataPoint(date=Wed Sep 15 19:08:38 CEST 2021, testsAll=5787, testsPassed=1768)
+DataPoint(date=Thu Sep 16 22:26:11 CEST 2021, testsAll=5787, testsPassed=1936)
+-->

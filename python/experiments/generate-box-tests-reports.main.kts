@@ -280,6 +280,12 @@ fun generateGitHistoryPlot(gitHistoryPlotPath: Path) {
             scaleYContinuous(limits = Pair(0, null), expand = listOf(0)) +
             ggsize(1000, 500)
     ggsave(p, gitHistoryPlotPath.fileName.toString(), path = gitHistoryPlotPath.parent?.toString() ?: ".")
+
+    val dataLineByLineAsString = data.joinToString(separator = "\n") { it.toString() }
+    gitHistoryPlotPath.toFile().appendText("""
+<!--
+$dataLineByLineAsString
+-->""")
 }
 
 fun Repository.getNumberOfFailedTests(tree: RevTree) =
