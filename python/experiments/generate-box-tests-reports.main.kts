@@ -111,7 +111,7 @@ fun String.removeVaryingParts() =
     (if (startsWith("java.lang.ClassCastException")) "java.lang.ClassCastException" else this)
         .replace(Regex("\\S+\\.kt"), "<path-truncated>")
         .replace(Regex("\\S+\\.py"), "<path-truncated>")
-        .replace(Regex("@[a-f0-9]{7,8}"), "@...")
+        .replace(Regex("@[a-f0-9]{1,8}"), "@...")
         .replace(Regex("0x[a-f0-9]{12}"), "[address]")
 
 fun TestStatus.extractFailureGeneralReason(): FailureGeneralReason? {
