@@ -1848,7 +1848,24 @@ class CoroutineContext(Any):
         pass
     
     def plus_d7pszg_k_(self, context):
-        return (self) if (context is EmptyCoroutineContext_getInstance()) else (context.fold_cq605b_k_(self, lambda acc, element: visitExpressionFunctionBodyStatements_x4__Assign__Expr__If__Return_))
+        def complexFunction_x4__Assign__Expr__If__Return__0(acc, element):
+            removed = acc.minusKey_djuxjq_k_(element._get_key__0_k_())
+            Unit_getInstance()
+            if removed is EmptyCoroutineContext_getInstance():
+                tmp = element
+            else:
+                interceptor = removed.get_9uvjra_k_(Key_getInstance())
+                if interceptor == None:
+                    tmp = CombinedContext(removed, element)
+                else:
+                    left = removed.minusKey_djuxjq_k_(Key_getInstance())
+                    tmp = (CombinedContext(element, interceptor)) if (left is EmptyCoroutineContext_getInstance()) else (CombinedContext(CombinedContext(left, element), interceptor))
+                
+                tmp = tmp
+            
+            return tmp
+        
+        return (self) if (context is EmptyCoroutineContext_getInstance()) else (context.fold_cq605b_k_(self, complexFunction_x4__Assign__Expr__If__Return__0))
     
     def minusKey_djuxjq_k_(self, key):
         pass
@@ -1991,7 +2008,12 @@ def writeReplace(_this):
     n = size(_this)
     elements = fillArrayVal(Array(n), None)
     index = _sharedBox_create(0)
-    _this.fold_cq605b_k_(Unit_getInstance(), lambda _anonymous_parameter_0_, element: visitExpressionFunctionBodyStatements_x3__Assign__Expr__Expr_)
+    def complexFunction_x3__Assign__Expr__Expr__0(_anonymous_parameter_0_, element):
+        tmp0 = _sharedBox_read(index)
+        _sharedBox_write(index, (tmp0 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        elements.__setitem__(tmp0, element)
+    
+    _this.fold_cq605b_k_(Unit_getInstance(), complexFunction_x3__Assign__Expr__Expr__0)
     tmp0_check_0 = _sharedBox_read(index) == n
     if not tmp0_check_0:
         message_2 = 'Check failed.'
@@ -2076,7 +2098,15 @@ class CombinedContext(CoroutineContext, Serializable):
         return (hashCode(self.left) + hashCode(self.element)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
     
     def toString(self):
-        return ('[' + self.fold_cq605b_k_('', lambda acc, element: visitExpressionFunctionBodyStatements_x2__If__Return_)) + ']'
+        def complexFunction_x2__If__Return__0(acc, element):
+            if charSequenceLength(acc) == 0:
+                tmp = toString_0(element)
+            elif True:
+                tmp = (str(acc) + str(', ')) + str(element)
+            
+            return tmp
+        
+        return ('[' + self.fold_cq605b_k_('', complexFunction_x2__If__Return__0)) + ']'
     
     def plus_d7pszg_k_(self, context):
         pass
@@ -9475,7 +9505,15 @@ class PrimitiveClasses_0(Any):
         tmp0_elvis_lhs = functionClasses[arity]
         if tmp0_elvis_lhs == None:
             tmp0_unsafeCast_0_3 = js('Function')
-            result_2 = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_3), str('Function') + str(arity), lambda it: visitExpressionFunctionBodyStatements_x2__If__Return_)
+            def complexFunction_x2__If__Return__0(it):
+                if jsTypeOf(it) is 'function':
+                    tmp = EQEQEQ(length(it), arity)
+                else:
+                    tmp = False
+                
+                return tmp
+            
+            result_2 = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_3), str('Function') + str(arity), complexFunction_x2__If__Return__0)
             tmp1_asDynamic_0_5 = functionClasses
             EQ(ARRAY_ACCESS(tmp1_asDynamic_0_5, arity), result_2)
             tmp = result_2

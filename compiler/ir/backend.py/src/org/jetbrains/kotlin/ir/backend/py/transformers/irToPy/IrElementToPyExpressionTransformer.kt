@@ -62,21 +62,40 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
         // TODO: create lowering: if there is one statement, use IrExpressionBody, otherwise, create a _no_name_provided_function_ and call it.
         //       for now, the code doesn't support some cases
 
+        val parameters = listOfNotNull(expression.function.dispatchReceiverParameter, expression.function.extensionReceiverParameter) +
+                expression.function.valueParameters
+        val args = argumentsImpl(
+            args = parameters.map { argImpl(identifier(it.name.asString().toValidPythonSymbol()), null, null) },
+            posonlyargs = emptyList(),
+            vararg = null,
+            kwonlyargs = emptyList(),
+            kw_defaults = emptyList(),
+            kwarg = null,
+            defaults = emptyList(),
+        )
+
         return Lambda(
-            args = argumentsImpl(
-                posonlyargs = emptyList(),
-                args = expression.function.valueParameters.map { argImpl(identifier(it.name.asString().toValidPythonSymbol()), null, null) },
-                kwonlyargs = emptyList(),
-                kw_defaults = emptyList(),
-                defaults = emptyList(),
-                vararg = null,
-                kwarg = null,
-            ),
+            args = args,
             body = when (val body = expression.function.body) {
                 is IrBlockBody -> {
                     val statements = IrElementToPyStatementTransformer().visitBlockBody(body, context)
                     when (val single = statements.singleOrNull() as? Return) {
-                        null -> Name(id = identifier("visitExpressionFunctionBodyStatements x${statements.size} ${statements.map { it::class.simpleName }}".toValidPythonSymbol()), ctx = Load)
+                        null -> {
+                            val complexFunctionName = identifier("complexFunction x${statements.size} ${statements.map { it::class.simpleName }} ${context.extraStatementsSize}".toValidPythonSymbol())
+
+                            val complexFunction = FunctionDef(
+                                name = complexFunctionName,
+                                args = args,
+                                body = statements,
+                                decorator_list = emptyList(),
+                                returns = null,
+                                type_comment = null,
+                            )
+
+                            context.addStatement(complexFunction)
+
+                            return Name(id = complexFunctionName, ctx = Load)
+                        }
                         else -> single.value ?: Name(id = identifier("visitExpressionFunctionBodyStatementsReturn null".toValidPythonSymbol()), ctx = Load)
                     }
                 }

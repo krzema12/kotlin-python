@@ -28,12 +28,12 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$An
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations$TypeAnnotations > testAllFilesPresentInTypeAnnotations	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations$TypeAnnotations > testCheckingNotincorporatedInputTypes	Failed	KotlinCompilation	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: toInt (3,64) in <path-truncated>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder > testAllFilesPresentInArgumentOrder	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder > testArgumentOrderInObjectSuperCall	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x4__Global__Assign__Expr__Return_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder > testArgumentOrderInSuperCall	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x4__Global__Assign__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder > testArgumentOrderInObjectSuperCall	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'NoneType'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder > testArgumentOrderInSuperCall	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'NoneType'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder > testArguments	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder > testCaptured	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder > testCapturedInExtension	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder > testDefaults	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x4__Global__Assign__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder > testDefaults	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder > testExtension	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder > testExtensionInClass	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder > testKt17691WithEnabledFeature	Failed	KotlinCompilation	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
@@ -210,7 +210,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Br
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testFakeOverrideWithSeveralSuperDeclarations	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'NoneType'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testFakeOverrideWithSynthesizedImplementation	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 1]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testGenericProperty	Failed	PythonExecution	NameError: name 'js' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testInnerClassTypeParameters	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testInnerClassTypeParameters	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testKt12416	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail #1]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testKt1939	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges > testKt1959	Succeeded		
@@ -462,7 +462,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ca
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property > testPrivateSetOuterClass	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property > testPrivateSetterInsideClass	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property > testPrivateSetterOutsideClass	Failed	PythonExecution	NameError: name 'EQ' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property > testReceiverEvaluatedOnce	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x5__Global__Assign__Assign__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property > testReceiverEvaluatedOnce	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property > testSimpleExtension	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property > testSimpleMember	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property > testSimpleMutableExtension	Failed	PythonExecution	NameError: name 'EQ' is not defined
@@ -574,7 +574,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt1018	Failed	PythonExecution	NameError: name 'Array' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt1120	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt1157	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt1247	Failed	PythonExecution	TypeError: <lambda>() takes 1 positional argument but 2 were given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt1247	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt1345	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt1439	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testKt1535	Succeeded		
@@ -638,8 +638,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testOverloadPlusAssignReturn	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testOverloadPlusToPlusAssign	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testOverloadUnaryOperator	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testPrivateOuterFunctions	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x3__Expr__Expr__Expr_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testPrivateOuterProperty	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testPrivateOuterFunctions	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testPrivateOuterProperty	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testPrivateToThis	Failed	PythonExecution	NameError: name 'EQEQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testPropertyDelegation	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail #2]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testPropertyInInitializer	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
@@ -658,7 +658,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes$Inner > testProperOuter	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes$Inner > testProperSuperLinking	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'NoneType'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testAllFilesPresentInClosures	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testAnonymousObjectAsLastExpressionInLambda	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testAnonymousObjectAsLastExpressionInLambda	Failed	PythonExecution	NameError: name 'K' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testCaptureExtensionReceiver	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'toString'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testCaptureExtensionReceiverX2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testCapturedLocalGenericFun	Succeeded		
@@ -668,17 +668,17 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testClosureWithParameter	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testClosureWithParameterAndBoxing	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testCrossinlineLocalDeclaration	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testDoubleEnclosedLocalVariable	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x3__Assign__Expr__Return_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testEnclosingLocalVariable	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x3__Assign__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testDoubleEnclosedLocalVariable	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testEnclosingLocalVariable	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testEnclosingThis	Failed	PythonExecution	TypeError: 'NoneType' object is not callable
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testExtensionClosure	Failed	PythonExecution	TypeError: <lambda>() takes 1 positional argument but 2 were given
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt10044	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x4__Assign__Assign__Assign__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testExtensionClosure	Failed	PythonExecution	NameError: name 'kotlin_Double' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt10044	Failed	PythonExecution	NameError: name '_undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt11634	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt11634_2	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[]OK> but was:<[fail: ]OK>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt11634_3	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[]OK> but was:<[fail: ]OK>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt11634_4	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt19389	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt19389_set	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt19389	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt19389_set	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt2151	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt3152	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt3523	Succeeded		
@@ -694,8 +694,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testLocalFunctionInInitBlock	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testLocalFunctionInInitializer	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testLocalGenericFun	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testLocalReturn	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__If__Return_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testLocalReturnWithAutolabel	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__If__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testLocalReturn	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testLocalReturnWithAutolabel	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testRecursiveClosure	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testSimplestClosure	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testSimplestClosureAndBoxing	Succeeded		
@@ -763,7 +763,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$ClosureInsideClosure > testPropertyAndFunctionNameClash	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$ClosureInsideClosure > testThreeLevels	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$ClosureInsideClosure > testThreeLevelsDifferentSignatures	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$ClosureInsideClosure > testVarAsFunInsideLocalFun	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x1__If_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$ClosureInsideClosure > testVarAsFunInsideLocalFun	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CollectionLiterals > testAllFilesPresentInCollectionLiterals	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Collections > testAddCollectionStubWithCovariantOverride	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Collections > testAllFilesPresentInCollections	Succeeded		
@@ -891,12 +891,12 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Constructor > testAllFilesPresentInConstructor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ConstructorCall > testAllFilesPresentInConstructorCall	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testAllFilesPresentInContracts	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testConstructorArgument	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x3__Expr__Assign__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testConstructorArgument	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testDestructuredVariable	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testExactlyOnceNotInline	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testException	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testFieldInConstructorParens	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testFieldReadInConstructor	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x1__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testFieldReadInConstructor	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'println_qi8yb4_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testForLoop	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testFunctionParameter	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testKt39374	Failed	PythonExecution	NameError: name '_undefined' is not defined
@@ -1163,7 +1163,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testKt25912	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testKt28844	Failed	PythonExecution	NameError: name 'constructor' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testKt30858	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testKt31784	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testKt31784	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testKt35967	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testKt42028	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testKt42554	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
@@ -1183,8 +1183,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testMergeNullAndString	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testMultipleInvokeCalls	Failed	PythonExecution	NameError: name 'constructor' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testMultipleInvokeCallsInsideInlineLambda1	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testMultipleInvokeCallsInsideInlineLambda2	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x3__Expr__Expr__Expr_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testMultipleInvokeCallsInsideInlineLambda3	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x5__Assign__Expr__Expr__Expr__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testMultipleInvokeCallsInsideInlineLambda2	Failed	PythonExecution	NameError: name 'constructor' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testMultipleInvokeCallsInsideInlineLambda3	Failed	PythonExecution	NameError: name 'constructor' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testNestedTryCatch	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testNoSuspensionPoints	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines > testNonLocalReturn	Failed	PythonExecution	NameError: name 'constructor' is not defined
@@ -1293,7 +1293,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection$Tailrec > testInfixCall	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection$Tailrec > testInfixRecursiveCall	Failed	PythonExecution	NameError: name 'constructor' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection$Tailrec > testRealIteratorFoldl	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection$Tailrec > testRealStringEscape	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection$Tailrec > testRealStringEscape	Failed	PythonExecution	SyntaxError: EOL while scanning string literal
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection$Tailrec > testRealStringRepeat	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection$Tailrec > testReturnInParentheses	Failed	PythonExecution	NameError: name 'constructor' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection$Tailrec > testSum	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
@@ -1761,7 +1761,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$De
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$OptimizedDelegatedProperties > testKt40815	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$OptimizedDelegatedProperties > testKt40815_2	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$OptimizedDelegatedProperties > testKt40815_3	Failed	PythonExecution	NameError: name 'EQ' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$OptimizedDelegatedProperties > testKt42253	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x3__Assign__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$OptimizedDelegatedProperties > testKt42253	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$OptimizedDelegatedProperties > testLazy	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$OptimizedDelegatedProperties > testMixedArgumentSizes	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testAllFilesPresentInProvideDelegate	Succeeded		
@@ -1797,18 +1797,18 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$De
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Delegation > testViaTypeAlias	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Delegation > testWithDefaultParameters	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail1: [2] object:C.foo(2);]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DestructuringDeclInLambdaParam > testAllFilesPresentInDestructuringDeclInLambdaParam	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DestructuringDeclInLambdaParam > testExtensionComponents	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x7__Assign__Expr__Assign__Expr__Assign__Expr__Return_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DestructuringDeclInLambdaParam > testGeneric	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x5__Assign__Expr__Assign__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DestructuringDeclInLambdaParam > testExtensionComponents	Failed	PythonExecution	AttributeError: 'B' object has no attribute 'y'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DestructuringDeclInLambdaParam > testGeneric	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'toString'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DestructuringDeclInLambdaParam > testInline	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DestructuringDeclInLambdaParam > testOtherParameters	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x5__Assign__Expr__Assign__Expr__Return_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DestructuringDeclInLambdaParam > testSimple	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x5__Assign__Expr__Assign__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DestructuringDeclInLambdaParam > testOtherParameters	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'toString'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DestructuringDeclInLambdaParam > testSimple	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DestructuringDeclInLambdaParam > testStdlibUsages	Failed	PythonExecution	NameError: name 'kotlin_Any_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DestructuringDeclInLambdaParam > testUnderscoreNames	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x5__Assign__Expr__Assign__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DestructuringDeclInLambdaParam > testUnderscoreNames	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DestructuringDeclInLambdaParam > testWithIndexed	Failed	PythonExecution	NameError: name 'EXCLEQEQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics > testAllFilesPresentInDiagnostics	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions > testAllFilesPresentInFunctions	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$Inference > testAllFilesPresentInInference	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$Inference > testKt6176	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__If__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$Inference > testKt6176	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$Invoke > testAllFilesPresentInInvoke	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$Invoke$OnObjects > testAllFilesPresentInOnObjects	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$Invoke$OnObjects > testInvokeOnClassObject1	Succeeded		
@@ -1919,7 +1919,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$En
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum > testKt38996	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum > testKt44744	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum > testKt44744_innerClass	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum > testKt46605	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x4__Assign__Expr__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum > testKt46605	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum > testKt7257	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum > testKt7257_anonObjectInit	Failed	PythonExecution	NameError: name 'EQEQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum > testKt7257_anonObjectMethod	Failed	PythonExecution	NameError: name 'EQEQ' is not defined
@@ -1962,14 +1962,14 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ex
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt1061	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt1249	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt1290	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt13312	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt13312	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt1776	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail <compiled_module.Num object at [address]>]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt1953	Failed	PythonExecution	NameError: name 'undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt1953_class	Failed	PythonExecution	NameError: name 'undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt23675	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt3285	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt3298	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x1__Expr_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt3646	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt3285	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt3298	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt3646	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt3969	Failed	PythonExecution	NameError: name 'kotlin_String' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt4228	Failed	PythonExecution	TypeError: 'NoneType' object is not callable
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt475	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
@@ -1977,7 +1977,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ex
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt606	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testKt865	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testMemberExtensionEqualsHashCodeToStringInInterface	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testNested2	Failed	PythonExecution	TypeError: <lambda>() takes 1 positional argument but 2 were given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testNested2	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'toString'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testShared	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testSimple	Failed	PythonExecution	NameError: name 'undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions > testThisMethodInObjectLiteral	Succeeded		
@@ -2034,7 +2034,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fi
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Finally > testTryFinally	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Finally > testTryLoopTry	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fir > testAllFilesPresentInFir	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fir > testClassCanNotBeCastedToVoid	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fir > testClassCanNotBeCastedToVoid	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fir > testFalsePositiveBoundSmartcast	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FullJdk > testAllFilesPresentInFullJdk	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FullJdk$Native > testAllFilesPresentInNative	Succeeded		
@@ -2064,7 +2064,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface > testPrimitiveConversions	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface > testReceiverEvaluatedOnce	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface > testSamConstructorExplicitInvocation	Failed	PythonExecution	NameError: name 'kotlin_Double' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface > testSamConversionToGenericInterfaceInGenericFun	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface > testSamConversionToGenericInterfaceInGenericFun	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface > testSubtypeOfFunctionalTypeToFunInterfaceConversion	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface > testSuspendFunInterfaceConversionCodegen	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface$Equality > testAllFilesPresentInEquality	Succeeded		
@@ -2105,16 +2105,16 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt2929	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt3214	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt3313	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt3573	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt3724	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt395	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt3573	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt3724	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt395	Failed	PythonExecution	NameError: name 'EQEQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt47449	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt785	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x4__Assign__Assign__Assign__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt785	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testKt873	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testLocalFunction	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testLocalReturnInsideFunctionExpression	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testMutualInline	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testNothisnoclosure	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x1__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testNothisnoclosure	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testPrefixRecursiveCall	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testRecursiveCompareTo	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testRecursiveIncrementCall	Succeeded		
@@ -2125,7 +2125,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$BigArity > testFunction255	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$BigArity > testInstanceOfCallableReference	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$BigArity > testInvokeCallableReference	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$BigArity > testInvokeLambda	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x31__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__E' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$BigArity > testInvokeLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$BigArity > testInvokeMemberCallableReference	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$BigArity > testNestedBigArityFunCalls	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$BigArity > testSubclass	Succeeded		
@@ -2146,7 +2146,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$Invoke > testKt3189	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$Invoke > testKt3190	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$Invoke > testKt3297	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$Invoke > testKt3450getAndInvoke	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$Invoke > testKt3450getAndInvoke	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$Invoke > testKt3631invokeOnString	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$Invoke > testKt3772	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$Invoke > testKt3821invokeOnThis	Succeeded		
@@ -2160,13 +2160,13 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testDefinedWithinLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testDefinedWithinLambdaInnerUsage1	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testDefinedWithinLambdaInnerUsage2	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt2895	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x1__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt2895	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt3308	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt3978	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt3978_2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt4119	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt4119_2	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt4514	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt4514	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt4777	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt4783	Failed	PythonExecution	NameError: name 'kotlin_Double' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions > testKt4784	Succeeded		
@@ -2235,7 +2235,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ie
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ieee754 > testWhenNullableSmartCast	Failed	PythonExecution	NameError: name 'kotlin_Double_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ieee754 > testWhen_properIeeeComparisons	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment > testAllFilesPresentInIncrement	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment > testArgumentWithSideEffects	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x3__Assign__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment > testArgumentWithSideEffects	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment > testArrayElement	Failed	PythonExecution	NameError: name 'kotlin_Any_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment > testAssignPlusOnSmartCast	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment > testAugmentedAssignmentWithComplexRhs	Failed	PythonExecution	SyntaxError: name 'result' is used prior to global declaration
@@ -2266,12 +2266,12 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testBuilderInferenceLeakingVariable	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testCapturedStarProjection	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testCapturedTypesSubstitutionIntoAbbreviation	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrTypeOperatorCallImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testCoercionToUnitWithLastLambdaExpression	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x4__Global__Assign__Expr__Return_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testCoerctionToUnitForLastExpressionWithStarProjection	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x4__If__Assign__If__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testCoercionToUnitWithLastLambdaExpression	Failed	PythonExecution	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testCoerctionToUnitForLastExpressionWithStarProjection	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testEarlyReturnInsideCrossinlineLambda	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetValueImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testInferenceWithTypeVariableInsideCapturedType	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testIntegerLiteralTypeInLamdaReturnType	Failed	PythonExecution	NameError: name 'EXCLEQEQ' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testKt10822	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testKt10822	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail: None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testKt35684	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testKt36446	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference > testKt38664	Failed	PythonExecution	AttributeError: 'Companion_20' object has no attribute 'foo_2bn_k_'
@@ -2296,7 +2296,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference$BuilderInference > testCallableReferenceAndCoercionToUnit	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference$BuilderInference > testCallableReferencesProperCompletion	Failed	KotlinCompilation	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: Sequence (8,14) in <path-truncated>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference$BuilderInference > testKt41164	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference$BuilderInference > testLackOfNullCheckOnNullableInsideBuild	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference$BuilderInference > testLackOfNullCheckOnNullableInsideBuild	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference$BuilderInference > testPropagateInferenceSessionIntoDeclarationAnalyzers	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference$BuilderInference > testSpecialCallsWithCallableReferences	Failed	KotlinCompilation	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: setOf (90,29) in <path-truncated>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference$BuilderInference > testSpecialCallsWithCallableReferencesDontCareTypeInBlockExpression	Succeeded		
@@ -2374,7 +2374,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testFieldNameClash	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testGenericInlineClassSynthMembers	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testGenericVararg2ndConstructor	Failed	PythonExecution	NameError: name 'EXCLEQEQ' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInitBlock	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x3__Global__Assign__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInitBlock	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassAsLastExpressionInInLambda	Failed	PythonExecution	NameError: name '_undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassEqualityShouldUseTotalOrderForFloatingPointData	Failed	PythonExecution	NameError: name '_undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassFieldHandling	Succeeded		
@@ -2486,8 +2486,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxNullableString	Failed	PythonExecution	NameError: name '_undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxNullableStringNull	Failed	PythonExecution	NameError: name '_undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxString	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testKt27586_1	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Expr__Return_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testKt27586_2	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testKt27586_1	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testKt27586_2	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testAllFilesPresentInBoxReturnValueOnOverride	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testBoxReturnValueInDefaultMethod	Failed	PythonExecution	NameError: name '_undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testCovariantOverrideChainErasedToAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
@@ -2586,7 +2586,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunInterface > testArgumentResult	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunInterface > testMangledSamWrappers	Failed	PythonExecution	NameError: name '_undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunInterface > testReturnIC	Failed	PythonExecution	NameError: name 'Result_T_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunInterface > testReturnResult	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunInterface > testReturnResult	Failed	PythonExecution	NameError: name 'kotlin_Result_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunctionNameMangling > testAllFilesPresentInFunctionNameMangling	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunctionNameMangling > testAnonymousObjectInFunctionWithMangledName	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunctionNameMangling > testExtensionFunctionsDoNotClash	Failed	PythonExecution	NameError: name '_undefined' is not defined
@@ -2646,7 +2646,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$JavaInterop > testAllFilesPresentInJavaInterop	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$Jvm8DefaultInterfaceMethods > testAllFilesPresentInJvm8DefaultInterfaceMethods	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$PropertyDelegation > testAllFilesPresentInPropertyDelegation	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$PropertyDelegation > testCaptureLocalVarDelegatedToInlineClass	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x4__If__Expr__If__If_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$PropertyDelegation > testCaptureLocalVarDelegatedToInlineClass	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$PropertyDelegation > testDelegateClassVarToInlineClass	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$PropertyDelegation > testDelegateClassVarToInlineClassWithProvideDelegate	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$PropertyDelegation > testDelegateCompanionVarToInlineClass	Failed	PythonExecution	NameError: name 'EQ' is not defined
@@ -2729,7 +2729,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InnerNested$SuperConstructorCall > testInnerExtendsInnerWithProperOuterCapture	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InnerNested$SuperConstructorCall > testKt11833_1	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InnerNested$SuperConstructorCall > testKt11833_2	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InnerNested$SuperConstructorCall > testLocalClassOuterDiffersFromInnerOuter	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InnerNested$SuperConstructorCall > testLocalClassOuterDiffersFromInnerOuter	Failed	PythonExecution	NameError: name 'EQEQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InnerNested$SuperConstructorCall > testLocalExtendsInner	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InnerNested$SuperConstructorCall > testLocalExtendsLocalWithClosure	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InnerNested$SuperConstructorCall > testLocalWithClosureExtendsLocalWithClosure	Failed	PythonExecution	RecursionError: maximum recursion depth exceeded
@@ -2790,7 +2790,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testFileClassInitializers	Failed	PythonExecution	NameError: name '_undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testGenericCompanion	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testHashCodeOnGenericSubstitutedWithPrimitive	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testKt25405	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testKt25405	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testKt40083	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testKt41765	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testObjectClass	Succeeded		
@@ -2866,7 +2866,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$La
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Labels > testLabeledDeclarations	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Labels > testPropertyAccessor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Labels > testPropertyAccessorFunctionLiteral	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Labels > testPropertyAccessorInnerExtensionFun	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Labels > testPropertyAccessorInnerExtensionFun	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Labels > testPropertyAccessorObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Labels > testPropertyInClassAccessor	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[inner getter or setter failed]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen > testAllFilesPresentInLazyCodegen	Succeeded		
@@ -2897,7 +2897,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Lo
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testClosureOfInnerLocalClass	Failed	PythonExecution	NameError: name 'kotlin_Any_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testClosureOfLambdaInLocalClass	Failed	PythonExecution	NameError: name 'kotlin_Any_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testClosureWithSelfInstantiation	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testDefaultParameterInConstructor	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testDefaultParameterInConstructor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testInExtensionFunction	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testInExtensionProperty	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testInLocalExtensionFunction	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[O]K> but was:<[K]K>
@@ -2907,7 +2907,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Lo
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testKt10835	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testKt10835a	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testKt2700	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'invoke_0_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testKt2873	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testKt2873	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testKt3210	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testKt3389	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testKt3584	Succeeded		
@@ -2916,7 +2916,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Lo
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testLocalClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testLocalClassCaptureExtensionReceiver	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'Outer' and 'str'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testLocalClassInInitializer	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testLocalClassInParameterInitializer	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x4__Expr__Assign__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testLocalClassInParameterInitializer	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<compiled_module.A object at [address]>]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testLocalDataClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testLocalExtendsInnerAndReferencesOuterMember	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses > testLocalGenericWithTypeParameters	Failed	PythonExecution	NameError: name 'kotlin_Boolean' is not defined
@@ -3061,7 +3061,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$No
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$NothingValue > testNothingValueException	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$NullCheckOptimization > testAllFilesPresentInNullCheckOptimization	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$NullCheckOptimization > testIsNullable	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$NullCheckOptimization > testKt22410	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x3__Assign__Expr__If_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$NullCheckOptimization > testKt22410	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$NullCheckOptimization > testKt7774	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$NullCheckOptimization > testPrimitiveCheckWithSideEffect	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$NullCheckOptimization > testTrivialInstanceOf	Succeeded		
@@ -3118,8 +3118,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ob
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testObjectVsClassInitialization_kt5291	Failed	PythonExecution	NameError: name 'undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testObjectWithSuperclass	Failed	PythonExecution	RecursionError: maximum recursion depth exceeded
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testObjectWithSuperclassAndTrait	Failed	PythonExecution	RecursionError: maximum recursion depth exceeded
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testPrivateExtensionFromInitializer_kt4543	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testPrivateFunctionFromClosureInInitializer_kt5582	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x3__Assign__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testPrivateExtensionFromInitializer_kt4543	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testPrivateFunctionFromClosureInInitializer_kt5582	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testReceiverInConstructor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testSafeAccess	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testSelfReferenceToCompanionObjectInAnonymousObjectInSuperConstructorCall	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'invoke_0_k_'
@@ -3214,7 +3214,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Op
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions > testKt45022	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions > testKt4987	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions > testNestedMaps	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions > testOperatorSetLambda	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x1__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions > testOperatorSetLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions > testOverloadedSet	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions > testPlusAssignWithComplexRHS	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'isEmpty_0_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions > testPlusExplicit	Failed	PythonExecution	NameError: name 'EXCLEQEQ' is not defined
@@ -3403,7 +3403,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testGenericWithSameName	Failed	PythonExecution	NameError: name 'T' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testInitOrderMultiModule	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testKt10715	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testKt10729	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testKt10729	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testKt1159	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testKt1165	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testKt1168	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
@@ -3413,7 +3413,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testKt1714	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testKt1714_minimal	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testKt1892	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testKt2331	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testKt2331	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testKt257	Failed	PythonExecution	NameError: name 'kotlin_Int' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testKt2655	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testKt2786	Succeeded		
@@ -3440,7 +3440,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testPrimitiveOverrideDefaultAccessor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testPrimitiveOverrideDelegateAccessor	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testPrivateAccessorOfOverriddenProperty	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testPrivatePropertyInConstructor	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x5__If__If__Assign__Expr__If_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testPrivatePropertyInConstructor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testPrivatePropertyWithoutBackingField	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testSideEffectInTopLevelInitializerMultiModule	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties > testTwoAnnotatedExtensionPropertiesWithoutBackingFields	Succeeded		
@@ -4572,14 +4572,14 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Sa
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt232	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt245	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt247	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt3430	Failed	PythonExecution	TypeError: <lambda>() takes 1 positional argument but 2 were given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt3430	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testKt4733	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'Test' and 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testPrimitive	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testPrimitiveEqSafeCall	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[failed 2]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testPrimitiveNotEqSafeCall	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[failed 2]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testSafeCallEqPrimitive	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testSafeCallNotEqPrimitive	Failed	PythonExecution	NameError: name 'js' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testSafeCallOnLong	Failed	PythonExecution	TypeError: <lambda>() takes 1 positional argument but 2 were given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SafeCall > testSafeCallOnLong	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Sam > testAllFilesPresentInSam	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Sam$Adapters > testAllFilesPresentInAdapters	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Sam$Adapters$Operators > testAllFilesPresentInOperators	Succeeded		
@@ -4692,7 +4692,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$St
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Statics > testIncInObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Statics > testInheritedPropertyInClassObject	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Statics > testInheritedPropertyInObject	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Statics > testKt8089	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Statics > testKt8089	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Statics > testSyntheticAccessor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$StoreStackBeforeInline > testAllFilesPresentInStoreStackBeforeInline	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$StoreStackBeforeInline > testDifferentTypes	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'toString'
@@ -4870,7 +4870,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ty
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias > testTypeAliasConstructorAccessor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias > testTypeAliasConstructorForArray	Failed	PythonExecution	NameError: name 'Array' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias > testTypeAliasConstructorInSuperCall	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'NoneType'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias > testTypeAliasFunction	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias > testTypeAliasFunction	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias > testTypeAliasInAnonymousObjectType	Failed	PythonExecution	NameError: name 'kotlin_String' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias > testTypeAliasObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias > testTypeAliasObjectCallable	Succeeded		
@@ -4941,7 +4941,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Va
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ValueClasses > testJvmInline	Failed	PythonExecution	NameError: name 'constructor' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testAllFilesPresentInVararg	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testDoNotCopyImmediatelyCreatedArrays	Failed	KotlinCompilation	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testEvaluationOrder	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testEvaluationOrder	Failed	PythonExecution	NameError: name '_undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testKt1978	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testKt37715	Failed	PythonExecution	NameError: name 'EXCLEQEQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testKt37779	Failed	KotlinCompilation	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
@@ -5003,12 +5003,12 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Wh
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization > testDuplicatingItems	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization > testEnumInsideClassObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization > testExpression	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization > testFunctionLiteralInTopLevel	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization > testFunctionLiteralInTopLevel	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization > testKt14597	Failed	PythonExecution	TypeError: __init__() missing 1 required positional argument: 'ordinal'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization > testKt14597_full	Failed	PythonExecution	TypeError: __init__() missing 1 required positional argument: 'ordinal'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization > testKt14802	Failed	PythonExecution	NameError: name 'kotlin_Enum___' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization > testKt15806	Failed	PythonExecution	NameError: name 'js' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization > testManyWhensWithinClass	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization > testManyWhensWithinClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization > testNonConstantEnum	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization > testNullIsTheFirstEntry	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization > testNullability	Succeeded		
@@ -5045,7 +5045,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Wh
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testWhenByString	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated > testAllFilesPresentInBoxInline	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testAllFilesPresentInAnonymousObject	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testAnonymousObjectInDefault	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x3__Assign__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testAnonymousObjectInDefault	Failed	PythonExecution	AttributeError: 'A' object has no attribute 'foo_0_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testAnonymousObjectOnCallSite	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testAnonymousObjectOnCallSiteSuperParams	Failed	PythonExecution	TypeError: can only concatenate str (not "NoneType") to str
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testAnonymousObjectOnDeclarationSite	Succeeded		
@@ -5066,7 +5066,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testInlineCallInsideInlineLambda	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testKt13182	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testKt13374	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testKt14011	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x3__Global__Assign__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testKt14011	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testKt14011_2	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testKt14011_3	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testKt15751	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
@@ -5079,7 +5079,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testKt17972_super2	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testKt17972_super3	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testKt19389	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testKt19399	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x1__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testKt19399	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testKt19723	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testKt34656	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'call_0_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testKt38197	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
@@ -5114,12 +5114,12 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturing > testNoInlineLambda	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testAllFilesPresentInProperRecapturingInClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testInlineChain	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testInlinelambdaChain	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x1__Expr_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testLambdaChain	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Expr_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testLambdaChainSimple	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Expr_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testLambdaChainSimple_2	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x1__Expr_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testLambdaChain_2	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Expr_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testLambdaChain_3	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testInlinelambdaChain	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testLambdaChain	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testLambdaChainSimple	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testLambdaChainSimple_2	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testLambdaChain_2	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testLambdaChain_3	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testNoCapturedThisOnCallSite	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testNoInlineLambda	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturingInClass > testTwoInlineLambda	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
@@ -5129,14 +5129,14 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$TwoCapturedReceivers > testAllFilesPresentInTwoCapturedReceivers	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$TwoCapturedReceivers > testKt8668	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$TwoCapturedReceivers > testKt8668_2	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$TwoCapturedReceivers > testKt8668_3	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$TwoCapturedReceivers > testKt8668_3	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$TwoCapturedReceivers > testKt8668_nested	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$TwoCapturedReceivers > testKt8668_nested_2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$TwoCapturedReceivers > testTwoDifferentDispatchReceivers	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$TwoCapturedReceivers > testTwoExtensionReceivers	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$ArgumentOrder > testAllFilesPresentInArgumentOrder	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$ArgumentOrder > testBoundFunctionReference	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x4__Global__Assign__Expr__Return_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$ArgumentOrder > testBoundFunctionReference2	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x4__Global__Assign__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$ArgumentOrder > testBoundFunctionReference	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$ArgumentOrder > testBoundFunctionReference2	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$ArgumentOrder > testCaptured	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$ArgumentOrder > testCapturedInExtension	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$ArgumentOrder > testDefaultParametersAndLastVararg	Failed	KotlinCompilation	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
@@ -5166,7 +5166,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference > testConstructor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference > testInnerGenericConstuctor	Failed	PythonExecution	NameError: name 'test_Inner_kotlin_String_kotlin_String_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference > testIntrinsic	Failed	PythonExecution	NameError: name 'kotlin_Any_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference > testKt15449	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x1__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference > testKt15449	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference > testKt15751_2	Failed	PythonExecution	NameError: name 'EXCLEQEQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference > testKt16411	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference > testKt35101	Succeeded		
@@ -5208,8 +5208,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$Bound > testSimpleVal2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$Bound > testTopLevelExtensionProperty	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Capture > testAllFilesPresentInCapture	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Capture > testCaptureInlinable	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Expr__Return_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Capture > testCaptureInlinableAndOther	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Capture > testCaptureInlinable	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Capture > testCaptureInlinableAndOther	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Capture > testCaptureThisAndReceiver	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Capture > testGenerics	Failed	PythonExecution	NameError: name 'EQEQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Capture > testSimpleCapturingInClass	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
@@ -5217,13 +5217,13 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Complex > testAllFilesPresentInComplex	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Complex > testClosureChain	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Complex > testKt44429	Failed	PythonExecution	NameError: name 'js' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Complex > testSwapAndWith	Failed	PythonExecution	TypeError: <lambda>() takes 0 positional arguments but 1 was given
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Complex > testSwapAndWith	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Complex > testSwapAndWith2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Complex > testUse	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Complex > testWith	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$ComplexStack > testAllFilesPresentInComplexStack	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$ComplexStack > testAsCheck	Failed	PythonExecution	NameError: name 'kotlin_Any_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$ComplexStack > testAsCheck2	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x4__Assign__Expr__Assign__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$ComplexStack > testAsCheck2	Failed	PythonExecution	NameError: name 'test_B' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$ComplexStack > testBreakContinueInInlineLambdaArgument	Failed	PythonExecution	NameError: name 'kotlin_Any_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$ComplexStack > testSimple	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$ComplexStack > testSimple2	Succeeded		
@@ -5241,7 +5241,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Contracts > testDefiniteValInitInInitializer	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Contracts > testDefiniteValInitialization	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Contracts > testExactlyOnceCrossinline	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Contracts > testExactlyOnceCrossinline2	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Assign__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Contracts > testExactlyOnceCrossinline2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Contracts > testExactlyOnceNoinline	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Contracts > testNonLocalReturn	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Contracts > testNonLocalReturnWithCycle	Failed	PythonExecution	NameError: name 'kotlin_Any_' is not defined
@@ -5334,7 +5334,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DelegatedProperty > testAllFilesPresentInDelegatedProperty	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DelegatedProperty > testKt16864	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DelegatedProperty > testLocal	Failed	PythonExecution	NameError: name 'EQ' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DelegatedProperty > testLocalDeclaredInLambda	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x3__Assign__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DelegatedProperty > testLocalDeclaredInLambda	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DelegatedProperty > testLocalInAnonymousObject	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DelegatedProperty > testLocalInLambda	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$EnclosingInfo > testAllFilesPresentInEnclosingInfo	Succeeded		
@@ -5393,7 +5393,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$JvmPackageName > testAllFilesPresentInJvmPackageName	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$LambdaClassClash > testAllFilesPresentInLambdaClassClash	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$LambdaClassClash > testLambdaClassClash	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$LambdaClassClash > testNoInlineLambdaX2	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x4__Global__Assign__Assign__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$LambdaClassClash > testNoInlineLambdaX2	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$LambdaTransformation > testAllFilesPresentInLambdaTransformation	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$LambdaTransformation > testLambdaCloning	Failed	PythonExecution	NameError: name 'EQEQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$LambdaTransformation > testLambdaInLambdaNoInline	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
@@ -5458,7 +5458,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns$TryFinally > testKt6956	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns$TryFinally > testKt7273	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns$TryFinally > testNonLocalReturnFromCatchBlock	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns$TryFinally > testNonLocalReturnFromOuterLambda	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x2__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns$TryFinally > testNonLocalReturnFromOuterLambda	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns$TryFinally > testNonLocalReturnToCatchBlock	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns$TryFinally$CallSite > testAllFilesPresentInCallSite	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns$TryFinally$CallSite > testCallSite	Failed	PythonExecution	UnboundLocalError: local variable 'test1' referenced before assignment
@@ -5544,7 +5544,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified > testArrayConstructor	Failed	PythonExecution	NameError: name 'Array' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified > testArrayOf	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified > testCapturedLambda	Failed	PythonExecution	TypeError: 'NoneType' object is not callable
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified > testCapturedLambda2	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x3__If__Expr__Return_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified > testCapturedLambda2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified > testDontSubstituteNonReified	Failed	PythonExecution	NameError: name 'Object' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified > testKt15956	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified > testKt18977	Failed	PythonExecution	NameError: name 'kotlin_Any_' is not defined
@@ -5620,7 +5620,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testSmapWithNewSyntax	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap > testSmapWithOldSyntax	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$Anonymous > testAllFilesPresentInAnonymous	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$Anonymous > testKt19175	Failed	PythonExecution	NameError: name 'visitExpressionFunctionBodyStatements_x4__Global__Assign__Assign__Expr_' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$Anonymous > testKt19175	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$Anonymous > testLambda	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$Anonymous > testLambdaOnCallSite	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$Anonymous > testLambdaOnInlineCallSite	Failed	PythonExecution	NameError: name '_sharedBox_create' is not defined
