@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.ir.backend.py.utils
 
+import generated.Python.stmt
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationWithName
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
@@ -29,6 +30,27 @@ class JsGenerationContext(
     val localNames: LocalNameGenerator? = null,
     val definedTypes: MutableSet<String> = mutableSetOf(),
 ): IrNamer by staticContext {
+
+    private val extraStatements = mutableListOf<stmt>()
+
+    val extraStatementsSize get() = extraStatements.size
+
+    fun addStatement(stmt: stmt) {
+        extraStatements.add(stmt)
+    }
+
+    fun extractStatements(): List<stmt> {
+        return extraStatements.toList().also { extraStatements.clear() }
+    }
+
+    fun newScope(): JsGenerationContext {
+        return JsGenerationContext(
+            currentFunction = currentFunction,
+            staticContext = staticContext,
+            localNames = localNames,
+            definedTypes = definedTypes,
+        )
+    }
 
     fun newDeclaration(func: IrFunction? = null, localNames: LocalNameGenerator? = null): JsGenerationContext {
         return JsGenerationContext(

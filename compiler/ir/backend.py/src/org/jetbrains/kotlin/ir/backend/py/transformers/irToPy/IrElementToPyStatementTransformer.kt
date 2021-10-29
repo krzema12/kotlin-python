@@ -39,15 +39,18 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     }
 
     override fun visitBlockBody(body: IrBlockBody, context: JsGenerationContext): List<stmt> {
-        return body.statements.translate(context)
+        val scopeContext = context.newScope()
+        return body.statements.translate(scopeContext).let { scopeContext.extractStatements() + it }
     }
 
     override fun visitBlock(expression: IrBlock, context: JsGenerationContext): List<stmt> {
-        return expression.statements.translate(context)
+        val scopeContext = context.newScope()
+        return expression.statements.translate(scopeContext).let { scopeContext.extractStatements() + it }
     }
 
     override fun visitComposite(expression: IrComposite, context: JsGenerationContext): List<stmt> {
-        return expression.statements.translate(context)
+        val scopeContext = context.newScope()
+        return expression.statements.translate(scopeContext).let { scopeContext.extractStatements() + it }
     }
 
     override fun visitExpression(expression: IrExpression, context: JsGenerationContext): List<stmt> {
@@ -79,71 +82,75 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
 
     override fun visitSetField(expression: IrSetField, context: JsGenerationContext): List<stmt> {
         // TODO
-        val receiverAsExpressions = expression.receiver?.accept(IrElementToPyExpressionTransformer(), context)
-        return listOf(
-            Assign(
-                targets = if (receiverAsExpressions != null) {
-                    listOf(Attribute(value = receiverAsExpressions, attr = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Store))
-                } else {
-                    listOf(Name(id = identifier(expression.symbol.owner.name.identifier.toValidPythonSymbol()), ctx = Store))
-                },
-                value = IrElementToPyExpressionTransformer().visitExpression(expression.value, context),
-                type_comment = null,
-            )
-        )
+        val scopeContext = context.newScope()
+        val receiverAsExpressions = expression.receiver?.accept(IrElementToPyExpressionTransformer(), scopeContext)
+        return Assign(
+            targets = if (receiverAsExpressions != null) {
+                listOf(Attribute(value = receiverAsExpressions, attr = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Store))
+            } else {
+                listOf(Name(id = identifier(expression.symbol.owner.name.identifier.toValidPythonSymbol()), ctx = Store))
+            },
+            value = IrElementToPyExpressionTransformer().visitExpression(expression.value, scopeContext),
+            type_comment = null,
+        ).let { scopeContext.extractStatements() + it }
     }
 
     override fun visitSetValue(expression: IrSetValue, context: JsGenerationContext): List<stmt> {
-        return listOf(
-            Assign(
-                targets = listOf(Name(id = identifier(expression.symbol.owner.name.identifier.toValidPythonSymbol()), ctx = Store)),
-                value = IrElementToPyExpressionTransformer().visitExpression(expression.value, context),
-                type_comment = null,
-            )
-        )
+        val scopeContext = context.newScope()
+        return Assign(
+            targets = listOf(Name(id = identifier(expression.symbol.owner.name.identifier.toValidPythonSymbol()), ctx = Store)),
+            value = IrElementToPyExpressionTransformer().visitExpression(expression.value, scopeContext),
+            type_comment = null,
+        ).let { scopeContext.extractStatements() + it }
     }
 
     override fun visitReturn(expression: IrReturn, context: JsGenerationContext): List<stmt> {
-        return listOf(Return(
-            value = IrElementToPyExpressionTransformer().visitExpression(expression.value, context),
-        ))
+        val scopeContext = context.newScope()
+        return Return(
+            value = IrElementToPyExpressionTransformer().visitExpression(expression.value, scopeContext),
+        ).let { scopeContext.extractStatements() + it }
     }
 
     override fun visitThrow(expression: IrThrow, context: JsGenerationContext): List<stmt> {
-        return listOf(Raise(
-            exc = IrElementToPyExpressionTransformer().visitExpression(expression.value, context),
+        val scopeContext = context.newScope()
+        return Raise(
+            exc = IrElementToPyExpressionTransformer().visitExpression(expression.value, scopeContext),
             cause = null,
-        ))
+        ).let { scopeContext.extractStatements() + it }
     }
 
     override fun visitVariable(declaration: IrVariable, context: JsGenerationContext): List<stmt> {
         // TODO
+        val scopeContext = context.newScope()
         return declaration.initializer?.let { initializer ->
             Assign(
                 targets = listOf(Name(id = identifier(declaration.name.identifier.toValidPythonSymbol()), ctx = Store)),
-                value = IrElementToPyExpressionTransformer().visitExpression(initializer, context),
+                value = IrElementToPyExpressionTransformer().visitExpression(initializer, scopeContext),
                 type_comment = null,
             )
         }
-            ?.let(::listOf)
+            ?.let { scopeContext.extractStatements() + it }
             ?: emptyList()
     }
 
     override fun visitDelegatingConstructorCall(expression: IrDelegatingConstructorCall, context: JsGenerationContext): List<stmt> {
         // TODO
+        val scopeContext = context.newScope()
         if (expression.symbol.owner.constructedClassType.isAny()) {
             return listOf()
         }
-        return expression.accept(IrElementToPyExpressionTransformer(), context).makeStmt().let(::listOf)
+        return expression.accept(IrElementToPyExpressionTransformer(), scopeContext).makeStmt().let { scopeContext.extractStatements() + it }
     }
 
-    override fun visitCall(expression: IrCall, data: JsGenerationContext): List<stmt> {
+    override fun visitCall(expression: IrCall, context: JsGenerationContext): List<stmt> {
         // TODO
-        return IrElementToPyExpressionTransformer().visitCall(expression, data).makeStmt().let(::listOf)
+        val scopeContext = context.newScope()
+        return IrElementToPyExpressionTransformer().visitCall(expression, scopeContext).makeStmt().let { scopeContext.extractStatements() + it }
     }
 
     override fun visitConstructorCall(expression: IrConstructorCall, context: JsGenerationContext): List<stmt> {
-        return IrElementToPyExpressionTransformer().visitConstructorCall(expression, context).makeStmt().let(::listOf)
+        val scopeContext = context.newScope()
+        return IrElementToPyExpressionTransformer().visitConstructorCall(expression, scopeContext).makeStmt().let { scopeContext.extractStatements() + it }
     }
 
     override fun visitInstanceInitializerCall(expression: IrInstanceInitializerCall, context: JsGenerationContext): List<stmt> {
@@ -157,44 +164,45 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     }
 
     override fun visitWhen(expression: IrWhen, context: JsGenerationContext): List<stmt> {
-        return listOf(
-            expression
-                .branches
-                .map { branch ->
+        val scopeContext = context.newScope()
+        return expression
+            .branches
+            .map { branch ->
+                If(
+                    test = IrElementToPyExpressionTransformer().visitExpression(branch.condition, scopeContext),
+                    body = IrElementToPyStatementTransformer().visitExpression(branch.result, scopeContext),
+                    orelse = emptyList(),
+                )
+            }
+            .reduceRight { iff, acc ->
+                val accTest = acc.test
+
+                if (accTest is Constant && accTest.value.value == "True") {
+                    // optimization
                     If(
-                        test = IrElementToPyExpressionTransformer().visitExpression(branch.condition, context),
-                        body = IrElementToPyStatementTransformer().visitExpression(branch.result, context),
-                        orelse = emptyList(),
+                        test = iff.test,
+                        body = iff.body,
+                        orelse = acc.body,
+                    )
+                } else {
+                    If(
+                        test = iff.test,
+                        body = iff.body,
+                        orelse = listOf(acc),
                     )
                 }
-                .reduceRight { iff, acc ->
-                    val accTest = acc.test
-
-                    if (accTest is Constant && accTest.value.value == "True") {
-                        // optimization
-                        If(
-                            test = iff.test,
-                            body = iff.body,
-                            orelse = acc.body,
-                        )
-                    } else {
-                        If(
-                            test = iff.test,
-                            body = iff.body,
-                            orelse = listOf(acc),
-                        )
-                    }
-                }
-        )
+            }
+            .let { scopeContext.extractStatements() + it }
     }
 
     override fun visitWhileLoop(loop: IrWhileLoop, context: JsGenerationContext): List<stmt> {
         // TODO
-        return listOf(While(
-            test = IrElementToPyExpressionTransformer().visitExpression(loop.condition, context),
-            body = loop.body?.accept(this, context) ?: emptyList(),
+        val scopeContext = context.newScope()
+        return While(
+            test = IrElementToPyExpressionTransformer().visitExpression(loop.condition, scopeContext),
+            body = loop.body?.accept(this, scopeContext) ?: emptyList(),
             orelse = emptyList(),
-        ))
+        ).let { scopeContext.extractStatements() + it }
     }
 
     override fun visitDoWhileLoop(loop: IrDoWhileLoop, context: JsGenerationContext): List<stmt> {
@@ -204,9 +212,10 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         //     <body>
         //     if <condition>:
         //         break
-        val body = loop.body?.accept(this, context).orEmpty()
+        val scopeContext = context.newScope()
+        val body = loop.body?.accept(this, scopeContext).orEmpty()
         val condition = If(
-            test = IrElementToPyExpressionTransformer().visitExpression(loop.condition, context),
+            test = IrElementToPyExpressionTransformer().visitExpression(loop.condition, scopeContext),
             body = listOf(Break),
             orelse = emptyList(),
         )
@@ -216,14 +225,16 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
             body = body + condition,
             orelse = emptyList(),
         )
-            .let(::listOf)
+            .let { scopeContext.extractStatements() + it }
     }
 
-    override fun visitDynamicOperatorExpression(expression: IrDynamicOperatorExpression, data: JsGenerationContext): List<stmt> {
-        return IrElementToPyExpressionTransformer().visitDynamicOperatorExpression(expression, data).makeStmt().let(::listOf)
+    override fun visitDynamicOperatorExpression(expression: IrDynamicOperatorExpression, context: JsGenerationContext): List<stmt> {
+        val scopeContext = context.newScope()
+        return IrElementToPyExpressionTransformer().visitDynamicOperatorExpression(expression, scopeContext).makeStmt().let { scopeContext.extractStatements() + it }
     }
 
     override fun <T> visitConst(expression: IrConst<T>, data: JsGenerationContext): List<stmt> {
-        return IrElementToPyExpressionTransformer().visitConst(expression, data).makeStmt().let(::listOf)
+        val scopeContext = data.newScope()
+        return IrElementToPyExpressionTransformer().visitConst(expression, scopeContext).makeStmt().let { scopeContext.extractStatements() + it }
     }
 }
