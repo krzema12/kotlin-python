@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 import generated.Python.*
 import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
+import org.jetbrains.kotlin.ir.backend.py.utils.Namer
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationWithName
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
@@ -386,23 +387,51 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
 //            add(intrinsics.unreachable) { _, _ ->
 //                JsInvocation(JsNameRef(Namer.UNREACHABLE_NAME))
 //            }
-//
-//            add(intrinsics.createSharedBox) { call, context: JsGenerationContext ->
-//                val arg = translateCallArguments(call, context).single()
-//                JsObjectLiteral(listOf(JsPropertyInitializer(JsNameRef(Namer.SHARED_BOX_V), arg)))
-//            }
-//
-//            add(intrinsics.readSharedBox) { call, context: JsGenerationContext ->
-//                val box = translateCallArguments(call, context).single()
-//                JsNameRef(Namer.SHARED_BOX_V, box)
-//            }
-//
-//            add(intrinsics.writeSharedBox) { call, context: JsGenerationContext ->
-//                val args = translateCallArguments(call, context)
-//                val box = args[0]
-//                val value = args[1]
-//                jsAssignment(JsNameRef(Namer.SHARED_BOX_V, box), value)
-//            }
+
+            add(intrinsics.createSharedBox) { call, context: JsGenerationContext ->
+                val arg = translateCallArguments(call, context).single()
+                Dict(
+                    keys = listOf(Constant(constant(Namer.SHARED_BOX_V), null)),
+                    values = listOf(arg),
+                )
+            }
+
+            add(intrinsics.readSharedBox) { call, context: JsGenerationContext ->
+                val box = translateCallArguments(call, context).single()
+
+                Subscript(
+                    value = box,
+                    slice = Constant(constant(Namer.SHARED_BOX_V), null),
+                    ctx = Load,
+                )
+            }
+
+            add(intrinsics.writeSharedBox) { call, context: JsGenerationContext ->
+                val args = translateCallArguments(call, context)
+                val box = args[0]
+                val value = args[1]
+
+//                Assign(  // todo: this is a statement but an expression is required, so using __setitem__ call below for now
+//                    targets = listOf(
+//                        Subscript(
+//                            value = box,
+//                            slice = Constant(constant(Namer.SHARED_BOX_V), null),
+//                            ctx = Store,
+//                        )
+//                    ),
+//                    value = value,
+//                    type_comment = null,
+//                )
+                Call(
+                    func = Attribute(
+                        value = box,
+                        attr = identifier("__setitem__"),
+                        ctx = Load,
+                    ),
+                    args = listOf(Constant(constant(Namer.SHARED_BOX_V), null), value),
+                    keywords = emptyList(),
+                )
+            }
 //            add(intrinsics.jsUndefined) { _, _ ->
 //                JsPrefixOperation(JsUnaryOperator.VOID, JsIntLiteral(1))
 //            }

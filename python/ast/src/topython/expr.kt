@@ -18,7 +18,7 @@ fun expr.toPython(): String {
         is UnaryOp -> toPython()
         is Lambda -> toPython()
         is IfExp -> toPython()
-        is Dict -> TODO()
+        is Dict -> toPython()
         is Set -> TODO()
         is ListComp -> TODO()
         is SetComp -> TODO()
@@ -71,6 +71,9 @@ fun Lambda.toPython() =
 
 fun IfExp.toPython() =
     "(${body.toPython()}) if (${test.toPython()}) else (${orelse.toPython()})"
+
+fun Dict.toPython() =
+    keys.zip(values).joinToString(prefix = "{", postfix = "}") { (k, v) -> "${k.toPython()}: ${v.toPython()}" }
 
 fun List.toPython() =
     elts.joinToString(separator = ", ", prefix = "[", postfix = "]") {

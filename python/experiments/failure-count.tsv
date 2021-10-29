@@ -1,47 +1,46 @@
-520	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
-408	NameError: name '_sharedBox_create' is not defined
-200	NameError: name 'constructor' is not defined
-189	NameError: name '_undefined' is not defined
-183	NameError: name 'js' is not defined
-173	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-139	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
-129	NameError: name 'EQ' is not defined
-86	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
+521	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
+462	NameError: name 'constructor' is not defined
+192	NameError: name '_undefined' is not defined
+190	NameError: name 'js' is not defined
+184	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
+145	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
+130	NameError: name 'EQ' is not defined
+88	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 78	NameError: name 'kotlin_Boolean' is not defined
 73	java.lang.IllegalStateException: Can't find compiled module for dependency <path-truncated>
 72	NameError: name 'undefined' is not defined
 70	NameError: name 'Array' is not defined
+68	NameError: name 'EQEQ' is not defined
+67	AttributeError: 'int' object has no attribute 'data'
 67	NameError: name 'kotlin_Any_' is not defined
-66	AttributeError: 'int' object has no attribute 'data'
-66	NameError: name 'EQEQ' is not defined
 46	NameError: name 'kotlin_String' is not defined
-44	NameError: name 'kotlin_Int' is not defined
+45	NameError: name 'kotlin_Int' is not defined
 44	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
 42	TypeError: 'NoneType' object is not callable
 39	NameError: name 'kotlin_UInt' is not defined
 36	SyntaxError: invalid syntax
 35	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 35	NameError: name 'kotlin_Double' is not defined
+33	NameError: name 'INVOKE' is not defined
 31	AttributeError: 'NoneType' object has no attribute 'append_uch40_k_'
-31	NameError: name 'INVOKE' is not defined
 27	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
-25	NameError: name 'EXCLEQEQ' is not defined
+26	NameError: name 'EXCLEQEQ' is not defined
 23	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
 20	TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 19	RecursionError: maximum recursion depth exceeded
 19	UnboundLocalError: local variable 'test1' referenced before assignment
+18	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
+17	AttributeError: 'int' object has no attribute 'toString'
 17	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_int32Array_visibility_public_modality_FINAL_____arg0_kotlin_Any___returnType_kotlin_Any_' is not defined
-17	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
-16	AttributeError: 'int' object has no attribute 'toString'
+16	NameError: name 'kotlin_Result_T_' is not defined
 16	TypeError: unsupported operand type(s) for +: 'NoneType' and 'NoneType'
-15	NameError: name 'kotlin_Result_T_' is not defined
 15	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
 14	TypeError: can only concatenate str (not "int") to str
+12	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' is not defined
 12	TypeError: __init__() takes 1 positional argument but 2 were given
 12	UnboundLocalError: local variable 'test0' referenced before assignment
 10	ImportError: cannot import name 'box' from 'compiled_module' <path-truncated>)
 10	NameError: name 'kotlin_Float' is not defined
-10	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' is not defined
 9	AttributeError: 'NoneType' object has no attribute 'invoke_0_k_'
 9	NameError: name 'kotlin_CharSequence' is not defined
 9	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail]>
@@ -50,6 +49,7 @@
 8	org.junit.ComparisonFailure: expected:<[O]K> but was:<[K]K>
 7	AttributeError: 'NoneType' object has no attribute 'data'
 7	NameError: name 'Object' is not defined
+7	NameError: name 'Result_T_' is not defined
 7	NameError: name 'kotlin_UByte' is not defined
 7	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1]>
 6	AttributeError: 'M' object has no attribute 'i'
@@ -58,17 +58,19 @@
 6	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: JvmDefault (7,6) in <path-truncated>
 6	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: 1:2;]>
 5	AttributeError: 'NoneType' object has no attribute 'getValue_1kobyo_k_'
+5	AttributeError: 'float' object has no attribute '__and__'
 5	NameError: name 'callableName' is not defined
 5	NameError: name 'test_A' is not defined
 5	TypeError: can only concatenate str (not "NoneType") to str
 5	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail: None]>
+5	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: None]>
 4	AttributeError: 'Companion_20' object has no attribute 'getO_0_k_'
 4	NameError: name 'Infinity' is not defined
-4	NameError: name 'Result_T_' is not defined
 4	NameError: name 'T' is not defined
 4	NameError: name 'kotlin_ULong' is not defined
 4	NameError: name 'test_S' is not defined
 4	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_int8Array_visibility_public_modality_FINAL_____arg0_kotlin_Any___returnType_kotlin_Any_' is not defined
+4	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl' is not defined
 4	TypeError: object of type 'NoneType' has no len()
 4	java.lang.AssertionError: For now the test checker supports a single output from the compiler!
 4	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun assertTrue(x: Boolean): Unit defined in kotlin.test (10,34) in <path-truncated>
@@ -76,13 +78,11 @@
 4	kotlin.UninitializedPropertyAccessException: lateinit property parent has not been initialized
 4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<compiled_module.A object at [address]>]>
 4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 1]>
-4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: None]>
 4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1 A.foo]>
 3	AttributeError: 'Foo' object has no attribute 'bar'
 3	AttributeError: 'NoneType' object has no attribute 'getValue_d8h4ck_k_'
 3	AttributeError: 'NoneType' object has no attribute 'iterator_0_k_'
 3	AttributeError: 'NoneType' object has no attribute 'string'
-3	AttributeError: 'float' object has no attribute '__and__'
 3	AttributeError: 'int' object has no attribute 'toDouble_0_k_'
 3	MemoryError
 3	NameError: name 'Foo_T_' is not defined
@@ -91,7 +91,6 @@
 3	NameError: name 'translateCallArguments_1' is not defined
 3	NameError: name 'translateCallArguments_2' is not defined
 3	NameError: name 'translateCallArguments_3' is not defined
-3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl' is not defined
 3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetFieldImpl' is not defined
 3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetValueImpl' is not defined
 3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrTypeOperatorCallImpl' is not defined
@@ -183,6 +182,7 @@
 1	AttributeError: 'NoneType' object has no attribute 'x'
 1	AttributeError: 'Test' object has no attribute '__add__'
 1	AttributeError: 'UIntArray' object has no attribute 'intArray'
+1	AttributeError: 'Z' object has no attribute '__add__'
 1	AttributeError: 'Z2' object has no attribute 'p'
 1	AttributeError: '_no_name_provided__9' object has no attribute 'foo_default_nmiqce_k_'
 1	AttributeError: 'bool' object has no attribute 'toString'
