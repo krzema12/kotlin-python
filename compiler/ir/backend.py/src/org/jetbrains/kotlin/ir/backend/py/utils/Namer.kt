@@ -43,5 +43,5 @@ object Namer {
     val KCALLABLE_CACHE_SUFFIX = "\$cache"
     const val KCALLABLE_ARITY = "\$arity"
 
-    const val SHARED_BOX_V = "_v"
+    const val SHARED_BOX_V = "'_v'"
 }

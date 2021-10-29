@@ -2007,14 +2007,14 @@ def containsAll(_this, context):
 def writeReplace(_this):
     n = size(_this)
     elements = fillArrayVal(Array(n), None)
-    index = _sharedBox_create(0)
+    index = {'_v': 0}
     def complexFunction_x3__Assign__Expr__Expr__0(_anonymous_parameter_0_, element):
-        tmp0 = _sharedBox_read(index)
-        _sharedBox_write(index, (tmp0 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp0 = index['_v']
+        index.__setitem__('_v', (tmp0 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
         elements.__setitem__(tmp0, element)
     
     _this.fold_cq605b_k_(Unit_getInstance(), complexFunction_x3__Assign__Expr__Expr__0)
-    tmp0_check_0 = _sharedBox_read(index) == n
+    tmp0_check_0 = index['_v'] == n
     if not tmp0_check_0:
         message_2 = 'Check failed.'
         raise IllegalStateException_init__Create__0(toString_0(message_2))
@@ -13500,6 +13500,15 @@ def execute20(f):
 
 def execute20Doubled():
     return execute20(lambda it: (it + it).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+
+def lambdaAndCapturing():
+    capt = {'_v': 0}
+    def complexFunction_x2__Expr__Return__0():
+        capt.__setitem__('_v', (capt['_v'] + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        return capt['_v']
+    
+    l = complexFunction_x2__Expr__Return__0
+    return l()
 
 def a(a1, *a2):
     pass

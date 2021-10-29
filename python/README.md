@@ -110,9 +110,11 @@ It will generate various reports and summaries:
 
 ![git-history-plot](experiments/git-history-plot.svg)
 
-Current status: **2059**/5787 passed
+Current status: **2154**/5787 passed
 
 #### History (newest on top)
+
+* after supporting lambda captures: **2154**/5787 passed (+95)
 
 * after supporting complex lambdas (multi-lined; with receiver): **2059**/5787 passed (+60)
 

@@ -12099,6 +12099,11 @@ this['out-ir'] = function (_) {
   function execute20Doubled() {
     return execute20(_no_name_provided_$factory_30());
   }
+  function lambdaAndCapturing() {
+    var capt = {_v: 0};
+    var l = _no_name_provided_$factory_31(capt);
+    return l();
+  }
   function a(a1, a2) {
   }
   function b() {
@@ -12159,10 +12164,27 @@ this['out-ir'] = function (_) {
     kind: 'class',
     interfaces: []
   };
+  function _no_name_provided__41($capt) {
+    this._$capt = $capt;
+  }
+  _no_name_provided__41.prototype.invoke_0_k$ = function () {
+    this._$capt._v = this._$capt._v + 1 | 0;
+    return this._$capt._v;
+  };
+  _no_name_provided__41.$metadata$ = {
+    kind: 'class',
+    interfaces: []
+  };
   function _no_name_provided_$factory_30() {
     var i = new _no_name_provided__40();
     return function (p1) {
       return i.invoke_ha5a7z_k$(p1);
+    };
+  }
+  function _no_name_provided_$factory_31($capt) {
+    var i = new _no_name_provided__41($capt);
+    return function () {
+      return i.invoke_0_k$();
     };
   }
   CombinedContext.prototype.plus_d7pszg_k$ = CoroutineContext.prototype.plus_d7pszg_k$;
