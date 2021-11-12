@@ -146,10 +146,10 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bi
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp > testCallNullable	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp > testCompareBoxedChars	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp > testDivisionByZero	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp > testEqNullableDoubles	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp > testEqNullableDoublesToInt	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp > testEqNullableDoublesToIntWithTP	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp > testEqNullableDoublesWithTP	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp > testEqNullableDoubles	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp > testEqNullableDoublesToInt	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp > testEqNullableDoublesToIntWithTP	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp > testEqNullableDoublesWithTP	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp > testIntrinsic	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp > testIntrinsicAny	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp > testIntrinsicNullable	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
@@ -178,7 +178,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bo
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testKt46859	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testKt5493	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testKt5588	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testKt5844	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testKt5844	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testKt6842	Failed	PythonExecution	NameError: name 'kotlin_Int' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testMaxMinByOrNull	Failed	PythonExecution	NameError: name 'kotlin_Any_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization > testNullCheck	Succeeded		
@@ -555,10 +555,10 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testDelegation4	Failed	PythonExecution	NameError: name 'constructor' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testDelegationGenericArg	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testDelegationGenericArgUpperBound	Failed	PythonExecution	NameError: name 'js' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testDelegationGenericLongArg	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testDelegationGenericLongArg	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testDelegationJava	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testDelegationMethodsWithArgs	Failed	PythonExecution	NameError: name 'EQEQ' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testExceptionConstructor	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testExceptionConstructor	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testExtensionFunWithDefaultParam	Failed	PythonExecution	NameError: name 'kotlin_String' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testExtensionOnNamedClassObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes > testFunDelegation	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail #2]>
@@ -672,7 +672,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testEnclosingLocalVariable	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testEnclosingThis	Failed	PythonExecution	TypeError: 'NoneType' object is not callable
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testExtensionClosure	Failed	PythonExecution	NameError: name 'kotlin_Double' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt10044	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt10044	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt11634	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt11634_2	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[]OK> but was:<[fail: ]OK>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures > testKt11634_3	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[]OK> but was:<[fail: ]OK>
@@ -732,7 +732,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$CaptureInSuperConstructorCall > testOuterCapturedInSecondaryConstructorDefaultParameter	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<compiled_module.Inner object at [address]>]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$CaptureInSuperConstructorCall > testOuterEnumEntryCapturedInLambdaInInnerClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$CaptureInSuperConstructorCall > testProperValueCapturedByClosure1	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$CaptureInSuperConstructorCall > testProperValueCapturedByClosure2	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$CaptureInSuperConstructorCall > testProperValueCapturedByClosure2	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$CaptureInSuperConstructorCall > testReferenceToCapturedVariablesInMultipleLambdas	Failed	PythonExecution	TypeError: 'NoneType' object is not callable
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$CaptureOuterProperty > testAllFilesPresentInCaptureOuterProperty	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures$CaptureOuterProperty > testCaptureFunctionInProperty	Succeeded		
@@ -899,7 +899,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testFieldReadInConstructor	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'println_qi8yb4_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testForLoop	Failed	PythonExecution	NameError: name 'EXCLEQEQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testFunctionParameter	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testKt39374	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testKt39374	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testKt45236	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testLambdaParameter	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Contracts > testListAppend	Failed	PythonExecution	NameError: name 'EXCLEQEQ' is not defined
@@ -962,7 +962,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt3203_1	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt3203_2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt3273	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt3280	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt3280	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt416	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt42455	Failed	PythonExecution	NameError: name 'kotlin_Any_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures > testKt513	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
@@ -1072,11 +1072,11 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ForInSequenceWithIndex > testForInSequenceWithIndexNoIndexVarCheckSideEffects	Failed	PythonExecution	NameError: name 'undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ForInSequenceWithIndex > testForInSequenceWithIndexWithExplicitlyTypedIndexVariable	Failed	PythonExecution	NameError: name 'undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing > testAllFilesPresentInReturnsNothing	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing > testIfElse	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing > testIfElse	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing > testInlineMethod	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing > testPropertyGetter	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing > testPropertyGetter	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing > testTryCatch	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing > testWhen	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing > testWhen	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$TryCatchInExpressions > testAllFilesPresentInTryCatchInExpressions	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$TryCatchInExpressions > testCatch	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$TryCatchInExpressions > testComplexChain	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
@@ -1263,7 +1263,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection > testInlineSuspendFinally	Failed	PythonExecution	NameError: name 'constructor' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection > testInterfaceMethodWithBody	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection > testInterfaceMethodWithBodyGeneric	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection > testOverrideInInlineClass	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection > testOverrideInInlineClass	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection > testOverrideInInnerClass	Failed	PythonExecution	NameError: name 'constructor' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection > testSafeCallOnTwoReceivers	Failed	PythonExecution	NameError: name 'constructor' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection > testSafeCallOnTwoReceiversLong	Failed	PythonExecution	NameError: name 'constructor' is not defined
@@ -1686,7 +1686,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$De
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Private > testSecondaryConstructor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Signature > testAllFilesPresentInSignature	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Signature > testKt2789	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1: 16 != None]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Signature > testKt9428	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Signature > testKt9428	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Signature > testKt9924	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty > testAccessTopLevelDelegatedPropertyInClinit	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty > testAllFilesPresentInDelegatedProperty	Succeeded		
@@ -1766,16 +1766,16 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$De
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$OptimizedDelegatedProperties > testMixedArgumentSizes	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testAllFilesPresentInProvideDelegate	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testDelegatedPropertyWithIdProvideDelegate	Failed	PythonExecution	NameError: name 'EQ' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testDifferentReceivers	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testDifferentReceivers	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testEvaluationOrder	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testEvaluationOrderVar	Failed	PythonExecution	NameError: name 'undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testExtensionDelegated	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'getValue_9ou11a_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testGeneric	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testGeneric	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testGenericDelegateWithNoAdditionalInfo	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testGenericProvideDelegateOnNumberLiteral	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'getValue_d8h4ck_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testHostCheck	Failed	PythonExecution	NameError: name 'EQ' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testInClass	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testInlineProvideDelegate	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testInClass	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testInlineProvideDelegate	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testKt15437	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'getValue_1kobyo_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testKt16441	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testKt18902	Failed	PythonExecution	NameError: name 'EQ' is not defined
@@ -1784,7 +1784,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$De
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testLocalCaptured	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testLocalDifferentReceivers	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testMemberExtension	Failed	PythonExecution	NameError: name 'EQ' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testPropertyMetadata	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testPropertyMetadata	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate > testProvideDelegateByExtensionFunction	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Delegation > testAllFilesPresentInDelegation	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Delegation > testDelegationDifferentModule	Failed	BoxTestsFailure	java.lang.IllegalStateException: Can't find compiled module for dependency <path-truncated>
@@ -2070,7 +2070,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface$Equality > testAllFilesPresentInEquality	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface$Equality > testFunctionReferencesBound	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface$Equality > testFunctionReferencesUnbound	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface$Equality > testLambdaRuntimeConversion	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface$Equality > testLambdaRuntimeConversion	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface$Equality > testLocalFunctionReferences	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface$Equality > testSimpleLambdas	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions > testAllFilesPresentInFunctions	Succeeded		
@@ -2312,8 +2312,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference$BuilderInference > testTopDownCompletionWithTwoBuilderInferenceCalls	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testAllFilesPresentInInlineClasses	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testAnnotatedMemberExtensionProperty	Failed	PythonExecution	AttributeError: 'A' object has no attribute 's'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testAnySuperCall	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testBoundCallableReferencePassedToInlineFunction	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testAnySuperCall	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testBoundCallableReferencePassedToInlineFunction	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testBoxImplDoesNotExecuteInSecondaryConstructor	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testBoxImplDoesNotExecuteInitBlock	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testBoxNullableValueOfInlineClassWithNonNullUnderlyingType	Succeeded		
@@ -2323,18 +2323,18 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testBoxUnboxOfInlineClassForCapturedVars	Failed	PythonExecution	SyntaxError: invalid syntax
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testBridgeForFunctionReturningInlineClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testBridgeGenerationWithInlineClassOverAny	Failed	PythonExecution	NameError: name 'Result_T_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testBridgesWhenInlineClassImplementsGenericInterface	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testBridgesWhenInlineClassImplementsGenericInterface	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCallComputablePropertyInsideInlineClass	Failed	PythonExecution	TypeError: _Props___init__impl_() takes 1 positional argument but 3 were given
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCallableReferencesWithInlineClasses	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCastInsideWhenExpression	Failed	PythonExecution	NameError: name 'Foo_T_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckBoxUnboxOfArgumentsOnInlinedFunctions	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckBoxingAfterAssertionOperator	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckBoxingForComplexClassHierarchy	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckBoxUnboxOfArgumentsOnInlinedFunctions	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckBoxingAfterAssertionOperator	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckBoxingForComplexClassHierarchy	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckBoxingForNonLocalAndLabeledReturns	Failed	PythonExecution	NameError: name 'kotlin_ULong' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckBoxingFromReturnTypeForInlineClasses	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckBoxingOnFunctionCalls	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckBoxingOnLocalVariableAssignments	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckBoxingUnboxingForInheritedTypeSpecializedFunctions	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckBoxingFromReturnTypeForInlineClasses	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckBoxingOnFunctionCalls	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckBoxingOnLocalVariableAssignments	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckBoxingUnboxingForInheritedTypeSpecializedFunctions	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckCallingMembersInsideInlineClass	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'toString'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckCastToInlineClass	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckForInstanceOfInlineClass	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
@@ -2342,51 +2342,51 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCheckUnboxingResultFromTypeVariable	Failed	PythonExecution	NameError: name 'Result_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testClassInInlineClassInit	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testComputablePropertyInsideInlineClass	Failed	PythonExecution	TypeError: _UIntArray___init__impl_() takes 1 positional argument but 3 were given
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testConformToComparableAndCallInterfaceMethod	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testConformToComparableAndCallInterfaceMethod	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testConstructorCallableReference	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCorrectBoxingForBranchExpressions	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCreateInlineClassInArgumentPosition	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCorrectBoxingForBranchExpressions	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCreateInlineClassInArgumentPosition	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCrossinlineWithInlineClassInParameter	Failed	PythonExecution	NameError: name 'Result_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testCustomIterator	Failed	KotlinCompilation	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: substring (22,32) in <path-truncated>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testDefaultFunctionsFromAnyForInlineClass	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testDefaultInterfaceMethodsInInlineClass	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testDefaultFunctionsFromAnyForInlineClass	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testDefaultInterfaceMethodsInInlineClass	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testDefaultWithInlineClassArgument	Failed	PythonExecution	NameError: name 'Array' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testElvisWithInlineClassAndNullConstant	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEmptyConstructorForInlineClass	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksInlineClassNonNull	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksMixedNullability	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksNegatedInlineClassNonNull	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksNegatedNonNull	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksNegatedNullable	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksNegatedPrimitive	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksNonNull	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksNullable	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksPrimitive	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksInlineClassNonNull	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksMixedNullability	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksNegatedInlineClassNonNull	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksNegatedNonNull	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksNegatedNullable	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksNegatedPrimitive	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksNonNull	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksNullable	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityChecksPrimitive	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualityForBoxesOfNullableValuesOfInlineClass	Failed	PythonExecution	NameError: name 'EXCLEQEQ' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualsCallsLeftArgument	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualsCallsLeftArgument	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualsEvaluationOrderInlineClass	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualsEvaluationOrderNonNull	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualsEvaluationOrderNullable	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualsEvaluationOrderPrimitive	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualsOperatorWithGenericCall	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testExtLambdaInInlineClassFun	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testExtLambdaInInlineClassFun2	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testEqualsOperatorWithGenericCall	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testExtLambdaInInlineClassFun	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testExtLambdaInInlineClassFun2	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testFieldNameClash	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testGenericInlineClassSynthMembers	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testGenericVararg2ndConstructor	Failed	PythonExecution	NameError: name 'EXCLEQEQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInitBlock	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassAsLastExpressionInInLambda	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassEqualityShouldUseTotalOrderForFloatingPointData	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassAsLastExpressionInInLambda	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassEqualityShouldUseTotalOrderForFloatingPointData	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassFieldHandling	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassFunctionInvoke	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassInInitBlock	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassInStringTemplate	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassInStringTemplate	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassPropertyReferenceGetAndSet	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassValueCapturedInInlineLambda	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassValueCapturedInNonInlineLambda	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassValuesInsideStrings	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassWithCustomEquals	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassWithDefaultFunctionsFromAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassValueCapturedInNonInlineLambda	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassValuesInsideStrings	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassWithCustomEquals	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassWithDefaultFunctionsFromAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassesAsInlineFunParameters	Failed	PythonExecution	NameError: name 'EQEQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassesCheckCast	Failed	PythonExecution	NameError: name 'AsAny_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineClassesInInlineLambdaParameters	Succeeded		
@@ -2394,8 +2394,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineExtLambdaInInlineClassFun	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineExtLambdaInInlineClassFun2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testInlineFunctionInsideInlineClass	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testIterateOverArrayOfInlineClassValues	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testIterateOverListOfInlineClassValues	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testIterateOverArrayOfInlineClassValues	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testIterateOverListOfInlineClassValues	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt25246	Failed	PythonExecution	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_int32Array_visibility_public_modality_FINAL_____arg0_kotlin_Any___returnType_kotlin_Any_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt25750	Failed	PythonExecution	NameError: name 'EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt25771	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
@@ -2404,15 +2404,15 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt26103_covariantUnderlyingType	Failed	PythonExecution	NameError: name 'EXCLEQEQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt26103_original	Failed	PythonExecution	NameError: name 'Foo_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27096	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27096_enum	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27096_functional	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27096_innerClass	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27096_nullablePrimitive	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27096_nullableReference	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27096_primitive	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27096_reference	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27096_enum	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27096_functional	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27096_innerClass	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27096_nullablePrimitive	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27096_nullableReference	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27096_primitive	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27096_reference	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27113	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27113a	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27113a	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27132	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27140	Failed	PythonExecution	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_int8Array_visibility_public_modality_FINAL_____arg0_kotlin_Any___returnType_kotlin_Any_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt27705	Succeeded		
@@ -2424,14 +2424,14 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt33119	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt34268	Failed	PythonExecution	NameError: name 'kotlin_ULong' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt34902	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt37998	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt38680	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt38680a	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt38680b	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt37998	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt38680	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt38680a	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt38680b	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt44141	Failed	PythonExecution	NameError: name 'kotlin_Result_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt44867	Failed	PythonExecution	NameError: name 'kotlin_Result_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt44978	Failed	KotlinCompilation	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: withIndex (8,36) in <path-truncated>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt45084	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt45084	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt45991	Failed	PythonExecution	NameError: name 'kotlin_Result_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testKt46554	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testMangledDefaultParameterFunction	Failed	PythonExecution	NameError: name 'kotlin_Function1_X_kotlin_String_' is not defined
@@ -2440,89 +2440,89 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testNestedInlineClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testNoAssertionsOnInlineClassBasedOnNullableType	Failed	PythonExecution	NameError: name 'Result_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testNoReturnTypeMangling	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testNullableEqeqNonNull	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testNullableWrapperEquality	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testOverridingFunCallingPrivateFun	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testNullableEqeqNonNull	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testNullableWrapperEquality	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testOverridingFunCallingPrivateFun	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testPassInlineClassAsVararg	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testPassInlineClassWithSpreadOperatorToVarargs	Failed	KotlinCompilation	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testPropertyLoweringOrder	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testReferToPropertyInCompanionObjectOfInlineClass	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testReferToUnderlyingPropertyInsideInlineClass	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testReferToUnderlyingPropertyOfInlineClass	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testRemoveInInlineCollectionOfInlineClassAsInt	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testRemoveInInlineCollectionOfInlineClassAsInt	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testResult	Failed	KotlinCompilation	java.lang.IllegalStateException: Symbol for public kotlin/Result.Companion|null[0] is unbound
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testResultInlining	Failed	PythonExecution	NameError: name 'kotlin_Result_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testResultRunCatchingOrElse	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testSafeAsOfTypeParameterWithInlineClassBound	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testSafeAsOfTypeParameterWithInlineClassBound	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testSecondaryConstructorWithVararg	Failed	PythonExecution	NameError: name 'translateCallArguments_0' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testSecondaryConstructorsInsideInlineClass	Failed	PythonExecution	SyntaxError: invalid syntax
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testSecondaryConstructorsInsideInlineClassWithPrimitiveCarrierType	Failed	PythonExecution	SyntaxError: invalid syntax
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testSimpleSecondaryConstructor	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testSmartCastOnThisOfInlineClassType	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testSmartCastOnThisOfInlineClassType	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testStringPlus	Failed	PythonExecution	NameError: name 'js' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testToStringCallingPrivateFun	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testToStringOfUnboxedNullable	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testTypeChecksForInlineClasses	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testToStringCallingPrivateFun	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testToStringOfUnboxedNullable	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testTypeChecksForInlineClasses	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testUIntArraySortExample	Failed	PythonExecution	AttributeError: 'UIntArray' object has no attribute 'intArray'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testUIntSafeAsInt	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testUnboxNullableValueOfInlineClassWithNonNullUnderlyingType	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testUnboxNullableValueOfInlineClassWithPrimitiveUnderlyingType	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testUnboxNullableValueOfInlineClassWithNonNullUnderlyingType	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testUnboxNullableValueOfInlineClassWithPrimitiveUnderlyingType	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testUnboxParameterOfSuspendLambdaBeforeInvoke	Failed	PythonExecution	NameError: name 'constructor' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testUnboxReceiverOnCallingMethodFromInlineClass	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testUnboxValueFromPlatformType	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testUnboxReceiverOnCallingMethodFromInlineClass	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testUnboxValueFromPlatformType	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testUnboxValueOfAnyBeforeMethodInvocation	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'get_ha5a7z_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testUseInlineClassesInsideElvisOperator	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testUseInlineFunctionInsideInlineClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testUseThisInsideInlineClass	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testWhenWithSubject	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses > testWhenWithSubject	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testAllFilesPresentInBoxReturnValueInLambda	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxFunLiteralAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxInt	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxNullableAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxNullableAnyNull	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxNullableInt	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxNullableIntNull	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxNullableString	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxNullableStringNull	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxString	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxFunLiteralAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxInt	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxNullableAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxNullableAnyNull	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxNullableInt	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxNullableIntNull	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxNullableString	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxNullableStringNull	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testBoxString	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testKt27586_1	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueInLambda > testKt27586_2	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testAllFilesPresentInBoxReturnValueOnOverride	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testBoxReturnValueInDefaultMethod	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testCovariantOverrideChainErasedToAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testCovariantOverrideChainErasedToNullableAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testCovariantOverrideErasedToAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testCovariantOverrideErasedToInterface	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testBoxReturnValueInDefaultMethod	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testCovariantOverrideChainErasedToAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testCovariantOverrideChainErasedToNullableAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testCovariantOverrideErasedToAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testCovariantOverrideErasedToInterface	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testCovariantOverrideErasedToPrimitive	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testCovariantOverrideListVsMutableList	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testCovariantOverrideUnrelatedInterfaces	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testGenericOverride	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testGenericOverrideSpecialized	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testCovariantOverrideUnrelatedInterfaces	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testGenericOverride	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testGenericOverrideSpecialized	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testInlineClassInOverriddenReturnTypes	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testKt28483	Failed	PythonExecution	NameError: name 'constructor' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testKt31585	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testKt31585	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testKt35234	Failed	PythonExecution	NameError: name 'UNARY_PLUS' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testKt35234a	Failed	PythonExecution	NameError: name 'UNARY_PLUS' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testOverrideGenericWithInlineClass	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testOverrideGenericWithNullableInlineClassUpperBoundWithNonNullAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testOverrideGenericWithNullableInlineClassUpperBoundWithNonNullNullableAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testOverrideGenericWithNullableInlineClassUpperBoundWithNonNullNullableAnyNull	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testOverrideNullableInlineClassWithNonNullAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testOverrideNullableInlineClassWithNonNullNullableAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testOverrideNullableInlineClassWithNonNullNullableAnyNull	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testRelatedReturnTypes1a	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testRelatedReturnTypes1b	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testRelatedReturnTypes2a	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testRelatedReturnTypes2b	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testUnrelatedGenerics	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testOverrideGenericWithInlineClass	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testOverrideGenericWithNullableInlineClassUpperBoundWithNonNullAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testOverrideGenericWithNullableInlineClassUpperBoundWithNonNullNullableAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testOverrideGenericWithNullableInlineClassUpperBoundWithNonNullNullableAnyNull	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testOverrideNullableInlineClassWithNonNullAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testOverrideNullableInlineClassWithNonNullNullableAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testOverrideNullableInlineClassWithNonNullNullableAnyNull	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testRelatedReturnTypes1a	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testRelatedReturnTypes1b	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testRelatedReturnTypes2a	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testRelatedReturnTypes2b	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$BoxReturnValueOnOverride > testUnrelatedGenerics	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences > testAllFilesPresentInCallableReferences	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences > testBoundInlineClassExtensionFun	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences > testBoundInlineClassExtensionVal	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences > testBoundInlineClassMemberFun	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences > testBoundInlineClassMemberVal	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences > testBoundInlineClassPrimaryVal	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences > testConstructorWithInlineClassParameters	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences > testConstructorWithInlineClassParameters	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences > testEqualsHashCodeToString	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences > testFunWithInlineClassParameters	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences > testInlineClassExtensionFun	Failed	PythonExecution	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
@@ -2541,11 +2541,11 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences$Let > testAny	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences$Let > testAnyN	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences$Let > testInt	Failed	PythonExecution	NameError: name 'Value_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences$Let > testIntN	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences$Let > testIntN	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences$Let > testNull	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'value'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences$Let > testResult	Failed	PythonExecution	NameError: name 'kotlin_Result_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences$Let > testString	Failed	PythonExecution	NameError: name 'Value_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences$Let > testStringN	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$CallableReferences$Let > testStringN	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$ContextsAndAccessors > testAccessPrivateInlineClassCompanionMethod	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$ContextsAndAccessors > testAccessPrivateInlineClassCompanionMethod2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$ContextsAndAccessors > testAccessPrivateInlineClassConstructorFromCompanion	Succeeded		
@@ -2561,7 +2561,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$ContextsAndAccessors > testCaptureInlineClassInstanceInLambda2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$ContextsAndAccessors > testCaptureInlineClassInstanceInObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$ContextsAndAccessors > testInlineLambdaInInlineClassFun	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$ContextsAndAccessors > testKt26858	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$ContextsAndAccessors > testKt26858	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$ContextsAndAccessors > testKt27513	Failed	PythonExecution	NameError: name 'undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$ContextsAndAccessors > testKt30780	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$ContextsAndAccessors > testLambdaInInlineClassFun	Succeeded		
@@ -2570,27 +2570,27 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$ContextsAndAccessors > testToPrivateCompanionVal	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testAllFilesPresentInDefaultParameterValues	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testDefaultConstructorParameterValuesOfInlineClassType	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testDefaultInterfaceFunParameterValuesOfInlineClassType	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testDefaultParameterValuesOfInlineClassType	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testDefaultParameterValuesOfInlineClassTypeBoxing	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testDefaultInterfaceFunParameterValuesOfInlineClassType	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testDefaultParameterValuesOfInlineClassType	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testDefaultParameterValuesOfInlineClassTypeBoxing	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testDefaultValueOfInlineClassTypeInInlineFun	Failed	PythonExecution	NameError: name 'EQEQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testDefaultValueOfInlineClassTypeInInlineFunInInlineClass	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'toString'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testInlineClassFun	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testInlineClassPrimaryConstructor	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testInlineClassPrimaryConstructorWithInlineClassValue	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testInlineClassPrimaryConstructorWithInlineClassValue	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testInlineClassSecondaryConstructor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testKt26554	Failed	PythonExecution	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_int32Array_visibility_public_modality_FINAL_____arg0_kotlin_Any___returnType_kotlin_Any_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$DefaultParameterValues > testKt27416	Failed	PythonExecution	NameError: name 'kotlin_String' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunInterface > testAllFilesPresentInFunInterface	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunInterface > testArgumentIC	Failed	PythonExecution	NameError: name 'Result_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunInterface > testArgumentResult	Failed	PythonExecution	NameError: name 'kotlin_Result_T_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunInterface > testMangledSamWrappers	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunInterface > testMangledSamWrappers	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunInterface > testReturnIC	Failed	PythonExecution	NameError: name 'Result_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunInterface > testReturnResult	Failed	PythonExecution	NameError: name 'kotlin_Result_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunctionNameMangling > testAllFilesPresentInFunctionNameMangling	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunctionNameMangling > testAnonymousObjectInFunctionWithMangledName	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunctionNameMangling > testExtensionFunctionsDoNotClash	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunctionNameMangling > testFunctionsWithDifferentNullabilityDoNotClash	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunctionNameMangling > testExtensionFunctionsDoNotClash	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunctionNameMangling > testFunctionsWithDifferentNullabilityDoNotClash	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunctionNameMangling > testGenericFunctionsDoNotClash	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunctionNameMangling > testLocalClassInFunctionWithMangledName	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$FunctionNameMangling > testMangledFunctionsCanBeOverridden	Succeeded		
@@ -2623,8 +2623,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InlineClassCollection > testInlineListOfInlineClass	Failed	KotlinCompilation	java.lang.IllegalStateException: UNRESOLVED_REFERENCE_WRONG_RECEIVER: Unresolved reference. None of the following candidates is applicable because of receiver type mismatch: 
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InlineClassCollection > testInlineMapOfInlineClass	Failed	KotlinCompilation	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: AbstractSet (14,56) in <path-truncated>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceDelegation > testAllFilesPresentInInterfaceDelegation	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceDelegation > testInterfaceImplementationByDelegation	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceDelegation > testKt38337	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceDelegation > testInterfaceImplementationByDelegation	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceDelegation > testKt38337	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceDelegation > testMemberExtValDelegationWithInlineClassParameterTypes	Failed	PythonExecution	AttributeError: 'FooImpl' object has no attribute 'x'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceDelegation > testMemberExtVarDelegationWithInlineClassParameterTypes	Failed	PythonExecution	NameError: name 'kotlin_Any_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceDelegation > testMemberFunDelegatedToInlineClassInt	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'toString'
@@ -2635,14 +2635,14 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testComplexGenericMethodWithInlineClassOverride	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testComplexGenericMethodWithInlineClassOverride2	Failed	PythonExecution	NameError: name 'constructor' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testComplexGenericMethodWithInlineClassOverride3	Failed	PythonExecution	NameError: name 'constructor' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testDefaultInterfaceExtensionFunCall	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testDefaultInterfaceMethodCall	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testGenericDefaultInterfaceExtensionFunCall	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testGenericDefaultInterfaceMethodCall	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testDefaultInterfaceExtensionFunCall	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testDefaultInterfaceMethodCall	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testGenericDefaultInterfaceExtensionFunCall	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testGenericDefaultInterfaceMethodCall	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testGenericInterfaceMethodCall	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testGenericMethodWithInlineClassOverride	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testInterfaceSuperCall	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testOverriddenDefaultInterfaceMethodCall	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testInterfaceSuperCall	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$InterfaceMethodCalls > testOverriddenDefaultInterfaceMethodCall	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$JavaInterop > testAllFilesPresentInJavaInterop	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$Jvm8DefaultInterfaceMethods > testAllFilesPresentInJvm8DefaultInterfaceMethods	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$PropertyDelegation > testAllFilesPresentInPropertyDelegation	Succeeded		
@@ -2666,35 +2666,35 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$ReturnResult > testTopLevel	Failed	PythonExecution	NameError: name 'kotlin_Result_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter > testAllFilesPresentInUnboxGenericParameter	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testAllFilesPresentInFunInterface	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testAnyN	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testIface	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testIfaceChild	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testAnyN	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testIface	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testIfaceChild	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testNullableResult	Failed	PythonExecution	NameError: name 'kotlin_Result_T_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testPrimitive	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testPrimitive	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testResult	Failed	PythonExecution	NameError: name 'kotlin_Result_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testResultAny	Failed	KotlinCompilation	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: Pair (8,36) in <path-truncated>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testString	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testString	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testAllFilesPresentInLambda	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testAnyN	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testIface	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testIfaceChild	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testAnyN	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testIface	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testIfaceChild	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testNullableResult	Failed	PythonExecution	NameError: name 'kotlin_Result_T_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testPrimitive	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testPrimitive	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testResult	Failed	PythonExecution	NameError: name 'kotlin_Result_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testResultAny	Failed	KotlinCompilation	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: Pair (6,36) in <path-truncated>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testString	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testString	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testAllFilesPresentInObjectLiteral	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testAnyN	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testIface	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testIfaceChild	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testAnyN	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testIface	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testIfaceChild	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testNullableResult	Failed	PythonExecution	NameError: name 'kotlin_Result_T_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testPrimitive	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testPrimitive	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testResult	Failed	PythonExecution	NameError: name 'kotlin_Result_T_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testResultAny	Failed	KotlinCompilation	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: Pair (6,36) in <path-truncated>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testString	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testString	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InnerNested > testAllFilesPresentInInnerNested	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InnerNested > testCreateNestedClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InnerNested > testCreatedNestedInOuterMember	Succeeded		
@@ -2784,10 +2784,10 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testAnonymousObjectInGenericFun	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testAnonymousObjectInsideElvis	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testClassInitializers	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testEnumClass	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testEnumClass	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testEnumClass2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testEnumClass3	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testFileClassInitializers	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testFileClassInitializers	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testGenericCompanion	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testHashCodeOnGenericSubstitutedWithPrimitive	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir > testKt25405	Succeeded		
@@ -2884,8 +2884,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$La
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateFalse	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateFalseVar	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateFalseVarChain	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateObjectComp	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateObjectComp2	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateObjectComp	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateObjectComp2	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateTrue	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNegateTrueVar	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations > testNoOptimization	Failed	PythonExecution	SyntaxError: invalid syntax
@@ -3032,8 +3032,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Mu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testExtensionReceiverValue	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testFunction	Failed	PythonExecution	TypeError: can only concatenate str (not "int") to str
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testFunctionFromOtherModule	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testInheritedFromCommonClass	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testInheritedFromExpectedClass	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testInheritedFromCommonClass	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testInheritedFromExpectedClass	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testInheritedFromExpectedInterface	Failed	PythonExecution	NameError: name 'kotlin_String' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testInheritedFromExpectedMethod	Failed	PythonExecution	TypeError: can only concatenate str (not "int") to str
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments > testInheritedInExpectedDeclarations	Failed	PythonExecution	TypeError: can only concatenate str (not "int") to str
@@ -3078,7 +3078,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ob
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testCompoundAssignmentToObjectFromCall	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testCompoundAssignmentToPropertyImportedFromObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testCompoundAssignmentToPropertyWithQualifier	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testFlist	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testFlist	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testInitializationOrder	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testInitializerBlockResetToDefault	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects > testInterfaceCompanion	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
@@ -3539,7 +3539,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ra
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains > testInPrimitiveProgression	Failed	PythonExecution	NameError: name 'constructor' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains > testInPrimitiveRange	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute '_get_first__0_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains > testInRangeLiteralComposition	Failed	PythonExecution	TypeError: '<=' not supported between instances of 'NoneType' and 'NoneType'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains > testInRangeWithCustomContains	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains > testInRangeWithCustomContains	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains > testInRangeWithImplicitReceiver	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains > testInRangeWithNonmatchingArguments	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains > testInRangeWithSmartCast	Failed	PythonExecution	NameError: name 'js' is not defined
@@ -3718,14 +3718,14 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ra
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testAllFilesPresentInForWithPossibleOverflow	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInDownToCharMinValue	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInDownToCharMinValueReversed	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInDownToIntMinValue	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInDownToIntMinValueReversed	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInDownToIntMinValue	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInDownToIntMinValueReversed	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInDownToLongMinValue	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInDownToLongMinValueReversed	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInRangeToCharMaxValue	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInRangeToCharMaxValueReversed	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInRangeToIntMaxValue	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInRangeToIntMaxValueReversed	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInRangeToIntMaxValue	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInRangeToIntMaxValueReversed	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInRangeToLongMaxValue	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInRangeToLongMaxValueReversed	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForWithPossibleOverflow > testForInUntilIntMinValueReversed	Failed	PythonExecution	NameError: name 'kotlin_Int' is not defined
@@ -4669,7 +4669,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Sp
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SpecialBuiltins > testEmptyStringMap	Failed	PythonExecution	NameError: name 'constructor' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SpecialBuiltins > testEntrySetSOE	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute '_get_size__0_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SpecialBuiltins > testEnumAsOrdinaled	Failed	PythonExecution	NameError: name 'constructor' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SpecialBuiltins > testExceptionCause	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SpecialBuiltins > testExceptionCause	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SpecialBuiltins > testExplicitSuperCall	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SpecialBuiltins > testIrrelevantRemoveAtOverride	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SpecialBuiltins > testMaps	Succeeded		
@@ -4680,7 +4680,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Sp
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SpecialBuiltins > testRemoveAtTwoSpecialBridges	Failed	PythonExecution	TypeError: can only concatenate str (not "NoneType") to str
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SpecialBuiltins > testRemoveSetInt	Failed	PythonExecution	NameError: name 'EQEQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SpecialBuiltins > testThrowable	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SpecialBuiltins > testThrowableCause	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SpecialBuiltins > testThrowableCause	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SpecialBuiltins > testThrowableComplex	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SpecialBuiltins > testThrowableImpl	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SpecialBuiltins > testThrowableImplWithSecondaryConstructor	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
@@ -4899,7 +4899,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Un
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnsignedTypes > testBoxedUnsignedEqualsZero	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnsignedTypes > testCheckBasicUnsignedLiterals	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnsignedTypes > testDefaultArguments	Failed	PythonExecution	NameError: name 'kotlin_UByte' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnsignedTypes > testEqualsImplForInlineClassWrappingNullableInlineClass	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnsignedTypes > testEqualsImplForInlineClassWrappingNullableInlineClass	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnsignedTypes > testForEachIndexedInListOfUInts	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnsignedTypes > testForInUnsignedDownTo	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnsignedTypes > testForInUnsignedProgression	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'first'
@@ -4924,7 +4924,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Un
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnsignedTypes > testUnsignedIntRemainder	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnsignedTypes > testUnsignedIntToString	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnsignedTypes > testUnsignedLiteralsForMaxLongValue	Failed	PythonExecution	NameError: name 'kotlin_ULong' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnsignedTypes > testUnsignedLiteralsInApiVersion14	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnsignedTypes > testUnsignedLiteralsInApiVersion14	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnsignedTypes > testUnsignedLiteralsWithSignedOverflow	Failed	PythonExecution	NameError: name 'kotlin_UByte' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnsignedTypes > testUnsignedLongCompare	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$UnsignedTypes > testUnsignedLongDivide	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'data'
@@ -4941,7 +4941,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Va
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ValueClasses > testJvmInline	Failed	PythonExecution	NameError: name 'constructor' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testAllFilesPresentInVararg	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testDoNotCopyImmediatelyCreatedArrays	Failed	KotlinCompilation	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testEvaluationOrder	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testEvaluationOrder	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testKt1978	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testKt37715	Failed	PythonExecution	NameError: name 'EXCLEQEQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg > testKt37779	Failed	KotlinCompilation	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
@@ -5029,7 +5029,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Wh
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testCaptureSubjectVariable	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testDenseIntSwitchWithSubjectVariable	Failed	PythonExecution	NameError: name 'kotlin_Int' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testEqualityWithSubjectVariable	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail: None]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testIeee754Equality	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testIeee754Equality	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testIeee754EqualityWithSmartCast	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testIsCheckOnSubjectVariable	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testKt27161	Succeeded		
@@ -5040,8 +5040,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Wh
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testRangeCheckOnSubjectVariable	Failed	PythonExecution	TypeError: '<=' not supported between instances of 'int' and 'NoneType'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testSparseIntSwitchWithSubjectVariable	Failed	PythonExecution	NameError: name 'kotlin_Int' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testSubjectExpressionIsEvaluatedOnce	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testWhenByEnum	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testWhenByNullableEnum	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testWhenByEnum	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testWhenByNullableEnum	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable > testWhenByString	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated > testAllFilesPresentInBoxInline	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject > testAllFilesPresentInAnonymousObject	Succeeded		
@@ -5364,26 +5364,26 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses > testWithReturnTypeManglingVal	Failed	PythonExecution	NameError: name 'test_S' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter > testAllFilesPresentInUnboxGenericParameter	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testAllFilesPresentInFunInterface	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testAnyN	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testIface	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testIfaceChild	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testPrimitive	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testString	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testAnyN	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testIface	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testIfaceChild	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testPrimitive	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$FunInterface > testString	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testAllFilesPresentInLambda	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testAnyN	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testIface	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testIfaceChild	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testPrimitive	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testString	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testAnyN	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testIface	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testIfaceChild	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testPrimitive	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$Lambda > testString	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testAllFilesPresentInObjectLiteral	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testAny	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testAnyN	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testIface	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testIfaceChild	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testPrimitive	Failed	PythonExecution	NameError: name '_undefined' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testString	Failed	PythonExecution	NameError: name '_undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testAny	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testAnyN	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testIface	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testIfaceChild	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testPrimitive	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses$UnboxGenericParameter$ObjectLiteral > testString	Failed	PythonExecution	NameError: name 'INVOKE' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InnerClasses > testAllFilesPresentInInnerClasses	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InnerClasses > testCaptureThisAndOuter	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Invokedynamic > testAllFilesPresentInInvokedynamic	Succeeded		
