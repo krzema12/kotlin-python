@@ -1,0 +1,23 @@
+Test some lambdas and function references work.
+--- Kotlin code ---
+fun execute20(f: (Int) -> Int): Int = f(20)
+
+fun execute20Doubled() = execute20 { it + it }
+--- Python consumer ---
+from compiled import execute20, execute20Doubled
+
+print(execute20Doubled())
+
+
+def myPrinterAdder(x: int) -> int:
+    print(x)
+    return x + 1
+
+
+print(execute20(myPrinterAdder))
+print(execute20(lambda y: y + 123))
+--- Expected output ---
+40
+20
+21
+143

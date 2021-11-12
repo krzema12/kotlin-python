@@ -1,0 +1,9 @@
+Test to show that very simple stuff works.
+--- Kotlin code ---
+fun test() = 2 + 2
+--- Python consumer ---
+from compiled import test
+
+print(test())
+--- Expected output ---
+4
