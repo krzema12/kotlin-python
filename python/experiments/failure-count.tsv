@@ -1,7 +1,7 @@
 521	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
 462	NameError: name 'constructor' is not defined
-192	NameError: name '_undefined' is not defined
-190	NameError: name 'js' is not defined
+223	NameError: name 'INVOKE' is not defined
+192	NameError: name 'js' is not defined
 184	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 145	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 130	NameError: name 'EQ' is not defined
@@ -21,7 +21,6 @@
 36	SyntaxError: invalid syntax
 35	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 35	NameError: name 'kotlin_Double' is not defined
-33	NameError: name 'INVOKE' is not defined
 31	AttributeError: 'NoneType' object has no attribute 'append_uch40_k_'
 27	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
 26	NameError: name 'EXCLEQEQ' is not defined

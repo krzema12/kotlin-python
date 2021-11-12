@@ -12799,7 +12799,7 @@ def CompletedContinuation_getInstance():
     return CompletedContinuation_instance
 
 def Exception_init__Init_(_this):
-    extendThrowable(_this, _undefined(), _undefined())
+    extendThrowable(_this, None, None)
     Exception.__init__(_this)
     return _this
 
@@ -12809,7 +12809,7 @@ def Exception_init__Create_():
     return tmp
 
 def Exception_init__Init__0(message, _this):
-    extendThrowable(_this, message, _undefined())
+    extendThrowable(_this, message, None)
     Exception.__init__(_this)
     return _this
 
@@ -12829,7 +12829,7 @@ def Exception_init__Create__1(message, cause):
     return tmp
 
 def Exception_init__Init__2(cause, _this):
-    extendThrowable(_this, _undefined(), cause)
+    extendThrowable(_this, None, cause)
     Exception.__init__(_this)
     return _this
 
@@ -12862,7 +12862,7 @@ class Exception(Error):
     
 
 def Error_init__Init_(_this):
-    extendThrowable(_this, _undefined(), _undefined())
+    extendThrowable(_this, None, None)
     Error_0.__init__(_this)
     return _this
 
@@ -12872,7 +12872,7 @@ def Error_init__Create_():
     return tmp
 
 def Error_init__Init__0(message, _this):
-    extendThrowable(_this, message, _undefined())
+    extendThrowable(_this, message, None)
     Error_0.__init__(_this)
     return _this
 
@@ -12892,7 +12892,7 @@ def Error_init__Create__1(message, cause):
     return tmp
 
 def Error_init__Init__2(cause, _this):
-    extendThrowable(_this, _undefined(), cause)
+    extendThrowable(_this, None, cause)
     Error_0.__init__(_this)
     return _this
 

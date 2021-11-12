@@ -432,9 +432,9 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
                     keywords = emptyList(),
                 )
             }
-//            add(intrinsics.jsUndefined) { _, _ ->
-//                JsPrefixOperation(JsUnaryOperator.VOID, JsIntLiteral(1))
-//            }
+            add(intrinsics.jsUndefined) { _, _ ->
+                Name(identifier("None"), Load)
+            }
         }
     }
 
