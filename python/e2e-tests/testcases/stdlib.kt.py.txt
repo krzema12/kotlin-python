@@ -1,0 +1,11 @@
+Examples of which Kotlin stdlib methods are supported.
+--- Kotlin code ---
+import kotlin.math.absoluteValue
+
+fun test1_absoluteValue() = (-123).absoluteValue
+--- Python consumer ---
+from compiled import test1_absoluteValue
+
+print(test1_absoluteValue())
+--- Expected output ---
+123

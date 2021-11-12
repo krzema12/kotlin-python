@@ -1,8 +1,5 @@
-/*
- * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
- * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
- */
-
+Test that multiple constructors in Kotlin code are compiled to Python and can be called properly.
+--- Kotlin code ---
 var s = "abc"
 
 class MultiConstructors1(a: Int) {
@@ -87,3 +84,35 @@ class ChildClass : BaseClass {
 fun child() {
     ChildClass(123)
 }
+--- Python consumer ---
+from compiled import multi11, multi12, multi21, multi22, multi31, multi32, multi33, child
+import compiled
+
+multi11()
+print(compiled.s)
+multi12()
+print(compiled.s)
+
+multi21()
+print(compiled.s)
+multi22()
+print(compiled.s)
+
+multi31()
+print(compiled.s)
+multi32()
+print(compiled.s)
+multi33()
+print(compiled.s)
+
+child()
+print(compiled.s)
+--- Expected output ---
+body 11
+body 12
+body 21
+body 22
+body 31
+body 32
+body 33
+body child

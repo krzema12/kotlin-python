@@ -71,4 +71,3 @@ outTmp/
 __pycache__/
 /test.output
 /kotlin-native/dist
-python/e2e-tests/output.*
