@@ -347,21 +347,83 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
     }
 
     override fun visitDynamicMemberExpression(expression: IrDynamicMemberExpression, data: JsGenerationContext): expr {
-        // TODO
-        return Call(
-            func = Name(id = identifier(expression.memberName.toValidPythonSymbol()), ctx = Load),
-            args = listOf(visitExpression(expression.receiver, data)),
-            keywords = emptyList(),
+        return Attribute(
+            expression.receiver.accept(this, data),
+            identifier(expression.memberName.toValidPythonSymbol()),
+            Load,
         )
     }
 
     override fun visitDynamicOperatorExpression(expression: IrDynamicOperatorExpression, data: JsGenerationContext): expr {
-        // TODO
-        return Call(
-            func = Name(id = identifier(expression.operator.toString().toValidPythonSymbol()), ctx = Load),
-            args = listOf(visitExpression(expression.receiver, data)) + expression.arguments.map { visitExpression(it, data) },
-            keywords = emptyList(),
-        )
+        fun prefixOperation(op: unaryop, expression: IrDynamicOperatorExpression, data: JsGenerationContext) =
+            UnaryOp(op, expression.receiver.accept(this, data))
+
+        fun binaryOperation(op: operator, expression: IrDynamicOperatorExpression, data: JsGenerationContext) =
+            BinOp(expression.left.accept(this, data), op, expression.right.accept(this, data))
+
+        fun binaryOperation(op: cmpop, expression: IrDynamicOperatorExpression, data: JsGenerationContext) =
+            Compare(expression.left.accept(this, data), listOf(op), listOf(expression.right.accept(this, data)))
+
+        fun binaryOperation(op: boolop, expression: IrDynamicOperatorExpression, data: JsGenerationContext) =
+            BoolOp(op, listOf(expression.left.accept(this, data), expression.right.accept(this, data)))
+
+        return when (expression.operator) {
+            IrDynamicOperator.UNARY_PLUS -> prefixOperation(UAdd, expression, data)
+            IrDynamicOperator.UNARY_MINUS -> prefixOperation(USub, expression, data)
+
+            IrDynamicOperator.EXCL -> prefixOperation(Not, expression, data)
+
+//            IrDynamicOperator.PREFIX_INCREMENT -> prefixOperation(JsUnaryOperator.INC, expression, data)
+//            IrDynamicOperator.PREFIX_DECREMENT -> prefixOperation(JsUnaryOperator.DEC, expression, data)
+//
+//            IrDynamicOperator.POSTFIX_INCREMENT -> postfixOperation(JsUnaryOperator.INC, expression, data)
+//            IrDynamicOperator.POSTFIX_DECREMENT -> postfixOperation(JsUnaryOperator.DEC, expression, data)
+
+            IrDynamicOperator.BINARY_PLUS -> binaryOperation(Add, expression, data)
+            IrDynamicOperator.BINARY_MINUS -> binaryOperation(Sub, expression, data)
+            IrDynamicOperator.MUL -> binaryOperation(Mult, expression, data)
+            IrDynamicOperator.DIV -> binaryOperation(Div, expression, data)
+            IrDynamicOperator.MOD -> binaryOperation(Mod, expression, data)
+
+            IrDynamicOperator.GT -> binaryOperation(Gt, expression, data)
+            IrDynamicOperator.LT -> binaryOperation(Lt, expression, data)
+            IrDynamicOperator.GE -> binaryOperation(GtE, expression, data)
+            IrDynamicOperator.LE -> binaryOperation(LtE, expression, data)
+
+            IrDynamicOperator.EQEQ -> binaryOperation(Eq, expression, data)
+            IrDynamicOperator.EXCLEQ -> binaryOperation(NotEq, expression, data)
+
+            IrDynamicOperator.EQEQEQ -> binaryOperation(Is, expression, data)
+            IrDynamicOperator.EXCLEQEQ -> binaryOperation(IsNot, expression, data)
+
+            IrDynamicOperator.ANDAND -> binaryOperation(And, expression, data)
+            IrDynamicOperator.OROR -> binaryOperation(Or, expression, data)
+
+//            IrDynamicOperator.EQ -> binaryOperation(JsBinaryOperator.ASG, expression, data)
+//            IrDynamicOperator.PLUSEQ -> binaryOperation(JsBinaryOperator.ASG_ADD, expression, data)
+//            IrDynamicOperator.MINUSEQ -> binaryOperation(JsBinaryOperator.ASG_SUB, expression, data)
+//            IrDynamicOperator.MULEQ -> binaryOperation(JsBinaryOperator.ASG_MUL, expression, data)
+//            IrDynamicOperator.DIVEQ -> binaryOperation(JsBinaryOperator.ASG_DIV, expression, data)
+//            IrDynamicOperator.MODEQ -> binaryOperation(JsBinaryOperator.ASG_MOD, expression, data)
+
+            IrDynamicOperator.ARRAY_ACCESS -> Subscript(
+                value = expression.left.accept(this, data),
+                slice = expression.right.accept(this, data),
+                ctx = Load,
+            )
+
+            IrDynamicOperator.INVOKE -> Call(
+                func = expression.receiver.accept(this, data),
+                args = expression.arguments.map { it.accept(this, data) },
+                keywords = emptyList(),
+            )
+
+            else -> Call(
+                func = Name(id = identifier("Unexpected operator ${expression.operator}".toValidPythonSymbol()), ctx = Load),
+                args = listOf(visitExpression(expression.receiver, data)) + expression.arguments.map { visitExpression(it, data) },
+                keywords = emptyList(),
+            )
+        }
     }
 
     override fun visitComposite(expression: IrComposite, data: JsGenerationContext): expr {

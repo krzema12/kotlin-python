@@ -12,7 +12,7 @@ import generated.Python.Set
 fun expr.toPython(): String {
     return when (this) {
         is Name -> toPython()
-        is BoolOp -> TODO()
+        is BoolOp -> toPython()
         is NamedExpr -> TODO()
         is BinOp -> toPython()
         is UnaryOp -> toPython()
@@ -59,6 +59,9 @@ private fun expr.surroundIfNeeded(forceEvaluate: Boolean = false) = when (needsP
 
 fun Name.toPython() =
     id.name
+
+fun BoolOp.toPython() =
+    values.joinToString(" ${op.toPython()} ") { it.surroundIfNeeded() }
 
 fun BinOp.toPython() =
     "${left.surroundIfNeeded()} ${op.toPython()} ${right.surroundIfNeeded()}"

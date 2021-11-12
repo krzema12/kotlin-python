@@ -2104,7 +2104,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testConversions FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testEqualsHashCodeToString FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testIncrementByteCharShort FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt1093 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt13023 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt14868 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testKt16732 FAILED
@@ -2133,7 +2132,6 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testStringEqualsHashCodeToString FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes > testUnboxComparable FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject > testBoxedLongEqualsLong FAILED
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject > testIntEqualsNull FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject > testIntEqualsNullableIntWithSmartCasts FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject > testKt42281 FAILED
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject > testObjectWithAsymmetricEqualsEqPrimitive FAILED
