@@ -26,5 +26,8 @@ for testcaseFile in python/e2e-tests/testcases/*.kt.py.txt; do
 
     echo "  Comparing actual and expected output..."
     diff -u python/e2e-tests/out/expected-output.txt python/e2e-tests/out/output.txt
+
+    echo "===== Finished with '$testName' ====="
 done
 
+echo "All done"
