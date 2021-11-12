@@ -73,8 +73,6 @@ abstract class BasicIrBoxTest(
         doTest(filePath, "OK", pars)
     }
 
-    private val testChecker get() = PythonTestChecker
-
     private val compilationCache = mutableMapOf<String, String>()
 
     private val cachedDependencies = mutableMapOf<String, Collection<String>>()
@@ -159,9 +157,7 @@ abstract class BasicIrBoxTest(
                     targetFile.absolutePath
                 }
 
-            val additionalFiles = mutableListOf<String>()
-
-            val allPyFiles = additionalFiles + inputPyFiles + generatedPyFiles.map { (outputFileName, _) -> outputFileName }
+            val allPyFiles = inputPyFiles + generatedPyFiles.map { (outputFileName, _) -> outputFileName }
 
             val skipRunningGeneratedCode = InTextDirectivesUtils.dontRunGeneratedCode(pythonBackend, file)
 
@@ -508,7 +504,7 @@ abstract class BasicIrBoxTest(
         // TODO: return list of js from translateFiles and provide then to this function with other js files
 
         val allFiles = jsFiles.flatMap { file -> cachedDependencies[File(file).absolutePath]?.let { deps -> deps + file } ?: listOf(file) }
-        testChecker.check(allFiles, expectedResult)
+        PythonTestChecker.check(allFiles, expectedResult)
     }
 
     companion object {

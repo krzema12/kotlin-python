@@ -13,19 +13,16 @@ import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 import kotlin.system.measureTimeMillis
 
-abstract class AbstractPyTestChecker {
+class PythonExecutionException(override val message: String) : RuntimeException(message)
+
+object PythonTestChecker {
+
     fun check(files: List<String>, expectedResult: String) {
         val actualResult = run(files)
         assertEquals(expectedResult, actualResult)
     }
 
-    protected abstract fun run(files: List<String>): Any
-}
-
-class PythonExecutionException(override val message: String) : RuntimeException(message)
-
-object PythonTestChecker : AbstractPyTestChecker() {
-    override fun run(files: List<String>): Any {
+    private fun run(files: List<String>): Any {
         assert(files.size == 1) { "For now the test checker supports a single output from the compiler!" }
         val fileToRun = files[0]
         val pathToFileToRun = Paths.get(fileToRun)
