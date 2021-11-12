@@ -1,30 +1,34 @@
 521	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
-462	NameError: name 'constructor' is not defined
-223	NameError: name 'INVOKE' is not defined
-192	NameError: name 'js' is not defined
+413	NameError: name 'js' is not defined
+269	AttributeError: 'Companion_19' object has no attribute 'constructor'
 184	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-145	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
-130	NameError: name 'EQ' is not defined
+159	NameError: name 'Unexpected_operator_EQ' is not defined
+150	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 88	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 78	NameError: name 'kotlin_Boolean' is not defined
 73	java.lang.IllegalStateException: Can't find compiled module for dependency <path-truncated>
 72	NameError: name 'undefined' is not defined
 70	NameError: name 'Array' is not defined
-68	NameError: name 'EQEQ' is not defined
 67	AttributeError: 'int' object has no attribute 'data'
 67	NameError: name 'kotlin_Any_' is not defined
 46	NameError: name 'kotlin_String' is not defined
 45	NameError: name 'kotlin_Int' is not defined
 44	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
 42	TypeError: 'NoneType' object is not callable
+41	NameError: name 'kotlin_Any' is not defined
+39	AttributeError: '_no_name_provided__11' object has no attribute 'constructor'
 39	NameError: name 'kotlin_UInt' is not defined
 36	SyntaxError: invalid syntax
 35	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 35	NameError: name 'kotlin_Double' is not defined
 31	AttributeError: 'NoneType' object has no attribute 'append_uch40_k_'
 27	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
-26	NameError: name 'EXCLEQEQ' is not defined
+26	AttributeError: 'ArrayAsCollection' object has no attribute 'toArray'
+24	AttributeError: '_no_name_provided__10' object has no attribute 'constructor'
+23	AttributeError: 'CheckStateMachineContinuation' object has no attribute 'constructor'
+23	AttributeError: '_no_name_provided__1_2' object has no attribute 'constructor'
 23	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
+21	AttributeError: 'Companion_23' object has no attribute 'constructor'
 20	TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 19	RecursionError: maximum recursion depth exceeded
 19	UnboundLocalError: local variable 'test1' referenced before assignment
@@ -34,6 +38,7 @@
 16	NameError: name 'kotlin_Result_T_' is not defined
 16	TypeError: unsupported operand type(s) for +: 'NoneType' and 'NoneType'
 15	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
+14	AttributeError: '_no_name_provided__12' object has no attribute 'constructor'
 14	TypeError: can only concatenate str (not "int") to str
 12	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' is not defined
 12	TypeError: __init__() takes 1 positional argument but 2 were given
@@ -51,6 +56,7 @@
 7	NameError: name 'Result_T_' is not defined
 7	NameError: name 'kotlin_UByte' is not defined
 7	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1]>
+6	AttributeError: 'C' object has no attribute 'constructor'
 6	AttributeError: 'M' object has no attribute 'i'
 6	NameError: name 'kotlin_Long' is not defined
 6	TypeError: unsupported operand type(s) for +: 'M' and 'int'
@@ -58,12 +64,12 @@
 6	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: 1:2;]>
 5	AttributeError: 'NoneType' object has no attribute 'getValue_1kobyo_k_'
 5	AttributeError: 'float' object has no attribute '__and__'
-5	NameError: name 'callableName' is not defined
 5	NameError: name 'test_A' is not defined
 5	TypeError: can only concatenate str (not "NoneType") to str
 5	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail: None]>
 5	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: None]>
 4	AttributeError: 'Companion_20' object has no attribute 'getO_0_k_'
+4	AttributeError: 'SequenceBuilderIterator' object has no attribute 'constructor'
 4	NameError: name 'Infinity' is not defined
 4	NameError: name 'T' is not defined
 4	NameError: name 'kotlin_ULong' is not defined
@@ -78,14 +84,17 @@
 4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<compiled_module.A object at [address]>]>
 4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 1]>
 4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1 A.foo]>
+3	AttributeError: 'EmptyContinuation_0' object has no attribute 'constructor'
 3	AttributeError: 'Foo' object has no attribute 'bar'
+3	AttributeError: 'Impl' object has no attribute 'constructor'
+3	AttributeError: 'NoneType' object has no attribute 'constructor'
 3	AttributeError: 'NoneType' object has no attribute 'getValue_d8h4ck_k_'
 3	AttributeError: 'NoneType' object has no attribute 'iterator_0_k_'
 3	AttributeError: 'NoneType' object has no attribute 'string'
+3	AttributeError: '_no_name_provided__9' object has no attribute 'constructor'
 3	AttributeError: 'int' object has no attribute 'toDouble_0_k_'
 3	MemoryError
 3	NameError: name 'Foo_T_' is not defined
-3	NameError: name 'kotlin_Any' is not defined
 3	NameError: name 'kotlin_Double_' is not defined
 3	NameError: name 'translateCallArguments_1' is not defined
 3	NameError: name 'translateCallArguments_2' is not defined
@@ -99,11 +108,16 @@
 3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail #1]>
 3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail #2]>
 3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail1: None]>
+2	AttributeError: 'A' object has no attribute 'constructor'
+2	AttributeError: 'BImpl' object has no attribute 'constructor'
+2	AttributeError: 'D' object has no attribute 'constructor'
+2	AttributeError: 'EmptyMap' object has no attribute 'constructor'
 2	AttributeError: 'NoneType' object has no attribute '__setitem__'
 2	AttributeError: 'NoneType' object has no attribute '_get_first__sv9k7v_k_'
 2	AttributeError: 'NoneType' object has no attribute 'get_ha5a7z_k_'
+2	AttributeError: 'NotEmptyMap' object has no attribute 'constructor'
+2	AttributeError: '_no_name_provided__2_8_0' object has no attribute 'constructor'
 2	AttributeError: 'tuple' object has no attribute '__setitem__'
-2	NameError: name 'UNARY_PLUS' is not defined
 2	NameError: name 'Value_' is not defined
 2	NameError: name 'kotlin_UShort' is not defined
 2	NameError: name 'test_Inner_kotlin_String_kotlin_String_' is not defined
@@ -117,6 +131,7 @@
 2	TypeError: 'NoneType' object is not subscriptable
 2	TypeError: __init__() missing 1 required positional argument: 'ordinal'
 2	TypeError: __init__() takes 2 positional arguments but 4 were given
+2	TypeError: bad operand type for unary +: 'str'
 2	UnboundLocalError: local variable 'invokeOnA' referenced before assignment
 2	java.lang.IllegalStateException: TYPE_MISMATCH: Type mismatch: inferred type is String but Int was expected (6,37) in <path-truncated>
 2	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: Pair (6,36) in <path-truncated>
@@ -137,7 +152,9 @@
 2	org.junit.ComparisonFailure: expected:<[]OK> but was:<[fail: ]OK>
 1	AttributeError: 'A' object has no attribute 'foo_0_k_'
 1	AttributeError: 'A' object has no attribute 's'
+1	AttributeError: 'B' object has no attribute 'constructor'
 1	AttributeError: 'B' object has no attribute 'y'
+1	AttributeError: 'Base' object has no attribute 'constructor'
 1	AttributeError: 'C' object has no attribute '_get_a__0_k_'
 1	AttributeError: 'ClassB' object has no attribute 'invoke_1r174_k_'
 1	AttributeError: 'Companion_17' object has no attribute 'K'
@@ -149,11 +166,16 @@
 1	AttributeError: 'Companion_20' object has no attribute 'getOK_0_k_'
 1	AttributeError: 'Companion_20' object has no attribute 'vo'
 1	AttributeError: 'Companion_23' object has no attribute 'vo'
+1	AttributeError: 'CompositePhase' object has no attribute 'constructor'
 1	AttributeError: 'Derived' object has no attribute 'p'
+1	AttributeError: 'EmptyList' object has no attribute 'constructor'
+1	AttributeError: 'EmptyStringMap' object has no attribute 'constructor'
 1	AttributeError: 'Foo' object has no attribute 'foo'
 1	AttributeError: 'Foo' object has no attribute 'p'
 1	AttributeError: 'FooImpl' object has no attribute 'x'
+1	AttributeError: 'FunDependencyEdgeImpl' object has no attribute 'constructor'
 1	AttributeError: 'Handler' object has no attribute 'path'
+1	AttributeError: 'InlineTrait' object has no attribute 'constructor'
 1	AttributeError: 'Inner' object has no attribute 'value'
 1	AttributeError: 'N' object has no attribute 'b'
 1	AttributeError: 'NoneType' object has no attribute '_get_first__0_k_'
@@ -179,10 +201,18 @@
 1	AttributeError: 'NoneType' object has no attribute 'test_0_k_'
 1	AttributeError: 'NoneType' object has no attribute 'value'
 1	AttributeError: 'NoneType' object has no attribute 'x'
+1	AttributeError: 'NotEmptyList' object has no attribute 'constructor'
 1	AttributeError: 'Test' object has no attribute '__add__'
+1	AttributeError: 'Test' object has no attribute 'constructor'
 1	AttributeError: 'UIntArray' object has no attribute 'intArray'
+1	AttributeError: 'Y' object has no attribute 'constructor'
 1	AttributeError: 'Z' object has no attribute '__add__'
+1	AttributeError: 'Z' object has no attribute 'constructor'
 1	AttributeError: 'Z2' object has no attribute 'p'
+1	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
+1	AttributeError: '_no_name_provided__19' object has no attribute 'constructor'
+1	AttributeError: '_no_name_provided__20' object has no attribute 'constructor'
+1	AttributeError: '_no_name_provided__21' object has no attribute 'constructor'
 1	AttributeError: '_no_name_provided__9' object has no attribute 'foo_default_nmiqce_k_'
 1	AttributeError: 'bool' object has no attribute 'toString'
 1	AttributeError: 'int' object has no attribute 'hashCode'
@@ -223,6 +253,7 @@
 1	TypeError: _UIntArray___init__impl_() takes 1 positional argument but 3 were given
 1	TypeError: __init__() takes 2 positional arguments but 5 were given
 1	TypeError: can only concatenate str (not "A") to str
+1	TypeError: complexFunction_x4__Assign__Assign__Expr__Expr__0() takes 0 positional arguments but 1 was given
 1	TypeError: isArray() missing 1 required positional argument: 'obj'
 1	TypeError: len() takes exactly one argument (0 given)
 1	TypeError: len() takes exactly one argument (4 given)
