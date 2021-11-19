@@ -20,7 +20,6 @@ import org.jetbrains.kotlin.config.*
 import org.jetbrains.kotlin.idea.KotlinFileType
 import org.jetbrains.kotlin.incremental.js.IncrementalResultsConsumerImpl
 import org.jetbrains.kotlin.ir.backend.js.prepareAnalyzedSourceModule
-import org.jetbrains.kotlin.ir.backend.py.CompilerResult
 import org.jetbrains.kotlin.ir.backend.py.PyCode
 import org.jetbrains.kotlin.ir.backend.py.compile
 import org.jetbrains.kotlin.ir.backend.py.jsPhases
@@ -441,7 +440,7 @@ abstract class BasicIrBoxTest(
             )
 
             var compilationException: Throwable? = null
-            val compiledModuleWithDuration: Pair<Long, CompilerResult?> = measureTimeMillisWithResult {
+            val (duration, compiledModule) = measureTimeMillisWithResult {
                 try {
                     compile(
                         module,
@@ -458,14 +457,13 @@ abstract class BasicIrBoxTest(
                     null
                 }
             }
-            val compilationTimeMessage = "Kotlin compilation time: ${compiledModuleWithDuration.first} ms"
 
             compilationException?.let {
+                val compilationTimeMessage = "Kotlin compilation time: $duration ms"
                 throw KotlinCompilationException(compilationTimeMessage, it)
             }
-            val compiledModule = compiledModuleWithDuration.second!!
 
-            compiledModule.pyCode!!.writeTo(outputFile)
+            compiledModule!!.pyCode!!.writeTo(outputFile)
         } else {
             TODO()
         }
