@@ -3,7 +3,7 @@
  * that can be found in the LICENSE file.
  */
 
-import kotlin.browser.*
+import kotlinx.browser.*
 import org.w3c.fetch.*
 import org.jetbrains.report.json.*
 import org.jetbrains.buildInfo.Build
@@ -336,7 +336,12 @@ fun main(args: Array<String>) {
                 mapOf(
                         "normalize" to "true",
                         "exclude" to unstableBenchmarks.joinToString(",")
-                )),
+                ),
+                mapOf(
+                        "normalize" to "true",
+                        "buildSuffix" to "(NewMM)"
+                )
+                ),
                 "COMPILE_TIME" to listOf(mapOf(
                         "samples" to "HelloWorld,Videoplayer$platformSpecificBenchs",
                         "agr" to "samples"
@@ -418,7 +423,7 @@ fun main(args: Array<String>) {
                         execData = labels to values
                         execChart = Chartist.Line("#exec_chart",
                                 getChartData(labels, execData.second),
-                                getChartOptions(arrayOf("Geometric Mean (All)", "Geometric mean (Stable)"),
+                                getChartOptions(arrayOf("Geometric Mean (All)", "Geometric mean (Stable)", "Geometric mean (New MM)"),
                                         "Normalized time"))
                         buildsInfoPromise.then { builds ->
                             customizeChart(execChart, "exec_chart", js("$(\"#exec_chart\")"), builds, parameters)

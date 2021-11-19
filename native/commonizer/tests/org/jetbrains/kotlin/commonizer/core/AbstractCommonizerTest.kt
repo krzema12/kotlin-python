@@ -28,8 +28,8 @@ abstract class AbstractCommonizerTest<T, R> {
         check(variants.isNotEmpty())
 
         val commonized = createCommonizer().apply {
-            variants.forEach {
-                assertTrue(commonizeWith(it))
+            variants.forEachIndexed { index, value ->
+                assertTrue(commonizeWith(value), "Expected successful commonization, but failed at index $index ($value)")
             }
         }
 
@@ -48,7 +48,8 @@ abstract class AbstractCommonizerTest<T, R> {
         val commonized = createCommonizer().apply {
             variants.forEachIndexed { index, variant ->
                 val result = commonizeWith(variant)
-                if (index >= failureIndex) assertFalse(result) else assertTrue(result)
+                if (index >= failureIndex) assertFalse(result, "Expected to fail at index $index")
+                else assertTrue(result, "Expected to not fail at index $index")
             }
         }
 

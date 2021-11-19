@@ -1,4 +1,4 @@
-// !WITH_NEW_INFERENCE
+// COMPARE_WITH_LIGHT_TREE
 //KT-328 Local function in function literals cause exceptions
 
 fun bar1() = {

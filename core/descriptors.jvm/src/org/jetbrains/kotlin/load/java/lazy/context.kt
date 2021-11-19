@@ -40,7 +40,6 @@ import org.jetbrains.kotlin.resolve.sam.SamConversionResolver
 import org.jetbrains.kotlin.serialization.deserialization.ErrorReporter
 import org.jetbrains.kotlin.storage.StorageManager
 import org.jetbrains.kotlin.types.checker.NewKotlinTypeChecker
-import org.jetbrains.kotlin.utils.JavaTypeEnhancementState
 
 class JavaResolverComponents(
     val storageManager: StorageManager,
@@ -84,6 +83,7 @@ interface JavaResolverSettings {
     val isReleaseCoroutines: Boolean
     val correctNullabilityForNotNullTypeParameter: Boolean
     val typeEnhancementImprovementsInStrictMode: Boolean
+    val ignoreNullabilityForErasedValueParameters: Boolean
 
     object Default : JavaResolverSettings {
         override val isReleaseCoroutines: Boolean
@@ -94,18 +94,23 @@ interface JavaResolverSettings {
 
         override val typeEnhancementImprovementsInStrictMode: Boolean
             get() = false
+
+        override val ignoreNullabilityForErasedValueParameters: Boolean
+            get() = false
     }
 
     companion object {
         fun create(
             isReleaseCoroutines: Boolean,
             correctNullabilityForNotNullTypeParameter: Boolean,
-            typeEnhancementImprovementsInStrictMode: Boolean
+            typeEnhancementImprovementsInStrictMode: Boolean,
+            ignoreNullabilityForErasedValueParameters: Boolean
         ): JavaResolverSettings =
             object : JavaResolverSettings {
                 override val isReleaseCoroutines get() = isReleaseCoroutines
                 override val correctNullabilityForNotNullTypeParameter get() = correctNullabilityForNotNullTypeParameter
                 override val typeEnhancementImprovementsInStrictMode get() = typeEnhancementImprovementsInStrictMode
+                override val ignoreNullabilityForErasedValueParameters get() = ignoreNullabilityForErasedValueParameters
             }
     }
 }

@@ -12,17 +12,18 @@ import org.jetbrains.kotlin.fir.resolve.fullyExpandedType
 import org.jetbrains.kotlin.fir.resolve.substitution.AbstractConeSubstitutor
 import org.jetbrains.kotlin.fir.resolve.toSymbol
 import org.jetbrains.kotlin.fir.typeContext
-import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.fir.types.impl.*
 import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.IrTypeArgument
+import org.jetbrains.kotlin.ir.types.IrTypeProjection
 import org.jetbrains.kotlin.ir.types.impl.IrSimpleTypeImpl
 import org.jetbrains.kotlin.ir.types.impl.IrStarProjectionImpl
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.name.ClassId
+import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.types.TypeApproximatorConfiguration
 import org.jetbrains.kotlin.types.Variance
 
@@ -30,7 +31,7 @@ class Fir2IrTypeConverter(
     private val components: Fir2IrComponents
 ) : Fir2IrComponents by components {
 
-    internal val classIdToSymbolMap = mapOf(
+    internal val classIdToSymbolMap by lazy { mapOf(
         StandardClassIds.Nothing to irBuiltIns.nothingClass,
         StandardClassIds.Unit to irBuiltIns.unitClass,
         StandardClassIds.Boolean to irBuiltIns.booleanClass,
@@ -44,9 +45,9 @@ class Fir2IrTypeConverter(
         StandardClassIds.Double to irBuiltIns.doubleClass,
         StandardClassIds.Char to irBuiltIns.charClass,
         StandardClassIds.Array to irBuiltIns.arrayClass
-    )
+    )}
 
-    internal val classIdToTypeMap = mapOf(
+    internal val classIdToTypeMap by lazy { mapOf(
         StandardClassIds.Nothing to irBuiltIns.nothingType,
         StandardClassIds.Unit to irBuiltIns.unitType,
         StandardClassIds.Boolean to irBuiltIns.booleanType,
@@ -59,7 +60,7 @@ class Fir2IrTypeConverter(
         StandardClassIds.Float to irBuiltIns.floatType,
         StandardClassIds.Double to irBuiltIns.doubleType,
         StandardClassIds.Char to irBuiltIns.charType
-    )
+    )}
 
     private val capturedTypeCache = mutableMapOf<ConeCapturedType, IrType>()
     private val errorTypeForCapturedTypeStub by lazy { createErrorType() }
@@ -134,14 +135,12 @@ class Fir2IrTypeConverter(
             is ConeCapturedType -> {
                 val cached = capturedTypeCache[this]
                 if (cached == null) {
-                    val irType = lowerType?.toIrType(typeContext) ?: run {
-                        capturedTypeCache[this] = errorTypeForCapturedTypeStub
-                        val supertypes = constructor.supertypes!!
-                        val approximation = supertypes.find {
-                            it == (constructor.projection as? ConeKotlinTypeProjection)?.type
-                        } ?: supertypes.first()
-                        approximation.toIrType(typeContext)
-                    }
+                    capturedTypeCache[this] = errorTypeForCapturedTypeStub
+                    val supertypes = constructor.supertypes!!
+                    val approximation = supertypes.find {
+                        it == (constructor.projection as? ConeKotlinTypeProjection)?.type
+                    } ?: supertypes.first()
+                    val irType = approximation.toIrType(typeContext)
                     capturedTypeCache[this] = irType
                     irType
                 } else {
@@ -164,16 +163,16 @@ class Fir2IrTypeConverter(
     }
 
     private fun ConeTypeProjection.toIrTypeArgument(typeContext: ConversionTypeContext): IrTypeArgument {
+        fun toIrTypeArgument(type: ConeKotlinType, variance: Variance): IrTypeProjection {
+            val irType = type.toIrType(typeContext)
+            return makeTypeProjection(irType, if (typeContext.invariantProjection) Variance.INVARIANT else variance)
+        }
+
         return when (this) {
             ConeStarProjection -> IrStarProjectionImpl
-            is ConeKotlinTypeProjectionIn -> {
-                val irType = this.type.toIrType(typeContext)
-                makeTypeProjection(irType, if (typeContext.invariantProjection) Variance.INVARIANT else Variance.IN_VARIANCE)
-            }
-            is ConeKotlinTypeProjectionOut -> {
-                val irType = this.type.toIrType(typeContext)
-                makeTypeProjection(irType, if (typeContext.invariantProjection) Variance.INVARIANT else Variance.OUT_VARIANCE)
-            }
+            is ConeKotlinTypeProjectionIn -> toIrTypeArgument(this.type, Variance.IN_VARIANCE)
+            is ConeKotlinTypeProjectionOut -> toIrTypeArgument(this.type, Variance.OUT_VARIANCE)
+            is ConeKotlinTypeConflictingProjection -> toIrTypeArgument(this.type, Variance.INVARIANT)
             is ConeKotlinType -> {
                 if (this is ConeCapturedType && this in capturedTypeCache && this.isRecursive(mutableSetOf())) {
                     // Recursive captured type, e.g., Recursive<R> where R : Recursive<R>, ...
@@ -229,7 +228,7 @@ class Fir2IrTypeConverter(
 
     private fun approximateType(type: ConeKotlinType): ConeKotlinType {
         if (type is ConeClassLikeType && type.typeArguments.isEmpty()) return type
-        val substitutor = object : AbstractConeSubstitutor() {
+        val substitutor = object : AbstractConeSubstitutor(session.typeContext) {
             override fun substituteType(type: ConeKotlinType): ConeKotlinType? {
                 return if (type is ConeIntersectionType) {
                     type.alternativeType?.let { substituteOrSelf(it) }

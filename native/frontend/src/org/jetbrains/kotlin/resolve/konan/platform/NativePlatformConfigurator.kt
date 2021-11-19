@@ -13,26 +13,26 @@ import org.jetbrains.kotlin.descriptors.CallableMemberDescriptor
 import org.jetbrains.kotlin.psi.KtCallableDeclaration
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.PlatformConfiguratorBase
+import org.jetbrains.kotlin.resolve.calls.checkers.InstantiationOfAnnotationClassesCallChecker
 import org.jetbrains.kotlin.resolve.calls.checkers.TypeOfChecker
 import org.jetbrains.kotlin.resolve.checkers.ExpectedActualDeclarationChecker
 import org.jetbrains.kotlin.resolve.inline.ReasonableInlineRule
 import org.jetbrains.kotlin.resolve.jvm.checkers.SuperCallWithDefaultArgumentsChecker
-import org.jetbrains.kotlin.resolve.konan.diagnostics.NativeSharedImmutableChecker
-import org.jetbrains.kotlin.resolve.konan.diagnostics.NativeThreadLocalChecker
-import org.jetbrains.kotlin.resolve.konan.diagnostics.NativeThrowsChecker
-import org.jetbrains.kotlin.resolve.konan.diagnostics.NativeTopLevelSingletonChecker
+import org.jetbrains.kotlin.resolve.konan.diagnostics.*
 
 object NativePlatformConfigurator : PlatformConfiguratorBase(
     additionalCallCheckers = listOf(
         SuperCallWithDefaultArgumentsChecker(),
+        InstantiationOfAnnotationClassesCallChecker
     ),
     additionalDeclarationCheckers = listOf(
         NativeThrowsChecker, NativeSharedImmutableChecker,
         NativeTopLevelSingletonChecker, NativeThreadLocalChecker
     )
 ) {
-    override fun configureModuleComponents(container: StorageComponentContainer, languageVersionSettings: LanguageVersionSettings) {
+    override fun configureModuleComponents(container: StorageComponentContainer) {
         container.useInstance(NativeInliningRule)
+        container.useImpl<NativeIdentifierChecker>()
     }
 
     override fun configureModuleDependentCheckers(container: StorageComponentContainer) {

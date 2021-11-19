@@ -113,6 +113,11 @@ sealed class StubOrigin {
          * E.CEnumVar.value.
          */
         class EnumVarValueField(val enum: EnumDef) : Synthetic()
+
+        /**
+         * Other synthetic values.
+         */
+        object ManagedTypeDetails : StubOrigin()
     }
 
     class ObjCCategoryInitMethod(
@@ -197,6 +202,7 @@ sealed class AnnotationStub(val classifier: Classifier) {
         object CString : CCall(cCallClassifier.nested("CString"))
         object WCString : CCall(cCallClassifier.nested("WCString"))
         class Symbol(val symbolName: String) : CCall(cCallClassifier)
+        object CppClassConstructor : CCall(cCallClassifier.nested("CppClassConstructor"))
     }
 
     class CStruct(val struct: String) : AnnotationStub(cStructClassifier) {
@@ -207,6 +213,10 @@ sealed class AnnotationStub(val classifier: Classifier) {
         class BitField(val offset: Long, val size: Int) : AnnotationStub(cStructClassifier.nested("BitField"))
 
         class VarType(val size: Long, val align: Int) : AnnotationStub(cStructClassifier.nested("VarType"))
+
+        object ManagedType : AnnotationStub(cStructClassifier.nested("ManagedType"))
+
+        object CPlusPlusClass : AnnotationStub(cStructClassifier.nested("CPlusPlusClass"))
     }
 
     class CNaturalStruct(val members: List<StructMember>) :
@@ -232,6 +242,12 @@ sealed class AnnotationStub(val classifier: Classifier) {
 
             val deprecatedCEnumByValue = Deprecated(
                     "Will be removed.",
+                    "",
+                    DeprecationLevel.WARNING
+            )
+
+            val deprecatedObjCAlloc = Deprecated(
+                    "Use constructor or factory method instead",
                     "",
                     DeprecationLevel.WARNING
             )
@@ -315,11 +331,11 @@ sealed class ClassStub : StubContainer(), StubElementWithOrigin, AnnotationHolde
     abstract val companion : Companion?
     abstract val classifier: Classifier
 
-    class Simple(
+    open class Simple(
             override val classifier: Classifier,
             val modality: ClassStubModality,
-            constructors: List<ConstructorStub> = emptyList(),
-            methods: List<FunctionStub> = emptyList(),
+            val constructors: List<ConstructorStub> = emptyList(),
+            val methods: List<FunctionStub> = emptyList(),
             override val superClassInit: SuperClassInit? = null,
             override val interfaces: List<StubType> = emptyList(),
             override val properties: List<PropertyStub> = emptyList(),
@@ -334,7 +350,7 @@ sealed class ClassStub : StubContainer(), StubElementWithOrigin, AnnotationHolde
 
     class Companion(
             override val classifier: Classifier,
-            methods: List<FunctionStub> = emptyList(),
+            val methods: List<FunctionStub> = emptyList(),
             override val superClassInit: SuperClassInit? = null,
             override val interfaces: List<StubType> = emptyList(),
             override val properties: List<PropertyStub> = emptyList(),

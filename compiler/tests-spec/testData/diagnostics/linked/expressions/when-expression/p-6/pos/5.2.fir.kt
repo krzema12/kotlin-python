@@ -18,7 +18,7 @@ fun case_2(value_1: Number, value_2: Int) {
 
 // TESTCASE NUMBER: 3
 fun case_3(value_1: Boolean, value_2: Boolean, value_3: Long) {
-    when (value_1) {
+    <!NON_EXHAUSTIVE_WHEN_STATEMENT!>when<!> (value_1) {
         value_2, !value_2, getBoolean() && value_2, getChar() != 'a' -> {}
         getList() === getAny(), value_3 <= 11 -> {}
     }
@@ -225,8 +225,8 @@ fun case_23(value_1: Nothing) {
 
 // TESTCASE NUMBER: 24
 fun case_24(value_1: Nothing?) = when (value_1) {
-    throw Exception(), <!RETURN_IN_FUNCTION_WITH_EXPRESSION_BODY!>return<!> "" -> ""
-    null, <!RETURN_IN_FUNCTION_WITH_EXPRESSION_BODY!>return<!> <!RETURN_IN_FUNCTION_WITH_EXPRESSION_BODY!>return<!> <!RETURN_IN_FUNCTION_WITH_EXPRESSION_BODY!>return<!> "", throw throw throw Exception() -> ""
+    <!SENSELESS_COMPARISON!>throw Exception()<!>, <!SENSELESS_COMPARISON!><!RETURN_IN_FUNCTION_WITH_EXPRESSION_BODY!>return<!> ""<!> -> ""
+    <!SENSELESS_NULL_IN_WHEN!>null<!>, <!SENSELESS_COMPARISON!><!RETURN_IN_FUNCTION_WITH_EXPRESSION_BODY!>return<!> <!RETURN_IN_FUNCTION_WITH_EXPRESSION_BODY!>return<!> <!RETURN_IN_FUNCTION_WITH_EXPRESSION_BODY!>return<!> ""<!>, <!SENSELESS_COMPARISON!>throw throw throw Exception()<!> -> ""
     else -> ""
 }
 

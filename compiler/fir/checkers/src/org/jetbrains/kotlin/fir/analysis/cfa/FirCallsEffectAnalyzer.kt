@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.cfa.FirControlFlowChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors
+import org.jetbrains.kotlin.fir.analysis.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.contracts.FirContractDescription
 import org.jetbrains.kotlin.fir.contracts.coneEffects
 import org.jetbrains.kotlin.fir.contracts.description.ConeCallsEffectDeclaration
@@ -31,7 +32,6 @@ import org.jetbrains.kotlin.fir.references.FirThisReference
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.*
 import org.jetbrains.kotlin.fir.resolve.inference.isBuiltinFunctionalType
 import org.jetbrains.kotlin.fir.resolve.isInvoke
-import org.jetbrains.kotlin.fir.symbols.AbstractFirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
@@ -45,11 +45,11 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
 
     override fun analyze(graph: ControlFlowGraph, reporter: DiagnosticReporter, context: CheckerContext) {
         val session = context.session
-        val function = (graph.declaration as? FirFunction<*>) ?: return
+        val function = (graph.declaration as? FirFunction) ?: return
         if (function !is FirContractDescriptionOwner) return
         if (function.contractDescription.coneEffects?.any { it is ConeCallsEffectDeclaration } != true) return
 
-        val functionalTypeEffects = mutableMapOf<AbstractFirBasedSymbol<*>, ConeCallsEffectDeclaration>()
+        val functionalTypeEffects = mutableMapOf<FirBasedSymbol<*>, ConeCallsEffectDeclaration>()
 
         function.valueParameters.forEachIndexed { index, parameter ->
             if (parameter.returnTypeRef.isFunctionalTypeRef(session)) {
@@ -65,7 +65,7 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
 
         if (functionalTypeEffects.isEmpty()) return
 
-        val leakedSymbols = mutableMapOf<AbstractFirBasedSymbol<*>, MutableList<FirSourceElement>>()
+        val leakedSymbols = mutableMapOf<FirBasedSymbol<*>, MutableList<FirSourceElement>>()
         graph.traverse(
             TraverseDirection.Forward,
             CapturedLambdaFinder(function),
@@ -73,11 +73,9 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
         )
 
         for ((symbol, leakedPlaces) in leakedSymbols) {
-            function.contractDescription.source?.let {
-                reporter.report(FirErrors.LEAKED_IN_PLACE_LAMBDA.on(it, symbol), context)
-            }
+            reporter.reportOn(function.contractDescription.source, FirErrors.LEAKED_IN_PLACE_LAMBDA, symbol, context)
             leakedPlaces.forEach {
-                reporter.report(FirErrors.LEAKED_IN_PLACE_LAMBDA.on(it, symbol), context)
+                reporter.reportOn(it, FirErrors.LEAKED_IN_PLACE_LAMBDA, symbol, context)
             }
         }
 
@@ -103,7 +101,7 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
 
     private fun investigate(
         info: LambdaInvocationInfo,
-        symbol: AbstractFirBasedSymbol<*>,
+        symbol: FirBasedSymbol<*>,
         requiredRange: EventOccurrencesRange,
         function: FirContractDescriptionOwner,
         reporter: DiagnosticReporter,
@@ -111,17 +109,22 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
     ): Boolean {
         val foundRange = info[symbol] ?: EventOccurrencesRange.ZERO
         if (foundRange !in requiredRange) {
-            function.contractDescription.source?.let {
-                reporter.report(FirErrors.WRONG_INVOCATION_KIND.on(it, symbol, requiredRange, foundRange), context)
-                return true
-            }
+            reporter.reportOn(
+                function.contractDescription.source,
+                FirErrors.WRONG_INVOCATION_KIND,
+                symbol,
+                requiredRange,
+                foundRange,
+                context
+            )
+            return true
         }
         return false
     }
 
     private class IllegalScopeContext(
-        private val functionalTypeSymbols: Set<AbstractFirBasedSymbol<*>>,
-        private val leakedSymbols: MutableMap<AbstractFirBasedSymbol<*>, MutableList<FirSourceElement>>,
+        private val functionalTypeSymbols: Set<FirBasedSymbol<*>>,
+        private val leakedSymbols: MutableMap<FirBasedSymbol<*>, MutableList<FirSourceElement>>,
     ) {
         private var scopeDepth: Int = 0
         private var illegalScopeDepth: Int? = null
@@ -150,7 +153,7 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
         }
     }
 
-    private class CapturedLambdaFinder(val rootFunction: FirFunction<*>) : ControlFlowGraphVisitor<Unit, IllegalScopeContext>() {
+    private class CapturedLambdaFinder(val rootFunction: FirFunction) : ControlFlowGraphVisitor<Unit, IllegalScopeContext>() {
 
         override fun visitNode(node: CFGNode<*>, data: IllegalScopeContext) {}
 
@@ -189,7 +192,7 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
 
         override fun visitFunctionCallNode(node: FunctionCallNode, data: IllegalScopeContext) {
             val functionSymbol = node.fir.toResolvedCallableSymbol() as? FirFunctionSymbol<*>?
-            val contractDescription = functionSymbol?.fir?.contractDescription
+            val contractDescription = functionSymbol?.resolvedContractDescription
 
             val callSource = node.fir.explicitReceiver?.source ?: node.fir.source
             data.checkExpressionForLeakedSymbols(node.fir.explicitReceiver, callSource) {
@@ -233,7 +236,7 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
     }
 
     private class InvocationDataCollector(
-        val functionalTypeSymbols: Set<AbstractFirBasedSymbol<*>>
+        val functionalTypeSymbols: Set<FirBasedSymbol<*>>
     ) : ControlFlowGraphVisitor<PathAwareLambdaInvocationInfo, Collection<Pair<EdgeLabel, PathAwareLambdaInvocationInfo>>>() {
 
         override fun visitNode(
@@ -252,7 +255,7 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
             var dataForNode = visitNode(node, data)
 
             val functionSymbol = node.fir.toResolvedCallableSymbol() as? FirFunctionSymbol<*>?
-            val contractDescription = functionSymbol?.fir?.contractDescription
+            val contractDescription = functionSymbol?.resolvedContractDescription
 
             dataForNode = dataForNode.checkReference(node.fir.explicitReceiver.toQualifiedReference()) {
                 when {
@@ -300,9 +303,6 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
         return this?.coneTypeSafe<ConeKotlinType>()?.isBuiltinFunctionalType(session) == true
     }
 
-    private val FirFunction<*>.contractDescription: FirContractDescription?
-        get() = (this as? FirContractDescriptionOwner)?.contractDescription
-
     private fun FirContractDescription?.getParameterCallsEffectDeclaration(index: Int): ConeCallsEffectDeclaration? {
         val effects = this?.coneEffects
         val callsEffect = effects?.find { it is ConeCallsEffectDeclaration && it.valueParameterReference.parameterIndex == index }
@@ -310,13 +310,13 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
     }
 
     private fun FirFunctionCall.getArgumentCallsEffect(arg: FirExpression): EventOccurrencesRange? {
-        val function = (this.toResolvedCallableSymbol() as? FirFunctionSymbol<*>?)?.fir
-        val contractDescription = function?.contractDescription
+        val functionSymbol = (this.toResolvedCallableSymbol() as? FirFunctionSymbol<*>?)
+        val contractDescription = functionSymbol?.resolvedContractDescription
         val resolvedArguments = argumentList as? FirResolvedArgumentList
 
-        return if (function != null && resolvedArguments != null) {
+        return if (functionSymbol != null && resolvedArguments != null) {
             val parameter = resolvedArguments.mapping[arg]
-            contractDescription.getParameterCallsEffect(function.valueParameters.indexOf(parameter))
+            contractDescription.getParameterCallsEffect(functionSymbol.valueParameterSymbols.indexOf(parameter?.symbol))
         } else null
     }
 
@@ -324,13 +324,13 @@ object FirCallsEffectAnalyzer : FirControlFlowChecker() {
         return getParameterCallsEffectDeclaration(index)?.kind
     }
 
-    private fun FirFunction<*>.isInPlaceLambda(): Boolean {
+    private fun FirFunction.isInPlaceLambda(): Boolean {
         return this is FirAnonymousFunction && this.isLambda && this.invocationKind != null
     }
 
     private fun FirExpression?.toQualifiedReference(): FirReference? = (this as? FirQualifiedAccess)?.calleeReference
 
-    private fun referenceToSymbol(reference: FirReference?): AbstractFirBasedSymbol<*>? = when (reference) {
+    private fun referenceToSymbol(reference: FirReference?): FirBasedSymbol<*>? = when (reference) {
         is FirResolvedNamedReference -> reference.resolvedSymbol
         is FirThisReference -> reference.boundSymbol
         else -> null

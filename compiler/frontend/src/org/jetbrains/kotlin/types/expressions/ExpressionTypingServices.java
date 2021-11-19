@@ -353,8 +353,12 @@ public class ExpressionTypingServices {
             }
             blockLevelVisitor = new ExpressionTypingVisitorDispatcher.ForBlock(expressionTypingComponents, annotationChecker, scope);
 
-            if (isFirstStatement) {
-                expressionTypingComponents.contractParsingServices.checkContractAndRecordIfPresent(statementExpression, context.trace, scope);
+            DeclarationDescriptor ownerDescriptor = scope.getOwnerDescriptor();
+
+            if (isFirstStatement && ownerDescriptor instanceof FunctionDescriptor) {
+                expressionTypingComponents.contractParsingServices.checkContractAndRecordIfPresent(
+                        statementExpression, context.trace, (FunctionDescriptor) ownerDescriptor
+                );
                 isFirstStatement = false;
             }
         }
@@ -394,7 +398,7 @@ public class ExpressionTypingServices {
             return blockLevelVisitor.getTypeInfo(statementExpression, context.replaceExpectedType(expectedType), true);
         }
 
-        if (KtPsiUtil.deparenthesize(statementExpression) instanceof KtLambdaExpression) {
+        if (KtPsiUtil.deparenthesize(statementExpression) instanceof KtLambdaExpression && context.contextDependency == ContextDependency.DEPENDENT) {
             KotlinTypeInfo typeInfo = createDontCareTypeInfoForNILambda(statementExpression, context);
             if (typeInfo != null) return typeInfo;
         }

@@ -7,6 +7,9 @@ package org.jetbrains.kotlin.commonizer.core
 
 import org.jetbrains.kotlin.commonizer.cir.CirFunctionOrProperty
 import org.jetbrains.kotlin.commonizer.cir.CirName
+import org.jetbrains.kotlin.commonizer.cir.CirProperty
+import org.jetbrains.kotlin.commonizer.cir.CirType
+import org.jetbrains.kotlin.commonizer.core.TypeCommonizer.Options.Companion.default
 import org.jetbrains.kotlin.commonizer.mergedtree.CirKnownClassifiers
 import org.jetbrains.kotlin.descriptors.CallableMemberDescriptor
 import org.jetbrains.kotlin.descriptors.CallableMemberDescriptor.Kind.DELEGATION
@@ -14,12 +17,12 @@ import org.jetbrains.kotlin.descriptors.CallableMemberDescriptor.Kind.SYNTHESIZE
 
 abstract class AbstractFunctionOrPropertyCommonizer<T : CirFunctionOrProperty>(
     classifiers: CirKnownClassifiers
-) : AbstractStandardCommonizer<T, T>() {
+) : AbstractStandardCommonizer<T, T?>() {
     protected lateinit var name: CirName
     protected val modality = ModalityCommonizer()
     protected val visibility = VisibilityCommonizer.lowering()
     protected val extensionReceiver = ExtensionReceiverCommonizer(classifiers)
-    protected val returnType = TypeCommonizer(classifiers)
+    protected val returnType = ReturnTypeCommonizer(classifiers).asCommonizer()
     protected lateinit var kind: CallableMemberDescriptor.Kind
     protected val typeParameters = TypeParameterListCommonizer(classifiers)
 
@@ -35,6 +38,18 @@ abstract class AbstractFunctionOrPropertyCommonizer<T : CirFunctionOrProperty>(
                 && modality.commonizeWith(next.modality)
                 && visibility.commonizeWith(next)
                 && extensionReceiver.commonizeWith(next.extensionReceiver)
-                && returnType.commonizeWith(next.returnType)
+                && returnType.commonizeWith(next)
                 && typeParameters.commonizeWith(next.typeParameters)
+}
+
+private class ReturnTypeCommonizer(
+    private val classifiers: CirKnownClassifiers,
+) : NullableContextualSingleInvocationCommonizer<CirFunctionOrProperty, CirType> {
+    override fun invoke(values: List<CirFunctionOrProperty>): CirType? {
+        if (values.isEmpty()) return null
+        val isTopLevel = values.all { it.containingClass == null }
+        val isCovariant = values.none { it is CirProperty && it.isVar }
+        return TypeCommonizer(classifiers, default.withCovariantNullabilityCommonizationEnabled(isTopLevel && isCovariant))
+            .asCommonizer().commonize(values.map { it.returnType })
+    }
 }

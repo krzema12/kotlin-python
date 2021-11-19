@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.descriptors.impl.LocalVariableDescriptor
 import org.jetbrains.kotlin.diagnostics.Errors.*
 import org.jetbrains.kotlin.diagnostics.reportDiagnosticOnce
 import org.jetbrains.kotlin.lexer.KtTokens
-import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.codeFragmentUtil.suppressDiagnosticsInDebugMode
 import org.jetbrains.kotlin.psi.psiUtil.checkReservedYield
@@ -50,7 +50,7 @@ import org.jetbrains.kotlin.types.checker.KotlinTypeRefiner
 import org.jetbrains.kotlin.types.expressions.FunctionWithBigAritySupport.LanguageVersionDependent
 import org.jetbrains.kotlin.types.expressions.typeInfoFactory.createTypeInfo
 import org.jetbrains.kotlin.types.expressions.typeInfoFactory.noTypeInfo
-import org.jetbrains.kotlin.types.refinement.TypeRefinement
+import org.jetbrains.kotlin.types.TypeRefinement
 import org.jetbrains.kotlin.types.typeUtil.*
 import org.jetbrains.kotlin.utils.yieldIfNotNull
 import java.util.*
@@ -114,7 +114,7 @@ class DoubleColonExpressionResolver(
         } else {
             val result = resolveDoubleColonLHS(expression, c)
 
-            if (c.inferenceSession is BuilderInferenceSession && result?.type?.contains { it is StubType } == true) {
+            if (c.inferenceSession is BuilderInferenceSession && result?.type?.contains { it is StubTypeForBuilderInference } == true) {
                 c.inferenceSession.addOldCallableReferenceCalls(expression)
             }
 
@@ -548,17 +548,19 @@ class DoubleColonExpressionResolver(
         val result = getCallableReferenceType(expression, lhs, resolutionResults, c)
         val doesSomeExtensionReceiverContainsStubType =
             resolutionResults != null && resolutionResults.resultingCalls.any { resolvedCall ->
-                resolvedCall.extensionReceiver?.type?.contains { it is StubType } == true
+                resolvedCall.extensionReceiver?.type?.contains { it is StubTypeForBuilderInference } == true
             }
 
-        if (doesSomeExtensionReceiverContainsStubType) {
+        val unrestrictedBuilderInferenceSupported = languageVersionSettings.supportsFeature(LanguageFeature.UnrestrictedBuilderInference)
+
+        if (doesSomeExtensionReceiverContainsStubType && !unrestrictedBuilderInferenceSupported) {
             c.trace.reportDiagnosticOnce(TYPE_INFERENCE_POSTPONED_VARIABLE_IN_RECEIVER_TYPE.on(expression))
             return noTypeInfo(c)
         }
 
         val dataFlowInfo = (lhs as? DoubleColonLHS.Expression)?.dataFlowInfo ?: c.dataFlowInfo
 
-        if (c.inferenceSession is BuilderInferenceSession && result?.contains { it is StubType } == true) {
+        if (c.inferenceSession is BuilderInferenceSession && result?.contains { it is StubTypeForBuilderInference } == true) {
             c.inferenceSession.addOldCallableReferenceCalls(expression)
         }
 
@@ -666,7 +668,7 @@ class DoubleColonExpressionResolver(
         mutable: Boolean = true
     ) {
         val localVariable = LocalVariableDescriptor(
-            context.scope.ownerDescriptor, Annotations.EMPTY, Name.special("<anonymous>"), referenceType,
+            context.scope.ownerDescriptor, Annotations.EMPTY, SpecialNames.ANONYMOUS, referenceType,
             mutable, false, expression.toSourceElement()
         )
 
@@ -697,7 +699,7 @@ class DoubleColonExpressionResolver(
     ) {
         val descriptor =
             if (resolutionResults?.isSingleResult == true) resolutionResults.resultingDescriptor else null
-        if (descriptor is PropertyDescriptor && descriptor.isBuiltInCoroutineContext(languageVersionSettings)) {
+        if (descriptor is PropertyDescriptor && descriptor.isBuiltInCoroutineContext()) {
             context.trace.report(UNSUPPORTED.on(expression.callableReference, "Callable reference to suspend property"))
         } else if (descriptor is FunctionDescriptor && descriptor.isSuspend
             && !context.languageVersionSettings.supportsFeature(LanguageFeature.ReleaseCoroutines)

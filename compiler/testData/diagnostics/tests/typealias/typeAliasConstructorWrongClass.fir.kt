@@ -7,8 +7,8 @@ val test1a = <!CREATING_AN_INSTANCE_OF_ABSTRACT_CLASS!>AbstractClass()<!>
 
 annotation class AnnotationClass
 typealias Test2 = AnnotationClass
-val test2 = Test2()
-val test2a = AnnotationClass()
+val test2 = <!ANNOTATION_CLASS_CONSTRUCTOR_CALL!>Test2()<!>
+val test2a = <!ANNOTATION_CLASS_CONSTRUCTOR_CALL!>AnnotationClass()<!>
 
 enum class EnumClass { VALUE1, VALUE2 }
 typealias Test3 = EnumClass
@@ -26,8 +26,8 @@ class Outer {
 }
 typealias Test5 = Outer.Inner
 
-val test5 = <!UNRESOLVED_REFERENCE!>Test5<!>()
-val test5a = Outer.<!UNRESOLVED_REFERENCE!>Inner<!>()
+val test5 = <!RESOLUTION_TO_CLASSIFIER!>Test5<!>()
+val test5a = Outer.<!RESOLUTION_TO_CLASSIFIER!>Inner<!>()
 val test5b = Outer.<!UNRESOLVED_REFERENCE!>TestInner<!>()
 val test5c = Outer().<!UNRESOLVED_REFERENCE!>TestInner<!>()
 val test5d = Outer().Inner()

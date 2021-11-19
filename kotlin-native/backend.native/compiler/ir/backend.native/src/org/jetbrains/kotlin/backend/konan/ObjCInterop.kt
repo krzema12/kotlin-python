@@ -5,19 +5,15 @@
 
 package org.jetbrains.kotlin.backend.konan
 
-import org.jetbrains.kotlin.backend.konan.descriptors.findPackage
-import org.jetbrains.kotlin.backend.konan.descriptors.getArgumentValueOrNull
-import org.jetbrains.kotlin.backend.konan.descriptors.getAnnotationValueOrNull
-import org.jetbrains.kotlin.backend.konan.descriptors.getStringValue
-import org.jetbrains.kotlin.backend.konan.descriptors.getAnnotationStringValue
-import org.jetbrains.kotlin.backend.konan.descriptors.getStringValueOrNull
-import org.jetbrains.kotlin.backend.konan.ir.*
+import org.jetbrains.kotlin.backend.konan.descriptors.*
+import org.jetbrains.kotlin.backend.konan.ir.getAnnotationArgumentValue
+import org.jetbrains.kotlin.backend.konan.ir.isOverridable
+import org.jetbrains.kotlin.backend.konan.ir.parentDeclarationsWithSelf
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
 import org.jetbrains.kotlin.incremental.components.NoLookupLocation
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
-import org.jetbrains.kotlin.ir.symbols.isPublicApi
 import org.jetbrains.kotlin.ir.types.classOrNull
 import org.jetbrains.kotlin.ir.types.getPublicSignature
 import org.jetbrains.kotlin.ir.util.*
@@ -31,7 +27,6 @@ import org.jetbrains.kotlin.resolve.descriptorUtil.parentsWithSelf
 import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.TypeUtils
 import org.jetbrains.kotlin.types.typeUtil.supertypes
-import org.jetbrains.kotlin.utils.addToStdlib.firstNotNullResult
 
 internal val interopPackageName = InteropFqNames.packageName
 internal val objCObjectFqName = interopPackageName.child(Name.identifier("ObjCObject"))
@@ -46,7 +41,7 @@ private val objCConstructorFqName = FqName("kotlinx.cinterop.ObjCConstructor")
 private val objCFactoryFqName = interopPackageName.child(Name.identifier("ObjCFactory"))
 private val objcnamesForwardDeclarationsPackageName = Name.identifier("objcnames")
 
-private fun getTopLevelPublicSignature(fqName: FqName): IdSignature.PublicSignature =
+private fun getTopLevelPublicSignature(fqName: FqName): IdSignature.CommonSignature =
         getPublicSignature(fqName.parent(), fqName.shortName().asString())
 
 fun ClassDescriptor.isObjCClass(): Boolean =
@@ -63,7 +58,7 @@ private fun IrClass.selfOrAnySuperClass(pred: (IrClass) -> Boolean): Boolean {
 }
 
 internal fun IrClass.isObjCClass() = this.packageFqName != interopPackageName &&
-        selfOrAnySuperClass { it.symbol.isPublicApi && objCObjectIdSignature == it.symbol.signature }
+        selfOrAnySuperClass { objCObjectIdSignature == it.symbol.signature }
 
 fun ClassDescriptor.isExternalObjCClass(): Boolean = this.isObjCClass() &&
         this.parentsWithSelf.filterIsInstance<ClassDescriptor>().any {
@@ -82,11 +77,10 @@ fun ClassDescriptor.isObjCMetaClass(): Boolean = this.getAllSuperClassifiers().a
 }
 
 fun IrClass.isObjCMetaClass(): Boolean = selfOrAnySuperClass {
-    it.symbol.isPublicApi && objCClassIdSignature == it.symbol.signature
+    objCClassIdSignature == it.symbol.signature
 }
 
-fun IrClass.isObjCProtocolClass(): Boolean =
-        symbol.isPublicApi && objCProtocolIdSignature == symbol.signature
+fun IrClass.isObjCProtocolClass(): Boolean = objCProtocolIdSignature == symbol.signature
 
 fun ClassDescriptor.isObjCProtocolClass(): Boolean =
         this.fqNameSafe == objCProtocolFqName
@@ -155,7 +149,7 @@ private fun FunctionDescriptor.getObjCMethodInfo(onlyExternal: Boolean): ObjCMet
         }
     }
 
-    return overriddenDescriptors.firstNotNullResult { it.getObjCMethodInfo(onlyExternal) }
+    return overriddenDescriptors.firstNotNullOfOrNull { it.getObjCMethodInfo(onlyExternal) }
 }
 
 /**
@@ -170,7 +164,7 @@ private fun IrSimpleFunction.getObjCMethodInfo(onlyExternal: Boolean): ObjCMetho
         }
     }
 
-    return overriddenSymbols.firstNotNullResult { it.owner.getObjCMethodInfo(onlyExternal) }
+    return overriddenSymbols.firstNotNullOfOrNull { it.owner.getObjCMethodInfo(onlyExternal) }
 }
 
 fun FunctionDescriptor.getExternalObjCMethodInfo(): ObjCMethodInfo? = this.getObjCMethodInfo(onlyExternal = true)

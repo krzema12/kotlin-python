@@ -8,6 +8,8 @@ package org.jetbrains.kotlin.fir.java.scopes
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.utils.isStatic
+import org.jetbrains.kotlin.fir.declarations.utils.modality
 import org.jetbrains.kotlin.fir.java.JavaTypeParameterStack
 import org.jetbrains.kotlin.fir.java.enhancement.readOnlyToMutable
 import org.jetbrains.kotlin.fir.java.toConeKotlinTypeProbablyFlexible
@@ -15,9 +17,10 @@ import org.jetbrains.kotlin.fir.resolve.fullyExpandedType
 import org.jetbrains.kotlin.fir.resolve.substitution.ConeSubstitutor
 import org.jetbrains.kotlin.fir.resolve.substitution.substitutorByMap
 import org.jetbrains.kotlin.fir.scopes.impl.FirAbstractOverrideChecker
-import org.jetbrains.kotlin.name.StandardClassIds
+import org.jetbrains.kotlin.fir.symbols.ensureResolved
 import org.jetbrains.kotlin.fir.typeContext
 import org.jetbrains.kotlin.fir.types.*
+import org.jetbrains.kotlin.name.StandardClassIds
 
 class JavaOverrideChecker internal constructor(
     private val session: FirSession,
@@ -63,11 +66,22 @@ class JavaOverrideChecker internal constructor(
         candidateTypeRef: FirTypeRef,
         baseTypeRef: FirTypeRef,
         substitutor: ConeSubstitutor
-    ) = isEqualTypes(
-        candidateTypeRef.toConeKotlinTypeProbablyFlexible(session, javaTypeParameterStack),
-        baseTypeRef.toConeKotlinTypeProbablyFlexible(session, javaTypeParameterStack),
-        substitutor
-    )
+    ): Boolean {
+        val candidateType = candidateTypeRef.toConeKotlinTypeProbablyFlexible(session, javaTypeParameterStack)
+        val baseType = baseTypeRef.toConeKotlinTypeProbablyFlexible(session, javaTypeParameterStack)
+
+        if (candidateType.isPrimitiveInJava() != baseType.isPrimitiveInJava()) return false
+
+        return isEqualTypes(
+            candidateType,
+            baseType,
+            substitutor
+        )
+    }
+
+    private fun ConeKotlinType.isPrimitiveInJava(): Boolean = with(context) {
+        !isNullableType() && CompilerConeAttributes.EnhancedNullability !in attributes && isPrimitiveOrNullablePrimitive
+    }
 
     private fun isEqualArrayElementTypeProjections(
         candidateTypeProjection: ConeTypeProjection,
@@ -96,7 +110,7 @@ class JavaOverrideChecker internal constructor(
             argument is ConeKotlinTypeProjection && argument.type.isTypeParameterDependent()
         }
 
-    private fun FirCallableMemberDeclaration<*>.isTypeParameterDependent(): Boolean =
+    private fun FirCallableDeclaration.isTypeParameterDependent(): Boolean =
         typeParameters.isNotEmpty() || returnTypeRef.isTypeParameterDependent() ||
                 receiverTypeRef.isTypeParameterDependent() ||
                 this is FirSimpleFunction && valueParameters.any { it.returnTypeRef.isTypeParameterDependent() }
@@ -122,7 +136,7 @@ class JavaOverrideChecker internal constructor(
         }
     }
 
-    private fun FirCallableMemberDeclaration<*>.extractTypeParametersTo(result: MutableCollection<FirTypeParameterRef>) {
+    private fun FirCallableDeclaration.extractTypeParametersTo(result: MutableCollection<FirTypeParameterRef>) {
         result += typeParameters
         returnTypeRef.extractTypeParametersTo(result)
         receiverTypeRef?.extractTypeParametersTo(result)
@@ -132,9 +146,12 @@ class JavaOverrideChecker internal constructor(
     }
 
     override fun buildTypeParametersSubstitutorIfCompatible(
-        overrideCandidate: FirCallableMemberDeclaration<*>,
-        baseDeclaration: FirCallableMemberDeclaration<*>
+        overrideCandidate: FirCallableDeclaration,
+        baseDeclaration: FirCallableDeclaration
     ): ConeSubstitutor {
+        overrideCandidate.ensureResolved(FirResolvePhase.TYPES)
+        baseDeclaration.ensureResolved(FirResolvePhase.TYPES)
+
         if (!overrideCandidate.isTypeParameterDependent() && !baseDeclaration.isTypeParameterDependent()) {
             return ConeSubstitutor.Empty
         }
@@ -146,6 +163,10 @@ class JavaOverrideChecker internal constructor(
 
     override fun isOverriddenFunction(overrideCandidate: FirSimpleFunction, baseDeclaration: FirSimpleFunction): Boolean {
         if (overrideCandidate.isStatic != baseDeclaration.isStatic) return false
+
+        overrideCandidate.ensureResolved(FirResolvePhase.TYPES)
+        baseDeclaration.ensureResolved(FirResolvePhase.TYPES)
+
         // NB: overrideCandidate is from Java and has no receiver
         val receiverTypeRef = baseDeclaration.receiverTypeRef
         val baseParameterTypes = listOfNotNull(receiverTypeRef) + baseDeclaration.valueParameters.map { it.returnTypeRef }
@@ -157,8 +178,12 @@ class JavaOverrideChecker internal constructor(
         }
     }
 
-    override fun isOverriddenProperty(overrideCandidate: FirCallableMemberDeclaration<*>, baseDeclaration: FirProperty): Boolean {
+    override fun isOverriddenProperty(overrideCandidate: FirCallableDeclaration, baseDeclaration: FirProperty): Boolean {
         if (baseDeclaration.modality == Modality.FINAL) return false
+
+        overrideCandidate.ensureResolved(FirResolvePhase.TYPES)
+        baseDeclaration.ensureResolved(FirResolvePhase.TYPES)
+
         val receiverTypeRef = baseDeclaration.receiverTypeRef
         return when (overrideCandidate) {
             is FirSimpleFunction -> {

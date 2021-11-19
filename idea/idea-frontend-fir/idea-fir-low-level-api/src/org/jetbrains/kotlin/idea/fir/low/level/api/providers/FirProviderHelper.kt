@@ -6,41 +6,41 @@
 package org.jetbrains.kotlin.idea.fir.low.level.api.providers
 
 import com.google.common.collect.Sets
+import org.jetbrains.kotlin.analysis.providers.KotlinDeclarationProvider
+import org.jetbrains.kotlin.analysis.providers.KotlinPackageProvider
 import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirClassLikeDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirFile
-import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirNamedFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
-import org.jetbrains.kotlin.idea.fir.low.level.api.IndexHelper
-import org.jetbrains.kotlin.idea.fir.low.level.api.PackageExistenceChecker
 import org.jetbrains.kotlin.idea.fir.low.level.api.file.builder.FirFileBuilder
 import org.jetbrains.kotlin.idea.fir.low.level.api.file.builder.ModuleFileCache
 import org.jetbrains.kotlin.idea.fir.low.level.api.util.FirElementFinder
 import org.jetbrains.kotlin.idea.fir.low.level.api.util.executeOrReturnDefaultValueOnPCE
+import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
-import org.jetbrains.kotlin.psi.KtEnumEntry
 import org.jetbrains.kotlin.psi.KtFile
 import java.util.*
 
 internal class FirProviderHelper(
     private val cache: ModuleFileCache,
     private val firFileBuilder: FirFileBuilder,
-    private val indexHelper: IndexHelper,
-    private val packageExistenceChecker: PackageExistenceChecker,
+    private val declarationProvider: KotlinDeclarationProvider,
+    private val packageProvider: KotlinPackageProvider,
 ) {
-    fun getFirClassifierByFqName(classId: ClassId): FirClassLikeDeclaration<*>? {
+    fun getFirClassifierByFqName(classId: ClassId): FirClassLikeDeclaration? {
+        if (classId.isLocal) return null
         return executeOrReturnDefaultValueOnPCE(null) {
             cache.classifierByClassId.computeIfAbsent(classId) {
-                val ktClass = indexHelper.classFromIndexByClassId(classId)
-                    ?: indexHelper.typeAliasFromIndexByClassId(classId)
-                    ?: return@computeIfAbsent Optional.empty()
-                if (ktClass is KtEnumEntry) return@computeIfAbsent Optional.empty()
-                val firFile = firFileBuilder.buildRawFirFileWithCaching(ktClass.containingKtFile, cache, lazyBodiesMode = true)
-                val classifier = FirElementFinder.findElementIn<FirClassLikeDeclaration<*>>(firFile) { classifier ->
+                val ktClass = when (val klass = declarationProvider.getClassesByClassId(classId).firstOrNull()) {
+                    null -> declarationProvider.getTypeAliasesByClassId(classId).firstOrNull()
+                    else -> if (klass.getClassId() == null) null else klass
+                } ?: return@computeIfAbsent Optional.empty()
+                val firFile = firFileBuilder.buildRawFirFileWithCaching(ktClass.containingKtFile, cache, preferLazyBodies = true)
+                val classifier = FirElementFinder.findElementIn<FirClassLikeDeclaration>(firFile) { classifier ->
                     classifier.symbol.classId == classId
                 }
                     ?: error("Classifier $classId was found in file ${ktClass.containingKtFile.virtualFilePath} but was not found in FirFile")
@@ -55,13 +55,13 @@ internal class FirProviderHelper(
         return executeOrReturnDefaultValueOnPCE(emptyList()) {
             cache.callableByCallableId.computeIfAbsent(callableId) {
                 val files = Sets.newIdentityHashSet<KtFile>().apply {
-                    indexHelper.getTopLevelFunctions(callableId).mapTo(this) { it.containingKtFile }
-                    indexHelper.getTopLevelProperties(callableId).mapTo(this) { it.containingKtFile }
+                    declarationProvider.getTopLevelFunctions(callableId).mapTo(this) { it.containingKtFile }
+                    declarationProvider.getTopLevelProperties(callableId).mapTo(this) { it.containingKtFile }
                 }
                 @OptIn(ExperimentalStdlibApi::class)
                 buildList {
                     files.forEach { ktFile ->
-                        val firFile = firFileBuilder.buildRawFirFileWithCaching(ktFile, cache, lazyBodiesMode = true)
+                        val firFile = firFileBuilder.buildRawFirFileWithCaching(ktFile, cache, preferLazyBodies = true)
                         firFile.collectCallableDeclarationsTo(this, name)
                     }
                 }
@@ -79,12 +79,12 @@ internal class FirProviderHelper(
 
     private fun FirFile.collectCallableDeclarationsTo(list: MutableList<FirCallableSymbol<*>>, name: Name) {
         declarations.mapNotNullTo(list) { declaration ->
-            if (declaration is FirCallableDeclaration<*> && declaration.symbol.callableId.callableName == name) {
+            if (declaration is FirCallableDeclaration && declaration.symbol.callableId.callableName == name) {
                 declaration.symbol
             } else null
         }
     }
 
     fun getPackage(fqName: FqName): FqName? =
-        fqName.takeIf(packageExistenceChecker::isPackageExists)
+        fqName.takeIf(packageProvider::isPackageExists)
 }

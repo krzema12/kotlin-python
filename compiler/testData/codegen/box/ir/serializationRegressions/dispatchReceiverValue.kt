@@ -5,6 +5,8 @@
 // !LANGUAGE: +MultiPlatformProjects
 // IGNORE_BACKEND: JS_IR
 // IGNORE_BACKEND: JS_IR_ES6
+// IGNORE_BACKEND_FIR: JVM_IR
+// ^ FIR doesn't support actualization in same module
 // MODULE: lib
 // FILE: common.kt
 

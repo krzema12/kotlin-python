@@ -13,11 +13,11 @@ import org.jetbrains.kotlin.backend.common.ir.returnType
 import org.jetbrains.kotlin.backend.wasm.WasmBackendContext
 import org.jetbrains.kotlin.backend.wasm.WasmSymbols
 import org.jetbrains.kotlin.backend.wasm.utils.*
+import org.jetbrains.kotlin.ir.IrBuiltIns
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.backend.js.utils.realOverrideTarget
 import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.descriptors.IrBuiltIns
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.defaultType
@@ -58,6 +58,7 @@ class BodyGenerator(val context: WasmFunctionCodegenContext) : IrElementVisitorV
             is IrConstKind.Double -> body.buildConstF64(kind.valueOf(expression))
             is IrConstKind.String -> {
                 body.buildConstI32Symbol(context.referenceStringLiteral(kind.valueOf(expression)))
+                body.buildConstI32(kind.valueOf(expression).length)
                 body.buildCall(context.referenceFunction(wasmSymbols.stringGetLiteral))
             }
             else -> error("Unknown constant kind")
@@ -142,7 +143,7 @@ class BodyGenerator(val context: WasmFunctionCodegenContext) : IrElementVisitorV
         if (klass.getWasmArrayAnnotation() != null) {
             require(expression.valueArgumentsCount == 1) { "@WasmArrayOf constructs must have exactly one argument" }
             generateExpression(expression.getValueArgument(0)!!)
-            body.buildRttCanon(context.transformType(klass.defaultType))
+            body.buildRttCanon(wasmGcType)
             body.buildInstr(
                 WasmOp.ARRAY_NEW_DEFAULT_WITH_RTT,
                 WasmImmediate.GcType(wasmGcType)
@@ -242,7 +243,7 @@ class BodyGenerator(val context: WasmFunctionCodegenContext) : IrElementVisitorV
             val resT = context.transformResultType(function.returnType)
             if (resT is WasmRefNullType) {
                 generateTypeRTT(function.returnType)
-                body.buildRefCast(fromType = WasmEqRef, toType = resT)
+                body.buildRefCast()
             }
         }
     }
@@ -278,17 +279,9 @@ class BodyGenerator(val context: WasmFunctionCodegenContext) : IrElementVisitorV
             }
 
             wasmSymbols.wasmRefCast -> {
-                val fromType = call.getTypeArgument(0)!!
-                val toType = call.getTypeArgument(1)!!
+                val toType = call.getTypeArgument(0)!!
                 generateTypeRTT(toType)
-                body.buildRefCast(context.transformType(fromType), context.transformType(toType))
-            }
-
-            wasmSymbols.wasmFloatNaN -> {
-                body.buildConstF32(Float.NaN)
-            }
-            wasmSymbols.wasmDoubleNaN -> {
-                body.buildConstF64(Double.NaN)
+                body.buildRefCast()
             }
 
             wasmSymbols.unboxIntrinsic -> {
@@ -311,9 +304,16 @@ class BodyGenerator(val context: WasmFunctionCodegenContext) : IrElementVisitorV
                 val field = getInlineClassBackingField(klass)
 
                 generateTypeRTT(toType)
-                body.buildRefCast(context.transformType(fromType), context.transformBoxedType(toType))
+                body.buildRefCast()
                 generateInstanceFieldAccess(field)
             }
+
+            wasmSymbols.unsafeGetScratchRawMemory -> {
+                // TODO: This drops size of the allocated segment. Instead we can check that it's in bounds for better error messages.
+                body.buildDrop()
+                body.buildConstI32Symbol(context.scratchMemAddr)
+            }
+
             else -> {
                 return false
             }
@@ -357,6 +357,14 @@ class BodyGenerator(val context: WasmFunctionCodegenContext) : IrElementVisitorV
             if (irReturnType != irBuiltIns.unitType) {
                 generateDefaultInitializerForType(context.transformType(irReturnType), body)
             }
+        }
+
+        // Handle complex exported parameters.
+        // TODO: This should live as a separate lowering which creates separate shims for each exported function.
+        if (context.irFunction.isExported(context.backendContext) &&
+            expression.value.type.getClass() == irBuiltIns.stringType.getClass()) {
+
+            body.buildCall(context.referenceFunction(wasmSymbols.exportString))
         }
 
         body.buildInstr(WasmOp.RETURN)
@@ -490,7 +498,7 @@ class BodyGenerator(val context: WasmFunctionCodegenContext) : IrElementVisitorV
 
     // Return true if function is recognized as intrinsic.
     fun tryToGenerateWasmOpIntrinsicCall(call: IrFunctionAccessExpression, function: IrFunction): Boolean {
-        if (function.hasWasmReinterpretAnnotation()) {
+        if (function.hasWasmNoOpCastAnnotation()) {
             return true
         }
 
@@ -500,6 +508,15 @@ class BodyGenerator(val context: WasmFunctionCodegenContext) : IrElementVisitorV
             var immediates = emptyArray<WasmImmediate>()
             when (op.immediates.size) {
                 0 -> {
+                    when (op) {
+                        WasmOp.REF_TEST -> {
+                            val toIrType = call.getTypeArgument(0)!!
+                            // ref.test takes RTT as a second operand
+                            generateTypeRTT(toIrType)
+                        }
+                        else -> {
+                        }
+                    }
                 }
                 1 -> {
                     immediates = arrayOf(
@@ -512,25 +529,6 @@ class BodyGenerator(val context: WasmFunctionCodegenContext) : IrElementVisitorV
                                 error("Immediate $imm is unsupported")
                         }
                     )
-                }
-                2 -> {
-                    when (op) {
-                        WasmOp.REF_TEST -> {
-                            val fromIrType = call.getValueArgument(0)!!.type
-                            val fromWasmType = context.transformBoxedType(fromIrType)
-                            val toIrType = call.getTypeArgument(0)!!
-                            val toWasmType = context.transformBoxedType(toIrType)
-                            immediates = arrayOf(
-                                WasmImmediate.HeapType(fromWasmType),
-                                WasmImmediate.HeapType(toWasmType),
-                            )
-
-                            // ref.test takes RTT as a second operand
-                            generateTypeRTT(toIrType)
-                        }
-                        else ->
-                            error("Op $opString is unsupported")
-                    }
                 }
                 else ->
                     error("Op $opString is unsupported")

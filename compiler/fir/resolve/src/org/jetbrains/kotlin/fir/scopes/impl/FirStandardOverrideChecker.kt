@@ -8,8 +8,9 @@ package org.jetbrains.kotlin.fir.scopes.impl
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.resolve.substitution.ConeSubstitutor
-import org.jetbrains.kotlin.fir.resolve.transformers.ensureResolved
+import org.jetbrains.kotlin.fir.symbols.ensureResolved
 import org.jetbrains.kotlin.fir.resolve.transformers.ensureResolvedTypeDeclaration
 import org.jetbrains.kotlin.fir.typeContext
 import org.jetbrains.kotlin.fir.types.*
@@ -57,7 +58,17 @@ class FirStandardOverrideChecker(private val session: FirSession) : FirAbstractO
     fun isEqualTypes(candidateTypeRef: FirTypeRef, baseTypeRef: FirTypeRef, substitutor: ConeSubstitutor): Boolean {
         candidateTypeRef.ensureResolvedTypeDeclaration(session, requiredPhase = FirResolvePhase.TYPES)
         baseTypeRef.ensureResolvedTypeDeclaration(session, requiredPhase = FirResolvePhase.TYPES)
+        if (candidateTypeRef is FirErrorTypeRef && baseTypeRef is FirErrorTypeRef) {
+            return maybeEqualErrorTypes(candidateTypeRef, baseTypeRef)
+        }
         return isEqualTypes(candidateTypeRef.coneType, baseTypeRef.coneType, substitutor)
+    }
+
+    private fun maybeEqualErrorTypes(ref1: FirErrorTypeRef, ref2: FirErrorTypeRef): Boolean {
+        val delegated1 = ref1.delegatedTypeRef as? FirUserTypeRef ?: return false
+        val delegated2 = ref2.delegatedTypeRef as? FirUserTypeRef ?: return false
+        if (delegated1.qualifier.size != delegated2.qualifier.size) return false
+        return delegated1.qualifier.zip(delegated2.qualifier).all { (l, r) -> l.name == r.name }
     }
 
 
@@ -94,9 +105,11 @@ class FirStandardOverrideChecker(private val session: FirSession) : FirAbstractO
     }
 
     override fun buildTypeParametersSubstitutorIfCompatible(
-        overrideCandidate: FirCallableMemberDeclaration<*>,
-        baseDeclaration: FirCallableMemberDeclaration<*>
+        overrideCandidate: FirCallableDeclaration,
+        baseDeclaration: FirCallableDeclaration
     ): ConeSubstitutor? {
+        overrideCandidate.ensureResolved(FirResolvePhase.TYPES)
+        baseDeclaration.ensureResolved(FirResolvePhase.TYPES)
         val substitutor = buildSubstitutorForOverridesCheck(overrideCandidate, baseDeclaration, session) ?: return null
         if (
             overrideCandidate.typeParameters.isNotEmpty() &&
@@ -121,9 +134,8 @@ class FirStandardOverrideChecker(private val session: FirSession) : FirAbstractO
 
         val substitutor = buildTypeParametersSubstitutorIfCompatible(overrideCandidate, baseDeclaration) ?: return false
 
-        overrideCandidate.ensureResolved(FirResolvePhase.TYPES, useSiteSession = session)
-        baseDeclaration.ensureResolved(FirResolvePhase.TYPES, useSiteSession = session)
-
+        overrideCandidate.ensureResolved(FirResolvePhase.TYPES)
+        baseDeclaration.ensureResolved(FirResolvePhase.TYPES)
         if (!isEqualReceiverTypes(overrideCandidate.receiverTypeRef, baseDeclaration.receiverTypeRef, substitutor)) return false
 
         return overrideCandidate.valueParameters.zip(baseDeclaration.valueParameters).all { (memberParam, selfParam) ->
@@ -132,13 +144,15 @@ class FirStandardOverrideChecker(private val session: FirSession) : FirAbstractO
     }
 
     override fun isOverriddenProperty(
-        overrideCandidate: FirCallableMemberDeclaration<*>,
+        overrideCandidate: FirCallableDeclaration,
         baseDeclaration: FirProperty
     ): Boolean {
         if (Visibilities.isPrivate(baseDeclaration.visibility)) return false
 
         if (overrideCandidate !is FirProperty) return false
         val substitutor = buildTypeParametersSubstitutorIfCompatible(overrideCandidate, baseDeclaration) ?: return false
+        overrideCandidate.ensureResolved(FirResolvePhase.TYPES)
+        baseDeclaration.ensureResolved(FirResolvePhase.TYPES)
         return isEqualReceiverTypes(overrideCandidate.receiverTypeRef, baseDeclaration.receiverTypeRef, substitutor)
     }
 }

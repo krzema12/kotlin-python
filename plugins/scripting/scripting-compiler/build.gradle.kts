@@ -14,7 +14,7 @@ dependencies {
     compileOnly(project(":compiler:backend.js"))
     compileOnly(project(":core:descriptors.runtime"))
     compileOnly(project(":compiler:ir.tree.impl"))
-    compileOnly(project(":compiler:backend.jvm:backend.jvm.entrypoint"))
+    compileOnly(project(":compiler:backend.jvm.entrypoint"))
     compileOnly(project(":kotlin-reflect-api"))
     compile(project(":kotlin-scripting-common"))
     compile(project(":kotlin-scripting-js"))
@@ -35,7 +35,10 @@ dependencies {
     testCompile(commonDep("junit:junit"))
 
     testImplementation(intellijCoreDep()) { includeJars("intellij-core") }
+    testImplementation(commonDep("org.jetbrains.kotlinx", "kotlinx-coroutines-core"))
     testRuntimeOnly(intellijDep()) { includeJars("jps-model", "jna") }
+
+    testImplementation(project(":kotlin-reflect"))
 }
 
 sourceSets {

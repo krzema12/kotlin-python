@@ -10,7 +10,9 @@ import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.fir.backend.Fir2IrComponents
 import org.jetbrains.kotlin.fir.backend.declareThisReceiverParameter
-import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
+import org.jetbrains.kotlin.fir.declarations.hasAnnotation
+import org.jetbrains.kotlin.fir.declarations.utils.*
 import org.jetbrains.kotlin.fir.symbols.Fir2IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.declarations.*
@@ -27,7 +29,7 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.resolve.annotations.JVM_STATIC_ANNOTATION_FQ_NAME
 import kotlin.properties.ReadWriteProperty
 
-abstract class AbstractFir2IrLazyFunction<F : FirMemberDeclaration>(
+abstract class AbstractFir2IrLazyFunction<F : FirCallableDeclaration>(
     components: Fir2IrComponents,
     override val startOffset: Int,
     override val endOffset: Int,
@@ -85,7 +87,7 @@ abstract class AbstractFir2IrLazyFunction<F : FirMemberDeclaration>(
 
     protected fun shouldHaveDispatchReceiver(
         containingClass: IrClass,
-        staticOwner: FirCallableMemberDeclaration<*>
+        staticOwner: FirCallableDeclaration
     ): Boolean {
         return !staticOwner.isStatic &&
                 (!containingClass.isObject || containingClass.isCompanion || !staticOwner.hasAnnotation(JVM_STATIC_CLASS_ID))

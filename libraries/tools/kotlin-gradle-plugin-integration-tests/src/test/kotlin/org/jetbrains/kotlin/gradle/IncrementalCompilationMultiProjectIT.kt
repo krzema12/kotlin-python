@@ -145,42 +145,60 @@ class IncrementalCompilationFirJvmMultiProjectIT : IncrementalCompilationJvmMult
     }
 }
 
-abstract class BaseIncrementalCompilationMultiProjectIT : BaseGradleIT() {
-    override fun defaultBuildOptions(): BuildOptions =
-        super.defaultBuildOptions().copy(withDaemon = true, incremental = true)
+class IncrementalCompilationClasspathSnapshotJvmMultiProjectIT : IncrementalCompilationJvmMultiProjectIT() {
+    override fun defaultBuildOptions() = super.defaultBuildOptions().copy(useClasspathSnapshot = true)
+}
 
-    protected abstract fun defaultProject(): Project
+abstract class BaseIncrementalCompilationMultiProjectIT : IncrementalCompilationBaseIT() {
 
     @Test
-    fun testMoveFunctionFromLib() {
-        val project = defaultProject()
-        project.build("build") {
-            assertSuccessful()
-        }
+    fun testAbiChangeInLib_changeMethodSignature() {
+        doTest(
+            "A.kt",
+            { it.replace("fun a() {}", "fun a(): Int = 1") },
+            expectedAffectedFileNames = listOf("A.kt", "B.kt", "AA.kt", "AAA.kt", "BB.kt", "barUseA.kt", "fooUseA.kt")
+        )
+    }
 
-        val barUseABKt = project.projectDir.getFileByName("barUseAB.kt")
-        val barInApp = File(project.projectDir, "app/src/main/kotlin/bar").apply { mkdirs() }
-        barUseABKt.copyTo(File(barInApp, barUseABKt.name))
-        barUseABKt.delete()
+    @Test
+    fun testAbiChangeInLib_addNewMethod() {
+        doTest(
+            "A.kt",
+            { it.replace("fun a() {}", "fun a() {}\nfun newA() {}") },
+            expectedAffectedFileNames = listOf("A.kt", "B.kt", "AA.kt", "AAA.kt", "BB.kt")
+        )
+    }
 
-        project.build("build") {
-            assertSuccessful()
-            val affectedSources = project.projectDir.getFilesByNames("fooCallUseAB.kt", "barUseAB.kt")
-            val relativePaths = project.relativize(affectedSources)
-            assertCompiledKotlinSources(relativePaths)
-        }
+    @Test
+    fun testNonAbiChangeInLib_changeMethodBody() {
+        doTest(
+            "A.kt",
+            { it.replace("fun a() {}", "fun a() { println() }") },
+            expectedAffectedFileNames = listOf("A.kt")
+        )
+    }
+
+    @Test
+    fun testMoveFunctionFromLibToApp() {
+        doTest(
+            { project ->
+                val barUseABKt = project.projectDir.getFileByName("barUseAB.kt")
+                val barInApp = File(project.projectDir, "app/src/main/kotlin/bar").apply { mkdirs() }
+                barUseABKt.copyTo(File(barInApp, barUseABKt.name))
+                barUseABKt.delete()
+            },
+            expectedAffectedFileNames = listOf("fooCallUseAB.kt", "barUseAB.kt")
+        )
     }
 
     @Test
     fun testAddNewMethodToLib() {
-        val project = defaultProject()
-        project.build("build") {
-            assertSuccessful()
-        }
-
-        val aKt = project.projectDir.getFileByName("A.kt")
-        aKt.writeText(
-            """
+        doTest(
+            options = defaultBuildOptions().copy(abiSnapshot = true),
+            { project ->
+                val aKt = project.projectDir.getFileByName("A.kt")
+                aKt.writeText(
+                    """
 package bar
 
 open class A {
@@ -188,14 +206,13 @@ open class A {
     fun newA() {}
 }
 """
+                )
+            },
+            //TODO for abi-snapshot "BB.kt" should not be recompiled
+            expectedAffectedFileNames = listOf(
+                "A.kt", "B.kt", "AA.kt", "BB.kt", "AAA.kt"
+            )
         )
-
-        project.build("build") {
-            assertSuccessful()
-            val affectedSources = project.projectDir.getFilesByNames("A.kt", "B.kt", "AA.kt", "AAA.kt", "BB.kt")
-            val relativePaths = project.relativize(affectedSources)
-            assertCompiledKotlinSources(relativePaths)
-        }
     }
 
     @Test
@@ -238,6 +255,8 @@ open class A {
         project.projectFile("BarDummy.kt").modify {
             it.replace("class BarDummy", "open class BarDummy")
         }
+
+        //don't need to recompile app classes because lib's proto stays the same
         project.build("build") {
             assertSuccessful()
             val affectedSources = project.projectDir.allKotlinFiles()
@@ -253,8 +272,66 @@ open class A {
         }
     }
 
+    @Test
+    fun testCleanBuildLibForAbiSnapshot() {
+        val options = defaultBuildOptions().copy(abiSnapshot = true)
+        val project = defaultProject()
+
+        project.build("build", options = options) {
+            assertSuccessful()
+        }
+
+        project.build(":lib:clean", options = options) {
+            assertSuccessful()
+        }
+
+        // Change file so Gradle won't skip :app:compile
+        project.projectFile("BarDummy.kt").modify {
+            it.replace("class BarDummy", "open class BarDummy")
+        }
+
+        //don't need to recompile app classes because lib's proto stays the same
+        project.build("build", options = options) {
+            val affectedSources = project.projectDir.allKotlinFiles()
+            val relativePaths = project.relativize(affectedSources)
+            assertCompiledKotlinSources(relativePaths)
+        }
+
+        val aaKt = project.projectFile("AA.kt")
+        aaKt.modify { "$it " }
+        project.build("build", options = options) {
+            assertSuccessful()
+            assertCompiledKotlinSources(project.relativize(aaKt))
+        }
+    }
+
     protected abstract val additionalLibDependencies: String
     protected abstract val compileKotlinTaskName: String
+
+    @Test
+    fun testAddMethodToLibForAbiSnapshot() {
+        val project = defaultProject()
+        val options = defaultBuildOptions().copy(abiSnapshot = true)
+
+        project.build("build", options = options) {
+            assertSuccessful()
+        }
+
+        // Change file so Gradle won't skip :app:compile
+        project.projectFile("BarDummy.kt").modify {
+            it.replace("class BarDummy", "open class BarDummy")
+        }
+
+        val barDummyClassFile = project.projectFile("BarDummy.kt")
+        barDummyClassFile.modify { "$it { fun m() = 42}" }
+
+        project.build("build", options = options) {
+            assertSuccessful()
+            val relativePaths = project.relativize(barDummyClassFile)
+            assertCompiledKotlinSources(relativePaths)
+        }
+
+    }
 
     @Test
     fun testAddDependencyToLib() {

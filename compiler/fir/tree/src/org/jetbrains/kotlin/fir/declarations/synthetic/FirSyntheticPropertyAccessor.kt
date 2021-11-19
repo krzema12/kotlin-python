@@ -5,7 +5,7 @@
 
 package org.jetbrains.kotlin.fir.declarations.synthetic
 
-import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.contracts.FirContractDescription
 import org.jetbrains.kotlin.fir.contracts.impl.FirEmptyContractDescription
@@ -28,8 +28,8 @@ class FirSyntheticPropertyAccessor(
     override val source: FirSourceElement?
         get() = delegate.source
 
-    override val declarationSiteSession: FirSession
-        get() = delegate.declarationSiteSession
+    override val moduleData: FirModuleData
+        get() = delegate.moduleData
 
     override val origin: FirDeclarationOrigin
         get() = FirDeclarationOrigin.Synthetic
@@ -48,6 +48,9 @@ class FirSyntheticPropertyAccessor(
 
     override val receiverTypeRef: FirTypeRef?
         get() = null
+    
+    override val deprecation: DeprecationsPerUseSite?
+        get() = delegate.deprecation
 
     override val valueParameters: List<FirValueParameter>
         get() = delegate.valueParameters
@@ -132,6 +135,10 @@ class FirSyntheticPropertyAccessor(
     }
 
     override fun replaceReceiverTypeRef(newReceiverTypeRef: FirTypeRef?) {
+        throw AssertionError("Mutation of synthetic property accessor isn't supported")
+    }
+
+    override fun replaceDeprecation(newDeprecation: DeprecationsPerUseSite?) {
         throw AssertionError("Mutation of synthetic property accessor isn't supported")
     }
 

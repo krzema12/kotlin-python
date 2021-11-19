@@ -5,17 +5,19 @@
 
 package org.jetbrains.kotlin.fir.resolve.inference
 
+import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirAnonymousFunction
+import org.jetbrains.kotlin.fir.expressions.FirAnonymousFunctionExpression
 import org.jetbrains.kotlin.fir.expressions.FirCallableReferenceAccess
 import org.jetbrains.kotlin.fir.expressions.FirStatement
 import org.jetbrains.kotlin.fir.references.FirNamedReference
 import org.jetbrains.kotlin.fir.resolve.DoubleColonLHS
 import org.jetbrains.kotlin.fir.resolve.calls.Candidate
-import org.jetbrains.kotlin.fir.symbols.impl.ConeClassLikeLookupTagImpl
-import org.jetbrains.kotlin.fir.types.*
-import org.jetbrains.kotlin.fir.types.impl.ConeClassLikeTypeImpl
-import org.jetbrains.kotlin.name.StandardClassIds
+import org.jetbrains.kotlin.fir.types.ConeKotlinType
+import org.jetbrains.kotlin.fir.types.ConeTypeVariable
+import org.jetbrains.kotlin.fir.types.ConeTypeVariableType
+import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.resolve.calls.model.LambdaWithTypeVariableAsExpectedTypeMarker
 import org.jetbrains.kotlin.resolve.calls.model.PostponedCallableReferenceMarker
 import org.jetbrains.kotlin.resolve.calls.model.PostponedResolvedAtomMarker
@@ -25,10 +27,12 @@ import org.jetbrains.kotlin.types.model.KotlinTypeMarker
 
 class ConeTypeVariableForLambdaReturnType(val argument: FirAnonymousFunction, name: String) : ConeTypeVariable(name)
 class ConeTypeVariableForPostponedAtom(name: String) : ConeTypeVariable(name)
+class ConeTypeVariableForLambdaParameterType(name: String, val index: Int) : ConeTypeVariable(name)
 
 //  -------------------------- Atoms --------------------------
 
 sealed class PostponedResolvedAtom : PostponedResolvedAtomMarker {
+    abstract val atom: FirElement
     abstract override val inputTypes: Collection<ConeKotlinType>
     abstract override val outputType: ConeKotlinType?
     override var analyzed: Boolean = false
@@ -38,7 +42,7 @@ sealed class PostponedResolvedAtom : PostponedResolvedAtomMarker {
 //  ------------- Lambdas -------------
 
 class ResolvedLambdaAtom(
-    val atom: FirAnonymousFunction,
+    override val atom: FirAnonymousFunction,
     expectedType: ConeKotlinType?,
     val isSuspend: Boolean,
     val receiver: ConeKotlinType?,
@@ -75,7 +79,7 @@ class ResolvedLambdaAtom(
 }
 
 class LambdaWithTypeVariableAsExpectedTypeAtom(
-    val atom: FirAnonymousFunction,
+    override val atom: FirAnonymousFunctionExpression,
     private val initialExpectedTypeType: ConeKotlinType,
     val expectedTypeRef: FirTypeRef,
     val candidateOfOuterCall: Candidate,
@@ -115,6 +119,9 @@ class ResolvedCallableReferenceAtom(
     val lhs: DoubleColonLHS?,
     private val session: FirSession
 ) : PostponedResolvedAtom(), PostponedCallableReferenceMarker {
+
+    override val atom: FirCallableReferenceAccess
+        get() = reference
 
     var hasBeenResolvedOnce: Boolean = false
     var hasBeenPostponed: Boolean = false

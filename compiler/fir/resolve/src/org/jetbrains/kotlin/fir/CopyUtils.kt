@@ -61,7 +61,7 @@ fun FirFunctionCall.copy(
 fun FirAnonymousFunction.copy(
     receiverTypeRef: FirTypeRef? = this.receiverTypeRef,
     source: FirSourceElement? = this.source,
-    session: FirSession = this.declarationSiteSession,
+    moduleData: FirModuleData = this.moduleData,
     origin: FirDeclarationOrigin = this.origin,
     returnTypeRef: FirTypeRef = this.returnTypeRef,
     valueParameters: List<FirValueParameter> = this.valueParameters,
@@ -74,7 +74,7 @@ fun FirAnonymousFunction.copy(
 ): FirAnonymousFunction {
     return buildAnonymousFunction {
         this.source = source
-        declarationSiteSession = session
+        this.moduleData = moduleData
         this.origin = origin
         this.returnTypeRef = returnTypeRef
         this.receiverTypeRef = receiverTypeRef
@@ -90,14 +90,20 @@ fun FirAnonymousFunction.copy(
     }
 }
 
-
 fun FirTypeRef.resolvedTypeFromPrototype(
     type: ConeKotlinType
 ): FirResolvedTypeRef {
-    return buildResolvedTypeRef {
-        source = this@resolvedTypeFromPrototype.source
-        this.type = type
-        annotations += this@resolvedTypeFromPrototype.annotations
+    return if (type is ConeKotlinErrorType) {
+        buildErrorTypeRef {
+            source = this@resolvedTypeFromPrototype.source
+            diagnostic = type.diagnostic
+        }
+    } else {
+        buildResolvedTypeRef {
+            source = this@resolvedTypeFromPrototype.source
+            this.type = type
+            annotations += this@resolvedTypeFromPrototype.annotations
+        }
     }
 }
 
@@ -116,7 +122,8 @@ fun FirTypeParameter.copy(
 ): FirTypeParameter {
     return buildTypeParameter {
         source = this@copy.source
-        declarationSiteSession = this@copy.declarationSiteSession
+        resolvePhase = this@copy.resolvePhase
+        moduleData = this@copy.moduleData
         name = this@copy.name
         symbol = this@copy.symbol
         variance = this@copy.variance
@@ -172,9 +179,10 @@ fun FirDeclarationStatus.copy(
     isExpect: Boolean = this.isExpect,
     newModality: Modality? = null,
     newVisibility: Visibility? = null,
-    newEffectiveVisibility: EffectiveVisibility? = null
+    newEffectiveVisibility: EffectiveVisibility? = null,
+    isOperator: Boolean = this.isOperator
 ): FirDeclarationStatus {
-    return if (this.isExpect == isExpect && newModality == null && newVisibility == null) {
+    return if (this.isExpect == isExpect && newModality == null && newVisibility == null && this.isOperator == isOperator) {
         this
     } else {
         require(this is FirDeclarationStatusImpl) { "Unexpected class ${this::class}" }
@@ -184,6 +192,7 @@ fun FirDeclarationStatus.copy(
             newEffectiveVisibility ?: EffectiveVisibility.Public
         ).apply {
             this.isExpect = isExpect
+            this.isOperator = isOperator
         }
     }
 }

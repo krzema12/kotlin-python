@@ -5,18 +5,54 @@
 package org.jetbrains.kotlin.idea.frontend.api.fir.utils
 
 import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirRegularClass
-import org.jetbrains.kotlin.fir.declarations.primaryConstructor
+import org.jetbrains.kotlin.fir.declarations.utils.primaryConstructor
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
 import org.jetbrains.kotlin.fir.expressions.FirConstExpression
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirNamedArgumentExpression
+import org.jetbrains.kotlin.fir.references.FirErrorNamedReference
+import org.jetbrains.kotlin.fir.references.FirNamedReference
+import org.jetbrains.kotlin.fir.references.FirResolvedNamedReference
+import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeUnresolvedNameError
 import org.jetbrains.kotlin.fir.resolve.toSymbol
-import org.jetbrains.kotlin.fir.types.ConeClassLikeType
-import org.jetbrains.kotlin.fir.types.coneType
+import org.jetbrains.kotlin.fir.types.*
+import org.jetbrains.kotlin.idea.fir.low.level.api.api.FirModuleResolveState
+import org.jetbrains.kotlin.idea.fir.low.level.api.api.withFirDeclaration
+import org.jetbrains.kotlin.idea.fir.low.level.api.lazy.resolve.ResolveType
 import org.jetbrains.kotlin.idea.frontend.api.symbols.markers.KtConstantValue
 import org.jetbrains.kotlin.idea.frontend.api.symbols.markers.KtSimpleConstantValue
 import org.jetbrains.kotlin.idea.frontend.api.symbols.markers.KtUnsupportedConstantValue
+import org.jetbrains.kotlin.idea.frontend.api.types.KtTypeNullability
+import org.jetbrains.kotlin.idea.references.FirReferenceResolveHelper
+import org.jetbrains.kotlin.psi.KtAnnotatedExpression
+import org.jetbrains.kotlin.psi.KtExpression
+import org.jetbrains.kotlin.psi.KtLabeledExpression
+import org.jetbrains.kotlin.psi.KtObjectLiteralExpression
+
+internal fun KtExpression.unwrap(): KtExpression {
+    return when (this) {
+        is KtLabeledExpression -> baseExpression?.unwrap()
+        is KtAnnotatedExpression -> baseExpression?.unwrap()
+        is KtObjectLiteralExpression -> objectDeclaration
+        else -> null
+    } ?: this
+}
+
+internal fun FirNamedReference.getReferencedElementType(resolveState: FirModuleResolveState): ConeKotlinType {
+    val symbols = when (this) {
+        is FirResolvedNamedReference -> listOf(resolvedSymbol)
+        is FirErrorNamedReference -> FirReferenceResolveHelper.getFirSymbolsByErrorNamedReference(this)
+        else -> error("Unexpected ${this::class}")
+    }
+    val firCallableDeclaration = symbols.singleOrNull()?.fir as? FirCallableDeclaration
+        ?: return ConeClassErrorType(ConeUnresolvedNameError(name))
+
+    return firCallableDeclaration.withFirDeclaration(ResolveType.CallableReturnType, resolveState) {
+        it.returnTypeRef.coneType
+    }
+}
 
 internal fun mapAnnotationParameters(annotationCall: FirAnnotationCall, session: FirSession): Map<String, FirExpression> {
 
@@ -55,3 +91,9 @@ internal fun FirExpression.convertConstantExpression(): KtConstantValue =
         is FirConstExpression<*> -> convertConstantExpression()
         else -> KtUnsupportedConstantValue
     }
+
+internal fun KtTypeNullability.toConeNullability() = when (this) {
+    KtTypeNullability.NULLABLE -> ConeNullability.NULLABLE
+    KtTypeNullability.NON_NULLABLE -> ConeNullability.NOT_NULL
+    KtTypeNullability.UNKNOWN -> ConeNullability.UNKNOWN
+}

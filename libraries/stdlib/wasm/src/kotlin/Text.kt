@@ -20,6 +20,9 @@ actual class Regex {
     actual fun replace(input: CharSequence, transform: (MatchResult) -> CharSequence): String = TODO("Wasm stdlib: Text")
     actual fun replaceFirst(input: CharSequence, replacement: String): String = TODO("Wasm stdlib: Text")
 
+    actual fun matchAt(input: CharSequence, index: Int): MatchResult? = TODO("Wasm stdlib: Text")
+    actual fun matchesAt(input: CharSequence, index: Int): Boolean = TODO("Wasm stdlib: Text")
+
     /**
      * Returns the first match of a regular expression in the [input], beginning at the specified [startIndex].
      *
@@ -37,12 +40,21 @@ actual class Regex {
     actual fun findAll(input: CharSequence, startIndex: Int): Sequence<MatchResult> = TODO("Wasm stdlib: Text")
 
     /**
-     * Splits the [input] CharSequence around matches of this regular expression.
+     * Splits the [input] CharSequence to a list of strings around matches of this regular expression.
      *
      * @param limit Non-negative value specifying the maximum number of substrings the string can be split to.
      * Zero by default means no limit is set.
      */
     actual fun split(input: CharSequence, limit: Int): List<String> = TODO("Wasm stdlib: Text")
+
+    /**
+     * Splits the [input] CharSequence to a sequence of strings around matches of this regular expression.
+     *
+     * @param limit Non-negative value specifying the maximum number of substrings the string can be split to.
+     * Zero by default means no limit is set.
+     * @sample samples.text.Regexps.splitToSequence
+     */
+    public actual fun splitToSequence(input: CharSequence, limit: Int): Sequence<String> = TODO("Wasm stdlib: Text")
 
     actual companion object {
         actual fun fromLiteral(literal: String): Regex = TODO("Wasm stdlib: Text")
@@ -276,7 +288,7 @@ public actual fun CharArray.concatToString(startIndex: Int, endIndex: Int): Stri
  */
 @SinceKotlin("1.3")
 @ExperimentalStdlibApi
-public actual fun String.toCharArray(): CharArray = TODO("Wasm stdlib: Text")
+public actual fun String.toCharArray(): CharArray = this.chars
 
 /**
  * Returns a [CharArray] containing characters of this string or its substring.
@@ -417,12 +429,17 @@ actual fun String.replaceFirst(oldValue: String, newValue: String, ignoreCase: B
 /**
  * Returns `true` if this string is equal to [other], optionally ignoring character case.
  *
+ * Two strings are considered to be equal if they have the same length and the same character at the same index.
+ * If [ignoreCase] is true, the result of `Char.uppercaseChar().lowercaseChar()` on each character is compared.
+ *
  * @param ignoreCase `true` to ignore character case when comparing strings. By default `false`.
  */
 actual fun String?.equals(other: String?, ignoreCase: Boolean): Boolean = TODO("Wasm stdlib: Text")
 
 /**
  * Compares two strings lexicographically, optionally ignoring case differences.
+ *
+ * If [ignoreCase] is true, the result of `Char.uppercaseChar().lowercaseChar()` on each character is compared.
  */
 @SinceKotlin("1.2")
 actual fun String.compareTo(other: String, ignoreCase: Boolean): Int = TODO("Wasm stdlib: Text")

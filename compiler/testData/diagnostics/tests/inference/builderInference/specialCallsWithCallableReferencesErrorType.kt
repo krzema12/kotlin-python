@@ -37,8 +37,8 @@ class Flow<out R>(private val block: suspend FlowCollector<R>.() -> Unit)
 
 fun poll7(): Flow<String> {
     return flow {
-        val inv = <!TYPE_INFERENCE_POSTPONED_VARIABLE_IN_RECEIVER_TYPE!>::bar<!><!NOT_NULL_ASSERTION_ON_CALLABLE_REFERENCE!>!!<!>
-        <!DEBUG_INFO_MISSING_UNRESOLVED!>inv()<!>
+        val inv = ::bar<!NOT_NULL_ASSERTION_ON_CALLABLE_REFERENCE!>!!<!>
+        inv()
     }
 }
 
@@ -51,8 +51,8 @@ fun poll71(): Flow<String> {
 
 fun poll72(): Flow<String> {
     return flow {
-        val inv = <!TYPE_INFERENCE_POSTPONED_VARIABLE_IN_RECEIVER_TYPE!>::bar3<!><!NOT_NULL_ASSERTION_ON_CALLABLE_REFERENCE!>!!<!>
-        <!DEBUG_INFO_MISSING_UNRESOLVED!>inv()<!>
+        val inv = ::bar3<!NOT_NULL_ASSERTION_ON_CALLABLE_REFERENCE!>!!<!>
+        inv()
     }
 }
 
@@ -65,8 +65,8 @@ fun poll73(): Flow<String> {
 
 fun poll74(): Flow<String> {
     return flow {
-        val inv = <!TYPE_INFERENCE_POSTPONED_VARIABLE_IN_RECEIVER_TYPE!>::bar5<!><!NOT_NULL_ASSERTION_ON_CALLABLE_REFERENCE!>!!<!>
-        <!DEBUG_INFO_ELEMENT_WITH_ERROR_TYPE!>inv<!>
+        val inv = ::bar5<!NOT_NULL_ASSERTION_ON_CALLABLE_REFERENCE!>!!<!>
+        inv
     }
 }
 
@@ -79,7 +79,7 @@ fun poll75(): Flow<String> {
 
 fun poll76(): Flow<String> {
     return flow {
-        val inv = <!NEW_INFERENCE_NO_INFORMATION_FOR_PARAMETER!>::<!TYPE_INFERENCE_NO_INFORMATION_FOR_PARAMETER!>Foo7<!><!><!NOT_NULL_ASSERTION_ON_CALLABLE_REFERENCE!>!!<!>
+        val inv = <!NEW_INFERENCE_NO_INFORMATION_FOR_PARAMETER!>::Foo7<!><!NOT_NULL_ASSERTION_ON_CALLABLE_REFERENCE!>!!<!>
         <!DEBUG_INFO_ELEMENT_WITH_ERROR_TYPE!>inv<!>
     }
 }

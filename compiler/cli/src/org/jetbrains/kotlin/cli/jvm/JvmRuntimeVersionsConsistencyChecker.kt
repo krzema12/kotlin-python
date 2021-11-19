@@ -233,8 +233,8 @@ object JvmRuntimeVersionsConsistencyChecker {
         jars: List<KotlinLibraryFile>
     ): MavenComparableVersion? {
         assert(jars.isNotEmpty()) { "'jars' must not be empty" }
-        val oldestVersion = jars.minBy { it.version }!!.version
-        val newestVersion = jars.maxBy { it.version }!!.version
+        val oldestVersion = jars.minOf { it.version }
+        val newestVersion = jars.maxOf { it.version }
 
         // If the oldest version is the same as the newest version, then all jars have the same version
         if (oldestVersion == newestVersion) return oldestVersion
@@ -250,9 +250,9 @@ object JvmRuntimeVersionsConsistencyChecker {
         // we suggest to provide an explicit dependency on version X.
         // TODO: report this depending on the content of the jars instead
         val minReflectJar =
-            jars.filter { it.file.name.startsWith("kotlin-reflect") }.minBy { it.version }
+            jars.filter { it.file.name.startsWith("kotlin-reflect") }.minByOrNull { it.version }
         val maxStdlibJar =
-            jars.filter { it.file.name.startsWith("kotlin-runtime") || it.file.name.startsWith("kotlin-stdlib") }.maxBy { it.version }
+            jars.filter { it.file.name.startsWith("kotlin-runtime") || it.file.name.startsWith("kotlin-stdlib") }.maxByOrNull { it.version }
         if (minReflectJar != null && maxStdlibJar != null && minReflectJar.version < maxStdlibJar.version) {
             messageCollector.issue(
                 null,
@@ -303,6 +303,7 @@ object JvmRuntimeVersionsConsistencyChecker {
                 }
                 FileKind.OldRuntime -> jars.add(KotlinLibraryFile(jarFile, ApiVersion.KOTLIN_1_0.version))
                 FileKind.LibraryWithBundledRuntime -> otherLibrariesWithBundledRuntime.add(jarFile)
+                FileKind.Irrelevant -> {}
             }
         }
 
@@ -358,5 +359,5 @@ object JvmRuntimeVersionsConsistencyChecker {
     }
 
     private fun Manifest.getKotlinLanguageVersion(): MavenComparableVersion =
-        (mainAttributes.getValue(KOTLIN_VERSION_ATTRIBUTE)?.let((ApiVersion)::parse) ?: ApiVersion.KOTLIN_1_0).version
+        (mainAttributes.getValue(KOTLIN_VERSION_ATTRIBUTE)?.let(ApiVersion.Companion::parse) ?: ApiVersion.KOTLIN_1_0).version
 }

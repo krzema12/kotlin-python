@@ -38,6 +38,8 @@ class NewConstraintSystemImpl(
     private val properTypesCache: MutableSet<KotlinTypeMarker> = SmartSet.create()
     private val notProperTypesCache: MutableSet<KotlinTypeMarker> = SmartSet.create()
 
+    private var couldBeResolvedWithUnrestrictedBuilderInference: Boolean = false
+
     private enum class State {
         BUILDING,
         TRANSACTION,
@@ -117,6 +119,13 @@ class NewConstraintSystemImpl(
     override fun markPostponedVariable(variable: TypeVariableMarker) {
         storage.postponedTypeVariables += variable
     }
+
+    override fun markCouldBeResolvedWithUnrestrictedBuilderInference() {
+        couldBeResolvedWithUnrestrictedBuilderInference = true
+    }
+
+    override fun couldBeResolvedWithUnrestrictedBuilderInference() =
+        couldBeResolvedWithUnrestrictedBuilderInference
 
     override fun unmarkPostponedVariable(variable: TypeVariableMarker) {
         storage.postponedTypeVariables -= variable
@@ -473,6 +482,14 @@ class NewConstraintSystemImpl(
         }
     }
 
+    override fun containsOnlyFixedVariables(type: KotlinTypeMarker): Boolean {
+        checkState(State.BUILDING, State.COMPLETION)
+        return !type.contains {
+            val typeConstructor = it.typeConstructor()
+            storage.notFixedTypeVariables.containsKey(typeConstructor)
+        }
+    }
+
     // PostponedArgumentsAnalyzer.Context
     override fun buildCurrentSubstitutor(): TypeSubstitutorMarker {
         checkState(State.BUILDING, State.COMPLETION, State.TRANSACTION)
@@ -497,7 +514,7 @@ class NewConstraintSystemImpl(
     override fun bindingStubsForPostponedVariables(): Map<TypeVariableMarker, StubTypeMarker> {
         checkState(State.BUILDING, State.COMPLETION)
         // TODO: SUB
-        return storage.postponedTypeVariables.associateWith { createStubType(it) }
+        return storage.postponedTypeVariables.associateWith { createStubTypeForBuilderInference(it) }
     }
 
     override fun currentStorage(): ConstraintStorage {
@@ -512,6 +529,14 @@ class NewConstraintSystemImpl(
         return constraints.any {
             (it.kind == ConstraintKind.UPPER || it.kind == ConstraintKind.EQUALITY) &&
                     it.type.lowerBoundIfFlexible().isUnit()
+        }
+    }
+
+    override fun removePostponedTypeVariablesFromConstraints(postponedTypeVariables: Set<TypeConstructorMarker>) {
+        for ((_, variableWithConstraints) in storage.notFixedTypeVariables) {
+            variableWithConstraints.removeConstrains { constraint ->
+                constraint.type.contains { it is StubTypeMarker && it.getOriginalTypeVariable() in postponedTypeVariables }
+            }
         }
     }
 }

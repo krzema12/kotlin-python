@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 package a
 
 interface A
@@ -14,7 +13,7 @@ fun testElvis(a: Int?, b: Int?) {
     if (a != null) {
         doInt(b ?: <!DEBUG_INFO_SMARTCAST!>a<!>)
     }
-    doList(getList() ?: <!TYPE_INFERENCE_UPPER_BOUND_VIOLATED{OI}!>emptyListOfA<!>()) //should be an error
+    doList(getList() ?: emptyListOfA()) //should be an error
     doList(getList() ?: strangeList { doInt(it) }) //lambda was not analyzed
 }
 
@@ -33,5 +32,5 @@ fun testDataFlowInfo2(a: Int?, b: Int?) {
 }
 
 fun testTypeMismatch(a: String?, b: Any) {
-    doInt(<!TYPE_MISMATCH{NI}!><!TYPE_MISMATCH{OI}!>a<!> ?: <!TYPE_MISMATCH{OI}!>b<!><!>)
+    doInt(<!TYPE_MISMATCH!>a ?: b<!>)
 }

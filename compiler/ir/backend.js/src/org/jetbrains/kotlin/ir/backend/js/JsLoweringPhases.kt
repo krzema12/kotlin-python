@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -19,10 +19,12 @@ import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.backend.js.lower.*
 import org.jetbrains.kotlin.ir.backend.js.lower.calls.CallsLowering
 import org.jetbrains.kotlin.ir.backend.js.lower.cleanup.CleanupLowering
+import org.jetbrains.kotlin.ir.backend.js.lower.coroutines.JsSuspendArityStoreLowering
 import org.jetbrains.kotlin.ir.backend.js.lower.coroutines.JsSuspendFunctionsLowering
 import org.jetbrains.kotlin.ir.backend.js.lower.inline.CopyInlineFunctionBodyLowering
-import org.jetbrains.kotlin.ir.backend.js.lower.inline.jsRecordExtractedLocalClasses
 import org.jetbrains.kotlin.ir.backend.js.lower.inline.RemoveInlineDeclarationsWithReifiedTypeParametersLowering
+import org.jetbrains.kotlin.ir.backend.js.lower.inline.SyntheticAccessorLowering
+import org.jetbrains.kotlin.ir.backend.js.lower.inline.jsRecordExtractedLocalClasses
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 
@@ -150,6 +152,12 @@ val createScriptFunctionsPhase = makeJsModulePhase(
     description = "Create functions for initialize and evaluate script"
 ).toModuleLowering()
 
+private val annotationInstantiationLowering = makeDeclarationTransformerPhase(
+    ::JsAnnotationImplementationTransformer,
+    name = "AnnotationImplementation",
+    description = "Create synthetic annotations implementations and use them in annotations constructor calls"
+)
+
 private val expectDeclarationsRemovingPhase = makeDeclarationTransformerPhase(
     ::ExpectDeclarationsRemoveLowering,
     name = "ExpectDeclarationsRemoving",
@@ -192,10 +200,17 @@ private val jsCodeOutliningPhase = makeBodyLoweringPhase(
     description = "Outline js() calls where JS code references Kotlin locals"
 )
 
+private val arrayConstructorReferencePhase = makeBodyLoweringPhase(
+    ::ArrayConstructorReferenceLowering,
+    name = "ArrayConstructorReference",
+    description = "Transform `::Array` into a lambda"
+)
+
 private val arrayConstructorPhase = makeBodyLoweringPhase(
     ::ArrayConstructorLowering,
     name = "ArrayConstructor",
-    description = "Transform `Array(size) { index -> value }` into a loop"
+    description = "Transform `Array(size) { index -> value }` into a loop",
+    prerequisite = setOf(arrayConstructorReferencePhase)
 )
 
 private val sharedVariablesLoweringPhase = makeBodyLoweringPhase(
@@ -224,13 +239,20 @@ private val localClassesExtractionFromInlineFunctionsPhase = makeBodyLoweringPha
     prerequisite = setOf(localClassesInInlineFunctionsPhase)
 )
 
+private val syntheticAccessorLoweringPhase = makeBodyLoweringPhase(
+    ::SyntheticAccessorLowering,
+    name = "syntheticAccessorLoweringPhase",
+    description = "Wrap top level inline function to access through them from inline functions"
+)
+
 private val functionInliningPhase = makeBodyLoweringPhase(
     ::FunctionInlining,
     name = "FunctionInliningPhase",
     description = "Perform function inlining",
     prerequisite = setOf(
         expectDeclarationsRemovingPhase, sharedVariablesLoweringPhase,
-        localClassesInInlineLambdasPhase, localClassesExtractionFromInlineFunctionsPhase
+        localClassesInInlineLambdasPhase, localClassesExtractionFromInlineFunctionsPhase,
+        syntheticAccessorLoweringPhase
     )
 )
 
@@ -341,9 +363,9 @@ private val callableReferenceLowering = makeBodyLoweringPhase(
 )
 
 private val returnableBlockLoweringPhase = makeBodyLoweringPhase(
-    ::ReturnableBlockLowering,
-    name = "ReturnableBlockLowering",
-    description = "Replace returnable block with do-while loop",
+    ::JsReturnableBlockLowering,
+    name = "JsReturnableBlockLowering",
+    description = "Introduce temporary variable for result and change returnable block's type to Unit",
     prerequisite = setOf(functionInliningPhase)
 )
 
@@ -384,6 +406,12 @@ private val copyPropertyAccessorBodiesLoweringPass = makeDeclarationTransformerP
     prerequisite = setOf(propertyAccessorInlinerLoweringPhase)
 )
 
+private val booleanPropertyInExternalLowering = makeBodyLoweringPhase(
+    ::BooleanPropertyInExternalLowering,
+    name = "BooleanPropertyInExternalLowering",
+    description = "Lowering which wrap boolean in external declarations with Boolean() call and add diagnostic for such cases"
+)
+
 private val foldConstantLoweringPhase = makeBodyLoweringPhase(
     { FoldConstantLowering(it, true) },
     name = "FoldConstantLowering",
@@ -398,7 +426,7 @@ private val localDelegatedPropertiesLoweringPhase = makeBodyLoweringPhase(
 )
 
 private val localDeclarationsLoweringPhase = makeBodyLoweringPhase(
-    ::LocalDeclarationsLowering,
+    { context -> LocalDeclarationsLowering(context, suggestUniqueNames = false) },
     name = "LocalDeclarationsLowering",
     description = "Move local declarations into nearest declaration container",
     prerequisite = setOf(sharedVariablesLoweringPhase, localDelegatedPropertiesLoweringPhase)
@@ -715,12 +743,20 @@ private val cleanupLoweringPhase = makeBodyLoweringPhase(
     description = "Clean up IR before codegen"
 )
 
+private val jsSuspendArityStorePhase = makeDeclarationTransformerPhase(
+    ::JsSuspendArityStoreLowering,
+    name = "JsSuspendArityStoreLowering",
+    description = "Store arity for suspend functions to not remove it during DCE"
+)
+
 private val loweringList = listOf<Lowering>(
     scriptRemoveReceiverLowering,
     validateIrBeforeLowering,
+    annotationInstantiationLowering,
     expectDeclarationsRemovingPhase,
     stripTypeAliasDeclarationsPhase,
     jsCodeOutliningPhase,
+    arrayConstructorReferencePhase,
     arrayConstructorPhase,
     lateinitNullableFieldsPhase,
     lateinitDeclarationLoweringPhase,
@@ -729,6 +765,7 @@ private val loweringList = listOf<Lowering>(
     localClassesInInlineLambdasPhase,
     localClassesInInlineFunctionsPhase,
     localClassesExtractionFromInlineFunctionsPhase,
+    syntheticAccessorLoweringPhase,
     functionInliningPhase,
     copyInlineFunctionBodyLoweringPhase,
     removeInlineDeclarationsWithReifiedTypeParametersLoweringPhase,
@@ -771,6 +808,7 @@ private val loweringList = listOf<Lowering>(
     removeInitializersForLazyProperties,
     propertyAccessorInlinerLoweringPhase,
     copyPropertyAccessorBodiesLoweringPass,
+    booleanPropertyInExternalLowering,
     foldConstantLoweringPhase,
     privateMembersLoweringPhase,
     privateMemberUsagesLoweringPhase,
@@ -803,7 +841,8 @@ private val loweringList = listOf<Lowering>(
     captureStackTraceInThrowablesPhase,
     callsLoweringPhase,
     cleanupLoweringPhase,
-    validateIrAfterLowering
+    validateIrAfterLowering,
+    jsSuspendArityStorePhase
 )
 
 // TODO comment? Eliminate ModuleLowering's? Don't filter them here?

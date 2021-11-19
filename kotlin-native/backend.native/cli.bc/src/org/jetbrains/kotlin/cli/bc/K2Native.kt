@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.cli.bc
 import com.intellij.openapi.Disposable
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
+import org.jetbrains.kotlin.analyzer.CompilationErrorException
 import org.jetbrains.kotlin.backend.common.serialization.metadata.KlibMetadataVersion
 import org.jetbrains.kotlin.backend.konan.*
 import org.jetbrains.kotlin.cli.common.*
@@ -26,6 +27,7 @@ import org.jetbrains.kotlin.konan.CURRENT
 import org.jetbrains.kotlin.konan.CompilerVersion
 import org.jetbrains.kotlin.konan.file.File
 import org.jetbrains.kotlin.konan.target.CompilerOutputKind
+import org.jetbrains.kotlin.library.uniqueName
 import org.jetbrains.kotlin.metadata.deserialization.BinaryVersion
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.util.profile
@@ -38,7 +40,7 @@ class K2Native : CLICompiler<K2NativeCompilerArguments>() {
 
     override fun createMetadataVersion(versionArray: IntArray): BinaryVersion = KlibMetadataVersion(*versionArray)
 
-    override val performanceManager:CommonCompilerPerformanceManager by lazy {
+    override val defaultPerformanceManager: CommonCompilerPerformanceManager by lazy {
         K2NativeCompilerPerformanceManager()
     }
 
@@ -75,10 +77,12 @@ class K2Native : CLICompiler<K2NativeCompilerArguments>() {
 
         try {
             val konanConfig = KonanConfig(project, configuration)
+            ensureModuleName(konanConfig, environment)
             runTopLevelPhases(konanConfig, environment)
-        } catch (e: KonanCompilationException) {
-            return ExitCode.COMPILATION_ERROR
         } catch (e: Throwable) {
+            if (e is KonanCompilationException || e is CompilationErrorException)
+                return ExitCode.COMPILATION_ERROR
+
             configuration.report(ERROR, """
                 |Compilation failed: ${e.message}
 
@@ -101,6 +105,18 @@ class K2Native : CLICompiler<K2NativeCompilerArguments>() {
         return this?.asList<String>() ?: listOf<String>()
     }
 
+    private fun ensureModuleName(config: KonanConfig, environment: KotlinCoreEnvironment) {
+        if (environment.getSourceFiles().isEmpty()) {
+            val libraries = config.resolvedLibraries.getFullList()
+            val moduleName = config.moduleId
+            if (libraries.any { it.uniqueName == moduleName }) {
+                val kexeModuleName = "${moduleName}_kexe"
+                config.configuration.put(KonanConfigKeys.MODULE_NAME, kexeModuleName)
+                assert(libraries.none { it.uniqueName == kexeModuleName })
+            }
+        }
+    }
+
     // It is executed before doExecute().
     override fun setupPlatformSpecificArgumentsAndServices(
             configuration: CompilerConfiguration,
@@ -114,6 +130,11 @@ class K2Native : CLICompiler<K2NativeCompilerArguments>() {
 
         with(KonanConfigKeys) {
             with(configuration) {
+                // Can be overwritten by explicit arguments below.
+                parseBinaryOptions(arguments, configuration).forEach { optionWithValue ->
+                    configuration.put(optionWithValue)
+                }
+
                 arguments.kotlinHome?.let { put(KONAN_HOME, it) }
 
                 put(NODEFAULTLIBS, arguments.nodefaultlibs || !arguments.libraryToAddToCache.isNullOrEmpty())
@@ -126,6 +147,10 @@ class K2Native : CLICompiler<K2NativeCompilerArguments>() {
                 put(LINKER_ARGS, arguments.linkerArguments.toNonNullList() +
                         arguments.singleLinkerArguments.toNonNullList())
                 arguments.moduleName?.let{ put(MODULE_NAME, it) }
+
+                // TODO: allow overriding the prefix directly.
+                arguments.moduleName?.let { put(FULL_EXPORTED_NAME_PREFIX, it) }
+
                 arguments.target?.let{ put(TARGET, it) }
 
                 put(INCLUDED_BINARY_FILES,
@@ -140,7 +165,7 @@ class K2Native : CLICompiler<K2NativeCompilerArguments>() {
 
                 arguments.outputName ?.let { put(OUTPUT, it) }
                 val outputKind = CompilerOutputKind.valueOf(
-                    (arguments.produce ?: "program").toUpperCase())
+                    (arguments.produce ?: "program").uppercase())
                 put(PRODUCE, outputKind)
                 put(METADATA_KLIB, arguments.metadataKlib)
 
@@ -169,12 +194,12 @@ class K2Native : CLICompiler<K2NativeCompilerArguments>() {
                         null
                     }
                 })
-                putIfNotNull(GENERATE_INLINED_FUNCTION_BODY_MARKER, when (val it = arguments.generateInlinedFunctionMarkerString) {
+                putIfNotNull(GENERATE_DEBUG_TRAMPOLINE, when (val it = arguments.generateDebugTrampolineString) {
                     "enable" -> true
                     "disable" -> false
                     null -> null
                     else -> {
-                        configuration.report(ERROR, "Unsupported -Xg-generate-inline-function-body-marker= value: $it. Possible values are 'enable'/'disable'")
+                        configuration.report(ERROR, "Unsupported -Xg-generate-debug-tramboline= value: $it. Possible values are 'enable'/'disable'")
                         null
                     }
                 })
@@ -189,6 +214,7 @@ class K2Native : CLICompiler<K2NativeCompilerArguments>() {
                 put(PRINT_DESCRIPTORS, arguments.printDescriptors)
                 put(PRINT_LOCATIONS, arguments.printLocations)
                 put(PRINT_BITCODE, arguments.printBitCode)
+                put(CHECK_EXTERNAL_CALLS, arguments.checkExternalCalls)
                 put(PRINT_FILES, arguments.printFiles)
 
                 put(PURGE_USER_LIBS, arguments.purgeUserLibs)
@@ -206,7 +232,7 @@ class K2Native : CLICompiler<K2NativeCompilerArguments>() {
 
                 put(ENABLE_ASSERTIONS, arguments.enableAssertions)
 
-                put(MEMORY_MODEL, when (arguments.memoryModel) {
+                val memoryModelFromArgument = when (arguments.memoryModel) {
                     "relaxed" -> {
                         configuration.report(STRONG_WARNING, "Relaxed memory model is not yet fully functional")
                         MemoryModel.RELAXED
@@ -217,7 +243,11 @@ class K2Native : CLICompiler<K2NativeCompilerArguments>() {
                         configuration.report(ERROR, "Unsupported memory model ${arguments.memoryModel}")
                         MemoryModel.STRICT
                     }
-                })
+                }
+
+                // TODO: revise priority and/or report conflicting values.
+                val memoryModel = get(BinaryOptions.memoryModel) ?: memoryModelFromArgument
+                put(BinaryOptions.memoryModel, memoryModel)
 
                 when {
                     arguments.generateWorkerTestRunner -> put(GENERATE_TEST_RUNNER, TestRunnerKind.WORKER)
@@ -230,6 +260,7 @@ class K2Native : CLICompiler<K2NativeCompilerArguments>() {
                     CHECK_DEPENDENCIES,
                     configuration.kotlinSourceRoots.isNotEmpty()
                             || !arguments.includes.isNullOrEmpty()
+                            || outputKind.isCache
                             || arguments.checkDependencies
                 )
                 if (arguments.friendModules != null)
@@ -271,6 +302,70 @@ class K2Native : CLICompiler<K2NativeCompilerArguments>() {
                         DestroyRuntimeMode.ON_SHUTDOWN
                     }
                 })
+                val assertGcSupported = {
+                    if (memoryModel != MemoryModel.EXPERIMENTAL) {
+                        configuration.report(ERROR, "-Xgc is only supported for -memory-model experimental")
+                    }
+                }
+                put(GARBAGE_COLLECTOR, when (arguments.gc) {
+                    null -> GC.SAME_THREAD_MARK_AND_SWEEP
+                    "noop" -> {
+                        assertGcSupported()
+                        GC.NOOP
+                    }
+                    "stms" -> {
+                        assertGcSupported()
+                        GC.SAME_THREAD_MARK_AND_SWEEP
+                    }
+                    else -> {
+                        configuration.report(ERROR, "Unsupported GC ${arguments.gc}")
+                        GC.SAME_THREAD_MARK_AND_SWEEP
+                    }
+                })
+                if (memoryModel != MemoryModel.EXPERIMENTAL && arguments.gcAggressive) {
+                    configuration.report(ERROR, "-Xgc-aggressive is only supported for -memory-model experimental")
+                }
+                put(GARBAGE_COLLECTOR_AGRESSIVE, arguments.gcAggressive)
+                put(PROPERTY_LAZY_INITIALIZATION, when (arguments.propertyLazyInitialization) {
+                    null -> {
+                        when (memoryModel) {
+                            MemoryModel.EXPERIMENTAL -> true
+                            else -> false
+                        }
+                    }
+                    "enable" -> true
+                    "disable" -> false
+                    else -> {
+                        configuration.report(ERROR, "Expected 'enable' or 'disable' for lazy property initialization")
+                        false
+                    }
+                })
+                put(WORKER_EXCEPTION_HANDLING, when (arguments.workerExceptionHandling) {
+                    null -> if (memoryModel == MemoryModel.EXPERIMENTAL) WorkerExceptionHandling.USE_HOOK else WorkerExceptionHandling.LEGACY
+                    "legacy" -> WorkerExceptionHandling.LEGACY
+                    "use-hook" -> WorkerExceptionHandling.USE_HOOK
+                    else -> {
+                        configuration.report(ERROR, "Unsupported worker exception handling mode ${arguments.workerExceptionHandling}")
+                        WorkerExceptionHandling.LEGACY
+                    }
+                })
+
+                arguments.externalDependencies?.let { put(EXTERNAL_DEPENDENCIES, it) }
+                putIfNotNull(LLVM_VARIANT, when (val variant = arguments.llvmVariant) {
+                    "user" -> LlvmVariant.User
+                    "dev" -> LlvmVariant.Dev
+                    null -> null
+                    else -> {
+                        val file = File(variant)
+                        if (!file.exists) {
+                            configuration.report(ERROR, "`-Xllvm-variant` should be `user`, `dev` or an absolute path. Got: $variant")
+                            null
+                        } else {
+                            LlvmVariant.Custom(file)
+                        }
+                    }
+                })
+                putIfNotNull(RUNTIME_LOGS, arguments.runtimeLogs)
             }
         }
     }
@@ -312,7 +407,7 @@ private fun selectFrameworkType(
         configuration.report(
             STRONG_WARNING,
             "'$STATIC_FRAMEWORK_FLAG' is only supported when producing frameworks, " +
-            "but the compiler is producing ${outputKind.name.toLowerCase()}"
+            "but the compiler is producing ${outputKind.name.lowercase()}"
         )
         false
     } else {
@@ -363,7 +458,7 @@ private fun selectExportedLibraries(
             outputKind != CompilerOutputKind.STATIC && outputKind != CompilerOutputKind.DYNAMIC) {
         configuration.report(STRONG_WARNING,
                 "-Xexport-library is only supported when producing frameworks or native libraries, " +
-                "but the compiler is producing ${outputKind.name.toLowerCase()}")
+                "but the compiler is producing ${outputKind.name.lowercase()}")
 
         emptyList()
     } else {
@@ -381,7 +476,7 @@ private fun selectIncludes(
     return if (includes.isNotEmpty() && outputKind == CompilerOutputKind.LIBRARY) {
         configuration.report(
             ERROR,
-            "The $INCLUDE_ARG flag is not supported when producing ${outputKind.name.toLowerCase()}"
+            "The $INCLUDE_ARG flag is not supported when producing ${outputKind.name.lowercase()}"
         )
         emptyList()
     } else {
@@ -450,7 +545,7 @@ private fun parseShortModuleName(
         configuration.report(
                 STRONG_WARNING,
                 "$SHORT_MODULE_NAME_ARG is only supported when producing a Kotlin library, " +
-                    "but the compiler is producing ${outputKind.name.toLowerCase()}"
+                    "but the compiler is producing ${outputKind.name.lowercase()}"
         )
         null
     } else {
@@ -474,22 +569,64 @@ private fun parseDebugPrefixMap(
     }
 }.toMap()
 
+private class BinaryOptionWithValue<T : Any>(val option: BinaryOption<T>, val value: T)
+
+private fun <T : Any> CompilerConfiguration.put(binaryOptionWithValue: BinaryOptionWithValue<T>) {
+    this.put(binaryOptionWithValue.option.compilerConfigurationKey, binaryOptionWithValue.value)
+}
+
+private fun parseBinaryOptions(
+        arguments: K2NativeCompilerArguments,
+        configuration: CompilerConfiguration
+): List<BinaryOptionWithValue<*>> {
+    val keyValuePairs = parseKeyValuePairs(arguments.binaryOptions, configuration) ?: return emptyList()
+
+    return keyValuePairs.mapNotNull { (key, value) ->
+        val option = BinaryOptions.getByName(key)
+        if (option == null) {
+            configuration.report(STRONG_WARNING, "Unknown binary option '$key'")
+            null
+        } else {
+            parseBinaryOption(option, value, configuration)
+        }
+    }
+}
+
+private fun <T : Any> parseBinaryOption(
+        option: BinaryOption<T>,
+        valueName: String,
+        configuration: CompilerConfiguration
+): BinaryOptionWithValue<T>? {
+    val value = option.valueParser.parse(valueName)
+    return if (value == null) {
+        configuration.report(STRONG_WARNING, "Unknown value '$valueName' of binary option '${option.name}'. " +
+                "Possible values are: ${option.valueParser.validValuesHint}")
+        null
+    } else {
+        BinaryOptionWithValue(option, value)
+    }
+}
+
 private fun parseOverrideKonanProperties(
         arguments: K2NativeCompilerArguments,
         configuration: CompilerConfiguration
-): Map<String, String>? =
-        arguments.overrideKonanProperties?.mapNotNull {
-            val keyValueSeparatorIndex = it.indexOf('=')
-            if (keyValueSeparatorIndex > 0) {
-                it.substringBefore('=') to it.substringAfter('=')
-            } else {
-                configuration.report(
-                        ERROR,
-                        "incorrect property format: expected '<key>=<value>', got '$it'"
-                )
-                null
-            }
-        }?.toMap()
+): Map<String, String>? = parseKeyValuePairs(arguments.overrideKonanProperties, configuration)
+
+private fun parseKeyValuePairs(
+        argumentValue: Array<String>?,
+        configuration: CompilerConfiguration
+): Map<String, String>? = argumentValue?.mapNotNull {
+    val keyValueSeparatorIndex = it.indexOf('=')
+    if (keyValueSeparatorIndex > 0) {
+        it.substringBefore('=') to it.substringAfter('=')
+    } else {
+        configuration.report(
+                ERROR,
+                "incorrect property format: expected '<key>=<value>', got '$it'"
+        )
+        null
+    }
+}?.toMap()
 
 
 

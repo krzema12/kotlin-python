@@ -29,17 +29,6 @@ struct WritableTypeInfo;
 struct ObjHeader;
 struct AssociatedObjectTableRecord;
 
-// Hash of open method name. Must be unique per class/scope (CityHash64 is being used).
-typedef int64_t MethodNameHash;
-
-// An element of sorted by hash in-place array representing methods.
-// For systems where introspection is not needed - only open methods are in
-// this table.
-struct MethodTableRecord {
-    MethodNameHash nameSignature_;
-    void* methodEntryPoint_;
-};
-
 // Type for runtime representation of Konan object.
 // Keep in sync with runtimeTypeMap in RTTIGenerator.
 enum Konan_RuntimeType {
@@ -67,6 +56,8 @@ enum Konan_TypeFlags {
   TF_SUSPEND_FUNCTION = 1 << 5,
   TF_HAS_FINALIZER = 1 << 6,
   TF_HAS_FREEZE_HOOK = 1 << 7,
+  TF_REFLECTION_SHOW_PKG_NAME = 1 << 8, // If package name is available in reflection, e.g. in `KClass.qualifiedName`.
+  TF_REFLECTION_SHOW_REL_NAME = 1 << 9 // If relative name is available in reflection, e.g. in `KClass.simpleName`.
 };
 
 // Flags per object instance.
@@ -123,19 +114,15 @@ struct TypeInfo {
     int32_t objOffsetsCount_;
     const TypeInfo* const* implementedInterfaces_;
     int32_t implementedInterfacesCount_;
-    // Null for abstract classes and interfaces.
-    const MethodTableRecord* openMethods_;
-    uint32_t openMethodsCount_;
     int32_t interfaceTableSize_;
     InterfaceTableRecord const* interfaceTable_;
 
-    // String for the fully qualified dot-separated name of the package containing class,
-    // or `null` if the class is local or anonymous.
+    // String for the fully qualified dot-separated name of the package containing class.
     ObjHeader* packageName_;
 
     // String for the qualified class name relative to the containing package
-    // (e.g. TopLevel.Nested1.Nested2), or simple class name if it is local,
-    // or `null` if the class is anonymous.
+    // (e.g. TopLevel.Nested1.Nested2) or the effective class name computed for
+    // local class or anonymous object (e.g. listOf$1).
     ObjHeader* relativeName_;
 
     // Various flags.
@@ -181,14 +168,6 @@ struct TypeInfo {
 #ifdef __cplusplus
 extern "C" {
 #endif
-// Find open method by its hash. Other methods are resolved in compile-time.
-// Note, that we use attribute const, which assumes function doesn't
-// dereference global memory, while this function does. However, it seems
-// to be safe, as actual result of this computation depends only on 'type_info'
-// and 'hash' numeric values and doesn't really depends on global memory state
-// (as TypeInfo is compile time constant and type info pointers are stable).
-void* LookupOpenMethod(const TypeInfo* info, MethodNameHash nameSignature) RUNTIME_CONST;
-
 InterfaceTableRecord const* LookupInterfaceTableRecord(InterfaceTableRecord const* interfaceTable,
                                                        int interfaceTableSize, ClassId interfaceId) RUNTIME_CONST;
 

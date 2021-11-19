@@ -5,22 +5,20 @@
 
 package org.jetbrains.kotlin.fir.resolve.dfa
 
-import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.fir.FirElement
-import org.jetbrains.kotlin.fir.declarations.modality
 import org.jetbrains.kotlin.fir.expressions.FirResolvedQualifier
-import org.jetbrains.kotlin.fir.symbols.AbstractFirBasedSymbol
+import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
-import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.types.ConeClassErrorType
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
+import org.jetbrains.kotlin.types.SmartcastStability
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
 // --------------------------------------- Variables ---------------------------------------
 
 data class Identifier(
-    val symbol: AbstractFirBasedSymbol<*>,
+    val symbol: FirBasedSymbol<*>,
     val dispatchReceiver: DataFlowVariable?,
     val extensionReceiver: DataFlowVariable?
 ) {
@@ -31,37 +29,43 @@ data class Identifier(
 }
 
 sealed class DataFlowVariable(private val variableIndexForDebug: Int) {
-    abstract val isStable: Boolean
-
     final override fun toString(): String {
         return "d$variableIndexForDebug"
     }
+}
+
+enum class PropertyStability(val impliedSmartcastStability: SmartcastStability?) {
+    // Immutable and no custom getter or local.
+    // Smartcast is definitely safe regardless of usage.
+    STABLE_VALUE(SmartcastStability.STABLE_VALUE),
+
+    // Open or custom getter.
+    // Smartcast is always unsafe regardless of usage.
+    PROPERTY_WITH_GETTER(SmartcastStability.PROPERTY_WITH_GETTER),
+
+    // Protected / public member value from another module.
+    // Smartcast is always unsafe regardless of usage.
+    ALIEN_PUBLIC_PROPERTY(SmartcastStability.ALIEN_PUBLIC_PROPERTY),
+
+    // Smartcast may or may not be safe, depending on whether there are concurrent writes to this local variable.
+    LOCAL_VAR(null),
+
+    // Mutable member property of a class or object.
+    // Smartcast is always unsafe regardless of usage.
+    MUTABLE_PROPERTY(SmartcastStability.MUTABLE_PROPERTY),
+
+    // Delegated property of a class or object.
+    // Smartcast is always unsafe regardless of usage.
+    DELEGATED_PROPERTY(SmartcastStability.DELEGATED_PROPERTY),
 }
 
 class RealVariable(
     val identifier: Identifier,
     val isThisReference: Boolean,
     val explicitReceiverVariable: DataFlowVariable?,
-    variableIndexForDebug: Int
+    variableIndexForDebug: Int,
+    val stability: PropertyStability,
 ) : DataFlowVariable(variableIndexForDebug) {
-    override val isStable: Boolean by lazy {
-        when (val symbol = identifier.symbol) {
-            is FirPropertySymbol -> {
-                val property = symbol.fir
-                when {
-                    property.isLocal -> true
-                    property.isVar -> false
-                    property.modality != Modality.FINAL -> false
-                    property.receiverTypeRef != null -> false
-                    property.getter != null -> false
-                    // TODO: getters, delegates
-                    else -> true
-                }
-            }
-            else -> true
-        }
-    }
-
     override fun equals(other: Any?): Boolean {
         return this === other
     }
@@ -96,8 +100,6 @@ class RealVariableAndType(val variable: RealVariable, val originalType: ConeKotl
 }
 
 class SyntheticVariable(val fir: FirElement, variableIndexForDebug: Int) : DataFlowVariable(variableIndexForDebug) {
-    override val isStable: Boolean get() = true
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

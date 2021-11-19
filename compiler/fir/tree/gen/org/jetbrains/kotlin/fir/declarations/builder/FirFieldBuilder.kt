@@ -7,23 +7,23 @@ package org.jetbrains.kotlin.fir.declarations.builder
 
 import kotlin.contracts.*
 import org.jetbrains.kotlin.fir.FirImplementationDetail
-import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.builder.FirAnnotationContainerBuilder
 import org.jetbrains.kotlin.fir.builder.FirBuilderDsl
+import org.jetbrains.kotlin.fir.declarations.DeprecationsPerUseSite
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationAttributes
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationStatus
 import org.jetbrains.kotlin.fir.declarations.FirField
 import org.jetbrains.kotlin.fir.declarations.FirPropertyAccessor
 import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
-import org.jetbrains.kotlin.fir.declarations.FirTypeParameter
+import org.jetbrains.kotlin.fir.declarations.FirTypeParameterRef
 import org.jetbrains.kotlin.fir.declarations.builder.FirDeclarationBuilder
 import org.jetbrains.kotlin.fir.declarations.impl.FirFieldImpl
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
 import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.fir.symbols.impl.FirDelegateFieldSymbol
-import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirFieldSymbol
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.visitors.*
@@ -38,39 +38,41 @@ import org.jetbrains.kotlin.serialization.deserialization.descriptors.Deserializ
 @FirBuilderDsl
 open class FirFieldBuilder : FirDeclarationBuilder, FirAnnotationContainerBuilder {
     override var source: FirSourceElement? = null
-    override lateinit var declarationSiteSession: FirSession
+    override lateinit var moduleData: FirModuleData
     override var resolvePhase: FirResolvePhase = FirResolvePhase.RAW_FIR
     override lateinit var origin: FirDeclarationOrigin
     override var attributes: FirDeclarationAttributes = FirDeclarationAttributes()
     open lateinit var returnTypeRef: FirTypeRef
+    open val typeParameters: MutableList<FirTypeParameterRef> = mutableListOf()
+    open lateinit var status: FirDeclarationStatus
+    open var deprecation: DeprecationsPerUseSite? = null
+    open var containerSource: DeserializedContainerSource? = null
+    open var dispatchReceiverType: ConeKotlinType? = null
     open lateinit var name: Name
-    open lateinit var symbol: FirVariableSymbol<FirField>
     open var initializer: FirExpression? = null
     open var isVar: Boolean by kotlin.properties.Delegates.notNull<Boolean>()
     override val annotations: MutableList<FirAnnotationCall> = mutableListOf()
-    open val typeParameters: MutableList<FirTypeParameter> = mutableListOf()
-    open lateinit var status: FirDeclarationStatus
-    open var containerSource: DeserializedContainerSource? = null
-    open var dispatchReceiverType: ConeKotlinType? = null
+    open lateinit var symbol: FirFieldSymbol
 
     @OptIn(FirImplementationDetail::class)
     override fun build(): FirField {
         return FirFieldImpl(
             source,
-            declarationSiteSession,
+            moduleData,
             resolvePhase,
             origin,
             attributes,
             returnTypeRef,
+            typeParameters,
+            status,
+            deprecation,
+            containerSource,
+            dispatchReceiverType,
             name,
-            symbol,
             initializer,
             isVar,
             annotations,
-            typeParameters,
-            status,
-            containerSource,
-            dispatchReceiverType,
+            symbol,
         )
     }
 

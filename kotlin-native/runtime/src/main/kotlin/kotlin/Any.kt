@@ -6,7 +6,9 @@
 package kotlin
 
 import kotlin.native.identityHashCode
+import kotlin.native.internal.fullName
 import kotlin.native.internal.ExportTypeInfo
+import kotlin.native.internal.GCUnsafeCall
 
 /**
  * The root of the Kotlin class hierarchy. Every Kotlin class has [Any] as a superclass.
@@ -25,7 +27,7 @@ public open class Any {
      *
      * Read more about [equality](https://kotlinlang.org/docs/reference/equality.html) in Kotlin.
      */
-    @SymbolName("Kotlin_Any_equals")
+    @GCUnsafeCall("Kotlin_Any_equals")
     external public open operator fun equals(other: Any?): Boolean
 
     /**
@@ -40,8 +42,7 @@ public open class Any {
      * Returns a string representation of the object.
      */
     public open fun toString(): String {
-        val kClass = this::class
-        val className = kClass.qualifiedName ?: kClass.simpleName ?: "<object>"
+        val className = this::class.fullName ?: "<object>"
         // TODO: consider using [identityHashCode].
         val unsignedHashCode = this.hashCode().toLong() and 0xffffffffL
         val hashCodeStr = unsignedHashCode.toString(16)

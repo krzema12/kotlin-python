@@ -14,7 +14,7 @@ data class CallableId(
     private val pathToLocal: FqName? = null
 ) {
     private companion object {
-        val LOCAL_NAME = Name.special("<local>")
+        val LOCAL_NAME = SpecialNames.LOCAL
         val PACKAGE_FQ_NAME_FOR_LOCAL = FqName.topLevel(LOCAL_NAME)
     }
 
@@ -40,7 +40,6 @@ data class CallableId(
 
     constructor(packageName: FqName, callableName: Name) : this(packageName, null, callableName)
 
-    @LocalCallableIdConstructor
     constructor(
         callableName: Name,
         // Currently, it's only used for debug info
@@ -73,6 +72,3 @@ data class CallableId(
         }
     }
 }
-
-@RequiresOptIn("TODO: Better solution for local callables?")
-annotation class LocalCallableIdConstructor

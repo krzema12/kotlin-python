@@ -19,8 +19,6 @@ import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension.*
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.KotlinCocoapodsPlugin
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.KotlinCocoapodsPlugin.Companion.COCOAPODS_EXTENSION_NAME
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.KotlinCocoapodsPlugin.Companion.GENERATE_WRAPPER_PROPERTY
-import org.jetbrains.kotlin.gradle.plugin.cocoapods.KotlinCocoapodsPlugin.Companion.KOTLIN_TARGET_FOR_IOS_DEVICE
-import org.jetbrains.kotlin.gradle.plugin.cocoapods.KotlinCocoapodsPlugin.Companion.KOTLIN_TARGET_FOR_WATCHOS_DEVICE
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.KotlinCocoapodsPlugin.Companion.SYNC_TASK_NAME
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.asValidFrameworkName
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.cocoapodsBuildDirs
@@ -104,7 +102,6 @@ open class PodspecTask : DefaultTask() {
         }
 
         val gradleCommand = "\$REPO_ROOT/${gradleWrapper.toRelativeString(project.projectDir)}"
-        val syncTask = "${project.path}:$SYNC_TASK_NAME"
 
         val deploymentTargets = run {
             listOf(ios, osx, tvos, watchos).map { it.get() }.filter { it.deploymentTarget != null }.joinToString("\n") {
@@ -124,7 +121,6 @@ open class PodspecTask : DefaultTask() {
                 |    spec.license                  = '${license.getOrEmpty()}'
                 |    spec.summary                  = '${summary.getOrEmpty()}'
                 |
-                |    spec.static_framework         = true
                 |    spec.vendored_frameworks      = "$frameworkDir/${frameworkName.get()}.framework"
                 |    spec.libraries                = "c++"
                 |    spec.module_name              = "#{spec.name}_umbrella"
@@ -134,13 +130,8 @@ open class PodspecTask : DefaultTask() {
                 $dependencies
                 |
                 |    spec.pod_target_xcconfig = {
-                |        'KOTLIN_TARGET[sdk=iphonesimulator*]' => 'ios_x64',
-                |        'KOTLIN_TARGET[sdk=iphoneos*]' => '$KOTLIN_TARGET_FOR_IOS_DEVICE',
-                |        'KOTLIN_TARGET[sdk=watchsimulator*]' => 'watchos_x64',
-                |        'KOTLIN_TARGET[sdk=watchos*]' => '$KOTLIN_TARGET_FOR_WATCHOS_DEVICE',
-                |        'KOTLIN_TARGET[sdk=appletvsimulator*]' => 'tvos_x64',
-                |        'KOTLIN_TARGET[sdk=appletvos*]' => 'tvos_arm64',
-                |        'KOTLIN_TARGET[sdk=macosx*]' => 'macos_x64'
+                |        'KOTLIN_PROJECT_PATH' => '${project.path}',
+                |        'PRODUCT_MODULE_NAME' => '$specName',
                 |    }
                 |
                 |    spec.script_phases = [
@@ -149,14 +140,16 @@ open class PodspecTask : DefaultTask() {
                 |            :execution_position => :before_compile,
                 |            :shell_path => '/bin/sh',
                 |            :script => <<-SCRIPT
+                |                if [ "YES" = "${'$'}COCOAPODS_SKIP_KOTLIN_BUILD" ]; then
+                |                  echo "Skipping Gradle build task invocation due to COCOAPODS_SKIP_KOTLIN_BUILD environment variable set to \"YES\""
+                |                  exit 0
+                |                fi
                 |                set -ev
                 |                REPO_ROOT="${'$'}PODS_TARGET_SRCROOT"
-                |                "$gradleCommand" -p "${'$'}REPO_ROOT" $syncTask \
-                |                    -P${KotlinCocoapodsPlugin.TARGET_PROPERTY}=${'$'}KOTLIN_TARGET \
-                |                    -P${KotlinCocoapodsPlugin.CONFIGURATION_PROPERTY}=${'$'}CONFIGURATION \
-                |                    -P${KotlinCocoapodsPlugin.CFLAGS_PROPERTY}="${'$'}OTHER_CFLAGS" \
-                |                    -P${KotlinCocoapodsPlugin.HEADER_PATHS_PROPERTY}="${'$'}HEADER_SEARCH_PATHS" \
-                |                    -P${KotlinCocoapodsPlugin.FRAMEWORK_PATHS_PROPERTY}="${'$'}FRAMEWORK_SEARCH_PATHS"
+                |                "$gradleCommand" -p "${'$'}REPO_ROOT" ${'$'}KOTLIN_PROJECT_PATH:$SYNC_TASK_NAME \
+                |                    -P${KotlinCocoapodsPlugin.PLATFORM_PROPERTY}=${'$'}PLATFORM_NAME \
+                |                    -P${KotlinCocoapodsPlugin.ARCHS_PROPERTY}="${'$'}ARCHS" \
+                |                    -P${KotlinCocoapodsPlugin.CONFIGURATION_PROPERTY}=${'$'}CONFIGURATION
                 |            SCRIPT
                 |        }
                 |    ]
@@ -215,8 +208,17 @@ open class DummyFrameworkTask : DefaultTask() {
     @Input
     lateinit var frameworkName: Provider<String>
 
+    @Input
+    lateinit var useDynamicFramework: Provider<Boolean>
+
     private val frameworkDir: File
         get() = destinationDir.resolve("${frameworkName.get()}.framework")
+
+    private val dummyFrameworkPath: String
+        get() {
+            val staticOrDynamic = if (useDynamicFramework.get()) "dynamic" else "static"
+            return "/cocoapods/$staticOrDynamic/dummy.framework/"
+        }
 
     private fun copyResource(from: String, to: File) {
         to.parentFile.mkdirs()
@@ -240,7 +242,7 @@ open class DummyFrameworkTask : DefaultTask() {
 
     private fun copyFrameworkFile(relativeFrom: String, relativeTo: String = relativeFrom) =
         copyResource(
-            "/cocoapods/dummy.framework/$relativeFrom",
+            "$dummyFrameworkPath$relativeFrom",
             frameworkDir.resolve(relativeTo)
         )
 
@@ -249,7 +251,7 @@ open class DummyFrameworkTask : DefaultTask() {
         relativeTo: String = relativeFrom,
         transform: (String) -> String = { it }
     ) = copyTextResource(
-        "/cocoapods/dummy.framework/$relativeFrom",
+        "$dummyFrameworkPath$relativeFrom",
         frameworkDir.resolve(relativeTo),
         transform
     )

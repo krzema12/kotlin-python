@@ -1,6 +1,6 @@
 /*
- * Copyright 2010-2018 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license
- * that can be found in the LICENSE file.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
 package kotlin.text
@@ -150,6 +150,12 @@ public actual class Regex internal constructor(internal val nativePattern: Patte
     /** Indicates whether the regular expression can find at least one match in the specified [input]. */
     actual fun containsMatchIn(input: CharSequence): Boolean = find(input) != null
 
+    @SinceKotlin("1.5")
+    @ExperimentalStdlibApi
+    public actual fun matchesAt(input: CharSequence, index: Int): Boolean =
+        // TODO: expand and simplify
+        matchAt(input, index) != null
+
     /**
      * Returns the first match of a regular expression in the [input], beginning at the specified [startIndex].
      *
@@ -197,46 +203,44 @@ public actual class Regex internal constructor(internal val nativePattern: Patte
      */
     actual fun matchEntire(input: CharSequence): MatchResult?= doMatch(input, Mode.MATCH)
 
-    private fun processReplacement(match: MatchResult, replacement: String): String {
-        val result = StringBuilder(replacement.length)
-        var escaped = false
-        var backReference = false
-        for (ch in replacement) {
-            when {
-                escaped -> {
-                    result.append(ch)
-                    escaped = false
-                }
-                backReference -> {
-                    if (ch !in '0'..'9') {
-                        throw IllegalArgumentException("Incorrect back reference: $ch.")
-                    }
-                    val group = ch - '0'
-                    result.append(match.groupValues[group])
-                    // We don't catch IndexOutOfBoundException here because
-                    // it's a correct exception in case of a wrong group number.
-                    // TODO: But we can rethrow it with more informative message.
-                    backReference = false
-                }
-                ch == '\\' -> escaped = true
-                ch == '$' -> backReference = true
-                else -> result.append(ch)
-            }
+    @SinceKotlin("1.5")
+    @ExperimentalStdlibApi
+    public actual fun matchAt(input: CharSequence, index: Int): MatchResult? {
+        if (index < 0 || index > input.length) {
+            throw IndexOutOfBoundsException("index is out of bounds: $index, input length: ${input.length}")
         }
-        if (backReference || escaped) {
-            throw IllegalArgumentException("Unexpected end of replacement.")
+        val matchResult = MatchResultImpl(input, this)
+        matchResult.mode = Mode.FIND
+        matchResult.startIndex = index
+        val matches = startNode.matches(index, input, matchResult) >= 0
+        if (!matches) {
+            return null
         }
-        return result.toString()
+        matchResult.finalizeMatch()
+        return matchResult
     }
 
     /**
-     * Replaces all occurrences of this regular expression in the specified [input] string with
-     * specified [replacement] expression.
+     * Replaces all occurrences of this regular expression in the specified [input] string with specified [replacement] expression.
      *
-     * @param replacement A replacement expression that can include substitutions.
+     * The replacement string may contain references to the captured groups during a match. Occurrences of `$index`
+     * in the replacement string will be substituted with the subsequences corresponding to the captured groups with the specified index.
+     * The first digit after '$' is always treated as part of group reference. Subsequent digits are incorporated
+     * into `index` only if they would form a valid group reference. Only the digits '0'..'9' are considered as potential components
+     * of the group reference. Note that indexes of captured groups start from 1, and the group with index 0 is the whole match.
+     *
+     * Backslash character '\' can be used to include the succeeding character as a literal in the replacement string, e.g, `\$` or `\\`.
+     * [Regex.escapeReplacement] can be used if [replacement] have to be treated as a literal string.
+     *
+     * Note that named capturing groups are not supported in Kotlin/Native.
+     *
+     * @param input the char sequence to find matches of this regular expression in
+     * @param replacement the expression to replace found matches with
+     * @return the result of replacing each occurrence of this regular expression in [input] with the result of evaluating the [replacement] expression
+     * @throws RuntimeException if [replacement] expression is malformed, or capturing group with specified `name` or `index` does not exist
      */
     actual fun replace(input: CharSequence, replacement: String): String
-            = replace(input) { match -> processReplacement(match, replacement) }
+            = replace(input) { match -> substituteGroupRefs(match, replacement) }
 
     /**
      * Replaces all occurrences of this regular expression in the specified [input] string with the result of
@@ -267,14 +271,28 @@ public actual class Regex internal constructor(internal val nativePattern: Patte
     /**
      * Replaces the first occurrence of this regular expression in the specified [input] string with specified [replacement] expression.
      *
-     * @param replacement A replacement expression that can include substitutions.
+     * The replacement string may contain references to the captured groups during a match. Occurrences of `$index`
+     * in the replacement string will be substituted with the subsequences corresponding to the captured groups with the specified index.
+     * The first digit after '$' is always treated as part of group reference. Subsequent digits are incorporated
+     * into `index` only if they would form a valid group reference. Only the digits '0'..'9' are considered as potential components
+     * of the group reference. Note that indexes of captured groups start from 1, and the group with index 0 is the whole match.
+     *
+     * Backslash character '\' can be used to include the succeeding character as a literal in the replacement string, e.g, `\$` or `\\`.
+     * [Regex.escapeReplacement] can be used if [replacement] have to be treated as a literal string.
+     *
+     * Note that named capturing groups are not supported in Kotlin/Native.
+     *
+     * @param input the char sequence to find a match of this regular expression in
+     * @param replacement the expression to replace the found match with
+     * @return the result of replacing the first occurrence of this regular expression in [input] with the result of evaluating the [replacement] expression
+     * @throws RuntimeException if [replacement] expression is malformed, or capturing group with specified `name` or `index` does not exist
      */
     actual fun replaceFirst(input: CharSequence, replacement: String): String {
         val match = find(input) ?: return input.toString()
         val length = input.length
         val result = StringBuilder(length)
         result.append(input, 0, match.range.start)
-        result.append(processReplacement(match, replacement))
+        result.append(substituteGroupRefs(match, replacement))
         if (match.range.endInclusive + 1 < length) {
             result.append(input, match.range.endInclusive + 1, length)
         }
@@ -282,14 +300,14 @@ public actual class Regex internal constructor(internal val nativePattern: Patte
     }
 
     /**
-     * Splits the [input] CharSequence around matches of this regular expression.
+     * Splits the [input] CharSequence to a list of strings around matches of this regular expression.
      *
      * @param limit Non-negative value specifying the maximum number of substrings the string can be split to.
      * Zero by default means no limit is set.
      */
     @Suppress("ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS")
     actual fun split(input: CharSequence, limit: Int = 0): List<String> {
-        require(limit >= 0, { "Limit must be non-negative, but was $limit." } )
+        requireNonNegativeLimit(limit)
 
         var match: MatchResult? = find(input)
 
@@ -312,10 +330,99 @@ public actual class Regex internal constructor(internal val nativePattern: Patte
     }
 
     /**
+     * Splits the [input] CharSequence to a sequence of strings around matches of this regular expression.
+     *
+     * @param limit Non-negative value specifying the maximum number of substrings the string can be split to.
+     * Zero by default means no limit is set.
+     * @sample samples.text.Regexps.splitToSequence
+     */
+    @SinceKotlin("1.6")
+    @WasExperimental(ExperimentalStdlibApi::class)
+    @Suppress("ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS")
+    public actual fun splitToSequence(input: CharSequence, limit: Int = 0): Sequence<String> {
+        requireNonNegativeLimit(limit)
+
+        return sequence {
+            var match = find(input)
+            if (match == null || limit == 1) {
+                yield(input.toString())
+                return@sequence
+            }
+
+            var nextStart = 0
+            var splitCount = 0
+
+            do {
+                val foundMatch = match!!
+                yield(input.substring(nextStart, foundMatch.range.first))
+                nextStart = foundMatch.range.endInclusive + 1
+                match = foundMatch.next()
+            } while (++splitCount != limit - 1 && match != null)
+
+            yield(input.substring(nextStart, input.length))
+        }
+    }
+
+    /**
      * Returns the string representation of this regular expression, namely the [pattern] of this regular expression.
      *
      * Note that another regular expression constructed from the same pattern string may have different [options]
      * and may match strings differently.
      */
     override fun toString(): String = nativePattern.toString()
+}
+
+// The same code from K/JS regex.kt
+private fun substituteGroupRefs(match: MatchResult, replacement: String): String {
+    var index = 0
+    val result = StringBuilder(replacement.length)
+
+    while (index < replacement.length) {
+        val char = replacement[index++]
+        if (char == '\\') {
+            if (index == replacement.length)
+                throw IllegalArgumentException("The Char to be escaped is missing")
+
+            result.append(replacement[index++])
+        } else if (char == '$') {
+            if (index == replacement.length)
+                throw IllegalArgumentException("Capturing group index is missing")
+
+            if (replacement[index] == '{')
+                throw IllegalArgumentException("Named capturing group reference currently is not supported")
+
+            if (replacement[index] !in '0'..'9')
+                throw IllegalArgumentException("Invalid capturing group reference")
+
+            val endIndex = replacement.readGroupIndex(index, match.groupValues.size)
+            val groupIndex = replacement.substring(index, endIndex).toInt()
+
+            if (groupIndex >= match.groupValues.size)
+                throw IndexOutOfBoundsException("Group with index $groupIndex does not exist")
+
+            result.append(match.groupValues[groupIndex])
+            index = endIndex
+        } else {
+            result.append(char)
+        }
+    }
+    return result.toString()
+}
+
+private fun String.readGroupIndex(startIndex: Int, groupCount: Int): Int {
+    // at least one digit after '$' is always captured
+    var index = startIndex + 1
+    var groupIndex = this[startIndex] - '0'
+
+    // capture the largest valid group index
+    while (index < length && this[index] in '0'..'9') {
+        val newGroupIndex = (groupIndex * 10) + (this[index] - '0')
+        if (newGroupIndex in 0 until groupCount) {
+            groupIndex = newGroupIndex
+            index++
+        } else {
+            break
+        }
+    }
+    return index
 }

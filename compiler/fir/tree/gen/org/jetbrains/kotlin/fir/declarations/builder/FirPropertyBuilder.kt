@@ -6,10 +6,11 @@
 package org.jetbrains.kotlin.fir.declarations.builder
 
 import kotlin.contracts.*
-import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.builder.FirAnnotationContainerBuilder
 import org.jetbrains.kotlin.fir.builder.FirBuilderDsl
+import org.jetbrains.kotlin.fir.declarations.DeprecationsPerUseSite
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationAttributes
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationStatus
@@ -40,50 +41,54 @@ import org.jetbrains.kotlin.serialization.deserialization.descriptors.Deserializ
 @FirBuilderDsl
 class FirPropertyBuilder : FirDeclarationBuilder, FirTypeParametersOwnerBuilder, FirAnnotationContainerBuilder {
     override var source: FirSourceElement? = null
-    override lateinit var declarationSiteSession: FirSession
+    override lateinit var moduleData: FirModuleData
     override var resolvePhase: FirResolvePhase = FirResolvePhase.RAW_FIR
     override lateinit var origin: FirDeclarationOrigin
     override var attributes: FirDeclarationAttributes = FirDeclarationAttributes()
     lateinit var returnTypeRef: FirTypeRef
+    lateinit var status: FirDeclarationStatus
     var receiverTypeRef: FirTypeRef? = null
+    var deprecation: DeprecationsPerUseSite? = null
+    var containerSource: DeserializedContainerSource? = null
+    var dispatchReceiverType: ConeKotlinType? = null
     lateinit var name: Name
     var initializer: FirExpression? = null
     var delegate: FirExpression? = null
-    var delegateFieldSymbol: FirDelegateFieldSymbol<FirProperty>? = null
     var isVar: Boolean by kotlin.properties.Delegates.notNull<Boolean>()
     var getter: FirPropertyAccessor? = null
     var setter: FirPropertyAccessor? = null
     override val annotations: MutableList<FirAnnotationCall> = mutableListOf()
-    override val typeParameters: MutableList<FirTypeParameter> = mutableListOf()
-    var containerSource: DeserializedContainerSource? = null
-    var dispatchReceiverType: ConeKotlinType? = null
     lateinit var symbol: FirPropertySymbol
+    var delegateFieldSymbol: FirDelegateFieldSymbol? = null
     var isLocal: Boolean by kotlin.properties.Delegates.notNull<Boolean>()
-    lateinit var status: FirDeclarationStatus
+    var initializerAndAccessorsAreResolved: Boolean = false
+    override val typeParameters: MutableList<FirTypeParameter> = mutableListOf()
 
     override fun build(): FirProperty {
         return FirPropertyImpl(
             source,
-            declarationSiteSession,
+            moduleData,
             resolvePhase,
             origin,
             attributes,
             returnTypeRef,
+            status,
             receiverTypeRef,
+            deprecation,
+            containerSource,
+            dispatchReceiverType,
             name,
             initializer,
             delegate,
-            delegateFieldSymbol,
             isVar,
             getter,
             setter,
             annotations,
-            typeParameters,
-            containerSource,
-            dispatchReceiverType,
             symbol,
+            delegateFieldSymbol,
             isLocal,
-            status,
+            initializerAndAccessorsAreResolved,
+            typeParameters,
         )
     }
 
@@ -104,25 +109,27 @@ inline fun buildPropertyCopy(original: FirProperty, init: FirPropertyBuilder.() 
     }
     val copyBuilder = FirPropertyBuilder()
     copyBuilder.source = original.source
-    copyBuilder.declarationSiteSession = original.declarationSiteSession
+    copyBuilder.moduleData = original.moduleData
     copyBuilder.resolvePhase = original.resolvePhase
     copyBuilder.origin = original.origin
     copyBuilder.attributes = original.attributes.copy()
     copyBuilder.returnTypeRef = original.returnTypeRef
+    copyBuilder.status = original.status
     copyBuilder.receiverTypeRef = original.receiverTypeRef
+    copyBuilder.deprecation = original.deprecation
+    copyBuilder.containerSource = original.containerSource
+    copyBuilder.dispatchReceiverType = original.dispatchReceiverType
     copyBuilder.name = original.name
     copyBuilder.initializer = original.initializer
     copyBuilder.delegate = original.delegate
-    copyBuilder.delegateFieldSymbol = original.delegateFieldSymbol
     copyBuilder.isVar = original.isVar
     copyBuilder.getter = original.getter
     copyBuilder.setter = original.setter
     copyBuilder.annotations.addAll(original.annotations)
-    copyBuilder.typeParameters.addAll(original.typeParameters)
-    copyBuilder.containerSource = original.containerSource
-    copyBuilder.dispatchReceiverType = original.dispatchReceiverType
     copyBuilder.symbol = original.symbol
+    copyBuilder.delegateFieldSymbol = original.delegateFieldSymbol
     copyBuilder.isLocal = original.isLocal
-    copyBuilder.status = original.status
+    copyBuilder.initializerAndAccessorsAreResolved = original.initializerAndAccessorsAreResolved
+    copyBuilder.typeParameters.addAll(original.typeParameters)
     return copyBuilder.apply(init).build()
 }

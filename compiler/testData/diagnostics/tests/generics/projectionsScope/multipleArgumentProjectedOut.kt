@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // !DIAGNOSTICS: -UNUSED_PARAMETER
 
 class A<T> {
@@ -6,5 +5,5 @@ class A<T> {
 }
 
 fun test(a: A<out CharSequence>) {
-    a.<!MEMBER_PROJECTED_OUT{OI}!>foo<!>(<!TYPE_MISMATCH{NI}!>""<!>, <!TYPE_MISMATCH{NI}!>""<!>)
+    a.foo(<!TYPE_MISMATCH!>""<!>, <!TYPE_MISMATCH!>""<!>)
 }

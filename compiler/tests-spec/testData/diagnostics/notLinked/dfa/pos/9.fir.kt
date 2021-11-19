@@ -3,7 +3,7 @@
 // SKIP_TXT
 
 // TESTCASE NUMBER: 1
-fun case_1(x: Out<out Int?>?) {
+fun case_1(x: Out<<!REDUNDANT_PROJECTION!>out<!> Int?>?) {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("Out<out kotlin.Int?>? & Out<out kotlin.Int?>")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("Out<out kotlin.Int?>? & Out<out kotlin.Int?>")!>x<!>.equals(null)
@@ -23,7 +23,7 @@ fun case_1(x: Out<out Int?>?) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28598
  */
-fun case_2(a: Out<out Out<out Out<out Out<out Out<out Out<out Int?>?>?>?>?>?>?) {
+fun case_2(a: Out<<!REDUNDANT_PROJECTION!>out<!> Out<<!REDUNDANT_PROJECTION!>out<!> Out<<!REDUNDANT_PROJECTION!>out<!> Out<<!REDUNDANT_PROJECTION!>out<!> Out<<!REDUNDANT_PROJECTION!>out<!> Out<<!REDUNDANT_PROJECTION!>out<!> Int?>?>?>?>?>?>?) {
     if (a != null) {
         val b = <!DEBUG_INFO_EXPRESSION_TYPE("Out<out Out<out Out<out Out<out Out<out Out<out kotlin.Int?>?>?>?>?>?>? & Out<out Out<out Out<out Out<out Out<out Out<out kotlin.Int?>?>?>?>?>?>")!>a<!>.get()
         if (b != null) {
@@ -60,8 +60,8 @@ fun case_2(a: Out<out Out<out Out<out Out<out Out<out Out<out Int?>?>?>?>?>?>?) 
 fun case_3(a: Inv<out Int>?) {
     if (a != null) {
         val b = a
-        if (a == null)
-        <!DEBUG_INFO_EXPRESSION_TYPE("Inv<out kotlin.Int>? & Inv<out kotlin.Int>")!>b<!>
+        if (<!SENSELESS_COMPARISON!>a == null<!>)
+        <!DEBUG_INFO_EXPRESSION_TYPE("Inv<out kotlin.Int>? & kotlin.Nothing")!>b<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("Inv<out kotlin.Int>? & Inv<out kotlin.Int>")!>b<!>.equals(null)
         <!DEBUG_INFO_EXPRESSION_TYPE("Inv<out kotlin.Int>? & Inv<out kotlin.Int>")!>b<!>.propT
         <!DEBUG_INFO_EXPRESSION_TYPE("Inv<out kotlin.Int>? & Inv<out kotlin.Int>")!>b<!>.propAny
@@ -75,7 +75,7 @@ fun case_3(a: Inv<out Int>?) {
 }
 
 // TESTCASE NUMBER: 4
-fun case_4(a: Out<out Int>?, b: Out<out Int> = if (a != null) <!DEBUG_INFO_EXPRESSION_TYPE("Out<out kotlin.Int>? & Out<out kotlin.Int>")!>a<!> else Out<Int>()) {
+fun case_4(a: Out<<!REDUNDANT_PROJECTION!>out<!> Int>?, b: Out<<!REDUNDANT_PROJECTION!>out<!> Int> = if (a != null) <!DEBUG_INFO_EXPRESSION_TYPE("Out<out kotlin.Int>? & Out<out kotlin.Int>")!>a<!> else Out<Int>()) {
     <!DEBUG_INFO_EXPRESSION_TYPE("Out<out kotlin.Int>?")!>a<!>
     <!DEBUG_INFO_EXPRESSION_TYPE("Out<out kotlin.Int>")!>b<!>
     <!DEBUG_INFO_EXPRESSION_TYPE("Out<out kotlin.Int>")!>b<!>.equals(null)
@@ -90,7 +90,7 @@ fun case_4(a: Out<out Int>?, b: Out<out Int> = if (a != null) <!DEBUG_INFO_EXPRE
 }
 
 // TESTCASE NUMBER: 5
-val x: Out<out Int>? = null
+val x: Out<<!REDUNDANT_PROJECTION!>out<!> Int>? = null
 
 fun case_5() {
     if (x != null) {
@@ -127,7 +127,7 @@ fun case_6() {
 
 // TESTCASE NUMBER: 7
 fun case_7() {
-    var x: Out<out Int>? = null
+    var x: Out<<!REDUNDANT_PROJECTION!>out<!> Int>? = null
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("Out<out kotlin.Int>? & Out<out kotlin.Int>")!>x<!>
@@ -438,7 +438,7 @@ fun case_18(a: Inv<out Int?>) {
  * ISSUES: KT-28785
  */
 fun case_19(a: Inv<out Nothing?>) {
-    if (a.x != null) {
+    if (<!SENSELESS_COMPARISON!>a.x != null<!>) {
         a.x
         a.x.hashCode()
     }
@@ -469,7 +469,7 @@ fun case_20(a: Inv<out Any?>) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-fun case_21(a: Out<out Int?>) {
+fun case_21(a: Out<<!REDUNDANT_PROJECTION!>out<!> Int?>) {
     if (a.x != null) {
         a.x
         a.x.equals(null)
@@ -489,8 +489,8 @@ fun case_21(a: Out<out Int?>) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-fun case_22(a: Out<out Nothing?>) {
-    if (a.x != null) {
+fun case_22(a: Out<<!REDUNDANT_PROJECTION!>out<!> Nothing?>) {
+    if (<!SENSELESS_COMPARISON!>a.x != null<!>) {
         a.x
         a.x.hashCode()
     }
@@ -501,7 +501,7 @@ fun case_22(a: Out<out Nothing?>) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-fun case_23(a: Out<out Any?>) {
+fun case_23(a: Out<<!REDUNDANT_PROJECTION!>out<!> Any?>) {
     if (a.x != null) {
         a.x
         a.x.equals(null)
@@ -534,7 +534,7 @@ fun case_24(a: Out<Int?>) {
 
 // TESTCASE NUMBER: 25
 fun case_25(a: Out<Nothing?>) {
-    if (a.x != null) {
+    if (<!SENSELESS_COMPARISON!>a.x != null<!>) {
         a.x
         a.x.hashCode()
     }

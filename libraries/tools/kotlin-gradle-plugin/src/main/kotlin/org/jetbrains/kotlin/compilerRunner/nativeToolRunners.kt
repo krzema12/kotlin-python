@@ -10,9 +10,11 @@ import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
 import org.jetbrains.kotlin.gradle.dsl.NativeCacheKind
 import org.jetbrains.kotlin.gradle.plugin.PropertiesProvider
 import org.jetbrains.kotlin.gradle.plugin.mpp.isAtLeast
+import org.jetbrains.kotlin.gradle.plugin.mpp.nativeUseEmbeddableCompilerJar
 import org.jetbrains.kotlin.gradle.tasks.CacheBuilder
 import org.jetbrains.kotlin.gradle.utils.NativeCompilerDownloader
 import org.jetbrains.kotlin.konan.CompilerVersion
+import org.jetbrains.kotlin.konan.file.File
 import org.jetbrains.kotlin.konan.properties.resolvablePropertyString
 import org.jetbrains.kotlin.konan.target.HostManager
 import org.jetbrains.kotlin.konan.target.KonanTarget
@@ -76,8 +78,17 @@ internal abstract class KotlinNativeToolRunner(
     }
 
     final override val classpath by lazy {
-        project.fileTree("${project.konanHome}/konan/lib/").apply { include("*.jar") }.toSet()
+        project.files(
+            project.kotlinNativeCompilerJar,
+            "${project.konanHome}/konan/lib/trove4j.jar"
+        ).files
     }
+
+    private val Project.kotlinNativeCompilerJar: String
+        get() = if (nativeUseEmbeddableCompilerJar)
+            "$konanHome/konan/lib/kotlin-native-compiler-embeddable.jar"
+        else
+            "$konanHome/konan/lib/kotlin-native.jar"
 
     final override fun checkClasspath() =
         check(classpath.isNotEmpty()) {
@@ -88,7 +99,10 @@ internal abstract class KotlinNativeToolRunner(
             """.trimIndent()
         }
 
-    final override val isolatedClassLoaderCacheKey get() = project.konanHome
+    data class IsolatedClassLoaderCacheKey(val classpath: Set<java.io.File>)
+
+    // TODO: can't we use this for other implementations too?
+    final override val isolatedClassLoaderCacheKey get() = IsolatedClassLoaderCacheKey(classpath)
 
     override fun transformArgs(args: List<String>) = listOf(toolName) + args
 

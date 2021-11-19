@@ -5,11 +5,11 @@
 
 package org.jetbrains.kotlin.ir.backend.js.lower.serialization.ir
 
+import org.jetbrains.kotlin.backend.common.serialization.CompatibilityMode
 import org.jetbrains.kotlin.backend.common.serialization.DeclarationTable
 import org.jetbrains.kotlin.backend.common.serialization.IrFileSerializer
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.ir.declarations.IrAnnotationContainer
-import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
 import org.jetbrains.kotlin.ir.util.IrMessageLogger
 import org.jetbrains.kotlin.ir.util.hasAnnotation
@@ -19,16 +19,20 @@ class JsIrFileSerializer(
     messageLogger: IrMessageLogger,
     declarationTable: DeclarationTable,
     expectDescriptorToSymbol: MutableMap<DeclarationDescriptor, IrSymbol>,
+    compatibilityMode: CompatibilityMode,
     skipExpects: Boolean,
     bodiesOnlyForInlines: Boolean = false,
     icMode: Boolean = false,
+    allowErrorStatementOrigins: Boolean = false,
 ) : IrFileSerializer(
     messageLogger,
     declarationTable,
     expectDescriptorToSymbol,
+    compatibilityMode,
     bodiesOnlyForInlines = bodiesOnlyForInlines,
     skipExpects = skipExpects,
     skipMutableState = icMode,
+    allowErrorStatementOrigins = allowErrorStatementOrigins,
 ) {
     companion object {
         private val JS_EXPORT_FQN = FqName("kotlin.js.JsExport")

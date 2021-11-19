@@ -39,7 +39,7 @@ abstract class IrBindablePublicSymbolBase<out D : DeclarationDescriptor, B : IrS
         assert(descriptor == null || isOriginalDescriptor(descriptor)) {
             "Substituted descriptor $descriptor for ${descriptor!!.original}"
         }
-        assert(sig.isPublic)
+//        assert(sig.isPubliclyVisible)
     }
 
     private fun isOriginalDescriptor(descriptor: DeclarationDescriptor): Boolean =
@@ -55,7 +55,7 @@ abstract class IrBindablePublicSymbolBase<out D : DeclarationDescriptor, B : IrS
         if (_owner == null) {
             _owner = owner
         } else {
-            throw IllegalStateException("${javaClass.simpleName} for $signature is already bound: ${owner.render()}")
+            throw IllegalStateException("${javaClass.simpleName} for $signature is already bound: ${_owner?.render()}")
         }
     }
 
@@ -86,3 +86,11 @@ class IrPropertyPublicSymbolImpl(sig: IdSignature, descriptor: PropertyDescripto
 class IrTypeAliasPublicSymbolImpl(sig: IdSignature, descriptor: TypeAliasDescriptor? = null) :
     IrBindablePublicSymbolBase<TypeAliasDescriptor, IrTypeAlias>(sig, descriptor),
     IrTypeAliasSymbol
+
+class IrFieldPublicSymbolImpl(sig: IdSignature, descriptor: PropertyDescriptor? = null) :
+    IrBindablePublicSymbolBase<PropertyDescriptor, IrField>(sig, descriptor),
+    IrFieldSymbol
+
+class IrTypeParameterPublicSymbolImpl(sig: IdSignature, descriptor: TypeParameterDescriptor? = null) :
+    IrBindablePublicSymbolBase<TypeParameterDescriptor, IrTypeParameter>(sig, descriptor),
+    IrTypeParameterSymbol

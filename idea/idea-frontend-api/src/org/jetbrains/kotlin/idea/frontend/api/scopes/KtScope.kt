@@ -13,16 +13,33 @@ import org.jetbrains.kotlin.idea.frontend.api.withValidityAssertion
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
-interface KtScope : ValidityTokenOwner {
-    // TODO check that names are accessible
-    // maybe return some kind of lazy set
-    fun getAllNames(): Set<Name> = withValidityAssertion { getCallableNames() + getClassifierNames() }
 
-    fun getCallableNames(): Set<Name>
-    fun getClassifierNames(): Set<Name>
+public interface KtScope : ValidityTokenOwner {
+    /**
+     * Returns a **subset** of names which current scope may contain.
+     * In other words `ALL_NAMES(scope)` is a subset of `scope.getAllNames()`
+     */
+    public fun getAllPossibleNames(): Set<Name> = withValidityAssertion {
+        getPossibleCallableNames() + getPossibleClassifierNames()
+    }
+
+    /**
+     * Returns a **subset** of callable names which current scope may contain.
+     * In other words `ALL_CALLABLE_NAMES(scope)` is a subset of `scope.getCallableNames()`
+     */
+    public fun getPossibleCallableNames(): Set<Name>
+
+    /**
+     * Returns a **subset** of classifier names which current scope may contain.
+     * In other words `ALL_CLASSIFIER_NAMES(scope)` is a subset of `scope.getClassifierNames()`
+     */
+    public fun getPossibleClassifierNames(): Set<Name>
 
 
-    fun getAllSymbols(): Sequence<KtSymbol> = withValidityAssertion {
+    /**
+     * Return a sequence of all [KtSymbol] which current scope contain
+     */
+    public fun getAllSymbols(): Sequence<KtSymbol> = withValidityAssertion {
         sequence {
             yieldAll(getCallableSymbols())
             yieldAll(getClassifierSymbols())
@@ -30,39 +47,57 @@ interface KtScope : ValidityTokenOwner {
         }
     }
 
-    fun getCallableSymbols(nameFilter: KtScopeNameFilter = { true }): Sequence<KtCallableSymbol>
-    fun getClassifierSymbols(nameFilter: KtScopeNameFilter = { true }): Sequence<KtClassifierSymbol>
-    fun getConstructors(): Sequence<KtConstructorSymbol>
+    /**
+     * Return a sequence of [KtCallableSymbol] which current scope contain if declaration name matches [nameFilter]
+     */
+    public fun getCallableSymbols(nameFilter: KtScopeNameFilter = { true }): Sequence<KtCallableSymbol>
 
-    fun containsName(name: Name): Boolean = withValidityAssertion {
-        name in getCallableNames() || name in getClassifierNames()
+    /**
+     * Return a sequence of [KtClassifierSymbol] which current scope contain if declaration name matches [nameFilter]
+     */
+    public fun getClassifierSymbols(nameFilter: KtScopeNameFilter = { true }): Sequence<KtClassifierSymbol>
+
+    /**
+     * Return a sequence of [KtConstructorSymbol] which current scope contain
+     */
+    public fun getConstructors(): Sequence<KtConstructorSymbol>
+
+    /**
+     * return true if the scope may contain name, false otherwise.
+     *
+     * In other words `(mayContainName(name) == false) => (name !in scope)`; vice versa is not always true
+     */
+    public fun mayContainName(name: Name): Boolean = withValidityAssertion {
+        name in getPossibleCallableNames() || name in getPossibleClassifierNames()
     }
 }
 
-typealias KtScopeNameFilter = (Name) -> Boolean
+public typealias KtScopeNameFilter = (Name) -> Boolean
 
-interface KtCompositeScope : KtScope {
-    val subScopes: List<KtScope>
+public interface KtCompositeScope : KtScope {
+    public val subScopes: List<KtScope>
 }
 
-interface KtMemberScope : KtDeclarationScope<KtSymbolWithMembers> {
+public interface KtMemberScope : KtDeclarationScope<KtSymbolWithMembers> {
     override val owner: KtSymbolWithMembers
 }
 
-interface KtDeclaredMemberScope : KtDeclarationScope<KtSymbolWithMembers> {
+public interface KtDeclaredMemberScope : KtDeclarationScope<KtSymbolWithMembers> {
     override val owner: KtSymbolWithMembers
 }
 
-interface KtDeclarationScope<out T : KtSymbolWithDeclarations> : KtScope {
-    val owner: T
+public interface KtDeclarationScope<out T : KtSymbolWithDeclarations> : KtScope {
+    public val owner: T
 }
 
-interface KtPackageScope : KtScope, KtSubstitutedScope<KtPackageScope> {
-    val fqName: FqName
-}
+public interface KtPackageScope : KtScope {
+    public val fqName: FqName
 
-interface KtUnsubstitutedScope<S : KtScope> : KtScope {
-    fun substitute(/*substitution*/): KtSubstitutedScope<S> = TODO()
-}
+    public fun getPackageSymbols(nameFilter: KtScopeNameFilter = { true }): Sequence<KtPackageSymbol>
 
-interface KtSubstitutedScope<S> : KtScope
+    override fun getAllSymbols(): Sequence<KtSymbol> = withValidityAssertion {
+        super.getAllSymbols() + getPackageSymbols()
+    }
+
+    override fun getConstructors(): Sequence<KtConstructorSymbol> = withValidityAssertion { emptySequence() }
+}

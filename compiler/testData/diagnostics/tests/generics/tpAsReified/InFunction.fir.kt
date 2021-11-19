@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // !DIAGNOSTICS: -UNUSED_PARAMETER, -UNUSED_EXPRESSION
 
 inline fun <reified T> foo() {
@@ -10,13 +9,13 @@ inline fun <reified T> f(): T = throw UnsupportedOperationException()
 fun <T> id(p: T): T = p
 
 fun <A> main() {
-    f()
+    <!NEW_INFERENCE_NO_INFORMATION_FOR_PARAMETER!>f<!>()
 
-    val a: A = f()
-    f<A>()
+    val a: A = <!TYPE_PARAMETER_AS_REIFIED!>f<!>()
+    f<<!TYPE_PARAMETER_AS_REIFIED!>A<!>>()
 
     val b: Int = f()
     f<Int>()
 
-    val с: A = id(f())
+    val с: A = id(<!TYPE_PARAMETER_AS_REIFIED!>f<!>())
 }

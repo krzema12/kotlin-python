@@ -6,30 +6,30 @@
 package org.jetbrains.kotlin.idea.frontend.api.fir.components
 
 import com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.fir.FirLabel
+import org.jetbrains.kotlin.fir.FirPackageDirective
 import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
-import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
-import org.jetbrains.kotlin.fir.expressions.FirStatement
-import org.jetbrains.kotlin.fir.expressions.argumentMapping
+import org.jetbrains.kotlin.fir.declarations.FirFunction
+import org.jetbrains.kotlin.fir.declarations.FirImport
+import org.jetbrains.kotlin.fir.declarations.utils.isSuspend
+import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.psi
-import org.jetbrains.kotlin.fir.references.FirErrorNamedReference
 import org.jetbrains.kotlin.fir.references.FirNamedReference
-import org.jetbrains.kotlin.fir.references.FirResolvedNamedReference
-import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeUnresolvedNameError
-import org.jetbrains.kotlin.fir.types.ConeClassErrorType
-import org.jetbrains.kotlin.fir.types.ConeKotlinType
+import org.jetbrains.kotlin.fir.resolve.constructFunctionalType
+import org.jetbrains.kotlin.fir.typeContext
+import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.idea.fir.low.level.api.api.getOrBuildFir
 import org.jetbrains.kotlin.idea.fir.low.level.api.api.getOrBuildFirOfType
 import org.jetbrains.kotlin.idea.fir.low.level.api.api.getOrBuildFirSafe
-import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
 import org.jetbrains.kotlin.idea.frontend.api.components.KtExpressionTypeProvider
 import org.jetbrains.kotlin.idea.frontend.api.fir.KtFirAnalysisSession
-import org.jetbrains.kotlin.idea.frontend.api.symbols.markers.KtTypedSymbol
-import org.jetbrains.kotlin.idea.frontend.api.types.KtErrorType
+import org.jetbrains.kotlin.idea.frontend.api.fir.utils.getReferencedElementType
+import org.jetbrains.kotlin.idea.frontend.api.fir.utils.unwrap
+import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
+import org.jetbrains.kotlin.idea.frontend.api.types.KtClassErrorType
 import org.jetbrains.kotlin.idea.frontend.api.types.KtType
 import org.jetbrains.kotlin.idea.frontend.api.withValidityAssertion
-import org.jetbrains.kotlin.idea.references.FirReferenceResolveHelper
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.*
 
@@ -37,29 +37,25 @@ internal class KtFirExpressionTypeProvider(
     override val analysisSession: KtFirAnalysisSession,
     override val token: ValidityToken,
 ) : KtExpressionTypeProvider(), KtFirAnalysisSessionComponent {
+
+    override fun getKtExpressionType(expression: KtExpression): KtType? = withValidityAssertion {
+        when (val fir = expression.unwrap().getOrBuildFir(firResolveState)) {
+            is FirExpression -> fir.typeRef.coneType.asKtType()
+            is FirNamedReference -> fir.getReferencedElementType(firResolveState).asKtType()
+            is FirStatement -> with(analysisSession) { builtinTypes.UNIT }
+            is FirTypeRef, is FirImport, is FirPackageDirective, is FirLabel -> null
+            else -> error("Unexpected ${fir?.let { it::class }} for ${expression::class} with text `${expression.text}`")
+        }
+    }
+
     override fun getReturnTypeForKtDeclaration(declaration: KtDeclaration): KtType = withValidityAssertion {
-        val firDeclaration = declaration.getOrBuildFirOfType<FirCallableDeclaration<*>>(firResolveState)
+        val firDeclaration = declaration.getOrBuildFirOfType<FirCallableDeclaration>(firResolveState)
         firDeclaration.returnTypeRef.coneType.asKtType()
     }
 
-    override fun getKtExpressionType(expression: KtExpression): KtType = withValidityAssertion {
-        when (val fir = expression.getOrBuildFir(firResolveState)) {
-            is FirExpression -> fir.typeRef.coneType.asKtType()
-            is FirNamedReference -> fir.getReferencedElementType().asKtType()
-            is FirStatement -> with(analysisSession) { builtinTypes.UNIT }
-            else -> error("Unexpected ${fir::class}")
-        }
-    }
-
-    private fun FirNamedReference.getReferencedElementType(): ConeKotlinType {
-        val symbols = when (this) {
-            is FirResolvedNamedReference -> listOf(resolvedSymbol)
-            is FirErrorNamedReference -> FirReferenceResolveHelper.getFirSymbolsByErrorNamedReference(this)
-            else -> error("Unexpected ${this::class}")
-        }
-        val firCallableDeclaration = symbols.singleOrNull()?.fir as? FirCallableDeclaration<*>
-        return firCallableDeclaration?.returnTypeRef?.coneType
-            ?: ConeClassErrorType(ConeUnresolvedNameError(name))
+    override fun getFunctionalTypeForKtFunction(declaration: KtFunction): KtType = withValidityAssertion {
+        val firFunction = declaration.getOrBuildFirOfType<FirFunction>(firResolveState)
+        firFunction.constructFunctionalType(firFunction.isSuspend).asKtType()
     }
 
     override fun getExpectedType(expression: PsiElement): KtType? {
@@ -70,7 +66,7 @@ internal class KtFirExpressionTypeProvider(
             ?: getExpectedTypeByVariableAssignment(expression)
             ?: getExpectedTypeByPropertyDeclaration(expression)
             ?: getExpectedTypeByFunctionExpressionBody(expression)
-        return expectedType.takeIf { it !is KtErrorType }
+        return expectedType.takeIf { it !is KtClassErrorType }
     }
 
     private fun getExpectedTypeOfFunctionParameter(expression: PsiElement): KtType? {
@@ -103,7 +99,7 @@ internal class KtFirExpressionTypeProvider(
     private fun getExpectedTypeByReturnExpression(expression: PsiElement): KtType? {
         val returnParent = expression.getReturnExpressionWithThisType() ?: return null
         val targetSymbol = with(analysisSession) { returnParent.getReturnTargetSymbol() } ?: return null
-        return (targetSymbol as? KtTypedSymbol)?.annotatedType?.type
+        return targetSymbol.annotatedType.type
     }
 
     private fun PsiElement.getReturnExpressionWithThisType(): KtReturnExpression? =
@@ -143,6 +139,32 @@ internal class KtFirExpressionTypeProvider(
 
     private fun PsiElement.isIfCondition() =
         unwrapQualified<KtIfExpression> { ifExpr, cond -> ifExpr.condition == cond } != null
+
+    override fun isDefinitelyNull(expression: KtExpression): Boolean =
+        getDefiniteNullability(expression) == DefiniteNullability.DEFINITELY_NULL
+
+    override fun isDefinitelyNotNull(expression: KtExpression): Boolean =
+        getDefiniteNullability(expression) == DefiniteNullability.DEFINITELY_NOT_NULL
+
+    private fun getDefiniteNullability(expression: KtExpression): DefiniteNullability = withValidityAssertion {
+        fun FirExpression.isNotNullable() = with(analysisSession.rootModuleSession.typeContext) {
+            !typeRef.coneType.isNullableType()
+        }
+
+        when (val fir = expression.getOrBuildFir(analysisSession.firResolveState)) {
+            is FirExpressionWithSmartcastToNull -> if (fir.isStable) {
+                return DefiniteNullability.DEFINITELY_NULL
+            }
+            is FirExpressionWithSmartcast -> if (fir.isStable && fir.isNotNullable()) {
+                return DefiniteNullability.DEFINITELY_NOT_NULL
+            }
+            is FirExpression -> if (fir.isNotNullable()) {
+                return DefiniteNullability.DEFINITELY_NOT_NULL
+            }
+        }
+
+        return DefiniteNullability.UNKNOWN
+    }
 }
 
 private data class KtCallWithArgument(val call: KtCallExpression, val argument: KtExpression)
@@ -167,3 +189,5 @@ private val PsiElement.nonContainerParent: PsiElement?
         is KtContainerNode -> parent.parent
         else -> parent
     }
+
+private enum class DefiniteNullability { DEFINITELY_NULL, DEFINITELY_NOT_NULL, UNKNOWN }

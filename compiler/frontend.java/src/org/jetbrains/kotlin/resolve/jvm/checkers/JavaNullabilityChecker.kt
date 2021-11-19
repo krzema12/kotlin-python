@@ -31,6 +31,7 @@ import org.jetbrains.kotlin.resolve.calls.context.ResolutionContext
 import org.jetbrains.kotlin.resolve.calls.smartcasts.DataFlowInfo
 import org.jetbrains.kotlin.resolve.calls.smartcasts.DataFlowValue
 import org.jetbrains.kotlin.resolve.calls.smartcasts.Nullability
+import org.jetbrains.kotlin.resolve.calls.tower.NewResolvedCallImpl
 import org.jetbrains.kotlin.resolve.jvm.diagnostics.ErrorsJvm
 import org.jetbrains.kotlin.resolve.scopes.receivers.ExpressionReceiver
 import org.jetbrains.kotlin.resolve.scopes.receivers.ReceiverValue
@@ -128,13 +129,24 @@ class JavaNullabilityChecker(val upperBoundChecker: UpperBoundChecker) : Additio
             upperBoundChecker.checkBoundsOfExpandedTypeAlias(expressionType.expandedType, expression, c.trace)
         }
 
-        if (c !is BasicCallResolutionContext || upperBoundChecker !is WarningAwareUpperBoundChecker) return
+        if (upperBoundChecker !is WarningAwareUpperBoundChecker) return
 
-        val resolvedCall = c.trace.bindingContext[BindingContext.RESOLVED_CALL, c.call] ?: return
+        val call = (c as? BasicCallResolutionContext)?.call
+            ?: c.trace.bindingContext[BindingContext.CALL, (expression as? KtCallExpression)?.calleeExpression]
+            ?: return
+        val resolvedCall = c.trace.bindingContext[BindingContext.RESOLVED_CALL, call] ?: return
 
-        for ((typeParameter, typeArgument) in resolvedCall.typeArguments) {
+        val typeArguments = if (resolvedCall is NewResolvedCallImpl<*>) {
+            resolvedCall.resolvedCallAtom.typeArgumentMappingByOriginal
+        } else {
+            resolvedCall.typeArguments.entries
+        }
+
+        for ((typeParameter, typeArgument) in typeArguments) {
             // continue if we don't have explicit type arguments
-            val typeReference = c.call.typeArguments.getOrNull(typeParameter.index)?.typeReference ?: continue
+            val typeReference = call.typeArguments.getOrNull(typeParameter.index)?.typeReference ?: continue
+
+            if (typeArgument == null) continue
 
             upperBoundChecker.checkBounds(
                 typeReference, typeArgument, typeParameter, TypeSubstitutor.create(typeArgument), c.trace, withOnlyCheckForWarning = true
@@ -152,7 +164,8 @@ class JavaNullabilityChecker(val upperBoundChecker: UpperBoundChecker) : Additio
 
         var metWrongNullabilityInsideArguments = false
 
-        val typeContext: AbstractTypeCheckerContext = object : ClassicTypeCheckerContext(errorTypeEqualsToAnything = true) {
+        @OptIn(ClassicTypeCheckerStateInternals::class)
+        val typeState: TypeCheckerState = object : ClassicTypeCheckerState(isErrorTypeEqualsToAnything = true) {
             private var expectsTypeArgument = false
             override fun customIsSubtypeOf(subType: KotlinTypeMarker, superType: KotlinTypeMarker): Boolean {
 
@@ -171,7 +184,7 @@ class JavaNullabilityChecker(val upperBoundChecker: UpperBoundChecker) : Additio
             }
         }
 
-        AbstractTypeChecker.isSubtypeOf(typeContext, expressionType, c.expectedType)
+        AbstractTypeChecker.isSubtypeOf(typeState, expressionType, c.expectedType)
 
         return metWrongNullabilityInsideArguments
     }
@@ -182,7 +195,7 @@ class JavaNullabilityChecker(val upperBoundChecker: UpperBoundChecker) : Additio
     ): Boolean {
         if (superType !is NotNullTypeVariable) return false
         return !AbstractNullabilityChecker.isSubtypeOfAny(
-            ClassicTypeCheckerContext(errorTypeEqualsToAnything = true) as AbstractTypeCheckerContext,
+            createClassicTypeCheckerState(isErrorTypeEqualsToAnything = true),
             subType
         )
     }

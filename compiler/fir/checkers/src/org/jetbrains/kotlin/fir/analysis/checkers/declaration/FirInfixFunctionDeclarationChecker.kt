@@ -10,21 +10,20 @@ import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors
 import org.jetbrains.kotlin.fir.analysis.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.declarations.FirClass
-import org.jetbrains.kotlin.fir.declarations.FirMemberDeclaration
+import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
-import org.jetbrains.kotlin.fir.declarations.isInfix
+import org.jetbrains.kotlin.fir.declarations.FirMemberDeclaration
 
-object FirInfixFunctionDeclarationChecker : FirMemberDeclarationChecker() {
-    override fun check(declaration: FirMemberDeclaration, context: CheckerContext, reporter: DiagnosticReporter) {
-        if (declaration is FirSimpleFunction && declaration.isInfix) {
+object FirInfixFunctionDeclarationChecker : FirBasicDeclarationChecker() {
+    override fun check(declaration: FirDeclaration, context: CheckerContext, reporter: DiagnosticReporter) {
+        if ((declaration as? FirMemberDeclaration)?.status?.isInfix != true) return
+        if (declaration is FirSimpleFunction) {
             if (declaration.valueParameters.size != 1 || !hasExtensionOrDispatchReceiver(declaration, context)) {
                 reporter.reportOn(declaration.source, FirErrors.INAPPLICABLE_INFIX_MODIFIER, context)
             }
             return
         }
-        if (declaration.isInfix) {
-            reporter.reportOn(declaration.source, FirErrors.INAPPLICABLE_INFIX_MODIFIER, context)
-        }
+        reporter.reportOn(declaration.source, FirErrors.INAPPLICABLE_INFIX_MODIFIER, context)
     }
 
     private fun hasExtensionOrDispatchReceiver(
@@ -32,6 +31,6 @@ object FirInfixFunctionDeclarationChecker : FirMemberDeclarationChecker() {
         context: CheckerContext
     ): Boolean {
         if (function.receiverTypeRef != null) return true
-        return context.containingDeclarations.lastOrNull() is FirClass<*>
+        return context.containingDeclarations.lastOrNull() is FirClass
     }
 }

@@ -6,10 +6,12 @@
 package org.jetbrains.kotlin.fir.declarations.builder
 
 import kotlin.contracts.*
-import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.FirImplementationDetail
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.builder.FirAnnotationContainerBuilder
 import org.jetbrains.kotlin.fir.builder.FirBuilderDsl
+import org.jetbrains.kotlin.fir.declarations.DeprecationsPerUseSite
 import org.jetbrains.kotlin.fir.declarations.FirConstructor
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationAttributes
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
@@ -37,36 +39,39 @@ import org.jetbrains.kotlin.serialization.deserialization.descriptors.Deserializ
 @FirBuilderDsl
 class FirPrimaryConstructorBuilder : FirAbstractConstructorBuilder, FirAnnotationContainerBuilder {
     override var source: FirSourceElement? = null
-    override lateinit var declarationSiteSession: FirSession
+    override lateinit var moduleData: FirModuleData
     override var resolvePhase: FirResolvePhase = FirResolvePhase.RAW_FIR
     override lateinit var origin: FirDeclarationOrigin
     override var attributes: FirDeclarationAttributes = FirDeclarationAttributes()
     override lateinit var returnTypeRef: FirTypeRef
-    override var receiverTypeRef: FirTypeRef? = null
     override val typeParameters: MutableList<FirTypeParameterRef> = mutableListOf()
-    override val valueParameters: MutableList<FirValueParameter> = mutableListOf()
     override lateinit var status: FirDeclarationStatus
+    override var receiverTypeRef: FirTypeRef? = null
+    override var deprecation: DeprecationsPerUseSite? = null
     override var containerSource: DeserializedContainerSource? = null
     override var dispatchReceiverType: ConeKotlinType? = null
+    override val valueParameters: MutableList<FirValueParameter> = mutableListOf()
     override val annotations: MutableList<FirAnnotationCall> = mutableListOf()
     override lateinit var symbol: FirConstructorSymbol
     override var delegatedConstructor: FirDelegatedConstructorCall? = null
     override var body: FirBlock? = null
 
+    @OptIn(FirImplementationDetail::class)
     override fun build(): FirConstructor {
         return FirPrimaryConstructor(
             source,
-            declarationSiteSession,
+            moduleData,
             resolvePhase,
             origin,
             attributes,
             returnTypeRef,
-            receiverTypeRef,
             typeParameters,
-            valueParameters,
             status,
+            receiverTypeRef,
+            deprecation,
             containerSource,
             dispatchReceiverType,
+            valueParameters,
             annotations,
             symbol,
             delegatedConstructor,

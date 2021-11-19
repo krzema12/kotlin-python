@@ -212,13 +212,20 @@ fun CompilerConfiguration.configureAdvancedJvmOptions(arguments: K2JVMCompilerAr
                 arguments.useIR && !useOldBackend
             }
 
-    if (arguments.useIR && arguments.useOldBackend) {
+    if (arguments.useOldBackend) {
         messageCollector.report(
             STRONG_WARNING,
-            "Both -Xuse-ir and -Xuse-old-backend are passed. This is an inconsistent configuration. " +
-                    "The compiler will use the ${if (useIR) "JVM IR" else "old JVM"} backend"
+            "-Xuse-old-backend is deprecated and will be removed in a future release"
         )
+        if (arguments.useIR) {
+            messageCollector.report(
+                STRONG_WARNING,
+                "Both -Xuse-ir and -Xuse-old-backend are passed. This is an inconsistent configuration. " +
+                        "The compiler will use the ${if (useIR) "JVM IR" else "old JVM"} backend"
+            )
+        }
     }
+
     messageCollector.report(LOGGING, "Using ${if (useIR) "JVM IR" else "old JVM"} backend")
 
     put(JVMConfigurationKeys.IR, useIR)
@@ -252,6 +259,11 @@ fun CompilerConfiguration.configureAdvancedJvmOptions(arguments: K2JVMCompilerAr
     put(JVMConfigurationKeys.NO_RESET_JAR_TIMESTAMPS, arguments.noResetJarTimestamps)
     put(JVMConfigurationKeys.NO_UNIFIED_NULL_CHECKS, arguments.noUnifiedNullChecks)
 
+    put(JVMConfigurationKeys.SERIALIZE_IR, arguments.serializeIr)
+
+    put(JVMConfigurationKeys.VALIDATE_IR, arguments.validateIr)
+    put(JVMConfigurationKeys.VALIDATE_BYTECODE, arguments.validateBytecode)
+
     if (!JVMConstructorCallNormalizationMode.isSupportedValue(arguments.constructorCallNormalizationMode)) {
         messageCollector.report(
             ERROR,
@@ -278,9 +290,14 @@ fun CompilerConfiguration.configureAdvancedJvmOptions(arguments: K2JVMCompilerAr
     put(JVMConfigurationKeys.USE_TYPE_TABLE, arguments.useTypeTable)
     put(JVMConfigurationKeys.SKIP_RUNTIME_VERSION_CHECK, arguments.skipRuntimeVersionCheck)
     put(JVMConfigurationKeys.USE_PSI_CLASS_FILES_READING, arguments.useOldClassFilesReading)
+    put(JVMConfigurationKeys.USE_FAST_JAR_FILE_SYSTEM, arguments.useFastJarFileSystem)
 
     if (arguments.useOldClassFilesReading) {
         messageCollector.report(INFO, "Using the old java class files reading implementation")
+    }
+
+    if (arguments.useFastJarFileSystem) {
+        messageCollector.report(INFO, "Using fast Jar FS implementation")
     }
 
     put(CLIConfigurationKeys.ALLOW_KOTLIN_PACKAGE, arguments.allowKotlinPackage)

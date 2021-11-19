@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollector
 import org.jetbrains.kotlin.fir.analysis.collectors.FirDiagnosticsCollector
-import org.jetbrains.kotlin.fir.declarations.FirDeclaration
+import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporterFactory
 import org.jetbrains.kotlin.fir.declarations.FirFile
 import org.jetbrains.kotlin.fir.resolve.ScopeSession
 import org.jetbrains.kotlin.fir.resolve.transformers.FirTransformerBasedResolveProcessor
@@ -19,7 +19,7 @@ class FirCheckersResolveProcessor(
     session: FirSession,
     scopeSession: ScopeSession
 ) : FirTransformerBasedResolveProcessor(session, scopeSession) {
-    val diagnosticCollector = FirDiagnosticsCollector.create(session, scopeSession)
+    val diagnosticCollector: AbstractDiagnosticCollector = FirDiagnosticsCollector.create(session, scopeSession)
 
     override val transformer: FirTransformer<Nothing?> = FirCheckersRunnerTransformer(diagnosticCollector)
 }
@@ -29,8 +29,9 @@ class FirCheckersRunnerTransformer(private val diagnosticCollector: AbstractDiag
         return element
     }
 
-    override fun transformFile(file: FirFile, data: Nothing?): FirDeclaration {
-        diagnosticCollector.collectDiagnostics(file)
+    override fun transformFile(file: FirFile, data: Nothing?): FirFile {
+        val reporter = DiagnosticReporterFactory.createReporter()
+        diagnosticCollector.collectDiagnostics(file, reporter)
         return file
     }
 }

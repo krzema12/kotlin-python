@@ -13,10 +13,12 @@ import org.jetbrains.kotlin.fir.expressions.impl.FirElseIfTrueCondition
 import org.jetbrains.kotlin.fir.expressions.impl.FirEmptyExpressionBlock
 import org.jetbrains.kotlin.fir.references.FirResolvedNamedReference
 import org.jetbrains.kotlin.fir.resolve.ResolutionMode
+import org.jetbrains.kotlin.fir.resolve.calls.isUnitOrFlexibleUnit
 import org.jetbrains.kotlin.fir.resolve.transformers.FirSyntheticCallGenerator
 import org.jetbrains.kotlin.fir.resolve.transformers.FirWhenExhaustivenessTransformer
 import org.jetbrains.kotlin.fir.resolve.withExpectedType
 import org.jetbrains.kotlin.fir.resolvedTypeFromPrototype
+import org.jetbrains.kotlin.fir.typeContext
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.fir.types.builder.buildErrorTypeRef
 import org.jetbrains.kotlin.fir.visitors.transformSingle
@@ -82,8 +84,7 @@ class FirControlFlowStatementsResolveTransformer(transformer: FirBodyResolveTran
                         return@with whenExpression
                     }
 
-                    val expectedTypeRef = data.expectedType
-                    val completionResult = callCompleter.completeCall(whenExpression, expectedTypeRef)
+                    val completionResult = callCompleter.completeCall(whenExpression, data)
                     whenExpression = completionResult.result
                 }
             }
@@ -95,7 +96,7 @@ class FirControlFlowStatementsResolveTransformer(transformer: FirBodyResolveTran
     }
 
     private fun FirWhenExpression.replaceReturnTypeIfNotExhaustive(): FirWhenExpression {
-        if (!isExhaustive) {
+        if (!isProperlyExhaustive) {
             resultType = resultType.resolvedTypeFromPrototype(session.builtinTypes.unitType.type)
         }
         return this
@@ -146,15 +147,14 @@ class FirControlFlowStatementsResolveTransformer(transformer: FirBodyResolveTran
 
         @Suppress("NAME_SHADOWING")
         var result = syntheticCallGenerator.generateCalleeForTryExpression(tryExpression, resolutionContext).let {
-            val expectedTypeRef = data.expectedType
-            val completionResult = callCompleter.completeCall(it, expectedTypeRef)
+            val completionResult = callCompleter.completeCall(it, data)
             callCompleted = completionResult.callCompleted
             completionResult.result
         }
         result = if (result.finallyBlock != null) {
             result.also { dataFlowAnalyzer.enterFinallyBlock() }
                 .transformFinallyBlock(transformer, ResolutionMode.ContextIndependent)
-                .also(dataFlowAnalyzer::exitFinallyBlock)
+                .also { dataFlowAnalyzer.exitFinallyBlock() }
         } else {
             result
         }
@@ -202,7 +202,7 @@ class FirControlFlowStatementsResolveTransformer(transformer: FirBodyResolveTran
         throwExpression: FirThrowExpression,
         data: ResolutionMode
     ): FirStatement {
-        return transformer.transformExpression(throwExpression, data).also {
+        return transformer.transformExpression(throwExpression, ResolutionMode.ContextIndependent).also {
             dataFlowAnalyzer.exitThrowExceptionNode(it as FirThrowExpression)
         }
     }
@@ -217,15 +217,25 @@ class FirControlFlowStatementsResolveTransformer(transformer: FirBodyResolveTran
         elvisExpression.transformAnnotations(transformer, data)
 
         val expectedType = data.expectedType?.coneTypeSafe<ConeKotlinType>()
-        val resolutionModeForLhs = withExpectedType(expectedType?.withNullability(ConeNullability.NULLABLE))
+        val mayBeCoercionToUnitApplied = (data as? ResolutionMode.WithExpectedType)?.mayBeCoercionToUnitApplied == true
+
+        val resolutionModeForLhs =
+            if (mayBeCoercionToUnitApplied && expectedType?.isUnitOrFlexibleUnit == true)
+                withExpectedType(expectedType, mayBeCoercionToUnitApplied = true)
+            else
+                withExpectedType(expectedType?.withNullability(ConeNullability.NULLABLE, session.typeContext))
+        dataFlowAnalyzer.enterElvis(elvisExpression)
         elvisExpression.transformLhs(transformer, resolutionModeForLhs)
         dataFlowAnalyzer.exitElvisLhs(elvisExpression)
 
-        val resolutionModeForRhs = withExpectedType(expectedType)
+        val resolutionModeForRhs = withExpectedType(
+            expectedType,
+            mayBeCoercionToUnitApplied = mayBeCoercionToUnitApplied
+        )
         elvisExpression.transformRhs(transformer, resolutionModeForRhs)
 
         val result = syntheticCallGenerator.generateCalleeForElvisExpression(elvisExpression, resolutionContext)?.let {
-            callCompleter.completeCall(it, data.expectedType).result
+            callCompleter.completeCall(it, data).result
         } ?: elvisExpression.also {
             it.resultType = buildErrorTypeRef {
                 diagnostic = ConeSimpleDiagnostic("Can't resolve ?: operator call", DiagnosticKind.InferenceError)

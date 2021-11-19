@@ -16,15 +16,13 @@
 
 package  org.jetbrains.kotlin.native.interop.tool
 
-import org.jetbrains.kotlin.konan.target.HostManager
-import org.jetbrains.kotlin.konan.target.KonanTarget
-import org.jetbrains.kotlin.konan.target.PlatformManager
-import org.jetbrains.kotlin.konan.target.customerDistribution
+import org.jetbrains.kotlin.konan.target.*
 import org.jetbrains.kotlin.konan.util.KonanHomeProvider
 import org.jetbrains.kotlin.konan.util.defaultTargetSubstitutions
 import org.jetbrains.kotlin.native.interop.gen.jvm.KotlinPlatform
+import org.jetbrains.kotlin.native.interop.indexer.Language
 
-class ToolConfig(userProvidedTargetName: String?, flavor: KotlinPlatform) {
+class ToolConfig(userProvidedTargetName: String?, private val flavor: KotlinPlatform) {
 
     private val konanHome = KonanHomeProvider.determineKonanHome()
     private val distribution = customerDistribution(konanHome)
@@ -35,17 +33,23 @@ class ToolConfig(userProvidedTargetName: String?, flavor: KotlinPlatform) {
 
     private val platform = platformManager.platform(target)
 
-    val clang = platform.clang
+    val clang = when (flavor) {
+        KotlinPlatform.JVM -> platform.clangForJni
+        KotlinPlatform.NATIVE -> platform.clang
+    }
 
     val substitutions = defaultTargetSubstitutions(target)
 
     fun downloadDependencies() = platform.downloadDependencies()
 
-    val defaultCompilerOpts =
-            platform.clang.targetLibclangArgs.toList()
+    fun getDefaultCompilerOptsForLanguage(language: Language): List<String> = when (language) {
+        Language.C,
+        Language.OBJECTIVE_C -> clang.libclangArgs.toList()
+        Language.CPP -> clang.libclangXXArgs.toList()
+    }
 
-    val platformCompilerOpts = if (flavor == KotlinPlatform.JVM)
-            platform.clang.hostCompilerArgsForJni.toList() else emptyList()
+    val platformCompilerOpts = if (clang is ClangArgs.Jni)
+            clang.hostCompilerArgsForJni.toList() else emptyList()
 
     val llvmHome = platform.absoluteLlvmHome
     val sysRoot = platform.absoluteTargetSysRoot

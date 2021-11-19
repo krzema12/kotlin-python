@@ -20,7 +20,6 @@ import org.jetbrains.kotlin.descriptors.annotations.Annotations
 import org.jetbrains.kotlin.renderer.DescriptorRenderer
 import org.jetbrains.kotlin.renderer.DescriptorRendererOptions
 import org.jetbrains.kotlin.types.checker.KotlinTypeRefiner
-import org.jetbrains.kotlin.types.refinement.TypeRefinement
 
 interface TypeWithEnhancement {
     val origin: UnwrappedType
@@ -33,7 +32,7 @@ class SimpleTypeWithEnhancement(
 ) : DelegatingSimpleType(),
     TypeWithEnhancement {
 
-    override val origin: UnwrappedType get() = delegate
+    override val origin get() = delegate
 
     override fun replaceAnnotations(newAnnotations: Annotations): SimpleType =
         origin.replaceAnnotations(newAnnotations).wrapEnhancement(enhancement) as SimpleType
@@ -51,6 +50,9 @@ class SimpleTypeWithEnhancement(
             kotlinTypeRefiner.refineType(delegate) as SimpleType,
             kotlinTypeRefiner.refineType(enhancement)
         )
+
+    override fun toString(): String =
+        "[@EnhancedForWarnings($enhancement)] $origin"
 }
 
 class FlexibleTypeWithEnhancement(
@@ -81,6 +83,9 @@ class FlexibleTypeWithEnhancement(
             kotlinTypeRefiner.refineType(origin) as FlexibleType,
             kotlinTypeRefiner.refineType(enhancement)
         )
+
+    override fun toString(): String =
+        "[@EnhancedForWarnings($enhancement)] $origin"
 }
 
 fun KotlinType.getEnhancement(): KotlinType? = when (this) {
@@ -144,13 +149,18 @@ fun KotlinType.unwrapEnhancementDeeply() = getEnhancementDeeply() ?: this
 
 fun KotlinType.unwrapEnhancement(): KotlinType = getEnhancement() ?: this
 
+fun UnwrappedType.inheritEnhancement(origin: KotlinType, transform: (KotlinType) -> KotlinType): UnwrappedType =
+    wrapEnhancement(origin.getEnhancement()?.let(transform))
+
 fun UnwrappedType.inheritEnhancement(origin: KotlinType): UnwrappedType = wrapEnhancement(origin.getEnhancement())
 
 fun UnwrappedType.wrapEnhancement(enhancement: KotlinType?): UnwrappedType {
-    if (enhancement == null) {
+    if (this is TypeWithEnhancement) {
+        return origin.wrapEnhancement(enhancement)
+    }
+    if (enhancement == null || enhancement == this) {
         return this
     }
-
     return when (this) {
         is SimpleType -> SimpleTypeWithEnhancement(this, enhancement)
         is FlexibleType -> FlexibleTypeWithEnhancement(this, enhancement)

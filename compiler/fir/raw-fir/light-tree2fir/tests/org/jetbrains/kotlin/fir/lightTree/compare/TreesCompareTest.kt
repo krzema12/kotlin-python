@@ -13,7 +13,7 @@ import junit.framework.TestCase
 import org.jetbrains.kotlin.checkers.BaseDiagnosticsTest.Companion.DIAGNOSTIC_IN_TESTDATA_PATTERN
 import org.jetbrains.kotlin.fir.FirRenderer
 import org.jetbrains.kotlin.fir.builder.AbstractRawFirBuilderTestCase
-import org.jetbrains.kotlin.fir.builder.RawFirBuilderMode
+import org.jetbrains.kotlin.fir.builder.BodyBuildingMode
 import org.jetbrains.kotlin.fir.builder.StubFirScopeProvider
 import org.jetbrains.kotlin.fir.lightTree.LightTree2Fir
 import org.jetbrains.kotlin.fir.lightTree.walkTopDown
@@ -66,7 +66,7 @@ class TreesCompareTest : AbstractRawFirBuilderTestCase() {
 
             //psi
             val ktFile = createPsiFile(FileUtil.getNameWithoutExtension(PathUtil.getFileName(file.path)), text) as KtFile
-            val firFileFromPsi = ktFile.toFirFile(RawFirBuilderMode.stubs(stubMode))
+            val firFileFromPsi = ktFile.toFirFile(BodyBuildingMode.stubs(stubMode))
             val treeFromPsi = StringBuilder().also { FirRenderer(it).visitFile(firFileFromPsi) }.toString()
 
             //light tree
@@ -85,6 +85,10 @@ class TreesCompareTest : AbstractRawFirBuilderTestCase() {
         )
         compareBase("compiler/testData/diagnostics/tests", withTestData = true) { file ->
             if (file.name.endsWith(".fir.kt")) {
+                return@compareBase true
+            }
+            if (file.path.replace("\\", "/") == "compiler/testData/diagnostics/tests/constantEvaluator/constant/strings.kt") {
+                // `DIAGNOSTIC_IN_TESTDATA_PATTERN` fails to correctly strip diagnostics from this file
                 return@compareBase true
             }
             val notEditedText = FileUtil.loadFile(file, CharsetToolkit.UTF8, true).trim()

@@ -108,12 +108,12 @@ internal object EscapeAnalysis {
 
     // A special marker field for external types implemented in the runtime (mainly, arrays).
     // The types being passed to the constructor are not used in the analysis - just put there anything.
-    private val intestinesField = DataFlowIR.Field(null, DataFlowIR.Type.Virtual, 1L, "inte\$tines")
+    private val intestinesField = DataFlowIR.Field(DataFlowIR.Type.Virtual, -1, "inte\$tines")
 
     // A special marker field for return values.
     // Basically we substitute [return x] with [ret.v@lue = x].
     // This is done in order to not handle return parameter somewhat specially.
-    private val returnsValueField = DataFlowIR.Field(null, DataFlowIR.Type.Virtual, 2L, "v@lue")
+    private val returnsValueField = DataFlowIR.Field(DataFlowIR.Type.Virtual, -2, "v@lue")
 
     // Roles in which particular object reference is being used.
     private enum class Role {
@@ -182,13 +182,14 @@ internal object EscapeAnalysis {
                 fun computeDepths(node: DataFlowIR.Node, depth: Int) {
                     if (node is DataFlowIR.Node.Scope)
                         node.nodes.forEach { computeDepths(it, depth + 1) }
-                    else
+                    else if (node != DataFlowIR.Node.Null)
                         nodesRoles[node] = NodeInfo(depth)
                 }
                 computeDepths(body.rootScope, Depths.ROOT_SCOPE - 1)
 
                 fun assignRole(node: DataFlowIR.Node, role: Role, infoEntry: RoleInfoEntry?) {
-                    nodesRoles[node]!!.add(role, infoEntry)
+                    if (node != DataFlowIR.Node.Null && infoEntry?.node != DataFlowIR.Node.Null)
+                        nodesRoles[node]!!.add(role, infoEntry)
                 }
 
                 body.returns.values.forEach { assignRole(it.node, Role.RETURN_VALUE, null) }
@@ -230,6 +231,13 @@ internal object EscapeAnalysis {
                             for (value in node.values)
                                 assignRole(node, Role.ASSIGNED, RoleInfoEntry(value.node, null))
                         }
+                        is DataFlowIR.Node.AllocInstance,
+                        is DataFlowIR.Node.Call,
+                        is DataFlowIR.Node.Const,
+                        is DataFlowIR.Node.FunctionReference,
+                        is DataFlowIR.Node.Null,
+                        is DataFlowIR.Node.Parameter,
+                        is DataFlowIR.Node.Scope -> {}
                     }
                 }
                 FunctionAnalysisResult(function, nodesRoles)
@@ -295,8 +303,8 @@ internal object EscapeAnalysis {
                 for (i in path.indices) {
                     if (i >= other.path.size)
                         return 1
-                    if (path[i].hash != other.path[i].hash)
-                        return path[i].hash.compareTo(other.path[i].hash)
+                    if (path[i].index != other.path[i].index)
+                        return path[i].index.compareTo(other.path[i].index)
                 }
                 if (path.size < other.path.size) return -1
                 return 0
@@ -319,7 +327,7 @@ internal object EscapeAnalysis {
                 append(root ?: kind.toString())
                 path.forEach {
                     append('.')
-                    append(it.name ?: "<no_name@${it.hash}>")
+                    append(it.name ?: "<no_name@${it.index}>")
                 }
             }
 
@@ -1359,14 +1367,17 @@ internal object EscapeAnalysis {
                     drainFactory: () -> CompressedPointsToGraph.Node
             ) {
                 // Here we try to find this subgraph within one component: [v -> d; w -> d; v !-> w; w !-> v].
-                // In most cases such a node [d] is just the drain of the component,
-                // but it may have been optimized away.
                 // This is needed because components are built with edges being considered undirected, so
                 // this implicit connection between [v] and [w] may be needed. Note, however, that the
                 // opposite subgraph: [d -> v; d -> w; v !-> w; w !-> v] is not interesting, because [d]
                 // can't hold both values simultaneously, but two references can hold the same value
                 // at the same time, that's the difference.
                 // For concrete example see [codegen/escapeAnalysis/test10.kt].
+                // Note: it is possible to search not for all such nodes, but for drains only, here's why:
+                // Assume a node [v] which is referenced from the two fixed nodes is found, then consider
+                // the [v]'s drain, by construction all drains are reachable from all nodes within the corresponding
+                // component, including [v]; this implies that the drain also is referenced from these two nodes,
+                // and therefore it is possible to check only drains rather than all nodes.
                 val connectedNodes = mutableSetOf<Pair<PointsToGraphNode, PointsToGraphNode>>()
                 allNodes.filter { nodeIds[it] != null && nodeIds[it.drain] == null /* The drain has been optimized away */ }
                         .forEach { node ->
@@ -1379,27 +1390,24 @@ internal object EscapeAnalysis {
                                     connectedNodes.add(Pair(secondNode, firstNode))
                                 }
                         }
-                allNodes.filter { nodeIds[it] == null && it.drain in interestingDrains && nodeIds[it.drain] == null }
-                        .forEach { node ->
-                            val referencingNodes = findReferencing(node).filter { nodeIds[it] != null }
-                            for (i in referencingNodes.indices)
+
+                interestingDrains
+                        .filter { nodeIds[it] == null } // Was optimized away.
+                        .forEach { drain ->
+                            val referencingNodes = findReferencing(drain).filter { nodeIds[it] != null }
+                            var needDrain = false
+                            outerLoop@ for (i in referencingNodes.indices)
                                 for (j in i + 1 until referencingNodes.size) {
                                     val firstNode = referencingNodes[i]
                                     val secondNode = referencingNodes[j]
                                     val pair = Pair(firstNode, secondNode)
-                                    if (pair in connectedNodes) continue
-
-                                    // It is not an actual drain, but a temporary node to reflect the found constraint.
-                                    val additionalDrain = newDrain()
-                                    // For consistency.
-                                    additionalDrain.depth = min(firstNode.depth, secondNode.depth)
-
-                                    firstNode.addAssignmentEdge(additionalDrain)
-                                    secondNode.addAssignmentEdge(additionalDrain)
-                                    nodeIds[additionalDrain] = drainFactory()
-                                    connectedNodes.add(pair)
-                                    connectedNodes.add(Pair(secondNode, firstNode))
+                                    if (pair !in connectedNodes) {
+                                        needDrain = true
+                                        break@outerLoop
+                                    }
                                 }
+                            if (needDrain)
+                                nodeIds[drain] = drainFactory()
                         }
             }
 

@@ -7,7 +7,7 @@ package org.jetbrains.kotlin.idea.fir.low.level.api.diagnostics
 
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirFakeSourceElementKind
-import org.jetbrains.kotlin.fir.analysis.checkers.context.PersistentCheckerContext
+import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.collectors.components.AbstractDiagnosticCollectorComponent
 import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.resolve.SessionHolderImpl
@@ -31,8 +31,8 @@ internal class SingleNonLocalDeclarationDiagnosticRetriever(
         collector: FileStructureElementDiagnosticsCollector,
         lockProvider: LockProvider<FirFile>
     ): FileStructureElementDiagnosticList {
-        val sessionHolder = SessionHolderImpl.createWithEmptyScopeSession(firFile.declarationSiteSession)
-        val context = lockProvider.withReadLock(firFile) {
+        val sessionHolder = SessionHolderImpl.createWithEmptyScopeSession(firFile.moduleData.session)
+        val context = lockProvider.withWriteLock(firFile) {
             PersistenceContextCollector.collectContext(sessionHolder, firFile, structureElementDeclaration)
         }
         return collector.collectForStructureElement(structureElementDeclaration) { components ->
@@ -42,7 +42,7 @@ internal class SingleNonLocalDeclarationDiagnosticRetriever(
 
     private class Visitor(
         private val structureElementDeclaration: FirDeclaration,
-        context: PersistentCheckerContext,
+        context: CheckerContext,
         components: List<AbstractDiagnosticCollectorComponent>
     ) : FirIdeDiagnosticVisitor(context, components) {
         private var insideAlwaysVisitableDeclarations = 0
@@ -105,13 +105,14 @@ internal object FileDiagnosticRetriever : FileStructureElementDiagnosticRetrieve
         firFile: FirFile,
         components: List<AbstractDiagnosticCollectorComponent>
     ) : FirIdeDiagnosticVisitor(
-        PersistentCheckerContextFactory.createEmptyPersistenceCheckerContext(SessionHolderImpl.createWithEmptyScopeSession(firFile.declarationSiteSession)),
+        PersistentCheckerContextFactory.createEmptyPersistenceCheckerContext(SessionHolderImpl.createWithEmptyScopeSession(firFile.moduleData.session)),
         components,
     ) {
         override fun visitFile(file: FirFile, data: Nothing?) {
-            withSuppressedDiagnostics(file) {
+            withAnnotationContainer(file) {
                 visitWithDeclaration(file) {
                     file.annotations.forEach { it.accept(this, data) }
+                    file.packageDirective.accept(this, data)
                     file.imports.forEach { it.accept(this, data) }
                     // do not visit declarations here
                 }

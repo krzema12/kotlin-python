@@ -27,7 +27,7 @@ import org.jetbrains.kotlin.load.java.structure.JavaWildcardType
 import org.jetbrains.kotlin.load.java.typeEnhancement.*
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqNameUnsafe
-import org.jetbrains.kotlin.utils.JavaTypeEnhancementState
+import org.jetbrains.kotlin.load.java.JavaTypeEnhancementState
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
 internal class EnhancementSignatureParts(
@@ -147,7 +147,7 @@ internal class EnhancementSignatureParts(
                 mapping.isMutable(upper.toFqNameUnsafe()) -> MutabilityQualifier.MUTABLE
                 else -> null
             },
-            isNotNullTypeParameter = lower is ConeDefinitelyNotNullType
+            definitelyNotNull = lower is ConeDefinitelyNotNullType
         )
     }
 
@@ -230,7 +230,7 @@ internal class EnhancementSignatureParts(
                     MutabilityQualifier.MUTABLE
                 )
             ),
-            isNotNullTypeParameter = nullabilityInfo?.qualifier == NullabilityQualifier.NOT_NULL && this.isTypeParameterBasedType(),
+            definitelyNotNull = nullabilityInfo?.qualifier == NullabilityQualifier.NOT_NULL && this.isTypeParameterBasedType(),
             isNullabilityQualifierForWarning = nullabilityInfo?.isForWarningOnly == true
         )
     }
@@ -268,7 +268,7 @@ internal class EnhancementSignatureParts(
                 .select(MutabilityQualifier.MUTABLE, MutabilityQualifier.READ_ONLY, own.mutability, isCovariantPosition)
 
         val canChange = ownNullabilityForWarning != ownNullability || nullabilityFromSupertypesWithWarning != nullabilityFromSupertypes
-        val isAnyNonNullTypeParameter = own.isNotNullTypeParameter || superQualifiers.any { it.isNotNullTypeParameter }
+        val isAnyNonNullTypeParameter = own.definitelyNotNull || superQualifiers.any { it.definitelyNotNull }
         if (nullability == null && canChange) {
             val nullabilityWithWarning =
                 nullabilityFromSupertypesWithWarning.select(ownNullabilityForWarning, isCovariantPosition)

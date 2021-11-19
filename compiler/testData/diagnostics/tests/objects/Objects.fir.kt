@@ -1,3 +1,4 @@
+// COMPARE_WITH_LIGHT_TREE
 package toplevelObjectDeclarations
 
   open class Foo(y : Int) {
@@ -14,7 +15,7 @@ package toplevelObjectDeclarations
     }
   }<!>
 
-  object B : A {}
+  object B : <!SINGLETON_IN_SUPERTYPE!>A<!> {}
 
   val x = A.foo()
 

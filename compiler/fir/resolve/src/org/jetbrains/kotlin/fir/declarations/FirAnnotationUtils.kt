@@ -12,11 +12,15 @@ import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.references.FirResolvedNamedReference
 import org.jetbrains.kotlin.fir.resolve.toSymbol
 import org.jetbrains.kotlin.fir.symbols.ConeClassLikeLookupTag
+import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.types.ConeClassLikeType
 import org.jetbrains.kotlin.fir.types.coneType
+import org.jetbrains.kotlin.fir.types.coneTypeSafe
 import org.jetbrains.kotlin.name.ClassId
+import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
 private val RETENTION_CLASS_ID = ClassId.fromString("kotlin/annotation/Retention")
 private val TARGET_CLASS_ID = ClassId.fromString("kotlin/annotation/Target")
@@ -88,3 +92,42 @@ private val DEFAULT_USE_SITE_TARGETS: Set<AnnotationUseSiteTarget> =
 fun FirAnnotatedDeclaration.hasAnnotation(classId: ClassId): Boolean {
     return annotations.any { it.toAnnotationClassId() == classId }
 }
+
+fun FirAnnotationContainer.getAnnotationByFqName(fqName: FqName): FirAnnotationCall? {
+    return annotations.find {
+        it.annotationTypeRef.coneTypeSafe<ConeClassLikeType>()?.lookupTag?.classId?.asSingleFqName() == fqName
+    }
+}
+
+fun <D> FirBasedSymbol<out D>.getAnnotationByFqName(fqName: FqName): FirAnnotationCall? where D : FirAnnotationContainer, D : FirDeclaration {
+    return fir.getAnnotationByFqName(fqName)
+}
+
+fun FirAnnotationContainer.getAnnotationsByFqName(fqName: FqName): List<FirAnnotationCall> = annotations.getAnnotationsByFqName(fqName)
+
+fun List<FirAnnotationCall>.getAnnotationsByFqName(fqName: FqName): List<FirAnnotationCall> {
+    return filter {
+        it.annotationTypeRef.coneTypeSafe<ConeClassLikeType>()?.lookupTag?.classId?.asSingleFqName() == fqName
+    }
+}
+
+fun FirAnnotationCall.findArgumentByName(name: Name): FirExpression? {
+    val argumentMapping = argumentMapping
+    if (argumentMapping != null) {
+        return argumentMapping.keys.find { argumentMapping[it]?.name == name }?.unwrapArgument()
+    }
+    // NB: we have to consider both cases, because deserializer does not create argument mapping
+    for (argument in arguments) {
+        if (argument is FirNamedArgumentExpression && argument.name == name) {
+            return argument.expression
+        }
+    }
+    // I'm lucky today!
+    // TODO: this line is still needed. However it should be replaced with 'return null'
+    return arguments.singleOrNull()
+}
+
+fun FirAnnotationCall.getStringArgument(name: Name): String? =
+    findArgumentByName(name)?.let { expression ->
+        expression.safeAs<FirConstExpression<*>>()?.value as? String
+    }

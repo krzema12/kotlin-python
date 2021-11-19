@@ -13,14 +13,12 @@ import org.jetbrains.kotlin.load.java.*
 import org.jetbrains.kotlin.load.java.typeEnhancement.NullabilityQualifier
 import org.jetbrains.kotlin.load.java.typeEnhancement.NullabilityQualifierWithMigrationStatus
 import org.jetbrains.kotlin.name.ClassId
-import org.jetbrains.kotlin.utils.JavaTypeEnhancementState
-import org.jetbrains.kotlin.utils.addToStdlib.firstNotNullResult
 
 fun List<FirAnnotationCall>.extractNullability(
     annotationTypeQualifierResolver: FirAnnotationTypeQualifierResolver,
     javaTypeEnhancementState: JavaTypeEnhancementState
 ): NullabilityQualifierWithMigrationStatus? =
-    this.firstNotNullResult { annotationCall ->
+    this.firstNotNullOfOrNull { annotationCall ->
         annotationCall.extractNullability(annotationTypeQualifierResolver, javaTypeEnhancementState)
     }
 
@@ -43,26 +41,26 @@ fun FirAnnotationCall.extractNullability(
 
 private fun FirAnnotationCall.extractNullabilityFromKnownAnnotations(javaTypeEnhancementState: JavaTypeEnhancementState): NullabilityQualifierWithMigrationStatus? {
     val annotationClassId = classId ?: return null
+    val reportLevel = javaTypeEnhancementState.getReportLevelForAnnotation(annotationClassId.asSingleFqName())
 
-    return when {
-        annotationClassId in NULLABLE_ANNOTATION_IDS -> NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NULLABLE)
-        annotationClassId in NOT_NULL_ANNOTATION_IDS -> NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NOT_NULL)
-        annotationClassId == JAVAX_NONNULL_ANNOTATION_ID -> extractNullabilityTypeFromArgument()
+    if (reportLevel == ReportLevel.IGNORE) return null
 
-        annotationClassId == COMPATQUAL_NULLABLE_ANNOTATION_ID && javaTypeEnhancementState.enableCompatqualCheckerFrameworkAnnotations ->
-            NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NULLABLE)
-
-        annotationClassId == COMPATQUAL_NONNULL_ANNOTATION_ID && javaTypeEnhancementState.enableCompatqualCheckerFrameworkAnnotations ->
-            NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NOT_NULL)
-
-        annotationClassId == ANDROIDX_RECENTLY_NON_NULL_ANNOTATION_ID -> NullabilityQualifierWithMigrationStatus(
+    return when (annotationClassId) {
+        in NULLABLE_ANNOTATION_IDS -> NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NULLABLE, reportLevel.isWarning)
+        in NOT_NULL_ANNOTATION_IDS -> NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NOT_NULL, reportLevel.isWarning)
+        JSPECIFY_NULLABLE_ANNOTATION_ID -> NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NULLABLE, reportLevel.isWarning)
+        JSPECIFY_NULLNESS_UNKNOWN_ANNOTATION_ID ->
+            NullabilityQualifierWithMigrationStatus(NullabilityQualifier.FORCE_FLEXIBILITY, reportLevel.isWarning)
+        JAVAX_NONNULL_ANNOTATION_ID -> extractNullabilityTypeFromArgument()
+        COMPATQUAL_NULLABLE_ANNOTATION_ID -> NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NULLABLE, reportLevel.isWarning)
+        COMPATQUAL_NONNULL_ANNOTATION_ID -> NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NOT_NULL, reportLevel.isWarning)
+        ANDROIDX_RECENTLY_NON_NULL_ANNOTATION_ID -> NullabilityQualifierWithMigrationStatus(
             NullabilityQualifier.NOT_NULL,
-            isForWarningOnly = true
+            isForWarningOnly = reportLevel.isWarning
         )
-
-        annotationClassId == ANDROIDX_RECENTLY_NULLABLE_ANNOTATION_ID -> NullabilityQualifierWithMigrationStatus(
+        ANDROIDX_RECENTLY_NULLABLE_ANNOTATION_ID -> NullabilityQualifierWithMigrationStatus(
             NullabilityQualifier.NULLABLE,
-            isForWarningOnly = true
+            isForWarningOnly = reportLevel.isWarning
         )
         else -> null
     }
@@ -89,3 +87,5 @@ private val COMPATQUAL_NULLABLE_ANNOTATION_ID = ClassId.topLevel(COMPATQUAL_NULL
 val COMPATQUAL_NONNULL_ANNOTATION_ID = ClassId.topLevel(COMPATQUAL_NONNULL_ANNOTATION)
 val ANDROIDX_RECENTLY_NON_NULL_ANNOTATION_ID = ClassId.topLevel(ANDROIDX_RECENTLY_NON_NULL_ANNOTATION)
 private val ANDROIDX_RECENTLY_NULLABLE_ANNOTATION_ID = ClassId.topLevel(ANDROIDX_RECENTLY_NULLABLE_ANNOTATION)
+private val JSPECIFY_NULLABLE_ANNOTATION_ID = ClassId.topLevel(JSPECIFY_NULLABLE)
+private val JSPECIFY_NULLNESS_UNKNOWN_ANNOTATION_ID = ClassId.topLevel(JSPECIFY_NULLNESS_UNKNOWN)

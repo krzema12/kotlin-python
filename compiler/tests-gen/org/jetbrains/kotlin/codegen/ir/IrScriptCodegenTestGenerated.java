@@ -65,6 +65,11 @@ public class IrScriptCodegenTestGenerated extends AbstractIrScriptCodegenTest {
         runTest("compiler/testData/codegen/script/inline.kts");
     }
 
+    @TestMetadata("innerClass.kts")
+    public void testInnerClass() throws Exception {
+        runTest("compiler/testData/codegen/script/innerClass.kts");
+    }
+
     @TestMetadata("kt20707.kts")
     public void testKt20707() throws Exception {
         runTest("compiler/testData/codegen/script/kt20707.kts");
@@ -73,6 +78,11 @@ public class IrScriptCodegenTestGenerated extends AbstractIrScriptCodegenTest {
     @TestMetadata("kt22029.kts")
     public void testKt22029() throws Exception {
         runTest("compiler/testData/codegen/script/kt22029.kts");
+    }
+
+    @TestMetadata("kt48025.kts")
+    public void testKt48025() throws Exception {
+        runTest("compiler/testData/codegen/script/kt48025.kts");
     }
 
     @TestMetadata("localDelegatedProperty.kts")

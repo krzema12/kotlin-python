@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -12,23 +12,25 @@ import org.jetbrains.kotlin.fir.backend.Fir2IrComponents
 import org.jetbrains.kotlin.fir.backend.FirMetadataSource
 import org.jetbrains.kotlin.fir.backend.declareThisReceiverParameter
 import org.jetbrains.kotlin.fir.backend.toIrType
-import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.FirClass
+import org.jetbrains.kotlin.fir.declarations.FirDeclaration
+import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
+import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.builder.buildSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.builder.buildValueParameter
 import org.jetbrains.kotlin.fir.declarations.impl.FirDeclarationStatusImpl
+import org.jetbrains.kotlin.fir.declarations.utils.modality
+import org.jetbrains.kotlin.fir.moduleData
 import org.jetbrains.kotlin.fir.scopes.unsubstitutedScope
-import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.fir.symbols.ConeClassLikeLookupTag
 import org.jetbrains.kotlin.fir.symbols.impl.FirNamedFunctionSymbol
-import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirValueParameterSymbol
 import org.jetbrains.kotlin.fir.types.ConeStarProjection
 import org.jetbrains.kotlin.fir.types.constructType
 import org.jetbrains.kotlin.fir.types.impl.FirImplicitBooleanTypeRef
 import org.jetbrains.kotlin.fir.types.impl.FirImplicitIntTypeRef
 import org.jetbrains.kotlin.fir.types.impl.FirImplicitNullableAnyTypeRef
 import org.jetbrains.kotlin.fir.types.impl.FirImplicitStringTypeRef
-import org.jetbrains.kotlin.incremental.components.NoLookupLocation
-import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.builders.IrGeneratorContextBase
 import org.jetbrains.kotlin.ir.declarations.*
@@ -42,6 +44,7 @@ import org.jetbrains.kotlin.ir.types.classOrNull
 import org.jetbrains.kotlin.ir.types.classifierOrNull
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.ir.util.DataClassMembersGenerator
+import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.util.OperatorNameConventions.EQUALS
 import org.jetbrains.kotlin.util.OperatorNameConventions.TO_STRING
@@ -54,13 +57,12 @@ import org.jetbrains.kotlin.util.OperatorNameConventions.TO_STRING
  * fir own logic that traverses class hierarchies in fir elements. Also, this one creates and passes IR elements, instead of providing how
  * to declare them, to [DataClassMembersGenerator].
  */
-@OptIn(ObsoleteDescriptorBasedAPI::class)
 class DataClassMembersGenerator(val components: Fir2IrComponents) {
 
-    fun generateInlineClassMembers(klass: FirClass<*>, irClass: IrClass): List<FirDeclaration> =
+    fun generateInlineClassMembers(klass: FirClass, irClass: IrClass): List<FirDeclaration> =
         MyDataClassMethodsGenerator(irClass, klass.symbol.toLookupTag(), IrDeclarationOrigin.GENERATED_INLINE_CLASS_MEMBER).generate(klass)
 
-    fun generateDataClassMembers(klass: FirClass<*>, irClass: IrClass): List<FirDeclaration> =
+    fun generateDataClassMembers(klass: FirClass, irClass: IrClass): List<FirDeclaration> =
         MyDataClassMethodsGenerator(irClass, klass.symbol.toLookupTag(), IrDeclarationOrigin.GENERATED_DATA_CLASS_MEMBER).generate(klass)
 
     fun generateDataClassComponentBody(irFunction: IrFunction, lookupTag: ConeClassLikeLookupTag) =
@@ -174,7 +176,7 @@ class DataClassMembersGenerator(val components: Fir2IrComponents) {
                     (this.name == HASHCODE_NAME && matchesHashCodeSignature) ||
                     (this.name == TO_STRING && matchesToStringSignature)
 
-        fun generate(klass: FirClass<*>): List<FirDeclaration> {
+        fun generate(klass: FirClass): List<FirDeclaration> {
             val propertyParametersCount = irClass.primaryConstructor?.explicitParameters?.size ?: 0
             val properties = irClass.properties.filter { it.backingField != null }.take(propertyParametersCount).toList()
             if (properties.isEmpty()) {
@@ -263,7 +265,7 @@ class DataClassMembersGenerator(val components: Fir2IrComponents) {
                 this.name = name
                 this.symbol = FirNamedFunctionSymbol(CallableId(lookupTag.classId, name))
                 this.status = FirDeclarationStatusImpl(Visibilities.Public, Modality.FINAL)
-                declarationSiteSession = components.session
+                moduleData = components.session.moduleData
                 this.returnTypeRef = when (returnType) {
                     components.irBuiltIns.booleanType -> FirImplicitBooleanTypeRef(null)
                     components.irBuiltIns.intType -> FirImplicitIntTypeRef(null)
@@ -275,9 +277,9 @@ class DataClassMembersGenerator(val components: Fir2IrComponents) {
                         buildValueParameter {
                             this.name = Name.identifier("other")
                             origin = FirDeclarationOrigin.Synthetic
-                            declarationSiteSession = components.session
+                            moduleData = components.session.moduleData
                             this.returnTypeRef = FirImplicitNullableAnyTypeRef(null)
-                            this.symbol = FirVariableSymbol(this.name)
+                            this.symbol = FirValueParameterSymbol(this.name)
                             isCrossinline = false
                             isNoinline = false
                             isVararg = false
@@ -308,12 +310,12 @@ class DataClassMembersGenerator(val components: Fir2IrComponents) {
             }.apply {
                 parent = irClass
                 dispatchReceiverParameter = generateDispatchReceiverParameter(this)
-                components.irBuiltIns.anyClass.descriptor.unsubstitutedMemberScope
-                    .getContributedFunctions(this.name, NoLookupLocation.FROM_BACKEND)
-                    .singleOrNull { function -> function.name == this.name }
-                    ?.let {
-                        overriddenSymbols = listOf(components.symbolTable.referenceSimpleFunction(it))
-                    }
+                components.irBuiltIns.findBuiltInClassMemberFunctions(
+                    components.irBuiltIns.anyClass,
+                    this.name
+                ).singleOrNull()?.let {
+                    overriddenSymbols = listOf(it)
+                }
             }
         }
 

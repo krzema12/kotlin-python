@@ -6,24 +6,29 @@
 package org.jetbrains.kotlin.fir.declarations.builder
 
 import kotlin.contracts.*
-import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.builder.FirAnnotationContainerBuilder
 import org.jetbrains.kotlin.fir.builder.FirBuilderDsl
+import org.jetbrains.kotlin.fir.declarations.DeprecationsPerUseSite
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationAttributes
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
+import org.jetbrains.kotlin.fir.declarations.FirDeclarationStatus
 import org.jetbrains.kotlin.fir.declarations.FirPropertyAccessor
 import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
+import org.jetbrains.kotlin.fir.declarations.FirTypeParameterRef
 import org.jetbrains.kotlin.fir.declarations.FirValueParameter
+import org.jetbrains.kotlin.fir.declarations.impl.FirResolvedDeclarationStatusImpl
 import org.jetbrains.kotlin.fir.declarations.impl.FirValueParameterImpl
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.references.FirControlFlowGraphReference
-import org.jetbrains.kotlin.fir.symbols.impl.FirDelegateFieldSymbol
-import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirValueParameterSymbol
+import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.visitors.*
 import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedContainerSource
 
 /*
  * This file was generated automatically
@@ -33,14 +38,17 @@ import org.jetbrains.kotlin.name.Name
 @FirBuilderDsl
 open class FirValueParameterBuilder : FirAnnotationContainerBuilder {
     override var source: FirSourceElement? = null
-    open lateinit var declarationSiteSession: FirSession
+    open lateinit var moduleData: FirModuleData
     open var resolvePhase: FirResolvePhase = FirResolvePhase.RAW_FIR
     open lateinit var origin: FirDeclarationOrigin
     open var attributes: FirDeclarationAttributes = FirDeclarationAttributes()
     open lateinit var returnTypeRef: FirTypeRef
+    open var deprecation: DeprecationsPerUseSite? = null
+    open var containerSource: DeserializedContainerSource? = null
+    open var dispatchReceiverType: ConeKotlinType? = null
     open lateinit var name: Name
-    open lateinit var symbol: FirVariableSymbol<FirValueParameter>
     override val annotations: MutableList<FirAnnotationCall> = mutableListOf()
+    open lateinit var symbol: FirValueParameterSymbol
     open var defaultValue: FirExpression? = null
     open var isCrossinline: Boolean by kotlin.properties.Delegates.notNull<Boolean>()
     open var isNoinline: Boolean by kotlin.properties.Delegates.notNull<Boolean>()
@@ -49,14 +57,17 @@ open class FirValueParameterBuilder : FirAnnotationContainerBuilder {
     override fun build(): FirValueParameter {
         return FirValueParameterImpl(
             source,
-            declarationSiteSession,
+            moduleData,
             resolvePhase,
             origin,
             attributes,
             returnTypeRef,
+            deprecation,
+            containerSource,
+            dispatchReceiverType,
             name,
-            symbol,
             annotations,
+            symbol,
             defaultValue,
             isCrossinline,
             isNoinline,
@@ -81,14 +92,17 @@ inline fun buildValueParameterCopy(original: FirValueParameter, init: FirValuePa
     }
     val copyBuilder = FirValueParameterBuilder()
     copyBuilder.source = original.source
-    copyBuilder.declarationSiteSession = original.declarationSiteSession
+    copyBuilder.moduleData = original.moduleData
     copyBuilder.resolvePhase = original.resolvePhase
     copyBuilder.origin = original.origin
     copyBuilder.attributes = original.attributes.copy()
     copyBuilder.returnTypeRef = original.returnTypeRef
+    copyBuilder.deprecation = original.deprecation
+    copyBuilder.containerSource = original.containerSource
+    copyBuilder.dispatchReceiverType = original.dispatchReceiverType
     copyBuilder.name = original.name
-    copyBuilder.symbol = original.symbol
     copyBuilder.annotations.addAll(original.annotations)
+    copyBuilder.symbol = original.symbol
     copyBuilder.defaultValue = original.defaultValue
     copyBuilder.isCrossinline = original.isCrossinline
     copyBuilder.isNoinline = original.isNoinline

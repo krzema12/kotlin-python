@@ -13,7 +13,7 @@ fun ConeKotlinType.render(): String {
     val nullabilitySuffix = if (this !is ConeFlexibleType && this !is ConeClassErrorType) nullability.suffix else ""
     return when (this) {
         is ConeTypeVariableType -> "${renderAttributes()}TypeVariable(${this.lookupTag.name})"
-        is ConeDefinitelyNotNullType -> "${original.render()}!!"
+        is ConeDefinitelyNotNullType -> "${original.render()} & Any"
         is ConeClassErrorType -> "${renderAttributes()}ERROR CLASS: ${diagnostic.reason}"
         is ConeCapturedType -> "${renderAttributes()}CapturedType(${constructor.projection.render()})"
         is ConeClassLikeType -> {
@@ -59,6 +59,7 @@ private fun ConeKotlinType.renderAttributes(): String {
 fun ConeTypeProjection.render(): String {
     return when (this) {
         ConeStarProjection -> "*"
+        is ConeKotlinTypeConflictingProjection -> "CONFLICTING-PROJECTION ${type.render()}"
         is ConeKotlinTypeProjectionIn -> "in ${type.render()}"
         is ConeKotlinTypeProjectionOut -> "out ${type.render()}"
         is ConeKotlinType -> render()

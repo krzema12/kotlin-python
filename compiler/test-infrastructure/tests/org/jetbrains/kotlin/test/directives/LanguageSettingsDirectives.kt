@@ -52,11 +52,19 @@ object LanguageSettingsDirectives : SimpleDirectivesContainer() {
         additionalParser = ExplicitApiMode.Companion::fromString
     )
 
+    val ALLOW_KOTLIN_PACKAGE by directive(
+        description = "Allow compiling code in package 'kotlin' and allow not requiring kotlin.stdlib in module-info (AnalysisFlags.allowKotlinPackage)"
+    )
+
     // --------------------- Jvm Analysis Flags ---------------------
 
     val JVM_DEFAULT_MODE by enumDirective<JvmDefaultMode>(
         description = "Configures corresponding analysis flag (JvmAnalysisFlags.jvmDefaultMode)",
         additionalParser = JvmDefaultMode.Companion::fromStringOrNull
+    )
+
+    val JVM_DEFAULT_ALLOW_NON_DEFAULT_INHERITANCE by directive(
+        description = "Configures corresponding analysis flag (JvmAnalysisFlags.jvmDefaultAllowNonDefaultInheritance)",
     )
 
     val INHERIT_MULTIFILE_PARTS by directive(
@@ -79,6 +87,7 @@ object LanguageSettingsDirectives : SimpleDirectivesContainer() {
 
     fun parseApiVersion(versionString: String): ApiVersion = when (versionString) {
         "LATEST" -> ApiVersion.LATEST
+        "LATEST_STABLE" -> ApiVersion.LATEST_STABLE
         else -> ApiVersion.parse(versionString) ?: error("Unknown API version: $versionString")
     }
 }

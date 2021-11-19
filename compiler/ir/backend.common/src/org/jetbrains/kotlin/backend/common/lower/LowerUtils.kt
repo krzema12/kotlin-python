@@ -8,12 +8,12 @@ package org.jetbrains.kotlin.backend.common.lower
 import org.jetbrains.kotlin.backend.common.BackendContext
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.impl.ValueParameterDescriptorImpl
+import org.jetbrains.kotlin.ir.IrBuiltIns
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.builders.*
 import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.descriptors.IrBuiltIns
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.*
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
@@ -24,8 +24,6 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitorVoid
 import org.jetbrains.kotlin.ir.visitors.acceptChildrenVoid
 import org.jetbrains.kotlin.name.Name
-
-class IrLoweringContext(backendContext: BackendContext) : IrGeneratorContextBase(backendContext.irBuiltIns)
 
 class DeclarationIrBuilder(
     generatorContext: IrGeneratorContext,
@@ -59,12 +57,19 @@ open class VariableRemapper(val mapping: Map<IrValueParameter, IrValueDeclaratio
         mapping[value]
 }
 
+fun IrBuiltIns.createIrBuilder(
+    symbol: IrSymbol,
+    startOffset: Int = UNDEFINED_OFFSET,
+    endOffset: Int = UNDEFINED_OFFSET
+) =
+    DeclarationIrBuilder(IrGeneratorContextBase(this), symbol, startOffset, endOffset)
+
 fun BackendContext.createIrBuilder(
     symbol: IrSymbol,
     startOffset: Int = UNDEFINED_OFFSET,
     endOffset: Int = UNDEFINED_OFFSET
 ) =
-    DeclarationIrBuilder(IrLoweringContext(this), symbol, startOffset, endOffset)
+    irBuiltIns.createIrBuilder(symbol, startOffset, endOffset)
 
 
 fun <T : IrBuilder> T.at(element: IrElement) = this.at(element.startOffset, element.endOffset)

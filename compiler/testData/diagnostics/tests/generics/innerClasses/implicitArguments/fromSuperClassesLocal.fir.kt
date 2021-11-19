@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // !CHECK_TYPE
 // !DIAGNOSTICS: -UNUSED_VALUE -VARIABLE_WITH_REDUNDANT_INITIALIZER -TOPLEVEL_TYPEALIASES_ONLY
 
@@ -43,7 +42,7 @@ fun test() {
     x = foobar<String>()
 
     x().foo().a() checkType { <!INAPPLICABLE_CANDIDATE!>_<!><A<String, Double, Short, Long>>() }
-    x().bar() <!INAPPLICABLE_CANDIDATE!>checkType<!> { <!INAPPLICABLE_CANDIDATE!>_<!><A<String, Double, Short, Char>>() }
+    x().bar() <!INAPPLICABLE_CANDIDATE!>checkType<!> { _<A<String, Double, Short, Char>>() }
 
     x = foobar<Int>()
 
@@ -51,5 +50,5 @@ fun test() {
     y = noParameters()
 
     y().foo().a() checkType { _<A<Any, Double, Short, Long>>() }
-    y().bar() <!INAPPLICABLE_CANDIDATE!>checkType<!> { <!INAPPLICABLE_CANDIDATE!>_<!><A<Any, Double, Short, Char>>() }
+    y().bar() <!INAPPLICABLE_CANDIDATE!>checkType<!> { _<A<Any, Double, Short, Char>>() }
 }

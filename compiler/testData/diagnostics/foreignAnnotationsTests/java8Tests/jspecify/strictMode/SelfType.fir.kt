@@ -50,9 +50,7 @@ fun main(ak: AK, akn: AKN, bk: BK, ck: CK, ckn: CKN): Unit {
     bk.foo(<!NULL_FOR_NONNULL_TYPE!>null<!>)
 
     ck.foo(ck)
-    // jspecify_nullness_mismatch
-    ck.foo(<!NULL_FOR_NONNULL_TYPE!>null<!>)
+    ck.foo(null)
 
-    // jspecify_nullness_mismatch
-    ckn.foo(<!NULL_FOR_NONNULL_TYPE!>null<!>)
+    ckn.foo(null)
 }

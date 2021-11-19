@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.test.directives
 
+import org.jetbrains.kotlin.backend.common.phaser.AnyNamedPhase
 import org.jetbrains.kotlin.test.TargetBackend
 import org.jetbrains.kotlin.test.backend.handlers.*
 import org.jetbrains.kotlin.test.backend.ir.JvmIrBackendFacade
@@ -91,6 +92,10 @@ object CodegenTestDirectives : SimpleDirectivesContainer() {
         description = "Run backend even FIR reported some diagnostics with ERROR severity"
     )
 
+    val IGNORE_FIR_DIAGNOSTICS_DIFF by directive(
+        description = "Don't compare diagnostics in testdata for FIR codegen tests"
+    )
+
     val DUMP_IR by directive(
         description = "Dumps generated backend IR (enables ${IrTextDumpHandler::class})"
     )
@@ -110,6 +115,11 @@ object CodegenTestDirectives : SimpleDirectivesContainer() {
 
     val SKIP_KT_DUMP by directive(
         description = "Skips check pretty kt IR dump (disables ${IrPrettyKotlinDumpHandler::class})"
+    )
+
+    val DUMP_IR_FOR_GIVEN_PHASES by valueDirective<AnyNamedPhase>(
+        description = "Dumps backend IR after given lowerings (enables ${PhasedIrDumpHandler::class})",
+        parser = { error("Cannot parse value $it for \"DUMP_IR_FOR_GIVEN_PHASES\" directive. All arguments must be specified via code in test system") }
     )
 
     val TREAT_AS_ONE_FILE by directive(
@@ -139,6 +149,19 @@ object CodegenTestDirectives : SimpleDirectivesContainer() {
               into ${SMAPDumpHandler.SMAP_SEP_EXT} and ${SMAPDumpHandler.SMAP_EXT}
               files instead of ${SMAPDumpHandler.SMAP_EXT} depending of module
               structure of test
+        """.trimIndent()
+    )
+
+    val ATTACH_DEBUGGER by directive(
+        description = """
+            This directive can be used to attach debugger to instance of JVM which
+              is used to run `box` test in case it runs in separate JVM instance
+              (e.g. when this case should be ran on some modern JDK like JDK 17)
+              
+            After running test run remote debugger on port 5005 (test will wait until
+              debugger won't be attached)
+              
+            Please don't forget to remove this directive after debug session is over 
         """.trimIndent()
     )
 }

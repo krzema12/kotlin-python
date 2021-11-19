@@ -35,6 +35,7 @@
 #include "KAssert.h"
 #include "Atomic.h"
 #include "Cleaner.h"
+#include "CompilerConstants.hpp"
 #if USE_CYCLIC_GC
 #include "CyclicCollector.h"
 #endif  // USE_CYCLIC_GC
@@ -220,7 +221,7 @@ class CycleDetector : private kotlin::Pinned, public KonanAllocatorAware {
   }
 
   static bool canBeACandidate(KRef object) {
-    return KonanNeedDebugInfo &&
+    return kotlin::compiler::shouldContainDebugInfo() &&
         Kotlin_memoryLeakCheckerEnabled() &&
         (object->type_info()->flags_ & TF_LEAK_DETECTOR_CANDIDATE) != 0;
   }
@@ -2044,11 +2045,11 @@ MemoryState* initMemory(bool firstRuntime) {
   memoryState->tls.Init();
   memoryState->foreignRefManager = ForeignRefManager::create();
   bool firstMemoryState = atomicAdd(&aliveMemoryStatesCount, 1) == 1;
-  switch (Kotlin_getDestroyRuntimeMode()) {
-    case DESTROY_RUNTIME_LEGACY:
+  switch (kotlin::compiler::destroyRuntimeMode()) {
+    case kotlin::compiler::DestroyRuntimeMode::kLegacy:
       firstRuntime = firstMemoryState;
       break;
-    case DESTROY_RUNTIME_ON_SHUTDOWN:
+    case kotlin::compiler::DestroyRuntimeMode::kOnShutdown:
       // Nothing to do.
       break;
   }
@@ -2066,11 +2067,11 @@ void deinitMemory(MemoryState* memoryState, bool destroyRuntime) {
   atomicAdd(&pendingDeinit, 1);
 #if USE_GC
   bool lastMemoryState = atomicAdd(&aliveMemoryStatesCount, -1) == 0;
-  switch (Kotlin_getDestroyRuntimeMode()) {
-    case DESTROY_RUNTIME_LEGACY:
+  switch (kotlin::compiler::destroyRuntimeMode()) {
+    case kotlin::compiler::DestroyRuntimeMode::kLegacy:
       destroyRuntime = lastMemoryState;
       break;
-    case DESTROY_RUNTIME_ON_SHUTDOWN:
+    case kotlin::compiler::DestroyRuntimeMode::kOnShutdown:
       // Nothing to do
       break;
   }
@@ -3137,7 +3138,7 @@ void ObjHeader::destroyMetaObject(ObjHeader* object) {
   }
 
 #ifdef KONAN_OBJC_INTEROP
-  Kotlin_ObjCExport_releaseAssociatedObject(meta->associatedObject_);
+  Kotlin_ObjCExport_detachAndReleaseAssociatedObject(meta->associatedObject_);
 #endif
 
   konanFreeMemory(meta);
@@ -3286,6 +3287,10 @@ RUNTIME_NOTHROW void ReleaseHeapRefNoCollectRelaxed(const ObjHeader* object) {
   releaseHeapRef<false, /* CanCollect = */ false>(const_cast<ObjHeader*>(object));
 }
 
+RUNTIME_NOTHROW OBJ_GETTER(TryRef, ObjHeader* object) {
+    RuntimeFail("Only for experimental MM");
+}
+
 ForeignRefContext InitLocalForeignRef(ObjHeader* object) {
   return initLocalForeignRef(object);
 }
@@ -3327,10 +3332,10 @@ void ClearMemoryForTests(MemoryState*) {
     // Nothing to do, DeinitMemory will do the job.
 }
 
-OBJ_GETTER(AllocInstanceStrict, const TypeInfo* type_info) {
+RUNTIME_NOTHROW OBJ_GETTER(AllocInstanceStrict, const TypeInfo* type_info) {
   RETURN_RESULT_OF(allocInstance<true>, type_info);
 }
-OBJ_GETTER(AllocInstanceRelaxed, const TypeInfo* type_info) {
+RUNTIME_NOTHROW OBJ_GETTER(AllocInstanceRelaxed, const TypeInfo* type_info) {
   RETURN_RESULT_OF(allocInstance<false>, type_info);
 }
 
@@ -3425,7 +3430,7 @@ RUNTIME_NOTHROW void UpdateHeapRefIfNull(ObjHeader** location, const ObjHeader* 
   updateHeapRefIfNull(location, object);
 }
 
-OBJ_GETTER(SwapHeapRefLocked,
+RUNTIME_NOTHROW OBJ_GETTER(SwapHeapRefLocked,
     ObjHeader** location, ObjHeader* expectedValue, ObjHeader* newValue, int32_t* spinlock, int32_t* cookie) {
   RETURN_RESULT_OF(swapHeapRefLocked, location, expectedValue, newValue, spinlock, cookie);
 }
@@ -3434,7 +3439,7 @@ RUNTIME_NOTHROW void SetHeapRefLocked(ObjHeader** location, ObjHeader* newValue,
   setHeapRefLocked(location, newValue, spinlock, cookie);
 }
 
-OBJ_GETTER(ReadHeapRefLocked, ObjHeader** location, int32_t* spinlock, int32_t* cookie) {
+RUNTIME_NOTHROW OBJ_GETTER(ReadHeapRefLocked, ObjHeader** location, int32_t* spinlock, int32_t* cookie) {
   RETURN_RESULT_OF(readHeapRefLocked, location, spinlock, cookie);
 }
 
@@ -3537,7 +3542,7 @@ KLong Kotlin_native_internal_GC_getThresholdAllocations(KRef) {
 #endif
 }
 
-void Kotlin_native_internal_GC_setTuneThreshold(KRef, KInt value) {
+void Kotlin_native_internal_GC_setTuneThreshold(KRef, KBoolean value) {
 #if USE_GC
   setTuneGCThreshold(value);
 #endif
@@ -3553,7 +3558,7 @@ KBoolean Kotlin_native_internal_GC_getTuneThreshold(KRef) {
 
 OBJ_GETTER(Kotlin_native_internal_GC_detectCycles, KRef) {
 #if USE_CYCLE_DETECTOR
-  if (!KonanNeedDebugInfo && !Kotlin_memoryLeakCheckerEnabled()) RETURN_OBJ(nullptr);
+  if (!kotlin::compiler::shouldContainDebugInfo() && !Kotlin_memoryLeakCheckerEnabled()) RETURN_OBJ(nullptr);
   RETURN_RESULT_OF0(detectCyclicReferences);
 #else
   RETURN_OBJ(nullptr);
@@ -3576,11 +3581,15 @@ RUNTIME_NOTHROW void DisposeStablePointer(KNativePtr pointer) {
   disposeStablePointer(pointer);
 }
 
-OBJ_GETTER(DerefStablePointer, KNativePtr pointer) {
+RUNTIME_NOTHROW void DisposeStablePointerFor(MemoryState* memoryState, KNativePtr pointer) {
+  DisposeStablePointer(pointer);
+}
+
+RUNTIME_NOTHROW OBJ_GETTER(DerefStablePointer, KNativePtr pointer) {
   RETURN_RESULT_OF(derefStablePointer, pointer);
 }
 
-OBJ_GETTER(AdoptStablePointer, KNativePtr pointer) {
+RUNTIME_NOTHROW OBJ_GETTER(AdoptStablePointer, KNativePtr pointer) {
   RETURN_RESULT_OF(adoptStablePointer, pointer);
 }
 
@@ -3716,7 +3725,7 @@ ALWAYS_INLINE ObjHeader* ExceptionObjHolder::GetExceptionObject() noexcept {
 }
 #endif
 
-ALWAYS_INLINE kotlin::ThreadState kotlin::SwitchThreadState(MemoryState* thread, ThreadState newState) noexcept {
+ALWAYS_INLINE kotlin::ThreadState kotlin::SwitchThreadState(MemoryState* thread, ThreadState newState, bool reentrant) noexcept {
     // no-op, used by the new MM only.
     return ThreadState::kRunnable;
 }
@@ -3725,6 +3734,21 @@ ALWAYS_INLINE void kotlin::AssertThreadState(MemoryState* thread, ThreadState ex
     // no-op, used by the new MM only.
 }
 
-MemoryState* kotlin::mm::GetMemoryState() {
+ALWAYS_INLINE void kotlin::AssertThreadState(MemoryState* thread, std::initializer_list<ThreadState> expected) noexcept {
+    // no-op, used by the new MM only.
+}
+
+MemoryState* kotlin::mm::GetMemoryState() noexcept {
     return ::memoryState;
 }
+
+kotlin::ThreadState kotlin::GetThreadState(MemoryState* thread) noexcept {
+    // Assume that we are always in the Runnable thread state.
+    return ThreadState::kRunnable;
+}
+
+ALWAYS_INLINE kotlin::CalledFromNativeGuard::CalledFromNativeGuard(bool reentrant) noexcept {
+    // no-op, used by the new MM only.
+}
+
+const bool kotlin::kSupportsMultipleMutators = true;

@@ -30,7 +30,7 @@ fun foo7() = null as Foo7<Int>
 
 interface FlowCollector<in T> {}
 
-fun <L> flow(@BuilderInference block: suspend FlowCollector<L>.() -> Unit) = Flow(block)
+fun <L> flow(@BuilderInference block: suspend FlowCollector<L>.() -> Unit): Flow<L> = Flow(block)
 
 class Flow<out R>(private val block: suspend FlowCollector<R>.() -> Unit)
 
@@ -39,7 +39,7 @@ fun <R> select(vararg x: R) = x[0]
 fun poll0(): Flow<String> {
     return flow {
         val inv = select(::bar, ::foo)
-        inv(<!NO_VALUE_FOR_PARAMETER!>)<!>
+        inv()
     }
 }
 
@@ -80,7 +80,7 @@ fun poll05(): Flow<String> {
 
 fun poll06(): Flow<String> {
     return flow {
-        val inv = select(foo7(), ::Foo7)
+        val inv = <!NEW_INFERENCE_NO_INFORMATION_FOR_PARAMETER!>select<!>(foo7(), ::Foo7)
         inv
     }
 }
@@ -123,7 +123,7 @@ fun poll14(flag: Boolean): Flow<String> {
 fun poll15(flag: Boolean): Flow<String> {
     return flow {
         val inv = if (flag) { ::bar5 } else { ::foo5 }
-        inv(<!NO_VALUE_FOR_PARAMETER!>)<!>
+        inv()
     }
 }
 
@@ -144,7 +144,7 @@ fun poll17(flag: Boolean): Flow<String> {
 fun poll2(flag: Boolean): Flow<String> {
     return flow {
         val inv = when (flag) { true -> ::bar else -> ::foo }
-        inv(<!NO_VALUE_FOR_PARAMETER!>)<!>
+        inv()
     }
 }
 
@@ -193,7 +193,7 @@ fun poll26(flag: Boolean): Flow<String> {
 fun poll3(flag: Boolean): Flow<String> {
     return flow {
         val inv = when (flag) { true -> ::bar false -> ::foo }
-        inv(<!NO_VALUE_FOR_PARAMETER!>)<!>
+        inv()
     }
 }
 
@@ -242,7 +242,7 @@ fun poll36(flag: Boolean): Flow<String> {
 fun poll4(): Flow<String> {
     return flow {
         val inv = try { ::bar } finally { ::foo }
-        inv(<!NO_VALUE_FOR_PARAMETER!>)<!>
+        inv()
     }
 }
 
@@ -270,7 +270,7 @@ fun poll43(): Flow<String> {
 fun poll44(): Flow<String> {
     return flow {
         val inv = try { ::bar5 } finally { ::foo5 }
-        inv(<!NO_VALUE_FOR_PARAMETER!>)<!>
+        inv()
     }
 }
 
@@ -291,7 +291,7 @@ fun poll46(): Flow<String> {
 fun poll5(): Flow<String> {
     return flow {
         val inv = try { ::bar } catch (e: Exception) { ::foo } finally { ::foo }
-        inv(<!NO_VALUE_FOR_PARAMETER!>)<!>
+        inv()
     }
 }
 
@@ -319,7 +319,7 @@ fun poll53(): Flow<String> {
 fun poll54(): Flow<String> {
     return flow {
         val inv = try { ::bar5 } catch (e: Exception) { ::foo5 } finally { ::foo5 }
-        inv(<!NO_VALUE_FOR_PARAMETER!>)<!>
+        inv()
     }
 }
 
@@ -389,7 +389,7 @@ fun poll66(): Flow<String> {
 fun poll7(): Flow<String> {
     return flow {
         val inv = ::bar<!NOT_NULL_ASSERTION_ON_CALLABLE_REFERENCE!>!!<!>
-        inv(<!NO_VALUE_FOR_PARAMETER!>)<!>
+        inv()
     }
 }
 
@@ -479,21 +479,21 @@ fun poll85(): Flow<String> {
 
 fun poll86(): Flow<String> {
     return flow {
-        val inv = ::Foo7 in setOf(::Foo7)
+        val inv = ::Foo7 <!NEW_INFERENCE_NO_INFORMATION_FOR_PARAMETER!>in<!> <!NEW_INFERENCE_NO_INFORMATION_FOR_PARAMETER, NEW_INFERENCE_NO_INFORMATION_FOR_PARAMETER!>setOf<!>(::Foo7)
         inv
     }
 }
 
 fun poll87(): Flow<String> {
     return flow {
-        val inv = ::Foo7 in setOf(foo7())
+        val inv = ::Foo7 <!NEW_INFERENCE_NO_INFORMATION_FOR_PARAMETER!>in<!> setOf(foo7())
         inv
     }
 }
 
 fun poll88(): Flow<String> {
     return flow {
-        val inv = foo7() in setOf(::Foo7)
+        val inv = foo7() in <!NEW_INFERENCE_NO_INFORMATION_FOR_PARAMETER, NEW_INFERENCE_NO_INFORMATION_FOR_PARAMETER!>setOf<!>(::Foo7)
         inv
     }
 }

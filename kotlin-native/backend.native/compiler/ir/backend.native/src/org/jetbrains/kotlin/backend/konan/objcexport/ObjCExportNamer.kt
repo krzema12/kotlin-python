@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.backend.konan.objcexport
 
 import org.jetbrains.kotlin.backend.common.serialization.findSourceFile
+import org.jetbrains.kotlin.backend.konan.Context
 import org.jetbrains.kotlin.backend.konan.cKeywords
 import org.jetbrains.kotlin.backend.konan.descriptors.isArray
 import org.jetbrains.kotlin.backend.konan.descriptors.isInterface
@@ -67,19 +68,24 @@ interface ObjCExportNamer {
     val mutableMapName: ClassOrProtocolName
     val kotlinNumberName: ClassOrProtocolName
 
+    fun getObjectPropertySelector(descriptor: ClassDescriptor): String
+    fun getCompanionObjectPropertySelector(descriptor: ClassDescriptor): String
+
     companion object {
-        internal val kotlinThrowableAsErrorMethodName: String = "asError"
+        internal const val kotlinThrowableAsErrorMethodName: String = "asError"
+        internal const val objectPropertyName: String = "shared"
+        internal const val companionObjectPropertyName: String = "companion"
     }
 }
 
 fun createNamer(moduleDescriptor: ModuleDescriptor,
-                topLevelNamePrefix: String = moduleDescriptor.namePrefix): ObjCExportNamer =
+                topLevelNamePrefix: String): ObjCExportNamer =
         createNamer(moduleDescriptor, emptyList(), topLevelNamePrefix)
 
 fun createNamer(
         moduleDescriptor: ModuleDescriptor,
         exportedDependencies: List<ModuleDescriptor>,
-        topLevelNamePrefix: String = moduleDescriptor.namePrefix
+        topLevelNamePrefix: String
 ): ObjCExportNamer = ObjCExportNamerImpl(
         (exportedDependencies + moduleDescriptor).toSet(),
         moduleDescriptor.builtIns,
@@ -220,6 +226,8 @@ private class ObjCExportNamingHelper(
     private fun <T> T.canBeSwiftInner(provider: ClassInfoProvider<T>): Boolean = when {
         objcGenerics && provider.hasGenerics(this) -> {
             // Swift compiler doesn't seem to handle this case properly.
+            // See https://bugs.swift.org/browse/SR-14607.
+            // This behaviour of Kotlin is reported as https://youtrack.jetbrains.com/issue/KT-46518.
             false
         }
 
@@ -263,7 +271,7 @@ internal class ObjCExportNamerImpl(
                     get() = topLevelNamePrefix
 
                 override fun getAdditionalPrefix(module: ModuleDescriptor): String? =
-                        if (module in moduleDescriptors) null else module.namePrefix
+                        if (module in moduleDescriptors) null else module.objCExportAdditionalNamePrefix
 
                 override val objcGenerics: Boolean
                     get() = objcGenerics
@@ -598,6 +606,16 @@ internal class ObjCExportNamerImpl(
         }
     }
 
+
+    override fun getObjectPropertySelector(descriptor: ClassDescriptor): String {
+        val collides = ObjCExportNamer.objectPropertyName == getObjectInstanceSelector(descriptor)
+        return ObjCExportNamer.objectPropertyName + (if (collides) "_" else "")
+    }
+
+    override fun getCompanionObjectPropertySelector(descriptor: ClassDescriptor): String {
+        return ObjCExportNamer.companionObjectPropertyName
+    }
+
     init {
         if (!local) {
             forceAssignPredefined(builtIns)
@@ -883,11 +901,13 @@ private fun ObjCExportMapper.canHaveSameName(first: PropertyDescriptor, second: 
     return bridgePropertyType(first) == bridgePropertyType(second)
 }
 
-internal val ModuleDescriptor.namePrefix: String get() {
+internal val ModuleDescriptor.objCExportAdditionalNamePrefix: String get() {
     if (this.isNativeStdlib()) return "Kotlin"
 
     val fullPrefix = when(val module = this.klibModuleOrigin) {
-        CurrentKlibModuleOrigin, SyntheticModulesOrigin ->
+        CurrentKlibModuleOrigin ->
+            error("expected deserialized module, got $this (origin = $module)")
+        SyntheticModulesOrigin ->
             this.name.asString().let { it.substring(1, it.lastIndex) }
         is DeserializedKlibModuleOrigin ->
             module.library.let { it.shortName ?: it.uniqueName }
@@ -895,6 +915,9 @@ internal val ModuleDescriptor.namePrefix: String get() {
 
     return abbreviate(fullPrefix)
 }
+
+internal val Context.objCExportTopLevelNamePrefix: String
+    get() = abbreviate(config.fullExportedNamePrefix)
 
 fun abbreviate(name: String): String {
     val normalizedName = name

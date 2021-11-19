@@ -18,6 +18,17 @@ abstract class ExplicitTypeParameterConstraintPosition<T>(val typeArgument: T) :
     override fun toString(): String = "TypeParameter $typeArgument"
 }
 
+abstract class InjectedAnotherStubTypeConstraintPosition<T>(private val builderInferenceLambdaOfInjectedStubType: T) : ConstraintPosition(),
+    OnlyInputTypeConstraintPosition {
+    override fun toString(): String = "Injected from $builderInferenceLambdaOfInjectedStubType builder inference call"
+}
+
+abstract class BuilderInferenceSubstitutionConstraintPosition<L, I>(private val builderInferenceLambda: L, val initialConstraint: I) :
+    ConstraintPosition(), OnlyInputTypeConstraintPosition {
+    override fun toString(): String = "Incorporated builder inference constraint $initialConstraint " +
+            "into $builderInferenceLambda call"
+}
+
 abstract class ExpectedTypeConstraintPosition<T>(val topLevelCall: T) : ConstraintPosition(), OnlyInputTypeConstraintPosition {
     override fun toString(): String = "ExpectedType for call $topLevelCall"
 }
@@ -26,7 +37,7 @@ abstract class DeclaredUpperBoundConstraintPosition<T>(val typeParameter: T) : C
     override fun toString(): String = "DeclaredUpperBound $typeParameter"
 }
 
-abstract class ArgumentConstraintPosition<T>(val argument: T) : ConstraintPosition(), OnlyInputTypeConstraintPosition {
+abstract class ArgumentConstraintPosition<out T>(val argument: T) : ConstraintPosition(), OnlyInputTypeConstraintPosition {
     override fun toString(): String = "Argument $argument"
 }
 
@@ -57,7 +68,7 @@ abstract class LambdaArgumentConstraintPosition<T>(val lambda: T) : ConstraintPo
     }
 }
 
-abstract class DelegatedPropertyConstraintPosition<T>(val topLevelCall: T) : ConstraintPosition() {
+open class DelegatedPropertyConstraintPosition<T>(val topLevelCall: T) : ConstraintPosition() {
     override fun toString(): String = "Constraint from call $topLevelCall for delegated property"
 }
 
@@ -69,8 +80,8 @@ data class IncorporationConstraintPosition(
     override fun toString(): String = "Incorporate $initialConstraint from position $from"
 }
 
-object CoroutinePosition : ConstraintPosition() {
-    override fun toString(): String = "for coroutine call"
+object BuilderInferencePosition : ConstraintPosition() {
+    override fun toString(): String = "For builder inference call"
 }
 
 // TODO: should be used only in SimpleConstraintSystemImpl
@@ -105,9 +116,10 @@ class CapturedTypeFromSubtyping(
     val position: ConstraintPosition
 ) : ConstraintSystemError(INAPPLICABLE)
 
-abstract class NotEnoughInformationForTypeParameter<T>(
+open class NotEnoughInformationForTypeParameter<T>(
     val typeVariable: TypeVariableMarker,
-    val resolvedAtom: T
+    val resolvedAtom: T,
+    val couldBeResolvedWithUnrestrictedBuilderInference: Boolean
 ) : ConstraintSystemError(INAPPLICABLE)
 
 class ConstrainingTypeIsError(

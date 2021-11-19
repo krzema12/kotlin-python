@@ -10,7 +10,11 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors.NESTED_CLASS_NOT_ALLOWED
 import org.jetbrains.kotlin.fir.analysis.diagnostics.reportOn
-import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.FirClass
+import org.jetbrains.kotlin.fir.declarations.FirRegularClass
+import org.jetbrains.kotlin.fir.declarations.utils.isCompanion
+import org.jetbrains.kotlin.fir.declarations.utils.isInner
+import org.jetbrains.kotlin.fir.declarations.utils.isLocal
 
 // No need to visit anonymous object since an anonymous object is always inner. This aligns with
 // compiler/frontend/src/org/jetbrains/kotlin/resolve/ModifiersChecker.java:198
@@ -26,13 +30,14 @@ object FirNestedClassChecker : FirRegularClassChecker() {
                     reporter.reportOn(declaration.source, NESTED_CLASS_NOT_ALLOWED, declaration.description, context)
                 }
             }
-            is FirClass<*> -> {
+            is FirClass -> {
                 // Since 1.3, enum entries can contain inner classes only.
                 // Companion objects are reported with code WRONG_MODIFIER_CONTAINING_DECLARATION instead
                 if (containingDeclaration.classKind == ClassKind.ENUM_ENTRY && !declaration.isInner && !declaration.isCompanion) {
                     reporter.reportOn(declaration.source, NESTED_CLASS_NOT_ALLOWED, declaration.description, context)
                 }
             }
+            else -> {}
         }
     }
 

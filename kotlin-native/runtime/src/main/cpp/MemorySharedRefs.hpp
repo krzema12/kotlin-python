@@ -30,6 +30,11 @@ class KRefSharedHolder {
 
   void dispose() const;
 
+  void disposeFromNative() const {
+    kotlin::CalledFromNativeGuard guard;
+    dispose();
+  }
+
   OBJ_GETTER0(describe) const;
 
  private:
@@ -54,6 +59,7 @@ class BackRefFromAssociatedObject {
   void releaseRef();
 
   void detach();
+  void assertDetached();
 
   // Error if called from the wrong worker with non-frozen obj_.
   template <ErrorPolicy errorPolicy>

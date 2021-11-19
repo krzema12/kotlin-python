@@ -28,8 +28,6 @@ import org.jetbrains.kotlin.base.kapt3.KaptFlag
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.codegen.AsmUtil
 import org.jetbrains.kotlin.codegen.coroutines.CONTINUATION_PARAMETER_NAME
-import org.jetbrains.kotlin.codegen.needsExperimentalCoroutinesWrapper
-import org.jetbrains.kotlin.config.LanguageFeature
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
 import org.jetbrains.kotlin.descriptors.annotations.Annotations
@@ -1022,7 +1020,7 @@ class ClassFileToSourceStubConverter(val kaptContext: KaptContextForStubGenerati
                             if (sourceElement == null) return@getNonErrorType null
 
                             if (sourceElement.hasDeclaredReturnType() && isContinuationParameter(parameterDescriptor)) {
-                                val continuationTypeFqName = getContinuationTypeFqName(descriptor)
+                                val continuationTypeFqName = StandardNames.CONTINUATION_INTERFACE_FQ_NAME
                                 val functionReturnType = sourceElement.typeReference!!.text
                                 KtPsiFactory(kaptContext.project).createType("$continuationTypeFqName<$functionReturnType>")
                             } else {
@@ -1056,19 +1054,9 @@ class ClassFileToSourceStubConverter(val kaptContext: KaptContextForStubGenerati
         val containingCallable = descriptor.containingDeclaration
 
         return containingCallable.valueParameters.lastOrNull() == descriptor
-            && descriptor.name == CONTINUATION_PARAMETER_NAME
-            && descriptor.source == SourceElement.NO_SOURCE
-            && descriptor.type.constructor.declarationDescriptor?.fqNameSafe == getContinuationTypeFqName(containingCallable)
-    }
-
-    private fun getContinuationTypeFqName(descriptor: CallableDescriptor): FqName {
-        val areCoroutinesReleased = !descriptor.needsExperimentalCoroutinesWrapper()
-                && kaptContext.generationState.languageVersionSettings.supportsFeature(LanguageFeature.ReleaseCoroutines)
-
-        return when (areCoroutinesReleased) {
-            true -> StandardNames.CONTINUATION_INTERFACE_FQ_NAME_RELEASE
-            false -> StandardNames.CONTINUATION_INTERFACE_FQ_NAME_EXPERIMENTAL
-        }
+                && descriptor.name == CONTINUATION_PARAMETER_NAME
+                && descriptor.source == SourceElement.NO_SOURCE
+                && descriptor.type.constructor.declarationDescriptor?.fqNameSafe == StandardNames.CONTINUATION_INTERFACE_FQ_NAME
     }
 
     private fun <T : JCExpression?> getNonErrorType(
@@ -1280,6 +1268,8 @@ class ClassFileToSourceStubConverter(val kaptContext: KaptContextForStubGenerati
                         null
                 }
                 is KtCollectionLiteralExpression -> singleArg.getInnerExpressions()
+                is KtDotQualifiedExpression -> listOf(singleArg)
+                null -> args
                 else -> null
             }
 
@@ -1317,7 +1307,7 @@ class ClassFileToSourceStubConverter(val kaptContext: KaptContextForStubGenerati
         if (constantValue is List<*>) {
             val callArgs = unwrapArgumentExpression()
             // So we make sure something is absent in the constant value
-            if (callArgs != null && callArgs.size != constantValue.size) {
+            if (callArgs != null && callArgs.size > constantValue.size) {
                 val literalExpressions = mapJList(callArgs, ::tryParseTypeLiteralExpression)
                 if (literalExpressions.size == callArgs.size) {
                     return treeMaker.NewArray(null, null, literalExpressions)

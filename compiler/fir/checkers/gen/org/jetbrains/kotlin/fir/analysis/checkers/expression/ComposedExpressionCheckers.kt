@@ -12,11 +12,15 @@ import org.jetbrains.kotlin.fir.analysis.CheckersComponentInternal
  * DO NOT MODIFY IT MANUALLY
  */
 
-internal class ComposedExpressionCheckers : ExpressionCheckers() {
+class ComposedExpressionCheckers : ExpressionCheckers() {
     override val basicExpressionCheckers: Set<FirBasicExpressionChecker>
         get() = _basicExpressionCheckers
     override val qualifiedAccessCheckers: Set<FirQualifiedAccessChecker>
         get() = _qualifiedAccessCheckers
+    override val qualifiedAccessExpressionCheckers: Set<FirQualifiedAccessExpressionChecker>
+        get() = _qualifiedAccessExpressionCheckers
+    override val callCheckers: Set<FirCallChecker>
+        get() = _callCheckers
     override val functionCallCheckers: Set<FirFunctionCallChecker>
         get() = _functionCallCheckers
     override val variableAssignmentCheckers: Set<FirVariableAssignmentChecker>
@@ -25,6 +29,12 @@ internal class ComposedExpressionCheckers : ExpressionCheckers() {
         get() = _tryExpressionCheckers
     override val whenExpressionCheckers: Set<FirWhenExpressionChecker>
         get() = _whenExpressionCheckers
+    override val loopExpressionCheckers: Set<FirLoopExpressionChecker>
+        get() = _loopExpressionCheckers
+    override val loopJumpCheckers: Set<FirLoopJumpChecker>
+        get() = _loopJumpCheckers
+    override val logicExpressionCheckers: Set<FirLogicExpressionChecker>
+        get() = _logicExpressionCheckers
     override val returnExpressionCheckers: Set<FirReturnExpressionChecker>
         get() = _returnExpressionCheckers
     override val blockCheckers: Set<FirBlockChecker>
@@ -41,17 +51,38 @@ internal class ComposedExpressionCheckers : ExpressionCheckers() {
         get() = _safeCallExpressionCheckers
     override val equalityOperatorCallCheckers: Set<FirEqualityOperatorCallChecker>
         get() = _equalityOperatorCallCheckers
-    override val anonymousFunctionAsExpressionCheckers: Set<FirAnonymousFunctionAsExpressionChecker>
-        get() = _anonymousFunctionAsExpressionCheckers
     override val stringConcatenationCallCheckers: Set<FirStringConcatenationCallChecker>
         get() = _stringConcatenationCallCheckers
+    override val typeOperatorCallCheckers: Set<FirTypeOperatorCallChecker>
+        get() = _typeOperatorCallCheckers
+    override val resolvedQualifierCheckers: Set<FirResolvedQualifierChecker>
+        get() = _resolvedQualifierCheckers
+    override val constExpressionCheckers: Set<FirConstExpressionChecker>
+        get() = _constExpressionCheckers
+    override val callableReferenceAccessCheckers: Set<FirCallableReferenceAccessChecker>
+        get() = _callableReferenceAccessCheckers
+    override val thisReceiverExpressionCheckers: Set<FirThisReceiverExpressionChecker>
+        get() = _thisReceiverExpressionCheckers
+    override val whileLoopCheckers: Set<FirWhileLoopChecker>
+        get() = _whileLoopCheckers
+    override val doWhileLoopCheckers: Set<FirDoWhileLoopChecker>
+        get() = _doWhileLoopCheckers
+    override val arrayOfCallCheckers: Set<FirArrayOfCallChecker>
+        get() = _arrayOfCallCheckers
+    override val classReferenceExpressionCheckers: Set<FirClassReferenceExpressionChecker>
+        get() = _classReferenceExpressionCheckers
 
     private val _basicExpressionCheckers: MutableSet<FirBasicExpressionChecker> = mutableSetOf()
     private val _qualifiedAccessCheckers: MutableSet<FirQualifiedAccessChecker> = mutableSetOf()
+    private val _qualifiedAccessExpressionCheckers: MutableSet<FirQualifiedAccessExpressionChecker> = mutableSetOf()
+    private val _callCheckers: MutableSet<FirCallChecker> = mutableSetOf()
     private val _functionCallCheckers: MutableSet<FirFunctionCallChecker> = mutableSetOf()
     private val _variableAssignmentCheckers: MutableSet<FirVariableAssignmentChecker> = mutableSetOf()
     private val _tryExpressionCheckers: MutableSet<FirTryExpressionChecker> = mutableSetOf()
     private val _whenExpressionCheckers: MutableSet<FirWhenExpressionChecker> = mutableSetOf()
+    private val _loopExpressionCheckers: MutableSet<FirLoopExpressionChecker> = mutableSetOf()
+    private val _loopJumpCheckers: MutableSet<FirLoopJumpChecker> = mutableSetOf()
+    private val _logicExpressionCheckers: MutableSet<FirLogicExpressionChecker> = mutableSetOf()
     private val _returnExpressionCheckers: MutableSet<FirReturnExpressionChecker> = mutableSetOf()
     private val _blockCheckers: MutableSet<FirBlockChecker> = mutableSetOf()
     private val _annotationCallCheckers: MutableSet<FirAnnotationCallChecker> = mutableSetOf()
@@ -60,17 +91,30 @@ internal class ComposedExpressionCheckers : ExpressionCheckers() {
     private val _getClassCallCheckers: MutableSet<FirGetClassCallChecker> = mutableSetOf()
     private val _safeCallExpressionCheckers: MutableSet<FirSafeCallExpressionChecker> = mutableSetOf()
     private val _equalityOperatorCallCheckers: MutableSet<FirEqualityOperatorCallChecker> = mutableSetOf()
-    private val _anonymousFunctionAsExpressionCheckers: MutableSet<FirAnonymousFunctionAsExpressionChecker> = mutableSetOf()
     private val _stringConcatenationCallCheckers: MutableSet<FirStringConcatenationCallChecker> = mutableSetOf()
+    private val _typeOperatorCallCheckers: MutableSet<FirTypeOperatorCallChecker> = mutableSetOf()
+    private val _resolvedQualifierCheckers: MutableSet<FirResolvedQualifierChecker> = mutableSetOf()
+    private val _constExpressionCheckers: MutableSet<FirConstExpressionChecker> = mutableSetOf()
+    private val _callableReferenceAccessCheckers: MutableSet<FirCallableReferenceAccessChecker> = mutableSetOf()
+    private val _thisReceiverExpressionCheckers: MutableSet<FirThisReceiverExpressionChecker> = mutableSetOf()
+    private val _whileLoopCheckers: MutableSet<FirWhileLoopChecker> = mutableSetOf()
+    private val _doWhileLoopCheckers: MutableSet<FirDoWhileLoopChecker> = mutableSetOf()
+    private val _arrayOfCallCheckers: MutableSet<FirArrayOfCallChecker> = mutableSetOf()
+    private val _classReferenceExpressionCheckers: MutableSet<FirClassReferenceExpressionChecker> = mutableSetOf()
 
     @CheckersComponentInternal
-    internal fun register(checkers: ExpressionCheckers) {
+    fun register(checkers: ExpressionCheckers) {
         _basicExpressionCheckers += checkers.basicExpressionCheckers
         _qualifiedAccessCheckers += checkers.qualifiedAccessCheckers
+        _qualifiedAccessExpressionCheckers += checkers.qualifiedAccessExpressionCheckers
+        _callCheckers += checkers.callCheckers
         _functionCallCheckers += checkers.functionCallCheckers
         _variableAssignmentCheckers += checkers.variableAssignmentCheckers
         _tryExpressionCheckers += checkers.tryExpressionCheckers
         _whenExpressionCheckers += checkers.whenExpressionCheckers
+        _loopExpressionCheckers += checkers.loopExpressionCheckers
+        _loopJumpCheckers += checkers.loopJumpCheckers
+        _logicExpressionCheckers += checkers.logicExpressionCheckers
         _returnExpressionCheckers += checkers.returnExpressionCheckers
         _blockCheckers += checkers.blockCheckers
         _annotationCallCheckers += checkers.annotationCallCheckers
@@ -79,7 +123,15 @@ internal class ComposedExpressionCheckers : ExpressionCheckers() {
         _getClassCallCheckers += checkers.getClassCallCheckers
         _safeCallExpressionCheckers += checkers.safeCallExpressionCheckers
         _equalityOperatorCallCheckers += checkers.equalityOperatorCallCheckers
-        _anonymousFunctionAsExpressionCheckers += checkers.anonymousFunctionAsExpressionCheckers
         _stringConcatenationCallCheckers += checkers.stringConcatenationCallCheckers
+        _typeOperatorCallCheckers += checkers.typeOperatorCallCheckers
+        _resolvedQualifierCheckers += checkers.resolvedQualifierCheckers
+        _constExpressionCheckers += checkers.constExpressionCheckers
+        _callableReferenceAccessCheckers += checkers.callableReferenceAccessCheckers
+        _thisReceiverExpressionCheckers += checkers.thisReceiverExpressionCheckers
+        _whileLoopCheckers += checkers.whileLoopCheckers
+        _doWhileLoopCheckers += checkers.doWhileLoopCheckers
+        _arrayOfCallCheckers += checkers.arrayOfCallCheckers
+        _classReferenceExpressionCheckers += checkers.classReferenceExpressionCheckers
     }
 }

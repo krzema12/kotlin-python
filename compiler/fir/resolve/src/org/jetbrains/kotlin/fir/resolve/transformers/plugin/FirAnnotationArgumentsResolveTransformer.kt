@@ -8,8 +8,6 @@ package org.jetbrains.kotlin.fir.resolve.transformers.plugin
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.expressions.*
-import org.jetbrains.kotlin.fir.extensions.AnnotationFqn
-import org.jetbrains.kotlin.fir.extensions.registeredPluginAnnotations
 import org.jetbrains.kotlin.fir.references.FirErrorNamedReference
 import org.jetbrains.kotlin.fir.resolve.ResolutionMode
 import org.jetbrains.kotlin.fir.resolve.ScopeSession
@@ -17,24 +15,19 @@ import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.BodyResolveCon
 import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.FirBodyResolveTransformer
 import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.FirDeclarationsResolveTransformer
 import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.FirExpressionsResolveTransformer
-import org.jetbrains.kotlin.fir.types.ConeClassLikeType
-import org.jetbrains.kotlin.fir.types.coneTypeSafe
 
-class FirAnnotationArgumentsResolveTransformer(
+open class FirAnnotationArgumentsResolveTransformer(
     session: FirSession,
     scopeSession: ScopeSession,
     outerBodyResolveContext: BodyResolveContext? = null
 ) : FirBodyResolveTransformer(
     session,
-    FirResolvePhase.ARGUMENTS_OF_PLUGIN_ANNOTATIONS,
+    FirResolvePhase.ARGUMENTS_OF_ANNOTATIONS,
     implicitTypeOnly = false,
     scopeSession,
     outerBodyResolveContext = outerBodyResolveContext
 ) {
-    override val expressionsTransformer: FirExpressionsResolveTransformer = FirExpressionsResolveTransformerForSpecificAnnotations(
-        this,
-        session.registeredPluginAnnotations.annotations
-    )
+    override val expressionsTransformer: FirExpressionsResolveTransformer = FirExpressionsResolveTransformerForSpecificAnnotations(this)
 
     override val declarationsTransformer: FirDeclarationsResolveTransformer = FirDeclarationsResolveTransformerForArgumentAnnotations(this)
 }
@@ -42,21 +35,24 @@ class FirAnnotationArgumentsResolveTransformer(
 private class FirDeclarationsResolveTransformerForArgumentAnnotations(
     transformer: FirBodyResolveTransformer
 ) : FirDeclarationsResolveTransformer(transformer) {
-    override fun transformWrappedDelegateExpression(
-        wrappedDelegateExpression: FirWrappedDelegateExpression,
-        data: ResolutionMode
-    ): FirStatement {
-        return wrappedDelegateExpression
-    }
-
     override fun transformRegularClass(regularClass: FirRegularClass, data: ResolutionMode): FirStatement {
-        return regularClass.transformAnnotations(this, data).transformDeclarations(this, data)
+        regularClass.transformAnnotations(this, data)
+        context.withContainingClass(regularClass) {
+            context.withRegularClass(regularClass, components) {
+                regularClass
+                    .transformTypeParameters(transformer, data)
+                    .transformSuperTypeRefs(transformer, data)
+                    .transformDeclarations(transformer, data)
+                    .transformCompanionObject(transformer, data)
+            }
+        }
+        return regularClass
     }
 
     override fun transformAnonymousInitializer(
         anonymousInitializer: FirAnonymousInitializer,
         data: ResolutionMode
-    ): FirDeclaration {
+    ): FirAnonymousInitializer {
         return anonymousInitializer
     }
 
@@ -64,62 +60,102 @@ private class FirDeclarationsResolveTransformerForArgumentAnnotations(
         simpleFunction: FirSimpleFunction,
         data: ResolutionMode
     ): FirSimpleFunction {
-        return simpleFunction.transformAnnotations(this, data)
+        simpleFunction
+            .transformReturnTypeRef(transformer, data)
+            .transformReceiverTypeRef(transformer, data)
+            .transformValueParameters(transformer, data)
+            .transformAnnotations(transformer, data)
+        return simpleFunction
     }
 
-    override fun transformConstructor(constructor: FirConstructor, data: ResolutionMode): FirDeclaration {
-        return constructor.transformAnnotations(this, data)
+    override fun transformConstructor(constructor: FirConstructor, data: ResolutionMode): FirConstructor {
+        constructor
+            .transformReturnTypeRef(transformer, data)
+            .transformReceiverTypeRef(transformer, data)
+            .transformValueParameters(transformer, data)
+            .transformAnnotations(transformer, data)
+        return constructor
     }
 
     override fun transformValueParameter(valueParameter: FirValueParameter, data: ResolutionMode): FirStatement {
-        return valueParameter.transformAnnotations(this, data)
+        valueParameter
+            .transformAnnotations(transformer, data)
+            .transformReturnTypeRef(transformer, data)
+        return valueParameter
     }
 
     override fun transformProperty(property: FirProperty, data: ResolutionMode): FirProperty {
-        property.transformAnnotations(this, data)
-        property.transformGetter(this, data)
-        property.transformSetter(this, data)
+        property
+            .transformAnnotations(transformer, data)
+            .transformReceiverTypeRef(transformer, data)
+            .transformReturnTypeRef(transformer, data)
+            .transformGetter(transformer, data)
+            .transformSetter(transformer, data)
+            .transformTypeParameters(transformer, data)
         return property
     }
 
     override fun transformPropertyAccessor(
         propertyAccessor: FirPropertyAccessor,
         data: ResolutionMode
-    ): FirDeclaration {
-        propertyAccessor.transformAnnotations(this, data)
+    ): FirPropertyAccessor {
+        propertyAccessor
+            .transformValueParameters(transformer, data)
+            .transformReturnTypeRef(transformer, data)
+            .transformReceiverTypeRef(transformer, data)
+            .transformReturnTypeRef(transformer, data)
+            .transformAnnotations(transformer, data)
         return propertyAccessor
+    }
+
+    override fun transformDeclarationStatus(declarationStatus: FirDeclarationStatus, data: ResolutionMode): FirDeclarationStatus {
+        return declarationStatus
+    }
+
+    override fun transformEnumEntry(enumEntry: FirEnumEntry, data: ResolutionMode): FirEnumEntry {
+        context.forEnumEntry {
+            enumEntry
+                .transformAnnotations(transformer, data)
+                .transformReceiverTypeRef(transformer, data)
+                .transformReturnTypeRef(transformer, data)
+                .transformTypeParameters(transformer, data)
+        }
+        return enumEntry
+    }
+
+    override fun transformField(field: FirField, data: ResolutionMode): FirField {
+        return field.transformAnnotations(transformer, data)
+    }
+
+    override fun transformTypeAlias(typeAlias: FirTypeAlias, data: ResolutionMode): FirTypeAlias {
+        typeAlias.transformAnnotations(transformer, data)
+        return typeAlias
     }
 }
 
 private class FirExpressionsResolveTransformerForSpecificAnnotations(
-    transformer: FirBodyResolveTransformer,
-    private val annotations: Set<AnnotationFqn>
+    transformer: FirBodyResolveTransformer
 ) : FirExpressionsResolveTransformer(transformer) {
-    private var annotationArgumentsMode: Boolean = false
 
     override fun transformAnnotationCall(annotationCall: FirAnnotationCall, data: ResolutionMode): FirStatement {
-        if (annotationArgumentsMode) {
-            return resolveAnnotationCall(annotationCall, FirAnnotationResolveStatus.PartiallyResolved)
-        }
-
-        annotationCall.transformAnnotationTypeRef(transformer, data)
-        val classId = annotationCall.annotationTypeRef.coneTypeSafe<ConeClassLikeType>()?.lookupTag?.classId
-            ?: return annotationCall
-        if (classId.asSingleFqName() !in annotations) {
-            return annotationCall
-        }
-        annotationArgumentsMode = true
-        return resolveAnnotationCall(annotationCall, FirAnnotationResolveStatus.PartiallyResolved).also {
-            annotationArgumentsMode = false
-        }
+        if (annotationCall.resolveStatus >= FirAnnotationResolveStatus.PartiallyResolved) return annotationCall
+        dataFlowAnalyzer.enterAnnotationCall(annotationCall)
+        annotationCall.transformChildren(transformer, ResolutionMode.ContextDependent)
+        dataFlowAnalyzer.exitAnnotationCall(annotationCall)
+        annotationCall.replaceResolveStatus(FirAnnotationResolveStatus.PartiallyResolved)
+        return annotationCall
     }
 
     override fun transformExpression(expression: FirExpression, data: ResolutionMode): FirStatement {
-        return expression
+        return expression.transformChildren(transformer, data) as FirStatement
     }
 
     override fun FirQualifiedAccessExpression.isAcceptableResolvedQualifiedAccess(): Boolean {
         return calleeReference !is FirErrorNamedReference
+    }
+
+    override fun resolveQualifiedAccessAndSelectCandidate(qualifiedAccessExpression: FirQualifiedAccessExpression): FirStatement {
+        return callResolver.resolveOnlyEnumOrQualifierAccessAndSelectCandidate(qualifiedAccessExpression)
     }
 
     override fun transformFunctionCall(functionCall: FirFunctionCall, data: ResolutionMode): FirStatement {
@@ -191,5 +227,14 @@ private class FirExpressionsResolveTransformerForSpecificAnnotations(
         data: ResolutionMode
     ): FirStatement {
         return augmentedArraySetCall
+    }
+
+    override fun transformArrayOfCall(arrayOfCall: FirArrayOfCall, data: ResolutionMode): FirStatement {
+        arrayOfCall.transformChildren(transformer, data)
+        return arrayOfCall
+    }
+
+    override fun shouldComputeTypeOfGetClassCallWithNotQualifierInLhs(getClassCall: FirGetClassCall): Boolean {
+        return false
     }
 }

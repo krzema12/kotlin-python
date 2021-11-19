@@ -6,8 +6,6 @@
 package org.jetbrains.kotlin.idea.frontend.api.fir.components
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.util.parentsOfType
-import org.jetbrains.kotlin.fir.FirSymbolOwner
 import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirMemberDeclaration
 import org.jetbrains.kotlin.fir.expressions.FirExpression
@@ -15,6 +13,7 @@ import org.jetbrains.kotlin.fir.resolve.calls.ExpressionReceiverValue
 import org.jetbrains.kotlin.fir.visibilityChecker
 import org.jetbrains.kotlin.idea.fir.low.level.api.api.collectDesignation
 import org.jetbrains.kotlin.idea.fir.low.level.api.api.getOrBuildFirSafe
+import org.jetbrains.kotlin.idea.fir.low.level.api.util.parentsOfType
 import org.jetbrains.kotlin.idea.frontend.api.components.KtVisibilityChecker
 import org.jetbrains.kotlin.idea.frontend.api.fir.KtFirAnalysisSession
 import org.jetbrains.kotlin.idea.frontend.api.fir.symbols.KtFirFileSymbol
@@ -46,7 +45,7 @@ internal class KtFirVisibilityChecker(
 
         return useSiteFile.firRef.withFir { useSiteFirFile ->
             val containers = nonLocalContainingDeclaration
-                ?.getOrBuildFirSafe<FirCallableDeclaration<*>>(analysisSession.firResolveState)
+                ?.getOrBuildFirSafe<FirCallableDeclaration>(analysisSession.firResolveState)
                 ?.collectDesignation()
                 ?.path
                 .orEmpty()
@@ -56,8 +55,8 @@ internal class KtFirVisibilityChecker(
                 ?.let { ExpressionReceiverValue(it) }
 
             candidateSymbol.firRef.withFir { candidateFirSymbol ->
-                require(candidateFirSymbol is FirMemberDeclaration && candidateFirSymbol is FirSymbolOwner<*>) {
-                    "$candidateFirSymbol must be a FirMemberDeclaration and FirSymbolOwner; it were ${candidateFirSymbol::class} instead"
+                require(candidateFirSymbol is FirMemberDeclaration) {
+                    "$candidateFirSymbol must be a FirStatusOwner and FirSymbolOwner; it were ${candidateFirSymbol::class} instead"
                 }
 
                 rootModuleSession.visibilityChecker.isVisible(

@@ -108,6 +108,8 @@ class IrMonoliticLibraryImpl(_access: IrLibraryAccess<IrKotlinLibraryLayout>) : 
 
     override fun body(index: Int, fileIndex: Int) = bodies.tableItemBytes(fileIndex, index)
 
+    override fun debugInfo(index: Int, fileIndex: Int) = debugInfos?.tableItemBytes(fileIndex, index)
+
     override fun file(index: Int) = files.tableItemBytes(index)
 
     private fun loadIrDeclaration(index: Int, fileIndex: Int) =
@@ -143,10 +145,36 @@ class IrMonoliticLibraryImpl(_access: IrLibraryAccess<IrKotlinLibraryLayout>) : 
         })
     }
 
+    private val debugInfos: IrMultiArrayFileReader? by lazy {
+        access.realFiles {
+            it.irDebugInfo.let { diFile -> if (diFile.exists) IrMultiArrayFileReader(diFile) else null }
+        }
+    }
+
     private val files: IrArrayFileReader by lazy {
         IrArrayFileReader(access.realFiles {
             it.irFiles
         })
+    }
+
+    override fun types(fileIndex: Int): ByteArray {
+        return types.tableItemBytes(fileIndex)
+    }
+
+    override fun signatures(fileIndex: Int): ByteArray {
+        return signatures.tableItemBytes(fileIndex)
+    }
+
+    override fun strings(fileIndex: Int): ByteArray {
+        return strings.tableItemBytes(fileIndex)
+    }
+
+    override fun declarations(fileIndex: Int): ByteArray {
+        return combinedDeclarations.tableItemBytes(fileIndex)
+    }
+
+    override fun bodies(fileIndex: Int): ByteArray {
+        return bodies.tableItemBytes(fileIndex)
     }
 }
 
@@ -180,13 +208,17 @@ class IrPerFileLibraryImpl(_access: IrLibraryAccess<IrKotlinLibraryLayout>) : Ir
         return dataReader.tableItemBytes(index)
     }
 
-    override fun signature(index: Int, fileIndex: Int): ByteArray {
-        val dataReader = fileToTypeMap.getOrPut(fileIndex) {
+    private fun signatureDataReader(fileIndex: Int): IrArrayFileReader {
+        return fileToTypeMap.getOrPut(fileIndex) {
             val fileDirectory = directories[fileIndex]
             IrArrayFileReader(access.realFiles {
                 it.irSignatures(fileDirectory)
             })
         }
+    }
+
+    override fun signature(index: Int, fileIndex: Int): ByteArray {
+        val dataReader = signatureDataReader(fileIndex)
         return dataReader.tableItemBytes(index)
     }
 
@@ -212,6 +244,23 @@ class IrPerFileLibraryImpl(_access: IrLibraryAccess<IrKotlinLibraryLayout>) : Ir
         return dataReader.tableItemBytes(index)
     }
 
+
+    private val fileToDebugInfoMap = mutableMapOf<Int, IrArrayFileReader?>()
+    override fun debugInfo(index: Int, fileIndex: Int): ByteArray? {
+        val dataReader = fileToDebugInfoMap.getOrPut(fileIndex) {
+            val fileDirectory = directories[fileIndex]
+            access.realFiles {
+                it.irDebugInfo(fileDirectory).let { diFile ->
+                    if (diFile.exists) {
+                        IrArrayFileReader(diFile)
+                    } else null
+                }
+            }
+
+        }
+        return dataReader?.tableItemBytes(index)
+    }
+
     override fun file(index: Int): ByteArray {
         return access.realFiles {
             it.irFile(directories[index]).readBytes()
@@ -220,6 +269,26 @@ class IrPerFileLibraryImpl(_access: IrLibraryAccess<IrKotlinLibraryLayout>) : Ir
 
     override fun fileCount(): Int {
         return directories.size
+    }
+
+    override fun types(fileIndex: Int): ByteArray {
+        TODO("Not yet implemented")
+    }
+
+    override fun signatures(fileIndex: Int): ByteArray {
+        TODO("Not yet implemented")
+    }
+
+    override fun strings(fileIndex: Int): ByteArray {
+        TODO("Not yet implemented")
+    }
+
+    override fun declarations(fileIndex: Int): ByteArray {
+        TODO("Not yet implemented")
+    }
+
+    override fun bodies(fileIndex: Int): ByteArray {
+        TODO("Not yet implemented")
     }
 }
 
@@ -276,9 +345,6 @@ fun createKotlinLibraryComponents(
         createKotlinLibrary(libraryFile, it, isDefault)
     }
 }
-
-@Deprecated("Use resolveSingleFileKlib() instead", replaceWith = ReplaceWith("resolveSingleFileKlib()"))
-fun createKotlinLibrary(libraryFile: File): KotlinLibrary = resolveSingleFileKlib(libraryFile)
 
 fun isKotlinLibrary(libraryFile: File): Boolean = try {
     resolveSingleFileKlib(libraryFile)

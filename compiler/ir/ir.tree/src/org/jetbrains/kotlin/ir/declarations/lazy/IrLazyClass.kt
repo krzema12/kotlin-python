@@ -10,9 +10,12 @@ import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
+import org.jetbrains.kotlin.ir.types.IrSimpleType
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.util.DeclarationStubGenerator
+import org.jetbrains.kotlin.ir.util.DeserializableClass
 import org.jetbrains.kotlin.ir.util.TypeTranslator
+import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.metadata.ProtoBuf
 import org.jetbrains.kotlin.metadata.deserialization.NameResolver
 import org.jetbrains.kotlin.name.Name
@@ -38,7 +41,7 @@ class IrLazyClass(
     override val isFun: Boolean,
     override val stubGenerator: DeclarationStubGenerator,
     override val typeTranslator: TypeTranslator
-) : IrClass(), IrLazyDeclarationBase {
+) : IrClass(), IrLazyDeclarationBase, DeserializableClass {
     init {
         symbol.bind(this)
     }
@@ -76,13 +79,7 @@ class IrLazyClass(
 
     private fun shouldBuildStub(descriptor: DeclarationDescriptor): Boolean =
         descriptor !is DeclarationDescriptorWithVisibility ||
-                !DescriptorVisibilities.isPrivate(descriptor.visibility) ||
-                // Always build lazy IR stubs for inline class primary constructors.
-                // This is needed because primary constructors of inline classes can be private, and prior to 1.5.0, there was no way
-                // to determine the inline class representation other than by loading the single value parameter of the primary constructor
-                // (corresponding metadata entry was added in 1.5.0). Backend still tries to load inline class representation in this way
-                // to support compilation against inline classes compiled with 1.4.30 or earlier.
-                (descriptor is ConstructorDescriptor && isInline)
+                !DescriptorVisibilities.isPrivate(descriptor.visibility)
 
     override var typeParameters: List<IrTypeParameter> by lazyVar(stubGenerator.lock) {
         descriptor.declaredTypeParameters.mapTo(arrayListOf()) {
@@ -99,6 +96,12 @@ class IrLazyClass(
         }
     }
 
+    override var inlineClassRepresentation: InlineClassRepresentation<IrSimpleType>? by lazyVar(stubGenerator.lock) {
+        descriptor.inlineClassRepresentation?.mapUnderlyingType {
+            it.toIrType() as? IrSimpleType ?: error("Inline class underlying type is not a simple type: ${render()}")
+        }
+    }
+
     override var attributeOwnerId: IrAttributeContainer = this
 
     val classProto: ProtoBuf.Class? get() = (descriptor as? DeserializedClassDescriptor)?.classProto
@@ -108,4 +111,14 @@ class IrLazyClass(
     override var metadata: MetadataSource?
         get() = null
         set(_) = error("We should never need to store metadata of external declarations.")
+
+    private var irLoaded: Boolean? = null
+
+    override fun loadIr(): Boolean {
+        assert(parent is IrPackageFragment)
+        irLoaded?.let { return it }
+        return stubGenerator.extensions.deserializeLazyClass(
+            this, stubGenerator, parent, allowErrorNodes = false
+        ).also { irLoaded = it }
+    }
 }

@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 fun <T> test(t: T): String? {
     if (t != null) {
         return t<!UNNECESSARY_SAFE_CALL!>?.<!>toString()
@@ -10,5 +9,5 @@ fun <T> T.testThis(): String? {
     if (this != null) {
         return this<!UNNECESSARY_SAFE_CALL!>?.<!>toString()
     }
-    return <!DEBUG_INFO_CONSTANT{OI}!>this<!>?.toString()
+    return this?.toString()
 }

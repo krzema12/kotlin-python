@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -7,7 +7,9 @@ package org.jetbrains.kotlin.ir.backend.js.transformers.irToJs
 
 import org.jetbrains.kotlin.backend.common.ir.isElseBranch
 import org.jetbrains.kotlin.backend.common.ir.isSuspend
-import org.jetbrains.kotlin.ir.backend.js.lower.InteropCallableReferenceLowering
+import org.jetbrains.kotlin.ir.IrElement
+import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
+import org.jetbrains.kotlin.ir.backend.js.JsStatementOrigins
 import org.jetbrains.kotlin.ir.backend.js.utils.*
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
@@ -86,9 +88,11 @@ private fun isFunctionTypeInvoke(receiver: JsExpression?, call: IrCall): Boolean
     val simpleFunction = call.symbol.owner as? IrSimpleFunction ?: return false
     val receiverType = simpleFunction.dispatchReceiverParameter?.type ?: return false
 
-    if (call.origin === InteropCallableReferenceLowering.Companion.EXPLICIT_INVOKE) return false
+    if (call.origin === JsStatementOrigins.EXPLICIT_INVOKE) return false
 
-    return simpleFunction.name == OperatorNameConventions.INVOKE && receiverType.isFunctionTypeOrSubtype()
+    return simpleFunction.name == OperatorNameConventions.INVOKE
+            && receiverType.isFunctionTypeOrSubtype()
+            && (!receiverType.isSuspendFunctionTypeOrSubtype() || receiverType.isSuspendFunction())
 }
 
 fun translateCall(
@@ -220,7 +224,27 @@ fun translateCall(
             }
         }
     } else {
-        JsInvocation(ref, listOfNotNull(jsExtensionReceiver) + arguments)
+        val defaultResult = JsInvocation(ref, listOfNotNull(jsExtensionReceiver) + arguments)
+
+        val alternativeResult =
+            if (jsDispatchReceiver != null && jsExtensionReceiver == null && context.staticContext.backendContext.legacyPropertyAccess) {
+                val property = function.correspondingPropertySymbol?.owner
+                if (property != null) {
+                    val propertyName = context.getNameForProperty(property)
+                    val args = mutableListOf(jsDispatchReceiver, JsStringLiteral(symbolName.ident), JsStringLiteral(propertyName.ident))
+                    val fnName = when (function) {
+                        property.getter -> context.getNameForStaticFunction(context.staticContext.backendContext.intrinsics.safePropertyGet.owner)
+                        property.setter -> {
+                            args += arguments
+                            context.getNameForStaticFunction(context.staticContext.backendContext.intrinsics.safePropertySet.owner)
+                        }
+                        else -> error("Function must be an accessor of corresponding property")
+                    }
+                    JsInvocation(fnName.makeRef(), args)
+                } else null
+            } else null
+
+        alternativeResult ?: defaultResult
     }
 }
 
@@ -459,4 +483,26 @@ object JsAstUtils {
     fun newVar(name: JsName, expr: JsExpression?): JsVars {
         return JsVars(JsVars.JsVar(name, expr))
     }
+}
+
+internal fun <T : JsNode> T.withSource(node: IrElement, context: JsGenerationContext): T {
+    addSourceInfoIfNeed(node, context)
+    return this
+}
+
+@Suppress("NOTHING_TO_INLINE")
+private inline fun <T : JsNode> T.addSourceInfoIfNeed(node: IrElement, context: JsGenerationContext) {
+    if (!context.staticContext.genSourcemaps) return
+
+    if (node.startOffset == UNDEFINED_OFFSET || node.endOffset == UNDEFINED_OFFSET) return
+
+    val fileEntry = context.currentFile?.fileEntry ?: return
+
+    val path = fileEntry.name
+    val startLine = fileEntry.getLineNumber(node.startOffset)
+    val startColumn = fileEntry.getColumnNumber(node.startOffset)
+
+    // TODO maybe it's better to fix in JsExpressionStatement
+    val locationTarget = if (this is JsExpressionStatement) this.expression else this
+    locationTarget.source = JsLocation(path, startLine, startColumn)
 }

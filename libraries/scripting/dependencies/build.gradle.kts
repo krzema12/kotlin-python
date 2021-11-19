@@ -3,12 +3,13 @@ plugins {
     id("jps-compatible")
 }
 
-jvmTarget = "1.6"
+project.updateJvmTarget("1.6")
 
 dependencies {
     compile(kotlinStdlib())
     compile(project(":kotlin-scripting-common"))
     testCompile(commonDep("junit"))
+    testImplementation(commonDep("org.jetbrains.kotlinx", "kotlinx-coroutines-core"))
 }
 
 sourceSets {
@@ -18,7 +19,7 @@ sourceSets {
 
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>> {
     kotlinOptions.freeCompilerArgs += listOf(
-        "-Xallow-kotlin-package", "-Xsuppress-deprecated-jvm-target-warning"
+        "-Xallow-kotlin-package"
     )
 }
 

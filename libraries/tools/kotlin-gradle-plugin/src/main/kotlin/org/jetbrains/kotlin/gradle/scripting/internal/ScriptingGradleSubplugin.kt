@@ -25,6 +25,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCommonOptions
 import org.jetbrains.kotlin.gradle.dsl.multiplatformExtensionOrNull
 import org.jetbrains.kotlin.gradle.internal.KaptGenerateStubsTask
 import org.jetbrains.kotlin.gradle.plugin.*
+import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractKotlinNativeCompilation
 import org.jetbrains.kotlin.gradle.scripting.ScriptingExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.scripting.compiler.plugin.impl.reporter
@@ -212,7 +213,7 @@ private fun Configuration.discoverScriptExtensionsFiles() =
 
 class ScriptingKotlinGradleSubplugin :
     KotlinCompilerPluginSupportPlugin,
-    @Suppress("DEPRECATION") // implementing to fix KT-39809
+    @Suppress("DEPRECATION_ERROR") // implementing to fix KT-39809
     KotlinGradleSubplugin<KotlinCompile> {
     companion object {
         const val SCRIPTING_ARTIFACT_NAME = "kotlin-scripting-compiler-embeddable"
@@ -223,7 +224,7 @@ class ScriptingKotlinGradleSubplugin :
         val LEGACY_SCRIPT_RESOLVER_ENVIRONMENT_OPTION = "script-resolver-environment"
     }
 
-    override fun isApplicable(kotlinCompilation: KotlinCompilation<*>): Boolean = true
+    override fun isApplicable(kotlinCompilation: KotlinCompilation<*>): Boolean = kotlinCompilation !is AbstractKotlinNativeCompilation
 
     override fun applyToCompilation(
         kotlinCompilation: KotlinCompilation<*>

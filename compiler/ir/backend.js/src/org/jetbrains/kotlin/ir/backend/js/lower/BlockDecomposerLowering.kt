@@ -32,7 +32,7 @@ import org.jetbrains.kotlin.utils.addIfNotNull
 
 class JsBlockDecomposerLowering(val context: JsIrBackendContext) : AbstractBlockDecomposerLowering(context) {
     override fun unreachableExpression(): IrExpression =
-        JsIrBuilder.buildCall(context.intrinsics.unreachable.symbol, context.irBuiltIns.nothingType)
+        JsIrBuilder.buildCall(context.intrinsics.unreachable, context.irBuiltIns.nothingType)
 }
 
 abstract class AbstractBlockDecomposerLowering(
@@ -346,7 +346,7 @@ class BlockDecomposerTransformer(
 
                 val newLoopCondition = newCondition.statements.last() as IrExpression
                 val newLoopBody = IrBlockImpl(
-                    newCondition.startOffset,
+                    newBody?.startOffset ?: newCondition.startOffset,
                     newBody?.endOffset ?: newCondition.endOffset,
                     newBody?.type ?: unitType
                 ).apply {

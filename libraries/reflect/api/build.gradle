@@ -2,7 +2,7 @@ description = ''
 
 apply plugin: 'kotlin'
 
-configureJvm6Project(project)
+JvmToolchain.configureJvmToolchain(project, JdkMajorVersion.JDK_1_6)
 
 def includeJava9 = BuildPropertiesExtKt.getIncludeJava9(project.kotlinBuildProperties)
 
@@ -32,28 +32,31 @@ dependencies {
 }
 
 if (includeJava9) {
-    compileJava9Sources(
-            project, 'kotlin.reflect',
-            [sourceSets.main.output, configurations.compileOnly.filter {
-                !it.name.contains("kotlin-stdlib")
-            }]
+    configurations.register('java9PatchModule') {
+        extendsFrom(configurations.compileOnly)
+        exclude(group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib')
+        canBeResolved = true
+    }
+
+    LibrariesCommon.configureJava9Compilation(
+            project,
+            'kotlin.reflect',
+            [sourceSets.main.output, configurations.java9PatchModule]
     )
 }
 
 compileKotlin {
     kotlinOptions {
-        freeCompilerArgs = ["-version",
-                            "-Xallow-kotlin-package",
-                            "-Xnormalize-constructor-calls=enable",
-                            "-Xno-optimized-callable-references",
-                            "-Xno-kotlin-nothing-value-exception",
-                            "-Xsuppress-deprecated-jvm-target-warning",
-                            "-Xopt-in=kotlin.RequiresOptIn"]
+        freeCompilerArgs = [
+                "-Xallow-kotlin-package",
+                "-Xno-optimized-callable-references",
+                "-Xno-kotlin-nothing-value-exception",
+                "-Xsuppress-deprecated-jvm-target-warning",
+                "-Xopt-in=kotlin.RequiresOptIn",
+        ]
         moduleName = "kotlin-reflection"
     }
 }
-
-configureJvmIrBackend(project)
 
 jar {
     manifestAttributes(manifest, project, "internal")

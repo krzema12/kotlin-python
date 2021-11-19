@@ -39,6 +39,12 @@ public class IrSteppingTestGenerated extends AbstractIrSteppingTest {
     }
 
     @Test
+    @TestMetadata("anonymousFunctionDirect.kt")
+    public void testAnonymousFunctionDirect() throws Exception {
+        runTest("compiler/testData/debug/stepping/anonymousFunctionDirect.kt");
+    }
+
+    @Test
     @TestMetadata("assertion.kt")
     public void testAssertion() throws Exception {
         runTest("compiler/testData/debug/stepping/assertion.kt");
@@ -246,6 +252,24 @@ public class IrSteppingTestGenerated extends AbstractIrSteppingTest {
     @TestMetadata("inlineSimpleCall.kt")
     public void testInlineSimpleCall() throws Exception {
         runTest("compiler/testData/debug/stepping/inlineSimpleCall.kt");
+    }
+
+    @Test
+    @TestMetadata("kt42208.kt")
+    public void testKt42208() throws Exception {
+        runTest("compiler/testData/debug/stepping/kt42208.kt");
+    }
+
+    @Test
+    @TestMetadata("kt42208b.kt")
+    public void testKt42208b() throws Exception {
+        runTest("compiler/testData/debug/stepping/kt42208b.kt");
+    }
+
+    @Test
+    @TestMetadata("kt42208c.kt")
+    public void testKt42208c() throws Exception {
+        runTest("compiler/testData/debug/stepping/kt42208c.kt");
     }
 
     @Test

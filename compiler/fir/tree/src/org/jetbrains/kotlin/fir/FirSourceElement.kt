@@ -83,9 +83,10 @@ sealed class FirFakeSourceElementKind : FirSourceElementKind() {
 
     object ImplicitInvokeCall : FirFakeSourceElementKind()
 
-    // this/super expressions have FirThisReference/FirSuperReference
-    // with a fake sources which refers to this this/super expression
-    object ExplicitThisOrSuperReference : FirFakeSourceElementKind()
+    // Consider an atomic qualified access like `i`. In the FIR tree, both the FirQualifiedAccessExpression and its calleeReference uses
+    // `i` as the source. Hence, this fake kind is set on the `calleeReference` to make sure no PSI element is shared by multiple FIR
+    // elements. This also applies to `this` and `super` references.
+    object ReferenceInAtomicQualifiedAccess : FirFakeSourceElementKind()
 
     // for enum classes we have valueOf & values functions generated
     // with a fake sources which refers to this the enum class
@@ -152,6 +153,11 @@ sealed class FirFakeSourceElementKind : FirSourceElementKind() {
     // where `Supertype` has a fake source
     object SuperCallImplicitType : FirFakeSourceElementKind()
 
+    // Consider `super<Supertype>.foo()`. The source PSI `Supertype` is referenced by both the qualified access expression
+    // `super<Supertype>` and the calleeExpression `super<Supertype>`. To avoid having two FIR elements sharing the same source, this fake
+    // source is assigned to the qualified access expression.
+    object SuperCallExplicitType : FirFakeSourceElementKind()
+
     // fun foo(vararg args: Int) {}
     // fun bar(1, 2, 3) --> [resolved] fun bar(VarargArgument(1, 2, 3))
     object VarargArgument : FirFakeSourceElementKind()
@@ -170,6 +176,10 @@ sealed class FirFakeSourceElementKind : FirSourceElementKind() {
     // for java annotations constructor implicit parameters are generated
     // with a fake source which refers to declared annotation methods
     object ImplicitAnnotationAnnotationConstructorParameter : FirFakeSourceElementKind()
+
+    // for the implicit field storing the delegated object for class delegation
+    // with a fake source that refers to the KtExpression that creates the delegate
+    object ClassDelegationField : FirFakeSourceElementKind()
 }
 
 sealed class FirSourceElement {
@@ -183,7 +193,7 @@ sealed class FirSourceElement {
 
 // NB: in certain situations, psi.node could be null
 // Potentially exceptions can be provoked by elementType / lighterASTNode
-sealed class FirPsiSourceElement<out P : PsiElement>(val psi: P) : FirSourceElement() {
+sealed class FirPsiSourceElement(val psi: PsiElement) : FirSourceElement() {
     override val elementType: IElementType
         get() = psi.node.elementType
 
@@ -262,25 +272,58 @@ sealed class FirPsiSourceElement<out P : PsiElement>(val psi: P) : FirSourceElem
             return element.textRange.endOffset
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as FirPsiSourceElement
+
+        if (psi != other.psi) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return psi.hashCode()
+    }
 }
 
-class FirRealPsiSourceElement<out P : PsiElement>(psi: P) : FirPsiSourceElement<P>(psi) {
+class FirRealPsiSourceElement(psi: PsiElement) : FirPsiSourceElement(psi) {
     override val kind: FirSourceElementKind get() = FirRealSourceElementKind
 }
 
-class FirFakeSourceElement<out P : PsiElement>(psi: P, override val kind: FirFakeSourceElementKind) : FirPsiSourceElement<P>(psi)
+class FirFakeSourceElement(psi: PsiElement, override val kind: FirFakeSourceElementKind) : FirPsiSourceElement(psi) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        if (!super.equals(other)) return false
+
+        other as FirFakeSourceElement
+
+        if (kind != other.kind) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + kind.hashCode()
+        return result
+    }
+}
 
 fun FirSourceElement.fakeElement(newKind: FirFakeSourceElementKind): FirSourceElement {
     return when (this) {
         is FirLightSourceElement -> FirLightSourceElement(lighterASTNode, startOffset, endOffset, treeStructure, newKind)
-        is FirPsiSourceElement<*> -> FirFakeSourceElement(psi, newKind)
+        is FirPsiSourceElement -> FirFakeSourceElement(psi, newKind)
     }
 }
 
 fun FirSourceElement.realElement(): FirSourceElement = when (this) {
-    is FirRealPsiSourceElement<*> -> this
+    is FirRealPsiSourceElement -> this
     is FirLightSourceElement -> FirLightSourceElement(lighterASTNode, startOffset, endOffset, treeStructure, FirRealSourceElementKind)
-    is FirPsiSourceElement<*> -> FirRealPsiSourceElement(psi)
+    is FirPsiSourceElement -> FirRealPsiSourceElement(psi)
 }
 
 
@@ -301,27 +344,51 @@ class FirLightSourceElement(
      * If it is `pure` [FirLightSourceElement], i.e, compiler created it in light tree mode, then return [unwrapToFirPsiSourceElement] `null`.
      * Otherwise, return some not-null result.
      */
-    fun unwrapToFirPsiSourceElement(): FirPsiSourceElement<*>? {
+    fun unwrapToFirPsiSourceElement(): FirPsiSourceElement? {
         if (treeStructure !is FirPsiSourceElement.WrappedTreeStructure) return null
         val node = treeStructure.unwrap(lighterASTNode)
         return node.psi?.toFirPsiSourceElement(kind)
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as FirLightSourceElement
+
+        if (lighterASTNode != other.lighterASTNode) return false
+        if (startOffset != other.startOffset) return false
+        if (endOffset != other.endOffset) return false
+        if (treeStructure != other.treeStructure) return false
+        if (kind != other.kind) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = lighterASTNode.hashCode()
+        result = 31 * result + startOffset
+        result = 31 * result + endOffset
+        result = 31 * result + treeStructure.hashCode()
+        result = 31 * result + kind.hashCode()
+        return result
+    }
 }
 
-val FirSourceElement?.psi: PsiElement? get() = (this as? FirPsiSourceElement<*>)?.psi
+val FirSourceElement?.psi: PsiElement? get() = (this as? FirPsiSourceElement)?.psi
 
 val FirSourceElement?.text: CharSequence?
     get() = when (this) {
-        is FirPsiSourceElement<*> -> psi.text
+        is FirPsiSourceElement -> psi.text
         is FirLightSourceElement -> treeStructure.toString(lighterASTNode)
         else -> null
     }
 
-val FirElement.psi: PsiElement? get() = (source as? FirPsiSourceElement<*>)?.psi
-val FirElement.realPsi: PsiElement? get() = (source as? FirRealPsiSourceElement<*>)?.psi
+val FirElement.psi: PsiElement? get() = (source as? FirPsiSourceElement)?.psi
+val FirElement.realPsi: PsiElement? get() = (source as? FirRealPsiSourceElement)?.psi
 
 @Suppress("NOTHING_TO_INLINE")
-inline fun PsiElement.toFirPsiSourceElement(kind: FirSourceElementKind = FirRealSourceElementKind): FirPsiSourceElement<*> = when (kind) {
+inline fun PsiElement.toFirPsiSourceElement(kind: FirSourceElementKind = FirRealSourceElementKind): FirPsiSourceElement = when (kind) {
     is FirRealSourceElementKind -> FirRealPsiSourceElement(this)
     is FirFakeSourceElementKind -> FirFakeSourceElement(this, kind)
 }

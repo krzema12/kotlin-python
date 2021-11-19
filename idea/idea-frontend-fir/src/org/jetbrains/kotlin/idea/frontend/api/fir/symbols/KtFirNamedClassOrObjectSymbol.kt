@@ -8,8 +8,10 @@ package org.jetbrains.kotlin.idea.frontend.api.fir.symbols
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.Modality
+import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.descriptors.Visibility
 import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.utils.*
 import org.jetbrains.kotlin.idea.fir.findPsi
 import org.jetbrains.kotlin.idea.fir.low.level.api.api.FirModuleResolveState
 import org.jetbrains.kotlin.idea.frontend.api.fir.KtSymbolByFirBuilder
@@ -22,7 +24,9 @@ import org.jetbrains.kotlin.idea.frontend.api.fir.utils.firRef
 import org.jetbrains.kotlin.idea.frontend.api.fir.utils.weakRef
 import org.jetbrains.kotlin.idea.frontend.api.symbols.KtClassKind
 import org.jetbrains.kotlin.idea.frontend.api.symbols.KtNamedClassOrObjectSymbol
-import org.jetbrains.kotlin.idea.frontend.api.symbols.markers.*
+import org.jetbrains.kotlin.idea.frontend.api.symbols.markers.KtAnnotationCall
+import org.jetbrains.kotlin.idea.frontend.api.symbols.markers.KtSymbolKind
+import org.jetbrains.kotlin.idea.frontend.api.symbols.markers.KtTypeAndAnnotations
 import org.jetbrains.kotlin.idea.frontend.api.symbols.pointers.CanNotCreateSymbolPointerForLocalLibraryDeclarationException
 import org.jetbrains.kotlin.idea.frontend.api.symbols.pointers.KtPsiBasedSymbolPointer
 import org.jetbrains.kotlin.idea.frontend.api.symbols.pointers.KtSymbolPointer
@@ -38,27 +42,36 @@ internal class KtFirNamedClassOrObjectSymbol(
 ) : KtNamedClassOrObjectSymbol(), KtFirSymbol<FirRegularClass> {
     private val builder by weakRef(_builder)
     override val firRef = firRef(fir, resolveState)
-    override val psi: PsiElement? by firRef.withFirAndCache { fir -> fir.findPsi(fir.declarationSiteSession) }
+    override val psi: PsiElement? by firRef.withFirAndCache { fir -> fir.findPsi(fir.moduleData.session) }
     override val name: Name get() = firRef.withFir { it.name }
     override val classIdIfNonLocal: ClassId?
         get() = firRef.withFir { fir ->
             fir.symbol.classId.takeUnless { it.isLocal }
         }
 
-    /* FirRegularClass modality and visibility does not modified by STATUS so it can be taken from RAW */
-    override val modality: Modality get() = getModality(FirResolvePhase.RAW_FIR, Modality.FINAL)
-    override val visibility: Visibility get() = getVisibility(FirResolvePhase.RAW_FIR)
+    /* FirRegularClass modality does not modified by STATUS so it can be taken from RAW */
+    override val modality: Modality
+        get() = getModality(
+            FirResolvePhase.RAW_FIR,
+            if (classKind == KtClassKind.INTERFACE) Modality.ABSTRACT else Modality.FINAL
+        )
+
+    /* FirRegularClass visibility are not modified by STATUS only for Unknown so it can be taken from RAW */
+    override val visibility: Visibility
+        get() = when (val possiblyRawVisibility = getVisibility(FirResolvePhase.RAW_FIR)) {
+            Visibilities.Unknown -> if (firRef.withFir { it.isLocal }) Visibilities.Local else Visibilities.Public
+            else -> possiblyRawVisibility
+        }
 
     override val annotations: List<KtAnnotationCall> by cached { firRef.toAnnotationsList() }
     override fun containsAnnotation(classId: ClassId): Boolean = firRef.containsAnnotation(classId)
     override val annotationClassIds: Collection<ClassId> by cached { firRef.getAnnotationClassIds() }
 
-    override val isInner: Boolean get() = firRef.withFir(FirResolvePhase.STATUS) { it.isInner }
-    override val isData: Boolean get() = firRef.withFir(FirResolvePhase.STATUS) { it.isData }
-    override val isInline: Boolean get() = firRef.withFir(FirResolvePhase.STATUS) { it.isInline }
-    override val isFun: Boolean get() = firRef.withFir(FirResolvePhase.STATUS) { it.isFun }
-
-    override val isExternal: Boolean get() = firRef.withFir(FirResolvePhase.STATUS) { it.isExternal }
+    override val isInner: Boolean get() = firRef.withFir { it.isInner }
+    override val isData: Boolean get() = firRef.withFir { it.isData }
+    override val isInline: Boolean get() = firRef.withFir { it.isInline }
+    override val isFun: Boolean get() = firRef.withFir { it.isFun }
+    override val isExternal: Boolean get() = firRef.withFir { it.isExternal }
 
     override val companionObject: KtFirNamedClassOrObjectSymbol? by firRef.withFirAndCache { fir ->
         fir.companionObject?.let { builder.classifierBuilder.buildNamedClassOrObjectSymbol(it) }
@@ -101,4 +114,7 @@ internal class KtFirNamedClassOrObjectSymbol(
         }
         return KtFirClassOrObjectInLibrarySymbolPointer(classIdIfNonLocal!!)
     }
+
+    override fun equals(other: Any?): Boolean = symbolEquals(other)
+    override fun hashCode(): Int = symbolHashCode()
 }

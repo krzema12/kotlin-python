@@ -58,11 +58,9 @@ val IrClass.classId: ClassId?
 val IrDeclaration.nameForIrSerialization: Name
     get() = when (this) {
         is IrDeclarationWithName -> this.name
-        is IrConstructor -> SPECIAL_INIT_NAME
+        is IrConstructor -> SpecialNames.INIT
         else -> error(this)
     }
-
-private val SPECIAL_INIT_NAME = Name.special("<init>")
 
 val IrValueParameter.isVararg get() = this.varargElementType != null
 
@@ -84,6 +82,9 @@ fun IrSimpleFunction.overrides(other: IrSimpleFunction): Boolean {
 
 private val IrConstructorCall.annotationClass
     get() = this.symbol.owner.constructedClass
+
+fun IrConstructorCall.isAnnotationWithEqualFqName(fqName: FqName): Boolean =
+    annotationClass.hasEqualFqName(fqName)
 
 val IrClass.packageFqName: FqName?
     get() = symbol.signature?.packageFqName() ?: parent.getPackageFragment()?.fqName
@@ -130,6 +131,8 @@ val IrDeclaration.isTopLevelDeclaration get() =
     parent !is IrDeclaration && !this.isPropertyAccessor && !this.isPropertyField
 
 val IrDeclaration.isAnonymousObject get() = this is IrClass && name == SpecialNames.NO_NAME_PROVIDED
+
+val IrDeclaration.isAnonymousFunction get() = this is IrSimpleFunction && name == SpecialNames.NO_NAME_PROVIDED
 
 val IrDeclaration.isLocal: Boolean
     get() {
@@ -228,7 +231,7 @@ private fun IrClass.getPropertyDeclaration(name: String): IrProperty? {
     return properties.firstOrNull()
 }
 
-private fun IrClass.getSimpleFunction(name: String): IrSimpleFunctionSymbol? =
+fun IrClass.getSimpleFunction(name: String): IrSimpleFunctionSymbol? =
     findDeclaration<IrSimpleFunction> { it.name.asString() == name }?.symbol
 
 fun IrClass.getPropertyGetter(name: String): IrSimpleFunctionSymbol? =

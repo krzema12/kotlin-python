@@ -32,8 +32,10 @@ import org.jetbrains.kotlin.resolve.BindingContext;
 import org.jetbrains.kotlin.resolve.BindingContextUtils;
 import org.jetbrains.kotlin.resolve.TemporaryBindingTrace;
 import org.jetbrains.kotlin.resolve.calls.ArgumentTypeResolver;
+import org.jetbrains.kotlin.resolve.calls.checkers.NewSchemeOfIntegerOperatorResolutionChecker;
 import org.jetbrains.kotlin.resolve.calls.context.CallPosition;
 import org.jetbrains.kotlin.resolve.calls.context.ContextDependency;
+import org.jetbrains.kotlin.resolve.calls.context.ResolutionContext;
 import org.jetbrains.kotlin.resolve.calls.context.TemporaryTraceAndCache;
 import org.jetbrains.kotlin.resolve.calls.inference.BuilderInferenceSession;
 import org.jetbrains.kotlin.resolve.calls.model.ResolvedCall;
@@ -334,7 +336,15 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
         }
         KotlinTypeInfo rightInfo = facade.getTypeInfo(rightOperand, context.replaceDataFlowInfo(leftInfo.getDataFlowInfo()));
 
-        KotlinType expectedType = refineTypeFromPropertySetterIfPossible(context.trace.getBindingContext(), leftOperand, leftInfo.getType());
+        boolean refineJavaFieldInTypeProperly =
+                components.languageVersionSettings.supportsFeature(LanguageFeature.RefineTypeCheckingOnAssignmentsToJavaFields);
+
+        BindingContext bindingContext = context.trace.getBindingContext();
+        KotlinType leftType = leftInfo.getType();
+
+        KotlinType expectedType = refineJavaFieldInTypeProperly
+                                  ? refineTypeByPropertyInType(bindingContext, leftOperand, leftType)
+                                  : refineTypeFromPropertySetterIfPossible(bindingContext, leftOperand, leftType);
 
         Ref<Boolean> hasErrorsOnTypeChecking = Ref.create(false);
         components.dataFlowAnalyzer.checkType(
@@ -347,6 +357,12 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
                 true
         );
         basic.checkLValue(context.trace, context, leftOperand, rightOperand, expression, false);
+
+        if (!refineJavaFieldInTypeProperly) {
+            checkPropertyInTypeWithWarnings(
+                    context, expression, binaryOperationType, rightInfo.getDataFlowInfo(), leftOperand, leftType, expectedType
+            );
+        }
 
         return !hasErrorsOnTypeChecking.get() ? rightInfo : null;
     }
@@ -377,6 +393,22 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
         return leftOperandType;
     }
 
+    @Nullable
+    private static KotlinType refineTypeByPropertyInType(
+            @NotNull BindingContext bindingContext,
+            @Nullable KtElement leftOperand,
+            @Nullable KotlinType leftOperandType
+    ) {
+        VariableDescriptor descriptor = BindingContextUtils.extractVariableFromResolvedCall(bindingContext, leftOperand);
+
+        if (descriptor instanceof PropertyDescriptor) {
+            KotlinType inType = ((PropertyDescriptor) descriptor).getInType();
+            if (inType != null) return inType;
+        }
+
+        return leftOperandType;
+    }
+
     @NotNull
     protected KotlinTypeInfo visitAssignment(KtBinaryExpression expression, ExpressionTypingContext contextWithExpectedType) {
         ExpressionTypingContext context =
@@ -399,7 +431,16 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
                 context.replaceCallPosition(new CallPosition.PropertyAssignment(left, true)),
                 facade
         );
-        KotlinType expectedType = refineTypeFromPropertySetterIfPossible(context.trace.getBindingContext(), leftOperand, leftInfo.getType());
+
+        BindingContext bindingContext = context.trace.getBindingContext();
+        KotlinType leftType = leftInfo.getType();
+
+        boolean refineJavaFieldInTypeProperly =
+                components.languageVersionSettings.supportsFeature(LanguageFeature.RefineTypeCheckingOnAssignmentsToJavaFields);
+        KotlinType expectedType = refineJavaFieldInTypeProperly
+                                  ? refineTypeByPropertyInType(bindingContext, leftOperand, leftType)
+                                  : refineTypeFromPropertySetterIfPossible(bindingContext, leftOperand, leftType);
+
         DataFlowInfo dataFlowInfo = leftInfo.getDataFlowInfo();
         KotlinTypeInfo resultInfo;
         if (right != null) {
@@ -417,6 +458,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
                 DataFlowValue rightValue = components.dataFlowValueFactory.createDataFlowValue(right, rightType, context);
                 // We cannot say here anything new about rightValue except it has the same value as leftValue
                 resultInfo = resultInfo.replaceDataFlowInfo(dataFlowInfo.assign(leftValue, rightValue, components.languageVersionSettings));
+                NewSchemeOfIntegerOperatorResolutionChecker.checkArgument(expectedType, right, context.languageVersionSettings, context.trace, components.moduleDescriptor);
             }
         }
         else {
@@ -425,9 +467,45 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
         if (expectedType != null && leftOperand != null) { //if expectedType == null, some other error has been generated
             basic.checkLValue(context.trace, context, leftOperand, right, expression, false);
         }
+
+        if (!refineJavaFieldInTypeProperly) {
+            checkPropertyInTypeWithWarnings(
+                    context, expression, resultInfo.getType(), resultInfo.getDataFlowInfo(), leftOperand, leftType, expectedType
+            );
+        }
+
         return resultInfo.replaceType(components.dataFlowAnalyzer.checkStatementType(expression, contextWithExpectedType));
     }
 
+    private void checkPropertyInTypeWithWarnings(
+            @NotNull ResolutionContext<?> context,
+            @NotNull KtBinaryExpression expression,
+            @Nullable KotlinType rhsType,
+            @NotNull DataFlowInfo rhsDataFlowInfo,
+            @Nullable KtExpression lhsOperand,
+            @Nullable KotlinType lhsType,
+            @Nullable KotlinType expectedType
+    ) {
+        if (rhsType == null || expectedType == null) return;
+
+        KotlinType expectedTypeByInType = refineTypeByPropertyInType(context.trace.getBindingContext(), lhsOperand, lhsType);
+
+        if (expectedTypeByInType != null && expectedType != expectedTypeByInType && !TypeUtils.equalTypes(expectedType, expectedTypeByInType)) {
+            Ref<Boolean> hasErrorsOnTypeChecking = Ref.create(false);
+            components.dataFlowAnalyzer.checkType(
+                    rhsType,
+                    expression,
+                    context.replaceExpectedType(expectedTypeByInType)
+                            .replaceDataFlowInfo(rhsDataFlowInfo)
+                            .replaceCallPosition(new CallPosition.PropertyAssignment(lhsOperand, false)),
+                    hasErrorsOnTypeChecking,
+                    false
+            );
+            if (hasErrorsOnTypeChecking.get()) {
+                context.trace.report(TYPE_MISMATCH_WARNING.on(expression, expectedTypeByInType, rhsType));
+            }
+        }
+    }
 
     @Override
     public KotlinTypeInfo visitExpression(@NotNull KtExpression expression, ExpressionTypingContext context) {

@@ -615,6 +615,9 @@ open class IrBasedClassDescriptor(owner: IrClass) : ClassDescriptor, IrBasedDecl
         TODO("not implemented")
     }
 
+    override fun getInlineClassRepresentation(): InlineClassRepresentation<SimpleType>? =
+        owner.inlineClassRepresentation?.mapUnderlyingType { it.toIrBasedKotlinType() as SimpleType }
+
     override fun getOriginal() = this
 
     override fun isExpect() = false
@@ -738,6 +741,8 @@ open class IrBasedEnumEntryDescriptor(owner: IrEnumEntry) : ClassDescriptor, IrB
     override fun getSealedSubclasses(): Collection<ClassDescriptor> {
         TODO("not implemented")
     }
+
+    override fun getInlineClassRepresentation(): InlineClassRepresentation<SimpleType>? = TODO("not implemented")
 
     override fun getOriginal() = this
 
@@ -878,6 +883,8 @@ open class IrBasedPropertyDescriptor(owner: IrProperty) :
     override fun getDelegateField(): FieldDescriptor? {
         TODO("not implemented")
     }
+
+    override fun getInType(): KotlinType? = setter?.valueParameters?.get(0)?.type
 
     override fun <V : Any?> getUserData(key: CallableDescriptor.UserDataKey<V>?): V? = null
 }
@@ -1056,6 +1063,8 @@ open class IrBasedFieldDescriptor(owner: IrField) : PropertyDescriptor, IrBasedD
     // Following functions are used in error reporting when rendering annotations on properties
     override fun getBackingField(): FieldDescriptor? = null // TODO
     override fun getDelegateField(): FieldDescriptor? = null // TODO
+
+    override fun getInType(): KotlinType? = setter?.valueParameters?.get(0)?.type
 
     override fun <V : Any?> getUserData(key: CallableDescriptor.UserDataKey<V>?): V? = null
 }

@@ -5,12 +5,8 @@
 
 package kotlin.native.concurrent
 
-import kotlin.native.internal.ExportTypeInfo
-import kotlin.native.internal.Frozen
-import kotlin.native.internal.LeakDetectorCandidate
-import kotlin.native.internal.NoReorderFields
-import kotlin.native.SymbolName
 import kotlinx.cinterop.NativePtr
+import kotlin.native.internal.*
 
 /**
  * Atomic values and freezing: atomics [AtomicInt], [AtomicLong], [AtomicNativePtr] and [AtomicReference]
@@ -32,7 +28,7 @@ public class AtomicInt(private var value_: Int) {
      * @param delta the value to add
      * @return the new value
      */
-    @SymbolName("Kotlin_AtomicInt_addAndGet")
+    @GCUnsafeCall("Kotlin_AtomicInt_addAndGet")
     external public fun addAndGet(delta: Int): Int
 
     /**
@@ -42,7 +38,7 @@ public class AtomicInt(private var value_: Int) {
      * @param new the new value
      * @return the old value
      */
-    @SymbolName("Kotlin_AtomicInt_compareAndSwap")
+    @GCUnsafeCall("Kotlin_AtomicInt_compareAndSwap")
     external public fun compareAndSwap(expected: Int, new: Int): Int
 
     /**
@@ -52,7 +48,7 @@ public class AtomicInt(private var value_: Int) {
      * @param new the new value
      * @return true if successful
      */
-    @SymbolName("Kotlin_AtomicInt_compareAndSet")
+    @GCUnsafeCall("Kotlin_AtomicInt_compareAndSet")
     external public fun compareAndSet(expected: Int, new: Int): Boolean
 
     /**
@@ -77,10 +73,10 @@ public class AtomicInt(private var value_: Int) {
     public override fun toString(): String = value.toString()
 
     // Implementation details.
-    @SymbolName("Kotlin_AtomicInt_set")
+    @GCUnsafeCall("Kotlin_AtomicInt_set")
     private external fun setImpl(new: Int): Unit
 
-    @SymbolName("Kotlin_AtomicInt_get")
+    @GCUnsafeCall("Kotlin_AtomicInt_get")
     private external fun getImpl(): Int
 }
 
@@ -99,7 +95,7 @@ public class AtomicLong(private var value_: Long = 0)  {
      * @param delta the value to add
      * @return the new value
      */
-    @SymbolName("Kotlin_AtomicLong_addAndGet")
+    @GCUnsafeCall("Kotlin_AtomicLong_addAndGet")
     external public fun addAndGet(delta: Long): Long
 
     /**
@@ -117,7 +113,7 @@ public class AtomicLong(private var value_: Long = 0)  {
      * @param new the new value
      * @return the old value
      */
-    @SymbolName("Kotlin_AtomicLong_compareAndSwap")
+    @GCUnsafeCall("Kotlin_AtomicLong_compareAndSwap")
     external public fun compareAndSwap(expected: Long, new: Long): Long
 
     /**
@@ -127,7 +123,7 @@ public class AtomicLong(private var value_: Long = 0)  {
      * @param new the new value
      * @return true if successful, false if state is unchanged
      */
-    @SymbolName("Kotlin_AtomicLong_compareAndSet")
+    @GCUnsafeCall("Kotlin_AtomicLong_compareAndSet")
     external public fun compareAndSet(expected: Long, new: Long): Boolean
 
     /**
@@ -152,10 +148,10 @@ public class AtomicLong(private var value_: Long = 0)  {
     public override fun toString(): String = value.toString()
 
     // Implementation details.
-    @SymbolName("Kotlin_AtomicLong_set")
+    @GCUnsafeCall("Kotlin_AtomicLong_set")
     private external fun setImpl(new: Long): Unit
 
-    @SymbolName("Kotlin_AtomicLong_get")
+    @GCUnsafeCall("Kotlin_AtomicLong_get")
     private external fun getImpl(): Long
 }
 
@@ -177,7 +173,7 @@ public class AtomicNativePtr(private var value_: NativePtr) {
      * @throws InvalidMutabilityException if [new] is not frozen or a permanent object
      * @return the old value
      */
-    @SymbolName("Kotlin_AtomicNativePtr_compareAndSwap")
+    @GCUnsafeCall("Kotlin_AtomicNativePtr_compareAndSwap")
     external public fun compareAndSwap(expected: NativePtr, new: NativePtr): NativePtr
 
     /**
@@ -187,7 +183,7 @@ public class AtomicNativePtr(private var value_: NativePtr) {
      * @param new the new value
      * @return true if successful
      */
-    @SymbolName("Kotlin_AtomicNativePtr_compareAndSet")
+    @GCUnsafeCall("Kotlin_AtomicNativePtr_compareAndSet")
     external public fun compareAndSet(expected: NativePtr, new: NativePtr): Boolean
 
     /**
@@ -198,10 +194,10 @@ public class AtomicNativePtr(private var value_: NativePtr) {
     public override fun toString(): String = value.toString()
 
     // Implementation details.
-    @SymbolName("Kotlin_AtomicNativePtr_set")
+    @GCUnsafeCall("Kotlin_AtomicNativePtr_set")
     private external fun setImpl(new: NativePtr): Unit
 
-    @SymbolName("Kotlin_AtomicNativePtr_get")
+    @GCUnsafeCall("Kotlin_AtomicNativePtr_get")
     private external fun getImpl(): NativePtr
 }
 
@@ -261,7 +257,7 @@ public class AtomicReference<T> {
      * @throws InvalidMutabilityException if the value is not frozen or a permanent object
      * @return the old value
      */
-    @SymbolName("Kotlin_AtomicReference_compareAndSwap")
+    @GCUnsafeCall("Kotlin_AtomicReference_compareAndSwap")
     external public fun compareAndSwap(expected: T, new: T): T
 
     /**
@@ -272,7 +268,7 @@ public class AtomicReference<T> {
      * @param new the new value
      * @return true if successful
      */
-    @SymbolName("Kotlin_AtomicReference_compareAndSet")
+    @GCUnsafeCall("Kotlin_AtomicReference_compareAndSet")
     external public fun compareAndSet(expected: T, new: T): Boolean
 
     /**
@@ -297,10 +293,10 @@ public class AtomicReference<T> {
     }
 
     // Implementation details.
-    @SymbolName("Kotlin_AtomicReference_set")
+    @GCUnsafeCall("Kotlin_AtomicReference_set")
     private external fun setImpl(new: Any?): Unit
 
-    @SymbolName("Kotlin_AtomicReference_get")
+    @GCUnsafeCall("Kotlin_AtomicReference_get")
     private external fun getImpl(): Any?
 }
 
@@ -330,7 +326,7 @@ public class FreezableAtomicReference<T>(private var value_: T) {
     public var value: T
         get() = @Suppress("UNCHECKED_CAST")(getImpl() as T)
         set(new) {
-            if (this.isFrozen)
+            if (this.isShareable())
                 setImpl(new)
             else
                 value_ = new
@@ -346,7 +342,9 @@ public class FreezableAtomicReference<T>(private var value_: T) {
      * @return the old value
      */
      public fun compareAndSwap(expected: T, new: T): T {
-        return if (this.isFrozen) @Suppress("UNCHECKED_CAST")(compareAndSwapImpl(expected, new) as T) else {
+        return if (this.isShareable()) {
+            @Suppress("UNCHECKED_CAST")(compareAndSwapImpl(expected, new) as T)
+        } else {
             val old = value_
             if (old === expected) value_ = new
             old
@@ -362,7 +360,8 @@ public class FreezableAtomicReference<T>(private var value_: T) {
      * @return true if successful
      */
     public fun compareAndSet(expected: T, new: T): Boolean {
-        if (this.isFrozen) return compareAndSetImpl(expected, new)
+        if (this.isShareable())
+            return compareAndSetImpl(expected, new)
         val old = value_
         if (old === expected) {
             value_ = new
@@ -380,16 +379,29 @@ public class FreezableAtomicReference<T>(private var value_: T) {
     public override fun toString(): String =
             "${debugString(this)} -> ${debugString(value)}"
 
+    // TODO: Consider making this public.
+    internal fun swap(new: T): T {
+        while (true) {
+            val old = value
+            if (old === new) {
+                return old
+            }
+            if (compareAndSet(old, new)) {
+                return old
+            }
+        }
+    }
+
     // Implementation details.
-    @SymbolName("Kotlin_AtomicReference_set")
+    @GCUnsafeCall("Kotlin_AtomicReference_set")
     private external fun setImpl(new: Any?): Unit
 
-    @SymbolName("Kotlin_AtomicReference_get")
+    @GCUnsafeCall("Kotlin_AtomicReference_get")
     private external fun getImpl(): Any?
 
-    @SymbolName("Kotlin_AtomicReference_compareAndSwap")
+    @GCUnsafeCall("Kotlin_AtomicReference_compareAndSwap")
     private external fun compareAndSwapImpl(expected: Any?, new: Any?): Any?
 
-    @SymbolName("Kotlin_AtomicReference_compareAndSet")
+    @GCUnsafeCall("Kotlin_AtomicReference_compareAndSet")
     private external fun compareAndSetImpl(expected: Any?, new: Any?): Boolean
 }

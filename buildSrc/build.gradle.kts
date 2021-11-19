@@ -22,7 +22,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-build-gradle-plugin:0.0.28")
+        classpath("org.jetbrains.kotlin:kotlin-build-gradle-plugin:0.0.34")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${project.bootstrapKotlinVersion}")
         classpath("org.jetbrains.kotlin:kotlin-sam-with-receiver:${project.bootstrapKotlinVersion}")
     }
@@ -69,7 +69,6 @@ rootProject.apply {
 }
 
 val isTeamcityBuild = kotlinBuildProperties.isTeamcityBuild
-val intellijUltimateEnabled by extra(kotlinBuildProperties.intellijUltimateEnabled)
 val intellijSeparateSdks by extra(project.getBooleanProperty("intellijSeparateSdks") ?: false)
 
 extra["intellijReleaseType"] = when {
@@ -92,27 +91,7 @@ repositories {
     }
 }
 
-/*
- A special case for the build.number that doesn't have a number in it.
- This means that this is a final release artifacts
- */
-open class VersionGeneratorNullableBuild : VersionGenerator() {
-    override val buildNumber: String?
-        @Optional
-        @Input
-        get() {
-            val number = project.findProperty("build.number")?.toString()
-            val buildNumberSplit = number
-                ?.split("-".toRegex())
-                ?.toTypedArray()
-            if (buildNumberSplit?.get(buildNumberSplit.size - 1)?.toIntOrNull() == null) {
-                return null
-            }
-            return number
-        }
-}
-
-val generateCompilerVersion by tasks.registering(VersionGeneratorNullableBuild::class) {
+val generateCompilerVersion by tasks.registering(VersionGenerator::class) {
     kotlinNativeVersionInResources=true
     defaultVersionFileLocation()
 }
@@ -164,7 +143,7 @@ java {
 dependencies {
     implementation(kotlin("stdlib", embeddedKotlinVersion))
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${project.bootstrapKotlinVersion}")
-    implementation("org.jetbrains.kotlin:kotlin-build-gradle-plugin:0.0.28")
+    implementation("org.jetbrains.kotlin:kotlin-build-gradle-plugin:0.0.34")
     implementation("com.gradle.publish:plugin-publish-plugin:0.14.0")
 
     implementation("net.rubygrapefruit:native-platform:${property("versions.native-platform")}")
@@ -176,10 +155,10 @@ dependencies {
     implementation("net.sf.proguard:proguard-gradle:6.2.2")
     implementation("org.jetbrains.intellij.deps:asm-all:8.0.1")
 
-    implementation("gradle.plugin.org.jetbrains.gradle.plugin.idea-ext:gradle-idea-ext:0.5")
+    implementation("gradle.plugin.org.jetbrains.gradle.plugin.idea-ext:gradle-idea-ext:1.0.1")
 
     implementation("org.gradle:test-retry-gradle-plugin:1.2.0")
-    implementation("com.gradle.enterprise:test-distribution-gradle-plugin:1.2.1")
+    implementation("com.gradle.enterprise:test-distribution-gradle-plugin:2.1")
 
     compileOnly(gradleApi())
 

@@ -13,7 +13,9 @@ import org.jetbrains.kotlin.descriptors.Visibility
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationUseSiteTarget
 import org.jetbrains.kotlin.fir.*
 import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.comparators.FirCallableDeclarationComparator
 import org.jetbrains.kotlin.fir.declarations.impl.FirDefaultPropertyAccessor
+import org.jetbrains.kotlin.fir.declarations.utils.*
 import org.jetbrains.kotlin.fir.deserialization.CONTINUATION_INTERFACE_CLASS_ID
 import org.jetbrains.kotlin.fir.deserialization.projection
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
@@ -33,7 +35,6 @@ import org.jetbrains.kotlin.fir.serialization.constant.EnumValue
 import org.jetbrains.kotlin.fir.serialization.constant.IntValue
 import org.jetbrains.kotlin.fir.serialization.constant.StringValue
 import org.jetbrains.kotlin.fir.serialization.constant.toConstantValue
-import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.fir.types.builder.buildResolvedTypeRef
@@ -45,9 +46,7 @@ import org.jetbrains.kotlin.metadata.deserialization.isKotlin1Dot4OrLater
 import org.jetbrains.kotlin.metadata.serialization.Interner
 import org.jetbrains.kotlin.metadata.serialization.MutableTypeTable
 import org.jetbrains.kotlin.metadata.serialization.MutableVersionRequirementTable
-import org.jetbrains.kotlin.name.ClassId
-import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.name.*
 import org.jetbrains.kotlin.resolve.RequireKotlinConstants
 import org.jetbrains.kotlin.serialization.deserialization.ProtoEnumFlags
 import org.jetbrains.kotlin.types.AbstractTypeApproximator
@@ -74,6 +73,7 @@ class FirElementSerializer private constructor(
                 is FirProperty -> propertyProto(declaration)?.let { builder.addProperty(it) }
                 is FirSimpleFunction -> functionProto(declaration)?.let { builder.addFunction(it) }
                 is FirTypeAlias -> typeAliasProto(declaration)?.let { builder.addTypeAlias(it) }
+                else -> {}
             }
         }
 
@@ -92,7 +92,7 @@ class FirElementSerializer private constructor(
         return builder
     }
 
-    fun classProto(klass: FirClass<*>): ProtoBuf.Class.Builder {
+    fun classProto(klass: FirClass): ProtoBuf.Class.Builder {
         val builder = ProtoBuf.Class.newBuilder()
 
         val regularClass = klass as? FirRegularClass
@@ -141,7 +141,7 @@ class FirElementSerializer private constructor(
         val callableMembers =
             extension.customClassMembersProducer?.getCallableMembers(klass)
                 ?: klass.declarations()
-                    .sortedWith(FirCallableMemberDeclarationComparator)
+                    .sortedWith(FirCallableDeclarationComparator)
 
         for (declaration in callableMembers) {
             if (declaration !is FirEnumEntry && declaration.isStatic) continue // ??? Miss values() & valueOf()
@@ -149,10 +149,11 @@ class FirElementSerializer private constructor(
                 is FirProperty -> propertyProto(declaration)?.let { builder.addProperty(it) }
                 is FirSimpleFunction -> functionProto(declaration)?.let { builder.addFunction(it) }
                 is FirEnumEntry -> enumEntryProto(declaration).let { builder.addEnumEntry(it) }
+                else -> {}
             }
         }
 
-        val nestedClassifiers = klass.declarations.filterIsInstance<FirClassLikeDeclaration<*>>()
+        val nestedClassifiers = klass.declarations.filterIsInstance<FirClassLikeDeclaration>()
         for (nestedClassifier in nestedClassifiers) {
             if (nestedClassifier is FirTypeAlias) {
                 typeAliasProto(nestedClassifier)?.let { builder.addTypeAlias(it) }
@@ -182,6 +183,22 @@ class FirElementSerializer private constructor(
             builder.typeTable = typeTableProto
         }
 
+        val representation = (klass as? FirRegularClass)?.getInlineClassUnderlyingParameter()
+        if (representation != null) {
+            builder.inlineClassUnderlyingPropertyName = getSimpleNameIndex(representation.name)
+
+            val property = callableMembers.single {
+                it is FirProperty && it.receiverTypeRef == null && it.name == representation.name
+            }
+            if (!property.visibility.isPublicAPI) {
+                if (useTypeTable()) {
+                    builder.inlineClassUnderlyingTypeId = typeId(representation.returnTypeRef)
+                } else {
+                    builder.setInlineClassUnderlyingType(typeProto(representation.returnTypeRef))
+                }
+            }
+        }
+
         if (versionRequirementTable == null) error("Version requirements must be serialized for classes: ${klass.render()}")
 
         builder.addAllVersionRequirement(versionRequirementTable.serializeVersionRequirements(klass))
@@ -198,13 +215,13 @@ class FirElementSerializer private constructor(
     }
 
     @OptIn(ExperimentalStdlibApi::class)
-    private fun FirClass<*>.declarations(): List<FirCallableMemberDeclaration<*>> = buildList {
+    private fun FirClass.declarations(): List<FirCallableDeclaration> = buildList {
         val memberScope =
             defaultType().scope(session, scopeSession, FakeOverrideTypeCalculator.DoNothing)
                 ?: error("Null scope for $this")
 
         fun addDeclarationIfNeeded(symbol: FirCallableSymbol<*>) {
-            val declaration = symbol.fir as? FirCallableMemberDeclaration<*> ?: return
+            val declaration = symbol.fir
             if (declaration.isSubstitutionOrIntersectionOverride) return
 
             // non-intersection or substitution fake override
@@ -217,7 +234,7 @@ class FirElementSerializer private constructor(
         memberScope.processAllProperties(::addDeclarationIfNeeded)
 
         for (declaration in declarations) {
-            if (declaration is FirCallableMemberDeclaration<*> && declaration.isStatic) {
+            if (declaration is FirCallableDeclaration && declaration.isStatic) {
                 add(declaration)
             }
         }
@@ -333,7 +350,7 @@ class FirElementSerializer private constructor(
         return builder
     }
 
-    fun functionProto(function: FirFunction<*>): ProtoBuf.Function.Builder? {
+    fun functionProto(function: FirFunction): ProtoBuf.Function.Builder? {
         if (!extension.shouldSerializeFunction(function)) return null
 
         val builder = ProtoBuf.Function.newBuilder()
@@ -364,7 +381,7 @@ class FirElementSerializer private constructor(
                 function.name
             }
             is FirAnonymousFunction -> {
-                if (function.isLambda) Name.special("<anonymous>") else Name.special("<no name provided>")
+                if (function.isLambda) SpecialNames.ANONYMOUS else Name.special("<no name provided>")
             }
             else -> throw AssertionError("Unsupported function: ${function.render()}")
         }
@@ -797,13 +814,13 @@ class FirElementSerializer private constructor(
         return false
     }
 
-    private fun FirCallableDeclaration<*>.isSuspendOrHasSuspendTypesInSignature(): Boolean {
+    private fun FirCallableDeclaration.isSuspendOrHasSuspendTypesInSignature(): Boolean {
         // TODO (types in signature)
-        return this is FirCallableMemberDeclaration<*> && this.isSuspend
+        return this.isSuspend
     }
 
     private fun writeVersionRequirementForInlineClasses(
-        klass: FirClass<*>,
+        klass: FirClass,
         builder: ProtoBuf.Class.Builder,
         versionRequirementTable: MutableVersionRequirementTable
     ) {
@@ -895,7 +912,7 @@ class FirElementSerializer private constructor(
         return declaration.visibility.normalize()
     }
 
-    private fun getClassifierId(declaration: FirClassLikeDeclaration<*>): Int =
+    private fun getClassifierId(declaration: FirClassLikeDeclaration): Int =
         stringTable.getFqNameIndex(declaration)
 
     private fun getClassifierId(classId: ClassId): Int =
@@ -940,7 +957,7 @@ class FirElementSerializer private constructor(
         fun create(
             session: FirSession,
             scopeSession: ScopeSession,
-            klass: FirClass<*>,
+            klass: FirClass,
             extension: FirSerializerExtension,
             parentSerializer: FirElementSerializer?,
             typeApproximator: AbstractTypeApproximator,

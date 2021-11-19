@@ -22,26 +22,27 @@ import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitorVoid
 import org.jetbrains.kotlin.ir.visitors.acceptChildrenVoid
 import org.jetbrains.kotlin.ir.visitors.acceptVoid
-import org.jetbrains.kotlin.js.config.DceRuntimeDiagnostic
 import org.jetbrains.kotlin.js.config.JSConfigurationKeys
-import org.jetbrains.kotlin.js.config.removingBody
+import org.jetbrains.kotlin.js.config.RuntimeDiagnostic
 import org.jetbrains.kotlin.utils.addIfNotNull
 import java.util.*
 
 fun eliminateDeadDeclarations(
     modules: Iterable<IrModuleFragment>,
-    context: JsIrBackendContext
+    context: JsIrBackendContext,
+    removeUnusedAssociatedObjects: Boolean = true,
 ) {
 
     val allRoots = context.irFactory.stageController.withInitialIr { buildRoots(modules, context) }
 
-    val usefulDeclarations = usefulDeclarations(allRoots, context)
+    val usefulDeclarations = usefulDeclarations(allRoots, context, removeUnusedAssociatedObjects)
 
     context.irFactory.stageController.unrestrictDeclarationListsAccess {
         processUselessDeclarations(
             modules,
             usefulDeclarations,
-            context
+            context,
+            removeUnusedAssociatedObjects,
         )
     }
 }
@@ -93,6 +94,11 @@ private fun buildRoots(modules: Iterable<IrModuleFragment>, context: JsIrBackend
         rootDeclarations += dceRuntimeDiagnostic.unreachableDeclarationMethod(context).owner
     }
 
+    if (context.legacyPropertyAccess) {
+        rootDeclarations += context.intrinsics.safePropertyGet.owner
+        rootDeclarations += context.intrinsics.safePropertySet.owner
+    }
+
     JsMainFunctionDetector.getMainFunctionOrNull(modules.last())?.let { mainFunction ->
         rootDeclarations += mainFunction
         if (mainFunction.isSuspend) {
@@ -103,16 +109,12 @@ private fun buildRoots(modules: Iterable<IrModuleFragment>, context: JsIrBackend
     return rootDeclarations
 }
 
-private fun DceRuntimeDiagnostic.unreachableDeclarationMethod(context: JsIrBackendContext) =
-    when (this) {
-        DceRuntimeDiagnostic.LOG -> context.intrinsics.jsUnreachableDeclarationLog
-        DceRuntimeDiagnostic.EXCEPTION -> context.intrinsics.jsUnreachableDeclarationException
-    }
 
 private fun processUselessDeclarations(
     modules: Iterable<IrModuleFragment>,
     usefulDeclarations: Set<IrDeclaration>,
-    context: JsIrBackendContext
+    context: JsIrBackendContext,
+    removeUnusedAssociatedObjects: Boolean,
 ) {
     modules.forEach { module ->
         module.files.forEach {
@@ -137,7 +139,9 @@ private fun processUselessDeclarations(
                     // Remove annotations for `findAssociatedObject` feature, which reference objects eliminated by the DCE.
                     // Otherwise `JsClassGenerator.generateAssociatedKeyProperties` will try to reference the object factory (which is removed).
                     // That will result in an error from the Namer. It cannot generate a name for an absent declaration.
-                    declaration.annotations = declaration.annotations.filter { it.shouldKeepAnnotation() }
+                    if (removeUnusedAssociatedObjects && declaration.annotations.any { !it.shouldKeepAnnotation() }) {
+                        declaration.annotations = declaration.annotations.filter { it.shouldKeepAnnotation() }
+                    }
                 }
 
                 // TODO bring back the primary constructor fix
@@ -165,6 +169,16 @@ private fun IrDeclaration.processUselessDeclaration(context: JsIrBackendContext)
         }
         else -> emptyList()
     }
+}
+
+private fun RuntimeDiagnostic.unreachableDeclarationMethod(context: JsIrBackendContext) =
+    when (this) {
+        RuntimeDiagnostic.LOG -> context.intrinsics.jsUnreachableDeclarationLog
+        RuntimeDiagnostic.EXCEPTION -> context.intrinsics.jsUnreachableDeclarationException
+    }
+
+private fun RuntimeDiagnostic.removingBody(): Boolean {
+    return this != RuntimeDiagnostic.LOG
 }
 
 private fun IrDeclaration.processWithDiagnostic(context: JsIrBackendContext) {
@@ -205,7 +219,11 @@ private fun IrField.isKotlinPackage() =
     fqNameWhenAvailable?.asString()?.startsWith("kotlin") == true
 
 // TODO refactor it, the function became too big. Please contact me (Zalim) before doing it.
-fun usefulDeclarations(roots: Iterable<IrDeclaration>, context: JsIrBackendContext): Set<IrDeclaration> {
+fun usefulDeclarations(
+    roots: Iterable<IrDeclaration>,
+    context: JsIrBackendContext,
+    removeUnusedAssociatedObjects: Boolean,
+): Set<IrDeclaration> {
     val printReachabilityInfo =
         context.configuration.getBoolean(JSConfigurationKeys.PRINT_REACHABILITY_INFO) ||
                 java.lang.Boolean.getBoolean("kotlin.js.ir.dce.print.reachability.info")
@@ -385,12 +403,27 @@ fun usefulDeclarations(roots: Iterable<IrDeclaration>, context: JsIrBackendConte
                             val ref = expression.getTypeArgument(0)!!.classifierOrFail.owner as IrDeclaration
                             ref.enqueue("intrinsic: jsClass")
                             referencedJsClasses += ref
+                            // When class reference provided as parameter to external function
+                            // It can be instantiated by external JS script
+                            // Need to leave constructor for this
+                            // https://youtrack.jetbrains.com/issue/KT-46672
+                            // TODO: Possibly solution with origin is not so good
+                            //  There is option with applying this hack to jsGetKClass
+                            if (expression.origin == JsLoweredDeclarationOrigin.CLASS_REFERENCE) {
+                                // Maybe we need to filter primary constructor
+                                // Although at this time, we should have only primary constructor
+                                (ref as IrClass)
+                                    .constructors
+                                    .forEach {
+                                        it.enqueue("intrinsic: jsClass (constructor)")
+                                    }
+                            }
                         }
                         context.intrinsics.jsGetKClassFromExpression -> {
                             val ref = expression.getTypeArgument(0)?.classOrNull ?: context.irBuiltIns.anyClass
                             referencedJsClassesFromExpressions += ref.owner
                         }
-                        context.intrinsics.jsObjectCreate.symbol -> {
+                        context.intrinsics.jsObjectCreate -> {
                             val classToCreate = expression.getTypeArgument(0)!!.classifierOrFail.owner as IrClass
                             classToCreate.enqueue("intrinsic: jsObjectCreate")
                             constructedClasses += classToCreate
@@ -425,6 +458,12 @@ fun usefulDeclarations(roots: Iterable<IrDeclaration>, context: JsIrBackendConte
                             val klass = arg.getClass()
                             constructedClasses.addIfNotNull(klass)
                         }
+                        context.intrinsics.jsInvokeSuspendSuperType,
+                        context.intrinsics.jsInvokeSuspendSuperTypeWithReceiver,
+                        context.intrinsics.jsInvokeSuspendSuperTypeWithReceiverAndParam -> {
+                            invokeFunForLambda(expression)
+                                .enqueue("intrinsic: suspendSuperType")
+                        }
                     }
                 }
 
@@ -453,11 +492,11 @@ fun usefulDeclarations(roots: Iterable<IrDeclaration>, context: JsIrBackendConte
         // Handle objects, constructed via `findAssociatedObject` annotation
         referencedJsClassesFromExpressions += constructedClasses.filterDescendantsOf(referencedJsClassesFromExpressions) // Grow the set of possible results of instance::class expression
         for (klass in classesWithObjectAssociations) {
-            if (klass !in referencedJsClasses && klass !in referencedJsClassesFromExpressions) continue
+            if (removeUnusedAssociatedObjects && klass !in referencedJsClasses && klass !in referencedJsClassesFromExpressions) continue
 
             for (annotation in klass.annotations) {
                 val annotationClass = annotation.symbol.owner.constructedClass
-                if (annotationClass !in referencedJsClasses) continue
+                if (removeUnusedAssociatedObjects && annotationClass !in referencedJsClasses) continue
 
                 annotation.associatedObject()?.let { obj ->
                     context.mapping.objectToGetInstanceFunction[obj]?.enqueue(klass, "associated object factory")

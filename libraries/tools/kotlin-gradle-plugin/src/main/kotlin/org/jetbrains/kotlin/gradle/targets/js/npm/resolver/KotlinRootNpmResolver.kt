@@ -17,7 +17,6 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.npm.CompositeNodeModulesCache
 import org.jetbrains.kotlin.gradle.targets.js.npm.GradleNodeModulesCache
 import org.jetbrains.kotlin.gradle.targets.js.npm.KotlinNpmResolutionManager
-import org.jetbrains.kotlin.gradle.targets.js.npm.PackageJsonUpToDateCheck
 import org.jetbrains.kotlin.gradle.targets.js.npm.plugins.RootResolverPlugin
 import org.jetbrains.kotlin.gradle.targets.js.npm.resolved.KotlinCompilationNpmResolution
 import org.jetbrains.kotlin.gradle.targets.js.npm.resolved.KotlinProjectNpmResolution
@@ -127,19 +126,22 @@ internal class KotlinRootNpmResolver internal constructor(
     val plugins
         get() = plugins_ ?: resolverStateHolder.get().parameters.plugins.get()
 
-    val projectResolvers
+    private val projectResolvers
         get() = projectResolvers_ ?: configurationCacheProjectResolvers
 
     val yarn by lazy {
         YarnPlugin.apply(rootProject)
     }
 
+    internal val mayBeUpToDateTasksRegistry = MayBeUpToDatePackageJsonTasksRegistry.registerIfAbsent(rootProject)
+
     fun alreadyResolvedMessage(action: String) = "Cannot $action. NodeJS projects already resolved."
 
-    @Synchronized
     fun addProject(target: Project) {
-        check(state == State.CONFIGURING) { alreadyResolvedMessage("add new project: $target") }
-        projectResolvers[target.path] = KotlinProjectNpmResolver(target, this)
+        synchronized(projectResolvers) {
+            check(state == State.CONFIGURING) { alreadyResolvedMessage("add new project: $target") }
+            projectResolvers[target.path] = KotlinProjectNpmResolver(target, this)
+        }
     }
 
     operator fun get(projectPath: String) = projectResolvers[projectPath] ?: error("$projectPath is not configured for JS usage")
@@ -179,7 +181,7 @@ internal class KotlinRootNpmResolver internal constructor(
      * Don't use directly, use [KotlinNpmResolutionManager.installIfNeeded] instead.
      */
     internal fun prepareInstallation(logger: Logger): Installation {
-        synchronized(this@KotlinRootNpmResolver) {
+        synchronized(projectResolvers) {
             check(state == State.CONFIGURING) {
                 "Projects must be configuring"
             }
@@ -201,7 +203,9 @@ internal class KotlinRootNpmResolver internal constructor(
                 logger,
                 allNpmPackages,
                 yarn.resolutions
-                    .associate { it.path to it.toVersionString() })
+                    .associate { it.path to it.toVersionString() },
+                forceFullResolve
+            )
 
             return Installation(
                 projectResolutions
@@ -219,7 +223,7 @@ internal class KotlinRootNpmResolver internal constructor(
             services: ServiceRegistry,
             logger: Logger
         ): KotlinRootNpmResolution {
-            synchronized(this@KotlinRootNpmResolver) {
+            synchronized(projectResolvers) {
                 check(state == State.PROJECTS_CLOSED) {
                     "Projects must be closed"
                 }
@@ -229,26 +233,16 @@ internal class KotlinRootNpmResolver internal constructor(
                     .values
                     .flatMap { it.npmProjects }
 
-                // we need manual up-to-date checking to avoid call package manager during
-                // idea import if nothing was changed
-                // we should call it even kotlinNpmInstall task is up-to-date (skipPackageManager is true)
-                // because our upToDateChecks saves state for next execution
-                val upToDateChecks = allNpmPackages.map {
-                    PackageJsonUpToDateCheck(services, it.npmProject)
-                }
-                val upToDate = forceUpToDate || upToDateChecks.all { it.upToDate }
-
+                val yarnConfigured = yarn.requireConfigured()
                 nodeJs.packageManager.resolveRootProject(
                     services,
                     logger,
                     nodeJs,
-                    yarn.requireConfigured().home,
+                    yarnConfigured.executable,
+                    yarnConfigured.standalone,
                     allNpmPackages,
-                    upToDate,
                     args
                 )
-
-                upToDateChecks.forEach { it.commit() }
 
                 return KotlinRootNpmResolution(rootProject, projectResolutions)
             }

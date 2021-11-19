@@ -22,12 +22,12 @@ import org.jetbrains.kotlin.builtins.isFunctionType
 import org.jetbrains.kotlin.builtins.isSuspendFunctionType
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.incremental.components.NoLookupLocation
+import org.jetbrains.kotlin.ir.IrBuiltIns
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.PsiIrFileEntry
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.descriptors.IrBasedDeclarationDescriptor
-import org.jetbrains.kotlin.ir.descriptors.IrBuiltIns
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.IrCallImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl
@@ -59,7 +59,6 @@ import org.jetbrains.kotlin.util.OperatorNameConventions
 
 fun insertImplicitCasts(file: IrFile, context: GeneratorContext) {
     InsertImplicitCasts(
-        context.builtIns,
         context.irBuiltIns,
         context.typeTranslator,
         context.callToSubstitutedDescriptorMap,
@@ -70,7 +69,6 @@ fun insertImplicitCasts(file: IrFile, context: GeneratorContext) {
 }
 
 internal class InsertImplicitCasts(
-    private val builtIns: KotlinBuiltIns,
     private val irBuiltIns: IrBuiltIns,
     private val typeTranslator: TypeTranslator,
     private val callToSubstitutedDescriptorMap: Map<IrDeclarationReference, CallableDescriptor>,
@@ -109,6 +107,10 @@ internal class InsertImplicitCasts(
 
             override fun visitElement(element: IrElement) {
                 element.acceptChildrenVoid(this)
+            }
+
+            override fun visitCall(expression: IrCall) {
+                expression.acceptChildrenVoid(this)
             }
         })
     }
@@ -255,20 +257,20 @@ internal class InsertImplicitCasts(
     override fun visitWhen(expression: IrWhen): IrExpression =
         expression.transformPostfix {
             for (irBranch in branches) {
-                irBranch.condition = irBranch.condition.cast(builtIns.booleanType)
+                irBranch.condition = irBranch.condition.cast(irBuiltIns.booleanType)
                 irBranch.result = irBranch.result.cast(type)
             }
         }
 
     override fun visitLoop(loop: IrLoop): IrExpression =
         loop.transformPostfix {
-            condition = condition.cast(builtIns.booleanType)
+            condition = condition.cast(irBuiltIns.booleanType)
             body = body?.coerceToUnit()
         }
 
     override fun visitThrow(expression: IrThrow): IrExpression =
         expression.transformPostfix {
-            value = value.cast(builtIns.throwable.defaultType)
+            value = value.cast(irBuiltIns.throwableType)
         }
 
     override fun visitTry(aTry: IrTry): IrExpression =
@@ -284,9 +286,10 @@ internal class InsertImplicitCasts(
 
     override fun visitTypeOperator(expression: IrTypeOperatorCall): IrExpression =
         when (expression.operator) {
-            IrTypeOperator.SAM_CONVERSION -> expression.transformPostfix {
-                argument = argument.cast(typeOperand.originalKotlinType!!.getSubstitutedFunctionTypeForSamType())
-            }
+            IrTypeOperator.SAM_CONVERSION ->
+                expression.transformPostfix {
+                    argument = argument.cast(typeOperand.originalKotlinType!!.getSubstitutedFunctionTypeForSamType())
+                }
 
             IrTypeOperator.IMPLICIT_CAST -> {
                 // This branch is required for handling specific ambiguous cases in implicit cast insertion,
@@ -464,7 +467,7 @@ internal class InsertImplicitCasts(
     }
 
     private fun IrExpression.invokeIntegerCoercionFunction(targetType: KotlinType, coercionFunName: String): IrExpression {
-        val coercionFunction = builtIns.int.unsubstitutedMemberScope.findSingleFunction(Name.identifier(coercionFunName))
+        val coercionFunction = irBuiltIns.intClass.descriptor.unsubstitutedMemberScope.findSingleFunction(Name.identifier(coercionFunName))
         return IrCallImpl(
             startOffset, endOffset,
             targetType.toIrType(),

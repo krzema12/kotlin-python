@@ -12,7 +12,10 @@ import org.jetbrains.kotlin.backend.common.lower.createIrBuilder
 import org.jetbrains.kotlin.backend.common.phaser.makeIrFilePhase
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
-import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.declarations.IrDeclaration
+import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
+import org.jetbrains.kotlin.ir.declarations.IrSymbolOwner
+import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.IrCompositeImpl
 import org.jetbrains.kotlin.ir.util.dump
@@ -94,11 +97,11 @@ val forLoopsPhase = makeIrFilePhase(
  *   }
  * ```
  */
-class ForLoopsLowering(val context: CommonBackendContext) : BodyLoweringPass {
+class ForLoopsLowering(val context: CommonBackendContext, val loopBodyTransformer: ForLoopBodyTransformer? = null) : BodyLoweringPass {
 
     override fun lower(irBody: IrBody, container: IrDeclaration) {
         val oldLoopToNewLoop = mutableMapOf<IrLoop, IrLoop>()
-        val transformer = RangeLoopTransformer(context, container as IrSymbolOwner, oldLoopToNewLoop)
+        val transformer = RangeLoopTransformer(context, container as IrSymbolOwner, oldLoopToNewLoop, loopBodyTransformer)
         irBody.transformChildrenVoid(transformer)
 
         // Update references in break/continue.
@@ -111,10 +114,25 @@ class ForLoopsLowering(val context: CommonBackendContext) : BodyLoweringPass {
     }
 }
 
+/**
+ * Abstract class for additional for-loop bodies transformations.
+ */
+abstract class ForLoopBodyTransformer : IrElementTransformerVoid() {
+
+    abstract fun transform(
+        context: CommonBackendContext,
+        loopBody: IrExpression,
+        loopVariable: IrVariable,
+        forLoopHeader: ForLoopHeader,
+        loopComponents: Map<Int, IrVariable>
+    )
+}
+
 private class RangeLoopTransformer(
     val context: CommonBackendContext,
     val container: IrSymbolOwner,
-    val oldLoopToNewLoop: MutableMap<IrLoop, IrLoop>
+    val oldLoopToNewLoop: MutableMap<IrLoop, IrLoop>,
+    val loopBodyTransformer: ForLoopBodyTransformer? = null
 ) : IrElementTransformerVoidWithContext() {
 
     private val headerInfoBuilder = DefaultHeaderInfoBuilder(context, this::getScopeOwnerSymbol)
@@ -236,7 +254,7 @@ private class RangeLoopTransformer(
                 mainLoopVariable.endOffset,
                 context.irBuiltIns.unitType,
                 IrStatementOrigin.FOR_LOOP_NEXT,
-                loopHeader.initializeIteration(mainLoopVariable, loopVariableComponents, this)
+                loopHeader.initializeIteration(mainLoopVariable, loopVariableComponents, this, this@RangeLoopTransformer.context)
             )
         }
 
@@ -256,6 +274,9 @@ private class RangeLoopTransformer(
             } else {
                 it
             }
+        }
+        if (newBody != null && loopBodyTransformer != null) {
+            loopBodyTransformer.transform(context, newBody, mainLoopVariable, loopHeader, loopVariableComponents)
         }
 
         return loopHeader.buildLoop(context.createIrBuilder(getScopeOwnerSymbol(), loop.startOffset, loop.endOffset), loop, newBody)

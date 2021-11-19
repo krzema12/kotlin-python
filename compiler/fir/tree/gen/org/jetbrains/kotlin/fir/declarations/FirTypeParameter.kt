@@ -6,11 +6,10 @@
 package org.jetbrains.kotlin.fir.declarations
 
 import org.jetbrains.kotlin.fir.FirElement
-import org.jetbrains.kotlin.fir.FirPureAbstractElement
-import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.FirSourceElement
-import org.jetbrains.kotlin.fir.FirSymbolOwner
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
+import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirTypeParameterSymbol
 import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.name.Name
@@ -22,14 +21,15 @@ import org.jetbrains.kotlin.fir.visitors.*
  * DO NOT MODIFY IT MANUALLY
  */
 
-abstract class FirTypeParameter : FirPureAbstractElement(), FirTypeParameterRef, FirAnnotatedDeclaration, FirSymbolOwner<FirTypeParameter> {
+abstract class FirTypeParameter : FirTypeParameterRef, FirAnnotatedDeclaration() {
     abstract override val source: FirSourceElement?
-    abstract override val declarationSiteSession: FirSession
+    abstract override val moduleData: FirModuleData
     abstract override val resolvePhase: FirResolvePhase
     abstract override val origin: FirDeclarationOrigin
     abstract override val attributes: FirDeclarationAttributes
     abstract val name: Name
     abstract override val symbol: FirTypeParameterSymbol
+    abstract val containingDeclarationSymbol: FirBasedSymbol<*>?
     abstract val variance: Variance
     abstract val isReified: Boolean
     abstract val bounds: List<FirTypeRef>

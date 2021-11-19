@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // FULL_JDK
 
 fun test() {
@@ -146,7 +145,7 @@ fun test() {
   out?.println();
 
   val out2 : java.io.PrintStream? = null
-  
+
   while (out2 == null) {
     out2?.println();
     out2<!UNSAFE_CALL!>.<!>println();

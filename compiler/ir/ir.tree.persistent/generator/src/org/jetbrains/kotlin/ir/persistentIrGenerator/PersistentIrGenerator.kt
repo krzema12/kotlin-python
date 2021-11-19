@@ -3,11 +3,11 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package org.jetbrains.kotlin.ir.persistentIrGenerator
 
 import java.io.File
-import java.lang.IllegalStateException
-import java.lang.StringBuilder
 
 internal interface R {
     fun text(t: String): R
@@ -97,6 +97,8 @@ internal object PersistentIrGenerator {
     val IrValueParameterSymbol = irSymbol("IrValueParameterSymbol")
     val IrTypeParameterSymbol = irSymbol("IrTypeParameterSymbol")
 
+    val IdSignature = import("IdSignature", "org.jetbrains.kotlin.ir.util")
+
     // Constructor parameters
 
     val startOffset = +"override val startOffset: Int"
@@ -129,6 +131,13 @@ internal object PersistentIrGenerator {
         +"symbol.bind(this)"
     )
 
+    // import org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrDeclarationBase.Companion.hashCodeCounter
+
+    val hashCodeValue = "private val hashCodeValue: Int = PersistentIrDeclarationBase.hashCodeCounter++"
+    val hashCodeImplementation = "override fun hashCode(): Int = hashCodeValue"
+    val equalsImplementation = "override fun equals(other: Any?): Boolean = (this === other)"
+    val hashCodeAndEqualsImpl = +"$hashCodeValue\n$hashCodeImplementation\n$equalsImplementation"
+
     // Proto types
 
     val protoValueParameterType = import("IrValueParameter", protoPackage, "ProtoIrValueParameter")
@@ -159,6 +168,11 @@ internal object PersistentIrGenerator {
 
     val visibilityProto = Proto(null, "visibility", +"Long", DescriptorVisibility)
     val modalityProto = Proto(null, "modality", +"Long", descriptorType("Modality"))
+    val inlineClassRepresentationProto = Proto(
+        "IrInlineClassRepresentation", "inlineClassRepresentation",
+        import("IrInlineClassRepresentation", protoPackage, "ProtoIrInlineClassRepresentation"),
+        descriptorType("InlineClassRepresentation") + "<" + import("IrSimpleType", "org.jetbrains.kotlin.ir.types") + ">"
+    )
 
     val isExternalClassProto = Proto(null, "isExternalClass", +"Long", +"Boolean")
     val isExternalFieldProto = Proto(null, "isExternalField", +"Long", +"Boolean")
@@ -183,6 +197,7 @@ internal object PersistentIrGenerator {
         variableProto,
         visibilityProto,
         modalityProto,
+        inlineClassRepresentationProto,
         isExternalClassProto,
         isExternalFieldProto,
         isExternalFunctionProto,
@@ -190,6 +205,8 @@ internal object PersistentIrGenerator {
     )
 
     // Fields
+    val signature = +"override var signature: " + IdSignature + "? = factory.currentSignature(this)"
+
     val lastModified = +"override var lastModified: Int = factory.stageController.currentStage"
     val loweredUpTo = +"override var loweredUpTo: Int = factory.stageController.currentStage"
     val values = +"override var values: Array<" + Carrier + ">? = null"
@@ -201,6 +218,8 @@ internal object PersistentIrGenerator {
     val annotationsField = +"override var annotationsField: List<" + IrConstructorCall + "> = emptyList()"
 
     val commonFields = lines(
+        signature,
+        id,
         lastModified,
         loweredUpTo,
         values,
@@ -210,6 +229,7 @@ internal object PersistentIrGenerator {
         originField,
         removedOn,
         annotationsField,
+        hashCodeAndEqualsImpl
     )
 
     val typeParametersField = Field(

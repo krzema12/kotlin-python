@@ -54,7 +54,7 @@ val SPECIAL_FUNCTION_NAMES = ResolveConstruct.values().map { it.specialFunctionN
 
 class GenericCandidateResolver(
     private val argumentTypeResolver: ArgumentTypeResolver,
-    private val coroutineInferenceSupport: CoroutineInferenceSupport,
+    private val builderInferenceSupport: BuilderInferenceSupport,
     private val languageVersionSettings: LanguageVersionSettings,
     private val dataFlowValueFactory: DataFlowValueFactory
 ) {
@@ -353,7 +353,7 @@ class GenericCandidateResolver(
             resultingSystem.resultingSubstitutor.replaceWithContravariantApproximatingSubstitution()
         } else resultingSystem.resultingSubstitutor
 
-        resolvedCall.setResultingSubstitutor(resultingSubstitutor)
+        resolvedCall.setSubstitutor(resultingSubstitutor)
     }
 
     // See KT-5385
@@ -384,8 +384,8 @@ class GenericCandidateResolver(
 
         val effectiveExpectedType = getEffectiveExpectedType(valueParameterDescriptor, valueArgument, context)
 
-        if (isCoroutineCallWithAdditionalInference(valueParameterDescriptor, valueArgument, languageVersionSettings)) {
-            coroutineInferenceSupport.analyzeCoroutine(functionLiteral, valueArgument, constraintSystem, context, effectiveExpectedType)
+        if (isBuilderInferenceCall(valueParameterDescriptor, valueArgument, languageVersionSettings)) {
+            builderInferenceSupport.analyzeBuilderInferenceCall(functionLiteral, valueArgument, constraintSystem, context, effectiveExpectedType)
         }
 
         val currentSubstitutor = constraintSystem.build().currentSubstitutor

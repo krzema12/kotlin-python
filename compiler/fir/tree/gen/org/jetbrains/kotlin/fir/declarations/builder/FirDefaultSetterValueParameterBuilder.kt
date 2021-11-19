@@ -6,24 +6,29 @@
 package org.jetbrains.kotlin.fir.declarations.builder
 
 import kotlin.contracts.*
-import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.builder.FirAnnotationContainerBuilder
 import org.jetbrains.kotlin.fir.builder.FirBuilderDsl
+import org.jetbrains.kotlin.fir.declarations.DeprecationsPerUseSite
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationAttributes
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
+import org.jetbrains.kotlin.fir.declarations.FirDeclarationStatus
 import org.jetbrains.kotlin.fir.declarations.FirPropertyAccessor
 import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
+import org.jetbrains.kotlin.fir.declarations.FirTypeParameterRef
 import org.jetbrains.kotlin.fir.declarations.FirValueParameter
 import org.jetbrains.kotlin.fir.declarations.impl.FirDefaultSetterValueParameter
+import org.jetbrains.kotlin.fir.declarations.impl.FirResolvedDeclarationStatusImpl
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.references.FirControlFlowGraphReference
-import org.jetbrains.kotlin.fir.symbols.impl.FirDelegateFieldSymbol
-import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirValueParameterSymbol
+import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.visitors.*
 import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedContainerSource
 
 /*
  * This file was generated automatically
@@ -33,21 +38,23 @@ import org.jetbrains.kotlin.name.Name
 @FirBuilderDsl
 class FirDefaultSetterValueParameterBuilder : FirAnnotationContainerBuilder {
     override var source: FirSourceElement? = null
-    lateinit var declarationSiteSession: FirSession
+    lateinit var moduleData: FirModuleData
     var resolvePhase: FirResolvePhase = FirResolvePhase.RAW_FIR
     lateinit var origin: FirDeclarationOrigin
     var attributes: FirDeclarationAttributes = FirDeclarationAttributes()
     lateinit var returnTypeRef: FirTypeRef
     var receiverTypeRef: FirTypeRef? = null
-    lateinit var symbol: FirVariableSymbol<FirValueParameter>
+    var deprecation: DeprecationsPerUseSite? = null
+    var containerSource: DeserializedContainerSource? = null
+    var dispatchReceiverType: ConeKotlinType? = null
     var initializer: FirExpression? = null
     var delegate: FirExpression? = null
-    var delegateFieldSymbol: FirDelegateFieldSymbol<FirValueParameter>? = null
     var isVar: Boolean = false
     var isVal: Boolean = true
     var getter: FirPropertyAccessor? = null
     var setter: FirPropertyAccessor? = null
     override val annotations: MutableList<FirAnnotationCall> = mutableListOf()
+    lateinit var symbol: FirValueParameterSymbol
     var defaultValue: FirExpression? = null
     var isCrossinline: Boolean = false
     var isNoinline: Boolean = false
@@ -56,21 +63,23 @@ class FirDefaultSetterValueParameterBuilder : FirAnnotationContainerBuilder {
     override fun build(): FirValueParameter {
         return FirDefaultSetterValueParameter(
             source,
-            declarationSiteSession,
+            moduleData,
             resolvePhase,
             origin,
             attributes,
             returnTypeRef,
             receiverTypeRef,
-            symbol,
+            deprecation,
+            containerSource,
+            dispatchReceiverType,
             initializer,
             delegate,
-            delegateFieldSymbol,
             isVar,
             isVal,
             getter,
             setter,
             annotations,
+            symbol,
             defaultValue,
             isCrossinline,
             isNoinline,

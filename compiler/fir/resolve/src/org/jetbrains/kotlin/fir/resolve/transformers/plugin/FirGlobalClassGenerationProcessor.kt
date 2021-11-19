@@ -9,8 +9,11 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirAnnotatedDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirFile
 import org.jetbrains.kotlin.fir.declarations.FirRegularClass
-import org.jetbrains.kotlin.fir.declarations.addDeclaration
-import org.jetbrains.kotlin.fir.extensions.*
+import org.jetbrains.kotlin.fir.declarations.utils.addDeclaration
+import org.jetbrains.kotlin.fir.extensions.FirDeclarationGenerationExtension
+import org.jetbrains.kotlin.fir.extensions.declarationGenerators
+import org.jetbrains.kotlin.fir.extensions.extensionService
+import org.jetbrains.kotlin.fir.extensions.predicateBasedProvider
 import org.jetbrains.kotlin.fir.resolve.ScopeSession
 import org.jetbrains.kotlin.fir.resolve.firProvider
 import org.jetbrains.kotlin.fir.resolve.providers.FirProviderInternals
@@ -56,6 +59,7 @@ class FirGlobalClassGenerationProcessor(
             when (owner) {
                 is FirRegularClass -> owner.addDeclaration(klass)
                 is FirFile -> owner.addDeclaration(klass)
+                else -> {}
             }
             session.generatedClassIndex.registerClass(klass, owner)
             session.predicateBasedProvider.registerGeneratedDeclaration(klass, owner)

@@ -5,21 +5,11 @@
 
 package org.jetbrains.kotlin.tooling
 
-import junit.framework.Assert.assertFalse
-import junit.framework.Assert.assertTrue
 import org.intellij.lang.annotations.Language
 import org.junit.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
-
-/*
- * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
- * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
- */
+import kotlin.test.*
 
 class DeserializeStringTest {
-
     @Test
     fun `schemaVersion 1 0 0`() {
         @Language("JSON") val json = """
@@ -28,7 +18,7 @@ class DeserializeStringTest {
             "buildSystem": "Gradle",
             "buildSystemVersion": "6.7",
             "buildPlugin": "org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper",
-            "buildPluginVersion": "1.5.255-SNAPSHOT",
+            "buildPluginVersion": "1.6.255-SNAPSHOT",
             "projectSettings": {
               "isHmppEnabled": false,
               "isCompatibilityMetadataVariantEnabled": true
@@ -88,7 +78,7 @@ class DeserializeStringTest {
         assertEquals("Gradle", metadata.buildSystem)
         assertEquals("6.7", metadata.buildSystemVersion)
         assertEquals("org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper", metadata.buildPlugin)
-        assertEquals("1.5.255-SNAPSHOT", metadata.buildPluginVersion)
+        assertEquals("1.6.255-SNAPSHOT", metadata.buildPluginVersion)
         assertFalse(metadata.projectSettings.isHmppEnabled)
         assertTrue(metadata.projectSettings.isCompatibilityMetadataVariantEnabled)
         assertEquals(5, metadata.projectTargets.size, "Expected exactly 4 targets")
@@ -135,4 +125,3 @@ class DeserializeStringTest {
         assertNull(commonTarget.extras.native)
     }
 }
-

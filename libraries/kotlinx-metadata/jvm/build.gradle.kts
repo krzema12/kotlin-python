@@ -26,8 +26,7 @@ group = "org.jetbrains.kotlinx"
 val deployVersion = findProperty("kotlinxMetadataDeployVersion") as String?
 version = deployVersion ?: "0.1-SNAPSHOT"
 
-jvmTarget = "1.6"
-javaHome = rootProject.extra["JDK_16"] as String
+project.configureJvmToolchain(JdkMajorVersion.JDK_1_6)
 
 sourceSets {
     "main" { projectDefault() }
@@ -51,12 +50,6 @@ dependencies {
     testImplementation(intellijDep()) { includeJars("asm-all", rootProject = rootProject) }
     testCompileOnly(project(":kotlin-reflect-api"))
     testRuntimeOnly(project(":kotlin-reflect"))
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>> {
-    kotlinOptions {
-        freeCompilerArgs += "-Xsuppress-deprecated-jvm-target-warning"
-    }
 }
 
 if (deployVersion != null) {

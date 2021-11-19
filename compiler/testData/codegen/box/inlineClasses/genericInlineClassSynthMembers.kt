@@ -1,6 +1,3 @@
-// TODO: muted for Python because it was muted for JS. Once Python doesn't piggy-back on JS, investigate if it can be re-enabled for Python.
-// IGNORE_BACKEND: PYTHON
-// IGNORE_BACKEND: JS
 // MODULE: lib1
 // FILE: lib1.kt
 
@@ -15,10 +12,8 @@ inline class IC<TT>(val c: C<TT>) {
     fun foo(): Int = c.hashCode()
 }
 
-
-// MODULE: main(lib2)
+// MODULE: main(lib1, lib2)
 // FILE: main.kt
-
 
 fun box(): String {
     val ic = IC<Int>(C(42))

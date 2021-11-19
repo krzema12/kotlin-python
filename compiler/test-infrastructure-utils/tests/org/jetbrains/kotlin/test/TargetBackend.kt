@@ -15,6 +15,7 @@ enum class TargetBackend(
     JVM_IR(true, JVM),
     JVM_MULTI_MODULE_IR_AGAINST_OLD(true, JVM_IR),
     JVM_MULTI_MODULE_OLD_AGAINST_IR(false, JVM),
+    JVM_IR_SERIALIZE(true, JVM_IR),
     JS(false),
     JS_IR(true, JS),
     JS_IR_ES6(true, JS_IR),
@@ -22,7 +23,11 @@ enum class TargetBackend(
     WASM(true),
     ANDROID(false, JVM),
     ANDROID_IR(true, JVM_IR),
-    NATIVE(true);
+    NATIVE(true),
+    JVM_WITH_OLD_EVALUATOR(false),
+    JVM_IR_WITH_OLD_EVALUATOR(true),
+    JVM_WITH_IR_EVALUATOR(false),
+    JVM_IR_WITH_IR_EVALUATOR(true);
 
     val compatibleWith get() = compatibleWithTargetBackend ?: ANY
 }

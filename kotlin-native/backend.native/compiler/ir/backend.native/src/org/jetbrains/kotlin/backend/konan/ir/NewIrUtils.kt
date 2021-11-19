@@ -7,26 +7,23 @@ package org.jetbrains.kotlin.backend.konan.ir
 
 import org.jetbrains.kotlin.backend.common.atMostOne
 import org.jetbrains.kotlin.backend.konan.DECLARATION_ORIGIN_INLINE_CLASS_SPECIAL_FUNCTION
+import org.jetbrains.kotlin.backend.konan.descriptors.allOverriddenFunctions
 import org.jetbrains.kotlin.backend.konan.descriptors.isInteropLibrary
 import org.jetbrains.kotlin.backend.konan.llvm.KonanMetadata
 import org.jetbrains.kotlin.backend.konan.serialization.KonanFileMetadataSource
 import org.jetbrains.kotlin.backend.konan.serialization.KonanIrModuleFragmentImpl
-import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
+import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.descriptors.konan.DeserializedKlibModuleOrigin
 import org.jetbrains.kotlin.descriptors.konan.klibModuleOrigin
+import org.jetbrains.kotlin.ir.IrBuiltIns
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.declarations.lazy.IrLazyDeclarationBase
-import org.jetbrains.kotlin.ir.descriptors.IrBuiltIns
-import org.jetbrains.kotlin.ir.expressions.IrCall
-import org.jetbrains.kotlin.ir.expressions.IrConst
-import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
-import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
-import org.jetbrains.kotlin.ir.symbols.isPublicApi
 import org.jetbrains.kotlin.ir.types.IdSignatureValues
 import org.jetbrains.kotlin.ir.types.classifierOrFail
 import org.jetbrains.kotlin.ir.types.isMarkedNullable
@@ -36,8 +33,7 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
-private fun IrClass.isClassTypeWithSignature(signature: IdSignature.PublicSignature): Boolean {
-    if (!symbol.isPublicApi) return false
+private fun IrClass.isClassTypeWithSignature(signature: IdSignature.CommonSignature): Boolean {
     return signature == symbol.signature
 }
 
@@ -91,8 +87,6 @@ fun IrValueParameter.isInlineParameter(): Boolean =
 val IrDeclaration.parentDeclarationsWithSelf: Sequence<IrDeclaration>
     get() = generateSequence(this, { it.parent as? IrDeclaration })
 
-fun IrClass.companionObject() = this.declarations.filterIsInstance<IrClass>().atMostOne { it.isCompanion }
-
 fun buildSimpleAnnotation(irBuiltIns: IrBuiltIns, startOffset: Int, endOffset: Int,
                           annotationClass: IrClass, vararg args: String): IrConstructorCall {
     val constructor = annotationClass.constructors.let {
@@ -110,6 +104,21 @@ fun buildSimpleAnnotation(irBuiltIns: IrBuiltIns, startOffset: Int, endOffset: I
 
 internal fun IrExpression.isBoxOrUnboxCall() =
         (this is IrCall && symbol.owner.origin == DECLARATION_ORIGIN_INLINE_CLASS_SPECIAL_FUNCTION)
+
+internal fun IrBranch.isUnconditional(): Boolean = (condition as? IrConst<*>)?.value == true
+
+internal val IrFunctionAccessExpression.actualCallee: IrFunction
+    get() {
+        val callee = symbol.owner
+        return ((this as? IrCall)?.superQualifierSymbol?.owner?.getOverridingOf(callee) ?: callee).target
+    }
+
+internal val IrFunctionAccessExpression.isVirtualCall: Boolean
+    get() = this is IrCall && this.superQualifierSymbol == null && this.symbol.owner.isOverridable
+
+private fun IrClass.getOverridingOf(function: IrFunction) = (function as? IrSimpleFunction)?.let {
+    it.allOverriddenFunctions.atMostOne { it.parent == this }
+}
 
 val ModuleDescriptor.konanLibrary get() = (this.klibModuleOrigin as? DeserializedKlibModuleOrigin)?.library
 val IrModuleFragment.konanLibrary get() =

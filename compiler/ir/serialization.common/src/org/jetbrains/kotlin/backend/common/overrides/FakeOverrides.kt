@@ -16,32 +16,34 @@
 
 package org.jetbrains.kotlin.backend.common.overrides
 
+import org.jetbrains.kotlin.backend.common.serialization.CompatibilityMode
 import org.jetbrains.kotlin.backend.common.serialization.DeclarationTable
 import org.jetbrains.kotlin.backend.common.serialization.GlobalDeclarationTable
 import org.jetbrains.kotlin.backend.common.serialization.signature.IdSignatureSerializer
+import org.jetbrains.kotlin.backend.common.serialization.signature.PublicIdSignatureComputer
 import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.descriptors.IrBuiltIns
 import org.jetbrains.kotlin.ir.overrides.FakeOverrideBuilderStrategy
 import org.jetbrains.kotlin.ir.overrides.IrOverridingUtil
 import org.jetbrains.kotlin.ir.symbols.IrPropertySymbol
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.impl.IrPropertySymbolImpl
+import org.jetbrains.kotlin.ir.types.IrTypeSystemContext
 import org.jetbrains.kotlin.ir.types.getClass
-import org.jetbrains.kotlin.ir.util.IdSignature
-import org.jetbrains.kotlin.ir.util.SymbolTable
-import org.jetbrains.kotlin.ir.util.parentAsClass
+import org.jetbrains.kotlin.ir.util.*
 
 class FakeOverrideGlobalDeclarationTable(
-    signatureSerializer: IdSignatureSerializer
-) : GlobalDeclarationTable(signatureSerializer, signatureSerializer.mangler) {
+    mangler: KotlinMangler.IrMangler
+) : GlobalDeclarationTable(mangler) {
     fun clear() = table.clear()
 }
 
-class FakeOverrideDeclarationTable(
-    signatureSerializer: IdSignatureSerializer,
-    globalTable: FakeOverrideGlobalDeclarationTable = FakeOverrideGlobalDeclarationTable(signatureSerializer)
+open class FakeOverrideDeclarationTable(
+    mangler: KotlinMangler.IrMangler,
+    globalTable: FakeOverrideGlobalDeclarationTable = FakeOverrideGlobalDeclarationTable(mangler),
+    signatureSerializerFactory: (PublicIdSignatureComputer, DeclarationTable) -> IdSignatureSerializer
 ) : DeclarationTable(globalTable) {
     override val globalDeclarationTable: FakeOverrideGlobalDeclarationTable = globalTable
+    override val signaturer: IdSignatureSerializer = signatureSerializerFactory(globalTable.publicIdSignatureComputer, this)
     fun clear() {
         this.table.clear()
         globalDeclarationTable.clear()
@@ -64,24 +66,27 @@ object DefaultFakeOverrideClassFilter : FakeOverrideClassFilter {
 class FakeOverrideBuilder(
     val linker: FileLocalAwareLinker,
     val symbolTable: SymbolTable,
-    val signaturer: IdSignatureSerializer,
-    irBuiltIns: IrBuiltIns,
-    val platformSpecificClassFilter: FakeOverrideClassFilter = DefaultFakeOverrideClassFilter
+    mangler: KotlinMangler.IrMangler,
+    typeSystem: IrTypeSystemContext,
+    val platformSpecificClassFilter: FakeOverrideClassFilter = DefaultFakeOverrideClassFilter,
+    private val fakeOverrideDeclarationTable: DeclarationTable = FakeOverrideDeclarationTable(mangler) { builder, table ->
+        IdSignatureSerializer(builder, table)
+    }
 ) : FakeOverrideBuilderStrategy() {
     private val haveFakeOverrides = mutableSetOf<IrClass>()
 
-    private val irOverridingUtil = IrOverridingUtil(irBuiltIns, this)
+    private val irOverridingUtil = IrOverridingUtil(typeSystem, this)
 
     // TODO: The declaration table is needed for the signaturer.
-    private val fakeOverrideDeclarationTable = FakeOverrideDeclarationTable(signaturer)
+//    private val fakeOverrideDeclarationTable = FakeOverrideDeclarationTable(mangler, signatureSerializerFactory)
 
-    private val fakeOverrideClassQueue = mutableListOf<IrClass>()
-    fun enqueueClass(clazz: IrClass, signature: IdSignature) {
+    private val fakeOverrideCandidates = mutableMapOf<IrClass, CompatibilityMode>()
+    fun enqueueClass(clazz: IrClass, signature: IdSignature, compatibilityMode: CompatibilityMode) {
         fakeOverrideDeclarationTable.assumeDeclarationSignature(clazz, signature)
-        fakeOverrideClassQueue.add(clazz)
+        fakeOverrideCandidates[clazz] = compatibilityMode
     }
 
-    private fun buildFakeOverrideChainsForClass(clazz: IrClass) {
+    private fun buildFakeOverrideChainsForClass(clazz: IrClass, compatibilityMode: CompatibilityMode) {
         if (haveFakeOverrides.contains(clazz)) return
         if (!platformSpecificClassFilter.needToConstructFakeOverrides(clazz)) return
 
@@ -91,20 +96,25 @@ class FakeOverrideBuilder(
             it.getClass() ?: error("Unexpected super type: $it")
         }
 
-        superClasses.forEach {
-            buildFakeOverrideChainsForClass(it)
-            haveFakeOverrides.add(it)
+        superClasses.forEach { superClass ->
+            val mode = fakeOverrideCandidates[superClass] ?: compatibilityMode
+            buildFakeOverrideChainsForClass(superClass, mode)
+            haveFakeOverrides.add(superClass)
         }
 
-        irOverridingUtil.buildFakeOverridesForClass(clazz)
+        fakeOverrideDeclarationTable.run {
+            inFile(clazz.fileOrNull) {
+                irOverridingUtil.buildFakeOverridesForClass(clazz, compatibilityMode.oldSignatures)
+            }
+        }
     }
 
-    override fun linkFunctionFakeOverride(declaration: IrFakeOverrideFunction) {
-        val signature = composeSignature(declaration)
+    override fun linkFunctionFakeOverride(declaration: IrFakeOverrideFunction, compatibilityMode: Boolean) {
+        val signature = composeSignature(declaration, compatibilityMode)
         declareFunctionFakeOverride(declaration, signature)
     }
 
-    override fun linkPropertyFakeOverride(declaration: IrFakeOverrideProperty) {
+    override fun linkPropertyFakeOverride(declaration: IrFakeOverrideProperty, compatibilityMode: Boolean) {
         // To compute a signature for a property with type parameters,
         // we must have its accessor's correspondingProperty pointing to the property's symbol.
         // See IrMangleComputer.mangleTypeParameterReference() for details.
@@ -121,21 +131,21 @@ class FakeOverrideBuilder(
             it.correspondingPropertySymbol = tempSymbol
         }
 
-        val signature = composeSignature(declaration)
+        val signature = composeSignature(declaration, compatibilityMode)
         declarePropertyFakeOverride(declaration, signature)
 
         declaration.getter?.let {
             it.correspondingPropertySymbol = declaration.symbol
-            linkFunctionFakeOverride(it as? IrFakeOverrideFunction ?: error("Unexpected fake override getter: $it"))
+            linkFunctionFakeOverride(it as? IrFakeOverrideFunction ?: error("Unexpected fake override getter: $it"), compatibilityMode)
         }
         declaration.setter?.let {
             it.correspondingPropertySymbol = declaration.symbol
-            linkFunctionFakeOverride(it as? IrFakeOverrideFunction ?: error("Unexpected fake override setter: $it"))
+            linkFunctionFakeOverride(it as? IrFakeOverrideFunction ?: error("Unexpected fake override setter: $it"), compatibilityMode)
         }
     }
 
-    private fun composeSignature(declaration: IrDeclaration) =
-        signaturer.composeSignatureForDeclaration(declaration)
+    private fun composeSignature(declaration: IrDeclaration, compatibleMode: Boolean) =
+        fakeOverrideDeclarationTable.signaturer.composeSignatureForDeclaration(declaration, compatibleMode)
 
     private fun declareFunctionFakeOverride(declaration: IrFakeOverrideFunction, signature: IdSignature) {
         val parent = declaration.parentAsClass
@@ -157,16 +167,18 @@ class FakeOverrideBuilder(
         }
     }
 
-    private fun provideFakeOverrides(klass: IrClass) {
-        buildFakeOverrideChainsForClass(klass)
+    fun provideFakeOverrides(klass: IrClass, compatibleMode: CompatibilityMode) {
+        buildFakeOverrideChainsForClass(klass, compatibleMode)
         irOverridingUtil.clear()
         haveFakeOverrides.add(klass)
     }
 
     fun provideFakeOverrides() {
-        while (fakeOverrideClassQueue.isNotEmpty()) {
-            val klass = fakeOverrideClassQueue.removeLast()
-            provideFakeOverrides(klass)
+        val entries = fakeOverrideCandidates.entries
+        while (entries.isNotEmpty()) {
+            val candidate = entries.last()
+            entries.remove(candidate)
+            provideFakeOverrides(candidate.key, candidate.value)
         }
     }
 }

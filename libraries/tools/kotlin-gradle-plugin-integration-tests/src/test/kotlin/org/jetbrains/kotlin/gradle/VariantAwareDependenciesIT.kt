@@ -86,10 +86,9 @@ class VariantAwareDependenciesIT : BaseGradleIT() {
     fun testNonKotlinJvmAppResolvesMppLib() {
         val outerProject = Project("sample-lib", gradleVersion, "new-mpp-lib-and-app")
         val innerProject = Project("simpleProject").apply {
-            setupWorkingDir()
+            setupWorkingDir(false)
             gradleBuildScript().modify {
-                it.replace("apply plugin: \"kotlin\"", "")
-                    .replace("\"org.jetbrains.kotlin:kotlin-stdlib\"", "\"org.jetbrains.kotlin:kotlin-stdlib:\$kotlin_version\"")
+                it.checkedReplace("id \"org.jetbrains.kotlin.jvm\"", "")
             }
 
             gradleBuildScript().appendText(
@@ -346,11 +345,45 @@ class VariantAwareDependenciesIT : BaseGradleIT() {
         }
     }
 
+    @Test
+    fun testResolveCompatibilityMetadataVariantWithNative() = with(Project("native-libraries")) {
+        setupWorkingDir()
+        val nestedProjectName = "nested"
+        embedProject(Project("native-libraries"), nestedProjectName)
+
+        projectDir.resolve("gradle.properties").appendText(
+            "\n" + """
+                kotlin.mpp.enableGranularSourceSetsMetadata=true
+                kotlin.mpp.enableCompatibilityMetadataVariant=true
+            """
+        )
+
+        val resolveConfigurationTaskName = "resolveConfiguration"
+        val marker = "###=>"
+
+        gradleBuildScript().appendText(
+            "\n" + """
+                dependencies { "commonMainImplementation"(project(":$nestedProjectName")) }
+                tasks.create("$resolveConfigurationTaskName") {
+                    doFirst {
+                        println("$marker" + configurations.getByName("metadataCompileClasspath").toList())
+                    }
+                }
+            """
+        )
+
+        build(resolveConfigurationTaskName) {
+            assertSuccessful()
+            val output = output.lines().single { marker in it }.substringAfter(marker).removeSurrounding("[", "]").split(",")
+            assertTrue { output.any { "$nestedProjectName-1.0.jar" in it } }
+        }
+    }
+
 }
 
 internal fun BaseGradleIT.Project.embedProject(other: BaseGradleIT.Project, renameTo: String? = null) {
     setupWorkingDir()
-    other.setupWorkingDir()
+    other.setupWorkingDir(false)
     val tempDir = createTempDir(if (isWindows) "" else "BaseGradleIT")
     val embeddedModuleName = renameTo ?: other.projectName
     try {
@@ -358,6 +391,16 @@ internal fun BaseGradleIT.Project.embedProject(other: BaseGradleIT.Project, rena
         tempDir.copyRecursively(projectDir.resolve(embeddedModuleName))
     } finally {
         check(tempDir.deleteRecursively())
+    }
+    if (projectName == other.projectName) {
+        val embeddedModuleDir = projectDir.resolve(embeddedModuleName)
+        embeddedModuleDir.walk().forEach {
+            if (it.name.contains("build.gradle")) {
+                it.modify { string ->
+                    string.lines().dropLast(5).joinToString(separator = "\n")
+                }
+            }
+        }
     }
     testCase.apply {
         gradleSettingsScript().appendText("\ninclude(\"$embeddedModuleName\")")

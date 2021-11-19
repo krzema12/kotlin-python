@@ -9,7 +9,6 @@ import com.android.build.gradle.BaseExtension
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.internal.GeneratedSubclass
-import org.gradle.api.provider.Property
 import org.gradle.api.tasks.*
 import org.jetbrains.kotlin.compilerRunner.konanVersion
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
@@ -44,7 +43,7 @@ internal val Project.buildKotlinToolingMetadataTask: TaskProvider<BuildKotlinToo
         }
     }
 
-open class BuildKotlinToolingMetadataTask : DefaultTask() {
+abstract class BuildKotlinToolingMetadataTask : DefaultTask() {
 
     companion object {
         /**
@@ -55,23 +54,28 @@ open class BuildKotlinToolingMetadataTask : DefaultTask() {
         const val defaultTaskName: String = "buildKotlinToolingMetadata"
     }
 
-    @get:OutputFile
-    val outputFile: Property<File> = project.objects.property(File::class.java)
-        .convention(project.buildDir.resolve("kotlinToolingMetadata").resolve("kotlin-tooling-metadata.json"))
+    @get:OutputDirectory
+    val outputDirectory: File = project.buildDir.resolve("kotlinToolingMetadata")
 
-    @Internal
-    fun getKotlinToolingMetadata(): KotlinToolingMetadata {
-        return project.kotlinExtension.getKotlinToolingMetadata()
+    @get:Internal /* Covered by 'outputDirectory' */
+    val outputFile: File = outputDirectory.resolve("kotlin-tooling-metadata.json")
+
+    @get:Internal
+    internal val kotlinToolingMetadata by lazy {
+        project.kotlinExtension.getKotlinToolingMetadata()
     }
 
-    @Input
-    internal fun getKotlinToolingMetadataJson(): String = getKotlinToolingMetadata().toJsonString()
+    @get:Input
+    internal val kotlinToolingMetadataJson
+        get() = kotlinToolingMetadata.toJsonString()
 
     @TaskAction
     internal fun createToolingMetadataFile() {
-        val outputFile = outputFile.orNull ?: return
-        outputFile.parentFile.mkdirs()
-        outputFile.writeText(getKotlinToolingMetadataJson())
+        /* Ensure output directory exists and is empty */
+        outputDirectory.mkdirs()
+        outputDirectory.listFiles().orEmpty().forEach { file -> file.deleteRecursively() }
+
+        outputFile.writeText(kotlinToolingMetadataJson)
     }
 }
 
@@ -81,9 +85,7 @@ private fun KotlinProjectExtension.getKotlinToolingMetadata(): KotlinToolingMeta
         buildSystem = "Gradle",
         buildSystemVersion = project.gradle.gradleVersion,
         buildPlugin = project.plugins.withType(KotlinBasePluginWrapper::class.java).joinToString(";") { it.javaClass.canonicalName },
-        buildPluginVersion = project.getKotlinPluginVersion() ?: throw IllegalStateException(
-            "Failed to infer Kotlin Plugin version"
-        ),
+        buildPluginVersion = project.getKotlinPluginVersion(),
         projectSettings = buildProjectSettings(),
         projectTargets = buildProjectTargets()
     )

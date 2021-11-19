@@ -16,7 +16,8 @@ sealed class CallKind(vararg resolutionSequence: ResolutionStage) {
         CheckDispatchReceiver,
         CheckExtensionReceiver,
         CheckLowPriorityInOverloadResolution,
-        PostponedVariablesInitializerResolutionStage
+        PostponedVariablesInitializerResolutionStage,
+        CheckDeprecatedSinceKotlin,
     )
 
     object SyntheticSelect : CallKind(
@@ -39,9 +40,11 @@ sealed class CallKind(vararg resolutionSequence: ResolutionStage) {
         CheckDispatchReceiver,
         CheckExtensionReceiver,
         CheckArguments,
+        CheckCallModifiers,
         EagerResolveOfCallableReferences,
         CheckLowPriorityInOverloadResolution,
-        PostponedVariablesInitializerResolutionStage
+        PostponedVariablesInitializerResolutionStage,
+        CheckDeprecatedSinceKotlin
     )
 
     object DelegatingConstructorCall : CallKind(
@@ -54,7 +57,8 @@ sealed class CallKind(vararg resolutionSequence: ResolutionStage) {
         CheckDispatchReceiver,
         CheckExtensionReceiver,
         CheckArguments,
-        EagerResolveOfCallableReferences
+        EagerResolveOfCallableReferences,
+        CheckDeprecatedSinceKotlin,
     )
 
     object CallableReference : CallKind(
@@ -66,7 +70,8 @@ sealed class CallKind(vararg resolutionSequence: ResolutionStage) {
         CheckDispatchReceiver,
         CheckExtensionReceiver,
         CheckCallableReferenceExpectedType,
-        CheckLowPriorityInOverloadResolution
+        CheckLowPriorityInOverloadResolution,
+        CheckDeprecatedSinceKotlin,
     )
 
     object SyntheticIdForCallableReferencesResolution : CallKind(

@@ -33,45 +33,52 @@ class CachingLazyStorage<K, V>(
     private val valueExternalizer: DataExternalizer<V>
 ) : LazyStorage<K, V> {
     private var storage: PersistentHashMap<K, V>? = null
+    private var isStorageFileExist = true
 
-    @Synchronized
     private fun getStorageIfExists(): PersistentHashMap<K, V>? {
         if (storage != null) return storage
+
+        if (!isStorageFileExist) return null
 
         if (storageFile.exists()) {
             storage = createMap()
             return storage
         }
 
+        isStorageFileExist = false
         return null
     }
 
-    @Synchronized
     private fun getStorageOrCreateNew(): PersistentHashMap<K, V> {
         if (storage == null) {
             storage = createMap()
         }
-
         return storage!!
     }
 
     override val keys: Collection<K>
+        @Synchronized
         get() = getStorageIfExists()?.allKeysWithExistingMapping ?: listOf()
 
+    @Synchronized
     override operator fun contains(key: K): Boolean =
         getStorageIfExists()?.containsMapping(key) ?: false
 
+    @Synchronized
     override operator fun get(key: K): V? =
         getStorageIfExists()?.get(key)
 
+    @Synchronized
     override operator fun set(key: K, value: V) {
         getStorageOrCreateNew().put(key, value)
     }
 
+    @Synchronized
     override fun remove(key: K) {
         getStorageIfExists()?.remove(key)
     }
 
+    @Synchronized
     override fun append(key: K, value: V) {
         getStorageOrCreateNew().appendData(key, { valueExternalizer.save(it, value) })
     }
@@ -103,7 +110,11 @@ class CachingLazyStorage<K, V>(
 
     @Synchronized
     override fun close() {
-        storage?.close()
+        try {
+            storage?.close()
+        } finally {
+            storage = null
+        }
     }
 
     private fun createMap(): PersistentHashMap<K, V> = PersistentHashMap(storageFile, keyDescriptor, valueExternalizer)

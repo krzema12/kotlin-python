@@ -35,13 +35,22 @@ enum class CompilerSystemProperties(val property: String, val alwaysDirectAccess
     DAEMON_RMI_SOCKET_CONNECT_INTERVAL_PROPERTY("kotlin.daemon.socket.connect.interval"),
     KOTLIN_COMPILER_ENVIRONMENT_KEEPALIVE_PROPERTY("kotlin.environment.keepalive"),
     COMPILE_DAEMON_CUSTOM_RUN_FILES_PATH_FOR_TESTS("kotlin.daemon.custom.run.files.path.for.tests"),
+    COMPILE_INCREMENTAL_WITH_CLASSPATH_SNAPSHOTS("kotlin.incremental.classpath.snapshot.enabled"),
+    COMPILE_INCREMENTAL_WITH_ARTIFACT_TRANSFORM("kotlin.incremental.useClasspathSnapshot"),
     KOTLIN_COLORS_ENABLED_PROPERTY("kotlin.colors.enabled"),
+
+    KOTLIN_STAT_ENABLED_PROPERTY("kotlin.plugin.stat.enabled"),
+    KOTLIN_STAT_ENDPOINT_PROPERTY("kotlin.plugin.stat.endpoint"),
+    KOTLIN_STAT_USER_PROPERTY("kotlin.plugin.stat.user"),
+    KOTLIN_STAT_PASSWORD_PROPERTY("kotlin.plugin.stat.password"),
+    KOTLIN_STAT_LABEl_PROPERTY("kotlin.plugin.stat.label"),
+
     OS_NAME("os.name", alwaysDirectAccess = true),
     TMP_DIR("java.io.tmpdir"),
     USER_HOME("user.home", alwaysDirectAccess = true),
     JAVA_VERSION("java.specification.version", alwaysDirectAccess = true),
     JAVA_HOME("java.home", alwaysDirectAccess = true),
-    JAVA_CLASS_PATH("java.class.path", alwaysDirectAccess = true),
+    JAVA_CLASS_PATH("java.class.path", alwaysDirectAccess = true)
     ;
 
     private fun <T> getProperFunction(custom: T?, default: T): T {

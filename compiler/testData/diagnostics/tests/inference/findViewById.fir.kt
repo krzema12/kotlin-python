@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // !LANGUAGE: +ExpectedTypeFromCast
 // !DIAGNOSTICS: -UNUSED_VARIABLE -DEBUG_INFO_LEAKING_THIS
 
@@ -51,8 +50,8 @@ fun test(t: Test) {
 }
 
 fun test2(t: Test?) {
-    val xSafeCallSafeCast = t?.findViewById(0) as? X
-    val xSafeCallSafeCastExplicitType = t?.findViewById<X>(0) as? X
+    val xSafeCallSafeCast = t?.findViewById(0) <!USELESS_CAST!>as? X<!>
+    val xSafeCallSafeCastExplicitType = t?.findViewById<X>(0) <!USELESS_CAST!>as? X<!>
 
     val xSafeCallCast = t?.findViewById(0) as X
     val xSafeCallCastExplicitType = t<!UNNECESSARY_SAFE_CALL!>?.<!>findViewById<X>(0) as X

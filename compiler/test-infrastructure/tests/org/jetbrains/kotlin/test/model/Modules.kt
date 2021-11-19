@@ -16,13 +16,20 @@ data class TestModule(
     val targetPlatform: TargetPlatform,
     val targetBackend: TargetBackend?,
     val frontendKind: FrontendKind<*>,
+    val backendKind: BackendKind<*>,
     val binaryKind: BinaryKind<*>,
     val files: List<TestFile>,
-    val dependencies: List<DependencyDescription>,
-    val friends: List<DependencyDescription>,
+    val allDependencies: List<DependencyDescription>,
     val directives: RegisteredDirectives,
     val languageVersionSettings: LanguageVersionSettings
 ) {
+    val regularDependencies: List<DependencyDescription>
+        get() = allDependencies.filter { it.relation == DependencyRelation.RegularDependency }
+    val friendDependencies: List<DependencyDescription>
+        get() = allDependencies.filter { it.relation == DependencyRelation.FriendDependency }
+    val dependsOnDependencies: List<DependencyDescription>
+        get() = allDependencies.filter { it.relation == DependencyRelation.DependsOnDependency }
+
     override fun equals(other: Any?): Boolean =
         other is TestModule && name == other.name
 
@@ -33,7 +40,7 @@ data class TestModule(
             appendLine("Module: $name")
             appendLine("targetPlatform = $targetPlatform")
             appendLine("Dependencies:")
-            dependencies.forEach { appendLine("  $it") }
+            allDependencies.forEach { appendLine("  $it") }
             appendLine("Directives:\n  $directives")
             files.forEach { appendLine(it) }
         }
@@ -55,9 +62,13 @@ class TestFile(
     val name: String = relativePath.split("/").last()
 }
 
+val TestFile.nameWithoutExtension: String
+    get() = name.substringBeforeLast(".")
+
 enum class DependencyRelation {
-    Dependency,
-    DependsOn
+    RegularDependency,
+    FriendDependency,
+    DependsOnDependency
 }
 
 enum class DependencyKind {

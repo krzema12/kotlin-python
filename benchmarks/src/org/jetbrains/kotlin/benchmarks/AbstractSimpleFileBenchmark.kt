@@ -12,6 +12,7 @@ import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.impl.PsiFileFactoryImpl
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.testFramework.LightVirtualFile
+import org.jetbrains.kotlin.ObsoleteTestInfrastructure
 import org.jetbrains.kotlin.asJava.finder.JavaElementFinder
 import org.jetbrains.kotlin.builtins.jvm.JvmBuiltIns
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
@@ -24,6 +25,7 @@ import org.jetbrains.kotlin.context.withModule
 import org.jetbrains.kotlin.context.withProject
 import org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl
 import org.jetbrains.kotlin.diagnostics.Severity
+import org.jetbrains.kotlin.fir.builder.PsiHandlingMode
 import org.jetbrains.kotlin.fir.builder.RawFirBuilder
 import org.jetbrains.kotlin.fir.createSessionForTests
 import org.jetbrains.kotlin.fir.java.FirJavaElementFinder
@@ -147,12 +149,13 @@ abstract class AbstractSimpleFileBenchmark {
         bh.consume(result.shouldGenerateCode)
     }
 
+    @OptIn(ObsoleteTestInfrastructure::class)
     private fun analyzeGreenFileIr(bh: Blackhole) {
         val scope = GlobalSearchScope.filesScope(env.project, listOf(file.virtualFile))
             .uniteWith(TopDownAnalyzerFacadeForJVM.AllJavaSourcesInProjectScope(env.project))
-        val session = createSessionForTests(env, scope)
+        val session = createSessionForTests(env.toAbstractProjectEnvironment(), scope.toAbstractProjectFileSearchScope())
         val firProvider = session.firProvider as FirProviderImpl
-        val builder = RawFirBuilder(session, firProvider.kotlinScopeProvider)
+        val builder = RawFirBuilder(session, firProvider.kotlinScopeProvider, PsiHandlingMode.COMPILER)
 
         val totalTransformer = FirTotalResolveProcessor(session)
         val firFile = builder.buildFirFile(file).also(firProvider::recordFile)

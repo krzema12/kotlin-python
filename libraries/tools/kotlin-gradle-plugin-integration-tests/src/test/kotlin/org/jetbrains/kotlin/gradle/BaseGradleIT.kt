@@ -1,3 +1,8 @@
+/*
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
+ */
+
 package org.jetbrains.kotlin.gradle
 
 import com.intellij.testFramework.TestDataFile
@@ -13,6 +18,7 @@ import org.jdom.output.XMLOutputter
 import org.jetbrains.kotlin.gradle.model.ModelContainer
 import org.jetbrains.kotlin.gradle.model.ModelFetcherBuildAction
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
+import org.jetbrains.kotlin.gradle.testbase.enableCacheRedirector
 import org.jetbrains.kotlin.gradle.util.*
 import org.jetbrains.kotlin.test.RunnerWithMuteInDatabase
 import org.jetbrains.kotlin.test.util.trimTrailingWhitespaces
@@ -40,10 +46,10 @@ abstract class BaseGradleIT {
     val isTeamCityRun = System.getenv("TEAMCITY_VERSION") != null
 
     @Before
-    fun setUp() {
+    open fun setUp() {
         // Aapt2 from Android Gradle Plugin 3.2 and below does not handle long paths on Windows.
         workingDir = createTempDir(if (isWindows) "" else "BaseGradleIT")
-        acceptAndroidSdkLicenses()
+        defaultBuildOptions().androidHome?.let { acceptAndroidSdkLicenses(it) }
     }
 
     @After
@@ -51,45 +57,45 @@ abstract class BaseGradleIT {
         workingDir.deleteRecursively()
     }
 
-    // https://developer.android.com/studio/intro/update.html#download-with-gradle
-    fun acceptAndroidSdkLicenses() = defaultBuildOptions().androidHome?.let {
-        val sdkLicensesDir = it.resolve("licenses")
-        if(!sdkLicensesDir.exists()) sdkLicensesDir.mkdirs()
-
-        val sdkLicenses = listOf(
-            "8933bad161af4178b1185d1a37fbf41ea5269c55",
-            "d56f5187479451eabf01fb78af6dfcb131a6481e",
-            "24333f8a63b6825ea9c5514f83c2829b004d1fee",
-        )
-        val sdkPreviewLicense = "84831b9409646a918e30573bab4c9c91346d8abd"
-
-        val sdkLicenseFile = sdkLicensesDir.resolve("android-sdk-license")
-        if (!sdkLicenseFile.exists()) {
-            sdkLicenseFile.createNewFile()
-            sdkLicenseFile.writeText(
-                sdkLicenses.joinToString(separator = "\n")
-            )
-        } else {
-            sdkLicenses
-                .subtract(
-                    sdkLicenseFile.readText().lines()
-                )
-                .forEach {
-                    sdkLicenseFile.appendText("$it\n")
-                }
-        }
-
-        val sdkPreviewLicenseFile = sdkLicensesDir.resolve("android-sdk-preview-license")
-        if (!sdkPreviewLicenseFile.exists()) {
-            sdkPreviewLicenseFile.writeText(sdkPreviewLicense)
-        } else {
-            if (sdkPreviewLicense != sdkPreviewLicenseFile.readText().trim()) {
-                sdkPreviewLicenseFile.writeText(sdkPreviewLicense)
-            }
-        }
-    }
 
     companion object {
+        // https://developer.android.com/studio/intro/update.html#download-with-gradle
+        fun acceptAndroidSdkLicenses(androidHome: File) {
+            val sdkLicensesDir = androidHome.resolve("licenses")
+            if (!sdkLicensesDir.exists()) sdkLicensesDir.mkdirs()
+
+            val sdkLicenses = listOf(
+                "8933bad161af4178b1185d1a37fbf41ea5269c55",
+                "d56f5187479451eabf01fb78af6dfcb131a6481e",
+                "24333f8a63b6825ea9c5514f83c2829b004d1fee",
+            )
+            val sdkPreviewLicense = "84831b9409646a918e30573bab4c9c91346d8abd"
+
+            val sdkLicenseFile = sdkLicensesDir.resolve("android-sdk-license")
+            if (!sdkLicenseFile.exists()) {
+                sdkLicenseFile.createNewFile()
+                sdkLicenseFile.writeText(
+                    sdkLicenses.joinToString(separator = "\n")
+                )
+            } else {
+                sdkLicenses
+                    .subtract(
+                        sdkLicenseFile.readText().lines()
+                    )
+                    .forEach {
+                        sdkLicenseFile.appendText("$it\n")
+                    }
+            }
+
+            val sdkPreviewLicenseFile = sdkLicensesDir.resolve("android-sdk-preview-license")
+            if (!sdkPreviewLicenseFile.exists()) {
+                sdkPreviewLicenseFile.writeText(sdkPreviewLicense)
+            } else {
+                if (sdkPreviewLicense != sdkPreviewLicenseFile.readText().trim()) {
+                    sdkPreviewLicenseFile.writeText(sdkPreviewLicense)
+                }
+            }
+        }
 
         private object DaemonRegistry {
             // wrapper version to the number of daemon runs performed
@@ -240,6 +246,7 @@ abstract class BaseGradleIT {
         val kotlinVersion: String = KOTLIN_VERSION,
         val kotlinDaemonDebugPort: Int? = null,
         val usePreciseJavaTracking: Boolean? = null,
+        val useClasspathSnapshot: Boolean? = null,
         val withBuildCache: Boolean = false,
         val kaptOptions: KaptOptions? = null,
         val parallelTasksInProject: Boolean = false,
@@ -250,6 +257,7 @@ abstract class BaseGradleIT {
         val useFir: Boolean = false,
         val customEnvironmentVariables: Map<String, String> = mapOf(),
         val dryRun: Boolean = false,
+        val abiSnapshot: Boolean = false,
     )
 
     enum class ConfigurationCacheProblems {
@@ -277,12 +285,14 @@ abstract class BaseGradleIT {
         open val resourcesRoot = File(resourcesRootFile, "testProject/$resourceDirName")
         val projectDir = File(workingDir.canonicalFile, projectName)
 
-        open fun setupWorkingDir() {
+        open fun setupWorkingDir(enableCacheRedirector: Boolean = true) {
             if (!projectDir.isDirectory || projectDir.listFiles().isEmpty()) {
                 copyRecursively(this.resourcesRoot, workingDir)
                 if (addHeapDumpOptions) {
                     addHeapDumpOptionsToPropertiesFile()
                 }
+
+                if (enableCacheRedirector) projectDir.toPath().enableCacheRedirector()
             }
         }
 
@@ -459,11 +469,11 @@ abstract class BaseGradleIT {
 
         val errors = "(?m)^.*\\[ERROR] \\[\\S+] (.*)$".toRegex().findAll(output)
         val errorMessage = buildString {
-            appendln("Gradle build failed")
-            appendln()
+            appendLine("Gradle build failed")
+            appendLine()
             if (errors.any()) {
-                appendln("Possible errors:")
-                errors.forEach { match -> appendln(match.groupValues[1]) }
+                appendLine("Possible errors:")
+                errors.forEach { match -> appendLine(match.groupValues[1]) }
             }
         }
         fail(errorMessage)
@@ -512,7 +522,7 @@ abstract class BaseGradleIT {
     }
 
     fun CompiledProject.assertNotContains(regex: Regex) {
-        assertNull(regex.find(output), "Output should not contain '$regex'")
+        assertNull(regex.find(output)?.value, "Output should not contain '$regex'")
     }
 
     fun CompiledProject.assertNoWarnings(sanitize: (String) -> String = { it }) {
@@ -562,7 +572,7 @@ abstract class BaseGradleIT {
         return this
     }
 
-    private fun Iterable<File>.projectRelativePaths(project: Project): Iterable<String> {
+    internal fun Iterable<File>.projectRelativePaths(project: Project): Iterable<String> {
         return map { it.canonicalFile.toRelativeString(project.projectDir) }
     }
 
@@ -665,6 +675,12 @@ abstract class BaseGradleIT {
         }
     }
 
+    fun CompiledProject.assertTasksRegisteredRegex(vararg tasks: String) {
+        for (task in tasks) {
+            assertContainsRegex("'Register task $task'".toRegex())
+        }
+    }
+
     fun CompiledProject.assertTasksNotRegistered(vararg tasks: String) {
         for (task in tasks) {
             assertNotContains("'Register task $task'")
@@ -686,6 +702,12 @@ abstract class BaseGradleIT {
     fun CompiledProject.assertTasksNotRealized(vararg tasks: String) {
         for (task in tasks) {
             assertNotContains("'Realize task $task'")
+        }
+    }
+
+    fun CompiledProject.assertTasksNotRealizedRegex(vararg tasks: String) {
+        for (task in tasks) {
+            assertNotContains("'Realize task $task'".toRegex())
         }
     }
 
@@ -780,6 +802,15 @@ Finished executing task ':$taskName'|
     fun CompiledProject.javaClassesDir(subproject: String? = null, sourceSet: String = "main"): String =
         project.classesDir(subproject, sourceSet, language = "java")
 
+    fun CompiledProject.compilerArgs(taskName: String): String {
+        val pattern = "$taskName Kotlin compiler args: "
+        return output
+            .lineSequence()
+            .firstOrNull { it.contains(pattern) }
+            ?.substringAfter(pattern)
+            ?: throw AssertionError("Cant find compiler args for task: $taskName")
+    }
+
     private fun Project.createBuildCommand(wrapperDir: File, params: Array<out String>, options: BuildOptions): List<String> =
         createGradleCommand(wrapperDir, createGradleTailParameters(options, params))
 
@@ -837,10 +868,10 @@ Finished executing task ':$taskName'|
             }
 
         val xmlString = buildString {
-            appendln("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
-            appendln("<results>")
+            appendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+            appendLine("<results>")
             files.forEach { file ->
-                appendln(
+                appendLine(
                     file.readText()
                         .trimTrailingWhitespaces()
                         .replace(projectDir.absolutePath, "/\$PROJECT_DIR$")
@@ -848,7 +879,7 @@ Finished executing task ':$taskName'|
                         .replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n", "")
                 )
             }
-            appendln("</results>")
+            appendLine("</results>")
         }
 
         val doc = SAXBuilder().build(xmlString.reader())
@@ -900,6 +931,7 @@ Finished executing task ':$taskName'|
             options.incrementalJsKlib?.let { add("-Pkotlin.incremental.js.klib=$it") }
             options.jsIrBackend?.let { add("-Pkotlin.js.useIrBackend=$it") }
             options.usePreciseJavaTracking?.let { add("-Pkotlin.incremental.usePreciseJavaTracking=$it") }
+            options.useClasspathSnapshot?.let { add("-Pkotlin.incremental.useClasspathSnapshot=$it") }
             options.androidGradlePluginVersion?.let { add("-Pandroid_tools_version=$it") }
             if (options.debug) {
                 add("-Dorg.gradle.debug=true")
@@ -940,6 +972,9 @@ Finished executing task ':$taskName'|
 
             if (options.dryRun) {
                 add("--dry-run")
+            }
+            if (options.abiSnapshot) {
+                add("-Dkotlin.incremental.classpath.snapshot.enabled=true")
             }
 
             add("-Dorg.gradle.unsafe.configuration-cache=${options.configurationCache}")

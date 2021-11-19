@@ -15,23 +15,27 @@ import org.jetbrains.kotlin.psi.psiUtil.getParentOfType
 import org.jetbrains.kotlin.psi.psiUtil.isAncestor
 import org.jetbrains.kotlin.resolve.*
 import org.jetbrains.kotlin.resolve.calls.ArgumentTypeResolver
+import org.jetbrains.kotlin.resolve.calls.callUtil.shouldBeSubstituteWithStubTypes
 import org.jetbrains.kotlin.resolve.calls.callUtil.toOldSubstitution
 import org.jetbrains.kotlin.resolve.calls.components.*
 import org.jetbrains.kotlin.resolve.calls.context.BasicCallResolutionContext
-import org.jetbrains.kotlin.resolve.calls.inference.components.ConstraintSystemCompletionMode
-import org.jetbrains.kotlin.resolve.calls.inference.components.KotlinConstraintSystemCompleter
-import org.jetbrains.kotlin.resolve.calls.inference.components.NewTypeSubstitutor
-import org.jetbrains.kotlin.resolve.calls.inference.components.NewTypeSubstitutorByConstructorMap
+import org.jetbrains.kotlin.resolve.calls.inference.components.*
 import org.jetbrains.kotlin.resolve.calls.inference.model.*
 import org.jetbrains.kotlin.resolve.calls.model.*
 import org.jetbrains.kotlin.resolve.calls.tower.*
 import org.jetbrains.kotlin.resolve.calls.util.FakeCallableDescriptorForObject
 import org.jetbrains.kotlin.resolve.deprecation.DeprecationResolver
 import org.jetbrains.kotlin.resolve.descriptorUtil.hasBuilderInferenceAnnotation
+import org.jetbrains.kotlin.resolve.descriptorUtil.shouldBeSubstituteWithStubTypes
 import org.jetbrains.kotlin.types.*
+import org.jetbrains.kotlin.types.checker.NewCapturedType
 import org.jetbrains.kotlin.types.expressions.DoubleColonExpressionResolver
 import org.jetbrains.kotlin.types.expressions.ExpressionTypingServices
+import org.jetbrains.kotlin.types.model.freshTypeConstructor
+import org.jetbrains.kotlin.types.model.safeSubstitute
+import org.jetbrains.kotlin.types.typeUtil.asTypeProjection
 import org.jetbrains.kotlin.types.typeUtil.contains
+import org.jetbrains.kotlin.types.typeUtil.shouldBeUpdated
 import org.jetbrains.kotlin.utils.addToStdlib.cast
 
 class BuilderInferenceSession(
@@ -41,7 +45,7 @@ class BuilderInferenceSession(
     callComponents: KotlinCallComponents,
     builtIns: KotlinBuiltIns,
     private val topLevelCallContext: BasicCallResolutionContext,
-    private val stubsForPostponedVariables: Map<NewTypeVariable, StubType>,
+    private val stubsForPostponedVariables: Map<NewTypeVariable, StubTypeForBuilderInference>,
     private val trace: BindingTrace,
     private val kotlinToResolvedCallTransformer: KotlinToResolvedCallTransformer,
     private val expressionTypingServices: ExpressionTypingServices,
@@ -50,22 +54,24 @@ class BuilderInferenceSession(
     private val deprecationResolver: DeprecationResolver,
     private val moduleDescriptor: ModuleDescriptor,
     private val typeApproximator: TypeApproximator,
-    private val missingSupertypesResolver: MissingSupertypesResolver
+    private val missingSupertypesResolver: MissingSupertypesResolver,
+    private val lambdaArgument: LambdaKotlinCallArgument
 ) : ManyCandidatesResolver<CallableDescriptor>(
     psiCallResolver, postponedArgumentsAnalyzer, kotlinConstraintSystemCompleter, callComponents, builtIns
 ) {
-    private var nestedBuilderInferenceSessions: MutableSet<BuilderInferenceSession> = mutableSetOf()
-
     private lateinit var lambda: ResolvedLambdaAtom
-    private lateinit var commonSystem: NewConstraintSystemImpl
+    private val commonSystem = NewConstraintSystemImpl(callComponents.constraintInjector, builtIns, callComponents.kotlinTypeRefiner)
 
     init {
-        if (topLevelCallContext.inferenceSession is BuilderInferenceSession) {
-            topLevelCallContext.inferenceSession.nestedBuilderInferenceSessions.add(this)
+        if (topLevelCallContext.inferenceSession is ManyCandidatesResolver<*>) {
+            topLevelCallContext.inferenceSession.addNestedInferenceSession(this)
         }
+        stubsForPostponedVariables.keys.forEach(commonSystem::registerVariable)
     }
 
     private val commonCalls = arrayListOf<PSICompletedCallInfo>()
+
+    private val localVariables = arrayListOf<KtVariableDeclaration>()
 
     // These calls come from the old type inference
     private val oldDoubleColonExpressionCalls = arrayListOf<KtExpression>()
@@ -85,7 +91,7 @@ class BuilderInferenceSession(
             return subResolvedAtoms?.any { it.hasPostponed() } == true
         }
 
-        if (!candidate.isSuitableForBuilderInference()) {
+        if (!candidate.resolvedCall.isSuitableForBuilderInference()) {
             return true
         }
 
@@ -99,20 +105,25 @@ class BuilderInferenceSession(
         } || candidate.getSubResolvedAtoms().any { it.hasPostponed() }
     }
 
-    private fun KotlinResolutionCandidate.isSuitableForBuilderInference(): Boolean {
-        val extensionReceiver = resolvedCall.extensionReceiverArgument
-        val dispatchReceiver = resolvedCall.dispatchReceiverArgument
+    private fun ResolvedCallAtom.isSuitableForBuilderInference(): Boolean {
+        val extensionReceiver = extensionReceiverArgument
+        val dispatchReceiver = dispatchReceiverArgument
+        val resolvedAtoms = subResolvedAtoms
+
         return when {
+            resolvedAtoms != null && resolvedAtoms.map { it.atom }.filterIsInstance<SubKotlinCallArgument>().any {
+                it.callResult.resultCallAtom.isSuitableForBuilderInference()
+            } -> true
             extensionReceiver == null && dispatchReceiver == null -> false
             dispatchReceiver?.receiver?.stableType?.containsStubType() == true -> true
-            extensionReceiver?.receiver?.stableType?.containsStubType() == true -> resolvedCall.candidateDescriptor.hasBuilderInferenceAnnotation()
+            extensionReceiver?.receiver?.stableType?.containsStubType() == true -> candidateDescriptor.hasBuilderInferenceAnnotation()
             else -> false
         }
     }
 
     private fun KotlinType.containsStubType(): Boolean {
         return this.contains {
-            it is StubType
+            it is StubTypeForBuilderInference
         }
     }
 
@@ -134,20 +145,23 @@ class BuilderInferenceSession(
 
         if (!checkCall) return
 
-        val isApplicableCall =
-            callComponents.statelessCallbacks.isApplicableCallForBuilderInference(
-                resultingDescriptor,
-                callComponents.languageVersionSettings
-            )
+        val isApplicableCall = callComponents.statelessCallbacks.isApplicableCallForBuilderInference(
+            resultingDescriptor,
+            callComponents.languageVersionSettings
+        )
 
         if (!isApplicableCall) {
             hasInapplicableCall = true
         }
     }
 
+    fun addLocalVariable(variable: KtVariableDeclaration) {
+        localVariables.add(variable)
+    }
+
     private fun anyReceiverContainStubType(descriptor: CallableDescriptor): Boolean {
-        return descriptor.dispatchReceiverParameter?.type?.contains { it is StubType } == true ||
-                descriptor.extensionReceiverParameter?.type?.contains { it is StubType } == true
+        return descriptor.dispatchReceiverParameter?.type?.contains { it is StubTypeForBuilderInference } == true ||
+                descriptor.extensionReceiverParameter?.type?.contains { it is StubTypeForBuilderInference } == true
     }
 
     private fun isTopLevelBuilderInferenceCall() = findParentBuildInferenceSession() == null
@@ -161,6 +175,16 @@ class BuilderInferenceSession(
         }
 
         return null
+    }
+
+    @OptIn(ExperimentalStdlibApi::class)
+    private fun findAllParentBuildInferenceSessions() = buildList {
+        var currentSession: BuilderInferenceSession? = findParentBuildInferenceSession()
+
+        while (currentSession != null) {
+            add(currentSession)
+            currentSession = currentSession.findParentBuildInferenceSession()
+        }
     }
 
     fun hasInapplicableCall(): Boolean = hasInapplicableCall
@@ -190,8 +214,16 @@ class BuilderInferenceSession(
         return lhs.isAncestor(callElement)
     }
 
-    override fun currentConstraintSystem(): ConstraintStorage {
-        return ConstraintStorage.Empty
+    override fun currentConstraintSystem() = ConstraintStorage.Empty
+
+    fun getNotFixedToInferredTypesSubstitutor(): NewTypeSubstitutor {
+        val currentSubstitutor =
+            commonSystem.buildCurrentSubstitutor().cast<NewTypeSubstitutor>().takeIf { !it.isEmpty } ?: return EmptySubstitutor
+        return ComposedSubstitutor(currentSubstitutor, createNonFixedTypeToVariableSubstitutor())
+    }
+
+    override fun initializeLambda(lambda: ResolvedLambdaAtom) {
+        this.lambda = lambda
     }
 
     override fun inferPostponedVariables(
@@ -200,15 +232,18 @@ class BuilderInferenceSession(
         completionMode: ConstraintSystemCompletionMode,
         diagnosticsHolder: KotlinDiagnosticsHolder,
     ): Map<TypeConstructor, UnwrappedType>? {
-        val (commonSystem, effectivelyEmptyConstraintSystem) = buildCommonSystem(initialStorage)
-        val initialStorageSubstitutor = initialStorage.buildResultingSubstitutor(commonSystem, transformTypeVariablesToErrorTypes = false)
+        initializeLambda(lambda)
 
-        this.lambda = lambda
-        this.commonSystem = commonSystem
+        fun getResultingSubstitutor(): NewTypeSubstitutor {
+            val storageSubstitutor = initialStorage.buildResultingSubstitutor(commonSystem, transformTypeVariablesToErrorTypes = false)
+            return ComposedSubstitutor(storageSubstitutor, commonSystem.buildCurrentSubstitutor() as NewTypeSubstitutor)
+        }
+
+        val effectivelyEmptyConstraintSystem = initializeCommonSystem(initialStorage)
 
         if (effectivelyEmptyConstraintSystem) {
             if (isTopLevelBuilderInferenceCall()) {
-                updateAllCalls(initialStorageSubstitutor)
+                updateAllCalls(getResultingSubstitutor())
             }
             return null
         }
@@ -222,10 +257,20 @@ class BuilderInferenceSession(
         )
 
         if (isTopLevelBuilderInferenceCall()) {
-            updateAllCalls(initialStorageSubstitutor)
+            updateAllCalls(getResultingSubstitutor())
         }
 
         return commonSystem.fixedTypeVariables.cast() // TODO: SUB
+    }
+
+    @OptIn(ExperimentalStdlibApi::class)
+    private fun getNestedBuilderInferenceSessions() = buildList {
+        for (nestedSession in nestedInferenceSessions) {
+            when (nestedSession) {
+                is BuilderInferenceSession -> add(nestedSession)
+                is DelegatedPropertyInferenceSession -> addAll(nestedSession.getNestedBuilderInferenceSessions())
+            }
+        }
     }
 
     /*
@@ -237,12 +282,17 @@ class BuilderInferenceSession(
     private fun updateAllCalls(substitutor: NewTypeSubstitutor) {
         updateCalls(
             lambda,
-            substitutor = ComposedSubstitutor(substitutor, commonSystem.buildCurrentSubstitutor() as NewTypeSubstitutor),
+            substitutor = substitutor,
             commonSystem.errors
         )
 
+        val nestedBuilderInferenceSessions = getNestedBuilderInferenceSessions()
+
         for (nestedSession in nestedBuilderInferenceSessions) {
-            nestedSession.updateAllCalls(substitutor)
+            // TODO: exclude injected variables
+            nestedSession.updateAllCalls(
+                ComposedSubstitutor(nestedSession.commonSystem.buildCurrentSubstitutor() as NewTypeSubstitutor, substitutor)
+            )
         }
     }
 
@@ -267,12 +317,26 @@ class BuilderInferenceSession(
     private fun createNonFixedTypeToVariableSubstitutor() = NewTypeSubstitutorByConstructorMap(createNonFixedTypeToVariableMap())
 
     private fun integrateConstraints(
-        commonSystem: NewConstraintSystemImpl,
         storage: ConstraintStorage,
         nonFixedToVariablesSubstitutor: NewTypeSubstitutor,
         shouldIntegrateAllConstraints: Boolean
-    ): Boolean {
-        storage.notFixedTypeVariables.values.forEach { commonSystem.registerVariable(it.typeVariable) }
+    ) {
+        storage.notFixedTypeVariables.values.forEach {
+            if (it.typeVariable.freshTypeConstructor(commonSystem.typeSystemContext) !in commonSystem.allTypeVariables) {
+                commonSystem.registerVariable(it.typeVariable)
+            }
+        }
+
+        for (parentSession in findAllParentBuildInferenceSessions()) {
+            for ((variable, stubType) in parentSession.stubsForPostponedVariables) {
+                commonSystem.registerVariable(variable)
+                commonSystem.addSubtypeConstraint(
+                    variable.defaultType,
+                    stubType,
+                    InjectedAnotherStubTypeConstraintPositionImpl(lambdaArgument)
+                )
+            }
+        }
 
         /*
         * storage can contain the following substitutions:
@@ -283,25 +347,27 @@ class BuilderInferenceSession(
         * */
         val callSubstitutor = storage.buildResultingSubstitutor(commonSystem, transformTypeVariablesToErrorTypes = false)
 
-        var introducedConstraint = false
-
         for (initialConstraint in storage.initialConstraints) {
-            val lower = nonFixedToVariablesSubstitutor.safeSubstitute(callSubstitutor.safeSubstitute(initialConstraint.a as UnwrappedType)) // TODO: SUB
-            val upper = nonFixedToVariablesSubstitutor.safeSubstitute(callSubstitutor.safeSubstitute(initialConstraint.b as UnwrappedType)) // TODO: SUB
+            if (initialConstraint.position is BuilderInferencePosition) continue
+
+            val substitutedConstraint = initialConstraint.substitute(callSubstitutor)
+            val (lower, upper) = substituteNotFixedVariables(
+                substitutedConstraint.a as KotlinType,
+                substitutedConstraint.b as KotlinType,
+                nonFixedToVariablesSubstitutor
+            )
 
             if (commonSystem.isProperType(lower) && commonSystem.isProperType(upper)) continue
-
-            introducedConstraint = true
 
             when (initialConstraint.constraintKind) {
                 ConstraintKind.LOWER -> error("LOWER constraint shouldn't be used, please use UPPER")
 
-                ConstraintKind.UPPER -> commonSystem.addSubtypeConstraint(lower, upper, initialConstraint.position)
+                ConstraintKind.UPPER -> commonSystem.addSubtypeConstraint(lower, upper, substitutedConstraint.position)
 
                 ConstraintKind.EQUALITY ->
                     with(commonSystem) {
-                        addSubtypeConstraint(lower, upper, initialConstraint.position)
-                        addSubtypeConstraint(upper, lower, initialConstraint.position)
+                        addSubtypeConstraint(lower, upper, substitutedConstraint.position)
+                        addSubtypeConstraint(upper, lower, substitutedConstraint.position)
                     }
             }
         }
@@ -310,35 +376,74 @@ class BuilderInferenceSession(
             for ((variableConstructor, type) in storage.fixedTypeVariables) {
                 val typeVariable = storage.allTypeVariables.getValue(variableConstructor)
                 commonSystem.registerVariable(typeVariable)
-                commonSystem.addEqualityConstraint((typeVariable as NewTypeVariable).defaultType, type, CoroutinePosition)
-                introducedConstraint = true
+                commonSystem.addEqualityConstraint((typeVariable as NewTypeVariable).defaultType, type, BuilderInferencePosition)
             }
         }
-
-        return introducedConstraint
     }
 
-    private fun buildCommonSystem(initialStorage: ConstraintStorage): Pair<NewConstraintSystemImpl, Boolean> {
-        val commonSystem = NewConstraintSystemImpl(callComponents.constraintInjector, builtIns)
+    fun addExpectedTypeConstraint(
+        callExpression: KtExpression,
+        a: KotlinType,
+        b: KotlinType
+    ) {
+        val nonFixedToVariablesSubstitutor: NewTypeSubstitutor = createNonFixedTypeToVariableSubstitutor()
+        val (lower, upper) = substituteNotFixedVariables(a, b, nonFixedToVariablesSubstitutor)
+        val position = BuilderInferenceExpectedTypeConstraintPosition(callExpression)
+        val currentSubstitutor = commonSystem.buildCurrentSubstitutor()
 
+        commonSystem.addSubtypeConstraint(
+            currentSubstitutor.safeSubstitute(commonSystem.typeSystemContext, lower),
+            currentSubstitutor.safeSubstitute(commonSystem.typeSystemContext, upper),
+            position
+        )
+    }
+
+    private fun substituteNotFixedVariables(
+        lowerType: KotlinType,
+        upperType: KotlinType,
+        nonFixedToVariablesSubstitutor: NewTypeSubstitutor
+    ): Pair<KotlinType, KotlinType> {
+        val commonCapTypes = extractCommonCapturedTypes(lowerType, upperType)
+        val substitutedCommonCapType = commonCapTypes.associate {
+            it.constructor as TypeConstructor to nonFixedToVariablesSubstitutor.safeSubstitute(it).asTypeProjection()
+        }
+
+        val capTypesSubstitutor = TypeConstructorSubstitution.createByConstructorsMap(substitutedCommonCapType).buildSubstitutor()
+
+        val substitutedLowerType = nonFixedToVariablesSubstitutor.safeSubstitute(capTypesSubstitutor.substitute(lowerType.unwrap()))
+        val substitutedUpperType = nonFixedToVariablesSubstitutor.safeSubstitute(capTypesSubstitutor.substitute(upperType.unwrap()))
+
+        return substitutedLowerType to substitutedUpperType
+    }
+
+    private fun extractCommonCapturedTypes(a: KotlinType, b: KotlinType): List<NewCapturedType> {
+        val extractedCapturedTypes = mutableSetOf<NewCapturedType>().also { extractCapturedTypesTo(a, it) }
+        return extractedCapturedTypes.filter { capturedType -> b.contains { it.constructor === capturedType.constructor } }
+    }
+
+    private fun extractCapturedTypesTo(type: KotlinType, to: MutableSet<NewCapturedType>) {
+        if (type is NewCapturedType) {
+            to.add(type)
+        }
+        for (typeArgument in type.arguments) {
+            if (typeArgument.isStarProjection) continue
+            extractCapturedTypesTo(typeArgument.type, to)
+        }
+    }
+
+    private fun initializeCommonSystem(initialStorage: ConstraintStorage): Boolean {
         val nonFixedToVariablesSubstitutor = createNonFixedTypeToVariableSubstitutor()
 
-        integrateConstraints(commonSystem, initialStorage, nonFixedToVariablesSubstitutor, false)
-
-        var effectivelyEmptyCommonSystem = true
+        integrateConstraints(initialStorage, nonFixedToVariablesSubstitutor, false)
 
         for (call in commonCalls) {
-            val hasConstraints =
-                integrateConstraints(commonSystem, call.callResolutionResult.constraintSystem, nonFixedToVariablesSubstitutor, false)
-            if (hasConstraints) effectivelyEmptyCommonSystem = false
+            integrateConstraints(call.callResolutionResult.constraintSystem, nonFixedToVariablesSubstitutor, false)
         }
         for (call in partiallyResolvedCallsInfo) {
-            val hasConstraints =
-                integrateConstraints(commonSystem, call.callResolutionResult.constraintSystem, nonFixedToVariablesSubstitutor, true)
-            if (hasConstraints) effectivelyEmptyCommonSystem = false
+            integrateConstraints(call.callResolutionResult.constraintSystem, nonFixedToVariablesSubstitutor, true)
         }
 
-        return commonSystem to effectivelyEmptyCommonSystem
+        return commonSystem.notFixedTypeVariables.all { it.value.constraints.isEmpty() }
     }
 
     private fun reportErrors(completedCall: CallInfo, resolvedCall: ResolvedCall<*>, errors: List<ConstraintSystemError>) {
@@ -349,6 +454,13 @@ class BuilderInferenceSession(
             resolvedCall.resultingDescriptor,
             errors.asDiagnostics()
         )
+    }
+
+    private fun updateLocalVariable(localVariable: KtVariableDeclaration, substitutor: NewTypeSubstitutor) {
+        val descriptor = trace[BindingContext.VARIABLE, localVariable] as? LocalVariableDescriptor
+        if (descriptor != null && descriptor.type.shouldBeUpdated()) {
+            descriptor.setOutType(substitutor.safeSubstitute(descriptor.type.unwrap()))
+        }
     }
 
     private fun updateCall(
@@ -378,7 +490,7 @@ class BuilderInferenceSession(
         return currentSession.topLevelCallContext.trace
     }
 
-    private fun completeDoubleColonExpression(expression: KtDoubleColonExpression, substitutor: NewTypeSubstitutor) {
+    fun completeDoubleColonExpression(expression: KtDoubleColonExpression, substitutor: NewTypeSubstitutor) {
         val atomCompleter = createResolvedAtomCompleter(substitutor, topLevelCallContext)
         val declarationDescriptor = trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, expression)
 
@@ -402,7 +514,13 @@ class BuilderInferenceSession(
         val resolvedCall = trace.get(BindingContext.RESOLVED_CALL, call)
 
         if (resolvedCall is ResolvedCallImpl<*>) {
-            resolvedCall.setResultingSubstitutor(substitutor.toOldSubstitution().buildSubstitutor())
+            val oldSubstitutor = substitutor.toOldSubstitution().buildSubstitutor()
+            if (resolvedCall.resultingDescriptor.shouldBeSubstituteWithStubTypes()) {
+                resolvedCall.setResultingSubstitutor(oldSubstitutor)
+            }
+            if (resolvedCall.shouldBeSubstituteWithStubTypes()) {
+                resolvedCall.setResolvedCallSubstitutor(oldSubstitutor)
+            }
         }
     }
 
@@ -447,6 +565,20 @@ class BuilderInferenceSession(
         }
     }
 
+    private fun InitialConstraint.substitute(substitutor: NewTypeSubstitutor): InitialConstraint {
+        val lowerSubstituted = substitutor.safeSubstitute(a as UnwrappedType)
+        val upperSubstituted = substitutor.safeSubstitute(b as UnwrappedType)
+
+        if (lowerSubstituted == a && upperSubstituted == b) return this
+
+        return InitialConstraint(
+            lowerSubstituted,
+            upperSubstituted,
+            constraintKind,
+            BuilderInferenceSubstitutionConstraintPositionImpl(lambdaArgument, this)
+        )
+    }
+
     companion object {
         private fun BuilderInferenceSession.updateCalls(
             lambda: ResolvedLambdaAtom,
@@ -462,6 +594,10 @@ class BuilderInferenceSession(
                 nonFixedTypesToResultSubstitutor,
                 topLevelCallContext.replaceBindingTrace(findTopLevelTrace()).replaceInferenceSession(this)
             )
+
+            for (localVariable in localVariables) {
+                updateLocalVariable(localVariable, nonFixedTypesToResultSubstitutor)
+            }
 
             for (completedCall in commonCalls) {
                 updateCall(completedCall, nonFixedTypesToResultSubstitutor, nonFixedTypesToResult)
@@ -493,3 +629,5 @@ class ComposedSubstitutor(val left: NewTypeSubstitutor, val right: NewTypeSubsti
 
     override val isEmpty: Boolean get() = left.isEmpty && right.isEmpty
 }
+
+class BuilderInferenceExpectedTypeConstraintPosition(callElement: KtExpression) : ExpectedTypeConstraintPosition<KtExpression>(callElement)

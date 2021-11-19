@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.backend.common.ir.ir2string
 import org.jetbrains.kotlin.backend.jvm.JvmBackendContext
 import org.jetbrains.kotlin.backend.jvm.JvmLoweredDeclarationOrigin
 import org.jetbrains.kotlin.backend.jvm.JvmSymbols
-import org.jetbrains.kotlin.backend.jvm.lower.MultifileFacadeFileEntry
+import org.jetbrains.kotlin.backend.jvm.MultifileFacadeFileEntry
 import org.jetbrains.kotlin.builtins.StandardNames.FqNames
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
 import org.jetbrains.kotlin.codegen.*
@@ -36,10 +36,10 @@ import org.jetbrains.kotlin.load.java.JavaDescriptorVisibilities
 import org.jetbrains.kotlin.load.kotlin.JvmPackagePartSource
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.resolve.checkers.ExpectedActualDeclarationChecker
 import org.jetbrains.kotlin.resolve.inline.INLINE_ONLY_ANNOTATION_FQ_NAME
 import org.jetbrains.kotlin.resolve.jvm.AsmTypes
 import org.jetbrains.kotlin.resolve.jvm.jvmSignature.JvmClassSignature
+import org.jetbrains.kotlin.resolve.multiplatform.OptionalAnnotationUtil
 import org.jetbrains.kotlin.resolve.source.PsiSourceElement
 import org.jetbrains.kotlin.utils.addIfNotNull
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
@@ -179,7 +179,7 @@ private fun IrDeclarationWithVisibility.specialCaseVisibility(kind: OwnerKind?):
         return Opcodes.ACC_PRIVATE
     }
 
-    if (isInlineOnlyPrivateInBytecode() || isInlineOnlyPropertyAccessor()) {
+    if (isInlineOnlyPrivateInBytecode()) {
         return Opcodes.ACC_PRIVATE
     }
 
@@ -223,26 +223,18 @@ private tailrec fun isInlineOrContainedInInline(declaration: IrDeclaration?): Bo
 
 /* Borrowed from inlineOnly.kt */
 
-fun IrDeclarationWithVisibility.isInlineOnlyOrReifiable(): Boolean =
-    this is IrFunction && (isReifiable() || isInlineOnly())
-
 fun IrDeclarationWithVisibility.isEffectivelyInlineOnly(): Boolean =
-    isInlineOnlyOrReifiable() || isInlineOnlyPrivateInBytecode() || isInlineOnlyPropertyAccessor()
+    this is IrFunction && (isReifiable() || isInlineOnly() || isPrivateInlineSuspend())
 
-fun IrDeclarationWithVisibility.isInlineOnlyPrivateInBytecode(): Boolean =
-    (this is IrFunction && isInlineOnly()) || isPrivateInlineSuspend()
+private fun IrDeclarationWithVisibility.isInlineOnlyPrivateInBytecode(): Boolean =
+    this is IrFunction && (isInlineOnly() || isPrivateInlineSuspend())
 
-private fun IrDeclarationWithVisibility.isPrivateInlineSuspend(): Boolean =
-    this is IrFunction && isSuspend && isInline && visibility == DescriptorVisibilities.PRIVATE
-
-private fun IrDeclarationWithVisibility.isInlineOnlyPropertyAccessor(): Boolean {
-    if (this !is IrSimpleFunction) return false
-    val propertySymbol = correspondingPropertySymbol ?: return false
-    return propertySymbol.owner.hasAnnotation(INLINE_ONLY_ANNOTATION_FQ_NAME)
-}
+private fun IrFunction.isPrivateInlineSuspend(): Boolean =
+    isSuspend && isInline && visibility == DescriptorVisibilities.PRIVATE
 
 fun IrFunction.isInlineOnly() =
-    isInline && hasAnnotation(INLINE_ONLY_ANNOTATION_FQ_NAME)
+    (isInline && hasAnnotation(INLINE_ONLY_ANNOTATION_FQ_NAME)) ||
+            (this is IrSimpleFunction && correspondingPropertySymbol?.owner?.hasAnnotation(INLINE_ONLY_ANNOTATION_FQ_NAME) == true)
 
 fun IrFunction.isReifiable() = typeParameters.any { it.isReified }
 
@@ -279,8 +271,12 @@ internal fun IrTypeMapper.mapClassSignature(irClass: IrClass, type: Type): JvmCl
     }
     sw.writeSuperclassEnd()
 
-    val superInterfaces = LinkedHashSet<String>()
     val kotlinMarkerInterfaces = LinkedHashSet<String>()
+    if (irClass.superTypes.any { it.isSuspendFunction() || it.isKSuspendFunction() }) {
+        kotlinMarkerInterfaces.add("kotlin/coroutines/jvm/internal/SuspendFunction")
+    }
+
+    val superInterfaces = LinkedHashSet<String>()
     for (superType in irClass.superTypes) {
         val superClass = superType.safeAs<IrSimpleType>()?.classifier?.safeAs<IrClassSymbol>()?.owner ?: continue
         if (superClass.isJvmInterface) {
@@ -330,7 +326,7 @@ fun IrClass.getVisibilityAccessFlagForClass(): Int {
 // TODO: Descriptor-based code also checks for `descriptor.isExpect`; we don't represent expect/actual distinction in IR thus far.
 fun IrClass.isOptionalAnnotationClass(): Boolean =
     isAnnotationClass &&
-            hasAnnotation(ExpectedActualDeclarationChecker.OPTIONAL_EXPECTATION_FQ_NAME)
+            hasAnnotation(OptionalAnnotationUtil.OPTIONAL_EXPECTATION_FQ_NAME)
 
 val IrDeclaration.isAnnotatedWithDeprecated: Boolean
     get() = annotations.hasAnnotation(FqNames.deprecated)
@@ -378,7 +374,7 @@ fun IrSimpleType.isRawType(): Boolean =
     hasAnnotation(JvmSymbols.RAW_TYPE_ANNOTATION_FQ_NAME)
 
 internal fun classFileContainsMethod(classId: ClassId, function: IrFunction, context: JvmBackendContext): Boolean? {
-    val originalSignature = context.methodSignatureMapper.mapSignatureWithGeneric(function).asmMethod
+    val originalSignature = context.methodSignatureMapper.mapAsmMethod(function)
     val originalDescriptor = originalSignature.descriptor
     val descriptor = if (function.isSuspend)
         listOf(*Type.getArgumentTypes(originalDescriptor), Type.getObjectType("kotlin/coroutines/Continuation"))
@@ -388,12 +384,16 @@ internal fun classFileContainsMethod(classId: ClassId, function: IrFunction, con
 }
 
 val IrMemberWithContainerSource.parentClassId: ClassId?
-    get() = (containerSource as? JvmPackagePartSource)?.classId ?: (parent as? IrClass)?.classId
+    get() = ((this as? IrSimpleFunction)?.correspondingPropertySymbol?.owner ?: this).let { directMember ->
+        (directMember.containerSource as? JvmPackagePartSource)?.classId ?: (directMember.parent as? IrClass)?.classId
+    }
 
 // Translated into IR-based terms from classifierDescriptor?.classId
-val IrClass.classId: ClassId?
+private val IrClass.classId: ClassId?
     get() = when (val parent = parent) {
         is IrExternalPackageFragment -> ClassId(parent.fqName, name)
+        // TODO: there's `context.classNameOverride`; theoretically it's only relevant for top-level members,
+        //       where `containerSource` is a `JvmPackagePartSource` anyway, but I'm not 100% sure.
         is IrClass -> parent.classId?.createNestedClassId(name)
         else -> null
     }

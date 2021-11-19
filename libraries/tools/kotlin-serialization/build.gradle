@@ -1,16 +1,10 @@
 apply plugin: 'kotlin'
 apply plugin: 'jps-compatible'
 
-configurePublishing(project)
+configureGradlePluginPublishing(project)
 
 pill {
     variant = 'FULL'
-}
-
-compileJava {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-    options.fork = false
 }
 
 dependencies {
@@ -23,14 +17,11 @@ dependencies {
     embedded(project(":kotlinx-serialization-compiler-plugin")) { transitive = false }
 }
 
-tasks.withType(project.compileKotlin.class) {
-    kotlinOptions.freeCompilerArgs += ["-Xskip-runtime-version-check"]
-}
-
 jar {
     manifestAttributes(manifest, project)
 }
 
+ArtifactsKt.noDefaultJar(project)
 ArtifactsKt.runtimeJar(project, EmbeddableKt.rewriteDefaultJarDepsToShadedCompiler(project, {}), {})
 configureSourcesJar()
 configureJavadocJar()

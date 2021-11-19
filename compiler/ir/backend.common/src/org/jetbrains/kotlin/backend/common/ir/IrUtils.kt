@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.DescriptorVisibility
 import org.jetbrains.kotlin.descriptors.Modality
+import org.jetbrains.kotlin.ir.IrBuiltIns
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.builders.declarations.addConstructor
 import org.jetbrains.kotlin.ir.builders.declarations.buildReceiverParameter
@@ -33,6 +34,7 @@ import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitor
 import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.name.SpecialNames
 import java.io.StringWriter
 
 fun ir2string(ir: IrElement?): String = ir?.render() ?: ""
@@ -402,7 +404,7 @@ fun IrFunction.isMethodOfAny(): Boolean =
                 else -> false
             }
 
-fun IrClass.simpleFunctions() = declarations.flatMap {
+fun IrDeclarationContainer.simpleFunctions() = declarations.flatMap {
     when (it) {
         is IrSimpleFunction -> listOf(it)
         is IrProperty -> listOfNotNull(it.getter, it.setter)
@@ -423,7 +425,7 @@ fun IrFunction.createDispatchReceiverParameter(origin: IrDeclarationOrigin? = nu
         startOffset, endOffset,
         origin ?: parentAsClass.origin,
         IrValueParameterSymbolImpl(),
-        Name.special("<this>"),
+        SpecialNames.THIS,
         -1,
         parentAsClass.defaultType,
         null,
@@ -457,11 +459,11 @@ val IrFunction.allParametersCount: Int
 // TODO: merge it with FakeOverrideBuilder.
 private class FakeOverrideBuilderForLowerings : FakeOverrideBuilderStrategy() {
 
-    override fun linkFunctionFakeOverride(declaration: IrFakeOverrideFunction) {
+    override fun linkFunctionFakeOverride(declaration: IrFakeOverrideFunction, compatibilityMode: Boolean) {
         declaration.acquireSymbol(IrSimpleFunctionSymbolImpl())
     }
 
-    override fun linkPropertyFakeOverride(declaration: IrFakeOverrideProperty) {
+    override fun linkPropertyFakeOverride(declaration: IrFakeOverrideProperty, compatibilityMode: Boolean) {
         val propertySymbol = IrPropertySymbolImpl()
         declaration.getter?.let { it.correspondingPropertySymbol = propertySymbol }
         declaration.setter?.let { it.correspondingPropertySymbol = propertySymbol }
@@ -470,18 +472,18 @@ private class FakeOverrideBuilderForLowerings : FakeOverrideBuilderStrategy() {
 
         declaration.getter?.let {
             it.correspondingPropertySymbol = declaration.symbol
-            linkFunctionFakeOverride(it as? IrFakeOverrideFunction ?: error("Unexpected fake override getter: $it"))
+            linkFunctionFakeOverride(it as? IrFakeOverrideFunction ?: error("Unexpected fake override getter: $it"), compatibilityMode)
         }
         declaration.setter?.let {
             it.correspondingPropertySymbol = declaration.symbol
-            linkFunctionFakeOverride(it as? IrFakeOverrideFunction ?: error("Unexpected fake override setter: $it"))
+            linkFunctionFakeOverride(it as? IrFakeOverrideFunction ?: error("Unexpected fake override setter: $it"), compatibilityMode)
         }
     }
 }
 
-fun IrClass.addFakeOverrides(irBuiltIns: IrBuiltIns, implementedMembers: List<IrOverridableMember> = emptyList()) {
-    IrOverridingUtil(irBuiltIns, FakeOverrideBuilderForLowerings())
-        .buildFakeOverridesForClassUsingOverriddenSymbols(this, implementedMembers)
+fun IrClass.addFakeOverrides(typeSystem: IrTypeSystemContext, implementedMembers: List<IrOverridableMember> = emptyList()) {
+    IrOverridingUtil(typeSystem, FakeOverrideBuilderForLowerings())
+        .buildFakeOverridesForClassUsingOverriddenSymbols(this, implementedMembers, compatibilityMode = false)
         .forEach { addChild(it) }
 }
 
@@ -697,7 +699,3 @@ fun IrExpression?.isPure(
 
     return false
 }
-
-fun IrDeclaration.isFromJava(): Boolean =
-    origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB ||
-            parent is IrDeclaration && (parent as IrDeclaration).isFromJava()

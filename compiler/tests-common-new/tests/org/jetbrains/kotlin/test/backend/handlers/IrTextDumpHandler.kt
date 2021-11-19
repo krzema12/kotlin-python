@@ -8,12 +8,14 @@ package org.jetbrains.kotlin.test.backend.handlers
 import org.jetbrains.kotlin.backend.common.serialization.signature.IdSignatureDescriptor
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.descriptors.findClassAcrossModuleDependencies
-import org.jetbrains.kotlin.ir.IrVerifier
 import org.jetbrains.kotlin.ir.backend.js.lower.serialization.ir.JsManglerDesc
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.impl.IrFactoryImpl
-import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.ir.util.DeclarationStubGenerator
+import org.jetbrains.kotlin.ir.util.SymbolTable
+import org.jetbrains.kotlin.ir.util.dump
+import org.jetbrains.kotlin.ir.util.dumpTreesFromLineNumber
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi2ir.generators.DeclarationStubGeneratorImpl
@@ -30,7 +32,7 @@ import org.jetbrains.kotlin.test.model.TestFile
 import org.jetbrains.kotlin.test.model.TestModule
 import org.jetbrains.kotlin.test.services.TestServices
 import org.jetbrains.kotlin.test.services.moduleStructure
-import org.jetbrains.kotlin.test.utils.MultiModuleInfoDumperImpl
+import org.jetbrains.kotlin.test.utils.MultiModuleInfoDumper
 import org.jetbrains.kotlin.test.utils.withExtension
 import org.jetbrains.kotlin.test.utils.withSuffixAndExtension
 import java.io.File
@@ -51,10 +53,10 @@ class IrTextDumpHandler(testServices: TestServices) : AbstractIrHandler(testServ
         }
     }
 
-    override val directivesContainers: List<DirectivesContainer>
+    override val directiveContainers: List<DirectivesContainer>
         get() = listOf(CodegenTestDirectives, FirDiagnosticsDirectives)
 
-    private val baseDumper = MultiModuleInfoDumperImpl()
+    private val baseDumper = MultiModuleInfoDumper()
     private val buildersForSeparateFileDumps: MutableMap<File, StringBuilder> = mutableMapOf()
 
     @OptIn(ExperimentalStdlibApi::class)
@@ -67,11 +69,6 @@ class IrTextDumpHandler(testServices: TestServices) : AbstractIrHandler(testServ
             if (EXTERNAL_FILE in testFile.directives) continue
             val actualDump = irFile.dumpTreesFromLineNumber(lineNumber = 0, normalizeNames = true)
             builder.append(actualDump)
-            verify(irFile)
-
-            val irFileCopy = irFile.deepCopyWithSymbols()
-            val dumpOfCopy = irFileCopy.dumpTreesFromLineNumber(lineNumber = 0, normalizeNames = true)
-            assertions.assertEquals(actualDump, dumpOfCopy) { "IR dump mismatch after deep copy with symbols" }
         }
         compareDumpsOfExternalClasses(module, info)
     }
@@ -90,7 +87,7 @@ class IrTextDumpHandler(testServices: TestServices) : AbstractIrHandler(testServ
         val stubGenerator = DeclarationStubGeneratorImpl(
             irModule.descriptor,
             SymbolTable(signaturer, IrFactoryImpl), // TODO
-            module.languageVersionSettings
+            irModule.irBuiltins
         )
 
         val baseFile = testServices.moduleStructure.originalTestDataFiles.first()
@@ -120,10 +117,6 @@ class IrTextDumpHandler(testServices: TestServices) : AbstractIrHandler(testServ
         if (actualDump.isNotEmpty()) {
             assertions.assertEqualsToFile(expectedFile, actualDump)
         }
-    }
-
-    private fun verify(irFile: IrFile) {
-        IrVerifier(assertions).verifyWithAssert(irFile)
     }
 
     private val TestModule.dumpExtension: String

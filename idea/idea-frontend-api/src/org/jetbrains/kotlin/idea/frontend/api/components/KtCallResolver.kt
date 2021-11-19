@@ -6,19 +6,28 @@
 package org.jetbrains.kotlin.idea.frontend.api.components
 
 import org.jetbrains.kotlin.idea.frontend.api.calls.KtCall
+import org.jetbrains.kotlin.psi.KtArrayAccessExpression
 import org.jetbrains.kotlin.psi.KtBinaryExpression
-import org.jetbrains.kotlin.psi.KtCallExpression
+import org.jetbrains.kotlin.psi.KtCallElement
+import org.jetbrains.kotlin.psi.KtUnaryExpression
 
-abstract class KtCallResolver : KtAnalysisSessionComponent() {
-    abstract fun resolveCall(call: KtCallExpression): KtCall?
-    abstract fun resolveCall(call: KtBinaryExpression): KtCall?
+public abstract class KtCallResolver : KtAnalysisSessionComponent() {
+    public abstract fun resolveCall(call: KtCallElement): KtCall?
+    public abstract fun resolveCall(call: KtBinaryExpression): KtCall?
+    public abstract fun resolveCall(call: KtUnaryExpression): KtCall?
+    public abstract fun resolveCall(call: KtArrayAccessExpression): KtCall?
 }
 
-interface KtCallResolverMixIn : KtAnalysisSessionMixIn {
-    fun KtCallExpression.resolveCall(): KtCall? =
+public interface KtCallResolverMixIn : KtAnalysisSessionMixIn {
+    public fun KtCallElement.resolveCall(): KtCall? =
         analysisSession.callResolver.resolveCall(this)
 
-    fun KtBinaryExpression.resolveCall(): KtCall? =
+    public fun KtBinaryExpression.resolveCall(): KtCall? =
         analysisSession.callResolver.resolveCall(this)
 
+    public fun KtUnaryExpression.resolveCall(): KtCall? =
+        analysisSession.callResolver.resolveCall(this)
+
+    public fun KtArrayAccessExpression.resolveCall(): KtCall? =
+        analysisSession.callResolver.resolveCall(this)
 }

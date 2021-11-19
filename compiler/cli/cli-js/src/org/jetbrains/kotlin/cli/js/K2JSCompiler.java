@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -20,10 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.kotlin.analyzer.AnalysisResult;
 import org.jetbrains.kotlin.backend.common.output.OutputFileCollection;
-import org.jetbrains.kotlin.cli.common.CLICompiler;
-import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys;
-import org.jetbrains.kotlin.cli.common.CommonCompilerPerformanceManager;
-import org.jetbrains.kotlin.cli.common.ExitCode;
+import org.jetbrains.kotlin.cli.common.*;
 import org.jetbrains.kotlin.cli.common.arguments.K2JSCompilerArguments;
 import org.jetbrains.kotlin.cli.common.arguments.K2JSCompilerArgumentsKt;
 import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants;
@@ -68,7 +65,6 @@ import java.util.stream.Collectors;
 
 import static org.jetbrains.kotlin.cli.common.ExitCode.COMPILATION_ERROR;
 import static org.jetbrains.kotlin.cli.common.ExitCode.OK;
-import static org.jetbrains.kotlin.cli.common.UtilsKt.checkKotlinPackageUsage;
 import static org.jetbrains.kotlin.cli.common.UtilsKt.getLibraryFromHome;
 import static org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity.*;
 
@@ -103,7 +99,7 @@ public class K2JSCompiler extends CLICompiler<K2JSCompilerArguments> {
         doMain(new K2JSCompiler(), args);
     }
 
-    private final K2JSCompilerPerformanceManager performanceManager = new K2JSCompilerPerformanceManager();
+    final K2JSCompilerPerformanceManager performanceManager = new K2JSCompilerPerformanceManager();
 
     @NotNull
     @Override
@@ -212,7 +208,7 @@ public class K2JSCompiler extends CLICompiler<K2JSCompilerArguments> {
 
         environmentForJS.getConfiguration().put(CLIConfigurationKeys.ALLOW_KOTLIN_PACKAGE, arguments.getAllowKotlinPackage());
 
-        if (!checkKotlinPackageUsage(environmentForJS, sourcesFiles)) return ExitCode.COMPILATION_ERROR;
+        if (!UtilsKt.checkKotlinPackageUsage(environmentForJS.getConfiguration(), sourcesFiles)) return ExitCode.COMPILATION_ERROR;
 
         if (arguments.getOutputFile() == null) {
             messageCollector.report(ERROR, "Specify output file via -output", null);
@@ -516,7 +512,7 @@ public class K2JSCompiler extends CLICompiler<K2JSCompilerArguments> {
     }
 
     @NotNull
-    private static String calculateSourceMapSourceRoot(
+    static String calculateSourceMapSourceRoot(
             @NotNull MessageCollector messageCollector,
             @NotNull K2JSCompilerArguments arguments
     ) {
@@ -568,7 +564,7 @@ public class K2JSCompiler extends CLICompiler<K2JSCompilerArguments> {
 
     @NotNull
     @Override
-    protected CommonCompilerPerformanceManager getPerformanceManager() {
+    public CommonCompilerPerformanceManager getDefaultPerformanceManager() {
         return performanceManager;
     }
 

@@ -1,6 +1,5 @@
 // !DIAGNOSTICS: -UNUSED_PARAMETER
 // !CHECK_TYPE
-// !WITH_NEW_INFERENCE
 
 // FILE: Foo.java
 import kotlin.Unit;
@@ -20,6 +19,6 @@ class Foo {
 
 // FILE: 1.kt
 fun test() {
-    Foo().<!OVERLOAD_RESOLUTION_AMBIGUITY!>foo<!> {} <!INAPPLICABLE_CANDIDATE!>checkType<!> { <!INAPPLICABLE_CANDIDATE!>_<!><Int>() }
-    Foo().<!OVERLOAD_RESOLUTION_AMBIGUITY!>bar<!> {} <!INAPPLICABLE_CANDIDATE!>checkType<!> { <!INAPPLICABLE_CANDIDATE!>_<!><String>() }
+    Foo().<!OVERLOAD_RESOLUTION_AMBIGUITY!>foo<!> {} <!INAPPLICABLE_CANDIDATE!>checkType<!> { _<Int>() }
+    Foo().<!OVERLOAD_RESOLUTION_AMBIGUITY!>bar<!> {} <!INAPPLICABLE_CANDIDATE!>checkType<!> { _<String>() }
 }

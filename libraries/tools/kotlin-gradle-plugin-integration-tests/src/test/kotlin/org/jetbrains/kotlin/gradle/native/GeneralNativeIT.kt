@@ -25,7 +25,9 @@ import org.jetbrains.kotlin.konan.target.HostManager
 import org.jetbrains.kotlin.konan.target.presetName
 import org.junit.Assume
 import org.junit.Ignore
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.ErrorCollector
 import java.io.File
 import java.util.*
 import kotlin.test.assertEquals
@@ -54,23 +56,29 @@ internal fun BaseGradleIT.transformNativeTestProject(projectName: String, wrappe
     val project = Project(projectName, wrapperVersion, directoryPrefix = directoryPrefix)
     project.setupWorkingDir()
     project.configureSingleNativeTarget()
-    project.configureMemoryInGradleProperties()
+    project.gradleProperties().apply {
+        configureJvmMemory()
+        disableKotlinNativeCaches()
+    }
     return project
 }
 
 internal fun BaseGradleIT.transformNativeTestProjectWithPluginDsl(projectName: String, wrapperVersion: GradleVersionRequired = defaultGradleVersion, directoryPrefix: String? = null): BaseGradleIT.Project {
     val project = transformProjectWithPluginsDsl(projectName, wrapperVersion, directoryPrefix = directoryPrefix)
     project.configureSingleNativeTarget()
-    project.configureMemoryInGradleProperties()
+    project.gradleProperties().apply {
+        configureJvmMemory()
+        disableKotlinNativeCaches()
+    }
     return project
 }
 
-internal fun BaseGradleIT.Project.configureMemoryInGradleProperties() {
-    val file = projectDir.resolve("gradle.properties")
-    if (file.exists()) {
-        file.createNewFile()
-    }
-    file.appendText("\norg.gradle.jvmargs=-Xmx1g\n")
+internal fun File.configureJvmMemory() {
+    appendText("\norg.gradle.jvmargs=-Xmx1g\n")
+}
+
+internal fun File.disableKotlinNativeCaches() {
+    appendText("\nkotlin.native.cacheKind=none\n")
 }
 
 private const val SINGLE_NATIVE_TARGET_PLACEHOLDER = "<SingleNativeTarget>"
@@ -974,6 +982,51 @@ class GeneralNativeIT : BaseGradleIT() {
         }
     }
 
+    @Test
+    fun testCinteropConfigurationsVariantAwareResolution() = with(transformNativeTestProjectWithPluginDsl("native-cinterop")) {
+        build(":publishedLibrary:publish") {
+            assertSuccessful()
+        }
+
+        fun CompiledProject.assertVariantInDependencyInsight(variantName: String) {
+            try {
+                assertContains("variant \"$variantName\" [")
+            } catch (originalError: AssertionError) {
+                val matchedVariants = Regex("variant \"(.*?)\" \\[").findAll(output).toList()
+                throw AssertionError(
+                    "Expected variant $variantName. " +
+                            if (matchedVariants.isNotEmpty())
+                                "Matched instead: " + matchedVariants.joinToString { it.groupValues[1] }
+                            else "No match.",
+                    originalError
+                )
+            }
+        }
+
+        build(":dependencyInsight", "--configuration", "hostTestTestNumberCInterop", "--dependency", "org.example:publishedLibrary") {
+            assertSuccessful()
+            assertVariantInDependencyInsight("hostApiElements-published")
+        }
+
+        gradleBuildScript("projectLibrary").appendText(
+            "\n" + """
+            configurations.create("ktlint") {
+                def bundlingAttribute = Attribute.of("org.gradle.dependency.bundling", String)
+                attributes.attribute(bundlingAttribute, "external")
+            }
+        """.trimIndent()
+        )
+
+        build(":dependencyInsight", "--configuration", "hostTestTestNumberCInterop", "--dependency", ":projectLibrary") {
+            assertSuccessful()
+            assertVariantInDependencyInsight("hostCInteropApiElements")
+        }
+        build(":dependencyInsight", "--configuration", "hostCompileKlibraries", "--dependency", ":projectLibrary") {
+            assertSuccessful()
+            assertVariantInDependencyInsight("hostApiElements")
+        }
+    }
+
     companion object {
         fun List<String>.containsSequentially(vararg elements: String): Boolean {
             check(elements.isNotEmpty())
@@ -981,6 +1034,7 @@ class GeneralNativeIT : BaseGradleIT() {
         }
 
         private enum class NativeToolSettingsKind(val title: String) {
+            COMPILER_CLASSPATH("Classpath"),
             COMMAND_LINE_ARGUMENTS("Arguments"),
             CUSTOM_ENV_VARIABLES("Custom ENV variables")
         }
@@ -1009,7 +1063,7 @@ class GeneralNativeIT : BaseGradleIT() {
             check(settingsHeader != null && settingsPrefix in settingsHeader) {
                 "Cannot find setting '${settingsKind.title}' for task ${taskPath}"
             }
-            
+
             return if (settingsHeader.trimEnd().endsWith(']'))
                 emptySequence() // No parameters.
             else
@@ -1018,6 +1072,9 @@ class GeneralNativeIT : BaseGradleIT() {
 
         fun CompiledProject.extractNativeCommandLineArguments(taskPath: String? = null, toolName: String): List<String> =
             extractNativeToolSettings(toolName, taskPath, NativeToolSettingsKind.COMMAND_LINE_ARGUMENTS).toList()
+
+        fun CompiledProject.extractNativeCompilerClasspath(taskPath: String? = null, toolName: String): List<String> =
+            extractNativeToolSettings(toolName, taskPath, NativeToolSettingsKind.COMPILER_CLASSPATH).toList()
 
         fun CompiledProject.extractNativeCustomEnvironment(taskPath: String? = null, toolName: String): Map<String, String> =
             extractNativeToolSettings(toolName, taskPath, NativeToolSettingsKind.CUSTOM_ENV_VARIABLES).map {
@@ -1030,7 +1087,13 @@ class GeneralNativeIT : BaseGradleIT() {
             toolName: String = "konanc",
             check: (List<String>) -> Unit
         ) = taskPaths.forEach { taskPath -> check(extractNativeCommandLineArguments(taskPath, toolName)) }
-        
+
+        fun CompiledProject.checkNativeCompilerClasspath(
+            vararg taskPaths: String,
+            toolName: String = "konanc",
+            check: (List<String>) -> Unit
+        ) = taskPaths.forEach { taskPath -> check(extractNativeCompilerClasspath(taskPath, toolName)) }
+
         fun CompiledProject.checkNativeCustomEnvironment(
             vararg taskPaths: String,
             toolName: String = "konanc",

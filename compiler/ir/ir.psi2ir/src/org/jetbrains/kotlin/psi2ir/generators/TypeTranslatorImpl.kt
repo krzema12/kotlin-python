@@ -6,20 +6,24 @@
 package org.jetbrains.kotlin.psi2ir.generators
 
 import org.jetbrains.kotlin.config.LanguageVersionSettings
+import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
+import org.jetbrains.kotlin.descriptors.TypeAliasDescriptor
 import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.resolve.source.getPsi
 import org.jetbrains.kotlin.types.*
 
-class TypeTranslatorImpl(
+open class TypeTranslatorImpl(
     symbolTable: ReferenceSymbolTable,
     languageVersionSettings: LanguageVersionSettings,
     moduleDescriptor: ModuleDescriptor,
     typeParametersResolverBuilder: () -> TypeParametersResolver = { ScopedTypeParametersResolver() },
     enterTableScope: Boolean = false,
     extensions: StubGeneratorExtensions = StubGeneratorExtensions.EMPTY,
+    private val ktFile: KtFile? = null
 ) : TypeTranslator(symbolTable, languageVersionSettings, typeParametersResolverBuilder, enterTableScope, extensions) {
-    override val constantValueGenerator: ConstantValueGenerator =
-        ConstantValueGeneratorImpl(moduleDescriptor, symbolTable, this)
+    override val constantValueGenerator: ConstantValueGenerator = ConstantValueGeneratorImpl(moduleDescriptor, symbolTable, this)
 
     private val typeApproximatorForNI = TypeApproximator(moduleDescriptor.builtIns, languageVersionSettings)
 
@@ -38,4 +42,12 @@ class TypeTranslatorImpl(
 
     override fun commonSupertype(types: Collection<KotlinType>): KotlinType =
         CommonSupertypes.commonSupertype(types)
+
+    override fun isTypeAliasAccessibleHere(typeAliasDescriptor: TypeAliasDescriptor): Boolean {
+        if (!DescriptorVisibilities.isPrivate(typeAliasDescriptor.visibility)) return true
+
+        val psiFile = typeAliasDescriptor.source.getPsi()?.containingFile ?: return false
+
+        return psiFile == ktFile
+    }
 }

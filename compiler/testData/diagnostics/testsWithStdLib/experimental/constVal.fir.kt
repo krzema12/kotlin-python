@@ -5,6 +5,7 @@ package api
 
 @RequiresOptIn(level = RequiresOptIn.Level.WARNING)
 @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.BINARY)
 annotation class ExperimentalAPI
 
 @ExperimentalAPI
@@ -39,5 +40,5 @@ package usage3
 
 import api.*
 
-@Anno(MEANING)
+@Anno(<!EXPERIMENTAL_API_USAGE!>MEANING<!>)
 fun usage() {}

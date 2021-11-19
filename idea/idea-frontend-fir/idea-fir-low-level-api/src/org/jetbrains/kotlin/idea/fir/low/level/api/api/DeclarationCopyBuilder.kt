@@ -6,147 +6,78 @@
 package org.jetbrains.kotlin.idea.fir.low.level.api.api
 
 import org.jetbrains.kotlin.fir.FirElement
-import org.jetbrains.kotlin.fir.builder.RawFirFragmentForLazyBodiesBuilder
 import org.jetbrains.kotlin.fir.declarations.*
-import org.jetbrains.kotlin.fir.declarations.builder.FirDeclarationBuilder
 import org.jetbrains.kotlin.fir.declarations.builder.*
 import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
 import org.jetbrains.kotlin.fir.visitors.FirVisitorVoid
-import org.jetbrains.kotlin.idea.fir.low.level.api.providers.firIdeProvider
-import org.jetbrains.kotlin.psi.*
 
-object DeclarationCopyBuilder {
-    fun createDeclarationCopy(
-        originalFirDeclaration: FirDeclaration,
-        fakeKtDeclaration: KtDeclaration,
-        state: FirModuleResolveState,
-    ): FirDeclaration {
-        return when (fakeKtDeclaration) {
-            is KtNamedFunction -> createFunctionCopy(
-                fakeKtDeclaration,
-                originalFirDeclaration as FirSimpleFunction,
-                state
-            )
-            is KtProperty -> createPropertyCopy(
-                fakeKtDeclaration,
-                originalFirDeclaration as FirProperty,
-                state
-            )
-            is KtClassOrObject -> createClassCopy(
-                fakeKtDeclaration,
-                originalFirDeclaration as FirRegularClass,
-                state
-            )
-            is KtTypeAlias -> createTypeAliasCopy(
-                fakeKtDeclaration,
-                originalFirDeclaration as FirTypeAlias,
-                state
-            )
-            else -> error("Unsupported declaration ${fakeKtDeclaration::class.simpleName}")
-        }
+internal object DeclarationCopyBuilder {
+    fun FirSimpleFunction.withBodyFrom(
+        functionWithBody: FirSimpleFunction,
+    ): FirSimpleFunction = buildSimpleFunctionCopy(this) {
+        body = functionWithBody.body
+        symbol = functionWithBody.symbol
+        initDeclaration(this@withBodyFrom, functionWithBody)
+    }.apply { reassignAllReturnTargets(functionWithBody) }
+
+    fun FirRegularClass.withBodyFrom(
+        classWithBody: FirRegularClass,
+    ): FirRegularClass = buildRegularClassCopy(this) {
+        declarations.clear()
+        declarations.addAll(classWithBody.declarations)
+        symbol = classWithBody.symbol
+        initDeclaration(this@withBodyFrom, classWithBody)
+        resolvePhase = minOf(this.resolvePhase, FirResolvePhase.IMPORTS) //TODO move into initDeclaration?
     }
 
-    private fun createFunctionCopy(
-        element: KtNamedFunction,
-        originalFunction: FirSimpleFunction,
-        state: FirModuleResolveState,
-    ): FirSimpleFunction {
-        val builtFunction = createCopy(element, originalFunction)
-
-        // right now we can't resolve builtFunction header properly, as it built right in air,
-        // without file, which is now required for running stages other then body resolve, so we
-        // take original function header (which is resolved) and copy replacing body with body from builtFunction
-        return buildSimpleFunctionCopy(originalFunction) {
-            body = builtFunction.body
-            symbol = builtFunction.symbol
-            initDeclaration(originalFunction, builtFunction, state)
-        }.apply { reassignAllReturnTargets(builtFunction) }
-    }
-
-    private fun createClassCopy(
-        fakeKtClassOrObject: KtClassOrObject,
-        originalFirClass: FirRegularClass,
-        state: FirModuleResolveState,
-    ): FirRegularClass {
-        val builtClass = createCopy(fakeKtClassOrObject, originalFirClass)
-
-        return buildRegularClassCopy(originalFirClass) {
-            declarations.clear()
-            declarations.addAll(builtClass.declarations)
-            symbol = builtClass.symbol
-            initDeclaration(originalFirClass, builtClass, state)
-        }
-    }
-
-    private fun createTypeAliasCopy(
-        fakeKtTypeAlias: KtTypeAlias,
-        originalFirTypeAlias: FirTypeAlias,
-        state: FirModuleResolveState,
-    ): FirTypeAlias {
-        val builtTypeAlias = createCopy(fakeKtTypeAlias, originalFirTypeAlias)
-
-        return buildTypeAliasCopy(originalFirTypeAlias) {
-            expandedTypeRef = builtTypeAlias.expandedTypeRef
-            symbol = builtTypeAlias.symbol
-            initDeclaration(originalFirTypeAlias, builtTypeAlias, state)
-        }
-    }
-
-    private fun createPropertyCopy(
-        element: KtProperty,
-        originalProperty: FirProperty,
-        state: FirModuleResolveState
-    ): FirProperty {
-        val builtProperty = createCopy(element, originalProperty)
-
-        val originalSetter = originalProperty.setter
-        val builtSetter = builtProperty.setter
+    fun FirProperty.withBodyFrom(propertyWithBody: FirProperty): FirProperty {
+        val originalSetter = this@withBodyFrom.setter
+        val replacementSetter = propertyWithBody.setter
 
         // setter has a header with `value` parameter, and we want it type to be resolved
-        val copySetter = if (originalSetter != null && builtSetter != null) {
+        val copySetter = if (originalSetter != null && replacementSetter != null) {
             buildPropertyAccessorCopy(originalSetter) {
-                body = builtSetter.body
-                symbol = builtSetter.symbol
-                initDeclaration(originalSetter, builtSetter, state)
-            }.apply { reassignAllReturnTargets(builtSetter) }
+                body = replacementSetter.body
+                symbol = replacementSetter.symbol
+                initDeclaration(originalSetter, replacementSetter)
+            }.apply { reassignAllReturnTargets(replacementSetter) }
         } else {
-            builtSetter
+            replacementSetter
         }
 
-        return buildPropertyCopy(originalProperty) {
-            symbol = builtProperty.symbol
-            initializer = builtProperty.initializer
+        val propertyResolvePhase = minOf(
+            this@withBodyFrom.resolvePhase,
+            FirResolvePhase.DECLARATIONS,
+            copySetter?.resolvePhase ?: FirResolvePhase.BODY_RESOLVE,
+            propertyWithBody.getter?.resolvePhase ?: FirResolvePhase.BODY_RESOLVE,
+        )
 
-            getter = builtProperty.getter
+        return buildPropertyCopy(this@withBodyFrom) {
+            symbol = propertyWithBody.symbol
+            initializer = propertyWithBody.initializer
+
+            getter = propertyWithBody.getter
             setter = copySetter
 
-            initDeclaration(originalProperty, builtProperty, state)
+            if (propertyResolvePhase < FirResolvePhase.IMPLICIT_TYPES_BODY_RESOLVE) {
+                initializerAndAccessorsAreResolved = false
+            }
+
+            initDeclaration(this@withBodyFrom, propertyWithBody)
+            resolvePhase = propertyResolvePhase
         }
     }
 
     private fun FirDeclarationBuilder.initDeclaration(
         originalDeclaration: FirDeclaration,
         builtDeclaration: FirDeclaration,
-        state: FirModuleResolveState
     ) {
         resolvePhase = minOf(originalDeclaration.resolvePhase, FirResolvePhase.DECLARATIONS)
         source = builtDeclaration.source
-        declarationSiteSession = state.rootModuleSession
+        moduleData = originalDeclaration.moduleData
     }
 
-    internal inline fun <reified T : FirDeclaration> createCopy(
-        fakeKtDeclaration: KtDeclaration,
-        originalFirDeclaration: T,
-    ): T {
-        return RawFirFragmentForLazyBodiesBuilder.build(
-            session = originalFirDeclaration.declarationSiteSession,
-            baseScopeProvider = originalFirDeclaration.declarationSiteSession.firIdeProvider.kotlinScopeProvider,
-            designation = originalFirDeclaration.collectDesignation().fullDesignation,
-            declaration = fakeKtDeclaration
-        ) as T
-    }
-
-    private fun FirFunction<*>.reassignAllReturnTargets(from: FirFunction<*>) {
+    private fun FirFunction.reassignAllReturnTargets(from: FirFunction) {
         this.accept(object : FirVisitorVoid() {
             override fun visitElement(element: FirElement) {
                 if (element is FirReturnExpression && element.target.labeledElement == from) {

@@ -10,9 +10,9 @@ import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
 import org.jetbrains.kotlin.idea.fir.low.level.api.api.FirModuleResolveState
 import org.jetbrains.kotlin.idea.fir.low.level.api.api.withFirDeclaration
-import org.jetbrains.kotlin.idea.fir.low.level.api.api.withFirDeclarationInWriteLock
-import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
+import org.jetbrains.kotlin.idea.fir.low.level.api.lazy.resolve.ResolveType
 import org.jetbrains.kotlin.idea.frontend.api.ValidityTokenOwner
+import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
 import org.jetbrains.kotlin.idea.frontend.api.tokens.assertIsValidAndAccessible
 import java.lang.ref.WeakReference
 
@@ -30,16 +30,7 @@ internal class FirRefWithValidityCheck<out D : FirDeclaration>(fir: D, resolveSt
             ?: throw EntityWasGarbageCollectedException("FirElement")
         val resolveState = resolveStateWeakRef.get()
             ?: throw EntityWasGarbageCollectedException("FirModuleResolveState")
-        return when (phase) {
-            FirResolvePhase.BODY_RESOLVE -> {
-                /*
-                 The BODY_RESOLVE phase is the maximum possible phase we can resolve our declaration to
-                 So there is not need to run whole `action` under read lock
-                 */
-                action(fir.withFirDeclaration(resolveState, phase) { it })
-            }
-            else -> fir.withFirDeclaration(resolveState, phase) { action(it) }
-        }
+        return fir.withFirDeclaration(resolveState, phase) { action(it) }
     }
 
     /**
@@ -54,19 +45,6 @@ internal class FirRefWithValidityCheck<out D : FirDeclaration>(fir: D, resolveSt
         return action(fir)
     }
 
-    /**
-     * Runs [action] with fir element with write action hold
-     * Consider using this then [action] may call some resolve
-     */
-    inline fun <R> withFirWithPossibleResolveInside(crossinline action: (fir: D) -> R): R {
-        token.assertIsValidAndAccessible()
-        val fir = firWeakRef.get()
-            ?: throw EntityWasGarbageCollectedException("FirElement")
-        val resolveState = resolveStateWeakRef.get()
-            ?: throw EntityWasGarbageCollectedException("FirModuleResolveState")
-        return fir.withFirDeclarationInWriteLock(resolveState) { action(it) }
-    }
-
     val resolveState
         get() = resolveStateWeakRef.get() ?: throw EntityWasGarbageCollectedException("FirModuleResolveState")
 
@@ -74,6 +52,33 @@ internal class FirRefWithValidityCheck<out D : FirDeclaration>(fir: D, resolveSt
         ValidityAwareCachedValue(token) {
             withFir(phase) { fir -> createValue(fir) }
         }
+
+    inline fun <R> withFirByType(type: ResolveType, crossinline action: (fir: D) -> R): R {
+        token.assertIsValidAndAccessible()
+        val fir = firWeakRef.get()
+            ?: throw EntityWasGarbageCollectedException("FirElement")
+        val resolveState = resolveStateWeakRef.get()
+            ?: throw EntityWasGarbageCollectedException("FirModuleResolveState")
+        return fir.withFirDeclaration(type, resolveState) { action(it) }
+    }
+
+    inline fun <R> withFirAndCache(type: ResolveType, crossinline createValue: (fir: D) -> R) =
+        ValidityAwareCachedValue(token) {
+            withFirByType(type) { fir -> createValue(fir) }
+        }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is FirRefWithValidityCheck<*>) return false
+        return getRefFir() == other.getRefFir() && this.token == other.token
+    }
+
+    override fun hashCode(): Int {
+        return getRefFir().hashCode() * 31 + token.hashCode()
+    }
+
+    private fun getRefFir(): FirDeclaration {
+        return firWeakRef.get() ?: throw EntityWasGarbageCollectedException("FirElement")
+    }
 }
 
 @Suppress("NOTHING_TO_INLINE")

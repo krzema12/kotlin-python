@@ -12,7 +12,10 @@ import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationStatus
 import org.jetbrains.kotlin.fir.declarations.FirPluginKey
 import org.jetbrains.kotlin.fir.extensions.FirStatusTransformerExtension
-import org.jetbrains.kotlin.fir.extensions.predicate.*
+import org.jetbrains.kotlin.fir.extensions.predicate.DeclarationPredicate
+import org.jetbrains.kotlin.fir.extensions.predicate.hasOrUnder
+import org.jetbrains.kotlin.fir.extensions.predicate.metaHasOrUnder
+import org.jetbrains.kotlin.fir.extensions.predicate.or
 import org.jetbrains.kotlin.fir.extensions.transform
 import org.jetbrains.kotlin.name.FqName
 

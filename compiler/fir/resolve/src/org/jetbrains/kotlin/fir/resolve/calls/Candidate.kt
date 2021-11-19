@@ -21,7 +21,7 @@ import org.jetbrains.kotlin.fir.resolve.inference.InferenceComponents
 import org.jetbrains.kotlin.fir.resolve.inference.PostponedResolvedAtom
 import org.jetbrains.kotlin.fir.resolve.substitution.ConeSubstitutor
 import org.jetbrains.kotlin.fir.scopes.FirScope
-import org.jetbrains.kotlin.fir.symbols.AbstractFirBasedSymbol
+import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.fir.types.ConeTypeVariable
 import org.jetbrains.kotlin.fir.types.FirTypeProjection
@@ -77,7 +77,7 @@ data class CallInfo(
 }
 
 class Candidate(
-    val symbol: AbstractFirBasedSymbol<*>,
+    val symbol: FirBasedSymbol<*>,
     val dispatchReceiverValue: ReceiverValue?,
     val extensionReceiverValue: ReceiverValue?,
     val explicitReceiverKind: ExplicitReceiverKind,
@@ -85,6 +85,7 @@ class Candidate(
     private val baseSystem: ConstraintStorage,
     val callInfo: CallInfo,
     val originScope: FirScope?,
+    val isFromCompanionObjectTypeScope: Boolean = false
 ) {
 
     var systemInitialized: Boolean = false
@@ -105,6 +106,9 @@ class Candidate(
         set(value) {
             field = value
             usesSuspendConversion = value?.suspendConversionStrategy == SuspendConversionStrategy.SUSPEND_CONVERSION
+            if (value != null) {
+                numDefaults = value.defaults
+            }
         }
 
     var usesSuspendConversion: Boolean = false

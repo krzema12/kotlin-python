@@ -4,7 +4,7 @@
 
 // TESTCASE NUMBER: 1
 fun case_1(x: Any?) {
-    if (x is Int is Boolean) {
+    if (<!USELESS_IS_CHECK!>x is Int is Boolean<!>) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!>.<!UNRESOLVED_REFERENCE!>inv<!>()
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!>.<!UNRESOLVED_REFERENCE!>not<!>()
@@ -15,7 +15,7 @@ fun case_1(x: Any?) {
 
 // TESTCASE NUMBER: 2
 fun case_2(x: Any?) {
-    if (x is Int is Any? is Boolean) {
+    if (<!USELESS_IS_CHECK!><!USELESS_IS_CHECK!>x is Int is Any?<!> is Boolean<!>) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!>.<!UNRESOLVED_REFERENCE!>inv<!>()
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!>.<!UNRESOLVED_REFERENCE!>not<!>()
@@ -36,7 +36,7 @@ inline fun <reified T>case_3(x: Any?) {
 
 // TESTCASE NUMBER: 4
 inline fun <reified T : <!FINAL_UPPER_BOUND!>Boolean<!>>case_4(x: Any?) {
-    if (x is Int is T == null) {
+    if (<!SENSELESS_COMPARISON!>x is Int is T == null<!>) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!>.<!UNRESOLVED_REFERENCE!>inv<!>()
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!><!UNSAFE_CALL!>.<!>propAny
@@ -46,7 +46,7 @@ inline fun <reified T : <!FINAL_UPPER_BOUND!>Boolean<!>>case_4(x: Any?) {
 
 // TESTCASE NUMBER: 5
 fun case_5(x: Any?) {
-    if (x is Int != null) {
+    if (<!SENSELESS_COMPARISON!>x is Int != null<!>) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!>.<!UNRESOLVED_REFERENCE!>inv<!>()
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!><!UNSAFE_CALL!>.<!>propAny
@@ -56,7 +56,7 @@ fun case_5(x: Any?) {
 
 // TESTCASE NUMBER: 6
 fun case_6(x: Any?) {
-    if (x is Int == null) {
+    if (<!SENSELESS_COMPARISON!>x is Int == null<!>) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!>.<!UNRESOLVED_REFERENCE!>inv<!>()
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!><!UNSAFE_CALL!>.<!>propAny
@@ -86,7 +86,7 @@ fun case_8(x: Any?) {
 
 // TESTCASE NUMBER: 9
 fun case_9(x: Any?) {
-    if (x !is Int !is Any?) {
+    if (<!USELESS_IS_CHECK!>x !is Int !is Any?<!>) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!>.<!UNRESOLVED_REFERENCE!>inv<!>()
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!><!UNSAFE_CALL!>.<!>propAny
@@ -132,7 +132,7 @@ inline fun <reified T, reified K, reified L>case_13(x: Any?) {
 
 // TESTCASE NUMBER: 14
 inline fun <reified T>case_14(x: Any?) {
-    if (!(x !is T is Boolean)) {
+    if (!(<!USELESS_IS_CHECK!>x !is T is Boolean<!>)) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!><!UNSAFE_CALL!>.<!>propAny
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!><!UNSAFE_CALL!>.<!>funAny()
@@ -141,7 +141,7 @@ inline fun <reified T>case_14(x: Any?) {
 
 // TESTCASE NUMBER: 15
 inline fun <reified T>case_15(x: Any?) {
-    if (!(x !is T) is Boolean) {
+    if (<!USELESS_IS_CHECK!>!(x !is T) is Boolean<!>) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!><!UNSAFE_CALL!>.<!>propAny
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!><!UNSAFE_CALL!>.<!>funAny()

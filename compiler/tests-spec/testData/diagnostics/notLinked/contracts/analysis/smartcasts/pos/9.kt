@@ -1,3 +1,4 @@
+// FIR_IDE_IGNORE
 // !USE_EXPERIMENTAL: kotlin.contracts.ExperimentalContracts
 
 /*
@@ -107,7 +108,7 @@ fun case_8(value_1: Any?) {
 
 // TESTCASE NUMBER: 9
 fun case_9(value_1: Any?) {
-    if (funWithReturnsFalse(value_1 is String) || funWithReturnsFalse(value_1 is Int)) {
+    if (funWithReturnsFalse(value_1 is String) || funWithReturnsFalse(<!USELESS_IS_CHECK!>value_1 is Int<!>)) {
 
     } else {
         println(<!DEBUG_INFO_SMARTCAST!>value_1<!>.length)

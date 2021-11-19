@@ -17,12 +17,9 @@
 package org.jetbrains.kotlin.backend.common
 
 import org.jetbrains.kotlin.ir.IrElement
-import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.expressions.IrBlockBody
 import org.jetbrains.kotlin.ir.expressions.IrBody
 import org.jetbrains.kotlin.ir.expressions.IrStatementContainer
-import org.jetbrains.kotlin.ir.expressions.IrExpressionBody
 import org.jetbrains.kotlin.ir.util.transformFlat
 import org.jetbrains.kotlin.ir.util.transformSubsetFlat
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitor
@@ -60,6 +57,12 @@ interface DeclarationContainerLoweringPass : FileLoweringPass {
 
 interface BodyLoweringPass : FileLoweringPass {
     fun lower(irBody: IrBody, container: IrDeclaration)
+
+    override fun lower(irFile: IrFile) = runOnFilePostfix(irFile)
+}
+
+interface BodyAndScriptBodyLoweringPass : BodyLoweringPass {
+    fun lowerScriptBody(irDeclarationContainer: IrDeclarationContainer, container: IrDeclaration)
 
     override fun lower(irFile: IrFile) = runOnFilePostfix(irFile)
 }
@@ -129,7 +132,17 @@ fun BodyLoweringPass.runOnFilePostfix(
     }
 }
 
-private class BodyLoweringVisitor(
+fun BodyAndScriptBodyLoweringPass.runOnFilePostfix(
+    irFile: IrFile,
+    allowDeclarationModification: Boolean = false
+) {
+    val visitor = ScriptBodyLoweringVisitor(this, allowDeclarationModification)
+    for (declaration in ArrayList(irFile.declarations)) {
+        declaration.accept(visitor, null)
+    }
+}
+
+private open class BodyLoweringVisitor(
     private val loweringPass: BodyLoweringPass,
     private val withLocalDeclarations: Boolean,
     private val allowDeclarationModification: Boolean,
@@ -150,11 +163,14 @@ private class BodyLoweringVisitor(
 
     override fun visitBody(body: IrBody, data: IrDeclaration?) {
         if (withLocalDeclarations) body.acceptChildren(this, null)
-        if (allowDeclarationModification) {
-            loweringPass.lower(body, data!!)
-        } else {
-            data!!.factory.stageController.bodyLowering {
+        val stageController = data!!.factory.stageController
+        stageController.restrictTo(data) {
+            if (allowDeclarationModification) {
                 loweringPass.lower(body, data)
+            } else {
+                stageController.bodyLowering {
+                    loweringPass.lower(body, data)
+                }
             }
         }
     }
@@ -162,6 +178,30 @@ private class BodyLoweringVisitor(
     override fun visitScript(declaration: IrScript, data: IrDeclaration?) {
         declaration.thisReceiver.accept(this, declaration)
         ArrayList(declaration.statements).forEach { it.accept(this, declaration) }
+    }
+}
+
+private class ScriptBodyLoweringVisitor(
+    private val loweringPass: BodyAndScriptBodyLoweringPass,
+    private val allowDeclarationModification: Boolean
+) : BodyLoweringVisitor(loweringPass, false, allowDeclarationModification) {
+
+    override fun visitClass(declaration: IrClass, data: IrDeclaration?) {
+        declaration.thisReceiver?.accept(this, declaration)
+        declaration.typeParameters.forEach { it.accept(this, declaration) }
+        ArrayList(declaration.declarations).forEach { it.accept(this, declaration) }
+        if (declaration.origin == IrDeclarationOrigin.SCRIPT_CLASS) {
+            val stageController = declaration.factory.stageController
+            stageController.restrictTo(declaration) {
+                if (allowDeclarationModification) {
+                    loweringPass.lowerScriptBody(declaration, declaration)
+                } else {
+                    stageController.bodyLowering {
+                        loweringPass.lowerScriptBody(declaration, declaration)
+                    }
+                }
+            }
+        }
     }
 }
 

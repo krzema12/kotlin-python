@@ -68,6 +68,7 @@ import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity.STRONG_W
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.cli.common.toBooleanLenient
 import org.jetbrains.kotlin.cli.jvm.JvmRuntimeVersionsConsistencyChecker
+import org.jetbrains.kotlin.cli.jvm.compiler.jarfs.FastJarFileSystem
 import org.jetbrains.kotlin.cli.jvm.config.*
 import org.jetbrains.kotlin.cli.jvm.index.*
 import org.jetbrains.kotlin.cli.jvm.javac.JavacWrapperRegistrar
@@ -75,6 +76,7 @@ import org.jetbrains.kotlin.cli.jvm.modules.CliJavaModuleFinder
 import org.jetbrains.kotlin.cli.jvm.modules.CliJavaModuleResolver
 import org.jetbrains.kotlin.cli.jvm.modules.CoreJrtFileSystem
 import org.jetbrains.kotlin.codegen.extensions.ClassBuilderInterceptorExtension
+import org.jetbrains.kotlin.codegen.extensions.ClassFileFactoryFinalizerExtension
 import org.jetbrains.kotlin.codegen.extensions.ExpressionCodegenExtension
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
 import org.jetbrains.kotlin.config.*
@@ -92,11 +94,11 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.CodeAnalyzerInitializer
 import org.jetbrains.kotlin.resolve.ModuleAnnotationsResolver
 import org.jetbrains.kotlin.resolve.extensions.ExtraImportsProviderExtension
-import org.jetbrains.kotlin.resolve.jvm.extensions.SyntheticJavaResolveExtension
 import org.jetbrains.kotlin.resolve.extensions.SyntheticResolveExtension
 import org.jetbrains.kotlin.resolve.jvm.KotlinJavaPsiFacade
 import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
 import org.jetbrains.kotlin.resolve.jvm.extensions.PackageFragmentProviderExtension
+import org.jetbrains.kotlin.resolve.jvm.extensions.SyntheticJavaResolveExtension
 import org.jetbrains.kotlin.resolve.jvm.modules.JavaModuleResolver
 import org.jetbrains.kotlin.resolve.lazy.declarations.CliDeclarationProviderFactoryService
 import org.jetbrains.kotlin.resolve.lazy.declarations.DeclarationProviderFactoryService
@@ -107,16 +109,53 @@ import java.nio.file.FileSystems
 import java.util.zip.ZipFile
 
 class KotlinCoreEnvironment private constructor(
-    val projectEnvironment: JavaCoreProjectEnvironment,
+    val projectEnvironment: ProjectEnvironment,
     private val initialConfiguration: CompilerConfiguration,
     configFiles: EnvironmentConfigFiles
 ) {
 
     class ProjectEnvironment(
         disposable: Disposable,
-        applicationEnvironment: KotlinCoreApplicationEnvironment
+        applicationEnvironment: KotlinCoreApplicationEnvironment,
+        configuration: CompilerConfiguration
     ) :
         KotlinCoreProjectEnvironment(disposable, applicationEnvironment) {
+
+        internal val jarFileSystem: VirtualFileSystem
+
+        init {
+            val messageCollector = configuration.get(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY)
+
+            if (configuration.getBoolean(JVMConfigurationKeys.USE_FAST_JAR_FILE_SYSTEM)) {
+                messageCollector?.report(
+                    STRONG_WARNING,
+                    "Using new faster version of JAR FS: it should make your build faster, but the new implementation is experimental"
+                )
+            }
+
+            jarFileSystem = when {
+                configuration.getBoolean(JVMConfigurationKeys.USE_FAST_JAR_FILE_SYSTEM) || configuration.getBoolean(CommonConfigurationKeys.USE_FIR) -> {
+                    val fastJarFs = FastJarFileSystem.createIfUnmappingPossible()
+
+                    if (fastJarFs == null) {
+                        messageCollector?.report(
+                            STRONG_WARNING,
+                            "Your JDK doesn't seem to support mapped buffer unmapping, so the slower (old) version of JAR FS will be used"
+                        )
+                        applicationEnvironment.jarFileSystem
+                    } else {
+
+                        Disposer.register(disposable) {
+                            fastJarFs.clearHandlersCache()
+                        }
+
+                        fastJarFs
+                    }
+                }
+
+                else -> applicationEnvironment.jarFileSystem
+            }
+        }
 
         private var extensionRegistered = false
 
@@ -166,6 +205,13 @@ class KotlinCoreEnvironment private constructor(
         val project = projectEnvironment.project
 
         val messageCollector = configuration.get(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY)
+
+        if (configuration.getBoolean(JVMConfigurationKeys.USE_FAST_JAR_FILE_SYSTEM)) {
+            messageCollector?.report(
+                STRONG_WARNING,
+                "Using new faster version of JAR FS: it should make your build faster, but the new implementation is experimental"
+            )
+        }
 
         (projectEnvironment as? ProjectEnvironment)?.registerExtensionsFromPlugins(configuration)
         // otherwise consider that project environment is properly configured before passing to the environment
@@ -222,11 +268,14 @@ class KotlinCoreEnvironment private constructor(
         this.initialRoots.addAll(initialRoots)
 
         if (!configuration.getBoolean(JVMConfigurationKeys.SKIP_RUNTIME_VERSION_CHECK) && messageCollector != null) {
+            /*
+            // Temporarily disable until compiler is bootstrapped to 1.6.
             JvmRuntimeVersionsConsistencyChecker.checkCompilerClasspathConsistency(
                 messageCollector,
                 configuration,
                 initialRoots.mapNotNull { (file, type) -> if (type == JavaRoot.RootType.BINARY) file else null }
             )
+            */
         }
 
         val (roots, singleJavaFileRoots) =
@@ -391,7 +440,7 @@ class KotlinCoreEnvironment private constructor(
     }
 
     private fun findJarRoot(file: File): VirtualFile? =
-        applicationEnvironment.jarFileSystem.findFileByPath("$file${URLUtil.JAR_SEPARATOR}")
+        projectEnvironment.jarFileSystem.findFileByPath("$file${URLUtil.JAR_SEPARATOR}")
 
     private fun getSourceRootsCheckingForDuplicates(): List<KotlinSourceRoot> {
         val uniqueSourceRoots = hashSetOf<String>()
@@ -417,9 +466,14 @@ class KotlinCoreEnvironment private constructor(
     companion object {
         private val LOG = Logger.getInstance(KotlinCoreEnvironment::class.java)
 
-        private val APPLICATION_LOCK = Object()
+        @PublishedApi
+        internal val APPLICATION_LOCK = Object()
+
         private var ourApplicationEnvironment: KotlinCoreApplicationEnvironment? = null
         private var ourProjectCount = 0
+
+        inline fun <R> underApplicationLock(action: () -> R): R =
+            synchronized(APPLICATION_LOCK) { action() }
 
         @JvmStatic
         fun createForProduction(
@@ -427,7 +481,7 @@ class KotlinCoreEnvironment private constructor(
         ): KotlinCoreEnvironment {
             setupIdeaStandaloneExecution()
             val appEnv = getOrCreateApplicationEnvironmentForProduction(parentDisposable, configuration)
-            val projectEnv = ProjectEnvironment(parentDisposable, appEnv)
+            val projectEnv = ProjectEnvironment(parentDisposable, appEnv, configuration)
             val environment = KotlinCoreEnvironment(projectEnv, configuration, configFiles)
 
             synchronized(APPLICATION_LOCK) {
@@ -438,7 +492,7 @@ class KotlinCoreEnvironment private constructor(
 
         @JvmStatic
         fun createForProduction(
-            projectEnvironment: JavaCoreProjectEnvironment, configuration: CompilerConfiguration, configFiles: EnvironmentConfigFiles
+            projectEnvironment: ProjectEnvironment, configuration: CompilerConfiguration, configFiles: EnvironmentConfigFiles
         ): KotlinCoreEnvironment {
             val environment = KotlinCoreEnvironment(projectEnvironment, configuration, configFiles)
 
@@ -459,7 +513,7 @@ class KotlinCoreEnvironment private constructor(
             val configuration = initialConfiguration.copy()
             // Tests are supposed to create a single project and dispose it right after use
             val appEnv = createApplicationEnvironment(parentDisposable, configuration, unitTestMode = true)
-            val projectEnv = ProjectEnvironment(parentDisposable, appEnv)
+            val projectEnv = ProjectEnvironment(parentDisposable, appEnv, configuration)
             return KotlinCoreEnvironment(projectEnv, configuration, extensionConfigs)
         }
 
@@ -474,7 +528,7 @@ class KotlinCoreEnvironment private constructor(
         @TestOnly
         fun createProjectEnvironmentForTests(parentDisposable: Disposable, configuration: CompilerConfiguration): ProjectEnvironment {
             val appEnv = createApplicationEnvironment(parentDisposable, configuration, unitTestMode = true)
-            return ProjectEnvironment(parentDisposable, appEnv)
+            return ProjectEnvironment(parentDisposable, appEnv, configuration)
         }
 
         // used in the daemon for jar cache cleanup
@@ -493,7 +547,14 @@ class KotlinCoreEnvironment private constructor(
         ): KotlinCoreApplicationEnvironment {
             synchronized(APPLICATION_LOCK) {
                 if (ourApplicationEnvironment == null) {
-                    val disposable = Disposer.newDisposable()
+                    val disposable = if (unitTestMode) {
+                        parentDisposable
+                    } else {
+                        // TODO this is a memory leak in the compiler, as this Disposable is not registered and thus is never disposed
+                        // but using parentDisposable as disposable in compiler, causes access to application extension points after
+                        // they was disposed, this needs to be fixed
+                        Disposer.newDisposable("Disposable for the KotlinCoreApplicationEnvironment")
+                    }
                     ourApplicationEnvironment = createApplicationEnvironment(disposable, configuration, unitTestMode)
                     ourProjectCount = 0
                     Disposer.register(disposable, Disposable {
@@ -538,11 +599,6 @@ class KotlinCoreEnvironment private constructor(
             val applicationEnvironment = KotlinCoreApplicationEnvironment.create(parentDisposable, unitTestMode)
 
             registerApplicationExtensionPointsAndExtensionsFrom(configuration, "extensions/compiler.xml")
-            // FIX ME WHEN BUNCH 202 REMOVED: this code is required to support compiler bundled to both 202 and 203.
-            // Please, remove "com.intellij.psi.classFileDecompiler" EP registration once 202 is no longer supported by the compiler
-            if (!ApplicationManager.getApplication().extensionArea.hasExtensionPoint("com.intellij.psi.classFileDecompiler")) {
-                registerApplicationExtensionPointsAndExtensionsFrom(configuration, "extensions/core.xml")
-            }
 
             registerApplicationServicesForCLI(applicationEnvironment)
             registerApplicationServices(applicationEnvironment)
@@ -566,6 +622,7 @@ class KotlinCoreEnvironment private constructor(
                     ?: PathUtil.getResourcePathForClass(this::class.java).takeIf { it.hasConfigFile(configFilePath) }
                     // hack for load extensions when compiler run directly from project directory (e.g. in tests)
                     ?: File("compiler/cli/cli-common/resources").takeIf { it.hasConfigFile(configFilePath) }
+                    ?: configuration.get(CLIConfigurationKeys.PATH_TO_KOTLIN_COMPILER_JAR)?.takeIf { it.hasConfigFile(configFilePath) }
                     ?: throw IllegalStateException(
                         "Unable to find extension point configuration $configFilePath " +
                                 "(cp:\n  ${(Thread.currentThread().contextClassLoader as? UrlClassLoader)?.urls?.joinToString("\n  ") { it.file }})"
@@ -585,6 +642,7 @@ class KotlinCoreEnvironment private constructor(
             SyntheticResolveExtension.registerExtensionPoint(project)
             SyntheticJavaResolveExtension.registerExtensionPoint(project)
             ClassBuilderInterceptorExtension.registerExtensionPoint(project)
+            ClassFileFactoryFinalizerExtension.registerExtensionPoint(project)
             AnalysisHandlerExtension.registerExtensionPoint(project)
             PackageFragmentProviderExtension.registerExtensionPoint(project)
             StorageComponentContainerContributor.registerExtensionPoint(project)

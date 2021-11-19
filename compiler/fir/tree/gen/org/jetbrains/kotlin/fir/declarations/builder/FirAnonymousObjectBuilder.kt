@@ -7,10 +7,11 @@ package org.jetbrains.kotlin.fir.declarations.builder
 
 import kotlin.contracts.*
 import org.jetbrains.kotlin.descriptors.ClassKind
-import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.builder.FirAnnotationContainerBuilder
 import org.jetbrains.kotlin.fir.builder.FirBuilderDsl
+import org.jetbrains.kotlin.fir.declarations.DeprecationsPerUseSite
 import org.jetbrains.kotlin.fir.declarations.FirAnonymousObject
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationAttributes
@@ -21,12 +22,10 @@ import org.jetbrains.kotlin.fir.declarations.builder.FirClassBuilder
 import org.jetbrains.kotlin.fir.declarations.builder.FirDeclarationBuilder
 import org.jetbrains.kotlin.fir.declarations.impl.FirAnonymousObjectImpl
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
-import org.jetbrains.kotlin.fir.expressions.builder.FirExpressionBuilder
 import org.jetbrains.kotlin.fir.references.FirControlFlowGraphReference
 import org.jetbrains.kotlin.fir.scopes.FirScopeProvider
 import org.jetbrains.kotlin.fir.symbols.impl.FirAnonymousObjectSymbol
 import org.jetbrains.kotlin.fir.types.FirTypeRef
-import org.jetbrains.kotlin.fir.types.impl.FirImplicitTypeRefImpl
 import org.jetbrains.kotlin.fir.visitors.*
 
 /*
@@ -35,35 +34,35 @@ import org.jetbrains.kotlin.fir.visitors.*
  */
 
 @FirBuilderDsl
-class FirAnonymousObjectBuilder : FirDeclarationBuilder, FirClassBuilder, FirAnnotationContainerBuilder, FirExpressionBuilder {
+class FirAnonymousObjectBuilder : FirDeclarationBuilder, FirClassBuilder, FirAnnotationContainerBuilder {
     override var source: FirSourceElement? = null
-    override lateinit var declarationSiteSession: FirSession
+    override lateinit var moduleData: FirModuleData
     override var resolvePhase: FirResolvePhase = FirResolvePhase.RAW_FIR
     override lateinit var origin: FirDeclarationOrigin
     override var attributes: FirDeclarationAttributes = FirDeclarationAttributes()
+    override var deprecation: DeprecationsPerUseSite? = null
     override val typeParameters: MutableList<FirTypeParameterRef> = mutableListOf()
     override lateinit var classKind: ClassKind
     override val superTypeRefs: MutableList<FirTypeRef> = mutableListOf()
     override val declarations: MutableList<FirDeclaration> = mutableListOf()
     override val annotations: MutableList<FirAnnotationCall> = mutableListOf()
     override lateinit var scopeProvider: FirScopeProvider
-    override var typeRef: FirTypeRef = FirImplicitTypeRefImpl(null)
     lateinit var symbol: FirAnonymousObjectSymbol
 
     override fun build(): FirAnonymousObject {
         return FirAnonymousObjectImpl(
             source,
-            declarationSiteSession,
+            moduleData,
             resolvePhase,
             origin,
             attributes,
+            deprecation,
             typeParameters,
             classKind,
             superTypeRefs,
             declarations,
             annotations,
             scopeProvider,
-            typeRef,
             symbol,
         )
     }

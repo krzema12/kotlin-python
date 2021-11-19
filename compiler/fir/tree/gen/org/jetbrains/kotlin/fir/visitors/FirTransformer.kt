@@ -10,9 +10,6 @@ import org.jetbrains.kotlin.fir.FirAnnotationContainer
 import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.references.FirReference
 import org.jetbrains.kotlin.fir.FirLabel
-import org.jetbrains.kotlin.fir.declarations.FirImport
-import org.jetbrains.kotlin.fir.declarations.FirResolvedImport
-import org.jetbrains.kotlin.fir.FirSymbolOwner
 import org.jetbrains.kotlin.fir.expressions.FirResolvable
 import org.jetbrains.kotlin.fir.FirTargetElement
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationStatus
@@ -24,13 +21,12 @@ import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirAnnotatedDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirAnonymousInitializer
 import org.jetbrains.kotlin.fir.declarations.FirTypedDeclaration
-import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
-import org.jetbrains.kotlin.fir.declarations.FirTypeParameterRef
-import org.jetbrains.kotlin.fir.declarations.FirTypeParameter
 import org.jetbrains.kotlin.fir.declarations.FirTypeParameterRefsOwner
 import org.jetbrains.kotlin.fir.declarations.FirTypeParametersOwner
 import org.jetbrains.kotlin.fir.declarations.FirMemberDeclaration
-import org.jetbrains.kotlin.fir.declarations.FirCallableMemberDeclaration
+import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
+import org.jetbrains.kotlin.fir.declarations.FirTypeParameterRef
+import org.jetbrains.kotlin.fir.declarations.FirTypeParameter
 import org.jetbrains.kotlin.fir.declarations.FirVariable
 import org.jetbrains.kotlin.fir.declarations.FirValueParameter
 import org.jetbrains.kotlin.fir.declarations.FirProperty
@@ -46,9 +42,15 @@ import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.FirPropertyAccessor
 import org.jetbrains.kotlin.fir.declarations.FirConstructor
 import org.jetbrains.kotlin.fir.declarations.FirFile
+import org.jetbrains.kotlin.fir.FirPackageDirective
 import org.jetbrains.kotlin.fir.declarations.FirAnonymousFunction
+import org.jetbrains.kotlin.fir.expressions.FirAnonymousFunctionExpression
 import org.jetbrains.kotlin.fir.declarations.FirAnonymousObject
+import org.jetbrains.kotlin.fir.expressions.FirAnonymousObjectExpression
 import org.jetbrains.kotlin.fir.diagnostics.FirDiagnosticHolder
+import org.jetbrains.kotlin.fir.declarations.FirImport
+import org.jetbrains.kotlin.fir.declarations.FirResolvedImport
+import org.jetbrains.kotlin.fir.declarations.FirErrorImport
 import org.jetbrains.kotlin.fir.expressions.FirLoop
 import org.jetbrains.kotlin.fir.expressions.FirErrorLoop
 import org.jetbrains.kotlin.fir.expressions.FirDoWhileLoop
@@ -84,6 +86,7 @@ import org.jetbrains.kotlin.fir.expressions.FirErrorExpression
 import org.jetbrains.kotlin.fir.declarations.FirErrorFunction
 import org.jetbrains.kotlin.fir.declarations.FirErrorProperty
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
+import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
 import org.jetbrains.kotlin.fir.expressions.FirImplicitInvokeCall
 import org.jetbrains.kotlin.fir.expressions.FirDelegatedConstructorCall
@@ -91,6 +94,7 @@ import org.jetbrains.kotlin.fir.expressions.FirComponentCall
 import org.jetbrains.kotlin.fir.expressions.FirCallableReferenceAccess
 import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
 import org.jetbrains.kotlin.fir.expressions.FirExpressionWithSmartcast
+import org.jetbrains.kotlin.fir.expressions.FirExpressionWithSmartcastToNull
 import org.jetbrains.kotlin.fir.expressions.FirSafeCallExpression
 import org.jetbrains.kotlin.fir.expressions.FirCheckedSafeCallSubject
 import org.jetbrains.kotlin.fir.expressions.FirGetClassCall
@@ -156,18 +160,6 @@ abstract class FirTransformer<in D> : FirVisitor<FirElement, D>() {
         return transformElement(label, data)
     }
 
-    open fun transformImport(import: FirImport, data: D): FirImport {
-        return transformElement(import, data)
-    }
-
-    open fun transformResolvedImport(resolvedImport: FirResolvedImport, data: D): FirImport {
-        return transformElement(resolvedImport, data)
-    }
-
-    open fun <E> transformSymbolOwner(symbolOwner: FirSymbolOwner<E>, data: D): FirSymbolOwner<E> where E : FirSymbolOwner<E>, E : FirDeclaration {
-        return transformElement(symbolOwner, data)
-    }
-
     open fun transformResolvable(resolvable: FirResolvable, data: D): FirResolvable {
         return transformElement(resolvable, data)
     }
@@ -200,28 +192,16 @@ abstract class FirTransformer<in D> : FirVisitor<FirElement, D>() {
         return transformElement(declaration, data)
     }
 
-    open fun transformAnnotatedDeclaration(annotatedDeclaration: FirAnnotatedDeclaration, data: D): FirDeclaration {
+    open fun transformAnnotatedDeclaration(annotatedDeclaration: FirAnnotatedDeclaration, data: D): FirAnnotatedDeclaration {
         return transformElement(annotatedDeclaration, data)
     }
 
-    open fun transformAnonymousInitializer(anonymousInitializer: FirAnonymousInitializer, data: D): FirDeclaration {
+    open fun transformAnonymousInitializer(anonymousInitializer: FirAnonymousInitializer, data: D): FirAnonymousInitializer {
         return transformElement(anonymousInitializer, data)
     }
 
-    open fun transformTypedDeclaration(typedDeclaration: FirTypedDeclaration, data: D): FirDeclaration {
+    open fun transformTypedDeclaration(typedDeclaration: FirTypedDeclaration, data: D): FirTypedDeclaration {
         return transformElement(typedDeclaration, data)
-    }
-
-    open fun <F : FirCallableDeclaration<F>> transformCallableDeclaration(callableDeclaration: FirCallableDeclaration<F>, data: D): FirDeclaration {
-        return transformElement(callableDeclaration, data)
-    }
-
-    open fun transformTypeParameterRef(typeParameterRef: FirTypeParameterRef, data: D): FirTypeParameterRef {
-        return transformElement(typeParameterRef, data)
-    }
-
-    open fun transformTypeParameter(typeParameter: FirTypeParameter, data: D): FirDeclaration {
-        return transformElement(typeParameter, data)
     }
 
     open fun transformTypeParameterRefsOwner(typeParameterRefsOwner: FirTypeParameterRefsOwner, data: D): FirTypeParameterRefsOwner {
@@ -232,15 +212,23 @@ abstract class FirTransformer<in D> : FirVisitor<FirElement, D>() {
         return transformElement(typeParametersOwner, data)
     }
 
-    open fun transformMemberDeclaration(memberDeclaration: FirMemberDeclaration, data: D): FirDeclaration {
+    open fun transformMemberDeclaration(memberDeclaration: FirMemberDeclaration, data: D): FirMemberDeclaration {
         return transformElement(memberDeclaration, data)
     }
 
-    open fun <F : FirCallableMemberDeclaration<F>> transformCallableMemberDeclaration(callableMemberDeclaration: FirCallableMemberDeclaration<F>, data: D): FirDeclaration {
-        return transformElement(callableMemberDeclaration, data)
+    open fun transformCallableDeclaration(callableDeclaration: FirCallableDeclaration, data: D): FirCallableDeclaration {
+        return transformElement(callableDeclaration, data)
     }
 
-    open fun <F : FirVariable<F>> transformVariable(variable: FirVariable<F>, data: D): FirStatement {
+    open fun transformTypeParameterRef(typeParameterRef: FirTypeParameterRef, data: D): FirTypeParameterRef {
+        return transformElement(typeParameterRef, data)
+    }
+
+    open fun transformTypeParameter(typeParameter: FirTypeParameter, data: D): FirTypeParameterRef {
+        return transformElement(typeParameter, data)
+    }
+
+    open fun transformVariable(variable: FirVariable, data: D): FirStatement {
         return transformElement(variable, data)
     }
 
@@ -248,23 +236,23 @@ abstract class FirTransformer<in D> : FirVisitor<FirElement, D>() {
         return transformElement(valueParameter, data)
     }
 
-    open fun transformProperty(property: FirProperty, data: D): FirDeclaration {
+    open fun transformProperty(property: FirProperty, data: D): FirStatement {
         return transformElement(property, data)
     }
 
-    open fun transformField(field: FirField, data: D): FirDeclaration {
+    open fun transformField(field: FirField, data: D): FirStatement {
         return transformElement(field, data)
     }
 
-    open fun transformEnumEntry(enumEntry: FirEnumEntry, data: D): FirDeclaration {
+    open fun transformEnumEntry(enumEntry: FirEnumEntry, data: D): FirStatement {
         return transformElement(enumEntry, data)
     }
 
-    open fun <F : FirClassLikeDeclaration<F>> transformClassLikeDeclaration(classLikeDeclaration: FirClassLikeDeclaration<F>, data: D): FirStatement {
+    open fun transformClassLikeDeclaration(classLikeDeclaration: FirClassLikeDeclaration, data: D): FirStatement {
         return transformElement(classLikeDeclaration, data)
     }
 
-    open fun <F : FirClass<F>> transformClass(klass: FirClass<F>, data: D): FirStatement {
+    open fun transformClass(klass: FirClass, data: D): FirStatement {
         return transformElement(klass, data)
     }
 
@@ -272,11 +260,11 @@ abstract class FirTransformer<in D> : FirVisitor<FirElement, D>() {
         return transformElement(regularClass, data)
     }
 
-    open fun transformTypeAlias(typeAlias: FirTypeAlias, data: D): FirDeclaration {
+    open fun transformTypeAlias(typeAlias: FirTypeAlias, data: D): FirStatement {
         return transformElement(typeAlias, data)
     }
 
-    open fun <F : FirFunction<F>> transformFunction(function: FirFunction<F>, data: D): FirStatement {
+    open fun transformFunction(function: FirFunction, data: D): FirStatement {
         return transformElement(function, data)
     }
 
@@ -284,32 +272,56 @@ abstract class FirTransformer<in D> : FirVisitor<FirElement, D>() {
         return transformElement(contractDescriptionOwner, data)
     }
 
-    open fun transformSimpleFunction(simpleFunction: FirSimpleFunction, data: D): FirDeclaration {
+    open fun transformSimpleFunction(simpleFunction: FirSimpleFunction, data: D): FirStatement {
         return transformElement(simpleFunction, data)
     }
 
-    open fun transformPropertyAccessor(propertyAccessor: FirPropertyAccessor, data: D): FirDeclaration {
+    open fun transformPropertyAccessor(propertyAccessor: FirPropertyAccessor, data: D): FirStatement {
         return transformElement(propertyAccessor, data)
     }
 
-    open fun transformConstructor(constructor: FirConstructor, data: D): FirDeclaration {
+    open fun transformConstructor(constructor: FirConstructor, data: D): FirStatement {
         return transformElement(constructor, data)
     }
 
-    open fun transformFile(file: FirFile, data: D): FirDeclaration {
+    open fun transformFile(file: FirFile, data: D): FirFile {
         return transformElement(file, data)
+    }
+
+    open fun transformPackageDirective(packageDirective: FirPackageDirective, data: D): FirPackageDirective {
+        return transformElement(packageDirective, data)
     }
 
     open fun transformAnonymousFunction(anonymousFunction: FirAnonymousFunction, data: D): FirStatement {
         return transformElement(anonymousFunction, data)
     }
 
+    open fun transformAnonymousFunctionExpression(anonymousFunctionExpression: FirAnonymousFunctionExpression, data: D): FirStatement {
+        return transformElement(anonymousFunctionExpression, data)
+    }
+
     open fun transformAnonymousObject(anonymousObject: FirAnonymousObject, data: D): FirStatement {
         return transformElement(anonymousObject, data)
     }
 
+    open fun transformAnonymousObjectExpression(anonymousObjectExpression: FirAnonymousObjectExpression, data: D): FirStatement {
+        return transformElement(anonymousObjectExpression, data)
+    }
+
     open fun transformDiagnosticHolder(diagnosticHolder: FirDiagnosticHolder, data: D): FirDiagnosticHolder {
         return transformElement(diagnosticHolder, data)
+    }
+
+    open fun transformImport(import: FirImport, data: D): FirImport {
+        return transformElement(import, data)
+    }
+
+    open fun transformResolvedImport(resolvedImport: FirResolvedImport, data: D): FirImport {
+        return transformElement(resolvedImport, data)
+    }
+
+    open fun transformErrorImport(errorImport: FirErrorImport, data: D): FirImport {
+        return transformElement(errorImport, data)
     }
 
     open fun transformLoop(loop: FirLoop, data: D): FirStatement {
@@ -452,6 +464,10 @@ abstract class FirTransformer<in D> : FirVisitor<FirElement, D>() {
         return transformElement(qualifiedAccessExpression, data)
     }
 
+    open fun transformPropertyAccessExpression(propertyAccessExpression: FirPropertyAccessExpression, data: D): FirStatement {
+        return transformElement(propertyAccessExpression, data)
+    }
+
     open fun transformFunctionCall(functionCall: FirFunctionCall, data: D): FirStatement {
         return transformElement(functionCall, data)
     }
@@ -478,6 +494,10 @@ abstract class FirTransformer<in D> : FirVisitor<FirElement, D>() {
 
     open fun transformExpressionWithSmartcast(expressionWithSmartcast: FirExpressionWithSmartcast, data: D): FirStatement {
         return transformElement(expressionWithSmartcast, data)
+    }
+
+    open fun transformExpressionWithSmartcastToNull(expressionWithSmartcastToNull: FirExpressionWithSmartcastToNull, data: D): FirStatement {
+        return transformElement(expressionWithSmartcastToNull, data)
     }
 
     open fun transformSafeCallExpression(safeCallExpression: FirSafeCallExpression, data: D): FirStatement {
@@ -656,18 +676,6 @@ abstract class FirTransformer<in D> : FirVisitor<FirElement, D>() {
         return transformLabel(label, data)
     }
 
-    final override fun visitImport(import: FirImport, data: D): FirImport {
-        return transformImport(import, data)
-    }
-
-    final override fun visitResolvedImport(resolvedImport: FirResolvedImport, data: D): FirImport {
-        return transformResolvedImport(resolvedImport, data)
-    }
-
-    final override fun <E> visitSymbolOwner(symbolOwner: FirSymbolOwner<E>, data: D): FirSymbolOwner<E> where E : FirSymbolOwner<E>, E : FirDeclaration {
-        return transformSymbolOwner(symbolOwner, data)
-    }
-
     final override fun visitResolvable(resolvable: FirResolvable, data: D): FirResolvable {
         return transformResolvable(resolvable, data)
     }
@@ -700,28 +708,16 @@ abstract class FirTransformer<in D> : FirVisitor<FirElement, D>() {
         return transformDeclaration(declaration, data)
     }
 
-    final override fun visitAnnotatedDeclaration(annotatedDeclaration: FirAnnotatedDeclaration, data: D): FirDeclaration {
+    final override fun visitAnnotatedDeclaration(annotatedDeclaration: FirAnnotatedDeclaration, data: D): FirAnnotatedDeclaration {
         return transformAnnotatedDeclaration(annotatedDeclaration, data)
     }
 
-    final override fun visitAnonymousInitializer(anonymousInitializer: FirAnonymousInitializer, data: D): FirDeclaration {
+    final override fun visitAnonymousInitializer(anonymousInitializer: FirAnonymousInitializer, data: D): FirAnonymousInitializer {
         return transformAnonymousInitializer(anonymousInitializer, data)
     }
 
-    final override fun visitTypedDeclaration(typedDeclaration: FirTypedDeclaration, data: D): FirDeclaration {
+    final override fun visitTypedDeclaration(typedDeclaration: FirTypedDeclaration, data: D): FirTypedDeclaration {
         return transformTypedDeclaration(typedDeclaration, data)
-    }
-
-    final override fun <F : FirCallableDeclaration<F>> visitCallableDeclaration(callableDeclaration: FirCallableDeclaration<F>, data: D): FirDeclaration {
-        return transformCallableDeclaration(callableDeclaration, data)
-    }
-
-    final override fun visitTypeParameterRef(typeParameterRef: FirTypeParameterRef, data: D): FirTypeParameterRef {
-        return transformTypeParameterRef(typeParameterRef, data)
-    }
-
-    final override fun visitTypeParameter(typeParameter: FirTypeParameter, data: D): FirDeclaration {
-        return transformTypeParameter(typeParameter, data)
     }
 
     final override fun visitTypeParameterRefsOwner(typeParameterRefsOwner: FirTypeParameterRefsOwner, data: D): FirTypeParameterRefsOwner {
@@ -732,15 +728,23 @@ abstract class FirTransformer<in D> : FirVisitor<FirElement, D>() {
         return transformTypeParametersOwner(typeParametersOwner, data)
     }
 
-    final override fun visitMemberDeclaration(memberDeclaration: FirMemberDeclaration, data: D): FirDeclaration {
+    final override fun visitMemberDeclaration(memberDeclaration: FirMemberDeclaration, data: D): FirMemberDeclaration {
         return transformMemberDeclaration(memberDeclaration, data)
     }
 
-    final override fun <F : FirCallableMemberDeclaration<F>> visitCallableMemberDeclaration(callableMemberDeclaration: FirCallableMemberDeclaration<F>, data: D): FirDeclaration {
-        return transformCallableMemberDeclaration(callableMemberDeclaration, data)
+    final override fun visitCallableDeclaration(callableDeclaration: FirCallableDeclaration, data: D): FirCallableDeclaration {
+        return transformCallableDeclaration(callableDeclaration, data)
     }
 
-    final override fun <F : FirVariable<F>> visitVariable(variable: FirVariable<F>, data: D): FirStatement {
+    final override fun visitTypeParameterRef(typeParameterRef: FirTypeParameterRef, data: D): FirTypeParameterRef {
+        return transformTypeParameterRef(typeParameterRef, data)
+    }
+
+    final override fun visitTypeParameter(typeParameter: FirTypeParameter, data: D): FirTypeParameterRef {
+        return transformTypeParameter(typeParameter, data)
+    }
+
+    final override fun visitVariable(variable: FirVariable, data: D): FirStatement {
         return transformVariable(variable, data)
     }
 
@@ -748,23 +752,23 @@ abstract class FirTransformer<in D> : FirVisitor<FirElement, D>() {
         return transformValueParameter(valueParameter, data)
     }
 
-    final override fun visitProperty(property: FirProperty, data: D): FirDeclaration {
+    final override fun visitProperty(property: FirProperty, data: D): FirStatement {
         return transformProperty(property, data)
     }
 
-    final override fun visitField(field: FirField, data: D): FirDeclaration {
+    final override fun visitField(field: FirField, data: D): FirStatement {
         return transformField(field, data)
     }
 
-    final override fun visitEnumEntry(enumEntry: FirEnumEntry, data: D): FirDeclaration {
+    final override fun visitEnumEntry(enumEntry: FirEnumEntry, data: D): FirStatement {
         return transformEnumEntry(enumEntry, data)
     }
 
-    final override fun <F : FirClassLikeDeclaration<F>> visitClassLikeDeclaration(classLikeDeclaration: FirClassLikeDeclaration<F>, data: D): FirStatement {
+    final override fun visitClassLikeDeclaration(classLikeDeclaration: FirClassLikeDeclaration, data: D): FirStatement {
         return transformClassLikeDeclaration(classLikeDeclaration, data)
     }
 
-    final override fun <F : FirClass<F>> visitClass(klass: FirClass<F>, data: D): FirStatement {
+    final override fun visitClass(klass: FirClass, data: D): FirStatement {
         return transformClass(klass, data)
     }
 
@@ -772,11 +776,11 @@ abstract class FirTransformer<in D> : FirVisitor<FirElement, D>() {
         return transformRegularClass(regularClass, data)
     }
 
-    final override fun visitTypeAlias(typeAlias: FirTypeAlias, data: D): FirDeclaration {
+    final override fun visitTypeAlias(typeAlias: FirTypeAlias, data: D): FirStatement {
         return transformTypeAlias(typeAlias, data)
     }
 
-    final override fun <F : FirFunction<F>> visitFunction(function: FirFunction<F>, data: D): FirStatement {
+    final override fun visitFunction(function: FirFunction, data: D): FirStatement {
         return transformFunction(function, data)
     }
 
@@ -784,32 +788,56 @@ abstract class FirTransformer<in D> : FirVisitor<FirElement, D>() {
         return transformContractDescriptionOwner(contractDescriptionOwner, data)
     }
 
-    final override fun visitSimpleFunction(simpleFunction: FirSimpleFunction, data: D): FirDeclaration {
+    final override fun visitSimpleFunction(simpleFunction: FirSimpleFunction, data: D): FirStatement {
         return transformSimpleFunction(simpleFunction, data)
     }
 
-    final override fun visitPropertyAccessor(propertyAccessor: FirPropertyAccessor, data: D): FirDeclaration {
+    final override fun visitPropertyAccessor(propertyAccessor: FirPropertyAccessor, data: D): FirStatement {
         return transformPropertyAccessor(propertyAccessor, data)
     }
 
-    final override fun visitConstructor(constructor: FirConstructor, data: D): FirDeclaration {
+    final override fun visitConstructor(constructor: FirConstructor, data: D): FirStatement {
         return transformConstructor(constructor, data)
     }
 
-    final override fun visitFile(file: FirFile, data: D): FirDeclaration {
+    final override fun visitFile(file: FirFile, data: D): FirFile {
         return transformFile(file, data)
+    }
+
+    final override fun visitPackageDirective(packageDirective: FirPackageDirective, data: D): FirPackageDirective {
+        return transformPackageDirective(packageDirective, data)
     }
 
     final override fun visitAnonymousFunction(anonymousFunction: FirAnonymousFunction, data: D): FirStatement {
         return transformAnonymousFunction(anonymousFunction, data)
     }
 
+    final override fun visitAnonymousFunctionExpression(anonymousFunctionExpression: FirAnonymousFunctionExpression, data: D): FirStatement {
+        return transformAnonymousFunctionExpression(anonymousFunctionExpression, data)
+    }
+
     final override fun visitAnonymousObject(anonymousObject: FirAnonymousObject, data: D): FirStatement {
         return transformAnonymousObject(anonymousObject, data)
     }
 
+    final override fun visitAnonymousObjectExpression(anonymousObjectExpression: FirAnonymousObjectExpression, data: D): FirStatement {
+        return transformAnonymousObjectExpression(anonymousObjectExpression, data)
+    }
+
     final override fun visitDiagnosticHolder(diagnosticHolder: FirDiagnosticHolder, data: D): FirDiagnosticHolder {
         return transformDiagnosticHolder(diagnosticHolder, data)
+    }
+
+    final override fun visitImport(import: FirImport, data: D): FirImport {
+        return transformImport(import, data)
+    }
+
+    final override fun visitResolvedImport(resolvedImport: FirResolvedImport, data: D): FirImport {
+        return transformResolvedImport(resolvedImport, data)
+    }
+
+    final override fun visitErrorImport(errorImport: FirErrorImport, data: D): FirImport {
+        return transformErrorImport(errorImport, data)
     }
 
     final override fun visitLoop(loop: FirLoop, data: D): FirStatement {
@@ -952,6 +980,10 @@ abstract class FirTransformer<in D> : FirVisitor<FirElement, D>() {
         return transformQualifiedAccessExpression(qualifiedAccessExpression, data)
     }
 
+    final override fun visitPropertyAccessExpression(propertyAccessExpression: FirPropertyAccessExpression, data: D): FirStatement {
+        return transformPropertyAccessExpression(propertyAccessExpression, data)
+    }
+
     final override fun visitFunctionCall(functionCall: FirFunctionCall, data: D): FirStatement {
         return transformFunctionCall(functionCall, data)
     }
@@ -978,6 +1010,10 @@ abstract class FirTransformer<in D> : FirVisitor<FirElement, D>() {
 
     final override fun visitExpressionWithSmartcast(expressionWithSmartcast: FirExpressionWithSmartcast, data: D): FirStatement {
         return transformExpressionWithSmartcast(expressionWithSmartcast, data)
+    }
+
+    final override fun visitExpressionWithSmartcastToNull(expressionWithSmartcastToNull: FirExpressionWithSmartcastToNull, data: D): FirStatement {
+        return transformExpressionWithSmartcastToNull(expressionWithSmartcastToNull, data)
     }
 
     final override fun visitSafeCallExpression(safeCallExpression: FirSafeCallExpression, data: D): FirStatement {

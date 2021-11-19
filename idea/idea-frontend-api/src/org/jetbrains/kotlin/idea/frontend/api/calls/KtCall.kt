@@ -6,13 +6,18 @@
 package org.jetbrains.kotlin.idea.frontend.api.calls
 
 import org.jetbrains.kotlin.idea.frontend.api.diagnostics.KtDiagnostic
-import org.jetbrains.kotlin.idea.frontend.api.symbols.*
+import org.jetbrains.kotlin.idea.frontend.api.symbols.KtFunctionLikeSymbol
+import org.jetbrains.kotlin.idea.frontend.api.symbols.KtValueParameterSymbol
+import org.jetbrains.kotlin.idea.frontend.api.symbols.KtVariableLikeSymbol
+import org.jetbrains.kotlin.psi.KtExpression
 
 /**
  * Represents direct or indirect (via invoke) function call from Kotlin code
  */
-sealed class KtCall {
-    abstract val isErrorCall: Boolean
+public sealed class KtCall {
+    public abstract val isErrorCall: Boolean
+    public abstract val argumentMapping: LinkedHashMap<KtExpression, KtValueParameterSymbol>
+    public abstract val targetFunction: KtCallTarget
 }
 
 /**
@@ -22,15 +27,18 @@ sealed class KtCall {
  *    f() // functional type call
  * }
  */
-class KtFunctionalTypeVariableCall(val target: KtVariableLikeSymbol) : KtCall() {
+public class KtFunctionalTypeVariableCall(
+    public val target: KtVariableLikeSymbol,
+    override val argumentMapping: LinkedHashMap<KtExpression, KtValueParameterSymbol>,
+    override val targetFunction: KtCallTarget
+) : KtCall() {
     override val isErrorCall: Boolean get() = false
 }
 
 /**
  * Direct or indirect call of function declared by user
  */
-sealed class KtDeclaredFunctionCall : KtCall() {
-    abstract val targetFunction: KtCallTarget
+public sealed class KtDeclaredFunctionCall : KtCall() {
     override val isErrorCall: Boolean
         get() = targetFunction is KtErrorCallTarget
 }
@@ -44,33 +52,63 @@ sealed class KtDeclaredFunctionCall : KtCall() {
  *
  * fun Int.invoke() {}
  */
-class KtVariableWithInvokeFunctionCall(
-    val target: KtVariableLikeSymbol,
-    val invokeFunction: KtCallTarget,
-) : KtDeclaredFunctionCall() {
-    override val targetFunction: KtCallTarget get() = invokeFunction
-}
+public class KtVariableWithInvokeFunctionCall(
+    public val target: KtVariableLikeSymbol,
+    override val argumentMapping: LinkedHashMap<KtExpression, KtValueParameterSymbol>,
+    override val targetFunction: KtCallTarget
+) : KtDeclaredFunctionCall()
 
 /**
  * Simple function call, e.g.,
  *
  * x.toString() // function call
  */
-data class KtFunctionCall(override val targetFunction: KtCallTarget) : KtDeclaredFunctionCall()
+public class KtFunctionCall(
+    override val argumentMapping: LinkedHashMap<KtExpression, KtValueParameterSymbol>,
+    override val targetFunction: KtCallTarget
+) : KtDeclaredFunctionCall()
+
+/**
+ * Annotation call, e.g.,
+ *
+ * @Retention(AnnotationRetention.SOURCE) // annotation call
+ * annotation class Ann
+ */
+public class KtAnnotationCall(
+    override val argumentMapping: LinkedHashMap<KtExpression, KtValueParameterSymbol>,
+    override val targetFunction: KtCallTarget
+) : KtDeclaredFunctionCall()
+// TODO: Add other properties, e.g., useSiteTarget
+
+/**
+ * Delegated constructor call, e.g.,
+ *
+ * open class A(a: Int)
+ * class B(b: Int) : A(b) { // delegated constructor call (kind = SUPER_CALL)
+ *   constructor() : this(1) // delegated constructor call (kind = THIS_CALL)
+ * }
+ */
+public class KtDelegatedConstructorCall(
+    override val argumentMapping: LinkedHashMap<KtExpression, KtValueParameterSymbol>,
+    override val targetFunction: KtCallTarget,
+    public val kind: KtDelegatedConstructorCallKind
+) : KtDeclaredFunctionCall()
+
+public enum class KtDelegatedConstructorCallKind { SUPER_CALL, THIS_CALL }
 
 /**
  * Represents function(s) in which call was resolved,
  * Can be success [KtSuccessCallTarget] in this case there only one such function
  * Or erroneous [KtErrorCallTarget] in this case there can be any count of candidates
  */
-sealed class KtCallTarget {
-    abstract val candidates: Collection<KtFunctionLikeSymbol>
+public sealed class KtCallTarget {
+    public abstract val candidates: Collection<KtFunctionLikeSymbol>
 }
 
 /**
  * Success call of [symbol]
  */
-class KtSuccessCallTarget(val symbol: KtFunctionLikeSymbol) : KtCallTarget() {
+public class KtSuccessCallTarget(public val symbol: KtFunctionLikeSymbol) : KtCallTarget() {
     override val candidates: Collection<KtFunctionLikeSymbol>
         get() = listOf(symbol)
 }
@@ -78,4 +116,7 @@ class KtSuccessCallTarget(val symbol: KtFunctionLikeSymbol) : KtCallTarget() {
 /**
  * Function all with errors, possible candidates are [candidates]
  */
-class KtErrorCallTarget(override val candidates: Collection<KtFunctionLikeSymbol>, val diagnostic: KtDiagnostic) : KtCallTarget()
+public class KtErrorCallTarget(
+    override val candidates: Collection<KtFunctionLikeSymbol>,
+    public val diagnostic: KtDiagnostic
+) : KtCallTarget()

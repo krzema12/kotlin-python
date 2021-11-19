@@ -26,7 +26,6 @@ import org.jetbrains.kotlin.types.*
 import org.jetbrains.kotlin.types.ErrorUtils.UninferredParameterTypeConstructor
 import org.jetbrains.kotlin.types.TypeUtils.CANT_INFER_FUNCTION_PARAM_TYPE
 import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
-import java.util.*
 
 internal class DescriptorRendererImpl(
     val options: DescriptorRendererOptionsImpl
@@ -236,19 +235,26 @@ internal class DescriptorRendererImpl(
     private fun StringBuilder.renderDefaultType(type: KotlinType) {
         this.renderAnnotations(type)
 
-        if (type.isError) {
-            if (type is UnresolvedType && presentableUnresolvedTypes) {
-                append(type.presentableName)
-            } else {
-                if (type is ErrorType && !informativeErrorType) {
+        val originalTypeOfDefNotNullType = (type as? DefinitelyNotNullType)?.original
+
+        when {
+            type.isError -> {
+                if (type is UnresolvedType && presentableUnresolvedTypes) {
                     append(type.presentableName)
                 } else {
-                    append(type.constructor.toString()) // Debug name of an error type is more informative
+                    if (type is ErrorType && !informativeErrorType) {
+                        append(type.presentableName)
+                    } else {
+                        append(type.constructor.toString()) // Debug name of an error type is more informative
+                    }
                 }
+                append(renderTypeArguments(type.arguments))
             }
-            append(renderTypeArguments(type.arguments))
-        } else {
-            renderTypeConstructorAndArguments(type)
+            type is StubTypeForBuilderInference ->
+                append(type.originalTypeVariable.toString())
+            originalTypeOfDefNotNullType is StubTypeForBuilderInference ->
+                append(originalTypeOfDefNotNullType.originalTypeVariable.toString())
+            else -> renderTypeConstructorAndArguments(type)
         }
 
         if (type.isMarkedNullable) {
@@ -256,7 +262,7 @@ internal class DescriptorRendererImpl(
         }
 
         if (type.isDefinitelyNotNullType) {
-            append("!!")
+            append(" & Any")
         }
     }
 
@@ -286,7 +292,11 @@ internal class DescriptorRendererImpl(
 
     override fun renderTypeConstructor(typeConstructor: TypeConstructor): String = when (val cd = typeConstructor.declarationDescriptor) {
         is TypeParameterDescriptor, is ClassDescriptor, is TypeAliasDescriptor -> renderClassifierName(cd)
-        null -> typeConstructor.toString()
+        null -> {
+            if (typeConstructor is IntersectionTypeConstructor) {
+                typeConstructor.makeDebugNameForIntersectionType { if (it is StubTypeForBuilderInference) it.originalTypeVariable else it }
+            } else typeConstructor.toString()
+        }
         else -> error("Unexpected classifier: " + cd::class.java)
     }
 
@@ -380,11 +390,7 @@ internal class DescriptorRendererImpl(
         if (descriptor is PackageFragmentDescriptor || descriptor is PackageViewDescriptor) {
             return
         }
-        if (descriptor is ModuleDescriptor) {
-            append(" is a module")
-            return
-        }
-
+        
         val containingDeclaration = descriptor.containingDeclaration
         if (containingDeclaration != null && containingDeclaration !is ModuleDescriptor) {
             append(" ").append(renderMessage("defined in")).append(" ")

@@ -49,6 +49,7 @@ interface IrDeclarationOrigin {
     object SCRIPT_RESULT_PROPERTY : IrDeclarationOriginImpl("SCRIPT_RESULT_PROPERTY")
     object GENERATED_DATA_CLASS_MEMBER : IrDeclarationOriginImpl("GENERATED_DATA_CLASS_MEMBER")
     object GENERATED_INLINE_CLASS_MEMBER : IrDeclarationOriginImpl("GENERATED_INLINE_CLASS_MEMBER")
+    object LOCAL_FUNCTION : IrDeclarationOriginImpl("LOCAL_FUNCTION")
     object LOCAL_FUNCTION_FOR_LAMBDA : IrDeclarationOriginImpl("LOCAL_FUNCTION_FOR_LAMBDA")
     object CATCH_PARAMETER : IrDeclarationOriginImpl("CATCH_PARAMETER")
     object INSTANCE_RECEIVER : IrDeclarationOriginImpl("INSTANCE_RECEIVER")
@@ -59,6 +60,7 @@ interface IrDeclarationOrigin {
     object IR_BUILTINS_STUB : IrDeclarationOriginImpl("IR_BUILTINS_STUB")
     object BRIDGE : IrDeclarationOriginImpl("BRIDGE", isSynthetic = true)
     object BRIDGE_SPECIAL : IrDeclarationOriginImpl("BRIDGE_SPECIAL")
+    object GENERATED_SETTER_GETTER : IrDeclarationOriginImpl("GENERATED_SETTER_GETTER", isSynthetic = true)
 
     object FIELD_FOR_ENUM_ENTRY : IrDeclarationOriginImpl("FIELD_FOR_ENUM_ENTRY")
     object SYNTHETIC_HELPER_FOR_ENUM_VALUES : IrDeclarationOriginImpl("SYNTHETIC_HELPER_FOR_ENUM_VALUES", isSynthetic = true)
@@ -74,6 +76,8 @@ interface IrDeclarationOrigin {
     object SYNTHETIC_GENERATED_SAM_IMPLEMENTATION : IrDeclarationOriginImpl("SYNTHETIC_GENERATED_SAM_IMPLEMENTATION", isSynthetic = true)
 
     object SYNTHETIC_JAVA_PROPERTY_DELEGATE : IrDeclarationOriginImpl("SYNTHETIC_JAVA_PROPERTY_DELEGATE", isSynthetic = true)
+
+    object FIELD_FOR_OUTER_THIS : IrDeclarationOriginImpl("FIELD_FOR_OUTER_THIS", isSynthetic = true)
 
     val isSynthetic: Boolean get() = false
 }

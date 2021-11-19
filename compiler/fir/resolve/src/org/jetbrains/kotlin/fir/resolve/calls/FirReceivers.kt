@@ -7,8 +7,7 @@ package org.jetbrains.kotlin.fir.resolve.calls
 
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.diagnostics.ConeIntermediateDiagnostic
-import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
+import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.expressions.builder.buildExpressionWithSmartcast
 import org.jetbrains.kotlin.fir.expressions.builder.buildThisReceiverExpression
 import org.jetbrains.kotlin.fir.references.builder.buildImplicitThisReference
@@ -16,10 +15,11 @@ import org.jetbrains.kotlin.fir.renderWithType
 import org.jetbrains.kotlin.fir.resolve.ScopeSession
 import org.jetbrains.kotlin.fir.resolve.constructType
 import org.jetbrains.kotlin.fir.resolve.scope
+import org.jetbrains.kotlin.fir.resolve.smartcastScope
 import org.jetbrains.kotlin.fir.resolvedTypeFromPrototype
 import org.jetbrains.kotlin.fir.scopes.FakeOverrideTypeCalculator
 import org.jetbrains.kotlin.fir.scopes.FirTypeScope
-import org.jetbrains.kotlin.fir.symbols.AbstractFirBasedSymbol
+import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassSymbol
 import org.jetbrains.kotlin.fir.types.ConeKotlinErrorType
@@ -27,6 +27,7 @@ import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.fir.types.builder.buildResolvedTypeRef
 import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.fir.types.coneTypeSafe
+import org.jetbrains.kotlin.types.SmartcastStability
 
 interface Receiver
 
@@ -56,9 +57,22 @@ abstract class AbstractExplicitReceiverValue<E : FirExpression> : AbstractExplic
 
 class ExpressionReceiverValue(
     override val explicitReceiver: FirExpression
-) : AbstractExplicitReceiverValue<FirExpression>(), ReceiverValue
+) : AbstractExplicitReceiverValue<FirExpression>(), ReceiverValue {
+    override fun scope(useSiteSession: FirSession, scopeSession: ScopeSession): FirTypeScope? {
+        var receiverExpr: FirExpression? = receiverExpression
+        // Unwrap `x!!` to `x` and use the resulted expression to derive receiver type. This is necessary so that smartcast types inside
+        // `!!` is handled correctly.
+        if (receiverExpr is FirCheckNotNullCall) {
+            receiverExpr = receiverExpr.arguments.firstOrNull()
+        }
+        if (receiverExpr is FirExpressionWithSmartcast) {
+            return receiverExpr.smartcastScope(useSiteSession, scopeSession)
+        }
+        return type.scope(useSiteSession, scopeSession, FakeOverrideTypeCalculator.DoNothing)
+    }
+}
 
-sealed class ImplicitReceiverValue<S : AbstractFirBasedSymbol<*>>(
+sealed class ImplicitReceiverValue<S : FirBasedSymbol<*>>(
     val boundSymbol: S,
     type: ConeKotlinType,
     protected val useSiteSession: FirSession,
@@ -89,15 +103,16 @@ sealed class ImplicitReceiverValue<S : AbstractFirBasedSymbol<*>>(
         } else {
             buildExpressionWithSmartcast {
                 originalExpression = originalReceiverExpression
-                typeRef = originalReceiverExpression.typeRef.resolvedTypeFromPrototype(type)
+                smartcastType = originalReceiverExpression.typeRef.resolvedTypeFromPrototype(type)
                 typesFromSmartCast = listOf(type)
+                smartcastStability = SmartcastStability.STABLE_VALUE
             }
         }
         implicitScope = type.scope(useSiteSession, scopeSession, FakeOverrideTypeCalculator.DoNothing)
     }
 }
 
-private fun receiverExpression(symbol: AbstractFirBasedSymbol<*>, type: ConeKotlinType): FirThisReceiverExpression =
+private fun receiverExpression(symbol: FirBasedSymbol<*>, type: ConeKotlinType): FirThisReceiverExpression =
     buildThisReceiverExpression {
         // NB: we can't use `symbol.fir.source` as the source of `this` receiver. For instance, if this is an implicit receiver for a class,
         // the entire class itself will be set as a source. If combined with an implicit type operation, a certain assertion, like null

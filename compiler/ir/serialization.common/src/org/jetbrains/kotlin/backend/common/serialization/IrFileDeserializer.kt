@@ -5,9 +5,10 @@
 
 package org.jetbrains.kotlin.backend.common.serialization
 
-import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.descriptors.impl.EmptyPackageFragmentDescriptor
-import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.declarations.IrDeclaration
+import org.jetbrains.kotlin.ir.declarations.IrFile
+import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.impl.IrFileImpl
 import org.jetbrains.kotlin.ir.symbols.impl.IrFileSymbolImpl
 import org.jetbrains.kotlin.ir.util.IdSignature
@@ -32,7 +33,7 @@ class IrFileDeserializer(
 
     private var annotations: List<ProtoConstructorCall>? = fileProto.annotationList
 
-    internal fun deserializeDeclaration(idSig: IdSignature): IrDeclaration {
+    fun deserializeDeclaration(idSig: IdSignature): IrDeclaration {
         return declarationDeserializer.deserializeDeclaration(loadTopLevelDeclarationProto(idSig)).also {
             file.declarations += it
         }
@@ -62,21 +63,25 @@ class FileDeserializationState(
     deserializeBodies: Boolean,
     allowErrorNodes: Boolean,
     deserializeInlineFunctions: Boolean,
-    moduleDeserializer: IrModuleDeserializer,
-    handleNoModuleDeserializerFound: (IdSignature, ModuleDescriptor, Collection<IrModuleDeserializer>) -> IrModuleDeserializer,
+    moduleDeserializer: IrModuleDeserializer
 ) {
 
     val symbolDeserializer =
-        IrSymbolDeserializer(linker.symbolTable, fileReader, fileProto.actualsList, ::addIdSignature, linker::handleExpectActualMapping) { idSig, symbolKind ->
-            assert(idSig.isPublic)
+        IrSymbolDeserializer(
+            linker.symbolTable, fileReader, file.symbol,
+            fileProto.actualList,
+            ::addIdSignature,
+            linker::handleExpectActualMapping,
+        ) { idSig, symbolKind ->
 
             val topLevelSig = idSig.topLevelSignature()
-            val actualModuleDeserializer =
-                moduleDeserializer.findModuleDeserializerForTopLevelId(topLevelSig) ?: handleNoModuleDeserializerFound(
-                    idSig,
-                    moduleDeserializer.moduleDescriptor,
-                    moduleDeserializer.moduleDependencies
-                )
+            val actualModuleDeserializer = moduleDeserializer.findModuleDeserializerForTopLevelId(topLevelSig)
+                ?: run {
+                    // The symbol might be gone in newer version of dependency KLIB. Then the KLIB that was compiled against
+                    // the older version of dependency KLIB will still have a reference to non-existing symbol. And the linker will have to
+                    // handle such situation appropriately. See KT-41378.
+                    linker.handleSignatureIdNotFoundInModuleWithDependencies(idSig, moduleDeserializer)
+                }
 
             actualModuleDeserializer.deserializeIrSymbol(idSig, symbolKind)
         }
@@ -93,6 +98,7 @@ class FileDeserializationState(
         symbolDeserializer,
         linker.fakeOverrideBuilder.platformSpecificClassFilter,
         linker.fakeOverrideBuilder,
+        compatibilityMode = moduleDeserializer.compatibilityMode
     )
 
     val fileDeserializer = IrFileDeserializer(file, fileReader, fileProto, symbolDeserializer, declarationDeserializer)
@@ -138,24 +144,27 @@ abstract class IrLibraryFile {
     abstract fun signature(index: Int): ByteArray
     abstract fun string(index: Int): ByteArray
     abstract fun body(index: Int): ByteArray
+    abstract fun debugInfo(index: Int): ByteArray?
 }
 
-class IrLibraryFileFromKlib(private val klib: IrLibrary, private val fileIndex: Int): IrLibraryFile() {
+class IrLibraryFileFromKlib(private val klib: IrLibrary, private val fileIndex: Int) : IrLibraryFile() {
     override fun irDeclaration(index: Int): ByteArray = klib.irDeclaration(index, fileIndex)
     override fun type(index: Int): ByteArray = klib.type(index, fileIndex)
     override fun signature(index: Int): ByteArray = klib.signature(index, fileIndex)
     override fun string(index: Int): ByteArray = klib.string(index, fileIndex)
     override fun body(index: Int): ByteArray = klib.body(index, fileIndex)
+    override fun debugInfo(index: Int): ByteArray? = klib.debugInfo(index, fileIndex)
 }
 
 internal fun IrLibraryFile.deserializeString(index: Int): String = WobblyTF8.decode(string(index))
+internal fun IrLibraryFile.deserializeDebugInfo(index: Int): String? = debugInfo(index)?.let { WobblyTF8.decode(it) }
 
 internal fun IrLibraryFile.deserializeFqName(fqn: List<Int>): String =
     fqn.joinToString(".", transform = ::deserializeString)
 
-internal fun IrLibraryFile.createFile(module: IrModuleFragment, fileProto: ProtoFile): IrFile {
+fun IrLibraryFile.createFile(module: IrModuleFragment, fileProto: ProtoFile): IrFile {
     val fileName = fileProto.fileEntry.name
-    val fileEntry = NaiveSourceBasedFileEntryImpl(fileName, fileProto.fileEntry.lineStartOffsetsList.toIntArray())
+    val fileEntry = NaiveSourceBasedFileEntryImpl(fileName, fileProto.fileEntry.lineStartOffsetList.toIntArray())
     val fqName = FqName(deserializeFqName(fileProto.fqNameList))
     val packageFragmentDescriptor = EmptyPackageFragmentDescriptor(module.descriptor, fqName)
     val symbol = IrFileSymbolImpl(packageFragmentDescriptor)

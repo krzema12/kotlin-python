@@ -17,8 +17,9 @@ import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.descriptors.konan.DeserializedKlibModuleOrigin
 import org.jetbrains.kotlin.descriptors.konan.KlibModuleOrigin
 import org.jetbrains.kotlin.descriptors.konan.isNativeStdlib
+import org.jetbrains.kotlin.ir.IrBuiltIns
 import org.jetbrains.kotlin.ir.builders.TranslationPluginContext
-import org.jetbrains.kotlin.ir.descriptors.IrBuiltIns
+import org.jetbrains.kotlin.ir.descriptors.IrBuiltInsOverDescriptors
 import org.jetbrains.kotlin.ir.linkage.IrDeserializer
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
 import org.jetbrains.kotlin.ir.util.*
@@ -53,21 +54,24 @@ internal fun Context.psiToIr(
     // Note: using [llvmModuleSpecification] since this phase produces IR for generating single LLVM module.
 
     val exportedDependencies = (getExportedDependencies() + modulesWithoutDCE).distinct()
+    val irBuiltInsOverDescriptors = generatorContext.irBuiltIns as IrBuiltInsOverDescriptors
     val functionIrClassFactory = BuiltInFictitiousFunctionIrClassFactory(
-            symbolTable, generatorContext.irBuiltIns, reflectionTypes)
-    generatorContext.irBuiltIns.functionFactory = functionIrClassFactory
+            symbolTable, irBuiltInsOverDescriptors, reflectionTypes)
+    irBuiltInsOverDescriptors.functionFactory = functionIrClassFactory
     val stubGenerator = DeclarationStubGeneratorImpl(
             moduleDescriptor, symbolTable,
-            config.configuration.languageVersionSettings
+            generatorContext.irBuiltIns
     )
-    val symbols = KonanSymbols(this, generatorContext.irBuiltIns, symbolTable, symbolTable.lazyWrapper, functionIrClassFactory)
+    val symbols = KonanSymbols(this, generatorContext.irBuiltIns, symbolTable, symbolTable.lazyWrapper)
 
     val irDeserializer = if (isProducingLibrary && !useLinkerWhenProducingLibrary) {
         // Enable lazy IR generation for newly-created symbols inside BE
         stubGenerator.unboundSymbolGeneration = true
 
         object : IrDeserializer {
-            override fun getDeclaration(symbol: IrSymbol) = stubGenerator.getDeclaration(symbol)
+            override fun getDeclaration(symbol: IrSymbol) = functionIrClassFactory.getDeclaration(symbol)
+                    ?: stubGenerator.getDeclaration(symbol)
+
             override fun resolveBySignatureInModule(signature: IdSignature, kind: IrDeserializer.TopLevelSymbolKind, moduleName: Name): IrSymbol {
                 error("Should not be called")
             }
@@ -89,7 +93,6 @@ internal fun Context.psiToIr(
 
         KonanIrLinker(
                 moduleDescriptor,
-                functionIrClassFactory,
                 translationContext,
                 messageLogger,
                 generatorContext.irBuiltIns,
@@ -98,7 +101,8 @@ internal fun Context.psiToIr(
                 stubGenerator,
                 irProviderForCEnumsAndCStructs,
                 exportedDependencies,
-                config.cachedLibraries
+                config.cachedLibraries,
+                config.userVisibleIrModulesSupport
         ).also { linker ->
 
             // context.config.librariesWithDependencies could change at each iteration.
@@ -123,7 +127,7 @@ internal fun Context.psiToIr(
                         isProducingLibrary -> linker.deserializeOnlyHeaderModule(dependency, kotlinLibrary)
                         kotlinLibrary != null && config.cachedLibraries.isLibraryCached(kotlinLibrary) ->
                             linker.deserializeHeadersWithInlineBodies(dependency, kotlinLibrary)
-                        else -> linker.deserializeIrModuleHeader(dependency, kotlinLibrary)
+                        else -> linker.deserializeIrModuleHeader(dependency, kotlinLibrary, dependency.name.asString())
                     }
                 }
                 if (dependencies.size == dependenciesCount) break
@@ -196,6 +200,7 @@ internal fun Context.psiToIr(
     ir.symbols = symbols
 
     if (!isProducingLibrary) {
+        // TODO: find out what should be done in the new builtins/symbols about it
         if (this.stdlibModule in modulesWithoutDCE)
             functionIrClassFactory.buildAllClasses()
         internalAbi.init(irModules.values + irModule!!)

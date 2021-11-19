@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // !DIAGNOSTICS: -UNREACHABLE_CODE
 
 fun none() {}
@@ -146,14 +145,14 @@ fun illegalConstantBlock(): String {
     return <!CONSTANT_EXPECTED_TYPE_MISMATCH!>1<!>
 }
 fun illegalIfBody(): Int =
-        if (1 < 2) <!CONSTANT_EXPECTED_TYPE_MISMATCH!>'a'<!> else <!TYPE_MISMATCH{NI}!>{ <!CONSTANT_EXPECTED_TYPE_MISMATCH{OI}!>1.0<!> }<!>
+        if (1 < 2) <!CONSTANT_EXPECTED_TYPE_MISMATCH!>'a'<!> else <!TYPE_MISMATCH!>{ 1.0 }<!>
 fun illegalIfBlock(): Boolean {
     if (1 < 2)
         return false
     else { return <!CONSTANT_EXPECTED_TYPE_MISMATCH!>1<!> }
 }
 fun illegalReturnIf(): Char {
-    return if (1 < 2) 'a' else <!TYPE_MISMATCH{NI}!>{ <!CONSTANT_EXPECTED_TYPE_MISMATCH{OI}!>1<!> }<!>
+    return if (1 < 2) 'a' else <!TYPE_MISMATCH!>{ 1 }<!>
 }
 
 fun returnNothing(): Nothing {

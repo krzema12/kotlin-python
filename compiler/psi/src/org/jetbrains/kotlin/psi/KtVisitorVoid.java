@@ -385,8 +385,8 @@ public class KtVisitorVoid extends KtVisitor<Void, Void> {
         super.visitNullableType(nullableType, null);
     }
 
-    public void visitDefinitelyNotNullType(@NotNull KtDefinitelyNotNullType definitelyNotNullType) {
-        super.visitDefinitelyNotNullType(definitelyNotNullType, null);
+    public void visitIntersectionType(@NotNull KtIntersectionType intersectionType) {
+        super.visitIntersectionType(intersectionType, null);
     }
 
     public void visitTypeProjection(@NotNull KtTypeProjection typeProjection) {
@@ -977,8 +977,8 @@ public class KtVisitorVoid extends KtVisitor<Void, Void> {
     }
 
     @Override
-    public Void visitDefinitelyNotNullType(@NotNull KtDefinitelyNotNullType definitelyNotNullType, Void data) {
-        visitDefinitelyNotNullType(definitelyNotNullType);
+    public Void visitIntersectionType(@NotNull KtIntersectionType intersectionType, Void data) {
+        visitIntersectionType(intersectionType);
         return null;
     }
 

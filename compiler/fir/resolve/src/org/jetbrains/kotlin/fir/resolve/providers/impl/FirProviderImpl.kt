@@ -13,16 +13,16 @@ import org.jetbrains.kotlin.fir.resolve.providers.FirProvider
 import org.jetbrains.kotlin.fir.resolve.providers.FirProviderInternals
 import org.jetbrains.kotlin.fir.resolve.providers.FirSymbolProvider
 import org.jetbrains.kotlin.fir.resolve.providers.FirSymbolProviderInternals
-import org.jetbrains.kotlin.fir.scopes.KotlinScopeProvider
-import org.jetbrains.kotlin.name.CallableId
+import org.jetbrains.kotlin.fir.scopes.FirKotlinScopeProvider
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.visitors.FirDefaultVisitor
+import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
 @ThreadSafeMutableState
-class FirProviderImpl(val session: FirSession, val kotlinScopeProvider: KotlinScopeProvider) : FirProvider() {
+class FirProviderImpl(val session: FirSession, val kotlinScopeProvider: FirKotlinScopeProvider) : FirProvider() {
     override val symbolProvider: FirSymbolProvider = SymbolProvider()
 
     override fun getFirCallableContainerFile(symbol: FirCallableSymbol<*>): FirFile? {
@@ -139,7 +139,7 @@ class FirProviderImpl(val session: FirSession, val kotlinScopeProvider: KotlinSc
             data.state.callableContainerMap[symbol] = data.file
         }
 
-        private inline fun <reified D : FirCallableMemberDeclaration<D>, S : FirCallableSymbol<D>> registerCallable(
+        private inline fun <reified D : FirCallableDeclaration, S : FirCallableSymbol<D>> registerCallable(
             symbol: S,
             data: FirRecorderData,
             map: MutableMap<CallableId, List<S>>
@@ -176,7 +176,7 @@ class FirProviderImpl(val session: FirSession, val kotlinScopeProvider: KotlinSc
 
     private class State {
         val fileMap = mutableMapOf<FqName, List<FirFile>>()
-        val classifierMap = mutableMapOf<ClassId, FirClassLikeDeclaration<*>>()
+        val classifierMap = mutableMapOf<ClassId, FirClassLikeDeclaration>()
         val classifierContainerFileMap = mutableMapOf<ClassId, FirFile>()
         val classesInPackage = mutableMapOf<FqName, MutableSet<Name>>()
         val functionMap = mutableMapOf<CallableId, List<FirNamedFunctionSymbol>>()
@@ -208,7 +208,7 @@ class FirProviderImpl(val session: FirSession, val kotlinScopeProvider: KotlinSc
         return state.fileMap[fqName].orEmpty()
     }
 
-    override fun getFirClassifierByFqName(classId: ClassId): FirClassLikeDeclaration<*>? {
+    override fun getFirClassifierByFqName(classId: ClassId): FirClassLikeDeclaration? {
         require(!classId.isLocal) {
             "Local $classId should never be used to find its corresponding classifier"
         }
@@ -289,6 +289,10 @@ class FirProviderImpl(val session: FirSession, val kotlinScopeProvider: KotlinSc
 
     override fun getClassNamesInPackage(fqName: FqName): Set<Name> {
         return state.classesInPackage[fqName] ?: emptySet()
+    }
+
+    fun getAllFirFiles(): List<FirFile> {
+        return state.fileMap.values.flatten()
     }
 }
 

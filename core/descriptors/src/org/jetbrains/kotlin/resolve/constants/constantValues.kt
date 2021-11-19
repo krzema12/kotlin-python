@@ -55,7 +55,7 @@ class AnnotationValue(value: AnnotationDescriptor) : ConstantValue<AnnotationDes
     override fun <R, D> accept(visitor: AnnotationArgumentVisitor<R, D>, data: D) = visitor.visitAnnotationValue(this, data)
 }
 
-class ArrayValue(
+open class ArrayValue(
     value: List<ConstantValue<*>>,
     private val computeType: (ModuleDescriptor) -> KotlinType
 ) : ConstantValue<List<ConstantValue<*>>>(value) {
@@ -128,6 +128,10 @@ class EnumValue(val enumClassId: ClassId, val enumEntryName: Name) : ConstantVal
 }
 
 abstract class ErrorValue : ConstantValue<Unit>(Unit) {
+    init {
+        Unit
+    }
+
     @Deprecated("Should not be called, for this is not a real value, but a indication of an error")
     override val value: Unit
         get() = throw UnsupportedOperationException()

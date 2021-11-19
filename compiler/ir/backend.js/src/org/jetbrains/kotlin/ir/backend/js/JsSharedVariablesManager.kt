@@ -6,9 +6,9 @@
 package org.jetbrains.kotlin.ir.backend.js
 
 import org.jetbrains.kotlin.backend.common.ir.SharedVariablesManager
+import org.jetbrains.kotlin.ir.IrBuiltIns
 import org.jetbrains.kotlin.ir.builders.declarations.buildVariable
 import org.jetbrains.kotlin.ir.declarations.IrVariable
-import org.jetbrains.kotlin.ir.descriptors.IrBuiltIns
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrGetValue
 import org.jetbrains.kotlin.ir.expressions.IrSetValue
@@ -21,9 +21,9 @@ import org.jetbrains.kotlin.ir.symbols.IrVariableSymbol
 class JsSharedVariablesManager(context: JsIrBackendContext) : SharedVariablesManager {
 
     private val builtIns: IrBuiltIns = context.irBuiltIns
-    private val createBox: IrSimpleFunctionSymbol = context.intrinsics.createSharedBox.symbol
-    private val readBox: IrSimpleFunctionSymbol = context.intrinsics.readSharedBox.symbol
-    private val writeBox: IrSimpleFunctionSymbol = context.intrinsics.writeSharedBox.symbol
+    private val createBox: IrSimpleFunctionSymbol = context.intrinsics.createSharedBox
+    private val readBox: IrSimpleFunctionSymbol = context.intrinsics.readSharedBox
+    private val writeBox: IrSimpleFunctionSymbol = context.intrinsics.writeSharedBox
     private val dynamicType = context.dynamicType
 
     override fun declareSharedVariable(originalDeclaration: IrVariable): IrVariable {

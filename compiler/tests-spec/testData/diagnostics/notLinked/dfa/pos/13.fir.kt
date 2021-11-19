@@ -107,7 +107,7 @@ fun <T> case_4(x: T?) {
 // TESTCASE NUMBER: 5
 fun <T> case_5(x: T?) {
     if (x is Interface1) {
-        if (x != null) {
+        if (<!SENSELESS_COMPARISON!>x != null<!>) {
             <!DEBUG_INFO_EXPRESSION_TYPE("T? & Interface1 & T?!!")!>x<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("T? & Interface1 & T?!!")!>x<!>.equals(null)
             x.propT
@@ -387,7 +387,7 @@ fun <T> case_8(x: T) {
 
 // TESTCASE NUMBER: 9
 fun <T : Number> case_9(x: T) {
-    if (x != null) {
+    if (<!SENSELESS_COMPARISON!>x != null<!>) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T")!>x<!>.equals(null)
         <!DEBUG_INFO_EXPRESSION_TYPE("T")!>x<!>.propT
@@ -682,7 +682,7 @@ fun <T> case_12(x: T) where T : Number?, T: Interface1? {
  * ISSUES: KT-28785
  */
 fun <T> case_13(x: T) where T : Out<*>?, T: Comparable<T?> {
-    if (x != null) {
+    if (<!SENSELESS_COMPARISON!>x != null<!>) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T")!>x<!>.equals(null)
         <!DEBUG_INFO_EXPRESSION_TYPE("T")!>x<!>.propT
@@ -2525,7 +2525,7 @@ fun <T> case_37(x: Map<in T, *>?) {
 }
 
 // TESTCASE NUMBER: 38
-fun <T> case_38(x: Map<*, out T>?) {
+fun <T> case_38(x: Map<*, <!REDUNDANT_PROJECTION!>out<!> T>?) {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<*, out T>? & kotlin.collections.Map<*, out T>")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<*, out T>? & kotlin.collections.Map<*, out T>")!>x<!>.equals(null)
@@ -2731,7 +2731,7 @@ fun <T> case_40(x: InterfaceWithTwoTypeParameters<in T, in T>?) {
 }
 
 // TESTCASE NUMBER: 41
-fun <T> case_41(x: Map<out T, out T>?) {
+fun <T> case_41(x: Map<out T, <!REDUNDANT_PROJECTION!>out<!> T>?) {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<out T, out T>? & kotlin.collections.Map<out T, out T>")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<out T, out T>? & kotlin.collections.Map<out T, out T>")!>x<!>.equals(null)
@@ -2803,7 +2803,7 @@ fun <T> case_41(x: Map<out T, out T>?) {
 }
 
 // TESTCASE NUMBER: 42
-fun <T> case_42(x: Map<T, out T>?) {
+fun <T> case_42(x: Map<T, <!REDUNDANT_PROJECTION!>out<!> T>?) {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<T, out T>? & kotlin.collections.Map<T, out T>")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<T, out T>? & kotlin.collections.Map<T, out T>")!>x<!>.equals(null)
@@ -3986,7 +3986,7 @@ fun <T> case_56(x: T) where T : Number?, T: Interface1? {
  * ISSUES: KT-28785
  */
 fun <T> case_57(x: T) where T : Out<*>?, T: Comparable<T?> {
-    if (x != null) {
+    if (<!SENSELESS_COMPARISON!>x != null<!>) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T")!>x<!>.equals(null)
         <!DEBUG_INFO_EXPRESSION_TYPE("T")!>x<!>.propT

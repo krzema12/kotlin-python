@@ -102,6 +102,7 @@ private fun List<String>?.isTrue(): Boolean {
 }
 
 private fun runCmd(command: Array<String>, verbose: Boolean = false) {
+    if (verbose) println("COMMAND: " + command.joinToString(" "))
     Command(*command).getOutputLines(true).let { lines ->
         if (verbose) lines.forEach(::println)
     }
@@ -124,13 +125,20 @@ private fun Properties.putAndRunOnReplace(key: Any, newValue: Any, beforeReplace
 private fun selectNativeLanguage(config: DefFile.DefFileConfig): Language {
     val languages = mapOf(
             "C" to Language.C,
+            "C++" to Language.CPP,
             "Objective-C" to Language.OBJECTIVE_C
     )
 
-    val language = config.language ?: return Language.C
+    // C++ is not publicly supported.
+    val publicLanguages = languages.keys.minus("C++")
 
-    return languages[language] ?:
-            error("Unexpected language '$language'. Possible values are: ${languages.keys.joinToString { "'$it'" }}")
+    val lang = config.language?.let {
+        languages[it]
+                ?: error("Unexpected language '${config.language}'. Possible values are: ${publicLanguages.joinToString { "'$it'" }}")
+    } ?: Language.C
+
+    return lang
+
 }
 
 private fun parseImports(dependencies: List<KotlinLibrary>): ImportsImpl =
@@ -220,13 +228,7 @@ private fun processCLib(flavor: KotlinPlatform, cinteropArguments: CInteropArgum
             cinteropArguments.linkerOptions.value.toTypedArray()
     val verbose = cinteropArguments.verbose
 
-    val language = selectNativeLanguage(def.config)
-
     val entryPoint = def.config.entryPoints.atMostOne()
-    val linkerOpts =
-            def.config.linkerOpts.toTypedArray() + 
-            tool.defaultCompilerOpts + 
-            additionalLinkerOpts
     val linkerName = cinteropArguments.linker ?: def.config.linker
     val linker = "${tool.llvmHome}/bin/$linkerName"
     val compiler = "${tool.llvmHome}/bin/clang"
@@ -265,7 +267,9 @@ private fun processCLib(flavor: KotlinPlatform, cinteropArguments: CInteropArgum
 
     val library = buildNativeLibrary(tool, def, cinteropArguments, imports)
 
-    val (nativeIndex, compilation) = buildNativeIndex(library, verbose)
+    val plugin = Plugins.plugin(def.config.pluginName)
+
+    val (nativeIndex, compilation) = plugin.buildNativeIndex(library, verbose)
 
     // Our current approach to arm64_32 support is to compile armv7k version of bitcode
     // for arm64_32. That's the reason for this substitution.
@@ -294,7 +298,7 @@ private fun processCLib(flavor: KotlinPlatform, cinteropArguments: CInteropArgum
 
 
     File(nativeLibsDir).mkdirs()
-    val outCFile = tempFiles.create(libName, ".${language.sourceFileExtension}")
+    val outCFile = tempFiles.create(libName, ".${library.language.sourceFileExtension}")
 
     val logger = if (verbose) {
         { message: String -> println(message) }
@@ -302,7 +306,7 @@ private fun processCLib(flavor: KotlinPlatform, cinteropArguments: CInteropArgum
         {}
     }
 
-    val stubIrContext = StubIrContext(logger, configuration, nativeIndex, imports, flavor, mode, libName)
+    val stubIrContext = StubIrContext(logger, configuration, nativeIndex, imports, flavor, mode, libName, plugin)
     val stubIrOutput = run {
         val outKtFileCreator = {
             val outKtFileName = fqParts.last() + ".kt"
@@ -311,7 +315,13 @@ private fun processCLib(flavor: KotlinPlatform, cinteropArguments: CInteropArgum
             file.parentFile.mkdirs()
             file
         }
-        val driverOptions = StubIrDriver.DriverOptions(entryPoint, moduleName, File(outCFile.absolutePath), outKtFileCreator)
+        val driverOptions = StubIrDriver.DriverOptions(
+                entryPoint,
+                moduleName,
+                File(outCFile.absolutePath),
+                outKtFileCreator,
+                cinteropArguments.dumpBridges ?: false
+        )
         val stubIrDriver = StubIrDriver(stubIrContext, driverOptions)
         stubIrDriver.run()
     }
@@ -328,7 +338,6 @@ private fun processCLib(flavor: KotlinPlatform, cinteropArguments: CInteropArgum
         def.manifestAddendProperties["ir_provider"] = KLIB_INTEROP_IR_PROVIDER_IDENTIFIER
     }
     stubIrContext.addManifestProperties(def.manifestAddendProperties)
-
     // cinterop command line option overrides def file property
     val foreignExceptionMode = cinteropArguments.foreignExceptionMode?: def.config.foreignExceptionMode
     foreignExceptionMode?.let {
@@ -346,7 +355,10 @@ private fun processCLib(flavor: KotlinPlatform, cinteropArguments: CInteropArgum
             val compilerCmd = arrayOf(compiler, *compilerArgs,
                     "-c", outCFile.absolutePath, "-o", outOFile.absolutePath)
             runCmd(compilerCmd, verbose)
-
+            val linkerOpts =
+                    def.config.linkerOpts.toTypedArray() +
+                            tool.getDefaultCompilerOptsForLanguage(library.language) +
+                            additionalLinkerOpts
             val outLib = File(nativeLibsDir, System.mapLibraryName(libName))
             val linkerCmd = arrayOf(linker,
                     outOFile.absolutePath, "-shared", "-o", outLib.absolutePath,
@@ -358,7 +370,6 @@ private fun processCLib(flavor: KotlinPlatform, cinteropArguments: CInteropArgum
             val outLib = File(nativeLibsDir, "$libName.bc")
             val compilerCmd = arrayOf(compiler, *compilerArgs,
                     "-emit-llvm", "-c", outCFile.absolutePath, "-o", outLib.absolutePath)
-
             runCmd(compilerCmd, verbose)
             outLib.absolutePath
         }
@@ -465,32 +476,15 @@ internal fun buildNativeLibrary(
     val language = selectNativeLanguage(def.config)
     val compilerOpts: List<String> = mutableListOf<String>().apply {
         addAll(def.config.compilerOpts)
-        addAll(tool.defaultCompilerOpts)
-        // We compile with -O2 because Clang may insert inline asm in bitcode at -O0.
-        // It is undesirable in case of watchos_arm64 since we target armv7k
-        // for this target instead of arm64_32 because it is not supported in LLVM 8.
-        //
-        // Note that PCH and the *.c file should be compiled with the same optimization level.
-        add("-O2")
+        addAll(tool.getDefaultCompilerOptsForLanguage(language))
         addAll(additionalCompilerOpts)
         addAll(getCompilerFlagsForVfsOverlay(arguments.headerFilterPrefix.toTypedArray(), def))
-        addAll(when (language) {
-            Language.C -> emptyList()
-            Language.OBJECTIVE_C -> {
-                // "Objective-C" within interop means "Objective-C with ARC":
-                listOf("-fobjc-arc")
-                // Using this flag here has two effects:
-                // 1. The headers are parsed with ARC enabled, thus the API is visible correctly.
-                // 2. The generated Objective-C stubs are compiled with ARC enabled, so reference counting
-                // calls are inserted automatically.
-            }
-        })
     }
 
     val compilation = CompilationImpl(
             includes = headerFiles,
             additionalPreambleLines = def.defHeaderLines,
-            compilerArgs = compilerOpts + tool.platformCompilerOpts,
+            compilerArgs = defaultCompilerArgs(language) + compilerOpts + tool.platformCompilerOpts,
             language = language
     )
 

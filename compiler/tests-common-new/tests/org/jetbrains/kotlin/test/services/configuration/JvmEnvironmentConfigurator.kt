@@ -7,20 +7,26 @@ package org.jetbrains.kotlin.test.services.configuration
 
 import com.intellij.openapi.util.SystemInfo
 import com.intellij.psi.PsiJavaModule.MODULE_INFO_FILE
+import org.jetbrains.kotlin.backend.common.phaser.PhaseConfig
+import org.jetbrains.kotlin.backend.jvm.jvmPhases
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.arguments.K2JVMCompilerArguments
 import org.jetbrains.kotlin.cli.jvm.addModularRootIfNotNull
 import org.jetbrains.kotlin.cli.jvm.config.*
 import org.jetbrains.kotlin.cli.jvm.configureStandardLibs
 import org.jetbrains.kotlin.codegen.forTestCompile.ForTestCompileRuntime
-import org.jetbrains.kotlin.config.*
+import org.jetbrains.kotlin.config.CompilerConfiguration
+import org.jetbrains.kotlin.config.CompilerConfigurationKey
+import org.jetbrains.kotlin.config.JVMConfigurationKeys
+import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.platform.jvm.JvmPlatforms
 import org.jetbrains.kotlin.test.ConfigurationKind
 import org.jetbrains.kotlin.test.MockLibraryUtil
 import org.jetbrains.kotlin.test.MockLibraryUtil.compileJavaFilesLibraryToJar
 import org.jetbrains.kotlin.test.TestJavacVersion
 import org.jetbrains.kotlin.test.TestJdkKind
-import org.jetbrains.kotlin.test.directives.ForeignAnnotationsDirectives
+import org.jetbrains.kotlin.test.backend.handlers.PhasedIrDumpHandler
+import org.jetbrains.kotlin.test.directives.CodegenTestDirectives
 import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirectives
 import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirectives.ALL_JAVA_AS_BINARY
 import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirectives.ASSERTIONS_MODE
@@ -30,8 +36,10 @@ import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirective
 import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirectives.JVM_TARGET
 import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirectives.LAMBDAS
 import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirectives.SAM_CONVERSIONS
+import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirectives.SERIALIZE_IR
 import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirectives.STRING_CONCAT
 import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirectives.USE_OLD_INLINE_CLASSES_MANGLING_SCHEME
+import org.jetbrains.kotlin.test.directives.LanguageSettingsDirectives
 import org.jetbrains.kotlin.test.directives.LanguageSettingsDirectives.DISABLE_CALL_ASSERTIONS
 import org.jetbrains.kotlin.test.directives.LanguageSettingsDirectives.DISABLE_PARAM_ASSERTIONS
 import org.jetbrains.kotlin.test.directives.LanguageSettingsDirectives.EMIT_JVM_TYPE_ANNOTATIONS
@@ -46,17 +54,13 @@ import org.jetbrains.kotlin.test.model.DependencyKind
 import org.jetbrains.kotlin.test.model.TestFile
 import org.jetbrains.kotlin.test.model.TestModule
 import org.jetbrains.kotlin.test.services.*
-import org.jetbrains.kotlin.test.services.JUnit5Assertions.assertTrue
-import org.jetbrains.kotlin.test.services.configuration.JvmForeignAnnotationsConfigurator.Companion.JSR_305_TEST_ANNOTATIONS_PATH
 import org.jetbrains.kotlin.test.services.jvm.CompiledClassesManager
 import org.jetbrains.kotlin.test.services.jvm.compiledClassesManager
 import org.jetbrains.kotlin.test.util.KtTestUtil
 import org.jetbrains.kotlin.test.util.joinToArrayString
 import org.jetbrains.kotlin.utils.PathUtil
-import org.jetbrains.kotlin.utils.addIfNotNull
 import java.io.File
 import kotlin.io.path.ExperimentalPathApi
-import kotlin.io.path.createTempDirectory
 
 class JvmEnvironmentConfigurator(testServices: TestServices) : EnvironmentConfigurator(testServices) {
     companion object {
@@ -65,9 +69,63 @@ class JvmEnvironmentConfigurator(testServices: TestServices) : EnvironmentConfig
         private val DEFAULT_JVM_TARGET_FROM_PROPERTY: String? = System.getProperty("kotlin.test.default.jvm.target")
 
         private const val JAVA_BINARIES_JAR_NAME = "java-binaries"
+
+        fun extractConfigurationKind(registeredDirectives: RegisteredDirectives): ConfigurationKind {
+            val withRuntime = JvmEnvironmentConfigurationDirectives.WITH_RUNTIME in registeredDirectives ||
+                    JvmEnvironmentConfigurationDirectives.WITH_STDLIB in registeredDirectives
+            val withReflect = JvmEnvironmentConfigurationDirectives.WITH_REFLECT in registeredDirectives
+            val noRuntime = JvmEnvironmentConfigurationDirectives.NO_RUNTIME in registeredDirectives
+            if (noRuntime && withRuntime) {
+                error("NO_RUNTIME and WITH_RUNTIME can not be used together")
+            }
+            return when {
+                withRuntime && !withReflect -> ConfigurationKind.NO_KOTLIN_REFLECT
+                withRuntime || withReflect -> ConfigurationKind.ALL
+                noRuntime -> ConfigurationKind.JDK_NO_RUNTIME
+                else -> ConfigurationKind.JDK_ONLY
+            }
+        }
+
+        fun extractJdkKind(registeredDirectives: RegisteredDirectives): TestJdkKind {
+            val fullJdkEnabled = JvmEnvironmentConfigurationDirectives.FULL_JDK in registeredDirectives
+            val jdkKinds = registeredDirectives[JvmEnvironmentConfigurationDirectives.JDK_KIND]
+
+            if (fullJdkEnabled) {
+                if (jdkKinds.isNotEmpty()) {
+                    error("FULL_JDK and JDK_KIND can not be used together")
+                }
+                return TestJdkKind.FULL_JDK
+            }
+
+            return when (jdkKinds.size) {
+                0 -> TestJdkKind.MOCK_JDK
+                1 -> jdkKinds.single()
+                else -> error("Too many jdk kinds passed: ${jdkKinds.joinToArrayString()}")
+            }
+        }
+
+        fun getLibraryFilesExceptRealRuntime(configurationKind: ConfigurationKind, directives: RegisteredDirectives): List<File> {
+            val files = mutableListOf<File>()
+            if (configurationKind.withRuntime) {
+                files.add(ForTestCompileRuntime.kotlinTestJarForTests())
+            } else if (configurationKind.withMockRuntime) {
+                files.add(ForTestCompileRuntime.minimalRuntimeJarForTests())
+                files.add(ForTestCompileRuntime.scriptRuntimeJarForTests())
+            }
+            if (configurationKind.withReflection) {
+                files.add(ForTestCompileRuntime.reflectJarForTests())
+            }
+            files.add(KtTestUtil.getAnnotationsJar())
+
+            if (JvmEnvironmentConfigurationDirectives.STDLIB_JDK8 in directives) {
+                files.add(ForTestCompileRuntime.runtimeJarForTestsWithJdk8())
+            }
+            files.add(KtTestUtil.getAnnotationsJar())
+            return files
+        }
     }
 
-    override val directivesContainers: List<DirectivesContainer>
+    override val directiveContainers: List<DirectivesContainer>
         get() = listOf(JvmEnvironmentConfigurationDirectives)
 
     override val additionalServices: List<ServiceRegistrationData>
@@ -88,6 +146,7 @@ class JvmEnvironmentConfigurator(testServices: TestServices) : EnvironmentConfig
         register(NO_UNIFIED_NULL_CHECKS, JVMConfigurationKeys.NO_UNIFIED_NULL_CHECKS)
         register(PARAMETERS_METADATA, JVMConfigurationKeys.PARAMETERS_METADATA)
         register(JVM_TARGET, JVMConfigurationKeys.JVM_TARGET)
+        register(SERIALIZE_IR, JVMConfigurationKeys.SERIALIZE_IR)
     }
 
     @OptIn(ExperimentalPathApi::class, ExperimentalStdlibApi::class)
@@ -112,8 +171,14 @@ class JvmEnvironmentConfigurator(testServices: TestServices) : EnvironmentConfig
             TestJdkKind.FULL_JDK_9 -> {
                 configuration.put(JVMConfigurationKeys.JDK_HOME, KtTestUtil.getJdk9Home())
             }
+            TestJdkKind.FULL_JDK_11 -> {
+                configuration.put(JVMConfigurationKeys.JDK_HOME, KtTestUtil.getJdk11Home())
+            }
             TestJdkKind.FULL_JDK_15 -> {
                 configuration.put(JVMConfigurationKeys.JDK_HOME, KtTestUtil.getJdk15Home())
+            }
+            TestJdkKind.FULL_JDK_17 -> {
+                configuration.put(JVMConfigurationKeys.JDK_HOME, KtTestUtil.getJdk17Home())
             }
             TestJdkKind.FULL_JDK -> {
                 if (SystemInfo.IS_AT_LEAST_JAVA9) {
@@ -139,20 +204,8 @@ class JvmEnvironmentConfigurator(testServices: TestServices) : EnvironmentConfig
 
         if (configurationKind.withRuntime) {
             configuration.configureStandardLibs(PathUtil.kotlinPathsForDistDirectory, K2JVMCompilerArguments().also { it.noReflect = true })
-            configuration.addJvmClasspathRoot(ForTestCompileRuntime.kotlinTestJarForTests())
-        } else if (configurationKind.withMockRuntime) {
-            configuration.addJvmClasspathRoot(ForTestCompileRuntime.minimalRuntimeJarForTests())
-            configuration.addJvmClasspathRoot(ForTestCompileRuntime.scriptRuntimeJarForTests())
         }
-        if (configurationKind.withReflection) {
-            configuration.addJvmClasspathRoot(ForTestCompileRuntime.reflectJarForTests())
-        }
-
-        if (JvmEnvironmentConfigurationDirectives.STDLIB_JDK8 in module.directives) {
-            configuration.addJvmClasspathRoot(ForTestCompileRuntime.runtimeJarForTestsWithJdk8())
-        }
-
-        configuration.addJvmClasspathRoot(KtTestUtil.getAnnotationsJar())
+        configuration.addJvmClasspathRoots(getLibraryFilesExceptRealRuntime(configurationKind, module.directives))
 
         val isIr = module.targetBackend?.isIR == true
         configuration.put(JVMConfigurationKeys.IR, isIr)
@@ -203,11 +256,16 @@ class JvmEnvironmentConfigurator(testServices: TestServices) : EnvironmentConfig
             configuration.put(JVMConfigurationKeys.USE_PSI_CLASS_FILES_READING, true)
         }
 
-        if (JvmEnvironmentConfigurationDirectives.ALLOW_KOTLIN_PACKAGE in module.directives) {
+        if (LanguageSettingsDirectives.ALLOW_KOTLIN_PACKAGE in module.directives) {
             configuration.put(CLIConfigurationKeys.ALLOW_KOTLIN_PACKAGE, true)
         }
 
-        initBinaryDependencies(module, configuration)
+        if (CodegenTestDirectives.DUMP_IR_FOR_GIVEN_PHASES in module.directives) {
+            configuration.putCustomPhaseConfigWithEnabledDump(module)
+        }
+
+        configuration.put(JVMConfigurationKeys.VALIDATE_IR, true)
+        configuration.put(JVMConfigurationKeys.VALIDATE_BYTECODE, true)
     }
 
     private fun addJavaSourceRootsByJavaModules(configuration: CompilerConfiguration, moduleInfoFiles: List<TestFile>) {
@@ -237,7 +295,7 @@ class JvmEnvironmentConfigurator(testServices: TestServices) : EnvironmentConfig
         module: TestModule,
         bySources: Boolean
     ) {
-        val moduleDependencies = module.dependencies.map { testServices.dependencyProvider.getTestModule(it.moduleName) }
+        val moduleDependencies = module.allDependencies.map { testServices.dependencyProvider.getTestModule(it.moduleName) }
         val filterJavaModuleInfoFiles = { testFile: TestFile ->
             val binaryFilesFilter = INCLUDE_JAVA_AS_BINARY in testFile.directives || ALL_JAVA_AS_BINARY in module.directives
             val includeOrExcludeBinaryFilesFilter = (bySources && !binaryFilesFilter) || (!bySources && binaryFilesFilter)
@@ -309,88 +367,33 @@ class JvmEnvironmentConfigurator(testServices: TestServices) : EnvironmentConfig
         }
     }
 
-    fun extractJdkKind(registeredDirectives: RegisteredDirectives): TestJdkKind {
-        val fullJdkEnabled = JvmEnvironmentConfigurationDirectives.FULL_JDK in registeredDirectives
-        val jdkKinds = registeredDirectives[JvmEnvironmentConfigurationDirectives.JDK_KIND]
-
-        if (fullJdkEnabled) {
-            if (jdkKinds.isNotEmpty()) {
-                error("FULL_JDK and JDK_KIND can not be used together")
-            }
-            return TestJdkKind.FULL_JDK
-        }
-
-        return when (jdkKinds.size) {
-            0 -> TestJdkKind.MOCK_JDK
-            1 -> jdkKinds.single()
-            else -> error("Too many jdk kinds passed: ${jdkKinds.joinToArrayString()}")
-        }
-    }
-
-    fun extractConfigurationKind(registeredDirectives: RegisteredDirectives): ConfigurationKind {
-        val withRuntime = JvmEnvironmentConfigurationDirectives.WITH_RUNTIME in registeredDirectives ||
-                JvmEnvironmentConfigurationDirectives.WITH_STDLIB in registeredDirectives
-        val withReflect = JvmEnvironmentConfigurationDirectives.WITH_REFLECT in registeredDirectives
-        val noRuntime = JvmEnvironmentConfigurationDirectives.NO_RUNTIME in registeredDirectives
-        if (noRuntime && withRuntime) {
-            error("NO_RUNTIME and WITH_RUNTIME can not be used together")
-        }
-        return when {
-            withRuntime && !withReflect -> ConfigurationKind.NO_KOTLIN_REFLECT
-            withRuntime || withReflect -> ConfigurationKind.ALL
-            noRuntime -> ConfigurationKind.JDK_NO_RUNTIME
-            else -> ConfigurationKind.JDK_ONLY
+    private fun CompilerConfiguration.putCustomPhaseConfigWithEnabledDump(module: TestModule) {
+        val dumpDirectory = testServices.getOrCreateTempDirectory(PhasedIrDumpHandler.DUMPED_IR_FOLDER_NAME)
+        val phases = module.directives[CodegenTestDirectives.DUMP_IR_FOR_GIVEN_PHASES].toSet()
+        if (phases.isNotEmpty()) {
+            val phaseConfig = PhaseConfig(
+                jvmPhases,
+                toDumpStateAfter = phases,
+                dumpToDirectory = dumpDirectory.absolutePath
+            )
+            put(CLIConfigurationKeys.PHASE_CONFIG, phaseConfig)
         }
     }
 
     private fun CompilerConfiguration.registerModuleDependencies(module: TestModule) {
-        val dependencyProvider = testServices.dependencyProvider
-        val modulesFromDependencies = module.dependencies
-            .filter { it.kind == DependencyKind.Binary }
-            .map { dependencyProvider.getTestModule(it.moduleName) }
-            .takeIf { it.isNotEmpty() }
-            ?: return
-        val jarManager = testServices.compiledClassesManager
-        val dependenciesClassPath = modulesFromDependencies.map { jarManager.getCompiledKotlinDirForModule(it) }
-        addJvmClasspathRoots(dependenciesClassPath)
+        addJvmClasspathRoots(module.allDependencies.filter { it.kind == DependencyKind.Binary }.toFileList())
+
+        val binaryFriends = module.friendDependencies.filter { it.kind == DependencyKind.Binary }
+        if (binaryFriends.isNotEmpty()) {
+            put(JVMConfigurationKeys.FRIEND_PATHS, binaryFriends.toFileList().map { it.absolutePath })
+        }
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
-    private fun initBinaryDependencies(
-        module: TestModule,
-        configuration: CompilerConfiguration,
-    ) {
-        val binaryDependencies = module.dependencies.filter { it.kind == DependencyKind.Binary }
-        val binaryFriends = module.friends.filter { it.kind == DependencyKind.Binary }
-        val dependencyProvider = testServices.dependencyProvider
-        val compiledClassesManager = testServices.compiledClassesManager
-        val compilerConfigurationProvider = testServices.compilerConfigurationProvider
-
-        fun addDependenciesToClasspath(dependencies: List<DependencyDescription>): List<File> {
-            val jvmClasspathRoots = buildList<File> {
-                dependencies.forEach {
-                    val dependencyModule = dependencyProvider.getTestModule(it.moduleName)
-
-                    add(compiledClassesManager.getCompiledKotlinDirForModule(dependencyModule))
-                    addIfNotNull(compiledClassesManager.getCompiledJavaDirForModule(dependencyModule))
-                    addAll(compilerConfigurationProvider.getCompilerConfiguration(dependencyModule).jvmClasspathRoots)
-                }
-            }
-            configuration.addJvmClasspathRoots(jvmClasspathRoots)
-            return jvmClasspathRoots
-        }
-
-        addDependenciesToClasspath(binaryDependencies)
-        addDependenciesToClasspath(binaryFriends)
-
-        if (binaryFriends.isNotEmpty()) {
-            configuration.put(JVMConfigurationKeys.FRIEND_PATHS, binaryFriends.flatMap {
-                val friendModule = dependencyProvider.getTestModule(it.moduleName)
-                listOfNotNull(
-                    compiledClassesManager.getCompiledKotlinDirForModule(friendModule),
-                    compiledClassesManager.getCompiledJavaDirForModule(friendModule)
-                )
-            }.map { it.absolutePath })
-        }
+    private fun List<DependencyDescription>.toFileList(): List<File> = this.flatMap { dependency ->
+        val friendModule = testServices.dependencyProvider.getTestModule(dependency.moduleName)
+        listOfNotNull(
+            testServices.compiledClassesManager.getCompiledKotlinDirForModule(friendModule),
+            testServices.compiledClassesManager.getCompiledJavaDirForModule(friendModule)
+        )
     }
 }

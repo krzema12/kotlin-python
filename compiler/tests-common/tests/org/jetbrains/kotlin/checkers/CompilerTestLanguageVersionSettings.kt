@@ -39,7 +39,7 @@ data class CompilerTestLanguageVersionSettings(
     override fun getFeatureSupport(feature: LanguageFeature): LanguageFeature.State =
             extraLanguageFeatures[feature] ?: delegate.getFeatureSupport(feature)
 
-    override fun isPreRelease(): Boolean = KotlinCompilerVersion.isPreRelease()
+    override fun isPreRelease(): Boolean = false
 
     @Suppress("UNCHECKED_CAST")
     override fun <T> getFlag(flag: AnalysisFlag<T>): T = analysisFlags[flag] as T? ?: flag.defaultValue
@@ -60,7 +60,6 @@ fun parseLanguageVersionSettings(directives: Directives): CompilerTestLanguageVe
     val languageFeaturesString = directives[LANGUAGE_DIRECTIVE]
 
     val analysisFlags = listOfNotNull(
-        analysisFlag(AnalysisFlags.experimental, directives[EXPERIMENTAL_DIRECTIVE]?.split(' ')),
         analysisFlag(AnalysisFlags.useExperimental, directives[USE_EXPERIMENTAL_DIRECTIVE]?.split(' ')),
         analysisFlag(JvmAnalysisFlags.jvmDefaultMode, directives[JVM_DEFAULT_MODE]?.let { JvmDefaultMode.fromStringOrNull(it) }),
         analysisFlag(AnalysisFlags.ignoreDataFlowInAssert, if (IGNORE_DATA_FLOW_IN_ASSERT_DIRECTIVE in directives) true else null),

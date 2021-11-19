@@ -40,7 +40,7 @@ import org.jetbrains.kotlin.ir.types.isKClass as isKClassImpl
 import org.jetbrains.kotlin.ir.util.isSuspendFunction as isSuspendFunctionImpl
 
 class IrTypeMapper(private val context: JvmBackendContext) : KotlinTypeMapperBase(), TypeMappingContext<JvmSignatureWriter> {
-    override val typeSystem: IrTypeSystemContext = IrTypeSystemContextImpl(context.irBuiltIns)
+    override val typeSystem: IrTypeSystemContext = context.typeSystem
     override val typeContext: TypeSystemCommonBackendContextForTypeMapping = IrTypeCheckerContextForTypeMapping(typeSystem, context)
 
     override fun mapClass(classifier: ClassifierDescriptor): Type =
@@ -133,8 +133,8 @@ class IrTypeMapper(private val context: JvmBackendContext) : KotlinTypeMapperBas
         sw: JvmSignatureWriter? = null
     ): Type = AbstractTypeMapper.mapType(this, type, mode, sw)
 
-    override fun JvmSignatureWriter.writeGenericType(type: SimpleTypeMarker, asmType: Type, mode: TypeMappingMode) {
-        require(type is IrSimpleType)
+    override fun JvmSignatureWriter.writeGenericType(type: KotlinTypeMarker, asmType: Type, mode: TypeMappingMode) {
+        if (type !is IrSimpleType) return
         if (skipGenericSignature() || hasNothingInNonContravariantPosition(type) || type.arguments.isEmpty() || type.isRawTypeImpl()) {
             writeAsmType(asmType)
             return

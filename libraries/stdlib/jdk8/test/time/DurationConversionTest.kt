@@ -3,12 +3,14 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
-@file:OptIn(ExperimentalTime::class)
 package kotlin.jdk8.time.test
 
 import kotlin.random.Random
 import kotlin.test.*
 import kotlin.time.*
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.nanoseconds
+import kotlin.time.Duration.Companion.seconds
 import java.time.Duration as JTDuration
 
 class DurationConversionTest {
@@ -16,7 +18,7 @@ class DurationConversionTest {
     fun twoWayConversion() {
         fun test(days: Int, hours: Int, minutes: Int, seconds: Int, millis: Int, nanos: Int) {
             val duration = with(Duration) {
-                days(days) + hours(hours) + minutes(minutes) + seconds(seconds) + milliseconds(millis) + nanoseconds(nanos)
+                days.days + hours.hours + minutes.minutes + seconds.seconds + millis.milliseconds + nanos.nanoseconds
             }
             val jtDuration = JTDuration.ZERO
                 .plusDays(days.toLong())
@@ -44,19 +46,19 @@ class DurationConversionTest {
 
     @Test
     fun javaToKotlinRounding() {
-        val jtDuration1 = JTDuration.ofDays(365 * 150)
+        val jtDuration1 = JTDuration.ofDays(365L * 150)
         val jtDuration2 = jtDuration1.plusNanos(1)
         assertNotEquals(jtDuration1, jtDuration2)
 
         val duration1 = jtDuration1.toKotlinDuration()
         val duration2 = jtDuration1.toKotlinDuration()
         assertEquals(duration1, duration2)
-        assertEquals(Duration.days(365 * 150), duration2)
+        assertEquals((365 * 150).days, duration2)
     }
 
     @Test
     fun kotlinToJavaClamping() {
-        val duration = Duration.seconds(Long.MAX_VALUE) * 5
+        val duration = Long.MAX_VALUE.seconds * 5
         val jtDuration = duration.toJavaDuration()
         assertEquals(JTDuration.ofSeconds(Long.MAX_VALUE), jtDuration)
 
@@ -67,7 +69,7 @@ class DurationConversionTest {
     @Test
     fun randomIsoConversionEquivalence() {
         repeat(100) {
-            val duration = Duration.nanoseconds(Random.nextLong(-(1 shl 53) + 1, 1 shl 53))
+            val duration = Random.nextLong(-(1L shl 53) + 1, 1L shl 53).nanoseconds
             val fromString = JTDuration.parse(duration.toIsoString())
             val fromDuration = duration.toJavaDuration()
 

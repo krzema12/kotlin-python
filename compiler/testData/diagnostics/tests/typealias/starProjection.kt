@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 typealias A<T> = Map<T, T>
 typealias B = A<*>
 
@@ -10,6 +9,6 @@ fun test2(x: Map<String, Int>) = check(x)
 
 fun test3(x: Map<Int, String>) = check(x).size
 
-fun test4(x: Map<Int, String>) = <!MEMBER_PROJECTED_OUT{OI}!>check(x)[<!TYPE_MISMATCH{NI}!>"42"<!>]<!>
+fun test4(x: Map<Int, String>) = check(x)[<!TYPE_MISMATCH!>"42"<!>]
 
-fun test5(x: Map<Int, String>) = <!MEMBER_PROJECTED_OUT{OI}!>check(x)[<!CONSTANT_EXPECTED_TYPE_MISMATCH{NI}!>42<!>]<!>
+fun test5(x: Map<Int, String>) = check(x)[<!CONSTANT_EXPECTED_TYPE_MISMATCH!>42<!>]

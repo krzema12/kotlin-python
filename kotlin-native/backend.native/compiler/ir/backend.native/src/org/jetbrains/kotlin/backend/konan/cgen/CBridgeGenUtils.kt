@@ -9,10 +9,7 @@ import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.builders.*
-import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
-import org.jetbrains.kotlin.ir.declarations.IrFunction
-import org.jetbrains.kotlin.ir.declarations.IrValueParameter
-import org.jetbrains.kotlin.ir.declarations.IrVariable
+import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.declarations.impl.IrFunctionImpl
 import org.jetbrains.kotlin.ir.declarations.impl.IrValueParameterImpl
 import org.jetbrains.kotlin.ir.expressions.IrExpression
@@ -22,7 +19,7 @@ import org.jetbrains.kotlin.ir.symbols.impl.IrSimpleFunctionSymbolImpl
 import org.jetbrains.kotlin.ir.symbols.impl.IrValueParameterSymbolImpl
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.impl.IrUninitializedType
-import org.jetbrains.kotlin.ir.util.constructors
+import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.ir.util.irBuilder
 import org.jetbrains.kotlin.ir.util.irCatch
 import org.jetbrains.kotlin.konan.ForeignExceptionMode
@@ -51,17 +48,19 @@ internal class CFunctionBuilder {
 
     fun getType(): CType = CTypes.function(returnType, parameters.map { it.type }, variadic)
 
-    fun buildSignature(name: String): String = returnType.render(buildString {
-        append(name)
-        append('(')
-        parameters.joinTo(this)
-        if (parameters.isEmpty()) {
-            if (!variadic) append("void")
-        } else {
-            if (variadic) append(", ...")
-        }
-        append(')')
-    })
+    fun buildSignature(name: String, language: String): String =
+        (if (language == "C++") "extern \"C\" const " else "") +
+        returnType.render(buildString {
+            append(name)
+            append('(')
+            parameters.joinTo(this)
+            if (parameters.isEmpty()) {
+                if (!variadic) append("void")
+            } else {
+                if (variadic) append(", ...")
+            }
+            append(')')
+        })
 
 }
 
@@ -71,10 +70,11 @@ internal class KotlinBridgeBuilder(
         cName: String,
         stubs: KotlinStubs,
         isExternal: Boolean,
-        foreignExceptionMode: ForeignExceptionMode.Mode
+        foreignExceptionMode: ForeignExceptionMode.Mode,
+        origin: IrDeclarationOrigin
 ) {
     private var counter = 0
-    private val bridge: IrFunction = createKotlinBridge(startOffset, endOffset, cName, stubs, isExternal, foreignExceptionMode)
+    private val bridge: IrFunction = createKotlinBridge(startOffset, endOffset, cName, stubs, isExternal, foreignExceptionMode, origin)
     val irBuilder: IrBuilderWithScope = irBuilder(stubs.irBuiltIns, bridge.symbol).at(startOffset, endOffset)
 
     fun addParameter(type: IrType): IrValueParameter {
@@ -108,12 +108,13 @@ private fun createKotlinBridge(
         cBridgeName: String,
         stubs: KotlinStubs,
         isExternal: Boolean,
-        foreignExceptionMode: ForeignExceptionMode.Mode
+        foreignExceptionMode: ForeignExceptionMode.Mode,
+        origin: IrDeclarationOrigin
 ): IrFunction {
     val bridge = IrFunctionImpl(
             startOffset,
             endOffset,
-            IrDeclarationOrigin.DEFINED,
+            origin,
             IrSimpleFunctionSymbolImpl(),
             Name.identifier(cBridgeName),
             DescriptorVisibilities.PRIVATE,
@@ -145,11 +146,13 @@ internal class KotlinCBridgeBuilder(
         startOffset: Int,
         endOffset: Int,
         cName: String,
-        stubs: KotlinStubs,
+        val stubs: KotlinStubs,
         isKotlinToC: Boolean,
         foreignExceptionMode: ForeignExceptionMode.Mode = ForeignExceptionMode.default
 ) {
-    private val kotlinBridgeBuilder = KotlinBridgeBuilder(startOffset, endOffset, cName, stubs, isExternal = isKotlinToC, foreignExceptionMode)
+    private val origin: CBridgeOrigin = if (isKotlinToC) CBridgeOrigin.KOTLIN_TO_C_BRIDGE else CBridgeOrigin.C_TO_KOTLIN_BRIDGE
+
+    private val kotlinBridgeBuilder = KotlinBridgeBuilder(startOffset, endOffset, cName, stubs, isExternal = isKotlinToC, foreignExceptionMode, origin)
     private val cBridgeBuilder = CFunctionBuilder()
 
     val kotlinIrBuilder: IrBuilderWithScope get() = kotlinBridgeBuilder.irBuilder
@@ -163,7 +166,7 @@ internal class KotlinCBridgeBuilder(
         cBridgeBuilder.setReturnType(cReturnType)
     }
 
-    fun buildCSignature(name: String): String = cBridgeBuilder.buildSignature(name)
+    fun buildCSignature(name: String): String = cBridgeBuilder.buildSignature(name, stubs.language)
 
     fun buildKotlinBridge() = kotlinBridgeBuilder.build()
 }
@@ -248,4 +251,9 @@ internal class CCallBuilder {
         arguments.joinTo(this)
         append(')')
     }
+}
+
+sealed class CBridgeOrigin(name: String): IrDeclarationOriginImpl(name, isSynthetic = true) {
+    object KOTLIN_TO_C_BRIDGE: CBridgeOrigin("KOTLIN_TO_C_BRIDGE")
+    object C_TO_KOTLIN_BRIDGE: CBridgeOrigin("C_TO_KOTLIN_BRIDGE")
 }

@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // !CHECK_TYPE
 // !DIAGNOSTICS: -UNUSED_PARAMETER
 data class A(val x: Int, val y: String)
@@ -47,8 +46,8 @@ fun bar() {
         b checkType { _<String>() }
     }
 
-    <!INAPPLICABLE_CANDIDATE!>foo<!> { (a, b): B ->
+    foo <!ARGUMENT_TYPE_MISMATCH!>{ (a, b): B ->
         a checkType { _<Double>() }
         b checkType { _<Short>() }
-    }
+    }<!>
 }

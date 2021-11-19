@@ -9,25 +9,15 @@ import kotlin.reflect.KClass
 
 @ExportForCompiler
 internal class KClassImpl<T : Any>(private val typeInfo: NativePtr) : KClass<T> {
+    // TODO: consider replacing '$' by another delimeter that can't be used in class name specified with backticks (``)
     override val simpleName: String?
-        get() {
-            val relativeName = getRelativeName(typeInfo)
-                    ?: return null
-
-            return relativeName.substringAfterLast(".")
-        }
+        get() = getRelativeName(typeInfo, true)?.substringAfterLast('.')?.substringAfterLast('$')
 
     override val qualifiedName: String?
         get() {
-            val packageName = getPackageName(typeInfo)
-                    ?: return null
-
-            val relativeName = getRelativeName(typeInfo)!!
-            return if (packageName.isEmpty()) {
-                relativeName
-            } else {
-                "$packageName.$relativeName"
-            }
+            val packageName = getPackageName(typeInfo, true) ?: return null
+            val relativeName = getRelativeName(typeInfo, true) ?: return null
+            return if (packageName.isEmpty()) relativeName else "$packageName.$relativeName"
         }
 
     override fun isInstance(value: Any?): Boolean = value != null && isInstance(value, this.typeInfo)
@@ -37,13 +27,21 @@ internal class KClassImpl<T : Any>(private val typeInfo: NativePtr) : KClass<T> 
 
     override fun hashCode(): Int = typeInfo.hashCode()
 
-    override fun toString(): String {
-        return "class " + (qualifiedName ?: simpleName ?: "<anonymous>")
-    }
+    override fun toString(): String = "class ${fullName ?: "<anonymous>"}"
+
+    internal val fullName: String?
+        get() {
+            val relativeName = getRelativeName(typeInfo, false) ?: return null
+            val packageName = getPackageName(typeInfo, false)!!
+            return if (packageName.isEmpty()) relativeName else "$packageName.$relativeName"
+        }
 
     internal fun findAssociatedObjectImpl(key: KClassImpl<*>): Any? =
             findAssociatedObjectImpl(this.typeInfo, key.typeInfo)
 }
+
+internal val KClass<*>.fullName: String?
+    get() = (this as? KClassImpl<*>)?.fullName
 
 @PublishedApi
 internal fun KClass<*>.findAssociatedObject(key: KClass<*>): Any? =
@@ -68,22 +66,22 @@ internal class KClassUnsupportedImpl(private val message: String) : KClass<Any> 
     override fun toString(): String = "unreflected class ($message)"
 }
 
-@SymbolName("Kotlin_TypeInfo_findAssociatedObject")
+@GCUnsafeCall("Kotlin_TypeInfo_findAssociatedObject")
 private external fun findAssociatedObjectImpl(typeInfo: NativePtr, key: NativePtr): Any?
 
 @ExportForCompiler
-@SymbolName("Kotlin_Any_getTypeInfo")
+@GCUnsafeCall("Kotlin_Any_getTypeInfo")
 internal external fun getObjectTypeInfo(obj: Any): NativePtr
 
 @ExportForCompiler
 @TypedIntrinsic(IntrinsicType.GET_CLASS_TYPE_INFO)
 internal external inline fun <reified T : Any> getClassTypeInfo(): NativePtr
 
-@SymbolName("Kotlin_TypeInfo_getPackageName")
-private external fun getPackageName(typeInfo: NativePtr): String?
+@GCUnsafeCall("Kotlin_TypeInfo_getPackageName")
+private external fun getPackageName(typeInfo: NativePtr, checkFlags: Boolean): String?
 
-@SymbolName("Kotlin_TypeInfo_getRelativeName")
-private external fun getRelativeName(typeInfo: NativePtr): String?
+@GCUnsafeCall("Kotlin_TypeInfo_getRelativeName")
+private external fun getRelativeName(typeInfo: NativePtr, checkFlags: Boolean): String?
 
-@SymbolName("Kotlin_TypeInfo_isInstance")
+@GCUnsafeCall("Kotlin_TypeInfo_isInstance")
 private external fun isInstance(obj: Any, typeInfo: NativePtr): Boolean

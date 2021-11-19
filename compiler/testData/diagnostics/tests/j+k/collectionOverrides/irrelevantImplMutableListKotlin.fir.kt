@@ -99,7 +99,7 @@ public class A extends AImpl implements List<String> {
 
 fun main() {
     val x = X()
-    x[0]
+    <!OPERATOR_MODIFIER_REQUIRED!>x[0]<!>
     x.size
     x.remove("")
     x.remove(1)

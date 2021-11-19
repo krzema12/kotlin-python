@@ -27,6 +27,12 @@ public class FirDiagnosticTestGenerated extends AbstractFirDiagnosticTest {
         }
 
         @Test
+        @TestMetadata("annotationOnDeclarationWithDifferentArguments.kt")
+        public void testAnnotationOnDeclarationWithDifferentArguments() throws Exception {
+            runTest("compiler/fir/analysis-tests/testData/resolve/annotationOnDeclarationWithDifferentArguments.kt");
+        }
+
+        @Test
         @TestMetadata("annotationUsedAsAnnotationArgument.kt")
         public void testAnnotationUsedAsAnnotationArgument() throws Exception {
             runTest("compiler/fir/analysis-tests/testData/resolve/annotationUsedAsAnnotationArgument.kt");
@@ -66,6 +72,12 @@ public class FirDiagnosticTestGenerated extends AbstractFirDiagnosticTest {
         @TestMetadata("catchParameter.kt")
         public void testCatchParameter() throws Exception {
             runTest("compiler/fir/analysis-tests/testData/resolve/catchParameter.kt");
+        }
+
+        @Test
+        @TestMetadata("classCallInLambda.kt")
+        public void testClassCallInLambda() throws Exception {
+            runTest("compiler/fir/analysis-tests/testData/resolve/classCallInLambda.kt");
         }
 
         @Test
@@ -660,6 +672,12 @@ public class FirDiagnosticTestGenerated extends AbstractFirDiagnosticTest {
             }
 
             @Test
+            @TestMetadata("integerOverloads.kt")
+            public void testIntegerOverloads() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolve/arguments/integerOverloads.kt");
+            }
+
+            @Test
             @TestMetadata("invoke.kt")
             public void testInvoke() throws Exception {
                 runTest("compiler/fir/analysis-tests/testData/resolve/arguments/invoke.kt");
@@ -711,6 +729,12 @@ public class FirDiagnosticTestGenerated extends AbstractFirDiagnosticTest {
             @TestMetadata("namedArrayInAnnotation.kt")
             public void testNamedArrayInAnnotation() throws Exception {
                 runTest("compiler/fir/analysis-tests/testData/resolve/arguments/namedArrayInAnnotation.kt");
+            }
+
+            @Test
+            @TestMetadata("nestedClassInAnnotationArgument.kt")
+            public void testNestedClassInAnnotationArgument() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolve/arguments/nestedClassInAnnotationArgument.kt");
             }
 
             @Test
@@ -1121,6 +1145,12 @@ public class FirDiagnosticTestGenerated extends AbstractFirDiagnosticTest {
             @TestMetadata("constValWithGetterOrDelegate.kt")
             public void testConstValWithGetterOrDelegate() throws Exception {
                 runTest("compiler/fir/analysis-tests/testData/resolve/constVal/constValWithGetterOrDelegate.kt");
+            }
+
+            @Test
+            @TestMetadata("constValWithTypealiasType.kt")
+            public void testConstValWithTypealiasType() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolve/constVal/constValWithTypealiasType.kt");
             }
         }
 
@@ -2734,6 +2764,18 @@ public class FirDiagnosticTestGenerated extends AbstractFirDiagnosticTest {
             }
 
             @Test
+            @TestMetadata("elvisAndUnit.kt")
+            public void testElvisAndUnit() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolve/inference/elvisAndUnit.kt");
+            }
+
+            @Test
+            @TestMetadata("equals.kt")
+            public void testEquals() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolve/inference/equals.kt");
+            }
+
+            @Test
             @TestMetadata("extensionCallableReferences.kt")
             public void testExtensionCallableReferences() throws Exception {
                 runTest("compiler/fir/analysis-tests/testData/resolve/inference/extensionCallableReferences.kt");
@@ -2816,6 +2858,12 @@ public class FirDiagnosticTestGenerated extends AbstractFirDiagnosticTest {
             public void testTypeDepthForTypeAlias() throws Exception {
                 runTest("compiler/fir/analysis-tests/testData/resolve/inference/typeDepthForTypeAlias.kt");
             }
+
+            @Test
+            @TestMetadata("unitUpperBound.kt")
+            public void testUnitUpperBound() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolve/inference/unitUpperBound.kt");
+            }
         }
 
         @Nested
@@ -2887,6 +2935,12 @@ public class FirDiagnosticTestGenerated extends AbstractFirDiagnosticTest {
             @Test
             public void testAllFilesPresentInLocalClasses() throws Exception {
                 KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/fir/analysis-tests/testData/resolve/localClasses"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+            }
+
+            @Test
+            @TestMetadata("anonymousInAnonymous.kt")
+            public void testAnonymousInAnonymous() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolve/localClasses/anonymousInAnonymous.kt");
             }
 
             @Test
@@ -3003,6 +3057,12 @@ public class FirDiagnosticTestGenerated extends AbstractFirDiagnosticTest {
             @TestMetadata("protobufExt.kt")
             public void testProtobufExt() throws Exception {
                 runTest("compiler/fir/analysis-tests/testData/resolve/overrides/protobufExt.kt");
+            }
+
+            @Test
+            @TestMetadata("sameValueParametersDifferentReceiver.kt")
+            public void testSameValueParametersDifferentReceiver() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolve/overrides/sameValueParametersDifferentReceiver.kt");
             }
 
             @Test
@@ -3157,6 +3217,12 @@ public class FirDiagnosticTestGenerated extends AbstractFirDiagnosticTest {
             @TestMetadata("secondaryConstructorCfg.kt")
             public void testSecondaryConstructorCfg() throws Exception {
                 runTest("compiler/fir/analysis-tests/testData/resolve/problems/secondaryConstructorCfg.kt");
+            }
+
+            @Test
+            @TestMetadata("symbolsAndDescriptors.kt")
+            public void testSymbolsAndDescriptors() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolve/problems/symbolsAndDescriptors.kt");
             }
 
             @Test
@@ -3399,6 +3465,12 @@ public class FirDiagnosticTestGenerated extends AbstractFirDiagnosticTest {
             @TestMetadata("equalsAndIdentity.kt")
             public void testEqualsAndIdentity() throws Exception {
                 runTest("compiler/fir/analysis-tests/testData/resolve/smartcasts/equalsAndIdentity.kt");
+            }
+
+            @Test
+            @TestMetadata("incorrectSmartcastToNothing.kt")
+            public void testIncorrectSmartcastToNothing() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolve/smartcasts/incorrectSmartcastToNothing.kt");
             }
 
             @Test
@@ -3833,6 +3905,12 @@ public class FirDiagnosticTestGenerated extends AbstractFirDiagnosticTest {
             @TestMetadata("castToBareType.kt")
             public void testCastToBareType() throws Exception {
                 runTest("compiler/fir/analysis-tests/testData/resolve/types/castToBareType.kt");
+            }
+
+            @Test
+            @TestMetadata("typeAliasInArguments.kt")
+            public void testTypeAliasInArguments() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolve/types/typeAliasInArguments.kt");
             }
         }
 
@@ -4947,12 +5025,70 @@ public class FirDiagnosticTestGenerated extends AbstractFirDiagnosticTest {
         }
 
         @Nested
+        @TestMetadata("compiler/fir/analysis-tests/testData/resolveWithStdlib/intellij")
+        @TestDataPath("$PROJECT_ROOT")
+        public class Intellij {
+            @Test
+            public void testAllFilesPresentInIntellij() throws Exception {
+                KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/fir/analysis-tests/testData/resolveWithStdlib/intellij"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+            }
+
+            @Test
+            @TestMetadata("DailyAggregatedDoubleFactor.kt")
+            public void testDailyAggregatedDoubleFactor() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/intellij/DailyAggregatedDoubleFactor.kt");
+            }
+
+            @Test
+            @TestMetadata("EnumWithToString.kt")
+            public void testEnumWithToString() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/intellij/EnumWithToString.kt");
+            }
+
+            @Test
+            @TestMetadata("IntersectionWithJavaString.kt")
+            public void testIntersectionWithJavaString() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/intellij/IntersectionWithJavaString.kt");
+            }
+
+            @Test
+            @TestMetadata("ParentOfType.kt")
+            public void testParentOfType() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/intellij/ParentOfType.kt");
+            }
+
+            @Test
+            @TestMetadata("PersistentStateComponent.kt")
+            public void testPersistentStateComponent() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/intellij/PersistentStateComponent.kt");
+            }
+
+            @Test
+            @TestMetadata("UastPatterns.kt")
+            public void testUastPatterns() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/intellij/UastPatterns.kt");
+            }
+
+            @Test
+            @TestMetadata("WithSpeedSearch.kt")
+            public void testWithSpeedSearch() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/intellij/WithSpeedSearch.kt");
+            }
+        }
+
+        @Nested
         @TestMetadata("compiler/fir/analysis-tests/testData/resolveWithStdlib/j+k")
         @TestDataPath("$PROJECT_ROOT")
         public class J_k {
             @Test
             public void testAllFilesPresentInJ_k() throws Exception {
                 KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/fir/analysis-tests/testData/resolveWithStdlib/j+k"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+            }
+
+            @Test
+            @TestMetadata("AnnotationWithEnum.kt")
+            public void testAnnotationWithEnum() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/j+k/AnnotationWithEnum.kt");
             }
 
             @Test
@@ -5288,6 +5424,12 @@ public class FirDiagnosticTestGenerated extends AbstractFirDiagnosticTest {
             }
 
             @Test
+            @TestMetadata("capturedTypeInEquality.kt")
+            public void testCapturedTypeInEquality() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/problems/capturedTypeInEquality.kt");
+            }
+
+            @Test
             @TestMetadata("DeepCopyIrTree.kt")
             public void testDeepCopyIrTree() throws Exception {
                 runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/problems/DeepCopyIrTree.kt");
@@ -5395,6 +5537,12 @@ public class FirDiagnosticTestGenerated extends AbstractFirDiagnosticTest {
             @Test
             public void testAllFilesPresentInSmartcasts() throws Exception {
                 KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/fir/analysis-tests/testData/resolveWithStdlib/smartcasts"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
+            }
+
+            @Test
+            @TestMetadata("assertIs.kt")
+            public void testAssertIs() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/smartcasts/assertIs.kt");
             }
 
             @Test

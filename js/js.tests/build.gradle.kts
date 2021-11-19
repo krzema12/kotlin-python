@@ -10,15 +10,6 @@ plugins {
     id("jps-compatible")
     id("com.github.node-gradle.node") version "3.0.1"
     id("de.undercouch.download")
-    id("com.gradle.enterprise.test-distribution") apply false
-}
-
-val isTeamcityBuild = project.kotlinBuildProperties.isTeamcityBuild
-val testDistributionEnabled = project.findProperty("kotlin.build.test.distribution.enabled")?.toString()?.toBoolean()
-    ?: isTeamcityBuild
-
-if (testDistributionEnabled) {
-    apply<com.gradle.enterprise.gradleplugin.testdistribution.TestDistributionPlugin>()
 }
 
 node {
@@ -156,7 +147,7 @@ val v8osString = when (currentOsType) {
 }
 
 val v8edition = "rel" // rel or dbg
-val v8version = "8.8.104"
+val v8version = "9.2.212"
 val v8fileName = "v8-${v8osString}-${v8edition}-${v8version}"
 val v8url = "https://storage.googleapis.com/chromium-v8/official/canary/$v8fileName.zip"
 

@@ -363,6 +363,7 @@ object KotlinCompilerClient {
                 .thenBy(FileAgeComparator()) { it.runFile }
         val optsCopy = daemonJVMOptions.copy()
         // if required options fit into fattest running daemon - return the daemon and required options with memory params set to actual ones in the daemon
+        @Suppress("DEPRECATION") // TODO: replace with maxWithOrNull as soon as minimal version of Gradle that we support has Kotlin 1.4+.
         return aliveWithMetadata.maxWith(comparator)?.takeIf { daemonJVMOptions memorywiseFitsInto it.jvmOptions }?.let {
                 Pair(it.daemon, optsCopy.updateMemoryUpperBounds(it.jvmOptions))
             }
@@ -371,14 +372,8 @@ object KotlinCompilerClient {
     }
 
 
-    private fun startDaemon(
-        compilerId: CompilerId,
-        daemonJVMOptions: DaemonJVMOptions,
-        daemonOptions: DaemonOptions,
-        reportingTargets: DaemonReportingTargets
-    ): Boolean {
-        val daemonJavaExecutable = compilerId.javaExecutable
-            ?: File(File(CompilerSystemProperties.JAVA_HOME.safeValue, "bin"), "java")
+    private fun startDaemon(compilerId: CompilerId, daemonJVMOptions: DaemonJVMOptions, daemonOptions: DaemonOptions, reportingTargets: DaemonReportingTargets): Boolean {
+        val javaExecutable = File(File(CompilerSystemProperties.JAVA_HOME.safeValue, "bin"), "java")
         val serverHostname = CompilerSystemProperties.JAVA_RMI_SERVER_HOSTNAME.value ?: error("${CompilerSystemProperties.JAVA_RMI_SERVER_HOSTNAME.property} is not set!")
         val platformSpecificOptions = listOf(
                 // hide daemon window
@@ -387,10 +382,10 @@ object KotlinCompilerClient {
         val javaVersion = CompilerSystemProperties.JAVA_VERSION.value?.toIntOrNull()
         val javaIllegalAccessWorkaround =
             if (javaVersion != null && javaVersion >= 16)
-                listOf("--illegal-access=permit")
+                listOf("--add-exports", "java.base/sun.nio.ch=ALL-UNNAMED")
             else emptyList()
         val args = listOf(
-                   daemonJavaExecutable.absolutePath, "-cp", compilerId.compilerClasspath.joinToString(File.pathSeparator)) +
+                   javaExecutable.absolutePath, "-cp", compilerId.compilerClasspath.joinToString(File.pathSeparator)) +
                    platformSpecificOptions +
                    daemonJVMOptions.mappers.flatMap { it.toArgs("-") } +
                    javaIllegalAccessWorkaround +

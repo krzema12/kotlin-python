@@ -13,7 +13,6 @@
 #include "gtest/gtest.h"
 
 #include "FinalizerHooksTestSupport.hpp"
-#include "GC.hpp"
 #include "ObjectTestSupport.hpp"
 #include "TestSupport.hpp"
 #include "Types.h"
@@ -40,7 +39,7 @@ using Consumer = typename Storage::Consumer;
 template <size_t DataAlignment>
 KStdVector<void*> Collect(ObjectFactoryStorage<DataAlignment>& storage) {
     KStdVector<void*> result;
-    for (auto& node : storage.Iter()) {
+    for (auto& node : storage.LockForIter()) {
         result.push_back(node.Data());
     }
     return result;
@@ -49,7 +48,7 @@ KStdVector<void*> Collect(ObjectFactoryStorage<DataAlignment>& storage) {
 template <typename T, size_t DataAlignment>
 KStdVector<T> Collect(ObjectFactoryStorage<DataAlignment>& storage) {
     KStdVector<T> result;
-    for (auto& node : storage.Iter()) {
+    for (auto& node : storage.LockForIter()) {
         result.push_back(*static_cast<T*>(node.Data()));
     }
     return result;
@@ -94,6 +93,7 @@ TEST(ObjectFactoryStorageTest, Empty) {
     auto actual = Collect(storage);
 
     EXPECT_THAT(actual, testing::IsEmpty());
+    EXPECT_THAT(storage.GetSizeUnsafe(), 0);
 }
 
 TEST(ObjectFactoryStorageTest, DoNotPublish) {
@@ -106,6 +106,8 @@ TEST(ObjectFactoryStorageTest, DoNotPublish) {
     auto actual = Collect(storage);
 
     EXPECT_THAT(actual, testing::IsEmpty());
+    EXPECT_THAT(storage.GetSizeUnsafe(), 0);
+    EXPECT_THAT(producer.size(), 2);
 }
 
 TEST(ObjectFactoryStorageTest, Publish) {
@@ -124,6 +126,9 @@ TEST(ObjectFactoryStorageTest, Publish) {
     auto actual = Collect<int>(storage);
 
     EXPECT_THAT(actual, testing::ElementsAre(1, 2, 10, 20));
+    EXPECT_THAT(storage.GetSizeUnsafe(), 4);
+    EXPECT_THAT(producer1.size(), 0);
+    EXPECT_THAT(producer2.size(), 0);
 }
 
 TEST(ObjectFactoryStorageTest, PublishDifferentTypes) {
@@ -138,7 +143,7 @@ TEST(ObjectFactoryStorageTest, PublishDifferentTypes) {
 
     producer.Publish();
 
-    auto actual = storage.Iter();
+    auto actual = storage.LockForIter();
     auto it = actual.begin();
     EXPECT_THAT(it->Data<int>(), 1);
     ++it;
@@ -157,6 +162,8 @@ TEST(ObjectFactoryStorageTest, PublishDifferentTypes) {
     EXPECT_THAT(maxAlign.value, 8);
     ++it;
     EXPECT_THAT(it, actual.end());
+    EXPECT_THAT(storage.GetSizeUnsafe(), 5);
+    EXPECT_THAT(producer.size(), 0);
 }
 
 TEST(ObjectFactoryStorageTest, PublishSeveralTimes) {
@@ -183,6 +190,8 @@ TEST(ObjectFactoryStorageTest, PublishSeveralTimes) {
     auto actual = Collect<int>(storage);
 
     EXPECT_THAT(actual, testing::ElementsAre(1, 2, 3, 4, 5));
+    EXPECT_THAT(storage.GetSizeUnsafe(), 5);
+    EXPECT_THAT(producer.size(), 0);
 }
 
 TEST(ObjectFactoryStorageTest, PublishInDestructor) {
@@ -197,6 +206,7 @@ TEST(ObjectFactoryStorageTest, PublishInDestructor) {
     auto actual = Collect<int>(storage);
 
     EXPECT_THAT(actual, testing::ElementsAre(1, 2));
+    EXPECT_THAT(storage.GetSizeUnsafe(), 2);
 }
 
 TEST(ObjectFactoryStorageTest, FindNode) {
@@ -223,7 +233,7 @@ TEST(ObjectFactoryStorageTest, EraseFirst) {
     producer.Publish();
 
     {
-        auto iter = storage.Iter();
+        auto iter = storage.LockForIter();
         for (auto it = iter.begin(); it != iter.end();) {
             if (it->Data<int>() == 1) {
                 iter.EraseAndAdvance(it);
@@ -236,6 +246,8 @@ TEST(ObjectFactoryStorageTest, EraseFirst) {
     auto actual = Collect<int>(storage);
 
     EXPECT_THAT(actual, testing::ElementsAre(2, 3));
+    EXPECT_THAT(storage.GetSizeUnsafe(), 2);
+    EXPECT_THAT(producer.size(), 0);
 }
 
 TEST(ObjectFactoryStorageTest, EraseMiddle) {
@@ -249,7 +261,7 @@ TEST(ObjectFactoryStorageTest, EraseMiddle) {
     producer.Publish();
 
     {
-        auto iter = storage.Iter();
+        auto iter = storage.LockForIter();
         for (auto it = iter.begin(); it != iter.end();) {
             if (it->Data<int>() == 2) {
                 iter.EraseAndAdvance(it);
@@ -262,6 +274,8 @@ TEST(ObjectFactoryStorageTest, EraseMiddle) {
     auto actual = Collect<int>(storage);
 
     EXPECT_THAT(actual, testing::ElementsAre(1, 3));
+    EXPECT_THAT(storage.GetSizeUnsafe(), 2);
+    EXPECT_THAT(producer.size(), 0);
 }
 
 TEST(ObjectFactoryStorageTest, EraseLast) {
@@ -275,7 +289,7 @@ TEST(ObjectFactoryStorageTest, EraseLast) {
     producer.Publish();
 
     {
-        auto iter = storage.Iter();
+        auto iter = storage.LockForIter();
         for (auto it = iter.begin(); it != iter.end();) {
             if (it->Data<int>() == 3) {
                 iter.EraseAndAdvance(it);
@@ -288,6 +302,8 @@ TEST(ObjectFactoryStorageTest, EraseLast) {
     auto actual = Collect<int>(storage);
 
     EXPECT_THAT(actual, testing::ElementsAre(1, 2));
+    EXPECT_THAT(storage.GetSizeUnsafe(), 2);
+    EXPECT_THAT(producer.size(), 0);
 }
 
 TEST(ObjectFactoryStorageTest, EraseAll) {
@@ -301,7 +317,7 @@ TEST(ObjectFactoryStorageTest, EraseAll) {
     producer.Publish();
 
     {
-        auto iter = storage.Iter();
+        auto iter = storage.LockForIter();
         for (auto it = iter.begin(); it != iter.end();) {
             iter.EraseAndAdvance(it);
         }
@@ -310,6 +326,8 @@ TEST(ObjectFactoryStorageTest, EraseAll) {
     auto actual = Collect<int>(storage);
 
     EXPECT_THAT(actual, testing::IsEmpty());
+    EXPECT_THAT(storage.GetSizeUnsafe(), 0);
+    EXPECT_THAT(producer.size(), 0);
 }
 
 TEST(ObjectFactoryStorageTest, EraseTheOnlyElement) {
@@ -321,7 +339,7 @@ TEST(ObjectFactoryStorageTest, EraseTheOnlyElement) {
     producer.Publish();
 
     {
-        auto iter = storage.Iter();
+        auto iter = storage.LockForIter();
         auto it = iter.begin();
         iter.EraseAndAdvance(it);
         EXPECT_THAT(it, iter.end());
@@ -330,6 +348,8 @@ TEST(ObjectFactoryStorageTest, EraseTheOnlyElement) {
     auto actual = Collect<int>(storage);
 
     EXPECT_THAT(actual, testing::IsEmpty());
+    EXPECT_THAT(storage.GetSizeUnsafe(), 0);
+    EXPECT_THAT(producer.size(), 0);
 }
 
 TEST(ObjectFactoryStorageTest, MoveFirst) {
@@ -344,7 +364,7 @@ TEST(ObjectFactoryStorageTest, MoveFirst) {
     producer.Publish();
 
     {
-        auto iter = storage.Iter();
+        auto iter = storage.LockForIter();
         for (auto it = iter.begin(); it != iter.end();) {
             if (it->Data<int>() == 1) {
                 iter.MoveAndAdvance(consumer, it);
@@ -359,6 +379,9 @@ TEST(ObjectFactoryStorageTest, MoveFirst) {
 
     EXPECT_THAT(actual, testing::ElementsAre(2, 3));
     EXPECT_THAT(actualConsumer, testing::ElementsAre(1));
+    EXPECT_THAT(storage.GetSizeUnsafe(), 2);
+    EXPECT_THAT(producer.size(), 0);
+    EXPECT_THAT(consumer.size(), 1);
 }
 
 TEST(ObjectFactoryStorageTest, MoveMiddle) {
@@ -373,7 +396,7 @@ TEST(ObjectFactoryStorageTest, MoveMiddle) {
     producer.Publish();
 
     {
-        auto iter = storage.Iter();
+        auto iter = storage.LockForIter();
         for (auto it = iter.begin(); it != iter.end();) {
             if (it->Data<int>() == 2) {
                 iter.MoveAndAdvance(consumer, it);
@@ -388,6 +411,9 @@ TEST(ObjectFactoryStorageTest, MoveMiddle) {
 
     EXPECT_THAT(actual, testing::ElementsAre(1, 3));
     EXPECT_THAT(actualConsumer, testing::ElementsAre(2));
+    EXPECT_THAT(storage.GetSizeUnsafe(), 2);
+    EXPECT_THAT(producer.size(), 0);
+    EXPECT_THAT(consumer.size(), 1);
 }
 
 TEST(ObjectFactoryStorageTest, MoveLast) {
@@ -402,7 +428,7 @@ TEST(ObjectFactoryStorageTest, MoveLast) {
     producer.Publish();
 
     {
-        auto iter = storage.Iter();
+        auto iter = storage.LockForIter();
         for (auto it = iter.begin(); it != iter.end();) {
             if (it->Data<int>() == 3) {
                 iter.MoveAndAdvance(consumer, it);
@@ -417,6 +443,9 @@ TEST(ObjectFactoryStorageTest, MoveLast) {
 
     EXPECT_THAT(actual, testing::ElementsAre(1, 2));
     EXPECT_THAT(actualConsumer, testing::ElementsAre(3));
+    EXPECT_THAT(storage.GetSizeUnsafe(), 2);
+    EXPECT_THAT(producer.size(), 0);
+    EXPECT_THAT(consumer.size(), 1);
 }
 
 TEST(ObjectFactoryStorageTest, MoveAll) {
@@ -431,7 +460,7 @@ TEST(ObjectFactoryStorageTest, MoveAll) {
     producer.Publish();
 
     {
-        auto iter = storage.Iter();
+        auto iter = storage.LockForIter();
         for (auto it = iter.begin(); it != iter.end();) {
             iter.MoveAndAdvance(consumer, it);
         }
@@ -442,6 +471,9 @@ TEST(ObjectFactoryStorageTest, MoveAll) {
 
     EXPECT_THAT(actual, testing::IsEmpty());
     EXPECT_THAT(actualConsumer, testing::ElementsAre(1, 2, 3));
+    EXPECT_THAT(storage.GetSizeUnsafe(), 0);
+    EXPECT_THAT(producer.size(), 0);
+    EXPECT_THAT(consumer.size(), 3);
 }
 
 TEST(ObjectFactoryStorageTest, MoveTheOnlyElement) {
@@ -454,7 +486,7 @@ TEST(ObjectFactoryStorageTest, MoveTheOnlyElement) {
     producer.Publish();
 
     {
-        auto iter = storage.Iter();
+        auto iter = storage.LockForIter();
         auto it = iter.begin();
         iter.MoveAndAdvance(consumer, it);
         EXPECT_THAT(it, iter.end());
@@ -465,6 +497,9 @@ TEST(ObjectFactoryStorageTest, MoveTheOnlyElement) {
 
     EXPECT_THAT(actual, testing::IsEmpty());
     EXPECT_THAT(actualConsumer, testing::ElementsAre(1));
+    EXPECT_THAT(storage.GetSizeUnsafe(), 0);
+    EXPECT_THAT(producer.size(), 0);
+    EXPECT_THAT(consumer.size(), 1);
 }
 
 TEST(ObjectFactoryStorageTest, MoveAndErase) {
@@ -485,7 +520,7 @@ TEST(ObjectFactoryStorageTest, MoveAndErase) {
     producer.Publish();
 
     {
-        auto iter = storage.Iter();
+        auto iter = storage.LockForIter();
         for (auto it = iter.begin(); it != iter.end();) {
             ++it;
             iter.EraseAndAdvance(it);
@@ -498,6 +533,9 @@ TEST(ObjectFactoryStorageTest, MoveAndErase) {
 
     EXPECT_THAT(actual, testing::ElementsAre(1, 4, 7));
     EXPECT_THAT(actualConsumer, testing::ElementsAre(3, 6, 9));
+    EXPECT_THAT(storage.GetSizeUnsafe(), 3);
+    EXPECT_THAT(producer.size(), 0);
+    EXPECT_THAT(consumer.size(), 3);
 }
 
 TEST(ObjectFactoryStorageTest, ConcurrentPublish) {
@@ -530,6 +568,7 @@ TEST(ObjectFactoryStorageTest, ConcurrentPublish) {
     auto actual = Collect<int>(storage);
 
     EXPECT_THAT(actual, testing::UnorderedElementsAreArray(expected));
+    EXPECT_THAT(storage.GetSizeUnsafe(), expected.size());
 }
 
 TEST(ObjectFactoryStorageTest, IterWhileConcurrentPublish) {
@@ -567,7 +606,7 @@ TEST(ObjectFactoryStorageTest, IterWhileConcurrentPublish) {
 
     KStdVector<int> actualBefore;
     {
-        auto iter = storage.Iter();
+        auto iter = storage.LockForIter();
         while (readyCount < kThreadCount) {
         }
         canStart = true;
@@ -589,6 +628,7 @@ TEST(ObjectFactoryStorageTest, IterWhileConcurrentPublish) {
     auto actualAfter = Collect<int>(storage);
 
     EXPECT_THAT(actualAfter, testing::UnorderedElementsAreArray(expectedAfter));
+    EXPECT_THAT(storage.GetSizeUnsafe(), expectedAfter.size());
 }
 
 TEST(ObjectFactoryStorageTest, EraseWhileConcurrentPublish) {
@@ -625,7 +665,7 @@ TEST(ObjectFactoryStorageTest, EraseWhileConcurrentPublish) {
     }
 
     {
-        auto iter = storage.Iter();
+        auto iter = storage.LockForIter();
         while (readyCount < kThreadCount) {
         }
         canStart = true;
@@ -648,6 +688,7 @@ TEST(ObjectFactoryStorageTest, EraseWhileConcurrentPublish) {
     auto actual = Collect<int>(storage);
 
     EXPECT_THAT(actual, testing::UnorderedElementsAreArray(expectedAfter));
+    EXPECT_THAT(storage.GetSizeUnsafe(), expectedAfter.size());
 }
 
 using mm::internal::AllocatorWithGC;
@@ -773,7 +814,7 @@ TEST(ObjectFactoryTest, CreateObject) {
     EXPECT_THAT(node.GetObjHeader(), object);
     EXPECT_THAT(node.GCObjectData().flags, 42);
 
-    auto iter = objectFactory.Iter();
+    auto iter = objectFactory.LockForIter();
     auto it = iter.begin();
     EXPECT_THAT(*it, node);
     ++it;
@@ -793,7 +834,7 @@ TEST(ObjectFactoryTest, CreateObjectArray) {
     EXPECT_THAT(node.GetArrayHeader(), array);
     EXPECT_THAT(node.GCObjectData().flags, 42);
 
-    auto iter = objectFactory.Iter();
+    auto iter = objectFactory.LockForIter();
     auto it = iter.begin();
     EXPECT_THAT(*it, node);
     ++it;
@@ -813,7 +854,7 @@ TEST(ObjectFactoryTest, CreateCharArray) {
     EXPECT_THAT(node.GetArrayHeader(), array);
     EXPECT_THAT(node.GCObjectData().flags, 42);
 
-    auto iter = objectFactory.Iter();
+    auto iter = objectFactory.LockForIter();
     auto it = iter.begin();
     EXPECT_THAT(*it, node);
     ++it;
@@ -834,7 +875,7 @@ TEST(ObjectFactoryTest, Erase) {
     threadQueue.Publish();
 
     {
-        auto iter = objectFactory.Iter();
+        auto iter = objectFactory.LockForIter();
         for (auto it = iter.begin(); it != iter.end();) {
             if (it->IsArray()) {
                 iter.EraseAndAdvance(it);
@@ -845,7 +886,7 @@ TEST(ObjectFactoryTest, Erase) {
     }
 
     {
-        auto iter = objectFactory.Iter();
+        auto iter = objectFactory.LockForIter();
         int count = 0;
         for (auto it = iter.begin(); it != iter.end(); ++it, ++count) {
             EXPECT_FALSE(it->IsArray());
@@ -869,7 +910,7 @@ TEST(ObjectFactoryTest, Move) {
     threadQueue.Publish();
 
     {
-        auto iter = objectFactory.Iter();
+        auto iter = objectFactory.LockForIter();
         for (auto it = iter.begin(); it != iter.end();) {
             if (it->IsArray()) {
                 iter.MoveAndAdvance(finalizerQueue, it);
@@ -880,7 +921,7 @@ TEST(ObjectFactoryTest, Move) {
     }
 
     {
-        auto iter = objectFactory.Iter();
+        auto iter = objectFactory.LockForIter();
         int count = 0;
         for (auto it = iter.begin(); it != iter.end(); ++it, ++count) {
             EXPECT_FALSE(it->IsArray());
@@ -915,7 +956,7 @@ TEST(ObjectFactoryTest, RunFinalizers) {
     threadQueue.Publish();
 
     {
-        auto iter = objectFactory.Iter();
+        auto iter = objectFactory.LockForIter();
         for (auto it = iter.begin(); it != iter.end();) {
             iter.MoveAndAdvance(finalizerQueue, it);
         }
@@ -962,7 +1003,7 @@ TEST(ObjectFactoryTest, ConcurrentPublish) {
         t.join();
     }
 
-    auto iter = objectFactory.Iter();
+    auto iter = objectFactory.LockForIter();
     KStdVector<ObjHeader*> actual;
     for (auto it = iter.begin(); it != iter.end(); ++it) {
         actual.push_back(it->GetObjHeader());

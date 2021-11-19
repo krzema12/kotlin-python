@@ -1,3 +1,4 @@
+// !LANGUAGE: -ProhibitSuperCallsFromPublicInline
 // FILE: 1.kt
 
 package test

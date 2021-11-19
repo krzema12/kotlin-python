@@ -9,6 +9,8 @@ import kotlin.contracts.*
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.builder.FirAnnotationContainerBuilder
 import org.jetbrains.kotlin.fir.builder.FirBuilderDsl
+import org.jetbrains.kotlin.fir.declarations.FirRegularClass
+import org.jetbrains.kotlin.fir.diagnostics.ConeDiagnostic
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
 import org.jetbrains.kotlin.fir.expressions.FirResolvedQualifier
 import org.jetbrains.kotlin.fir.expressions.builder.FirAbstractResolvedQualifierBuilder
@@ -36,6 +38,7 @@ class FirResolvedQualifierBuilder : FirAbstractResolvedQualifierBuilder, FirAnno
     override var relativeClassFqName: FqName? = null
     override var symbol: FirClassLikeSymbol<*>? = null
     override var isNullableLHSForCallableReference: Boolean = false
+    override val nonFatalDiagnostics: MutableList<ConeDiagnostic> = mutableListOf()
     override val typeArguments: MutableList<FirTypeProjection> = mutableListOf()
 
     override fun build(): FirResolvedQualifier {
@@ -47,6 +50,7 @@ class FirResolvedQualifierBuilder : FirAbstractResolvedQualifierBuilder, FirAnno
             relativeClassFqName,
             symbol,
             isNullableLHSForCallableReference,
+            nonFatalDiagnostics,
             typeArguments,
         )
     }
@@ -54,6 +58,13 @@ class FirResolvedQualifierBuilder : FirAbstractResolvedQualifierBuilder, FirAnno
 
     @Deprecated("Modification of 'classId' has no impact for FirResolvedQualifierBuilder", level = DeprecationLevel.HIDDEN)
     override var classId: ClassId?
+        get() = throw IllegalStateException()
+        set(_) {
+            throw IllegalStateException()
+        }
+
+    @Deprecated("Modification of 'resolvedToCompanionObject' has no impact for FirResolvedQualifierBuilder", level = DeprecationLevel.HIDDEN)
+    override var resolvedToCompanionObject: Boolean
         get() = throw IllegalStateException()
         set(_) {
             throw IllegalStateException()

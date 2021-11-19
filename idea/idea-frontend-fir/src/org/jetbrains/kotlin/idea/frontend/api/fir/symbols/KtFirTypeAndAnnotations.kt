@@ -7,8 +7,10 @@ package org.jetbrains.kotlin.idea.frontend.api.fir.symbols
 
 import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.resolve.transformers.resolveSupertypesInTheAir
-import org.jetbrains.kotlin.fir.types.*
-import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
+import org.jetbrains.kotlin.fir.types.ConeKotlinType
+import org.jetbrains.kotlin.fir.types.FirTypeRef
+import org.jetbrains.kotlin.fir.types.coneType
+import org.jetbrains.kotlin.idea.fir.low.level.api.lazy.resolve.ResolveType
 import org.jetbrains.kotlin.idea.frontend.api.fir.KtSymbolByFirBuilder
 import org.jetbrains.kotlin.idea.frontend.api.fir.symbols.annotations.KtFirAnnotationCall
 import org.jetbrains.kotlin.idea.frontend.api.fir.utils.FirRefWithValidityCheck
@@ -16,11 +18,12 @@ import org.jetbrains.kotlin.idea.frontend.api.fir.utils.cached
 import org.jetbrains.kotlin.idea.frontend.api.fir.utils.weakRef
 import org.jetbrains.kotlin.idea.frontend.api.symbols.markers.KtAnnotationCall
 import org.jetbrains.kotlin.idea.frontend.api.symbols.markers.KtTypeAndAnnotations
+import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
 import org.jetbrains.kotlin.idea.frontend.api.types.KtType
 
 internal class KtFirTypeAndAnnotations<T : FirDeclaration>(
     private val containingDeclaration: FirRefWithValidityCheck<T>,
-    typeResolvePhase: FirResolvePhase,
+    @Suppress("UNUSED_PARAMETER") typeResolvePhase: FirResolvePhase,
     _builder: KtSymbolByFirBuilder,
     private val typeRef: (T) -> FirTypeRef,
 ) : KtTypeAndAnnotations() {
@@ -28,7 +31,7 @@ internal class KtFirTypeAndAnnotations<T : FirDeclaration>(
 
     override val token: ValidityToken get() = containingDeclaration.token
 
-    override val type: KtType by containingDeclaration.withFirAndCache(typeResolvePhase) { fir ->
+    override val type: KtType by containingDeclaration.withFirAndCache(ResolveType.CallableReturnType) { fir ->
         builder.typeBuilder.buildKtType(typeRef(fir))
     }
 
@@ -56,23 +59,23 @@ internal class KtSimpleFirTypeAndAnnotations(
     override val annotations: List<KtAnnotationCall> get() = annotationsListRef
 }
 
-internal fun FirRefWithValidityCheck<FirClass<*>>.superTypesAndAnnotationsList(builder: KtSymbolByFirBuilder): List<KtTypeAndAnnotations> =
+internal fun FirRefWithValidityCheck<FirClass>.superTypesAndAnnotationsList(builder: KtSymbolByFirBuilder): List<KtTypeAndAnnotations> =
     withFir(FirResolvePhase.SUPER_TYPES) { fir ->
         fir.superTypeRefs.mapToTypeAndAnnotations(this, builder)
     }
 
 internal fun FirRefWithValidityCheck<FirRegularClass>.superTypesAndAnnotationsListForRegularClass(builder: KtSymbolByFirBuilder): List<KtTypeAndAnnotations> {
     return withFir { fir ->
-        if (fir.resolvePhase >= FirResolvePhase.SUPER_TYPES) {
+        if(fir.resolvePhase >= FirResolvePhase.SUPER_TYPES) {
             fir.superTypeRefs.mapToTypeAndAnnotations(this, builder)
         } else null
-    } ?: withFirWithPossibleResolveInside { fir ->
+    } ?: withFirByType(ResolveType.NoResolve) { fir ->
         fir.resolveSupertypesInTheAir(builder.rootSession).mapToTypeAndAnnotations(this, builder)
     }
 }
 
 private fun List<FirTypeRef>.mapToTypeAndAnnotations(
-    containingDeclaration: FirRefWithValidityCheck<FirClass<*>>,
+    containingDeclaration: FirRefWithValidityCheck<FirClass>,
     builder: KtSymbolByFirBuilder,
 ) = map { typeRef ->
     val annotations = typeRef.annotations.map { annotation ->
@@ -86,7 +89,7 @@ internal fun FirRefWithValidityCheck<FirTypedDeclaration>.returnTypeAndAnnotatio
     builder: KtSymbolByFirBuilder
 ) = KtFirTypeAndAnnotations(this, typeResolvePhase, builder) { it.returnTypeRef }
 
-internal fun FirRefWithValidityCheck<FirCallableDeclaration<*>>.receiverTypeAndAnnotations(builder: KtSymbolByFirBuilder) = withFir { fir ->
+internal fun FirRefWithValidityCheck<FirCallableDeclaration>.receiverTypeAndAnnotations(builder: KtSymbolByFirBuilder) = withFir { fir ->
     fir.receiverTypeRef?.let { _ ->
         KtFirTypeAndAnnotations(this, FirResolvePhase.TYPES, builder) {
             it.receiverTypeRef ?: error { "Receiver expected for callable declaration but it is null" }
@@ -94,7 +97,7 @@ internal fun FirRefWithValidityCheck<FirCallableDeclaration<*>>.receiverTypeAndA
     }
 }
 
-internal fun FirRefWithValidityCheck<FirCallableMemberDeclaration<*>>.dispatchReceiverTypeAndAnnotations(builder: KtSymbolByFirBuilder) =
+internal fun FirRefWithValidityCheck<FirCallableDeclaration>.dispatchReceiverTypeAndAnnotations(builder: KtSymbolByFirBuilder) =
     withFir { fir ->
         fir.dispatchReceiverType?.let {
             builder.typeBuilder.buildKtType(it)

@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <cstdio>
+
 #include "KAssert.h"
 #include "Memory.h"
 #include "Natives.h"
@@ -27,36 +29,75 @@ extern "C" {
 
 // io/Console.kt
 void Kotlin_io_Console_print(KString message) {
-  if (message->type_info() != theStringTypeInfo) {
-    ThrowClassCastException(message->obj(), theStringTypeInfo);
-  }
-  // TODO: system stdout must be aware about UTF-8.
-  const KChar* utf16 = CharArrayAddressOfElementAt(message, 0);
-  KStdString utf8;
-  utf8.reserve(message->count_);
-  // Replace incorrect sequences with a default codepoint (see utf8::with_replacement::default_replacement)
-  utf8::with_replacement::utf16to8(utf16, utf16 + message->count_, back_inserter(utf8));
-  konan::consoleWriteUtf8(utf8.c_str(), utf8.size());
+    if (message->type_info() != theStringTypeInfo) {
+        ThrowClassCastException(message->obj(), theStringTypeInfo);
+    }
+    // TODO: system stdout must be aware about UTF-8.
+    const KChar* utf16 = CharArrayAddressOfElementAt(message, 0);
+    KStdString utf8;
+    utf8.reserve(message->count_);
+    // Replace incorrect sequences with a default codepoint (see utf8::with_replacement::default_replacement)
+    utf8::with_replacement::utf16to8(utf16, utf16 + message->count_, back_inserter(utf8));
+
+    kotlin::ThreadStateGuard guard(kotlin::ThreadState::kNative);
+    konan::consoleWriteUtf8(utf8.c_str(), utf8.size());
 }
 
 void Kotlin_io_Console_println(KString message) {
-  Kotlin_io_Console_print(message);
+    Kotlin_io_Console_print(message);
 #ifndef KONAN_ANDROID
-  // On Android single print produces logcat entry, so no need in linefeed.
-  Kotlin_io_Console_println0();
+    // On Android single print produces logcat entry, so no need in linefeed.
+    Kotlin_io_Console_println0();
 #endif
 }
 
 void Kotlin_io_Console_println0() {
-  konan::consoleWriteUtf8("\n", 1);
+    kotlin::ThreadStateGuard guard(kotlin::ThreadState::kNative);
+    konan::consoleWriteUtf8("\n", 1);
 }
 
 OBJ_GETTER0(Kotlin_io_Console_readLine) {
-  char data[4096];
-  if (konan::consoleReadUtf8(data, sizeof(data)) < 0) {
-    RETURN_OBJ(nullptr);
-  }
-  RETURN_RESULT_OF(CreateStringFromCString, data);
+    char data[4096];
+    int32_t result;
+    {
+        kotlin::ThreadStateGuard guard(kotlin::ThreadState::kNative);
+        result = konan::consoleReadUtf8(data, sizeof(data));
+    }
+    if (result < 0) {
+        RETURN_OBJ(nullptr);
+    }
+    RETURN_RESULT_OF(CreateStringFromCString, data);
+}
+
+OBJ_GETTER0(Kotlin_io_Console_readlnOrNull) {
+    KStdVector<char> data;
+    data.reserve(16);
+    bool isEOF = false;
+    bool isError = false;
+    {
+        kotlin::ThreadStateGuard guard(kotlin::ThreadState::kNative);
+        while (true) {
+            int result = fgetc(stdin);
+
+            if (result == EOF || result == '\n') {
+                isEOF = (result == EOF);
+                isError = (ferror(stdin) != 0);
+                break;
+            }
+
+            data.push_back(result);
+        }
+    }
+    if (isError) {
+        ThrowIllegalStateException();
+    }
+    if (!isEOF && !data.empty() && data.back() == '\r') { // CRLF
+        data.pop_back();
+    }
+    if (data.empty() && isEOF) {
+        RETURN_OBJ(nullptr);
+    }
+    RETURN_RESULT_OF(StringFromUtf8Buffer, data.data(), data.size());
 }
 
 } // extern "C"

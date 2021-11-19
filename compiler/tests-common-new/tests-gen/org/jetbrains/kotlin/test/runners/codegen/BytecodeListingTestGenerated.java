@@ -92,12 +92,6 @@ public class BytecodeListingTestGenerated extends AbstractBytecodeListingTest {
     }
 
     @Test
-    @TestMetadata("delegatedPropertiesInCompanionObject.kt")
-    public void testDelegatedPropertiesInCompanionObject() throws Exception {
-        runTest("compiler/testData/codegen/bytecodeListing/delegatedPropertiesInCompanionObject.kt");
-    }
-
-    @Test
     @TestMetadata("delegationToJavaInterfaceWithWildcardType.kt")
     public void testDelegationToJavaInterfaceWithWildcardType() throws Exception {
         runTest("compiler/testData/codegen/bytecodeListing/delegationToJavaInterfaceWithWildcardType.kt");
@@ -158,24 +152,6 @@ public class BytecodeListingTestGenerated extends AbstractBytecodeListingTest {
     }
 
     @Test
-    @TestMetadata("jvmStaticExternal.kt")
-    public void testJvmStaticExternal() throws Exception {
-        runTest("compiler/testData/codegen/bytecodeListing/jvmStaticExternal.kt");
-    }
-
-    @Test
-    @TestMetadata("jvmStaticWithDefaultParameters.kt")
-    public void testJvmStaticWithDefaultParameters() throws Exception {
-        runTest("compiler/testData/codegen/bytecodeListing/jvmStaticWithDefaultParameters.kt");
-    }
-
-    @Test
-    @TestMetadata("kt31389.kt")
-    public void testKt31389() throws Exception {
-        runTest("compiler/testData/codegen/bytecodeListing/kt31389.kt");
-    }
-
-    @Test
     @TestMetadata("kt42137.kt")
     public void testKt42137() throws Exception {
         runTest("compiler/testData/codegen/bytecodeListing/kt42137.kt");
@@ -215,6 +191,12 @@ public class BytecodeListingTestGenerated extends AbstractBytecodeListingTest {
     @TestMetadata("kt45934.kt")
     public void testKt45934() throws Exception {
         runTest("compiler/testData/codegen/bytecodeListing/kt45934.kt");
+    }
+
+    @Test
+    @TestMetadata("kt47328.kt")
+    public void testKt47328() throws Exception {
+        runTest("compiler/testData/codegen/bytecodeListing/kt47328.kt");
     }
 
     @Test
@@ -311,6 +293,18 @@ public class BytecodeListingTestGenerated extends AbstractBytecodeListingTest {
         }
 
         @Test
+        @TestMetadata("annotationCtorCallGenerateSynthetic.kt")
+        public void testAnnotationCtorCallGenerateSynthetic() throws Exception {
+            runTest("compiler/testData/codegen/bytecodeListing/annotations/annotationCtorCallGenerateSynthetic.kt");
+        }
+
+        @Test
+        @TestMetadata("annotationCtorCallNoSynthetic.kt")
+        public void testAnnotationCtorCallNoSynthetic() throws Exception {
+            runTest("compiler/testData/codegen/bytecodeListing/annotations/annotationCtorCallNoSynthetic.kt");
+        }
+
+        @Test
         @TestMetadata("annotationsOnDelegatedMembers.kt")
         public void testAnnotationsOnDelegatedMembers() throws Exception {
             runTest("compiler/testData/codegen/bytecodeListing/annotations/annotationsOnDelegatedMembers.kt");
@@ -404,6 +398,32 @@ public class BytecodeListingTestGenerated extends AbstractBytecodeListingTest {
         @TestMetadata("unsignedTypes.kt")
         public void testUnsignedTypes() throws Exception {
             runTest("compiler/testData/codegen/bytecodeListing/annotations/unsignedTypes.kt");
+        }
+
+        @Nested
+        @TestMetadata("compiler/testData/codegen/bytecodeListing/annotations/repeatable")
+        @TestDataPath("$PROJECT_ROOT")
+        public class Repeatable {
+            @Test
+            public void testAllFilesPresentInRepeatable() throws Exception {
+                KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/testData/codegen/bytecodeListing/annotations/repeatable"), Pattern.compile("^(.+)\\.kt$"), null, TargetBackend.JVM, true);
+            }
+        }
+    }
+
+    @Nested
+    @TestMetadata("compiler/testData/codegen/bytecodeListing/callableReference")
+    @TestDataPath("$PROJECT_ROOT")
+    public class CallableReference {
+        @Test
+        @TestMetadata("adaptedReference.kt")
+        public void testAdaptedReference() throws Exception {
+            runTest("compiler/testData/codegen/bytecodeListing/callableReference/adaptedReference.kt");
+        }
+
+        @Test
+        public void testAllFilesPresentInCallableReference() throws Exception {
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/testData/codegen/bytecodeListing/callableReference"), Pattern.compile("^(.+)\\.kt$"), null, TargetBackend.JVM, true);
         }
     }
 
@@ -978,6 +998,28 @@ public class BytecodeListingTestGenerated extends AbstractBytecodeListingTest {
         @TestMetadata("internalNameMangling.kt")
         public void testInternalNameMangling() throws Exception {
             runTest("compiler/testData/codegen/bytecodeListing/defaultArguments/internalNameMangling.kt");
+        }
+    }
+
+    @Nested
+    @TestMetadata("compiler/testData/codegen/bytecodeListing/delegatedProperty")
+    @TestDataPath("$PROJECT_ROOT")
+    public class DelegatedProperty {
+        @Test
+        public void testAllFilesPresentInDelegatedProperty() throws Exception {
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/testData/codegen/bytecodeListing/delegatedProperty"), Pattern.compile("^(.+)\\.kt$"), null, TargetBackend.JVM, true);
+        }
+
+        @Test
+        @TestMetadata("delegateMethodIsNonOverridable.kt")
+        public void testDelegateMethodIsNonOverridable() throws Exception {
+            runTest("compiler/testData/codegen/bytecodeListing/delegatedProperty/delegateMethodIsNonOverridable.kt");
+        }
+
+        @Test
+        @TestMetadata("delegatedPropertiesInCompanionObject.kt")
+        public void testDelegatedPropertiesInCompanionObject() throws Exception {
+            runTest("compiler/testData/codegen/bytecodeListing/delegatedProperty/delegatedPropertiesInCompanionObject.kt");
         }
     }
 
@@ -1768,6 +1810,40 @@ public class BytecodeListingTestGenerated extends AbstractBytecodeListingTest {
     }
 
     @Nested
+    @TestMetadata("compiler/testData/codegen/bytecodeListing/jvmStatic")
+    @TestDataPath("$PROJECT_ROOT")
+    public class JvmStatic {
+        @Test
+        public void testAllFilesPresentInJvmStatic() throws Exception {
+            KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/testData/codegen/bytecodeListing/jvmStatic"), Pattern.compile("^(.+)\\.kt$"), null, TargetBackend.JVM, true);
+        }
+
+        @Test
+        @TestMetadata("jvmStaticExternal.kt")
+        public void testJvmStaticExternal() throws Exception {
+            runTest("compiler/testData/codegen/bytecodeListing/jvmStatic/jvmStaticExternal.kt");
+        }
+
+        @Test
+        @TestMetadata("jvmStaticPrivate.kt")
+        public void testJvmStaticPrivate() throws Exception {
+            runTest("compiler/testData/codegen/bytecodeListing/jvmStatic/jvmStaticPrivate.kt");
+        }
+
+        @Test
+        @TestMetadata("jvmStaticWithDefaultParameters.kt")
+        public void testJvmStaticWithDefaultParameters() throws Exception {
+            runTest("compiler/testData/codegen/bytecodeListing/jvmStatic/jvmStaticWithDefaultParameters.kt");
+        }
+
+        @Test
+        @TestMetadata("kt31389.kt")
+        public void testKt31389() throws Exception {
+            runTest("compiler/testData/codegen/bytecodeListing/jvmStatic/kt31389.kt");
+        }
+    }
+
+    @Nested
     @TestMetadata("compiler/testData/codegen/bytecodeListing/localFunctions")
     @TestDataPath("$PROJECT_ROOT")
     public class LocalFunctions {
@@ -2013,6 +2089,24 @@ public class BytecodeListingTestGenerated extends AbstractBytecodeListingTest {
         }
 
         @Test
+        @TestMetadata("nonApproxToValidSupertype.kt")
+        public void testNonApproxToValidSupertype() throws Exception {
+            runTest("compiler/testData/codegen/bytecodeListing/sam/nonApproxToValidSupertype.kt");
+        }
+
+        @Test
+        @TestMetadata("nonApproxToValidSupertype2.kt")
+        public void testNonApproxToValidSupertype2() throws Exception {
+            runTest("compiler/testData/codegen/bytecodeListing/sam/nonApproxToValidSupertype2.kt");
+        }
+
+        @Test
+        @TestMetadata("privateInlineSamAdapter.kt")
+        public void testPrivateInlineSamAdapter() throws Exception {
+            runTest("compiler/testData/codegen/bytecodeListing/sam/privateInlineSamAdapter.kt");
+        }
+
+        @Test
         @TestMetadata("reusedSamWrapperClasses.kt")
         public void testReusedSamWrapperClasses() throws Exception {
             runTest("compiler/testData/codegen/bytecodeListing/sam/reusedSamWrapperClasses.kt");
@@ -2022,6 +2116,12 @@ public class BytecodeListingTestGenerated extends AbstractBytecodeListingTest {
         @TestMetadata("samAdapterAndInlinedOne.kt")
         public void testSamAdapterAndInlinedOne() throws Exception {
             runTest("compiler/testData/codegen/bytecodeListing/sam/samAdapterAndInlinedOne.kt");
+        }
+
+        @Test
+        @TestMetadata("samAdapterInInlineLambda.kt")
+        public void testSamAdapterInInlineLambda() throws Exception {
+            runTest("compiler/testData/codegen/bytecodeListing/sam/samAdapterInInlineLambda.kt");
         }
 
         @Test
@@ -2213,6 +2313,12 @@ public class BytecodeListingTestGenerated extends AbstractBytecodeListingTest {
             @TestMetadata("implementsJavaMap.kt")
             public void testImplementsJavaMap() throws Exception {
                 runTest("compiler/testData/codegen/bytecodeListing/specialBridges/signatures/implementsJavaMap.kt");
+            }
+
+            @Test
+            @TestMetadata("implementsJavaMapWithCustomEntries.kt")
+            public void testImplementsJavaMapWithCustomEntries() throws Exception {
+                runTest("compiler/testData/codegen/bytecodeListing/specialBridges/signatures/implementsJavaMapWithCustomEntries.kt");
             }
 
             @Test

@@ -5,11 +5,14 @@
 
 package org.jetbrains.kotlin.idea.fir.low.level.api.providers
 
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.caches.*
+import org.jetbrains.kotlin.fir.caches.createCache
+import org.jetbrains.kotlin.fir.caches.firCachesFactory
+import org.jetbrains.kotlin.fir.caches.getValue
 import org.jetbrains.kotlin.fir.resolve.providers.FirSymbolProviderInternals
 import org.jetbrains.kotlin.fir.resolve.providers.impl.FirBuiltinSymbolProvider
-import org.jetbrains.kotlin.fir.scopes.KotlinScopeProvider
+import org.jetbrains.kotlin.fir.scopes.FirKotlinScopeProvider
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirNamedFunctionSymbol
 import org.jetbrains.kotlin.name.CallableId
@@ -18,8 +21,9 @@ import org.jetbrains.kotlin.name.Name
 
 class FirIdeBuiltinSymbolProvider(
     session: FirSession,
-    kotlinScopeProvider: KotlinScopeProvider
-) : FirBuiltinSymbolProvider(session, kotlinScopeProvider) {
+    moduleData: FirModuleData,
+    kotlinScopeProvider: FirKotlinScopeProvider
+) : FirBuiltinSymbolProvider(session, moduleData, kotlinScopeProvider) {
     @OptIn(ExperimentalStdlibApi::class)
     private val functionsCache = session.firCachesFactory.createCache { callableId: CallableId ->
         buildList {

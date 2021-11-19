@@ -6,9 +6,11 @@
 package org.jetbrains.kotlin.gradle.dsl
 
 import groovy.lang.Closure
+import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.internal.plugins.DslObject
+import org.gradle.jvm.toolchain.JavaToolchainSpec
 import org.gradle.util.ConfigureUtil
 import org.jetbrains.kotlin.gradle.plugin.*
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
@@ -19,6 +21,8 @@ import org.jetbrains.kotlin.gradle.plugin.statistics.KotlinBuildStatsService
 import org.jetbrains.kotlin.gradle.targets.js.calculateJsCompilerType
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrSingleTargetPreset
+import org.jetbrains.kotlin.gradle.tasks.CompileUsingKotlinDaemon
+import org.jetbrains.kotlin.gradle.tasks.withType
 import org.jetbrains.kotlin.gradle.utils.lowerCamelCaseName
 import org.jetbrains.kotlin.konan.target.CompilerOutputKind
 import org.jetbrains.kotlin.statistics.metrics.StringMetrics
@@ -41,7 +45,7 @@ internal val Project.topLevelExtensionOrNull: KotlinTopLevelExtension?
 internal val Project.kotlinExtensionOrNull: KotlinProjectExtension?
     get() = extensions.findByName(KOTLIN_PROJECT_EXTENSION_NAME) as? KotlinProjectExtension
 
-internal val Project.kotlinExtension: KotlinProjectExtension
+val Project.kotlinExtension: KotlinProjectExtension
     get() = extensions.getByName(KOTLIN_PROJECT_EXTENSION_NAME) as KotlinProjectExtension
 
 internal val Project.multiplatformExtensionOrNull: KotlinMultiplatformExtension?
@@ -53,12 +57,40 @@ internal val Project.multiplatformExtension: KotlinMultiplatformExtension
 internal val Project.pm20Extension: KotlinPm20ProjectExtension
     get() = extensions.getByName(KOTLIN_PROJECT_EXTENSION_NAME) as KotlinPm20ProjectExtension
 
-
 open class KotlinTopLevelExtension (internal val project: Project) {
     val experimental: ExperimentalExtension
         get() = DslObject(this).extensions.getByType(ExperimentalExtension::class.java)
 
     lateinit var coreLibrariesVersion: String
+
+    private val toolchainSupport = ToolchainSupport.createToolchain(project)
+
+    /**
+     * Configures [Java toolchain](https://docs.gradle.org/current/userguide/toolchains.html) both for Kotlin JVM and Java tasks.
+     *
+     * @param action - action to configure [JavaToolchainSpec]. You could safely cast `Any` into `JavaToolchainSpec`.
+     */
+    fun jvmToolchain(action: Action<Any>) {
+        toolchainSupport.applyToolchain(action)
+    }
+
+    /**
+     * Configures Kotlin daemon JVM arguments for all tasks in this project.
+     *
+     * **Note**: In case other projects are using different JVM arguments, new instance of Kotlin daemon will be started.
+     */
+    @get:JvmSynthetic
+    var kotlinDaemonJvmArgs: List<String>
+        @Deprecated("", level = DeprecationLevel.ERROR)
+        get() = throw UnsupportedOperationException()
+        set(value) {
+            project
+                .tasks
+                .withType<CompileUsingKotlinDaemon>()
+                .configureEach {
+                    it.kotlinDaemonJvmArguments.set(value)
+                }
+        }
 
     var explicitApi: ExplicitApiMode? = null
 

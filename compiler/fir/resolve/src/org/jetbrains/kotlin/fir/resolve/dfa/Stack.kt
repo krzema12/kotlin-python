@@ -6,7 +6,8 @@
 package org.jetbrains.kotlin.fir.resolve.dfa
 
 import org.jetbrains.kotlin.fir.FirElement
-import org.jetbrains.kotlin.fir.FirSymbolOwner
+import org.jetbrains.kotlin.fir.asReversedFrozen
+import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 
@@ -16,6 +17,11 @@ abstract class Stack<T> {
     abstract fun pop(): T
     abstract fun push(value: T)
     abstract fun reset()
+
+    /**
+     * returns all elements of the stack in order of retrieval
+     */
+    abstract fun all(): List<T>
 }
 
 fun <T> stackOf(vararg values: T): Stack<T> = StackImpl(*values)
@@ -38,6 +44,8 @@ private class StackImpl<T>(vararg values: T) : Stack<T>() {
     override fun reset() {
         stack.clear()
     }
+
+    override fun all(): List<T> = stack.asReversedFrozen()
 }
 
 class NodeStorage<T : FirElement, N : CFGNode<T>> : Stack<N>(){
@@ -65,6 +73,8 @@ class NodeStorage<T : FirElement, N : CFGNode<T>> : Stack<N>(){
         stack.reset()
         map.clear()
     }
+
+    override fun all(): List<N> = stack.all()
 }
 
 class SymbolBasedNodeStorage<T, N : CFGNode<T>> : Stack<N>() where T : FirElement {
@@ -76,12 +86,12 @@ class SymbolBasedNodeStorage<T, N : CFGNode<T>> : Stack<N>() where T : FirElemen
     override fun top(): N = stack.top()
 
     override fun pop(): N = stack.pop().also {
-        map.remove((it.fir as FirSymbolOwner<*>).symbol)
+        map.remove((it.fir as FirDeclaration).symbol)
     }
 
     override fun push(value: N) {
         stack.push(value)
-        map[(value.fir as FirSymbolOwner<*>).symbol] = value
+        map[(value.fir as FirDeclaration).symbol] = value
     }
 
     operator fun get(key: FirBasedSymbol<*>): N? {
@@ -92,4 +102,6 @@ class SymbolBasedNodeStorage<T, N : CFGNode<T>> : Stack<N>() where T : FirElemen
         stack.reset()
         map.clear()
     }
+
+    override fun all(): List<N> = stack.all()
 }

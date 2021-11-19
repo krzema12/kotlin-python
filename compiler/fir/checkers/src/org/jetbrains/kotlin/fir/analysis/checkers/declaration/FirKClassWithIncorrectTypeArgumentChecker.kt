@@ -10,18 +10,20 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors
 import org.jetbrains.kotlin.fir.analysis.diagnostics.reportOn
-import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
+import org.jetbrains.kotlin.fir.declarations.FirFile
 import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeTypeParameterInQualifiedAccess
 import org.jetbrains.kotlin.fir.resolve.inference.inferenceComponents
 import org.jetbrains.kotlin.fir.resolve.inference.isKClassType
 import org.jetbrains.kotlin.fir.scopes.impl.toConeType
+import org.jetbrains.kotlin.fir.symbols.impl.FirTypeParameterSymbol
 import org.jetbrains.kotlin.fir.types.*
 
 // See FE1.0 [KClassWithIncorrectTypeArgumentChecker]
 object FirKClassWithIncorrectTypeArgumentChecker : FirFileChecker() {
     override fun check(declaration: FirFile, context: CheckerContext, reporter: DiagnosticReporter) {
         for (topLevelDeclaration in declaration.declarations) {
-            if (topLevelDeclaration is FirCallableMemberDeclaration<*>) {
+            if (topLevelDeclaration is FirCallableDeclaration) {
                 checkTopLevelDeclaration(topLevelDeclaration, context, reporter)
             }
         }
@@ -31,7 +33,7 @@ object FirKClassWithIncorrectTypeArgumentChecker : FirFileChecker() {
     //  bad:  fun <T> test1() = T::class
     //  okay: fun <T: Any> test2() = T::class
     private fun checkTopLevelDeclaration(
-        declaration: FirCallableMemberDeclaration<*>,
+        declaration: FirCallableDeclaration,
         context: CheckerContext,
         reporter: DiagnosticReporter
     ) {
@@ -43,7 +45,7 @@ object FirKClassWithIncorrectTypeArgumentChecker : FirFileChecker() {
 
         val typeArgument = (returnType.typeArguments[0] as ConeKotlinTypeProjection).type
         typeArgument.typeParameterFromError?.let {
-            reporter.reportOn(source, FirErrors.KCLASS_WITH_NULLABLE_TYPE_PARAMETER_IN_SIGNATURE, it.symbol, context)
+            reporter.reportOn(source, FirErrors.KCLASS_WITH_NULLABLE_TYPE_PARAMETER_IN_SIGNATURE, it, context)
         }
     }
 
@@ -56,14 +58,14 @@ object FirKClassWithIncorrectTypeArgumentChecker : FirFileChecker() {
             }
         } ?: return false
         with(context) {
-            argumentType.typeParameterFromError?.let { typeParameter ->
-                return typeParameter.toConeType().isNullableType()
+            argumentType.typeParameterFromError?.let { typeParameterSymbol ->
+                return typeParameterSymbol.toConeType().isNullableType()
             }
             return argumentType is ConeKotlinErrorType || argumentType.isNullableType()
         }
     }
 
-    private val ConeKotlinType.typeParameterFromError: FirTypeParameter?
-        get() = ((this as? ConeKotlinErrorType)?.diagnostic as? ConeTypeParameterInQualifiedAccess)?.symbol?.fir
+    private val ConeKotlinType.typeParameterFromError: FirTypeParameterSymbol?
+        get() = ((this as? ConeKotlinErrorType)?.diagnostic as? ConeTypeParameterInQualifiedAccess)?.symbol
 
 }

@@ -49,6 +49,26 @@ public class CompilerLightClassTestGenerated extends AbstractCompilerLightClassT
         runTest("compiler/testData/asJava/lightClasses/AnnotationClass.kt");
     }
 
+    @TestMetadata("AnnotationJvmRepeatable.kt")
+    public void testAnnotationJvmRepeatable() throws Exception {
+        runTest("compiler/testData/asJava/lightClasses/AnnotationJvmRepeatable.kt");
+    }
+
+    @TestMetadata("AnnotationKotlinAndJavaRepeatable.kt")
+    public void testAnnotationKotlinAndJavaRepeatable() throws Exception {
+        runTest("compiler/testData/asJava/lightClasses/AnnotationKotlinAndJavaRepeatable.kt");
+    }
+
+    @TestMetadata("AnnotationKotlinAndJvmRepeatable.kt")
+    public void testAnnotationKotlinAndJvmRepeatable() throws Exception {
+        runTest("compiler/testData/asJava/lightClasses/AnnotationKotlinAndJvmRepeatable.kt");
+    }
+
+    @TestMetadata("AnnotationRepeatable.kt")
+    public void testAnnotationRepeatable() throws Exception {
+        runTest("compiler/testData/asJava/lightClasses/AnnotationRepeatable.kt");
+    }
+
     @TestMetadata("Constructors.kt")
     public void testConstructors() throws Exception {
         runTest("compiler/testData/asJava/lightClasses/Constructors.kt");
@@ -122,6 +142,11 @@ public class CompilerLightClassTestGenerated extends AbstractCompilerLightClassT
     @TestMetadata("JvmStatic.kt")
     public void testJvmStatic() throws Exception {
         runTest("compiler/testData/asJava/lightClasses/JvmStatic.kt");
+    }
+
+    @TestMetadata("LocalFunctions.kt")
+    public void testLocalFunctions() throws Exception {
+        runTest("compiler/testData/asJava/lightClasses/LocalFunctions.kt");
     }
 
     @TestMetadata("NestedObjects.kt")

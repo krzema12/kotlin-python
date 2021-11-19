@@ -10,16 +10,19 @@ import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.descriptors.Visibility
 import org.jetbrains.kotlin.fir.*
 import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.utils.isExpect
+import org.jetbrains.kotlin.fir.declarations.utils.modality
+import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.resolve.substitution.ConeSubstitutor
 import org.jetbrains.kotlin.fir.scopes.*
-import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.fir.symbols.impl.*
-import org.jetbrains.kotlin.fir.types.*
+import org.jetbrains.kotlin.fir.types.ConeFlexibleType
+import org.jetbrains.kotlin.fir.types.ConeKotlinType
+import org.jetbrains.kotlin.fir.types.classId
+import org.jetbrains.kotlin.fir.types.coneTypeSafe
+import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.types.AbstractTypeChecker
-import org.jetbrains.kotlin.types.AbstractTypeCheckerContext
-import java.util.*
-import kotlin.collections.HashSet
 
 class FirTypeIntersectionScope private constructor(
     session: FirSession,
@@ -31,12 +34,16 @@ class FirTypeIntersectionScope private constructor(
     private val absentProperties: MutableSet<Name> = mutableSetOf()
     private val absentClassifiers: MutableSet<Name> = mutableSetOf()
 
-    private val typeCheckerContext = session.typeContext.newBaseTypeCheckerContext(false, false)
+    private val typeCheckerState = session.typeContext.newTypeCheckerState(false, false)
 
     private val overriddenSymbols: MutableMap<FirCallableSymbol<*>, Collection<MemberWithBaseScope<out FirCallableSymbol<*>>>> =
         mutableMapOf()
 
     private val intersectionOverrides: MutableMap<FirCallableSymbol<*>, MemberWithBaseScope<out FirCallableSymbol<*>>> = mutableMapOf()
+
+    private val callableNamesCached by lazy(LazyThreadSafetyMode.PUBLICATION) {
+        scopes.flatMapTo(mutableSetOf()) { it.getCallableNames() }
+    }
 
     override fun processFunctionsByName(name: Name, processor: (FirNamedFunctionSymbol) -> Unit) {
         if (!processCallablesByName(name, processor, absentFunctions, FirScope::processFunctionsByName)) {
@@ -136,7 +143,7 @@ class FirTypeIntersectionScope private constructor(
         return true
     }
 
-    private inline fun <reified D : FirCallableDeclaration<*>> D.unwrapSubstitutionOverrides(): D {
+    private inline fun <reified D : FirCallableDeclaration> D.unwrapSubstitutionOverrides(): D {
         var current = this
 
         do {
@@ -341,10 +348,14 @@ class FirTypeIntersectionScope private constructor(
         newModality: Modality?,
         newVisibility: Visibility,
     ): FirPropertySymbol {
-        val newSymbol = FirIntersectionOverridePropertySymbol(mostSpecific.callableId, overrides)
+        val callableId = CallableId(
+            dispatchReceiverType.classId ?: mostSpecific.dispatchReceiverClassOrNull()?.classId!!,
+            mostSpecific.fir.name
+        )
+        val newSymbol = FirIntersectionOverridePropertySymbol(callableId, overrides)
         val mostSpecificProperty = mostSpecific.fir
         FirFakeOverrideGenerator.createCopyForFirProperty(
-            newSymbol, mostSpecificProperty, mostSpecificProperty.declarationSiteSession, FirDeclarationOrigin.IntersectionOverride,
+            newSymbol, mostSpecificProperty, session, FirDeclarationOrigin.IntersectionOverride,
             newModality = newModality,
             newVisibility = newVisibility,
             newDispatchReceiverType = dispatchReceiverType,
@@ -394,7 +405,6 @@ class FirTypeIntersectionScope private constructor(
     ): Boolean {
         val aFir = a.fir
         val bFir = b.fir
-        if (aFir !is FirCallableMemberDeclaration<*> || bFir !is FirCallableMemberDeclaration<*>) return false
 
         val substitutor = buildSubstitutorForOverridesCheck(aFir, bFir, session) ?: return false
         // NB: these lines throw CCE in modularized tests when changed to just .coneType (FirImplicitTypeRef)
@@ -409,7 +419,7 @@ class FirTypeIntersectionScope private constructor(
             require(bFir is FirProperty) { "b is " + b.javaClass }
             // TODO: if (!OverridingUtil.isAccessorMoreSpecific(pa.getSetter(), pb.getSetter())) return false
             return if (aFir.isVar && bFir.isVar) {
-                AbstractTypeChecker.equalTypes(typeCheckerContext as AbstractTypeCheckerContext, aReturnType, bReturnType)
+                AbstractTypeChecker.equalTypes(typeCheckerState, aReturnType, bReturnType)
             } else { // both vals or var vs val: val can't be more specific then var
                 !(!aFir.isVar && bFir.isVar) && isTypeMoreSpecific(aReturnType, bReturnType)
             }
@@ -418,7 +428,7 @@ class FirTypeIntersectionScope private constructor(
     }
 
     private fun isTypeMoreSpecific(a: ConeKotlinType, b: ConeKotlinType): Boolean =
-        AbstractTypeChecker.isSubtypeOf(typeCheckerContext as AbstractTypeCheckerContext, a, b)
+        AbstractTypeChecker.isSubtypeOf(typeCheckerState, a, b)
 
     private fun <D : FirCallableSymbol<*>> findMemberWithMaxVisibility(members: Collection<MemberWithBaseScope<D>>): MemberWithBaseScope<D> {
         assert(members.isNotEmpty())
@@ -431,8 +441,8 @@ class FirTypeIntersectionScope private constructor(
             }
 
             val result = Visibilities.compare(
-                (member.member.fir as FirCallableMemberDeclaration<*>).status.visibility,
-                (candidate.member.fir as FirCallableMemberDeclaration<*>).status.visibility
+                member.member.fir.status.visibility,
+                candidate.member.fir.status.visibility
             )
             if (result != null && result < 0) {
                 member = candidate
@@ -449,7 +459,7 @@ class FirTypeIntersectionScope private constructor(
 
         val iterator = members.iterator()
 
-        val overrideCandidate = overrider.member.fir as FirCallableMemberDeclaration<*>
+        val overrideCandidate = overrider.member.fir
         while (iterator.hasNext()) {
             val next = iterator.next()
             if (next == overrider) {
@@ -457,7 +467,7 @@ class FirTypeIntersectionScope private constructor(
                 continue
             }
 
-            if (similarFunctionsOrBothProperties(overrideCandidate, next.member.fir as FirCallableMemberDeclaration<*>)) {
+            if (similarFunctionsOrBothProperties(overrideCandidate, next.member.fir)) {
                 result.add(next)
                 iterator.remove()
             }
@@ -533,9 +543,7 @@ class FirTypeIntersectionScope private constructor(
         return ProcessorAction.NEXT
     }
 
-    override fun getCallableNames(): Set<Name> {
-        return scopes.flatMapTo(mutableSetOf()) { it.getCallableNames() }
-    }
+    override fun getCallableNames(): Set<Name> = callableNamesCached
 
     override fun getClassifierNames(): Set<Name> {
         return scopes.flatMapTo(hashSetOf()) { it.getClassifierNames() }

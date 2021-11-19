@@ -1,5 +1,4 @@
 // !DIAGNOSTICS: -UNUSED_VARIABLE
-// !WITH_NEW_INFERENCE
 // FULL_JDK
 
 import java.util.*
@@ -25,9 +24,9 @@ fun hashMapTest() {
     val b4: Map<String?, Int?> = x
     val b5: Map<String, Int?> = <!INITIALIZER_TYPE_MISMATCH!>x<!>
 
-    val b6: Int = <!INITIALIZER_TYPE_MISMATCH!>x[""]<!>
-    val b7: Int = <!INITIALIZER_TYPE_MISMATCH!>x[null]<!>
-    val b8: Int = <!INITIALIZER_TYPE_MISMATCH!>x.get("")<!>
+    val b6: Int = <!INITIALIZER_TYPE_MISMATCH, TYPE_MISMATCH!>x[""]<!>
+    val b7: Int = <!INITIALIZER_TYPE_MISMATCH, TYPE_MISMATCH!>x[null]<!>
+    val b8: Int = <!INITIALIZER_TYPE_MISMATCH, TYPE_MISMATCH!>x.get("")<!>
 
     val b9: Int? = x.get("")
 }
@@ -50,8 +49,8 @@ fun treeMapTest() {
     val b4: Map<String?, Int?> = x
     val b5: Map<String, Int?> = <!INITIALIZER_TYPE_MISMATCH!>x<!>
 
-    val b6: Int = <!INITIALIZER_TYPE_MISMATCH!>x[""]<!>
-    val b7: Int = <!INITIALIZER_TYPE_MISMATCH!>x.get("")<!>
+    val b6: Int = <!INITIALIZER_TYPE_MISMATCH, TYPE_MISMATCH!>x[""]<!>
+    val b7: Int = <!INITIALIZER_TYPE_MISMATCH, TYPE_MISMATCH!>x.get("")<!>
 
     val b8: Int? = x.get("")
 }

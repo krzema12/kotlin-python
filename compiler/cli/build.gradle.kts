@@ -12,7 +12,8 @@ dependencies {
     compile(project(":compiler:backend-common"))
     compile(project(":compiler:backend"))
     compile(project(":compiler:backend.jvm"))
-    implementation(project(":compiler:backend.jvm:backend.jvm.entrypoint"))
+    implementation(project(":compiler:backend.jvm.lower"))
+    implementation(project(":compiler:backend.jvm.entrypoint"))
     compile(project(":compiler:ir.backend.common"))
     compile(project(":compiler:light-classes"))
     compile(project(":compiler:serialization"))
@@ -30,6 +31,7 @@ dependencies {
     compile(project(":compiler:fir:fir2ir"))
     compile(project(":compiler:fir:fir2ir:jvm-backend"))
     compile(project(":compiler:fir:checkers"))
+    compile(project(":compiler:fir:checkers:checkers.jvm"))
     compile(project(":kotlin-util-klib"))
     compile(project(":kotlin-util-io"))
 
@@ -56,10 +58,10 @@ sourceSets {
 
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>> {
     kotlinOptions {
-        languageVersion = "1.3"
-        apiVersion = "1.3"
+        languageVersion = "1.4"
+        apiVersion = "1.4"
         freeCompilerArgs = freeCompilerArgs - "-progressive" + listOf(
-            "-Xskip-prerelease-check", "-Xsuppress-version-warnings"
+            "-Xskip-prerelease-check", "-Xsuppress-version-warnings", "-Xuse-mixed-named-arguments", "-Xnew-inference"
         )
     }
 }

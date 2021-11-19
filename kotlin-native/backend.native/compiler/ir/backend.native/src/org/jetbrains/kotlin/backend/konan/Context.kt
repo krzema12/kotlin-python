@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.backend.konan.ir.KonanIr
 import org.jetbrains.kotlin.library.SerializedMetadata
 import org.jetbrains.kotlin.backend.konan.llvm.*
 import org.jetbrains.kotlin.backend.konan.lower.DECLARATION_ORIGIN_BRIDGE_METHOD
-import org.jetbrains.kotlin.backend.konan.optimizations.Devirtualization
+import org.jetbrains.kotlin.backend.konan.optimizations.DevirtualizationAnalysis
 import org.jetbrains.kotlin.backend.konan.optimizations.ExternalModulesDFG
 import org.jetbrains.kotlin.backend.konan.optimizations.ModuleDFG
 import org.jetbrains.kotlin.descriptors.*
@@ -24,6 +24,8 @@ import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.declarations.impl.IrFieldImpl
 import org.jetbrains.kotlin.ir.declarations.impl.IrFunctionImpl
 import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.ir.types.IrTypeSystemContext
+import org.jetbrains.kotlin.ir.types.IrTypeSystemContextImpl
 import org.jetbrains.kotlin.builtins.konan.KonanBuiltIns
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.ir.symbols.impl.IrSimpleFunctionSymbolImpl
@@ -103,6 +105,15 @@ internal class SpecialDeclarationsFactory(val context: Context) {
                 parent = innerClass
             }
         }
+
+    fun getLoweredEnumOrNull(enumClass: IrClass): LoweredEnumAccess? {
+        assert(enumClass.kind == ClassKind.ENUM_CLASS) { "Expected enum class but was: ${enumClass.descriptor}" }
+        return if (!context.llvmModuleSpecification.containsDeclaration(enumClass)) {
+            externalLoweredEnums[enumClass]
+        } else {
+            internalLoweredEnums[enumClass]
+        }
+    }
 
     fun getLoweredEnum(enumClass: IrClass): LoweredEnumAccess {
         assert(enumClass.kind == ClassKind.ENUM_CLASS) { "Expected enum class but was: ${enumClass.descriptor}" }
@@ -249,6 +260,18 @@ internal class Context(config: KonanConfig) : KonanBackendContext(config) {
         lazyValues[member] = newValue
     }
 
+    private val localClassNames = mutableMapOf<IrAttributeContainer, String>()
+
+    fun getLocalClassName(container: IrAttributeContainer): String? = localClassNames[container.attributeOwnerId]
+
+    fun putLocalClassName(container: IrAttributeContainer, name: String) {
+        localClassNames[container.attributeOwnerId] = name
+    }
+
+    fun copyLocalClassName(source: IrAttributeContainer, destination: IrAttributeContainer) {
+        getLocalClassName(source)?.let { name -> putLocalClassName(destination, name) }
+    }
+
     val reflectionTypes: KonanReflectionTypes by lazy(PUBLICATION) {
         KonanReflectionTypes(moduleDescriptor, KonanFqNames.internalPackageName)
     }
@@ -308,6 +331,9 @@ internal class Context(config: KonanConfig) : KonanBackendContext(config) {
 
     override val irBuiltIns
         get() = ir.irModule.irBuiltins
+
+    override val typeSystem: IrTypeSystemContext
+        get() = IrTypeSystemContextImpl(irBuiltIns)
 
     val interopBuiltIns by lazy {
         InteropBuiltIns(this.builtIns)
@@ -420,6 +446,7 @@ internal class Context(config: KonanConfig) : KonanBackendContext(config) {
 
     fun shouldOptimize() = config.configuration.getBoolean(KonanConfigKeys.OPTIMIZATION)
     fun ghaEnabled() = ::globalHierarchyAnalysisResult.isInitialized
+    fun useLazyFileInitializers() = config.propertyLazyInitialization
 
     val memoryModel = config.memoryModel
 
@@ -435,7 +462,7 @@ internal class Context(config: KonanConfig) : KonanBackendContext(config) {
     var externalModulesDFG: ExternalModulesDFG? = null
     lateinit var lifetimes: MutableMap<IrElement, Lifetime>
     lateinit var codegenVisitor: CodeGeneratorVisitor
-    var devirtualizationAnalysisResult: Devirtualization.AnalysisResult? = null
+    var devirtualizationAnalysisResult: DevirtualizationAnalysis.AnalysisResult? = null
 
     var referencedFunctions: Set<IrFunction>? = null
 

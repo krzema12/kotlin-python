@@ -6,8 +6,7 @@
 package org.jetbrains.kotlin.fir.declarations
 
 import org.jetbrains.kotlin.fir.FirElement
-import org.jetbrains.kotlin.fir.FirPureAbstractElement
-import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
 import org.jetbrains.kotlin.fir.symbols.impl.FirTypeAliasSymbol
@@ -20,12 +19,13 @@ import org.jetbrains.kotlin.fir.visitors.*
  * DO NOT MODIFY IT MANUALLY
  */
 
-abstract class FirTypeAlias : FirPureAbstractElement(), FirClassLikeDeclaration<FirTypeAlias>, FirMemberDeclaration, FirTypeParametersOwner {
+abstract class FirTypeAlias : FirClassLikeDeclaration(), FirMemberDeclaration, FirTypeParametersOwner {
     abstract override val source: FirSourceElement?
-    abstract override val declarationSiteSession: FirSession
+    abstract override val moduleData: FirModuleData
     abstract override val resolvePhase: FirResolvePhase
     abstract override val origin: FirDeclarationOrigin
     abstract override val attributes: FirDeclarationAttributes
+    abstract override val deprecation: DeprecationsPerUseSite?
     abstract override val status: FirDeclarationStatus
     abstract override val typeParameters: List<FirTypeParameter>
     abstract val name: Name
@@ -40,6 +40,8 @@ abstract class FirTypeAlias : FirPureAbstractElement(), FirClassLikeDeclaration<
         transformer.transformTypeAlias(this, data) as E
 
     abstract override fun replaceResolvePhase(newResolvePhase: FirResolvePhase)
+
+    abstract override fun replaceDeprecation(newDeprecation: DeprecationsPerUseSite?)
 
     abstract fun replaceExpandedTypeRef(newExpandedTypeRef: FirTypeRef)
 

@@ -119,7 +119,9 @@ sealed class CFGNode<out E : FirElement>(val owner: ControlFlowGraph, val level:
         protected set
 
     internal fun updateDeadStatus() {
-        isDead = incomingEdges.size == previousNodes.size && incomingEdges.values.all { it.kind == EdgeKind.DeadForward }
+        isDead = incomingEdges.size == previousNodes.size && incomingEdges.values.all {
+            it.kind == EdgeKind.DeadForward || !it.kind.usedInCfa
+        }
     }
 
     abstract fun <R, D> accept(visitor: ControlFlowGraphVisitor<R, D>, data: D): R
@@ -160,17 +162,17 @@ sealed class CFGNodeWithCfgOwner<out E : FirControlFlowGraphOwner>(owner: Contro
 
 // ----------------------------------- Named function -----------------------------------
 
-class FunctionEnterNode(owner: ControlFlowGraph, override val fir: FirFunction<*>, level: Int, id: Int) : CFGNode<FirFunction<*>>(owner, level, id), EnterNodeMarker {
+class FunctionEnterNode(owner: ControlFlowGraph, override val fir: FirFunction, level: Int, id: Int) : CFGNode<FirFunction>(owner, level, id), EnterNodeMarker {
     override fun <R, D> accept(visitor: ControlFlowGraphVisitor<R, D>, data: D): R {
         return visitor.visitFunctionEnterNode(this, data)
     }
 }
-class FunctionExitNode(owner: ControlFlowGraph, override val fir: FirFunction<*>, level: Int, id: Int) : CFGNode<FirFunction<*>>(owner, level, id), ExitNodeMarker {
+class FunctionExitNode(owner: ControlFlowGraph, override val fir: FirFunction, level: Int, id: Int) : CFGNode<FirFunction>(owner, level, id), ExitNodeMarker {
     override fun <R, D> accept(visitor: ControlFlowGraphVisitor<R, D>, data: D): R {
         return visitor.visitFunctionExitNode(this, data)
     }
 }
-class LocalFunctionDeclarationNode(owner: ControlFlowGraph, override val fir: FirFunction<*>, level: Int, id: Int) : CFGNodeWithCfgOwner<FirFunction<*>>(owner, level, id) {
+class LocalFunctionDeclarationNode(owner: ControlFlowGraph, override val fir: FirFunction, level: Int, id: Int) : CFGNodeWithCfgOwner<FirFunction>(owner, level, id) {
     override fun <R, D> accept(visitor: ControlFlowGraphVisitor<R, D>, data: D): R {
         return visitor.visitLocalFunctionDeclarationNode(this, data)
     }
@@ -206,7 +208,7 @@ class PostponedLambdaEnterNode(owner: ControlFlowGraph, override val fir: FirAno
         return visitor.visitPostponedLambdaEnterNode(this, data)
     }
 }
-class PostponedLambdaExitNode(owner: ControlFlowGraph, override val fir: FirAnonymousFunction, level: Int, id: Int) : CFGNode<FirAnonymousFunction>(owner, level, id) {
+class PostponedLambdaExitNode(owner: ControlFlowGraph, override val fir: FirAnonymousFunctionExpression, level: Int, id: Int) : CFGNode<FirAnonymousFunctionExpression>(owner, level, id) {
     override fun <R, D> accept(visitor: ControlFlowGraphVisitor<R, D>, data: D): R {
         return visitor.visitPostponedLambdaExitNode(this, data)
     }
@@ -217,9 +219,15 @@ class UnionFunctionCallArgumentsNode(owner: ControlFlowGraph, override val fir: 
     }
 }
 
+class AnonymousFunctionExpressionExitNode(owner: ControlFlowGraph, override val fir: FirAnonymousFunctionExpression, level: Int, id: Int) : CFGNode<FirAnonymousFunctionExpression>(owner, level, id) {
+    override fun <R, D> accept(visitor: ControlFlowGraphVisitor<R, D>, data: D): R {
+        return visitor.visitAnonymousFunctionExpressionExitNode(this, data)
+    }
+}
+
 // ----------------------------------- Classes -----------------------------------
 
-class ClassEnterNode(owner: ControlFlowGraph, override val fir: FirClass<*>, level: Int, id: Int) : CFGNode<FirClass<*>>(owner, level, id), EnterNodeMarker {
+class ClassEnterNode(owner: ControlFlowGraph, override val fir: FirClass, level: Int, id: Int) : CFGNode<FirClass>(owner, level, id), EnterNodeMarker {
     init {
         owner.enterNode = this
     }
@@ -229,7 +237,7 @@ class ClassEnterNode(owner: ControlFlowGraph, override val fir: FirClass<*>, lev
     }
 }
 
-class ClassExitNode(owner: ControlFlowGraph, override val fir: FirClass<*>, level: Int, id: Int) : CFGNode<FirClass<*>>(owner, level, id), ExitNodeMarker {
+class ClassExitNode(owner: ControlFlowGraph, override val fir: FirClass, level: Int, id: Int) : CFGNode<FirClass>(owner, level, id), ExitNodeMarker {
     init {
         owner.exitNode = this
     }
@@ -248,6 +256,12 @@ class LocalClassExitNode(owner: ControlFlowGraph, override val fir: FirRegularCl
 class AnonymousObjectExitNode(owner: ControlFlowGraph, override val fir: FirAnonymousObject, level: Int, id: Int) : CFGNodeWithCfgOwner<FirAnonymousObject>(owner, level, id) {
     override fun <R, D> accept(visitor: ControlFlowGraphVisitor<R, D>, data: D): R {
         return visitor.visitAnonymousObjectExitNode(this, data)
+    }
+}
+
+class AnonymousObjectExpressionExitNode(owner: ControlFlowGraph, override val fir: FirAnonymousObjectExpression, level: Int, id: Int) : CFGNode<FirAnonymousObjectExpression>(owner, level, id) {
+    override fun <R, D> accept(visitor: ControlFlowGraphVisitor<R, D>, data: D): R {
+        return visitor.visitAnonymousObjectExpressionExitNode(this, data)
     }
 }
 
@@ -369,7 +383,7 @@ class WhenBranchResultExitNode(owner: ControlFlowGraph, override val fir: FirWhe
 }
 class WhenSyntheticElseBranchNode(owner: ControlFlowGraph, override val fir: FirWhenExpression, level: Int, id: Int) : CFGNode<FirWhenExpression>(owner, level, id) {
     init {
-        assert(!fir.isExhaustive)
+        assert(!fir.isProperlyExhaustive)
     }
 
     override fun <R, D> accept(visitor: ControlFlowGraphVisitor<R, D>, data: D): R {
@@ -592,6 +606,12 @@ class CallableReferenceNode(
 ) : CFGNode<FirCallableReferenceAccess>(owner, level, id) {
     override fun <R, D> accept(visitor: ControlFlowGraphVisitor<R, D>, data: D): R {
         return visitor.visitCallableReferenceNode(this, data)
+    }
+}
+
+class GetClassCallNode(owner: ControlFlowGraph, override val fir: FirGetClassCall, level: Int, id: Int) : CFGNode<FirGetClassCall>(owner, level, id) {
+    override fun <R, D> accept(visitor: ControlFlowGraphVisitor<R, D>, data: D): R {
+        return visitor.visitGetClassCallNode(this, data)
     }
 }
 

@@ -1,12 +1,11 @@
 // !DIAGNOSTICS: -UNUSED_PARAMETER
-// !WITH_NEW_INFERENCE
 
 fun takeUByte(u: UByte) {}
 fun takeUShort(u: UShort) {}
 fun takeUInt(u: UInt) {}
 fun takeULong(u: ULong) {}
 
-fun takeUBytes(vararg u: UByte) {}
+fun takeUBytes(vararg u: <!EXPERIMENTAL_API_USAGE!>UByte<!>) {}
 
 fun takeNullableUInt(u: UInt?) {}
 

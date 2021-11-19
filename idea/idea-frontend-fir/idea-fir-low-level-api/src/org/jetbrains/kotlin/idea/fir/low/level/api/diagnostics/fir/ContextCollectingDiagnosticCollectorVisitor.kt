@@ -6,24 +6,26 @@
 package org.jetbrains.kotlin.idea.fir.low.level.api.diagnostics.fir
 
 import org.jetbrains.kotlin.fir.FirElement
-import org.jetbrains.kotlin.fir.analysis.checkers.context.PersistentCheckerContext
+import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollectorVisitor
-import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
+import org.jetbrains.kotlin.fir.declarations.FirClassLikeDeclaration
+import org.jetbrains.kotlin.fir.declarations.FirDeclaration
+import org.jetbrains.kotlin.fir.declarations.FirFile
 import org.jetbrains.kotlin.fir.renderWithType
 import org.jetbrains.kotlin.fir.resolve.SessionHolder
 import org.jetbrains.kotlin.idea.fir.low.level.api.ContextByDesignationCollector
-import org.jetbrains.kotlin.idea.fir.low.level.api.api.FirDeclarationDesignation
+import org.jetbrains.kotlin.idea.fir.low.level.api.api.FirDeclarationDesignationWithFile
 import org.jetbrains.kotlin.idea.fir.low.level.api.api.collectDesignation
 
 private class ContextCollectingDiagnosticCollectorVisitor private constructor(
     sessionHolder: SessionHolder,
-    designation: FirDeclarationDesignation,
-    firFile: FirFile,
+    designation: FirDeclarationDesignationWithFile,
 ) : AbstractDiagnosticCollectorVisitor(
     PersistentCheckerContextFactory.createEmptyPersistenceCheckerContext(sessionHolder)
 ) {
-    private val contextCollector = object : ContextByDesignationCollector<PersistentCheckerContext>(designation, firFile) {
-        override fun getCurrentContext(): PersistentCheckerContext = context
+    private val contextCollector = object : ContextByDesignationCollector<CheckerContext>(designation) {
+        override fun getCurrentContext(): CheckerContext = context
 
         override fun goToNestedDeclaration(declaration: FirDeclaration) {
             declaration.accept(this@ContextCollectingDiagnosticCollectorVisitor, null)
@@ -41,9 +43,9 @@ private class ContextCollectingDiagnosticCollectorVisitor private constructor(
     override fun checkElement(element: FirElement) {}
 
     companion object {
-        fun collect(sessionHolder: SessionHolder, firFile: FirFile, designation: FirDeclarationDesignation): PersistentCheckerContext {
-            val visitor = ContextCollectingDiagnosticCollectorVisitor(sessionHolder, designation, firFile)
-            firFile.accept(visitor, null)
+        fun collect(sessionHolder: SessionHolder, designation: FirDeclarationDesignationWithFile): CheckerContext {
+            val visitor = ContextCollectingDiagnosticCollectorVisitor(sessionHolder, designation)
+            designation.firFile.accept(visitor, null)
             return visitor.contextCollector.getCollectedContext()
         }
     }
@@ -54,19 +56,16 @@ internal object PersistenceContextCollector {
         sessionHolder: SessionHolder,
         firFile: FirFile,
         declaration: FirDeclaration,
-    ): PersistentCheckerContext {
+    ): CheckerContext {
         val isLocal = when (declaration) {
-            is FirClassLikeDeclaration<*> -> declaration.symbol.classId.isLocal
-            is FirCallableDeclaration<*> -> declaration.symbol.callableId.isLocal
+            is FirClassLikeDeclaration -> declaration.symbol.classId.isLocal
+            is FirCallableDeclaration -> declaration.symbol.callableId.isLocal
             else -> error("Unsupported declaration ${declaration.renderWithType()}")
         }
         require(!isLocal) {
             "Cannot collect context for local declaration ${declaration.renderWithType()}"
         }
-        val designation = declaration.collectDesignation()
-        check(!designation.isLocalDesignation) {
-            "Designation should not local for ${declaration.renderWithType()}"
-        }
-        return ContextCollectingDiagnosticCollectorVisitor.collect(sessionHolder, firFile, designation)
+        val designation = declaration.collectDesignation(firFile)
+        return ContextCollectingDiagnosticCollectorVisitor.collect(sessionHolder, designation)
     }
 }

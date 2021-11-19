@@ -26,23 +26,22 @@ internal abstract class FirAbstractAnnotationResolveTransformer<D, S>(
 
     protected lateinit var scope: FirScope
 
-    override fun transformFile(file: FirFile, data: D): FirDeclaration {
+    override fun transformFile(file: FirFile, data: D): FirFile {
         scope = FirCompositeScope(createImportingScopes(file, session, scopeSession, useCaching = false))
         val state = beforeChildren(file)
         file.transformDeclarations(this, data)
         afterChildren(state)
-        return transformAnnotatedDeclaration(file, data)
+        return transformAnnotatedDeclaration(file, data) as FirFile
     }
 
-    override fun transformProperty(property: FirProperty, data: D): FirDeclaration {
-        return transformAnnotatedDeclaration(property, data)
+    override fun transformProperty(property: FirProperty, data: D): FirProperty {
+        return transformAnnotatedDeclaration(property, data) as FirProperty
     }
 
     override fun transformRegularClass(
         regularClass: FirRegularClass,
         data: D
     ): FirStatement {
-        @Suppress("UNCHECKED_CAST")
         return transformAnnotatedDeclaration(regularClass, data).also {
             val state = beforeChildren(regularClass)
             regularClass.transformDeclarations(this, data)
@@ -55,48 +54,45 @@ internal abstract class FirAbstractAnnotationResolveTransformer<D, S>(
     override fun transformSimpleFunction(
         simpleFunction: FirSimpleFunction,
         data: D
-    ): FirDeclaration {
+    ): FirSimpleFunction {
         return transformAnnotatedDeclaration(simpleFunction, data).also {
             val state = beforeChildren(simpleFunction)
             simpleFunction.transformValueParameters(this, data)
             afterChildren(state)
-        }
+        } as FirSimpleFunction
     }
 
     override fun transformConstructor(
         constructor: FirConstructor,
         data: D
-    ): FirDeclaration {
+    ): FirConstructor {
         return transformAnnotatedDeclaration(constructor, data).also {
             val state = beforeChildren(constructor)
             constructor.transformValueParameters(this, data)
             afterChildren(state)
-        }
+        } as FirConstructor
     }
 
     override fun transformValueParameter(
         valueParameter: FirValueParameter,
         data: D
     ): FirStatement {
-        @Suppress("UNCHECKED_CAST")
         return transformAnnotatedDeclaration(valueParameter, data) as FirStatement
     }
 
-    override fun transformTypeAlias(typeAlias: FirTypeAlias, data: D): FirDeclaration {
-        return transformAnnotatedDeclaration(typeAlias, data)
+    override fun transformTypeAlias(typeAlias: FirTypeAlias, data: D): FirTypeAlias {
+        return transformAnnotatedDeclaration(typeAlias, data) as FirTypeAlias
     }
 
     override fun transformTypeRef(typeRef: FirTypeRef, data: D): FirTypeRef {
-        @Suppress("UNCHECKED_CAST")
         return transformAnnotationContainer(typeRef, data) as FirTypeRef
     }
 
     override fun transformAnnotatedDeclaration(
         annotatedDeclaration: FirAnnotatedDeclaration,
         data: D
-    ): FirDeclaration {
-        @Suppress("UNCHECKED_CAST")
-        return transformAnnotationContainer(annotatedDeclaration, data) as FirDeclaration
+    ): FirAnnotatedDeclaration {
+        return transformAnnotationContainer(annotatedDeclaration, data) as FirAnnotatedDeclaration
     }
 
     override fun transformAnnotationContainer(

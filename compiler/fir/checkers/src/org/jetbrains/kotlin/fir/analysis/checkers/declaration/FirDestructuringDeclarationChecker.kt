@@ -11,18 +11,19 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors
 import org.jetbrains.kotlin.fir.analysis.diagnostics.reportOn
-import org.jetbrains.kotlin.fir.declarations.FirProperty
-import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
-import org.jetbrains.kotlin.fir.declarations.FirValueParameter
-import org.jetbrains.kotlin.fir.declarations.FirVariable
+import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.diagnostics.ConeSimpleDiagnostic
 import org.jetbrains.kotlin.fir.diagnostics.DiagnosticKind
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.references.FirErrorNamedReference
 import org.jetbrains.kotlin.fir.references.FirResolvedNamedReference
 import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeAmbiguityError
+import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeConstraintSystemHasContradiction
 import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeInapplicableCandidateError
 import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeUnresolvedNameError
+import org.jetbrains.kotlin.fir.symbols.SymbolInternals
+import org.jetbrains.kotlin.fir.symbols.ensureResolved
+import org.jetbrains.kotlin.fir.symbols.impl.FirNamedFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.typeContext
 import org.jetbrains.kotlin.fir.types.*
@@ -65,27 +66,20 @@ object FirDestructuringDeclarationChecker : FirPropertyChecker() {
         val originalDestructuringDeclarationOrInitializerSource = originalDestructuringDeclarationOrInitializer.source ?: return
         val originalDestructuringDeclarationType =
             when (originalDestructuringDeclarationOrInitializer) {
-                is FirVariable<*> -> originalDestructuringDeclarationOrInitializer.returnTypeRef.coneTypeSafe<ConeKotlinType>()
-                is FirExpression -> originalDestructuringDeclarationOrInitializer.typeRef.coneTypeSafe<ConeKotlinType>()
+                is FirVariable -> originalDestructuringDeclarationOrInitializer.returnTypeRef.coneType
+                is FirExpression -> originalDestructuringDeclarationOrInitializer.typeRef.coneType
                 else -> null
             } ?: return
 
         when (val reference = componentCall.calleeReference) {
-            is FirResolvedNamedReference ->
-                checkComponentCallReturnType(
-                    originalDestructuringDeclarationOrInitializerSource,
-                    declaration,
-                    componentCall,
-                    originalDestructuringDeclaration,
-                    reference,
-                    reporter,
-                    context
-                )
             is FirErrorNamedReference ->
                 checkComponentCall(
                     originalDestructuringDeclarationOrInitializerSource,
                     originalDestructuringDeclarationType,
                     reference,
+                    declaration,
+                    componentCall,
+                    originalDestructuringDeclaration,
                     reporter,
                     context
                 )
@@ -109,44 +103,13 @@ object FirDestructuringDeclarationChecker : FirPropertyChecker() {
         }
     }
 
-    private fun checkComponentCallReturnType(
-        source: FirSourceElement,
-        property: FirProperty,
-        componentCall: FirComponentCall,
-        destructuringDeclaration: FirVariable<*>,
-        reference: FirResolvedNamedReference,
-        reporter: DiagnosticReporter,
-        context: CheckerContext
-    ) {
-        val destructuringType = componentCall.typeRef.coneType
-        if (destructuringType is ConeKotlinErrorType) {
-            // There will be other errors on this error type.
-            return
-        }
-        val expectedType = property.returnTypeRef.coneType
-        if (!AbstractTypeChecker.isSubtypeOf(context.session.typeContext, destructuringType, expectedType)) {
-            val typeMismatchSource =
-                // ... = { `(entry, ...)` -> ... } // Report on specific `entry`
-                if (destructuringDeclaration is FirValueParameter)
-                    property.source
-                // val (entry, ...) = `destructuring_declaration` // Report on a destructuring declaration
-                else
-                    source
-            reporter.reportOn(
-                typeMismatchSource,
-                FirErrors.COMPONENT_FUNCTION_RETURN_TYPE_MISMATCH,
-                (reference.resolvedSymbol.fir as FirSimpleFunction).name,
-                destructuringType,
-                expectedType,
-                context
-            )
-        }
-    }
-
     private fun checkComponentCall(
         source: FirSourceElement,
         destructuringDeclarationType: ConeKotlinType,
         reference: FirErrorNamedReference,
+        property: FirProperty,
+        componentCall: FirComponentCall,
+        destructuringDeclaration: FirVariable,
         reporter: DiagnosticReporter,
         context: CheckerContext
     ) {
@@ -174,7 +137,32 @@ object FirDestructuringDeclarationChecker : FirPropertyChecker() {
                     reporter.reportOn(
                         source,
                         FirErrors.COMPONENT_FUNCTION_ON_NULLABLE,
-                        (diagnostic.candidate.symbol.fir as FirSimpleFunction).name,
+                        (diagnostic.candidate.symbol as FirNamedFunctionSymbol).callableId.callableName,
+                        context
+                    )
+                }
+            }
+            is ConeConstraintSystemHasContradiction -> {
+                val componentType = componentCall.typeRef.coneType
+                if (componentType is ConeKotlinErrorType) {
+                    // There will be other errors on this error type.
+                    return
+                }
+                val expectedType = property.returnTypeRef.coneType
+                if (!AbstractTypeChecker.isSubtypeOf(context.session.typeContext, componentType, expectedType)) {
+                    val typeMismatchSource =
+                        // ... = { `(entry, ...)` -> ... } // Report on specific `entry`
+                        if (destructuringDeclaration is FirValueParameter)
+                            property.source
+                        // val (entry, ...) = `destructuring_declaration` // Report on a destructuring declaration
+                        else
+                            source
+                    reporter.reportOn(
+                        typeMismatchSource,
+                        FirErrors.COMPONENT_FUNCTION_RETURN_TYPE_MISMATCH,
+                        diagnostic.candidate.callInfo.name,
+                        componentType,
+                        expectedType,
                         context
                     )
                 }
@@ -193,6 +181,11 @@ object FirDestructuringDeclarationChecker : FirPropertyChecker() {
                 else -> this
             }
 
-    private val FirQualifiedAccessExpression.resolvedVariable: FirVariable<*>?
-        get() = ((calleeReference as? FirResolvedNamedReference)?.resolvedSymbol as? FirVariableSymbol)?.fir as? FirVariable<*>
+    private val FirQualifiedAccessExpression.resolvedVariable: FirVariable?
+        get() {
+            val symbol = (calleeReference as? FirResolvedNamedReference)?.resolvedSymbol as? FirVariableSymbol<*> ?: return null
+            symbol.ensureResolved(FirResolvePhase.BODY_RESOLVE)
+            @OptIn(SymbolInternals::class)
+            return symbol.fir
+        }
 }

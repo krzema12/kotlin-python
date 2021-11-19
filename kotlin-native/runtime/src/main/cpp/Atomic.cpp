@@ -176,13 +176,18 @@ KNativePtr Kotlin_AtomicNativePtr_get(KRef thiz) {
 }
 
 void Kotlin_AtomicReference_checkIfFrozen(KRef value) {
+    if (!kotlin::compiler::freezingEnabled()) {
+        return;
+    }
     if (value != nullptr && !isPermanentOrFrozen(value)) {
         ThrowInvalidMutabilityException(value);
     }
 }
 
 OBJ_GETTER(Kotlin_AtomicReference_compareAndSwap, KRef thiz, KRef expectedValue, KRef newValue) {
-    Kotlin_AtomicReference_checkIfFrozen(newValue);
+    if (isPermanentOrFrozen(thiz)) {
+        Kotlin_AtomicReference_checkIfFrozen(newValue);
+    }
     // See Kotlin_AtomicReference_get() for explanations, why locking is needed.
     AtomicReferenceLayout* ref = asAtomicReference(thiz);
     RETURN_RESULT_OF(SwapHeapRefLocked, &ref->value_, expectedValue, newValue,
@@ -190,7 +195,9 @@ OBJ_GETTER(Kotlin_AtomicReference_compareAndSwap, KRef thiz, KRef expectedValue,
 }
 
 KBoolean Kotlin_AtomicReference_compareAndSet(KRef thiz, KRef expectedValue, KRef newValue) {
-    Kotlin_AtomicReference_checkIfFrozen(newValue);
+    if (isPermanentOrFrozen(thiz)) {
+        Kotlin_AtomicReference_checkIfFrozen(newValue);
+    }
     // See Kotlin_AtomicReference_get() for explanations, why locking is needed.
     AtomicReferenceLayout* ref = asAtomicReference(thiz);
     ObjHolder holder;
@@ -200,7 +207,9 @@ KBoolean Kotlin_AtomicReference_compareAndSet(KRef thiz, KRef expectedValue, KRe
 }
 
 void Kotlin_AtomicReference_set(KRef thiz, KRef newValue) {
-    Kotlin_AtomicReference_checkIfFrozen(newValue);
+    if (isPermanentOrFrozen(thiz)) {
+        Kotlin_AtomicReference_checkIfFrozen(newValue);
+    }
     AtomicReferenceLayout* ref = asAtomicReference(thiz);
     SetHeapRefLocked(&ref->value_, newValue, &ref->lock_, &ref->cookie_);
 }

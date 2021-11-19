@@ -5,8 +5,8 @@
 
 package org.jetbrains.kotlin.gradle
 
-import org.gradle.api.logging.configuration.WarningMode
 import org.gradle.internal.os.OperatingSystem
+import org.jetbrains.kotlin.konan.file.File
 import org.junit.Test
 
 class CommonizerHierarchicalIT : BaseGradleIT() {
@@ -22,6 +22,7 @@ class CommonizerHierarchicalIT : BaseGradleIT() {
                 }
 
                 build(":p1:compileAppleMainKotlinMetadata") {
+
                     assertSuccessful()
                     assertFileExists("p1/build/classes/kotlin/metadata/appleMain/klib/p1_appleMain.klib")
                 }
@@ -61,11 +62,12 @@ class CommonizerHierarchicalIT : BaseGradleIT() {
     fun `test commonizeHierarchically Klibrary compilations`() {
         with(Project("commonizeHierarchically")) {
             if (Os.canCompileApple) {
-                build(":p1:iosArm64MainKlibrary", ":p1:iosX64MainKlibrary", ":p1:macosMainKlibrary") {
+                build(":p1:iosArm64MainKlibrary", ":p1:iosX64MainKlibrary", ":p1:macosX64MainKlibrary", ":p1:macosArm64MainKLibrary") {
                     assertSuccessful()
                     assertFileExists("p1/build/classes/kotlin/iosArm64/main/klib/p1.klib")
                     assertFileExists("p1/build/classes/kotlin/iosX64/main/klib/p1.klib")
-                    assertFileExists("p1/build/classes/kotlin/macos/main/klib/p1.klib")
+                    assertFileExists("p1/build/classes/kotlin/macosX64/main/klib/p1.klib")
+                    assertFileExists("p1/build/classes/kotlin/macosArm64/main/klib/p1.klib")
                 }
             }
 
@@ -90,11 +92,7 @@ class CommonizerHierarchicalIT : BaseGradleIT() {
     @Test
     fun `test commonizeHierarchicallyMultiModule`() {
         with(Project("commonizeHierarchicallyMultiModule")) {
-            build(
-                "assemble",
-                // https://youtrack.jetbrains.com/issue/KT-46279
-                options = BuildOptions(warningMode = WarningMode.All)
-            ) {
+            build("assemble") {
                 assertSuccessful()
                 assertTasksExecuted(":p1:commonizeCInterop")
                 assertTasksExecuted(":p2:commonizeCInterop")
@@ -106,6 +104,22 @@ class CommonizerHierarchicalIT : BaseGradleIT() {
                 We still expect a warning being printed.
                  */
                 assertContains("w: Could not find \"commonizeHierarchicallyMultiModule:p1-cinterop-withPosix\" in ")
+            }
+        }
+    }
+
+    @Test
+    fun `test platform dependencies on leaf source sets`() {
+        with(Project("commonizeHierarchicallyPlatformDependencies")) {
+            build(":checkPlatformDependencies") {
+                val klibPlatform = "${File.separator}klib${File.separator}platform${File.separator}".replace("\\", "\\\\")
+
+                assertSuccessful()
+                assertTasksExecuted(":commonizeNativeDistribution")
+                assertTasksExecuted(":checkLinuxX64MainPlatformDependencies")
+                assertTasksExecuted(":checkLinuxArm64MainPlatformDependencies")
+                assertContainsRegex(Regex(""".*linuxX64Main.*$klibPlatform.*[Pp]osix.*"""))
+                assertContainsRegex(Regex(""".*linuxArm64Main.*$klibPlatform.*[Pp]osix.*"""))
             }
         }
     }

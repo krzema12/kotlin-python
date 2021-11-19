@@ -6,11 +6,8 @@
 package org.jetbrains.kotlin.ir.util
 
 import org.jetbrains.kotlin.descriptors.*
-import org.jetbrains.kotlin.ir.IrElement
-import org.jetbrains.kotlin.ir.IrStatement
-import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
+import org.jetbrains.kotlin.ir.*
 import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.descriptors.IrBuiltIns
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.*
 import org.jetbrains.kotlin.ir.symbols.*
@@ -154,12 +151,12 @@ fun IrExpression.isFalseConst() = this is IrConst<*> && this.kind == IrConstKind
 
 fun IrExpression.isIntegerConst(value: Int) = this is IrConst<*> && this.kind == IrConstKind.Int && this.value == value
 
-fun IrExpression.coerceToUnit(builtins: IrBuiltIns): IrExpression {
-    return coerceToUnitIfNeeded(type, builtins)
+fun IrExpression.coerceToUnit(builtins: IrBuiltIns, typeSystem: IrTypeSystemContext): IrExpression {
+    return coerceToUnitIfNeeded(type, builtins, typeSystem)
 }
 
-fun IrExpression.coerceToUnitIfNeeded(valueType: IrType, irBuiltIns: IrBuiltIns): IrExpression {
-    return if (valueType.isSubtypeOf(irBuiltIns.unitType, irBuiltIns))
+fun IrExpression.coerceToUnitIfNeeded(valueType: IrType, irBuiltIns: IrBuiltIns, typeSystem: IrTypeSystemContext): IrExpression {
+    return if (valueType.isSubtypeOf(irBuiltIns.unitType, typeSystem))
         this
     else
         IrTypeOperatorCallImpl(
@@ -173,6 +170,11 @@ fun IrExpression.coerceToUnitIfNeeded(valueType: IrType, irBuiltIns: IrBuiltIns)
 
 fun IrFunctionAccessExpression.usesDefaultArguments(): Boolean =
     symbol.owner.valueParameters.any { this.getValueArgument(it.index) == null }
+
+fun IrValueParameter.createStubDefaultValue(): IrExpressionBody =
+    factory.createExpressionBody(
+        IrErrorExpressionImpl(UNDEFINED_OFFSET, UNDEFINED_OFFSET, type, "Stub expression for default value of $name")
+    )
 
 val IrClass.functions: Sequence<IrSimpleFunction>
     get() = declarations.asSequence().filterIsInstance<IrSimpleFunction>()
@@ -546,6 +548,10 @@ val IrDeclaration.isFileClass: Boolean
                 origin == IrDeclarationOrigin.SYNTHETIC_FILE_CLASS ||
                 origin == IrDeclarationOrigin.JVM_MULTIFILE_CLASS
 
+fun IrDeclaration.isFromJava(): Boolean =
+    origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB ||
+            parent is IrDeclaration && (parent as IrDeclaration).isFromJava()
+
 val IrValueDeclaration.isImmutable: Boolean
     get() = this is IrValueParameter || this is IrVariable && !isVar
 
@@ -603,3 +609,9 @@ internal fun <T> IrConst<T>.shallowCopy() = IrConstImpl(
     kind,
     value
 )
+
+val IrDeclarationParent.isFacadeClass: Boolean
+    get() = this is IrClass &&
+            (origin == IrDeclarationOrigin.JVM_MULTIFILE_CLASS ||
+                    origin == IrDeclarationOrigin.FILE_CLASS ||
+                    origin == IrDeclarationOrigin.SYNTHETIC_FILE_CLASS)

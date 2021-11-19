@@ -34,7 +34,7 @@ internal class KtFirValueParameterSymbol(
 ) : KtValueParameterSymbol(), KtFirSymbol<FirValueParameter> {
     private val builder by weakRef(_builder)
     override val firRef = firRef(fir, resolveState)
-    override val psi: PsiElement? by firRef.withFirAndCache { fir -> fir.findPsi(fir.declarationSiteSession) }
+    override val psi: PsiElement? by firRef.withFirAndCache { fir -> fir.findPsi(fir.moduleData.session) }
 
     override val name: Name get() = firRef.withFir { it.name }
     override val isVararg: Boolean get() = firRef.withFir { it.isVararg }
@@ -52,4 +52,7 @@ internal class KtFirValueParameterSymbol(
         KtPsiBasedSymbolPointer.createForSymbolFromSource(this)?.let { return it }
         TODO("Creating pointers for functions parameters from library is not supported yet")
     }
+
+    override fun equals(other: Any?): Boolean = symbolEquals(other)
+    override fun hashCode(): Int = symbolHashCode()
 }

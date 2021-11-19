@@ -1,3 +1,6 @@
+// !LANGUAGE: -AbstractClassMemberNotImplementedWithIntermediateAbstractClass
+// IGNORE_BACKEND_FIR: JVM_IR
+
 // FILE: 1.kt
 class Test: Impl(), CProvider
 

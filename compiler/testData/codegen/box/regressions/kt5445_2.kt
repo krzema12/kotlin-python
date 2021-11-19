@@ -1,5 +1,8 @@
 // TARGET_BACKEND: JVM
 
+// IGNORE_BACKEND_FIR: JVM_IR
+//  - FIR2IR should generate call to fake override
+
 // WITH_RUNTIME
 // FILE: 1.kt
 
@@ -13,7 +16,7 @@ class C : A() {
     }
 }
 
-public fun box(): String {
+fun box(): String {
     return C().a()
 }
 

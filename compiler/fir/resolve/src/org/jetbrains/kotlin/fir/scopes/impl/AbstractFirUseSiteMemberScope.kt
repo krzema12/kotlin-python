@@ -22,6 +22,10 @@ abstract class AbstractFirUseSiteMemberScope(
     protected val directOverriddenFunctions = hashMapOf<FirNamedFunctionSymbol, Collection<FirNamedFunctionSymbol>>()
     protected val directOverriddenProperties = hashMapOf<FirPropertySymbol, MutableList<FirPropertySymbol>>()
 
+    private val callableNamesCached by lazy(LazyThreadSafetyMode.PUBLICATION) {
+        declaredMemberScope.getContainingCallableNamesIfPresent() + superTypesScope.getCallableNames()
+    }
+
     override fun processFunctionsByName(name: Name, processor: (FirNamedFunctionSymbol) -> Unit) {
         functions.getOrPut(name) {
             doProcessFunctions(name)
@@ -66,6 +70,7 @@ abstract class AbstractFirUseSiteMemberScope(
         functionSymbol: FirNamedFunctionSymbol,
         processor: (FirNamedFunctionSymbol, FirTypeScope) -> ProcessorAction
     ): ProcessorAction =
+        //directOverriddenFunctions might be not filled for functionSymbol if it is not from processFunctionsByName call
         doProcessDirectOverriddenCallables(
             functionSymbol, processor, directOverriddenFunctions, superTypesScope,
             FirTypeScope::processDirectOverriddenFunctionsWithBaseScope
@@ -89,9 +94,7 @@ abstract class AbstractFirUseSiteMemberScope(
         declaredMemberScope.processDeclaredConstructors(processor)
     }
 
-    override fun getCallableNames(): Set<Name> {
-        return declaredMemberScope.getContainingCallableNamesIfPresent() + superTypesScope.getCallableNames()
-    }
+    override fun getCallableNames(): Set<Name> = callableNamesCached
 
     override fun getClassifierNames(): Set<Name> {
         return declaredMemberScope.getContainingClassifierNamesIfPresent() + superTypesScope.getClassifierNames()

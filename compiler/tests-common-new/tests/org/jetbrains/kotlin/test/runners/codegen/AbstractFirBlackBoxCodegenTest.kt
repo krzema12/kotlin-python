@@ -7,11 +7,14 @@ package org.jetbrains.kotlin.test.runners.codegen
 
 import org.jetbrains.kotlin.test.Constructor
 import org.jetbrains.kotlin.test.TargetBackend
+import org.jetbrains.kotlin.test.backend.ir.IrBackendInput
 import org.jetbrains.kotlin.test.backend.ir.JvmIrBackendFacade
 import org.jetbrains.kotlin.test.builders.TestConfigurationBuilder
+import org.jetbrains.kotlin.test.builders.configureFirHandlersStep
 import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirectives.USE_PSI_CLASS_FILES_READING
 import org.jetbrains.kotlin.test.frontend.fir.Fir2IrResultsConverter
 import org.jetbrains.kotlin.test.frontend.fir.FirFrontendFacade
+import org.jetbrains.kotlin.test.frontend.fir.FirMetaInfoDiffSuppressor
 import org.jetbrains.kotlin.test.frontend.fir.FirOutputArtifact
 import org.jetbrains.kotlin.test.frontend.fir.handlers.FirCfgDumpHandler
 import org.jetbrains.kotlin.test.frontend.fir.handlers.FirDumpHandler
@@ -19,17 +22,17 @@ import org.jetbrains.kotlin.test.frontend.fir.handlers.FirNoImplicitTypesHandler
 import org.jetbrains.kotlin.test.frontend.fir.handlers.FirScopeDumpHandler
 import org.jetbrains.kotlin.test.model.*
 
-open class AbstractFirBlackBoxCodegenTest : AbstractJvmBlackBoxCodegenTestBase<FirOutputArtifact>(
+open class AbstractFirBlackBoxCodegenTest : AbstractJvmBlackBoxCodegenTestBase<FirOutputArtifact, IrBackendInput>(
     FrontendKinds.FIR,
     TargetBackend.JVM_IR
 ) {
     override val frontendFacade: Constructor<FrontendFacade<FirOutputArtifact>>
         get() = ::FirFrontendFacade
 
-    override val frontendToBackendConverter: Constructor<Frontend2BackendConverter<FirOutputArtifact, *>>
+    override val frontendToBackendConverter: Constructor<Frontend2BackendConverter<FirOutputArtifact, IrBackendInput>>
         get() = ::Fir2IrResultsConverter
 
-    override val backendFacade: Constructor<BackendFacade<*, BinaryArtifacts.Jvm>>
+    override val backendFacade: Constructor<BackendFacade<IrBackendInput, BinaryArtifacts.Jvm>>
         get() = ::JvmIrBackendFacade
 
     override fun configure(builder: TestConfigurationBuilder) {
@@ -39,13 +42,21 @@ open class AbstractFirBlackBoxCodegenTest : AbstractJvmBlackBoxCodegenTestBase<F
                 // See KT-44152
                 -USE_PSI_CLASS_FILES_READING
             }
-            useFrontendHandlers(
-                ::FirDumpHandler,
-                ::FirScopeDumpHandler,
-                ::FirCfgDumpHandler,
-                ::FirNoImplicitTypesHandler,
+
+            configureFirHandlersStep {
+                useHandlers(
+                    ::FirDumpHandler,
+                    ::FirScopeDumpHandler,
+                    ::FirCfgDumpHandler,
+                    ::FirNoImplicitTypesHandler,
+                )
+            }
+
+            useAfterAnalysisCheckers(
+                ::FirMetaInfoDiffSuppressor
             )
-            dumpHandlersForCodegenTest()
+
+            configureDumpHandlersForCodegenTest()
         }
     }
 }

@@ -5,7 +5,7 @@
 
 package org.jetbrains.kotlin.config
 
-import org.jetbrains.kotlin.utils.JavaTypeEnhancementState
+import org.jetbrains.kotlin.load.java.JavaTypeEnhancementState
 import kotlin.reflect.KProperty
 
 object JvmAnalysisFlags {
@@ -17,6 +17,9 @@ object JvmAnalysisFlags {
 
     @JvmStatic
     val jvmDefaultMode by Delegates.JvmDefaultModeDisabledByDefault
+
+    @JvmStatic
+    val jvmDefaultAllowNonDefaultInheritance by AnalysisFlag.Delegates.Boolean
 
     @JvmStatic
     val inheritMultifileParts by AnalysisFlag.Delegates.Boolean

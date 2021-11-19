@@ -1,3 +1,4 @@
+// LANGUAGE: +WarnAboutNonExhaustiveWhenOnAlgebraicTypes
 /*
  * KOTLIN DIAGNOSTICS SPEC TEST (NEGATIVE)
  *
@@ -22,7 +23,7 @@ object Last : S()
 fun use(s: String) = s
 
 fun foo(s: S) {
-    when (s) {
+    <!NON_EXHAUSTIVE_WHEN_STATEMENT!>when<!> (s) {
         First -> {}
         is Derived -> use(s.s)
     }

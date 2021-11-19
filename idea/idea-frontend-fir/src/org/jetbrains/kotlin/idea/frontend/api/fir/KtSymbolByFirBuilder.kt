@@ -5,18 +5,19 @@
 
 package org.jetbrains.kotlin.idea.frontend.api.fir
 
-import com.google.common.collect.MapMaker
 import com.intellij.openapi.project.Project
+import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.search.GlobalSearchScope
+import org.jetbrains.kotlin.analysis.providers.createPackageProvider
 import org.jetbrains.kotlin.builtins.functions.FunctionClassKind
 import org.jetbrains.kotlin.fir.*
 import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.declarations.impl.FirFieldImpl
 import org.jetbrains.kotlin.fir.declarations.synthetic.FirSyntheticProperty
-import org.jetbrains.kotlin.fir.resolve.calls.originalConstructorIfTypeAlias
 import org.jetbrains.kotlin.fir.java.declarations.FirJavaField
-import org.jetbrains.kotlin.fir.resolve.symbolProvider
+import org.jetbrains.kotlin.fir.resolve.calls.originalConstructorIfTypeAlias
 import org.jetbrains.kotlin.fir.resolve.getSymbolByLookupTag
+import org.jetbrains.kotlin.fir.resolve.symbolProvider
 import org.jetbrains.kotlin.fir.symbols.ConeClassLikeLookupTag
 import org.jetbrains.kotlin.fir.symbols.ConeTypeParameterLookupTag
 import org.jetbrains.kotlin.fir.symbols.impl.FirBackingFieldSymbol
@@ -25,17 +26,20 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirTypeParameterSymbol
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.fir.types.impl.ConeClassLikeTypeImpl
 import org.jetbrains.kotlin.idea.fir.low.level.api.api.FirModuleResolveState
-import org.jetbrains.kotlin.idea.frontend.api.*
+import org.jetbrains.kotlin.idea.frontend.api.KtStarProjectionTypeArgument
+import org.jetbrains.kotlin.idea.frontend.api.KtTypeArgument
+import org.jetbrains.kotlin.idea.frontend.api.KtTypeArgumentWithVariance
+import org.jetbrains.kotlin.idea.frontend.api.ValidityTokenOwner
 import org.jetbrains.kotlin.idea.frontend.api.fir.symbols.*
 import org.jetbrains.kotlin.idea.frontend.api.fir.types.*
 import org.jetbrains.kotlin.idea.frontend.api.fir.utils.weakRef
 import org.jetbrains.kotlin.idea.frontend.api.symbols.*
 import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
 import org.jetbrains.kotlin.idea.frontend.api.types.KtType
-import org.jetbrains.kotlin.idea.stubindex.PackageIndexUtil
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.types.Variance
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
@@ -97,9 +101,9 @@ internal class KtSymbolByFirBuilder private constructor(
 
     fun buildSymbol(fir: FirDeclaration): KtSymbol {
         return when (fir) {
-            is FirClassLikeDeclaration<*> -> classifierBuilder.buildClassLikeSymbol(fir)
+            is FirClassLikeDeclaration -> classifierBuilder.buildClassLikeSymbol(fir)
             is FirTypeParameter -> classifierBuilder.buildTypeParameterSymbol(fir)
-            is FirCallableDeclaration<*> -> callableBuilder.buildCallableSymbol(fir)
+            is FirCallableDeclaration -> callableBuilder.buildCallableSymbol(fir)
             else -> throwUnexpectedElementError(fir)
         }
     }
@@ -110,12 +114,19 @@ internal class KtSymbolByFirBuilder private constructor(
 
     fun buildFileSymbol(fir: FirFile) = filesCache.cache(fir) { KtFirFileSymbol(fir, resolveState, token) }
 
+    private val packageProvider = project.createPackageProvider(GlobalSearchScope.allScope(project))//todo scope
 
     fun createPackageSymbolIfOneExists(packageFqName: FqName): KtFirPackageSymbol? {
-        val exists = PackageIndexUtil.packageExists(packageFqName, GlobalSearchScope.allScope(project), project)
+        val exists =
+            packageProvider.isPackageExists(packageFqName)
+                    || JavaPsiFacade.getInstance(project).findPackage(packageFqName.asString()) != null
         if (!exists) {
             return null
         }
+        return createPackageSymbol(packageFqName)
+    }
+
+    fun createPackageSymbol(packageFqName: FqName): KtFirPackageSymbol {
         return KtFirPackageSymbol(packageFqName, project, token)
     }
 
@@ -129,15 +140,15 @@ internal class KtSymbolByFirBuilder private constructor(
         }
 
 
-        fun buildClassLikeSymbol(fir: FirClassLikeDeclaration<*>): KtClassLikeSymbol {
+        fun buildClassLikeSymbol(fir: FirClassLikeDeclaration): KtClassLikeSymbol {
             return when (fir) {
-                is FirClass<*> -> buildClassOrObjectSymbol(fir)
+                is FirClass -> buildClassOrObjectSymbol(fir)
                 is FirTypeAlias -> buildTypeAliasSymbol(fir)
                 else -> throwUnexpectedElementError(fir)
             }
         }
 
-        fun buildClassOrObjectSymbol(fir: FirClass<*>): KtClassOrObjectSymbol {
+        fun buildClassOrObjectSymbol(fir: FirClass): KtClassOrObjectSymbol {
             return when (fir) {
                 is FirAnonymousObject -> buildAnonymousObjectSymbol(fir)
                 is FirRegularClass -> buildNamedClassOrObjectSymbol(fir)
@@ -154,7 +165,7 @@ internal class KtSymbolByFirBuilder private constructor(
         }
 
         fun buildTypeAliasSymbol(fir: FirTypeAlias): KtFirTypeAliasSymbol {
-            return symbolsCache.cache(fir) { KtFirTypeAliasSymbol(fir, resolveState, token) }
+            return symbolsCache.cache(fir) { KtFirTypeAliasSymbol(fir, resolveState, token, this@KtSymbolByFirBuilder) }
         }
 
         fun buildTypeParameterSymbol(fir: FirTypeParameter): KtFirTypeParameterSymbol {
@@ -178,7 +189,7 @@ internal class KtSymbolByFirBuilder private constructor(
     }
 
     inner class FunctionLikeSymbolBuilder {
-        fun buildFunctionLikeSymbol(fir: FirFunction<*>): KtFunctionLikeSymbol {
+        fun buildFunctionLikeSymbol(fir: FirFunction): KtFunctionLikeSymbol {
             return when (fir) {
                 is FirSimpleFunction -> buildFunctionSymbol(fir)
                 is FirConstructor -> buildConstructorSymbol(fir)
@@ -204,7 +215,7 @@ internal class KtSymbolByFirBuilder private constructor(
     }
 
     inner class VariableLikeSymbolBuilder {
-        fun buildVariableLikeSymbol(fir: FirVariable<*>): KtVariableLikeSymbol {
+        fun buildVariableLikeSymbol(fir: FirVariable): KtVariableLikeSymbol {
             return when (fir) {
                 is FirProperty -> buildVariableSymbol(fir)
                 is FirValueParameter -> buildValueParameterSymbol(fir)
@@ -272,11 +283,11 @@ internal class KtSymbolByFirBuilder private constructor(
     }
 
     inner class CallableSymbolBuilder {
-        fun buildCallableSymbol(fir: FirCallableDeclaration<*>): KtCallableSymbol {
+        fun buildCallableSymbol(fir: FirCallableDeclaration): KtCallableSymbol {
             return when (fir) {
                 is FirPropertyAccessor -> buildPropertyAccessorSymbol(fir)
-                is FirFunction<*> -> functionLikeBuilder.buildFunctionLikeSymbol(fir)
-                is FirVariable<*> -> variableLikeBuilder.buildVariableLikeSymbol(fir)
+                is FirFunction -> functionLikeBuilder.buildFunctionLikeSymbol(fir)
+                is FirVariable -> variableLikeBuilder.buildVariableLikeSymbol(fir)
                 else -> throwUnexpectedElementError(fir)
             }
         }
@@ -309,10 +320,11 @@ internal class KtSymbolByFirBuilder private constructor(
                         else KtFirUsualClassType(coneType, token, this@KtSymbolByFirBuilder)
                     }
                     is ConeTypeParameterType -> KtFirTypeParameterType(coneType, token, this@KtSymbolByFirBuilder)
-                    is ConeClassErrorType -> KtFirErrorType(coneType, token)
+                    is ConeClassErrorType -> KtFirClassErrorType(coneType, token)
                     is ConeFlexibleType -> KtFirFlexibleType(coneType, token, this@KtSymbolByFirBuilder)
                     is ConeIntersectionType -> KtFirIntersectionType(coneType, token, this@KtSymbolByFirBuilder)
-                    is ConeDefinitelyNotNullType -> buildKtType(coneType.original)
+                    is ConeDefinitelyNotNullType -> KtFirDefinitelyNotNullType(coneType, token, this@KtSymbolByFirBuilder)
+                    is ConeCapturedType -> KtFirCapturedType(coneType, token)
                     else -> throwUnexpectedElementError(coneType)
                 }
             }
@@ -328,10 +340,11 @@ internal class KtSymbolByFirBuilder private constructor(
         }
 
         fun buildTypeArgument(coneType: ConeTypeProjection): KtTypeArgument = when (coneType) {
-            is ConeStarProjection -> KtStarProjectionTypeArgument
-            is ConeKotlinTypeProjection -> KtFirTypeArgumentWithVariance(
+            is ConeStarProjection -> KtStarProjectionTypeArgument(token)
+            is ConeKotlinTypeProjection -> KtTypeArgumentWithVariance(
                 buildKtType(coneType.type),
-                coneType.kind.toVariance()
+                coneType.kind.toVariance(),
+                token,
             )
         }
 
@@ -369,7 +382,7 @@ private class BuilderCache<From, To: Any> private constructor(
     private val cache: ConcurrentMap<From, To>,
     private val isReadOnly: Boolean
 ) {
-    constructor() : this(cache = MapMaker().weakKeys().makeMap(), isReadOnly = false)
+    constructor() : this(ConcurrentHashMap<From, To>(), isReadOnly = false)
 
     fun createReadOnlyCopy(): BuilderCache<From, To> {
         check(!isReadOnly) { "Cannot create readOnly BuilderCache from a readonly one" }

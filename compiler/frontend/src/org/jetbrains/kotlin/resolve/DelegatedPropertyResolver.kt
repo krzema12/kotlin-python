@@ -24,6 +24,8 @@ import org.jetbrains.kotlin.resolve.calls.callUtil.getResolvedCall
 import org.jetbrains.kotlin.resolve.calls.checkers.OperatorCallChecker
 import org.jetbrains.kotlin.resolve.calls.components.InferenceSession
 import org.jetbrains.kotlin.resolve.calls.components.PostponedArgumentsAnalyzer
+import org.jetbrains.kotlin.resolve.calls.context.BasicCallResolutionContext
+import org.jetbrains.kotlin.resolve.calls.context.CheckArgumentTypesMode
 import org.jetbrains.kotlin.resolve.calls.context.ContextDependency
 import org.jetbrains.kotlin.resolve.calls.inference.ConstraintSystem
 import org.jetbrains.kotlin.resolve.calls.inference.ConstraintSystemCompleter
@@ -40,6 +42,7 @@ import org.jetbrains.kotlin.resolve.calls.results.OverloadResolutionResults
 import org.jetbrains.kotlin.resolve.calls.smartcasts.DataFlowInfo
 import org.jetbrains.kotlin.resolve.calls.smartcasts.DataFlowValueFactory
 import org.jetbrains.kotlin.resolve.calls.tower.PSICallResolver
+import org.jetbrains.kotlin.resolve.calls.util.CallMaker
 import org.jetbrains.kotlin.resolve.constants.IntegerLiteralTypeConstructor
 import org.jetbrains.kotlin.resolve.scopes.LexicalScope
 import org.jetbrains.kotlin.resolve.scopes.ScopeUtils
@@ -538,6 +541,21 @@ class DelegatedPropertyResolver(
         return delegateType
     }
 
+    private fun completeNotComputedDelegateType(trace: BindingTrace, traceToResolveDelegatedProperty: TemporaryBindingTrace) {
+        val ranIntoRecursionDiagnostic = traceToResolveDelegatedProperty.bindingContext.diagnostics.find {
+            it.factory == TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM.errorFactory
+                    || it.factory == TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM.warningFactory
+        }
+        if (ranIntoRecursionDiagnostic != null) {
+            trace.report(
+                TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM.on(
+                    languageVersionSettings,
+                    ranIntoRecursionDiagnostic.psiElement as KtExpression
+                )
+            )
+        }
+    }
+
     private fun resolveWithNewInference(
         delegateExpression: KtExpression,
         variableDescriptor: VariableDescriptorWithAccessors,
@@ -557,7 +575,11 @@ class DelegatedPropertyResolver(
             traceToResolveDelegatedProperty, false, delegateExpression, ContextDependency.DEPENDENT
         )
 
-        var delegateType = delegateTypeInfo.type ?: return null
+        var delegateType = delegateTypeInfo.type ?: run {
+            completeNotComputedDelegateType(trace, traceToResolveDelegatedProperty)
+            return null
+        }
+
         var delegateDataFlow = delegateTypeInfo.dataFlowInfo
 
         val delegateTypeConstructor = delegateType.constructor
@@ -692,7 +714,9 @@ class DelegatedPropertyResolver(
             )
         }
 
-        val resolutionCallbacks = psiCallResolver.createResolutionCallbacks(trace, newInferenceSession, context = null)
+        val call = CallMaker.makeCall(delegateExpression, receiver)
+        val resolutionContext = BasicCallResolutionContext.create(context, call, CheckArgumentTypesMode.CHECK_VALUE_ARGUMENTS)
+        val resolutionCallbacks = psiCallResolver.createResolutionCallbacks(trace, newInferenceSession, resolutionContext)
         val resolutionResults = newInferenceSession.resolveCandidates(resolutionCallbacks)
 
         for ((name, isGet) in listOf(OperatorNameConventions.GET_VALUE to true, OperatorNameConventions.SET_VALUE to false)) {

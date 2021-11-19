@@ -11,47 +11,57 @@ import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 
-abstract class KtFunctionLikeSymbol : KtCallableSymbol(), KtSymbolWithKind {
-    abstract val valueParameters: List<KtValueParameterSymbol>
+public abstract class KtFunctionLikeSymbol : KtCallableSymbol(), KtSymbolWithKind {
+    public abstract val valueParameters: List<KtValueParameterSymbol>
+
+    /**
+     * Kotlin functions always have stable parameter names that can be reliably used when calling them with named arguments.
+     * Functions loaded from platform definitions (e.g. Java binaries or JS) may have unstable parameter names that vary from
+     * one platform installation to another. These names can not be used reliably for calls with named arguments.
+     */
+    public abstract val hasStableParameterNames: Boolean
 
     abstract override fun createPointer(): KtSymbolPointer<KtFunctionLikeSymbol>
 }
 
-abstract class KtAnonymousFunctionSymbol : KtFunctionLikeSymbol(), KtPossibleExtensionSymbol {
+public abstract class KtAnonymousFunctionSymbol : KtFunctionLikeSymbol() {
     final override val symbolKind: KtSymbolKind get() = KtSymbolKind.LOCAL
     final override val callableIdIfNonLocal: CallableId? get() = null
 
     abstract override fun createPointer(): KtSymbolPointer<KtAnonymousFunctionSymbol>
 }
 
-abstract class KtFunctionSymbol : KtFunctionLikeSymbol(),
+public abstract class KtFunctionSymbol : KtFunctionLikeSymbol(),
     KtNamedSymbol,
-    KtPossibleExtensionSymbol,
     KtPossibleMemberSymbol,
     KtSymbolWithTypeParameters,
     KtSymbolWithModality,
     KtSymbolWithVisibility,
     KtAnnotatedSymbol {
 
-    abstract val isSuspend: Boolean
-    abstract val isOperator: Boolean
-    abstract val isExternal: Boolean
-    abstract val isInline: Boolean
-    abstract val isOverride: Boolean
+    public abstract val isSuspend: Boolean
+    public abstract val isOperator: Boolean
+    public abstract val isExternal: Boolean
+    public abstract val isInline: Boolean
+    public abstract val isOverride: Boolean
+    public abstract val isInfix: Boolean
+    public abstract val isStatic: Boolean
 
     abstract override fun createPointer(): KtSymbolPointer<KtFunctionSymbol>
 }
 
-abstract class KtConstructorSymbol : KtFunctionLikeSymbol(),
+public abstract class KtConstructorSymbol : KtFunctionLikeSymbol(),
     KtPossibleMemberSymbol,
     KtAnnotatedSymbol,
     KtSymbolWithVisibility,
     KtSymbolWithTypeParameters {
-    abstract val isPrimary: Boolean
-    abstract val containingClassIdIfNonLocal: ClassId?
+    public abstract val isPrimary: Boolean
+    public abstract val containingClassIdIfNonLocal: ClassId?
 
     final override val callableIdIfNonLocal: CallableId? get() = null
     final override val symbolKind: KtSymbolKind get() = KtSymbolKind.MEMBER
+    final override val isExtension: Boolean get() = false
+    final override val receiverType: KtTypeAndAnnotations? get() = null
 
     abstract override fun createPointer(): KtSymbolPointer<KtConstructorSymbol>
 }

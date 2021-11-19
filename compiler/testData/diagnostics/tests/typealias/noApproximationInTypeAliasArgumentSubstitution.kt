@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // NI_EXPECTED_FILE
 
 typealias Array2D<T> = Array<Array<T>>
@@ -14,4 +13,4 @@ typealias TMap<T> = Map<T, T>
 fun <T> foo2(m: TMap<T>) = m
 
 fun bar2(m: TMap<*>) =
-        <!TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS{OI}!>foo2<!>(<!TYPE_MISMATCH{NI}!>m<!>)
+        foo2(<!TYPE_MISMATCH!>m<!>)

@@ -11,32 +11,32 @@ import org.jetbrains.kotlin.KtNodeTypes
 import org.jetbrains.kotlin.fir.FirAnnotationContainer
 import org.jetbrains.kotlin.fir.FirFakeSourceElementKind
 import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.FirSymbolOwner
 import org.jetbrains.kotlin.fir.analysis.cfa.*
 import org.jetbrains.kotlin.fir.analysis.checkers.cfa.FirControlFlowChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
-import org.jetbrains.kotlin.fir.analysis.checkers.getContainingClass
+import org.jetbrains.kotlin.fir.analysis.checkers.getContainingClassSymbol
 import org.jetbrains.kotlin.fir.analysis.checkers.isIterator
 import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors
 import org.jetbrains.kotlin.fir.analysis.diagnostics.reportOn
+import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
+import org.jetbrains.kotlin.fir.declarations.utils.isLocal
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccess
 import org.jetbrains.kotlin.fir.references.FirResolvedNamedReference
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.*
 import org.jetbrains.kotlin.fir.resolve.inference.isFunctionalType
+import org.jetbrains.kotlin.fir.symbols.SymbolInternals
+import org.jetbrains.kotlin.fir.symbols.ensureResolved
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.types.coneType
 
 object UnusedChecker : FirControlFlowChecker() {
     override fun analyze(graph: ControlFlowGraph, reporter: DiagnosticReporter, context: CheckerContext) {
-        if ((graph.declaration as? FirSymbolOwner<*>)?.getContainingClass(context)?.takeIf {
-                !it.symbol.classId.isLocal
-            } != null
-        ) return
-        val properties = LocalPropertyCollector.collect(graph)
+        if (graph.declaration?.getContainingClassSymbol(context.session)?.takeIf { !it.isLocal } != null) return
+        val (properties, _) = LocalPropertyAndCapturedWriteCollector.collect(graph)
         if (properties.isEmpty()) return
 
         val data = ValueWritesWithoutReading(context.session, properties).getData(graph)
@@ -67,12 +67,16 @@ object UnusedChecker : FirControlFlowChecker() {
 
         override fun visitVariableDeclarationNode(node: VariableDeclarationNode) {
             val variableSymbol = node.fir.symbol
+            if (node.fir.source == null) return
             if (variableSymbol.isLoopIterator) return
             val dataPerNode = data[node] ?: return
             for (dataPerLabel in dataPerNode.values) {
                 val data = dataPerLabel[variableSymbol] ?: continue
 
-                val variableSource = variableSymbol.fir.source.takeIf { it?.elementType != KtNodeTypes.DESTRUCTURING_DECLARATION }
+                variableSymbol.ensureResolved(FirResolvePhase.BODY_RESOLVE)
+                @OptIn(SymbolInternals::class)
+                val variable = variableSymbol.fir
+                val variableSource = variable.source.takeIf { it?.elementType != KtNodeTypes.DESTRUCTURING_DECLARATION }
                 when {
                     data == VariableStatus.UNUSED -> {
                         if ((node.fir.initializer as? FirFunctionCall)?.isIterator != true) {
@@ -81,7 +85,7 @@ object UnusedChecker : FirControlFlowChecker() {
                         }
                     }
                     data.isRedundantInit -> {
-                        val source = variableSymbol.fir.initializer?.source
+                        val source = variable.initializer?.source
                         reporter.reportOn(source, FirErrors.VARIABLE_INITIALIZER_IS_REDUNDANT, context)
                         break
                     }
@@ -279,7 +283,7 @@ object UnusedChecker : FirControlFlowChecker() {
             val reference = node.fir.calleeReference as? FirResolvedNamedReference ?: return dataForNode
             val functionSymbol = reference.resolvedSymbol as? FirFunctionSymbol<*> ?: return dataForNode
             val symbol = if (functionSymbol.callableId.callableName.identifier == "invoke") {
-                localProperties.find { it.fir.name == reference.name && it.fir.returnTypeRef.coneType.isFunctionalType(session) }
+                localProperties.find { it.name == reference.name && it.resolvedReturnTypeRef.coneType.isFunctionalType(session) }
             } else null
             symbol ?: return dataForNode
 
@@ -310,6 +314,9 @@ object UnusedChecker : FirControlFlowChecker() {
         }
     }
 
-    private val FirPropertySymbol.isLoopIterator
-        get() = fir.initializer?.source?.kind == FirFakeSourceElementKind.DesugaredForLoop
+    private val FirPropertySymbol.isLoopIterator: Boolean
+        get() {
+            @OptIn(SymbolInternals::class)
+            return fir.initializer?.source?.kind == FirFakeSourceElementKind.DesugaredForLoop
+        }
 }

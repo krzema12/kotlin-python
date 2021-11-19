@@ -5,6 +5,8 @@
 
 package kotlin
 
+import kotlin.wasm.internal.*
+
 /**
  * Counts the number of set bits in the binary representation of this [Int] number.
  */
@@ -17,7 +19,7 @@ public actual fun Int.countOneBits(): Int = TODO("Wasm stdlib: Numbers")
  */
 @SinceKotlin("1.3")
 @ExperimentalStdlibApi
-public actual fun Int.countLeadingZeroBits(): Int = TODO("Wasm stdlib: Numbers")
+public actual fun Int.countLeadingZeroBits(): Int = wasm_i32_clz(this)
 
 /**
  * Counts the number of consecutive least significant bits that are zero in the binary representation of this [Int] number.
@@ -52,8 +54,8 @@ public actual fun Int.takeLowestOneBit(): Int = TODO("Wasm stdlib: Numbers")
  * Rotating by a multiple of [Int.SIZE_BITS] (32) returns the same number, or more generally
  * `number.rotateLeft(n) == number.rotateLeft(n % 32)`
  */
-@SinceKotlin("1.3")
-@ExperimentalStdlibApi
+@SinceKotlin("1.6")
+@WasExperimental(ExperimentalStdlibApi::class)
 public actual fun Int.rotateLeft(bitCount: Int): Int = TODO("Wasm stdlib: Numbers")
 
 
@@ -67,8 +69,8 @@ public actual fun Int.rotateLeft(bitCount: Int): Int = TODO("Wasm stdlib: Number
  * Rotating by a multiple of [Int.SIZE_BITS] (32) returns the same number, or more generally
  * `number.rotateRight(n) == number.rotateRight(n % 32)`
  */
-@SinceKotlin("1.3")
-@ExperimentalStdlibApi
+@SinceKotlin("1.6")
+@WasExperimental(ExperimentalStdlibApi::class)
 public actual fun Int.rotateRight(bitCount: Int): Int = TODO("Wasm stdlib: Numbers")
 
 
@@ -84,7 +86,7 @@ public actual fun Long.countOneBits(): Int = TODO("Wasm stdlib: Numbers")
  */
 @SinceKotlin("1.3")
 @ExperimentalStdlibApi
-public actual fun Long.countLeadingZeroBits(): Int = TODO("Wasm stdlib: Numbers")
+public actual fun Long.countLeadingZeroBits(): Int = wasm_i64_clz(this).toInt()
 
 /**
  * Counts the number of consecutive least significant bits that are zero in the binary representation of this [Long] number.
@@ -119,8 +121,8 @@ public actual fun Long.takeLowestOneBit(): Long = TODO("Wasm stdlib: Numbers")
  * Rotating by a multiple of [Long.SIZE_BITS] (64) returns the same number, or more generally
  * `number.rotateLeft(n) == number.rotateLeft(n % 64)`
  */
-@SinceKotlin("1.3")
-@ExperimentalStdlibApi
+@SinceKotlin("1.6")
+@WasExperimental(ExperimentalStdlibApi::class)
 public actual fun Long.rotateLeft(bitCount: Int): Long = TODO("Wasm stdlib: Numbers")
 
 /**
@@ -133,6 +135,6 @@ public actual fun Long.rotateLeft(bitCount: Int): Long = TODO("Wasm stdlib: Numb
  * Rotating by a multiple of [Long.SIZE_BITS] (64) returns the same number, or more generally
  * `number.rotateRight(n) == number.rotateRight(n % 64)`
  */
-@SinceKotlin("1.3")
-@ExperimentalStdlibApi
+@SinceKotlin("1.6")
+@WasExperimental(ExperimentalStdlibApi::class)
 public actual fun Long.rotateRight(bitCount: Int): Long = TODO("Wasm stdlib: Numbers")

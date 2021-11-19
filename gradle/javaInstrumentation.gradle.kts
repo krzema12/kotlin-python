@@ -21,7 +21,10 @@ fun Project.configureJavaInstrumentation() {
         val javaInstrumentator by configurations.creating
         dependencies {
             javaInstrumentator(intellijDep()) {
-                includeJars("javac2", "jdom", "asm-all", rootProject = rootProject)
+                includeJars("jdom", "asm-all", rootProject = rootProject)
+            }
+            javaInstrumentator(intellijPluginDep("java")) {
+                includeJars("javac2", rootProject = rootProject)
             }
         }
         for (sourceSet in listOf(mainSourceSet, testSourceSet)) {

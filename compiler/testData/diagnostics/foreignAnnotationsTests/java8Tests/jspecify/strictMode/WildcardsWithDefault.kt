@@ -1,3 +1,4 @@
+// FIR_IDENTICAL
 // JSPECIFY_STATE: strict
 // MUTE_FOR_PSI_CLASS_FILES_READING
 
@@ -24,12 +25,9 @@ fun main(
             b: WildcardsWithDefault
 ): Unit {
     b.noBoundsNotNull(aNotNullNotNullNotNull)
-    // jspecify_nullness_mismatch
-    b.noBoundsNotNull(<!TYPE_MISMATCH!>aNotNullNotNullNull<!>)
-    // jspecify_nullness_mismatch
-    b.noBoundsNotNull(<!TYPE_MISMATCH!>aNotNullNullNotNull<!>)
-    // jspecify_nullness_mismatch
-    b.noBoundsNotNull(<!TYPE_MISMATCH!>aNotNullNullNull<!>)
+    b.noBoundsNotNull(aNotNullNotNullNull)
+    b.noBoundsNotNull(aNotNullNullNotNull)
+    b.noBoundsNotNull(aNotNullNullNull)
 
     b.noBoundsNullable(aNotNullNotNullNotNull)
     b.noBoundsNullable(aNotNullNotNullNull)

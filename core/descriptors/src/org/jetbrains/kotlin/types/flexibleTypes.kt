@@ -26,7 +26,7 @@ import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 import org.jetbrains.kotlin.types.checker.ErrorTypesAreEqualToAnything
 import org.jetbrains.kotlin.types.checker.KotlinTypeChecker
 import org.jetbrains.kotlin.types.checker.KotlinTypeRefiner
-import org.jetbrains.kotlin.types.refinement.TypeRefinement
+import org.jetbrains.kotlin.types.TypeRefinement
 import org.jetbrains.kotlin.types.typeUtil.builtIns
 
 fun KotlinType.isFlexible(): Boolean = unwrap() is FlexibleType
@@ -136,6 +136,8 @@ class FlexibleTypeImpl(lowerBound: SimpleType, upperBound: SimpleType) : Flexibl
         return renderer.renderFlexibleType(renderer.renderType(lowerBound), renderer.renderType(upperBound), builtIns)
     }
 
+    override fun toString() = "($lowerBound..$upperBound)"
+
     override fun makeNullableAsSpecified(newNullability: Boolean): UnwrappedType = KotlinTypeFactory.flexibleType(
         lowerBound.makeNullableAsSpecified(newNullability),
         upperBound.makeNullableAsSpecified(newNullability)
@@ -172,12 +174,11 @@ object FlexibleTypeBoundsChecker {
         return possiblePairBound == b.constructor.declarationDescriptor?.fqNameSafe
     }
 
-    // We consider base bounds as not mutable collections
-    fun getBaseBoundFqNameByMutability(a: KotlinType): FqName? {
-        val fqName = a.constructor.declarationDescriptor?.fqNameSafe ?: return null
+    // We consider base bounds as readonly collection interfaces (e.g. kotlin.collections.Iterable).
+    fun getBaseBoundFqNameByMutability(type: KotlinType): FqName? =
+        type.constructor.declarationDescriptor?.fqNameSafe?.let(::getBaseBoundFqNameByMutability)
 
-        if (fqName in baseTypesToMutableEquivalent) return fqName
-
-        return mutableToBaseMap[fqName]
-    }
+    fun getBaseBoundFqNameByMutability(fqName: FqName): FqName? =
+        if (fqName in baseTypesToMutableEquivalent) fqName
+        else mutableToBaseMap[fqName]
 }

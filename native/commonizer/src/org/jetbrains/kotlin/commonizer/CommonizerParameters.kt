@@ -8,28 +8,38 @@ package org.jetbrains.kotlin.commonizer
 import org.jetbrains.kotlin.commonizer.konan.NativeManifestDataProvider
 import org.jetbrains.kotlin.commonizer.mergedtree.CirFictitiousFunctionClassifiers
 import org.jetbrains.kotlin.commonizer.mergedtree.CirProvidedClassifiers
+import org.jetbrains.kotlin.commonizer.mergedtree.CirProvidedClassifiersByModules
 import org.jetbrains.kotlin.commonizer.stats.StatsCollector
-import org.jetbrains.kotlin.commonizer.utils.ProgressLogger
+import org.jetbrains.kotlin.storage.LockBasedStorageManager
+import org.jetbrains.kotlin.storage.StorageManager
+import org.jetbrains.kotlin.util.Logger
 
 data class CommonizerParameters(
-    val outputTarget: SharedCommonizerTarget,
+    val outputTargets: Set<SharedCommonizerTarget>,
     val manifestProvider: TargetDependent<NativeManifestDataProvider>,
     val dependenciesProvider: TargetDependent<ModulesProvider?>,
     val targetProviders: TargetDependent<TargetProvider?>,
     val resultsConsumer: ResultsConsumer,
+    val storageManager: StorageManager = LockBasedStorageManager.NO_LOCKS,
     val statsCollector: StatsCollector? = null,
-    val logger: ProgressLogger? = null,
+    val logger: Logger? = null,
 )
 
 internal fun CommonizerParameters.dependencyClassifiers(target: CommonizerTarget): CirProvidedClassifiers {
-    val modules = outputTarget.withAllAncestors()
-        .sortedBy { it.level }
-        .filter { it == target || it isAncestorOf target }
-        .mapNotNull { compatibleTarget -> dependenciesProvider[compatibleTarget] }
+    val targetModulesProvider = targetProviders.getOrNull(target)?.modulesProvider
+    val dependenciesModulesProvider = dependenciesProvider[target]
 
-    return modules.fold<ModulesProvider, CirProvidedClassifiers>(CirFictitiousFunctionClassifiers) { classifiers, module ->
-        CirProvidedClassifiers.of(classifiers, CirProvidedClassifiers.by(module))
-    }
+    val providedByTarget = if (targetModulesProvider != null)
+        CirProvidedClassifiersByModules.loadExportedForwardDeclarations(targetModulesProvider) else null
+
+    val providedByDependencies = if (dependenciesModulesProvider != null)
+        CirProvidedClassifiers.of(
+            CirProvidedClassifiersByModules.load(dependenciesModulesProvider),
+            CirProvidedClassifiersByModules.loadExportedForwardDeclarations(dependenciesModulesProvider)
+        ) else null
+
+
+    return CirProvidedClassifiers.of(
+        *listOfNotNull(CirFictitiousFunctionClassifiers, providedByTarget, providedByDependencies).toTypedArray()
+    )
 }
-
-internal fun CommonizerParameters.with(logger: ProgressLogger?) = copy(logger = logger)

@@ -5,6 +5,7 @@
 
 package kotlin
 
+import kotlin.native.internal.GCUnsafeCall
 import kotlin.native.internal.TypedIntrinsic
 import kotlin.native.internal.IntrinsicType
 
@@ -12,38 +13,38 @@ import kotlin.native.internal.IntrinsicType
  * Returns `true` if the specified number is a
  * Not-a-Number (NaN) value, `false` otherwise.
  */
-@SymbolName("Kotlin_Double_isNaN")
+@GCUnsafeCall("Kotlin_Double_isNaN")
 public actual external fun Double.isNaN(): Boolean
 
 /**
  * Returns `true` if the specified number is a
  * Not-a-Number (NaN) value, `false` otherwise.
  */
-@SymbolName("Kotlin_Float_isNaN")
+@GCUnsafeCall("Kotlin_Float_isNaN")
 public actual external fun Float.isNaN(): Boolean
 
 /**
  * Returns `true` if this value is infinitely large in magnitude.
  */
-@SymbolName("Kotlin_Double_isInfinite")
+@GCUnsafeCall("Kotlin_Double_isInfinite")
 public actual external fun Double.isInfinite(): Boolean
 
 /**
  * Returns `true` if this value is infinitely large in magnitude.
  */
-@SymbolName("Kotlin_Float_isInfinite")
+@GCUnsafeCall("Kotlin_Float_isInfinite")
 public actual external fun Float.isInfinite(): Boolean
 
 /**
  * Returns `true` if the argument is a finite floating-point value; returns `false` otherwise (for `NaN` and infinity arguments).
  */
-@SymbolName("Kotlin_Double_isFinite")
+@GCUnsafeCall("Kotlin_Double_isFinite")
 public actual external fun Double.isFinite(): Boolean
 
 /**
  * Returns `true` if the argument is a finite floating-point value; returns `false` otherwise (for `NaN` and infinity arguments).
  */
-@SymbolName("Kotlin_Float_isFinite")
+@GCUnsafeCall("Kotlin_Float_isFinite")
 public actual external fun Float.isFinite(): Boolean
 
 /**
@@ -109,14 +110,14 @@ internal external fun fromBits(bits: Int): Float
  */
 @SinceKotlin("1.4")
 @WasExperimental(ExperimentalStdlibApi::class)
-@SymbolName("Kotlin_Int_countOneBits")
+@GCUnsafeCall("Kotlin_Int_countOneBits")
 public actual external fun Int.countOneBits(): Int
 
 /**
  * Counts the number of consecutive most significant bits that are zero in the binary representation of [Int] [value].
  * Returns undefined result for zero [value].
  */
-@SymbolName("Kotlin_Int_countLeadingZeroBits")
+@GCUnsafeCall("Kotlin_Int_countLeadingZeroBits")
 private external fun countLeadingZeroBits(value: Int): Int
 
 /**
@@ -131,7 +132,7 @@ public actual fun Int.countLeadingZeroBits(): Int =
  * Counts the number of consecutive least significant bits that are zero in the binary representation of [Int] [value].
  * Returns undefined result for zero [value].
  */
-@SymbolName("Kotlin_Int_countTrailingZeroBits")
+@GCUnsafeCall("Kotlin_Int_countTrailingZeroBits")
 private external fun countTrailingZeroBits(value: Int): Int
 
 /**
@@ -170,8 +171,8 @@ public actual fun Int.takeLowestOneBit(): Int =
  * Rotating by a multiple of [Int.SIZE_BITS] (32) returns the same number, or more generally
  * `number.rotateLeft(n) == number.rotateLeft(n % 32)`
  */
-@SinceKotlin("1.3")
-@ExperimentalStdlibApi
+@SinceKotlin("1.6")
+@WasExperimental(ExperimentalStdlibApi::class)
 public actual fun Int.rotateLeft(bitCount: Int): Int =
         shl(bitCount) or ushr(32 - bitCount)
 
@@ -186,8 +187,8 @@ public actual fun Int.rotateLeft(bitCount: Int): Int =
  * Rotating by a multiple of [Int.SIZE_BITS] (32) returns the same number, or more generally
  * `number.rotateRight(n) == number.rotateRight(n % 32)`
  */
-@SinceKotlin("1.3")
-@ExperimentalStdlibApi
+@SinceKotlin("1.6")
+@WasExperimental(ExperimentalStdlibApi::class)
 public actual fun Int.rotateRight(bitCount: Int): Int =
         shl(32 - bitCount) or ushr(bitCount)
 
@@ -197,14 +198,14 @@ public actual fun Int.rotateRight(bitCount: Int): Int =
  */
 @SinceKotlin("1.4")
 @WasExperimental(ExperimentalStdlibApi::class)
-@SymbolName("Kotlin_Long_countOneBits")
+@GCUnsafeCall("Kotlin_Long_countOneBits")
 public actual external fun Long.countOneBits(): Int
 
 /**
  * Counts the number of consecutive most significant bits that are zero in the binary representation of [Long] [value].
  * Returns undefined result for zero [value].
  */
-@SymbolName("Kotlin_Long_countLeadingZeroBits")
+@GCUnsafeCall("Kotlin_Long_countLeadingZeroBits")
 private external fun countLeadingZeroBits(value: Long): Int
 
 /**
@@ -219,7 +220,7 @@ public actual fun Long.countLeadingZeroBits(): Int =
  * Counts the number of consecutive least significant bits that are zero in the binary representation of [Long] [value].
  * Returns undefined result for zero [value].
  */
-@SymbolName("Kotlin_Long_countTrailingZeroBits")
+@GCUnsafeCall("Kotlin_Long_countTrailingZeroBits")
 private external fun countTrailingZeroBits(value: Long): Int
 
 /**
@@ -258,8 +259,8 @@ public actual fun Long.takeLowestOneBit(): Long =
  * Rotating by a multiple of [Long.SIZE_BITS] (64) returns the same number, or more generally
  * `number.rotateLeft(n) == number.rotateLeft(n % 64)`
  */
-@SinceKotlin("1.3")
-@ExperimentalStdlibApi
+@SinceKotlin("1.6")
+@WasExperimental(ExperimentalStdlibApi::class)
 public actual fun Long.rotateLeft(bitCount: Int): Long =
         shl(bitCount) or ushr(64 - bitCount)
 
@@ -273,8 +274,8 @@ public actual fun Long.rotateLeft(bitCount: Int): Long =
  * Rotating by a multiple of [Long.SIZE_BITS] (64) returns the same number, or more generally
  * `number.rotateRight(n) == number.rotateRight(n % 64)`
  */
-@SinceKotlin("1.3")
-@ExperimentalStdlibApi
+@SinceKotlin("1.6")
+@WasExperimental(ExperimentalStdlibApi::class)
 @kotlin.internal.InlineOnly
 public actual inline fun Long.rotateRight(bitCount: Int): Long =
         shl(64 - bitCount) or ushr(bitCount)

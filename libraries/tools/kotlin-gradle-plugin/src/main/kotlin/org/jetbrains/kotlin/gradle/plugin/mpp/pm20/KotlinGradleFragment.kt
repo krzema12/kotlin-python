@@ -11,7 +11,8 @@ import org.gradle.api.Project
 import org.gradle.api.file.SourceDirectorySet
 import org.gradle.api.provider.Provider
 import org.gradle.util.ConfigureUtil
-import org.jetbrains.kotlin.gradle.plugin.*
+import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
+import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
 import org.jetbrains.kotlin.gradle.plugin.mpp.DefaultKotlinDependencyHandler
 import org.jetbrains.kotlin.gradle.plugin.mpp.toModuleDependency
 import org.jetbrains.kotlin.gradle.plugin.sources.DefaultLanguageSettingsBuilder
@@ -19,6 +20,7 @@ import org.jetbrains.kotlin.gradle.plugin.sources.FragmentConsistencyChecker
 import org.jetbrains.kotlin.gradle.plugin.sources.FragmentConsistencyChecks
 import org.jetbrains.kotlin.gradle.utils.addExtendsFromRelation
 import org.jetbrains.kotlin.gradle.utils.lowerCamelCaseName
+import org.jetbrains.kotlin.gradle.utils.runProjectConfigurationHealthCheckWhenEvaluated
 import org.jetbrains.kotlin.project.model.KotlinModuleDependency
 import org.jetbrains.kotlin.project.model.KotlinModuleFragment
 import org.jetbrains.kotlin.project.model.refinesClosure
@@ -37,7 +39,7 @@ open class KotlinGradleFragmentInternal @Inject constructor(
     // TODO pull up to KotlinModuleFragment
     // FIXME apply to compilation
     // FIXME check for consistency
-    override val languageSettings: LanguageSettingsBuilder = DefaultLanguageSettingsBuilder()
+    override val languageSettings: LanguageSettingsBuilder = DefaultLanguageSettingsBuilder(project)
 
     override fun refines(other: KotlinGradleFragment) {
         checkCanRefine(other)
@@ -54,7 +56,7 @@ open class KotlinGradleFragmentInternal @Inject constructor(
             project.addExtendsFromRelation(getConfiguration(this), getConfiguration(other.get())) // todo eager instantiation; fix?
         }
 
-        project.whenEvaluated {
+        project.runProjectConfigurationHealthCheckWhenEvaluated {
             kotlinGradleFragmentConsistencyChecker.runAllChecks(this@KotlinGradleFragmentInternal, other.get())
         }
     }

@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors
 import org.jetbrains.kotlin.fir.analysis.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirTypeParameterRefsOwner
-import org.jetbrains.kotlin.fir.declarations.getDanglingTypeConstraintsOrEmpty
+import org.jetbrains.kotlin.fir.declarations.utils.getDanglingTypeConstraintsOrEmpty
 
 object FirTypeConstraintsChecker : FirBasicDeclarationChecker() {
 
@@ -24,7 +24,7 @@ object FirTypeConstraintsChecker : FirBasicDeclarationChecker() {
                 constraint.source,
                 FirErrors.NAME_IN_CONSTRAINT_IS_NOT_A_TYPE_PARAMETER,
                 constraint.name,
-                declaration,
+                declaration.symbol,
                 context
             )
         }

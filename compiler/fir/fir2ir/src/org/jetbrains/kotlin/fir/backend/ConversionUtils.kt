@@ -8,12 +8,16 @@ package org.jetbrains.kotlin.fir.backend
 import com.intellij.psi.PsiCompiledElement
 import org.jetbrains.kotlin.KtNodeTypes
 import org.jetbrains.kotlin.descriptors.ClassKind
+import org.jetbrains.kotlin.descriptors.InlineClassRepresentation
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.*
 import org.jetbrains.kotlin.fir.backend.generators.FakeOverrideGenerator
 import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.declarations.synthetic.FirSyntheticProperty
+import org.jetbrains.kotlin.fir.declarations.utils.isInline
+import org.jetbrains.kotlin.fir.declarations.utils.isJava
+import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
 import org.jetbrains.kotlin.fir.expressions.FirConstExpression
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccess
@@ -26,10 +30,11 @@ import org.jetbrains.kotlin.fir.resolve.*
 import org.jetbrains.kotlin.fir.resolve.calls.FirSyntheticPropertySymbol
 import org.jetbrains.kotlin.fir.resolve.calls.originalConstructorIfTypeAlias
 import org.jetbrains.kotlin.fir.resolve.providers.FirProvider
-import org.jetbrains.kotlin.fir.scopes.*
-import org.jetbrains.kotlin.fir.scopes.impl.delegatedWrapperData
-import org.jetbrains.kotlin.fir.symbols.AbstractFirBasedSymbol
+import org.jetbrains.kotlin.fir.scopes.FirTypeScope
+import org.jetbrains.kotlin.fir.scopes.ProcessorAction
+import org.jetbrains.kotlin.fir.scopes.unsubstitutedScope
 import org.jetbrains.kotlin.fir.symbols.AccessorSymbol
+import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.ir.IrElement
@@ -47,7 +52,7 @@ import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.types.impl.IrErrorTypeImpl
 import org.jetbrains.kotlin.ir.util.SymbolTable
 import org.jetbrains.kotlin.ir.util.functions
-import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.psi.KtQualifiedExpression
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.startOffsetSkippingComments
@@ -139,7 +144,7 @@ fun FirClassifierSymbol<*>.toSymbol(
     }
 }
 
-private fun AbstractFirBasedSymbol<*>.toSymbolForCall(
+private fun FirBasedSymbol<*>.toSymbolForCall(
     session: FirSession,
     classifierStorage: Fir2IrClassifierStorage,
     declarationStorage: Fir2IrDeclarationStorage,
@@ -192,7 +197,7 @@ private fun FirCallableSymbol<*>.toSymbolForCall(declarationStorage: Fir2IrDecla
         is FirPropertySymbol -> declarationStorage.getIrPropertySymbol(this)
         is FirFieldSymbol -> declarationStorage.getIrFieldSymbol(this)
         is FirBackingFieldSymbol -> declarationStorage.getIrBackingFieldSymbol(this)
-        is FirDelegateFieldSymbol<*> -> declarationStorage.getIrBackingFieldSymbol(this)
+        is FirDelegateFieldSymbol -> declarationStorage.getIrBackingFieldSymbol(this)
         is FirVariableSymbol<*> -> declarationStorage.getIrValueSymbol(this)
         else -> null
     }
@@ -274,7 +279,7 @@ internal tailrec fun FirCallableSymbol<*>.unwrapCallRepresentative(root: FirCall
         // interface B { fun foo() }
         // interface C : A, B // for C.foo we've got an IR fake override
         // for {A & B} we don't have such an IR declaration, so we're unwrapping it
-        if (fir is FirCallableMemberDeclaration && fir.dispatchReceiverType is ConeIntersectionType) {
+        if (fir.dispatchReceiverType is ConeIntersectionType) {
             return fir.baseForIntersectionOverride!!.symbol.unwrapCallRepresentative(this)
         }
 
@@ -288,28 +293,38 @@ internal tailrec fun FirCallableSymbol<*>.unwrapCallRepresentative(root: FirCall
     return overriddenSymbol.unwrapCallRepresentative(this)
 }
 
+internal fun FirSimpleFunction.processOverriddenFunctionSymbols(
+    containingClass: FirClass,
+    session: FirSession,
+    scopeSession: ScopeSession,
+    processor: (FirNamedFunctionSymbol) -> Unit
+) {
+    val scope = containingClass.unsubstitutedScope(session, scopeSession, withForcedTypeCalculator = true)
+    scope.processFunctionsByName(name) {}
+    scope.processOverriddenFunctionsFromSuperClasses(symbol, containingClass) {
+        if (it.fir.visibility == Visibilities.Private) {
+            return@processOverriddenFunctionsFromSuperClasses ProcessorAction.NEXT
+        }
+        processor(it)
+
+        ProcessorAction.NEXT
+    }
+}
+
 internal fun FirSimpleFunction.generateOverriddenFunctionSymbols(
-    containingClass: FirClass<*>,
+    containingClass: FirClass,
     session: FirSession,
     scopeSession: ScopeSession,
     declarationStorage: Fir2IrDeclarationStorage,
     fakeOverrideGenerator: FakeOverrideGenerator,
 ): List<IrSimpleFunctionSymbol> {
     val superClasses = containingClass.getSuperTypesAsIrClasses(declarationStorage) ?: return emptyList()
-
-    val scope = containingClass.unsubstitutedScope(session, scopeSession, withForcedTypeCalculator = true)
-    scope.processFunctionsByName(name) {}
     val overriddenSet = mutableSetOf<IrSimpleFunctionSymbol>()
-    scope.processOverriddenFunctionsFromSuperClasses(symbol, containingClass) {
-        if (it.fir.visibility == Visibilities.Private) {
-            return@processOverriddenFunctionsFromSuperClasses ProcessorAction.NEXT
-        }
 
+    processOverriddenFunctionSymbols(containingClass, session, scopeSession) {
         for (overridden in fakeOverrideGenerator.getOverriddenSymbolsInSupertypes(it, superClasses)) {
             overriddenSet += overridden
         }
-
-        ProcessorAction.NEXT
     }
 
     return overriddenSet.toList()
@@ -317,15 +332,11 @@ internal fun FirSimpleFunction.generateOverriddenFunctionSymbols(
 
 fun FirTypeScope.processOverriddenFunctionsFromSuperClasses(
     functionSymbol: FirNamedFunctionSymbol,
-    containingClass: FirClass<*>,
+    containingClass: FirClass,
     processor: (FirNamedFunctionSymbol) -> ProcessorAction
 ): ProcessorAction = processDirectOverriddenFunctionsWithBaseScope(functionSymbol) { overridden, baseScope ->
-    val unwrapped =
-        overridden.fir.delegatedWrapperData?.takeIf { it.containingClass == containingClass.symbol.toLookupTag() }?.wrapped?.symbol
-            ?: overridden
-
-    if (unwrapped.containingClass() == containingClass.symbol.toLookupTag()) {
-        baseScope.processOverriddenFunctionsFromSuperClasses(unwrapped, containingClass, processor)
+    if (overridden.containingClass() == containingClass.symbol.toLookupTag()) {
+        baseScope.processOverriddenFunctionsFromSuperClasses(overridden, containingClass, processor)
     } else {
         processor(overridden)
     }
@@ -333,7 +344,7 @@ fun FirTypeScope.processOverriddenFunctionsFromSuperClasses(
 
 fun FirTypeScope.processOverriddenPropertiesFromSuperClasses(
     propertySymbol: FirPropertySymbol,
-    containingClass: FirClass<*>,
+    containingClass: FirClass,
     processor: (FirPropertySymbol) -> ProcessorAction
 ): ProcessorAction = processDirectOverriddenPropertiesWithBaseScope(propertySymbol) { overridden, baseScope ->
     if (overridden.containingClass() == containingClass.symbol.toLookupTag()) {
@@ -343,7 +354,7 @@ fun FirTypeScope.processOverriddenPropertiesFromSuperClasses(
     }
 }
 
-private fun FirClass<*>.getSuperTypesAsIrClasses(
+private fun FirClass.getSuperTypesAsIrClasses(
     declarationStorage: Fir2IrDeclarationStorage
 ): Set<IrClass>? {
     val irClass =
@@ -352,15 +363,12 @@ private fun FirClass<*>.getSuperTypesAsIrClasses(
     return irClass.superTypes.mapNotNull { it.classifierOrNull?.owner as? IrClass }.toSet()
 }
 
-internal fun FirProperty.generateOverriddenPropertySymbols(
-    containingClass: FirClass<*>,
+internal fun FirProperty.processOverriddenPropertySymbols(
+    containingClass: FirClass,
     session: FirSession,
     scopeSession: ScopeSession,
-    declarationStorage: Fir2IrDeclarationStorage,
-    fakeOverrideGenerator: FakeOverrideGenerator,
+    processor: (FirPropertySymbol) -> Unit
 ): List<IrPropertySymbol> {
-    val superClasses = containingClass.getSuperTypesAsIrClasses(declarationStorage) ?: return emptyList()
-
     val scope = containingClass.unsubstitutedScope(session, scopeSession, withForcedTypeCalculator = true)
     scope.processPropertiesByName(name) {}
     val overriddenSet = mutableSetOf<IrPropertySymbol>()
@@ -368,10 +376,7 @@ internal fun FirProperty.generateOverriddenPropertySymbols(
         if (it.fir.visibility == Visibilities.Private) {
             return@processOverriddenPropertiesFromSuperClasses ProcessorAction.NEXT
         }
-
-        for (overridden in fakeOverrideGenerator.getOverriddenSymbolsInSupertypes(it, superClasses)) {
-            overriddenSet += overridden
-        }
+        processor(it)
 
         ProcessorAction.NEXT
     }
@@ -379,8 +384,27 @@ internal fun FirProperty.generateOverriddenPropertySymbols(
     return overriddenSet.toList()
 }
 
+internal fun FirProperty.generateOverriddenPropertySymbols(
+    containingClass: FirClass,
+    session: FirSession,
+    scopeSession: ScopeSession,
+    declarationStorage: Fir2IrDeclarationStorage,
+    fakeOverrideGenerator: FakeOverrideGenerator,
+): List<IrPropertySymbol> {
+    val superClasses = containingClass.getSuperTypesAsIrClasses(declarationStorage) ?: return emptyList()
+    val overriddenSet = mutableSetOf<IrPropertySymbol>()
+
+    processOverriddenPropertySymbols(containingClass, session, scopeSession) {
+        for (overridden in fakeOverrideGenerator.getOverriddenSymbolsInSupertypes(it, superClasses)) {
+            overriddenSet += overridden
+        }
+    }
+
+    return overriddenSet.toList()
+}
+
 internal fun FirProperty.generateOverriddenAccessorSymbols(
-    containingClass: FirClass<*>,
+    containingClass: FirClass,
     isGetter: Boolean,
     session: FirSession,
     scopeSession: ScopeSession,
@@ -452,16 +476,16 @@ internal fun IrDeclarationParent.declareThisReceiverParameter(
 ): IrValueParameter =
     symbolTable.irFactory.createValueParameter(
         startOffset, endOffset, thisOrigin, IrValueParameterSymbolImpl(),
-        Name.special("<this>"), UNDEFINED_PARAMETER_INDEX, thisType,
+        SpecialNames.THIS, UNDEFINED_PARAMETER_INDEX, thisType,
         varargElementType = null, isCrossinline = false, isNoinline = false,
         isHidden = false, isAssignable = false
     ).apply {
         this.parent = this@declareThisReceiverParameter
     }
 
-fun FirClass<*>.irOrigin(firProvider: FirProvider): IrDeclarationOrigin = when {
+fun FirClass.irOrigin(firProvider: FirProvider): IrDeclarationOrigin = when {
     firProvider.getFirClassifierContainerFileIfAny(symbol) != null -> IrDeclarationOrigin.DEFINED
-    origin == FirDeclarationOrigin.Java -> IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB
+    isJava -> IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB
     else -> IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB
 }
 
@@ -524,3 +548,14 @@ fun Fir2IrComponents.createTemporaryVariableForSafeCallConstruction(
     conversionScope: Fir2IrConversionScope
 ): Pair<IrVariable, IrValueSymbol> =
     createTemporaryVariable(receiverExpression, conversionScope, "safe_receiver")
+
+// TODO: implement inlineClassRepresentation in FirRegularClass instead.
+fun Fir2IrComponents.computeInlineClassRepresentation(klass: FirRegularClass): InlineClassRepresentation<IrSimpleType>? {
+    if (!klass.isInline) return null
+    val parameter = klass.getInlineClassUnderlyingParameter() ?: error("Inline class has no underlying parameter: ${klass.render()}")
+    val underlyingType = parameter.returnTypeRef.toIrType(typeConverter)
+    return InlineClassRepresentation(
+        parameter.name,
+        underlyingType as? IrSimpleType ?: error("Inline class underlying type is not a simple type: ${klass.render()}")
+    )
+}

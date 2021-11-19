@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -14,10 +14,12 @@ import com.intellij.psi.PsiManager
 import junit.framework.TestCase
 import org.jetbrains.kotlin.checkers.CompilerTestLanguageVersionSettings
 import org.jetbrains.kotlin.checkers.parseLanguageVersionSettings
+import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
 import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
 import org.jetbrains.kotlin.cli.common.messages.PrintingMessageCollector
 import org.jetbrains.kotlin.cli.common.output.writeAllTo
+import org.jetbrains.kotlin.cli.js.resolve
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.config.*
@@ -25,6 +27,7 @@ import org.jetbrains.kotlin.idea.KotlinFileType
 import org.jetbrains.kotlin.incremental.js.IncrementalDataProviderImpl
 import org.jetbrains.kotlin.incremental.js.IncrementalResultsConsumerImpl
 import org.jetbrains.kotlin.incremental.js.TranslationResultValue
+import org.jetbrains.kotlin.ir.backend.js.ic.SerializedIcData
 import org.jetbrains.kotlin.js.JavaScript
 import org.jetbrains.kotlin.js.backend.JsToStringGenerationVisitor
 import org.jetbrains.kotlin.js.backend.ast.*
@@ -41,8 +44,10 @@ import org.jetbrains.kotlin.js.parser.sourcemaps.SourceMapParser
 import org.jetbrains.kotlin.js.parser.sourcemaps.SourceMapSuccess
 import org.jetbrains.kotlin.js.sourceMap.SourceFilePathResolver
 import org.jetbrains.kotlin.js.sourceMap.SourceMap3Builder
+import org.jetbrains.kotlin.js.sourceMap.SourceMapBuilderConsumer
 import org.jetbrains.kotlin.js.test.utils.*
 import org.jetbrains.kotlin.js.util.TextOutputImpl
+import org.jetbrains.kotlin.library.KotlinAbiVersion
 import org.jetbrains.kotlin.metadata.DebugProtoBuf
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtNamedFunction
@@ -147,8 +152,16 @@ abstract class BasicBoxTest(
 
         val skipDceDriven = SKIP_DCE_DRIVEN.matcher(fileContent).find()
         val splitPerModule = SPLIT_PER_MODULE.matcher(fileContent).find()
+        val skipMangleVerification = SKIP_MANGLE_VERIFICATION.matcher(fileContent).find()
 
         val propertyLazyInitialization = PROPERTY_LAZY_INITIALIZATION.matcher(fileContent).find()
+        val safeExternalBoolean = SAFE_EXTERNAL_BOOLEAN.matcher(fileContent).find()
+        val safeExternalBooleanDiagnosticMatcher = SAFE_EXTERNAL_BOOLEAN_DIAGNOSTIC.matcher(fileContent)
+
+        val safeExternalBooleanDiagnostic =
+            if (safeExternalBooleanDiagnosticMatcher.find())
+                RuntimeDiagnostic.resolve(safeExternalBooleanDiagnosticMatcher.group(1))
+            else null
 
         TestFileFactoryImpl().use { testFactory ->
             val inputFiles = TestFiles.createTestFiles(
@@ -178,6 +191,7 @@ abstract class BasicBoxTest(
             }
             val testModuleName = if (runPlainBoxFunction) null else mainModuleName
             val mainModule = modules[mainModuleName] ?: error("No module with name \"$mainModuleName\"")
+            val icCache = mutableMapOf<String, SerializedIcData>()
 
             val generatedJsFiles = orderedModules.asReversed().mapNotNull { module ->
                 val dependencies = module.dependenciesSymbols.map { modules[it]?.outputFileName(outputDir) + ".meta.js" }
@@ -187,6 +201,7 @@ abstract class BasicBoxTest(
                 val outputFileName = module.outputFileName(outputDir) + ".js"
                 val dceOutputFileName = module.outputFileName(dceOutputDir) + ".js"
                 val pirOutputFileName = module.outputFileName(pirOutputDir) + ".js"
+                val abiVersion = module.abiVersion
                 val isMainModule = mainModuleName == module.name
 
                 logger.logFile("Output JS", File(outputFileName))
@@ -213,7 +228,12 @@ abstract class BasicBoxTest(
                     skipDceDriven,
                     splitPerModule,
                     errorPolicy,
-                    propertyLazyInitialization
+                    propertyLazyInitialization,
+                    safeExternalBoolean,
+                    safeExternalBooleanDiagnostic,
+                    skipMangleVerification,
+                    abiVersion,
+                    icCache
                 )
 
                 when {
@@ -467,6 +487,11 @@ abstract class BasicBoxTest(
         splitPerModule: Boolean,
         errorIgnorancePolicy: ErrorTolerancePolicy,
         propertyLazyInitialization: Boolean,
+        safeExternalBoolean: Boolean,
+        safeExternalBooleanDiagnostic: RuntimeDiagnostic?,
+        skipMangleVerification: Boolean,
+        abiVersion: KotlinAbiVersion,
+        icCache: MutableMap<String, SerializedIcData>
     ) {
         val kotlinFiles = module.files.filter { it.fileName.endsWith(".kt") }
         val testFiles = kotlinFiles.map { it.fileName }
@@ -517,6 +542,11 @@ abstract class BasicBoxTest(
             skipDceDriven,
             splitPerModule,
             propertyLazyInitialization,
+            safeExternalBoolean,
+            safeExternalBooleanDiagnostic,
+            skipMangleVerification,
+            abiVersion,
+            icCache
         )
 
         if (incrementalCompilationChecksEnabled && module.hasFilesToRecompile) {
@@ -607,10 +637,15 @@ abstract class BasicBoxTest(
             testPackage,
             testFunction,
             needsFullIrRuntime,
-           isMainModule = false,
-           skipDceDriven = true,
-           splitPerModule = false,
+            isMainModule = false,
+            skipDceDriven = true,
+            splitPerModule = false,
             propertyLazyInitialization = false,
+            safeExternalBoolean = false,
+            safeExternalBooleanDiagnostic = null,
+            skipMangleVerification = false,
+            abiVersion = KotlinAbiVersion.CURRENT,
+            mutableMapOf()
         )
 
         val originalOutput = FileUtil.loadFile(outputFile)
@@ -690,6 +725,11 @@ abstract class BasicBoxTest(
         skipDceDriven: Boolean,
         splitPerModule: Boolean,
         propertyLazyInitialization: Boolean,
+        safeExternalBoolean: Boolean,
+        safeExternalBooleanDiagnostic: RuntimeDiagnostic?,
+        skipMangleVerification: Boolean,
+        abiVersion: KotlinAbiVersion,
+        icCache: MutableMap<String, SerializedIcData>
     ) {
         val translator = K2JSTranslator(config, false)
         val translationResult = translator.translateUnits(ExceptionThrowingReporter, units, mainCallParameters)
@@ -953,7 +993,7 @@ abstract class BasicBoxTest(
     private inner class TestFileFactoryImpl() : TestFiles.TestFileFactory<TestModule, TestFile>, Closeable {
         var testPackage: String? = null
         val tmpDir = KtTestUtil.tmpDir("js-tests")
-        val defaultModule = TestModule(TEST_MODULE, emptyList(), emptyList())
+        val defaultModule = TestModule(TEST_MODULE, emptyList(), emptyList(), KotlinAbiVersion.CURRENT)
         var languageVersionSettings: LanguageVersionSettings? = null
 
         override fun createFile(module: TestModule?, fileName: String, text: String, directives: Directives): TestFile? {
@@ -1016,8 +1056,13 @@ abstract class BasicBoxTest(
             )
         }
 
-        override fun createModule(name: String, dependencies: List<String>, friends: List<String>) =
-            TestModule(name, dependencies, friends)
+        override fun createModule(name: String, dependencies: List<String>, friends: List<String>, abiVersions: List<Int>): TestModule {
+            val abiVersion = if (abiVersions.isEmpty()) KotlinAbiVersion.CURRENT else {
+                assert(abiVersions.size == 3)
+                KotlinAbiVersion(abiVersions[0], abiVersions[1], abiVersions[2])
+            }
+            return TestModule(name, dependencies, friends, abiVersion)
+        }
 
         override fun close() {
             FileUtil.delete(tmpDir)
@@ -1033,7 +1078,8 @@ abstract class BasicBoxTest(
     private class TestModule(
         name: String,
         dependencies: List<String>,
-        friends: List<String>
+        friends: List<String>,
+        val abiVersion: KotlinAbiVersion
     ) : KotlinBaseTest.TestModule(name, dependencies, friends) {
         var moduleKind = ModuleKind.PLAIN
         var inliningDisabled = false
@@ -1088,10 +1134,14 @@ abstract class BasicBoxTest(
         private val EXPECT_ACTUAL_LINKER = Pattern.compile("^// EXPECT_ACTUAL_LINKER *$", Pattern.MULTILINE)
         private val SKIP_DCE_DRIVEN = Pattern.compile("^// *SKIP_DCE_DRIVEN *$", Pattern.MULTILINE)
         private val SPLIT_PER_MODULE = Pattern.compile("^// *SPLIT_PER_MODULE *$", Pattern.MULTILINE)
+        private val SKIP_MANGLE_VERIFICATION = Pattern.compile("^// *SKIP_MANGLE_VERIFICATION *$", Pattern.MULTILINE)
 
         private val ERROR_POLICY_PATTERN = Pattern.compile("^// *ERROR_POLICY: *(.+)$", Pattern.MULTILINE)
 
         private val PROPERTY_LAZY_INITIALIZATION = Pattern.compile("^// *PROPERTY_LAZY_INITIALIZATION *$", Pattern.MULTILINE)
+
+        private val SAFE_EXTERNAL_BOOLEAN = Pattern.compile("^// *SAFE_EXTERNAL_BOOLEAN *$", Pattern.MULTILINE)
+        private val SAFE_EXTERNAL_BOOLEAN_DIAGNOSTIC = Pattern.compile("^// *SAFE_EXTERNAL_BOOLEAN_DIAGNOSTIC: *(.+)$", Pattern.MULTILINE)
 
         @JvmStatic
         protected val runTestInNashorn = getBoolean("kotlin.js.useNashorn")
@@ -1126,5 +1176,16 @@ class KotlinJsTestLogger {
         if (verbose) {
             println("TEST_LOG: $description file://${file.absolutePath}")
         }
+    }
+}
+
+fun RuntimeDiagnostic.Companion.resolve(
+    value: String?,
+): RuntimeDiagnostic? = when (value?.lowercase()) {
+    K2JsArgumentConstants.RUNTIME_DIAGNOSTIC_LOG -> RuntimeDiagnostic.LOG
+    K2JsArgumentConstants.RUNTIME_DIAGNOSTIC_EXCEPTION -> RuntimeDiagnostic.EXCEPTION
+    null -> null
+    else -> {
+        null
     }
 }

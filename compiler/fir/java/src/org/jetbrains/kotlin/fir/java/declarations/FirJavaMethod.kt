@@ -5,10 +5,8 @@
 
 package org.jetbrains.kotlin.fir.java.declarations
 
-import org.jetbrains.kotlin.descriptors.Modality
-import org.jetbrains.kotlin.descriptors.Visibility
 import org.jetbrains.kotlin.fir.FirImplementationDetail
-import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.builder.FirAnnotationContainerBuilder
 import org.jetbrains.kotlin.fir.builder.FirBuilderDsl
@@ -51,7 +49,8 @@ import kotlin.properties.Delegates
 @OptIn(FirImplementationDetail::class)
 class FirJavaMethod @FirImplementationDetail constructor(
     override val source: FirSourceElement?,
-    override val declarationSiteSession: FirSession,
+    override val moduleData: FirModuleData,
+    @Volatile
     override var resolvePhase: FirResolvePhase,
     override val attributes: FirDeclarationAttributes,
     override var returnTypeRef: FirTypeRef,
@@ -85,6 +84,9 @@ class FirJavaMethod @FirImplementationDetail constructor(
     override var controlFlowGraphReference: FirControlFlowGraphReference? = null
 
     override val annotations: List<FirAnnotationCall> by lazy { annotationBuilder() }
+
+    //not used actually, because get 'enhanced' into regular FirSimpleFunction
+    override var deprecation: DeprecationsPerUseSite? = null
 
     override fun <R, D> acceptChildren(visitor: FirVisitor<R, D>, data: D) {
         returnTypeRef.accept(visitor, data)
@@ -158,6 +160,10 @@ class FirJavaMethod @FirImplementationDetail constructor(
     override fun replaceReceiverTypeRef(newReceiverTypeRef: FirTypeRef?) {
     }
 
+    override fun replaceDeprecation(newDeprecation: DeprecationsPerUseSite?) {
+        deprecation = newDeprecation
+    }
+
     override fun replaceControlFlowGraphReference(newControlFlowGraphReference: FirControlFlowGraphReference?) {
         controlFlowGraphReference = newControlFlowGraphReference
     }
@@ -181,27 +187,39 @@ val ALL_JAVA_OPERATION_NAMES =
 @FirBuilderDsl
 class FirJavaMethodBuilder : FirFunctionBuilder, FirTypeParametersOwnerBuilder, FirAnnotationContainerBuilder {
     override var source: FirSourceElement? = null
-    override lateinit var declarationSiteSession: FirSession
+    override lateinit var moduleData: FirModuleData
     override var attributes: FirDeclarationAttributes = FirDeclarationAttributes()
     override lateinit var returnTypeRef: FirTypeRef
     override val valueParameters: MutableList<FirValueParameter> = mutableListOf()
     override var body: FirBlock? = null
-    lateinit var status: FirDeclarationStatus
-    var dispatchReceiverType: ConeKotlinType? = null
+    override lateinit var status: FirDeclarationStatus
+    override var dispatchReceiverType: ConeKotlinType? = null
     lateinit var name: Name
     lateinit var symbol: FirNamedFunctionSymbol
     override val annotations: MutableList<FirAnnotationCall> = mutableListOf()
     override val typeParameters: MutableList<FirTypeParameter> = mutableListOf()
-    lateinit var visibility: Visibility
-    var modality: Modality? = null
     var isStatic: Boolean by Delegates.notNull()
     override var resolvePhase: FirResolvePhase = FirResolvePhase.ANALYZED_DEPENDENCIES
     lateinit var annotationBuilder: () -> List<FirAnnotationCall>
 
+    @Deprecated("Modification of 'deprecation' has no impact for FirJavaFunctionBuilder", level = DeprecationLevel.HIDDEN)
+    override var deprecation: DeprecationsPerUseSite?
+        get() = throw IllegalStateException()
+        set(_) {
+            throw IllegalStateException()
+        }
+
+    @Deprecated("Modification of 'containerSource' has no impact for FirJavaFunctionBuilder", level = DeprecationLevel.HIDDEN)
+    override var containerSource: DeserializedContainerSource?
+        get() = throw IllegalStateException()
+        set(_) {
+            throw IllegalStateException()
+        }
+
     @Deprecated("Modification of 'origin' has no impact for FirJavaFunctionBuilder", level = DeprecationLevel.HIDDEN)
     override var origin: FirDeclarationOrigin
         get() = throw IllegalStateException()
-        set(@Suppress("UNUSED_PARAMETER") value) {
+        set(_) {
             throw IllegalStateException()
         }
 
@@ -209,7 +227,7 @@ class FirJavaMethodBuilder : FirFunctionBuilder, FirTypeParametersOwnerBuilder, 
     override fun build(): FirJavaMethod {
         return FirJavaMethod(
             source,
-            declarationSiteSession,
+            moduleData,
             resolvePhase,
             attributes,
             returnTypeRef as FirJavaTypeRef,
@@ -219,7 +237,7 @@ class FirJavaMethodBuilder : FirFunctionBuilder, FirTypeParametersOwnerBuilder, 
             status,
             symbol,
             annotationBuilder,
-            dispatchReceiverType,
+            dispatchReceiverType
         )
     }
 }
@@ -235,7 +253,7 @@ inline fun buildJavaMethodCopy(original: FirSimpleFunction, init: FirJavaMethodB
     }
     val copyBuilder = FirJavaMethodBuilder()
     copyBuilder.source = original.source
-    copyBuilder.declarationSiteSession = original.declarationSiteSession
+    copyBuilder.moduleData = original.moduleData
     copyBuilder.resolvePhase = original.resolvePhase
     copyBuilder.attributes = original.attributes.copy()
     copyBuilder.returnTypeRef = original.returnTypeRef

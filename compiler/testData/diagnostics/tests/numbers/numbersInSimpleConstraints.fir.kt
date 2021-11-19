@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // !CHECK_TYPE
 package a
 
@@ -17,9 +16,9 @@ fun <T> otherGeneric(l: List<T>) {}
 fun test() {
     val a: Byte = id(1)
 
-    val b: Byte = id(300)
+    val b: Byte = <!TYPE_MISMATCH!>id(300)<!>
 
-    val c: Int = <!INITIALIZER_TYPE_MISMATCH!>id(9223372036854775807)<!>
+    val c: Int = <!INITIALIZER_TYPE_MISMATCH, TYPE_MISMATCH!>id(9223372036854775807)<!>
 
     val d = id(22)
     checkSubtype<Int>(d)
@@ -29,7 +28,7 @@ fun test() {
 
     val f: Byte = either(1, 2)
 
-    val g: Byte = either(1, 300)
+    val g: Byte = <!TYPE_MISMATCH!>either(1, 300)<!>
 
     other(<!ARGUMENT_TYPE_MISMATCH!>11<!>)
 

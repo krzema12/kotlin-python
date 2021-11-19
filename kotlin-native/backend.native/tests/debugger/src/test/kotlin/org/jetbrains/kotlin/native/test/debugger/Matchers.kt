@@ -148,6 +148,10 @@ class ToolDriverHelper(private val driver: ToolDriver, val root:Path) {
         driver.compile(it, this, "-produce", "framework", *args)
     }
 
+    fun Array<Path>.binary(name:String, vararg args:String = emptyArray()):Path = root.resolve("$name.kexe").also {
+        driver.compile(it, this, *args)
+    }
+
     fun swiftc(output: String, swiftSrc: Path, vararg args: String) = root.resolve(output).also {
         driver.swiftc(it, swiftSrc, *args, "-Xlinker", "-rpath", "-Xlinker", "@executable_path")
     }
@@ -169,7 +173,7 @@ fun dwarfDumpComplexTest(test:ToolDriverHelper.()->Unit) {
 
     with(Files.createTempDirectory("dwarfdump_test_complex")) {
         toFile().deleteOnExit()
-        val driver = ToolDriverHelper(ToolDriver(), this).test()
+        ToolDriverHelper(ToolDriver(), this).test()
     }
 }
 
@@ -182,7 +186,7 @@ fun lldbComplexTest(test:ToolDriverHelper.()->Unit) {
 
     with(Files.createTempDirectory("lldb_test_complex")) {
         toFile().deleteOnExit()
-        val driver = ToolDriverHelper(ToolDriver(), this).test()
+        ToolDriverHelper(ToolDriver(), this).test()
     }
 }
 

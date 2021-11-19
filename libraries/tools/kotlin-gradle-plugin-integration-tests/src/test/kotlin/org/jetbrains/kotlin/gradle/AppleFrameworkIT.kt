@@ -33,7 +33,8 @@ class AppleFrameworkIT : BaseGradleIT() {
             val options: BuildOptions = defaultBuildOptions().copy(
                 customEnvironmentVariables = mapOf(
                     "CONFIGURATION" to "debug",
-                    "SDK_NAME" to "iphoneos123"
+                    "SDK_NAME" to "iphoneos123",
+                    "ARCHS" to "arm64"
                 )
             )
             build("assembleDebugAppleFrameworkForXcodeIosArm64", options = options) {
@@ -48,6 +49,27 @@ class AppleFrameworkIT : BaseGradleIT() {
                 assertTasksExecuted(":shared:assembleCustomDebugAppleFrameworkForXcodeIosArm64")
                 assertFileExists("/shared/build/xcode-frameworks/debug/iphoneos123/lib.framework")
                 assertFileExists("/shared/build/xcode-frameworks/debug/iphoneos123/lib.framework.dSYM")
+            }
+        }
+    }
+
+    @Test
+    fun `assemble fat AppleFrameworkForXcode tasks for Arm64 and X64 simulators`() {
+        with(Project("sharedAppleFramework")) {
+            val options: BuildOptions = defaultBuildOptions().copy(
+                customEnvironmentVariables = mapOf(
+                    "CONFIGURATION" to "Release",
+                    "SDK_NAME" to "iphonesimulator",
+                    "ARCHS" to "arm64 x86_64"
+                )
+            )
+            build("assembleReleaseAppleFrameworkForXcode", options = options) {
+                assertSuccessful()
+                assertTasksExecuted(":shared:linkReleaseFrameworkIosSimulatorArm64")
+                assertTasksExecuted(":shared:linkReleaseFrameworkIosX64")
+                assertTasksExecuted(":shared:assembleReleaseAppleFrameworkForXcode")
+                assertFileExists("/shared/build/xcode-frameworks/Release/iphonesimulator/sdk.framework")
+                assertFileExists("/shared/build/xcode-frameworks/Release/iphonesimulator/sdk.framework.dSYM")
             }
         }
     }
@@ -72,6 +94,7 @@ class AppleFrameworkIT : BaseGradleIT() {
                 customEnvironmentVariables = mapOf(
                     "CONFIGURATION" to "Debug",
                     "SDK_NAME" to "iphoneos",
+                    "ARCHS" to "arm64",
                     "EXPANDED_CODE_SIGN_IDENTITY" to "-",
                     "TARGET_BUILD_DIR" to "testBuildDir",
                     "FRAMEWORKS_FOLDER_PATH" to "testFrameworksDir"
@@ -103,7 +126,8 @@ class AppleFrameworkIT : BaseGradleIT() {
             val options: BuildOptions = defaultBuildOptions().copy(
                 customEnvironmentVariables = mapOf(
                     "CONFIGURATION" to "Debug",
-                    "SDK_NAME" to "iphoneos"
+                    "SDK_NAME" to "iphoneos",
+                    "ARCHS" to "arm64"
                 )
             )
             build("tasks", options = options) {

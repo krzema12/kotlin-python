@@ -19,6 +19,7 @@ import org.jetbrains.kotlin.fir.contracts.impl.FirEmptyContractDescription
 import org.jetbrains.kotlin.fir.declarations.FirFile
 import org.jetbrains.kotlin.fir.declarations.FirTypeParameter
 import org.jetbrains.kotlin.fir.declarations.FirValueParameter
+import org.jetbrains.kotlin.fir.declarations.impl.FirResolvedDeclarationStatusImpl
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
 import org.jetbrains.kotlin.fir.expressions.FirEmptyArgumentList
 import org.jetbrains.kotlin.fir.expressions.impl.FirNoReceiverExpression
@@ -61,7 +62,7 @@ abstract class AbstractRawFirBuilderTestCase : KtParsingTestCase(
 
     protected open fun doRawFirTest(filePath: String) {
         val file = createKtFile(filePath)
-        val firFile = file.toFirFile(RawFirBuilderMode.NORMAL)
+        val firFile = file.toFirFile(BodyBuildingMode.NORMAL)
         val firFileDump = StringBuilder().also { FirRenderer(it, mode = FirRenderer.RenderMode.WithDeclarationAttributes).visitFile(firFile) }.toString()
         val expectedPath = filePath.replace(".kt", ".txt")
         KotlinTestUtils.assertEqualsToFile(File(expectedPath), firFileDump)
@@ -74,27 +75,43 @@ abstract class AbstractRawFirBuilderTestCase : KtParsingTestCase(
         }
     }
 
-    protected fun KtFile.toFirFile(mode: RawFirBuilderMode = RawFirBuilderMode.NORMAL): FirFile {
+    protected fun KtFile.toFirFile(bodyBuildingMode: BodyBuildingMode = BodyBuildingMode.NORMAL): FirFile {
         val session = FirSessionFactory.createEmptySession()
-        return RawFirBuilder(session, StubFirScopeProvider, mode).buildFirFile(this)
+        return RawFirBuilder(
+            session,
+            StubFirScopeProvider,
+            psiMode = PsiHandlingMode.COMPILER,
+            bodyBuildingMode = bodyBuildingMode
+        ).buildFirFile(this)
     }
 
     private fun FirElement.traverseChildren(result: MutableSet<FirElement> = hashSetOf()): MutableSet<FirElement> {
         if (!result.add(this)) {
             return result
         }
-        propertyLoop@ for (property in this::class.memberProperties) {
-            val childElement = property.getter.apply { isAccessible = true }.call(this)
+        for (property in this::class.memberProperties) {
+            if (hasNoAcceptAndTransform(this::class.simpleName, property.name)) continue
 
-            when (childElement) {
-                is FirNoReceiverExpression -> continue@propertyLoop
+            when (val childElement = property.getter.apply { isAccessible = true }.call(this)) {
+                is FirNoReceiverExpression -> continue
                 is FirElement -> childElement.traverseChildren(result)
                 is List<*> -> childElement.filterIsInstance<FirElement>().forEach { it.traverseChildren(result) }
-                else -> continue@propertyLoop
+                else -> continue
             }
 
         }
         return result
+    }
+
+    private val firImplClassPropertiesWithNoAcceptAndTransform = mapOf(
+        "FirResolvedImportImpl" to "delegate",
+        "FirErrorTypeRefImpl" to "delegatedTypeRef",
+        "FirResolvedTypeRefImpl" to "delegatedTypeRef"
+    )
+
+    private fun hasNoAcceptAndTransform(className: String?, propertyName: String): Boolean {
+        if (className == null) return false
+        return firImplClassPropertiesWithNoAcceptAndTransform[className] == propertyName
     }
 
     private fun FirFile.visitChildren(): Set<FirElement> =
@@ -169,7 +186,7 @@ private fun throwTwiceVisitingError(element: FirElement) {
         element is FirTypeProjection || element is FirValueParameter || element is FirAnnotationCall ||
         element is FirEmptyContractDescription ||
         element is FirStubReference || element.isExtensionFunctionAnnotation || element is FirEmptyArgumentList ||
-        element is FirStubStatement
+        element is FirStubStatement || element === FirResolvedDeclarationStatusImpl.DEFAULT_STATUS_FOR_STATUSLESS_DECLARATIONS
     ) {
         return
     }

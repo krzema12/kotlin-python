@@ -9,7 +9,8 @@ dependencies {
     testApi(project(":compiler:fir:entrypoint"))
     testApi(project(":compiler:cli"))
     testImplementation(project(":compiler:ir.tree.impl"))
-    testImplementation(project(":compiler:backend.jvm:backend.jvm.entrypoint"))
+    testImplementation(project(":compiler:backend.jvm.lower"))
+    testImplementation(project(":compiler:backend.jvm.entrypoint"))
     testImplementation(intellijCoreDep()) { includeJars("intellij-core") }
 
     testCompileOnly(project(":kotlin-reflect-api"))
@@ -25,31 +26,10 @@ dependencies {
     testApi(projectTests(":compiler:tests-common-jvm6"))
 
     testRuntimeOnly(intellijDep()) {
-        includeJars(
-            "jps-model",
-            "extensions",
-            "util",
-            "platform-api",
-            "platform-impl",
-            "idea",
-            "guava",
-            "trove4j",
-            "asm-all",
-            "log4j",
-            "jdom",
-            "streamex",
-            "bootstrap",
-            "jna",
-            rootProject = rootProject
-        )
+        includeJars("jna", rootProject = rootProject)
     }
 
-    Platform[202] {
-        testRuntimeOnly(intellijDep()) { includeJars("intellij-deps-fastutil-8.3.1-1") }
-    }
-    Platform[203].orHigher {
-        testRuntimeOnly(intellijDep()) { includeJars("intellij-deps-fastutil-8.3.1-3") }
-    }
+    testRuntimeOnly(intellijDep()) { includeJars("intellij-deps-fastutil-8.4.1-4") }
     testRuntimeOnly(toolsJar())
 }
 

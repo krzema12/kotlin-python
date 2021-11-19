@@ -14,11 +14,12 @@ import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors
 import org.jetbrains.kotlin.fir.analysis.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.utils.*
 import org.jetbrains.kotlin.lexer.KtTokens
 
 // See old FE's [DeclarationsChecker]
-object FirMemberFunctionsChecker : FirRegularClassChecker() {
-    override fun check(declaration: FirRegularClass, context: CheckerContext, reporter: DiagnosticReporter) {
+object FirMemberFunctionsChecker : FirClassChecker() {
+    override fun check(declaration: FirClass, context: CheckerContext, reporter: DiagnosticReporter) {
         for (member in declaration.declarations) {
             if (member is FirSimpleFunction) {
                 checkFunction(declaration, member, context, reporter)
@@ -27,27 +28,31 @@ object FirMemberFunctionsChecker : FirRegularClassChecker() {
     }
 
     private fun checkFunction(
-        containingDeclaration: FirRegularClass,
+        containingDeclaration: FirClass,
         function: FirSimpleFunction,
         context: CheckerContext,
         reporter: DiagnosticReporter
     ) {
         val source = function.source ?: return
         if (source.kind is FirFakeSourceElementKind) return
+        val functionSymbol = function.symbol
         // If multiple (potentially conflicting) modality modifiers are specified, not all modifiers are recorded at `status`.
         // So, our source of truth should be the full modifier list retrieved from the source.
         val modifierList = source.getModifierList()
         val hasAbstractModifier = KtTokens.ABSTRACT_KEYWORD in modifierList
         val isAbstract = function.isAbstract || hasAbstractModifier
         if (isAbstract) {
-            if (!containingDeclaration.canHaveAbstractDeclaration) {
-                reporter.report(
-                    FirErrors.ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS.on(source, function, containingDeclaration),
+            if (containingDeclaration is FirRegularClass && !containingDeclaration.canHaveAbstractDeclaration) {
+                reporter.reportOn(
+                    source,
+                    FirErrors.ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS,
+                    functionSymbol,
+                    containingDeclaration.symbol,
                     context
                 )
             }
             if (function.hasBody) {
-                reporter.report(FirErrors.ABSTRACT_FUNCTION_WITH_BODY.on(source, function), context)
+                reporter.reportOn(source, FirErrors.ABSTRACT_FUNCTION_WITH_BODY, functionSymbol, context)
             }
         }
         val isInsideExpectClass = isInsideExpectClass(containingDeclaration, context)
@@ -55,13 +60,13 @@ object FirMemberFunctionsChecker : FirRegularClassChecker() {
         if (!function.hasBody) {
             if (containingDeclaration.isInterface) {
                 if (Visibilities.isPrivate(function.visibility)) {
-                    reporter.reportOn(source, FirErrors.PRIVATE_FUNCTION_WITH_NO_BODY, function, context)
+                    reporter.reportOn(source, FirErrors.PRIVATE_FUNCTION_WITH_NO_BODY, functionSymbol, context)
                 }
                 if (!isInsideExpectClass && !hasAbstractModifier && hasOpenModifier) {
                     reporter.reportOn(source, FirErrors.REDUNDANT_OPEN_IN_INTERFACE, context)
                 }
             } else if (!isInsideExpectClass && !hasAbstractModifier && !function.isExternal) {
-                reporter.reportOn(source, FirErrors.NON_ABSTRACT_FUNCTION_WITH_NO_BODY, function, context)
+                reporter.reportOn(source, FirErrors.NON_ABSTRACT_FUNCTION_WITH_NO_BODY, functionSymbol, context)
             }
         }
 

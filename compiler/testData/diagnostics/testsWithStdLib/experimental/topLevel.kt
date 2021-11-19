@@ -1,3 +1,4 @@
+// FIR_IDENTICAL
 // !USE_EXPERIMENTAL: kotlin.RequiresOptIn
 // !DIAGNOSTICS: -UNUSED_VARIABLE
 // FILE: api.kt
@@ -5,8 +6,9 @@
 package api
 
 @RequiresOptIn(level = RequiresOptIn.Level.WARNING)
-@Target(AnnotationTarget.TYPE, AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY, AnnotationTarget.TYPEALIAS,
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY, AnnotationTarget.TYPEALIAS,
         AnnotationTarget.VALUE_PARAMETER)
+@Retention(AnnotationRetention.BINARY)
 annotation class ExperimentalAPI
 
 @ExperimentalAPI
@@ -74,5 +76,5 @@ fun use() {
     <!EXPERIMENTAL_API_USAGE!>function<!>()
     <!EXPERIMENTAL_API_USAGE!>property<!>
     val s: <!EXPERIMENTAL_API_USAGE!>Typealias<!> = ""
-    s.hashCode()
+    <!EXPERIMENTAL_API_USAGE!>s<!>.hashCode()
 }

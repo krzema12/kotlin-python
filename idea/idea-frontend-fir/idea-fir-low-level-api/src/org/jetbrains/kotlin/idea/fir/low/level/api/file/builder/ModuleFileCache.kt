@@ -5,22 +5,20 @@
 
 package org.jetbrains.kotlin.idea.fir.low.level.api.file.builder
 
+import com.intellij.concurrency.ConcurrentCollectionFactory
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirClassLikeDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirFile
 import org.jetbrains.kotlin.fir.psi
 import org.jetbrains.kotlin.fir.render
-import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
+import org.jetbrains.kotlin.idea.fir.low.level.api.annotations.ThreadSafe
+import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.psi.KtFile
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.locks.ReentrantLock
-import java.util.concurrent.locks.ReentrantReadWriteLock
-import org.jetbrains.kotlin.idea.fir.low.level.api.annotations.ThreadSafe
-import kotlin.concurrent.withLock
 
 /**
  * Caches mapping [KtFile] -> [FirFile] of module [moduleInfo]
@@ -33,7 +31,7 @@ internal abstract class ModuleFileCache {
      * Maps [ClassId] to corresponding classifiers
      * If classifier with required [ClassId] is not found in given module then map contains [Optional.EMPTY]
      */
-    abstract val classifierByClassId: ConcurrentHashMap<ClassId, Optional<FirClassLikeDeclaration<*>>>
+    abstract val classifierByClassId: ConcurrentHashMap<ClassId, Optional<FirClassLikeDeclaration>>
 
     /**
      * Maps [CallableId] to corresponding callable
@@ -52,18 +50,12 @@ internal abstract class ModuleFileCache {
     abstract fun getCachedFirFile(ktFile: KtFile): FirFile?
 
     abstract val firFileLockProvider: LockProvider<FirFile>
-
-    inline fun <D : FirDeclaration, R> withReadLockOn(declaration: D, action: (D) -> R): R {
-        val file = getContainerFirFile(declaration)
-            ?: error("No fir file found for\n${declaration.render()}")
-        return firFileLockProvider.withReadLock(file) { action(declaration) }
-    }
 }
 
 internal class ModuleFileCacheImpl(override val session: FirSession) : ModuleFileCache() {
-    private val ktFileToFirFile = ConcurrentHashMap<KtFile, FirFile>()
+    private val ktFileToFirFile = ConcurrentCollectionFactory.createConcurrentIdentityMap<KtFile, FirFile>()
 
-    override val classifierByClassId: ConcurrentHashMap<ClassId, Optional<FirClassLikeDeclaration<*>>> = ConcurrentHashMap()
+    override val classifierByClassId: ConcurrentHashMap<ClassId, Optional<FirClassLikeDeclaration>> = ConcurrentHashMap()
     override val callableByCallableId: ConcurrentHashMap<CallableId, List<FirCallableSymbol<*>>> = ConcurrentHashMap()
 
     override fun fileCached(file: KtFile, createValue: () -> FirFile): FirFile =

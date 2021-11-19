@@ -73,6 +73,7 @@ fun SmartPrinter.printImplementation(implementation: Implementation) {
             }
             println("(")
             withIndent {
+
                 fieldsWithoutDefault.forEachIndexed { _, field ->
                     printField(field, isImplementation = true, override = true, end = ",")
                 }
@@ -89,6 +90,7 @@ fun SmartPrinter.printImplementation(implementation: Implementation) {
         withIndent {
             if (isInterface || isAbstract) {
                 allFields.forEach {
+
                     abstract()
                     printField(it, isImplementation = true, override = true, end = "")
                 }
@@ -102,23 +104,23 @@ fun SmartPrinter.printImplementation(implementation: Implementation) {
             }
 
 
-            element.allFields.filter { it.type.contains("Symbol") && it !is FieldList }
-                .takeIf {
-                    it.isNotEmpty() && !isInterface && !isAbstract &&
-                            !element.type.contains("Reference")
-                            && !element.type.contains("ResolvedQualifier")
-                            && !element.type.endsWith("Ref")
-                }
-                ?.let { symbolFields ->
-                    println("init {")
-                    for (symbolField in symbolFields) {
-                        withIndent {
-                            println("${symbolField.name}${symbolField.call()}bind(this)")
-                        }
+            element.allFields.filter {
+                it.withBindThis && it.type.contains("Symbol") && it !is FieldList
+            }.takeIf {
+                it.isNotEmpty() && !isInterface && !isAbstract &&
+                        !element.type.contains("Reference")
+                        && !element.type.contains("ResolvedQualifier")
+                        && !element.type.endsWith("Ref")
+            }?.let { symbolFields ->
+                println("init {")
+                for (symbolField in symbolFields) {
+                    withIndent {
+                        println("${symbolField.name}${symbolField.call()}bind(this)")
                     }
-                    println("}")
-                    println()
                 }
+                println("}")
+                println()
+            }
 
             fun Field.acceptString(): String = "${name}${call()}accept(visitor, data)"
             if (!isInterface && !isAbstract) {

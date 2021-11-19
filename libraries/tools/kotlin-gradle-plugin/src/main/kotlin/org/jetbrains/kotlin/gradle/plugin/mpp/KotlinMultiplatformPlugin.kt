@@ -11,7 +11,6 @@ import org.gradle.api.Project
 import org.gradle.api.attributes.Attribute
 import org.gradle.api.attributes.AttributeContainer
 import org.gradle.api.file.DuplicatesStrategy
-import org.gradle.api.file.FileCollection
 import org.gradle.api.internal.plugins.DslObject
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.SourceTask
@@ -26,18 +25,17 @@ import org.jetbrains.kotlin.gradle.dsl.multiplatformExtension
 import org.jetbrains.kotlin.gradle.internal.customizeKotlinDependencies
 import org.jetbrains.kotlin.gradle.plugin.*
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMultiplatformPlugin.Companion.sourceSetFreeCompilerArgsPropertyName
-import org.jetbrains.kotlin.gradle.plugin.sources.*
+import org.jetbrains.kotlin.gradle.plugin.mpp.internal.handleHierarchicalStructureFlagsMigration
+import org.jetbrains.kotlin.gradle.plugin.sources.CleanupStaleSourceSetMetadataEntriesService
 import org.jetbrains.kotlin.gradle.plugin.sources.DefaultLanguageSettingsBuilder
+import org.jetbrains.kotlin.gradle.plugin.sources.SourceSetMetadataStorageForIde
+import org.jetbrains.kotlin.gradle.plugin.sources.checkSourceSetVisibilityRequirements
 import org.jetbrains.kotlin.gradle.plugin.statistics.KotlinBuildStatsService
 import org.jetbrains.kotlin.gradle.scripting.internal.ScriptingGradleSubplugin
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTargetPreset
 import org.jetbrains.kotlin.gradle.tasks.locateTask
 import org.jetbrains.kotlin.gradle.tasks.registerTask
 import org.jetbrains.kotlin.gradle.utils.*
-import org.jetbrains.kotlin.gradle.utils.SingleActionPerBuild
-import org.jetbrains.kotlin.gradle.utils.SingleWarningPerBuild
-import org.jetbrains.kotlin.gradle.utils.checkGradleCompatibility
-import org.jetbrains.kotlin.gradle.utils.lowerCamelCaseName
 import org.jetbrains.kotlin.konan.target.HostManager
 import org.jetbrains.kotlin.konan.target.KonanTarget.*
 import org.jetbrains.kotlin.konan.target.presetName
@@ -58,8 +56,6 @@ class KotlinMultiplatformPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         checkGradleCompatibility("the Kotlin Multiplatform plugin", GradleVersion.version("6.0"))
 
-        project.plugins.apply(JavaBasePlugin::class.java)
-
         if (PropertiesProvider(project).mppStabilityNoWarn != true) {
             SingleWarningPerBuild.show(
                 project,
@@ -68,6 +64,10 @@ class KotlinMultiplatformPlugin : Plugin<Project> {
                         "To hide this message, add '$STABILITY_NOWARN_FLAG=true' to the Gradle properties.\n"
             )
         }
+
+        handleHierarchicalStructureFlagsMigration(project)
+
+        project.plugins.apply(JavaBasePlugin::class.java)
 
         val targetsContainer = project.container(KotlinTarget::class.java)
         val kotlinMultiplatformExtension = project.extensions.getByType(KotlinMultiplatformExtension::class.java)
@@ -108,7 +108,7 @@ class KotlinMultiplatformPlugin : Plugin<Project> {
 
         SingleActionPerBuild.run(project.rootProject, "cleanup-processed-metadata") {
             if (isConfigurationCacheAvailable(project.gradle)) {
-                BuildEventsListenerRegistryHolder.getInstance(project).listenerRegistry!!.onTaskCompletion(
+                BuildEventsListenerRegistryHolder.getInstance(project).listenerRegistry.onTaskCompletion(
                     project.gradle.sharedServices
                         .registerIfAbsent(
                             "cleanup-stale-sourceset-metadata",
@@ -185,8 +185,9 @@ class KotlinMultiplatformPlugin : Plugin<Project> {
             add(KotlinJvmWithJavaTargetPreset(project))
 
             // Note: modifying these sets should also be reflected in the DSL code generator, see 'presetEntries.kt'
-            val nativeTargetsWithHostTests = setOf(LINUX_X64, MACOS_X64, MINGW_X64)
-            val nativeTargetsWithSimulatorTests = setOf(IOS_X64, WATCHOS_X86, WATCHOS_X64, TVOS_X64)
+            val nativeTargetsWithHostTests = setOf(LINUX_X64, MACOS_X64, MACOS_ARM64, MINGW_X64)
+            val nativeTargetsWithSimulatorTests =
+                setOf(IOS_X64, IOS_SIMULATOR_ARM64, WATCHOS_X86, WATCHOS_X64, WATCHOS_SIMULATOR_ARM64, TVOS_X64, TVOS_SIMULATOR_ARM64)
 
             HostManager().targets
                 .forEach { (_, konanTarget) ->
@@ -226,7 +227,7 @@ class KotlinMultiplatformPlugin : Plugin<Project> {
 
         UnusedSourceSetsChecker.checkSourceSets(project)
 
-        project.whenEvaluated {
+        project.runProjectConfigurationHealthCheckWhenEvaluated {
             checkSourceSetVisibilityRequirements(project)
         }
     }

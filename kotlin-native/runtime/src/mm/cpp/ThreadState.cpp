@@ -7,13 +7,7 @@
 #include "ThreadData.hpp"
 #include "ThreadState.hpp"
 
-namespace {
-
-ALWAYS_INLINE bool isStateSwitchAllowed(ThreadState oldState, ThreadState newState) noexcept {
-    return oldState != newState;
-}
-
-const char* stateToString(ThreadState state) noexcept {
+const char* kotlin::ThreadStateName(ThreadState state) noexcept {
     switch (state) {
         case ThreadState::kRunnable:
             return "RUNNABLE";
@@ -22,29 +16,39 @@ const char* stateToString(ThreadState state) noexcept {
     }
 }
 
-} // namespace
-
-// Switches the state of the current thread to `newState` and returns the previous state.
-ALWAYS_INLINE ThreadState kotlin::SwitchThreadState(mm::ThreadData* threadData, ThreadState newState) noexcept {
-    auto oldState = threadData->setState(newState);
-    // TODO(perf): Mesaure the impact of this assert in debug and opt modes.
-    RuntimeAssert(isStateSwitchAllowed(oldState, newState),
-                  "Illegal thread state switch. Old state: %s. New state: %s.",
-                  stateToString(oldState), stateToString(newState));
-    return oldState;
+std::string kotlin::internal::statesToString(std::initializer_list<ThreadState> states) noexcept {
+    std::string result = "{ ";
+    for (size_t i = 0; i < states.size(); i++) {
+        if (i != 0) {
+            result += ", ";
+        }
+        result += ThreadStateName(data(states)[i]);
+    }
+    result += " }";
+    return result;
 }
 
-ALWAYS_INLINE ThreadState kotlin::SwitchThreadState(MemoryState* thread, ThreadState newState) noexcept {
-    return SwitchThreadState(thread->GetThreadData(), newState);
-}
-
-ALWAYS_INLINE void kotlin::AssertThreadState(mm::ThreadData* threadData, ThreadState expected) noexcept {
-    auto actual = threadData->state();
-    RuntimeAssert(actual == expected,
-                  "Unexpected thread state. Expected: %s. Actual: %s.",
-                  stateToString(expected), stateToString(actual));
+ALWAYS_INLINE ThreadState kotlin::SwitchThreadState(MemoryState* thread, ThreadState newState, bool reentrant) noexcept {
+    RuntimeAssert(thread != nullptr, "thread must not be nullptr");
+    return SwitchThreadState(thread->GetThreadData(), newState, reentrant);
 }
 
 ALWAYS_INLINE void kotlin::AssertThreadState(MemoryState* thread, ThreadState expected) noexcept {
-    AssertThreadState(thread->GetThreadData(), expected);
+    // Avoid redundant read in GetThreadData if runtime asserts are disabled.
+    if (compiler::runtimeAssertsMode() != compiler::RuntimeAssertsMode::kIgnore) {
+        RuntimeAssert(thread != nullptr, "thread must not be nullptr");
+        AssertThreadState(thread->GetThreadData(), expected);
+    }
+}
+
+ALWAYS_INLINE void kotlin::AssertThreadState(MemoryState* thread, std::initializer_list<ThreadState> expected) noexcept {
+    // Avoid redundant read in GetThreadData if runtime asserts are disabled.
+    if (compiler::runtimeAssertsMode() != compiler::RuntimeAssertsMode::kIgnore) {
+        RuntimeAssert(thread != nullptr, "thread must not be nullptr");
+        AssertThreadState(thread->GetThreadData(), expected);
+    }
+}
+
+ThreadState kotlin::GetThreadState(MemoryState* thread) noexcept {
+    return thread->GetThreadData()->state();
 }

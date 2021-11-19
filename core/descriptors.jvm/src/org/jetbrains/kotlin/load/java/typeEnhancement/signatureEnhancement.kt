@@ -19,7 +19,10 @@ package org.jetbrains.kotlin.load.java.typeEnhancement
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMapper
 import org.jetbrains.kotlin.descriptors.*
-import org.jetbrains.kotlin.descriptors.annotations.*
+import org.jetbrains.kotlin.descriptors.annotations.Annotated
+import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
+import org.jetbrains.kotlin.descriptors.annotations.Annotations
+import org.jetbrains.kotlin.descriptors.annotations.composeAnnotations
 import org.jetbrains.kotlin.load.java.*
 import org.jetbrains.kotlin.load.java.descriptors.*
 import org.jetbrains.kotlin.load.java.lazy.LazyJavaResolverContext
@@ -34,14 +37,12 @@ import org.jetbrains.kotlin.load.kotlin.signature
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.resolve.constants.EnumValue
 import org.jetbrains.kotlin.resolve.deprecation.DEPRECATED_FUNCTION_KEY
-import org.jetbrains.kotlin.resolve.descriptorUtil.*
+import org.jetbrains.kotlin.resolve.descriptorUtil.firstArgument
+import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameOrNull
 import org.jetbrains.kotlin.types.*
 import org.jetbrains.kotlin.types.checker.KotlinTypeChecker
 import org.jetbrains.kotlin.types.typeUtil.contains
 import org.jetbrains.kotlin.types.typeUtil.isTypeParameter
-import org.jetbrains.kotlin.utils.JavaTypeEnhancementState
-import org.jetbrains.kotlin.utils.ReportLevel
-import org.jetbrains.kotlin.utils.addToStdlib.firstNotNullResult
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
 class SignatureEnhancement(
@@ -90,10 +91,7 @@ class SignatureEnhancement(
         val isForWarningOnly = annotationDescriptor is LazyJavaAnnotationDescriptor
                 && (annotationDescriptor.isFreshlySupportedTypeUseAnnotation || typeParameterBounds)
                 && !areImprovementsEnabled
-
-        val migrationStatus = jspecifyMigrationStatus(annotationFqName)
-            ?: commonMigrationStatus(annotationFqName, annotationDescriptor, isForWarningOnly)
-            ?: return null
+        val migrationStatus = commonMigrationStatus(annotationFqName, annotationDescriptor, isForWarningOnly) ?: return null
 
         return if (!migrationStatus.isForWarningOnly
             && annotationDescriptor is PossiblyExternalAnnotationDescriptor
@@ -103,44 +101,35 @@ class SignatureEnhancement(
         } else migrationStatus
     }
 
-    private fun jspecifyMigrationStatus(
-        annotationFqName: FqName
-    ): NullabilityQualifierWithMigrationStatus? {
-        if (javaTypeEnhancementState.jspecifyReportLevel == ReportLevel.IGNORE) return null
-        val isForWarningOnly = javaTypeEnhancementState.jspecifyReportLevel == ReportLevel.WARN
-        return when (annotationFqName) {
-            JSPECIFY_NULLABLE -> NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NULLABLE, isForWarningOnly)
-            JSPECIFY_NULLNESS_UNKNOWN ->
-                NullabilityQualifierWithMigrationStatus(NullabilityQualifier.FORCE_FLEXIBILITY, isForWarningOnly)
-            else -> null
-        }
-    }
-
     private fun commonMigrationStatus(
         annotationFqName: FqName,
         annotationDescriptor: AnnotationDescriptor,
         isForWarningOnly: Boolean = false
-    ): NullabilityQualifierWithMigrationStatus? = when {
-        annotationFqName in NULLABLE_ANNOTATIONS -> NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NULLABLE, isForWarningOnly)
-        annotationFqName in NOT_NULL_ANNOTATIONS -> NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NOT_NULL, isForWarningOnly)
-        annotationFqName == JAVAX_NONNULL_ANNOTATION -> annotationDescriptor.extractNullabilityTypeFromArgument(isForWarningOnly)
+    ): NullabilityQualifierWithMigrationStatus? {
+        val reportLevel = javaTypeEnhancementState.getReportLevelForAnnotation(annotationFqName)
 
-        annotationFqName == COMPATQUAL_NULLABLE_ANNOTATION && javaTypeEnhancementState.enableCompatqualCheckerFrameworkAnnotations ->
-            NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NULLABLE, isForWarningOnly)
+        if (reportLevel.isIgnore) return null
 
-        annotationFqName == COMPATQUAL_NONNULL_ANNOTATION && javaTypeEnhancementState.enableCompatqualCheckerFrameworkAnnotations ->
-            NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NOT_NULL, isForWarningOnly)
+        val isForWarning = reportLevel.isWarning || isForWarningOnly
 
-        annotationFqName == ANDROIDX_RECENTLY_NON_NULL_ANNOTATION -> NullabilityQualifierWithMigrationStatus(
-            NullabilityQualifier.NOT_NULL,
-            isForWarningOnly = true
-        )
-
-        annotationFqName == ANDROIDX_RECENTLY_NULLABLE_ANNOTATION -> NullabilityQualifierWithMigrationStatus(
-            NullabilityQualifier.NULLABLE,
-            isForWarningOnly = true
-        )
-        else -> null
+        return when (annotationFqName) {
+            in NULLABLE_ANNOTATIONS -> NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NULLABLE, isForWarning)
+            in NOT_NULL_ANNOTATIONS -> NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NOT_NULL, isForWarning)
+            JSPECIFY_NULLABLE -> NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NULLABLE, isForWarning)
+            JSPECIFY_NULLNESS_UNKNOWN -> NullabilityQualifierWithMigrationStatus(NullabilityQualifier.FORCE_FLEXIBILITY, isForWarning)
+            JAVAX_NONNULL_ANNOTATION -> annotationDescriptor.extractNullabilityTypeFromArgument(isForWarning)
+            COMPATQUAL_NULLABLE_ANNOTATION ->
+                NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NULLABLE, isForWarning)
+            COMPATQUAL_NONNULL_ANNOTATION ->
+                NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NOT_NULL, isForWarning)
+            ANDROIDX_RECENTLY_NON_NULL_ANNOTATION -> NullabilityQualifierWithMigrationStatus(
+                NullabilityQualifier.NOT_NULL, isForWarning
+            )
+            ANDROIDX_RECENTLY_NULLABLE_ANNOTATION -> NullabilityQualifierWithMigrationStatus(
+                NullabilityQualifier.NULLABLE, isForWarning
+            )
+            else -> null
+        }
     }
 
     fun <D : CallableMemberDescriptor> enhanceSignatures(c: LazyJavaResolverContext, platformSignatures: Collection<D>): Collection<D> {
@@ -202,9 +191,13 @@ class SignatureEnhancement(
             }
         }
 
+        val ignoreDeclarationNullabilityAnnotations =
+            (isJspecifyEnabledInStrictMode(javaTypeEnhancementState)
+                    || memberContext.components.settings.ignoreNullabilityForErasedValueParameters)
+                    && hasErasedValueParameters(this)
         val valueParameterEnhancements = annotationOwnerForMember.valueParameters.map { p ->
             partsForValueParameter(p, memberContext) { it.valueParameters[p.index].type }
-                .enhance(predefinedEnhancementInfo?.parametersInfo?.getOrNull(p.index))
+                .enhance(predefinedEnhancementInfo?.parametersInfo?.getOrNull(p.index), ignoreDeclarationNullabilityAnnotations)
         }
 
         val returnTypeEnhancement =
@@ -233,7 +226,12 @@ class SignatureEnhancement(
             @Suppress("UNCHECKED_CAST")
             return this.enhance(
                 receiverTypeEnhancement?.type,
-                valueParameterEnhancements.map { ValueParameterData(it.type, false) },
+                valueParameterEnhancements.mapIndexed { index, enhanced ->
+                    ValueParameterData(
+                        enhanced.type,
+                        annotationOwnerForMember.valueParameters[index].declaresDefaultValue()
+                    )
+                },
                 returnTypeEnhancement.type,
                 additionalUserData
             ) as D
@@ -263,7 +261,10 @@ class SignatureEnhancement(
      *      class A extends B<@NotNull Integer> {}
      */
     fun enhanceSuperType(type: KotlinType, context: LazyJavaResolverContext) =
-        SignatureParts(null, type, emptyList(), false, context, AnnotationQualifierApplicabilityType.TYPE_USE).enhance().type
+        SignatureParts(
+            typeContainer = null, type, emptyList(), isCovariant = false,
+            context, AnnotationQualifierApplicabilityType.TYPE_USE, isSuperTypesEnhancement = true
+        ).enhance().type
 
     private inner class SignatureParts(
         private val typeContainer: Annotated?,
@@ -272,13 +273,17 @@ class SignatureEnhancement(
         private val isCovariant: Boolean,
         private val containerContext: LazyJavaResolverContext,
         private val containerApplicabilityType: AnnotationQualifierApplicabilityType,
-        private val typeParameterBounds: Boolean = false
+        private val typeParameterBounds: Boolean = false,
+        private val isSuperTypesEnhancement: Boolean = false
     ) {
 
         private val isForVarargParameter get() = typeContainer.safeAs<ValueParameterDescriptor>()?.varargElementType != null
 
-        fun enhance(predefined: TypeEnhancementInfo? = null): PartEnhancementResult {
-            val qualifiers = computeIndexedQualifiersForOverride()
+        fun enhance(
+            predefined: TypeEnhancementInfo? = null,
+            ignoreDeclarationNullabilityAnnotations: Boolean = false
+        ): PartEnhancementResult {
+            val qualifiers = computeIndexedQualifiersForOverride(ignoreDeclarationNullabilityAnnotations)
 
             val qualifiersWithPredefined: ((Int) -> JavaTypeQualifiers)? = predefined?.let {
                 { index ->
@@ -286,15 +291,21 @@ class SignatureEnhancement(
                 }
             }
 
-            val containsFunctionN = TypeUtils.contains(fromOverride) {
-                val classifier = it.constructor.declarationDescriptor ?: return@contains false
+            fun containsFunctionN(type: UnwrappedType): Boolean {
+                val classifier = type.constructor.declarationDescriptor ?: return false
 
-                classifier.name == JavaToKotlinClassMap.FUNCTION_N_FQ_NAME.shortName() &&
+                return classifier.name == JavaToKotlinClassMap.FUNCTION_N_FQ_NAME.shortName() &&
                         classifier.fqNameOrNull() == JavaToKotlinClassMap.FUNCTION_N_FQ_NAME
             }
 
+            val containsFunctionN = if (isSuperTypesEnhancement) {
+                TypeUtils.containsStoppingAt(fromOverride, ::containsFunctionN) { it is RawType }
+            } else {
+                TypeUtils.contains(fromOverride, ::containsFunctionN)
+            }
+
             return with(typeEnhancement) {
-                fromOverride.enhance(qualifiersWithPredefined ?: qualifiers)?.let { enhanced ->
+                fromOverride.enhance(qualifiersWithPredefined ?: qualifiers, isSuperTypesEnhancement)?.let { enhanced ->
                     PartEnhancementResult(enhanced, wereChanges = true, containsFunctionN = containsFunctionN)
                 } ?: PartEnhancementResult(fromOverride, wereChanges = false, containsFunctionN = containsFunctionN)
             }
@@ -318,7 +329,7 @@ class SignatureEnhancement(
                     mapper.isMutable(upper) -> MutabilityQualifier.MUTABLE
                     else -> null
                 },
-                isNotNullTypeParameter = unwrap() is NotNullTypeParameter
+                definitelyNotNull = unwrap() is NotNullTypeParameter || unwrap() is DefinitelyNotNullType
             )
         }
 
@@ -328,12 +339,19 @@ class SignatureEnhancement(
             typeParameterForArgument: TypeParameterDescriptor?,
             isFromStarProjection: Boolean
         ): JavaTypeQualifiers {
+            if (isFromStarProjection && typeParameterForArgument?.variance == Variance.IN_VARIANCE) {
+                // Star projections can only be enhanced in one way: `?` -> `? extends <something>`. Given a Kotlin type `C<in T>
+                // (declaration-site variance), this is not a valid enhancement due to conflicting variances.
+                return JavaTypeQualifiers.NONE
+            }
+
             val areImprovementsInStrictMode = containerContext.components.settings.typeEnhancementImprovementsInStrictMode
 
             val composedAnnotation =
                 if (isHeadTypeConstructor && typeContainer != null && typeContainer !is TypeParameterDescriptor && areImprovementsInStrictMode) {
                     val filteredContainerAnnotations = typeContainer.annotations.filter {
-                        val (_, targets) = annotationTypeQualifierResolver.resolveAnnotation(it) ?: return@filter false
+                        val (_, targets) = annotationTypeQualifierResolver.resolveAnnotation(it)
+                            ?: return@filter true // don't exclude annotations without specified target or unresolved
                         /*
                          * We don't apply container type use annotations to avoid double applying them like with arrays:
                          *      @NotNull Integer [] f15();
@@ -355,12 +373,10 @@ class SignatureEnhancement(
             fun <T : Any> uniqueNotNull(x: T?, y: T?) = if (x == null || y == null || x == y) x ?: y else null
 
             val defaultTypeQualifier =
-                (if (isHeadTypeConstructor)
+                if (isHeadTypeConstructor)
                     containerContext.defaultTypeQualifiers?.get(containerApplicabilityType)
                 else
-                    defaultQualifiersForType)?.takeIf {
-                    it.affectsTypeParameterBasedTypes || !isTypeParameter()
-                }
+                    defaultQualifiersForType
 
             val (nullabilityFromBoundsForTypeBasedOnTypeParameter, isTypeParameterWithNotNullableBounds) =
                 nullabilityInfoBoundsForTypeParameterUsage()
@@ -379,7 +395,7 @@ class SignatureEnhancement(
                 if (annotationsNullability != null)
                     annotationsNullability.qualifier == NullabilityQualifier.NOT_NULL
                 else
-                    isTypeParameterWithNotNullableBounds || defaultTypeQualifier?.makesTypeParameterNotNull == true
+                    isTypeParameterWithNotNullableBounds || defaultTypeQualifier?.definitelyNotNull == true
 
             return JavaTypeQualifiers(
                 nullabilityInfo?.qualifier,
@@ -391,7 +407,7 @@ class SignatureEnhancement(
                         MutabilityQualifier.MUTABLE
                     )
                 ),
-                isNotNullTypeParameter = isNotNullTypeParameter && isTypeParameter(),
+                definitelyNotNull = isNotNullTypeParameter && isTypeParameter(),
                 isNullabilityQualifierForWarning = nullabilityInfo?.isForWarningOnly == true
             )
         }
@@ -404,32 +420,25 @@ class SignatureEnhancement(
 
             val result =
                 nullabilityFromBoundsForTypeBasedOnTypeParameter
-                    ?: defaultTypeQualifier?.nullabilityQualifier?.let { nullabilityQualifierWithMigrationStatus ->
-                        NullabilityQualifierWithMigrationStatus(
-                            nullabilityQualifierWithMigrationStatus.qualifier,
-                            nullabilityQualifierWithMigrationStatus.isForWarningOnly
-                        )
-                    }
+                    ?: defaultTypeQualifier?.nullabilityQualifier
 
-            val boundsFromTypeParameterForArgument = typeParameterForArgument?.boundsNullability() ?: return result
-            if (result == null) return boundsFromTypeParameterForArgument
+            val boundsFromTypeParameterForArgument = typeParameterForArgument?.boundsNullability()
+                ?.let { if (it.qualifier == NullabilityQualifier.NULLABLE) it.copy(qualifier = NullabilityQualifier.FORCE_FLEXIBILITY) else it }
 
             return mostSpecific(boundsFromTypeParameterForArgument, result)
         }
 
         private fun mostSpecific(
-            a: NullabilityQualifierWithMigrationStatus,
-            b: NullabilityQualifierWithMigrationStatus
-        ): NullabilityQualifierWithMigrationStatus {
-            if (a.qualifier == NullabilityQualifier.FORCE_FLEXIBILITY) return b
-            if (b.qualifier == NullabilityQualifier.FORCE_FLEXIBILITY) return a
-            if (a.qualifier == NullabilityQualifier.NULLABLE) return b
-            if (b.qualifier == NullabilityQualifier.NULLABLE) return a
-            assert(a.qualifier == b.qualifier && a.qualifier == NullabilityQualifier.NOT_NULL) {
-                "Expected everything is NOT_NULL, but $a and $b are found"
-            }
-
-            return NullabilityQualifierWithMigrationStatus(NullabilityQualifier.NOT_NULL)
+            a: NullabilityQualifierWithMigrationStatus?,
+            b: NullabilityQualifierWithMigrationStatus?
+        ): NullabilityQualifierWithMigrationStatus? {
+            if (a == null) return b // null < not null
+            if (b == null) return a
+            if (a.isForWarningOnly && !b.isForWarningOnly) return b // warnings < errors
+            if (!a.isForWarningOnly && b.isForWarningOnly) return a
+            if (a.qualifier < b.qualifier) return b // T! < T? < T
+            if (a.qualifier > b.qualifier) return a
+            return b // they are equal
         }
 
         private fun KotlinType.nullabilityInfoBoundsForTypeParameterUsage(): Pair<NullabilityQualifierWithMigrationStatus?, Boolean> {
@@ -473,9 +482,18 @@ class SignatureEnhancement(
             areImprovementsEnabled: Boolean,
             typeParameterBounds: Boolean
         ): NullabilityQualifierWithMigrationStatus? =
-            this.firstNotNullResult { extractNullability(it, areImprovementsEnabled, typeParameterBounds) }
+            fold(null as NullabilityQualifierWithMigrationStatus?) { found, annotation ->
+                val extracted = extractNullability(annotation, areImprovementsEnabled, typeParameterBounds)
+                when {
+                    found == null -> extracted
+                    extracted == null || extracted == found -> found
+                    extracted.isForWarningOnly && !found.isForWarningOnly -> found
+                    !extracted.isForWarningOnly && found.isForWarningOnly -> extracted
+                    else -> return null // inconsistent
+                }
+            }
 
-        private fun computeIndexedQualifiersForOverride(): (Int) -> JavaTypeQualifiers {
+        private fun computeIndexedQualifiersForOverride(ignoreDeclarationNullabilityAnnotations: Boolean = false): (Int) -> JavaTypeQualifiers {
 
             val indexedFromSupertypes = fromOverridden.map { it.toIndexed() }
             val indexedThisType = fromOverride.toIndexed()
@@ -497,7 +515,8 @@ class SignatureEnhancement(
 
                 // Only the head type constructor is safely co-variant
                 qualifiers.computeQualifiersForOverride(
-                    verticalSlice, defaultQualifiers, isHeadTypeConstructor, typeParameterForArgument, isFromStarProjection
+                    verticalSlice, defaultQualifiers, isHeadTypeConstructor,
+                    typeParameterForArgument, isFromStarProjection, ignoreDeclarationNullabilityAnnotations
                 )
             }
 
@@ -527,6 +546,8 @@ class SignatureEnhancement(
                     )
                 )
 
+                if (isSuperTypesEnhancement && type is RawType) return
+
                 for ((arg, parameter) in type.arguments.zip(type.constructor.parameters)) {
                     if (arg.isStarProjection) {
                         // TODO: sort out how to handle wildcards
@@ -546,7 +567,8 @@ class SignatureEnhancement(
             defaultQualifiersForType: JavaDefaultQualifiers?,
             isHeadTypeConstructor: Boolean,
             typeParameterForArgument: TypeParameterDescriptor?,
-            isFromStarProjection: Boolean
+            isFromStarProjection: Boolean,
+            ignoreDeclarationNullabilityAnnotations: Boolean = false
         ): JavaTypeQualifiers {
             val superQualifiers = fromSupertypes.map { it.extractQualifiers() }
             val mutabilityFromSupertypes = superQualifiers.mapNotNull { it.mutability }.toSet()
@@ -567,14 +589,17 @@ class SignatureEnhancement(
                 nullabilityFromSupertypes.select(ownNullability, isCovariantPosition)
                     // Vararg value parameters effectively have non-nullable type in Kotlin
                     // and having nullable types in Java may lead to impossibility of overriding them in Kotlin
-                    ?.takeUnless { isForVarargParameter && isHeadTypeConstructor && it == NullabilityQualifier.NULLABLE }
+                    ?.takeUnless {
+                        ignoreDeclarationNullabilityAnnotations ||
+                                (isForVarargParameter && isHeadTypeConstructor && it == NullabilityQualifier.NULLABLE)
+                    }
 
             val mutability =
                 mutabilityFromSupertypes
                     .select(MutabilityQualifier.MUTABLE, MutabilityQualifier.READ_ONLY, own.mutability, isCovariantPosition)
 
             val canChange = ownNullabilityForWarning != ownNullability || nullabilityFromSupertypesWithWarning != nullabilityFromSupertypes
-            val isAnyNonNullTypeParameter = own.isNotNullTypeParameter || superQualifiers.any { it.isNotNullTypeParameter }
+            val isAnyNonNullTypeParameter = own.definitelyNotNull || superQualifiers.any { it.definitelyNotNull }
             if (nullability == null && canChange) {
                 val nullabilityWithWarning =
                     nullabilityFromSupertypesWithWarning.select(ownNullabilityForWarning, isCovariantPosition)

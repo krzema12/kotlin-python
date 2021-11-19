@@ -7,9 +7,14 @@ package org.jetbrains.kotlin.fir.backend.generators
 
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.Modality
-import org.jetbrains.kotlin.fir.backend.*
+import org.jetbrains.kotlin.fir.backend.Fir2IrComponents
+import org.jetbrains.kotlin.fir.backend.Fir2IrConversionScope
+import org.jetbrains.kotlin.fir.backend.FirMetadataSource
 import org.jetbrains.kotlin.fir.backend.convertWithOffsets
-import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.FirFunction
+import org.jetbrains.kotlin.fir.declarations.FirMemberDeclaration
+import org.jetbrains.kotlin.fir.declarations.FirValueParameter
+import org.jetbrains.kotlin.fir.declarations.utils.*
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.expressions.impl.FirNoReceiverExpression
 import org.jetbrains.kotlin.fir.references.FirResolvedCallableReference
@@ -32,7 +37,10 @@ import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.impl.IrSimpleFunctionSymbolImpl
 import org.jetbrains.kotlin.ir.symbols.impl.IrValueParameterSymbolImpl
-import org.jetbrains.kotlin.ir.types.*
+import org.jetbrains.kotlin.ir.types.IrSimpleType
+import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.isUnit
+import org.jetbrains.kotlin.ir.types.typeOrNull
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.name.Name
 
@@ -164,7 +172,7 @@ internal class AdapterGenerator(
         callableReferenceAccess: FirCallableReferenceAccess,
         startOffset: Int,
         endOffset: Int,
-        firAdaptee: FirFunction<*>,
+        firAdaptee: FirFunction,
         adaptee: IrFunction,
         type: IrSimpleType,
         boundDispatchReceiver: IrExpression?,
@@ -254,7 +262,7 @@ internal class AdapterGenerator(
 
     private fun createAdapteeCallForCallableReference(
         callableReferenceAccess: FirCallableReferenceAccess,
-        firAdaptee: FirFunction<*>,
+        firAdaptee: FirFunction,
         adapteeSymbol: IrFunctionSymbol,
         adapterFunction: IrFunction,
         boundDispatchReceiver: IrExpression?,

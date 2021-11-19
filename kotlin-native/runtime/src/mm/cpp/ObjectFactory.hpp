@@ -126,6 +126,8 @@ public:
 
         ~Producer() { Publish(); }
 
+        size_t size() const noexcept { return size_; }
+
         Node& Insert(size_t dataSize) noexcept {
             AssertCorrect();
             auto node = Node::Create(allocator_, dataSize);
@@ -137,6 +139,7 @@ public:
             }
 
             last_ = nodePtr;
+            ++size_;
             RuntimeAssert(root_ != nullptr, "Must not be empty");
             AssertCorrect();
             return *nodePtr;
@@ -172,6 +175,8 @@ public:
 
             owner_.last_ = last_;
             last_ = nullptr;
+            owner_.size_ += size_;
+            size_ = 0;
 
             RuntimeAssert(root_ == nullptr, "Must be empty");
             AssertCorrect();
@@ -186,6 +191,7 @@ public:
             // Since it's only for tests, no need to worry about stack overflows.
             root_.reset();
             last_ = nullptr;
+            size_ = 0;
         }
 
     private:
@@ -204,6 +210,7 @@ public:
         Allocator allocator_;
         unique_ptr<Node> root_;
         Node* last_ = nullptr;
+        size_t size_ = 0;
     };
 
     class Iterator {
@@ -263,6 +270,8 @@ public:
             }
         }
 
+        size_t size() const noexcept { return size_; }
+
         Iterator begin() noexcept { return Iterator(root_.get()); }
         Iterator end() noexcept { return Iterator(nullptr); }
 
@@ -279,6 +288,7 @@ public:
             }
 
             last_ = nodePtr;
+            ++size_;
             AssertCorrect();
         }
 
@@ -293,11 +303,14 @@ public:
 
         unique_ptr<Node> root_;
         Node* last_ = nullptr;
+        size_t size_ = 0;
     };
 
     class Iterable : private MoveOnly {
     public:
         explicit Iterable(ObjectFactoryStorage& owner) noexcept : owner_(owner), guard_(owner_.mutex_) {}
+
+        size_t size() const noexcept { return owner_.size_; }
 
         Iterator begin() noexcept { return Iterator(nullptr, owner_.root_.get()); }
         Iterator end() noexcept { return Iterator(owner_.last_, nullptr); }
@@ -324,11 +337,14 @@ public:
     }
 
     // Lock `ObjectFactoryStorage` for safe iteration.
-    Iterable Iter() noexcept { return Iterable(*this); }
+    Iterable LockForIter() noexcept { return Iterable(*this); }
+
+    size_t GetSizeUnsafe() const noexcept { return size_; }
 
     void ClearForTests() {
         root_.reset();
         last_ = nullptr;
+        size_ = 0;
     }
 
 private:
@@ -344,6 +360,7 @@ private:
             if (!root_) {
                 last_ = nullptr;
             }
+            --size_;
             AssertCorrectUnsafe();
             return {std::move(node), root_.get()};
         }
@@ -353,6 +370,7 @@ private:
         if (!previousNode->next_) {
             last_ = previousNode;
         }
+        --size_;
 
         AssertCorrectUnsafe();
         return {std::move(node), previousNode->next_.get()};
@@ -370,6 +388,7 @@ private:
 
     unique_ptr<Node> root_;
     Node* last_ = nullptr;
+    size_t size_ = 0;
     SpinLock mutex_;
 };
 
@@ -515,6 +534,7 @@ public:
             auto* heapObject = new (node.Data()) HeapObjHeader();
             auto* object = &heapObject->object;
             object->typeInfoOrMeta_ = const_cast<TypeInfo*>(typeInfo);
+            // TODO: Consider supporting TF_IMMUTABLE: mark instance as frozen upon creation.
             return object;
         }
 
@@ -528,6 +548,7 @@ public:
             auto* array = &heapArray->array;
             array->typeInfoOrMeta_ = const_cast<TypeInfo*>(typeInfo);
             array->count_ = count;
+            // TODO: Consider supporting TF_IMMUTABLE: mark instance as frozen upon creation.
             return array;
         }
 
@@ -600,6 +621,8 @@ public:
             FinalizerQueue& owner_;
         };
 
+        size_t size() const noexcept { return consumer_.size(); }
+
         // TODO: Consider running it in the destructor instead.
         void Finalize() noexcept {
             for (auto node : Iterable(*this)) {
@@ -617,7 +640,7 @@ public:
 
     class Iterable {
     public:
-        Iterable(ObjectFactory& owner) noexcept : iter_(owner.storage_.Iter()) {}
+        Iterable(ObjectFactory& owner) noexcept : iter_(owner.storage_.LockForIter()) {}
 
         Iterator begin() noexcept { return Iterator(iter_.begin()); }
         Iterator end() noexcept { return Iterator(iter_.end()); }
@@ -635,7 +658,10 @@ public:
     ObjectFactory() noexcept = default;
     ~ObjectFactory() = default;
 
-    Iterable Iter() noexcept { return Iterable(*this); }
+    // Lock ObjectFactory for safe iteration.
+    Iterable LockForIter() noexcept { return Iterable(*this); }
+
+    size_t GetSizeUnsafe() const noexcept { return storage_.GetSizeUnsafe(); }
 
     void ClearForTests() { storage_.ClearForTests(); }
 

@@ -145,6 +145,7 @@ internal class Linker(val context: Context) {
                     BitcodeEmbedding.getLinkerOptions(context.config) +
                     linkerInput.caches.dynamic +
                     libraryProvidedLinkerFlags + additionalLinkerArgs
+
             val finalOutputCommands = linker.finalLinkCommands(
                     objectFiles = linkerInput.objectFiles,
                     executable = executable,

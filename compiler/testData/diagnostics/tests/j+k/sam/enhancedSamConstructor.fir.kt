@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // FILE: J.java
 import org.jetbrains.annotations.*;
 
@@ -16,13 +15,13 @@ public interface J2 extends J {
 
 // FILE: main.kt
 fun main() {
-    J { s: String -> <!ARGUMENT_TYPE_MISMATCH!>s<!>} // should be prohibited, because SAM value parameter has nullable type
+    J <!ARGUMENT_TYPE_MISMATCH!>{ s: String -> s}<!> // should be prohibited, because SAM value parameter has nullable type
     J { "" + it<!UNSAFE_CALL!>.<!>length }
-    J { null }
-    J { it?.length?.toString() }
+    J { <!NULL_FOR_NONNULL_TYPE!>null<!> }
+    J { <!ARGUMENT_TYPE_MISMATCH!>it?.length?.toString()<!> }
 
-    J2 { s: String -> <!ARGUMENT_TYPE_MISMATCH!>s<!>}
+    J2 <!ARGUMENT_TYPE_MISMATCH!>{ s: String -> s}<!>
     J2 { "" + it<!UNSAFE_CALL!>.<!>length }
-    J2 { null }
-    J2 { it?.length?.toString() }
+    J2 { <!NULL_FOR_NONNULL_TYPE!>null<!> }
+    J2 { <!ARGUMENT_TYPE_MISMATCH!>it?.length?.toString()<!> }
 }

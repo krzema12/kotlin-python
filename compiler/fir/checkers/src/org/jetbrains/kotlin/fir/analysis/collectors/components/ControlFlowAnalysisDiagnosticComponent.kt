@@ -5,19 +5,21 @@
 
 package org.jetbrains.kotlin.fir.analysis.collectors.components
 
+import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.cfa.FirControlFlowAnalyzer
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.DeclarationCheckers
 import org.jetbrains.kotlin.fir.analysis.checkersComponent
-import org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollector
+import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.references.FirControlFlowGraphReference
 import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
 
 class ControlFlowAnalysisDiagnosticComponent(
-    collector: AbstractDiagnosticCollector,
-    declarationCheckers: DeclarationCheckers = collector.session.checkersComponent.declarationCheckers,
-) : AbstractDiagnosticCollectorComponent(collector) {
+    session: FirSession,
+    reporter: DiagnosticReporter,
+    declarationCheckers: DeclarationCheckers = session.checkersComponent.declarationCheckers,
+) : AbstractDiagnosticCollectorComponent(session, reporter) {
     private val controlFlowAnalyzer = FirControlFlowAnalyzer(session, declarationCheckers)
 
     // ------------------------------- Class initializer -------------------------------
@@ -30,8 +32,8 @@ class ControlFlowAnalysisDiagnosticComponent(
         visitClass(anonymousObject, anonymousObject.controlFlowGraphReference, data)
     }
 
-    private fun <F : FirClass<F>> visitClass(
-        klass: FirClass<F>,
+    private fun visitClass(
+        klass: FirClass,
         controlFlowGraphReference: FirControlFlowGraphReference?,
         data: CheckerContext
     ) {
@@ -47,7 +49,7 @@ class ControlFlowAnalysisDiagnosticComponent(
 
     // ------------------------------- Function -------------------------------
 
-    override fun <F : FirFunction<F>> visitFunction(function: FirFunction<F>, data: CheckerContext) {
+    override fun visitFunction(function: FirFunction, data: CheckerContext) {
         val graph = function.controlFlowGraphReference?.controlFlowGraph ?: return
 
         controlFlowAnalyzer.analyzeFunction(function, graph, data, reporter)

@@ -7,36 +7,33 @@ package org.jetbrains.kotlin.idea.frontend.api.fir.components
 
 import com.intellij.openapi.project.Project
 import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.declarations.FirAnonymousObject
 import org.jetbrains.kotlin.fir.declarations.FirClass
 import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
+import org.jetbrains.kotlin.fir.expressions.FirAnonymousObjectExpression
 import org.jetbrains.kotlin.fir.resolve.ScopeSession
 import org.jetbrains.kotlin.fir.resolve.calls.FirSyntheticPropertiesScope
 import org.jetbrains.kotlin.fir.resolve.scope
 import org.jetbrains.kotlin.fir.scopes.*
 import org.jetbrains.kotlin.fir.scopes.impl.*
 import org.jetbrains.kotlin.idea.fir.low.level.api.api.FirModuleResolveState
-import org.jetbrains.kotlin.idea.fir.low.level.api.api.getTowerDataContextUnsafe
-import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
+import org.jetbrains.kotlin.idea.fir.low.level.api.api.LowLevelFirApiFacadeForResolveOnAir.getTowerContextProvider
+import org.jetbrains.kotlin.idea.fir.low.level.api.util.getElementTextInContext
 import org.jetbrains.kotlin.idea.frontend.api.ValidityTokenOwner
+import org.jetbrains.kotlin.idea.frontend.api.components.KtImplicitReceiver
 import org.jetbrains.kotlin.idea.frontend.api.components.KtScopeContext
 import org.jetbrains.kotlin.idea.frontend.api.components.KtScopeProvider
 import org.jetbrains.kotlin.idea.frontend.api.fir.KtFirAnalysisSession
 import org.jetbrains.kotlin.idea.frontend.api.fir.KtSymbolByFirBuilder
 import org.jetbrains.kotlin.idea.frontend.api.fir.scopes.*
 import org.jetbrains.kotlin.idea.frontend.api.fir.symbols.*
-import org.jetbrains.kotlin.idea.frontend.api.fir.symbols.KtFirAnonymousObjectSymbol
-import org.jetbrains.kotlin.idea.frontend.api.fir.symbols.KtFirEnumEntrySymbol
-import org.jetbrains.kotlin.idea.frontend.api.fir.symbols.KtFirFileSymbol
-import org.jetbrains.kotlin.idea.frontend.api.fir.symbols.KtFirNamedClassOrObjectSymbol
 import org.jetbrains.kotlin.idea.frontend.api.fir.types.KtFirType
 import org.jetbrains.kotlin.idea.frontend.api.fir.utils.weakRef
 import org.jetbrains.kotlin.idea.frontend.api.scopes.*
-import org.jetbrains.kotlin.idea.frontend.api.symbols.KtClassOrObjectSymbol
 import org.jetbrains.kotlin.idea.frontend.api.symbols.KtFileSymbol
 import org.jetbrains.kotlin.idea.frontend.api.symbols.KtPackageSymbol
 import org.jetbrains.kotlin.idea.frontend.api.symbols.markers.KtSymbolWithDeclarations
 import org.jetbrains.kotlin.idea.frontend.api.symbols.markers.KtSymbolWithMembers
+import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
 import org.jetbrains.kotlin.idea.frontend.api.types.KtType
 import org.jetbrains.kotlin.idea.frontend.api.withValidityAssertion
 import org.jetbrains.kotlin.psi.KtElement
@@ -60,13 +57,13 @@ internal class KtFirScopeProvider(
     private val fileScopeCache = IdentityHashMap<KtFileSymbol, KtDeclarationScope<KtSymbolWithDeclarations>>()
     private val packageMemberScopeCache = IdentityHashMap<KtPackageSymbol, KtPackageScope>()
 
-    private inline fun <T> KtSymbolWithMembers.withFirForScope(crossinline body: (FirClass<*>) -> T): T? = when (this) {
-        is KtFirNamedClassOrObjectSymbol -> firRef.withFir(FirResolvePhase.SUPER_TYPES, body)
-        is KtFirAnonymousObjectSymbol -> firRef.withFir(FirResolvePhase.SUPER_TYPES, body)
+    private inline fun <T> KtSymbolWithMembers.withFirForScope(crossinline body: (FirClass) -> T): T? = when (this) {
+        is KtFirNamedClassOrObjectSymbol -> firRef.withFir(FirResolvePhase.TYPES, body)
+        is KtFirAnonymousObjectSymbol -> firRef.withFir(FirResolvePhase.TYPES, body)
         is KtFirEnumEntrySymbol -> firRef.withFir(FirResolvePhase.IMPLICIT_TYPES_BODY_RESOLVE) {
             val initializer = it.initializer
-            check(initializer is FirAnonymousObject)
-            body(initializer)
+            check(initializer is FirAnonymousObjectExpression) { "Unexpected enum entry initializer: ${initializer?.javaClass}" }
+            body(initializer.anonymousObject)
         }
         else -> error { "Unknown KtSymbolWithDeclarations implementation ${this::class.qualifiedName}" }
     }
@@ -75,7 +72,7 @@ internal class KtFirScopeProvider(
         memberScopeCache.getOrPut(classSymbol) {
 
             val firScope = classSymbol.withFirForScope { fir ->
-                val firSession = fir.declarationSiteSession
+                val firSession = analysisSession.rootModuleSession
                 fir.unsubstitutedScope(
                     firSession,
                     ScopeSession(),
@@ -86,6 +83,15 @@ internal class KtFirScopeProvider(
             firScopeStorage.register(firScope)
             KtFirMemberScope(classSymbol, firScope, token, builder)
         }
+    }
+
+    override fun getStaticMemberScope(symbol: KtSymbolWithMembers): KtScope {
+        val firScope = symbol.withFirForScope { fir ->
+            fir.scopeProvider.getStaticScope(fir, analysisSession.rootModuleSession, ScopeSession())
+        } ?: return KtFirEmptyMemberScope(symbol)
+        firScopeStorage.register(firScope)
+        check(firScope is FirContainingNamesAwareScope)
+        return KtFirDelegatingScopeImpl(firScope, builder, token)
     }
 
     override fun getDeclaredMemberScope(classSymbol: KtSymbolWithMembers): KtDeclaredMemberScope = withValidityAssertion {
@@ -109,13 +115,20 @@ internal class KtFirScopeProvider(
 
     override fun getPackageScope(packageSymbol: KtPackageSymbol): KtPackageScope = withValidityAssertion {
         packageMemberScopeCache.getOrPut(packageSymbol) {
-            val firPackageScope =
-                FirPackageMemberScope(
-                    packageSymbol.fqName,
-                    firResolveState.rootModuleSession/*TODO use correct session here*/
-                ).also(firScopeStorage::register)
-            KtFirPackageScope(firPackageScope, project, builder, token)
+            KtFirPackageScope(
+                packageSymbol.fqName,
+                project,
+                builder,
+                this,
+                token,
+                analysisSession.searchScope,
+                analysisSession.targetPlatform
+            )
         }
+    }
+
+    fun registerScope(scope: FirScope) {
+        firScopeStorage.register(scope)
     }
 
     override fun getCompositeScope(subScopes: List<KtScope>): KtCompositeScope = withValidityAssertion {
@@ -145,17 +158,26 @@ internal class KtFirScopeProvider(
         originalFile: KtFile,
         positionInFakeFile: KtElement
     ): KtScopeContext = withValidityAssertion {
-        val towerDataContext = analysisSession.firResolveState.getTowerDataContextUnsafe(positionInFakeFile)
+
+        val towerDataContext =
+            analysisSession.firResolveState.getTowerContextProvider().getClosestAvailableParentContext(positionInFakeFile)
+                ?: error("Cannot find enclosing declaration for ${positionInFakeFile.getElementTextInContext()}")
 
         val implicitReceivers = towerDataContext.nonLocalTowerDataElements.mapNotNull { it.implicitReceiver }.distinct()
-        val implicitReceiversTypes = implicitReceivers.map { builder.typeBuilder.buildKtType(it.type) }
+        val implicitKtReceivers = implicitReceivers.map { receiver ->
+            KtImplicitReceiver(
+                token,
+                builder.typeBuilder.buildKtType(receiver.type),
+                builder.buildSymbol(receiver.boundSymbol.fir),
+            )
+        }
 
         val implicitReceiverScopes = implicitReceivers.mapNotNull { it.implicitScope }
         val nonLocalScopes = towerDataContext.nonLocalTowerDataElements.mapNotNull { it.scope }.distinct()
         val firLocalScopes = towerDataContext.localScopes
 
         @OptIn(ExperimentalStdlibApi::class)
-        val allKtScopes = buildList {
+        val allKtScopes = buildList<KtScope> {
             implicitReceiverScopes.mapTo(this, ::convertToKtScope)
             nonLocalScopes.mapTo(this, ::convertToKtScope)
             firLocalScopes.mapTo(this, ::convertToKtScope)
@@ -163,7 +185,7 @@ internal class KtFirScopeProvider(
 
         KtScopeContext(
             getCompositeScope(allKtScopes.asReversed()),
-            implicitReceiversTypes.asReversed()
+            implicitKtReceivers.asReversed()
         )
     }
 
@@ -172,7 +194,15 @@ internal class KtFirScopeProvider(
         return when (firScope) {
             is FirAbstractSimpleImportingScope -> KtFirNonStarImportingScope(firScope, builder, token)
             is FirAbstractStarImportingScope -> KtFirStarImportingScope(firScope, builder, project, token)
-            is FirPackageMemberScope -> KtFirPackageScope(firScope, project, builder, token)
+            is FirPackageMemberScope -> KtFirPackageScope(
+                firScope.fqName,
+                project,
+                builder,
+                this,
+                token,
+                analysisSession.searchScope,
+                analysisSession.targetPlatform
+            )
             is FirContainingNamesAwareScope -> KtFirDelegatingScopeImpl(firScope, builder, token)
             is FirMemberTypeParameterScope -> KtFirDelegatingScopeImpl(firScope, builder, token)
             else -> TODO(firScope::class.toString())

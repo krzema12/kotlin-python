@@ -5,11 +5,12 @@
 
 package org.jetbrains.kotlin.backend.common.lower
 
-import org.jetbrains.kotlin.backend.common.BodyLoweringPass
 import org.jetbrains.kotlin.backend.common.CommonBackendContext
+import org.jetbrains.kotlin.backend.common.BodyAndScriptBodyLoweringPass
 import org.jetbrains.kotlin.backend.common.descriptors.synthesizedString
 import org.jetbrains.kotlin.backend.common.ir.*
 import org.jetbrains.kotlin.backend.common.runOnFilePostfix
+import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.DescriptorVisibility
@@ -59,7 +60,7 @@ val IrDeclaration.parentsWithSelf: Sequence<IrDeclarationParent>
     get() = generateSequence(this as? IrDeclarationParent) { (it as? IrDeclaration)?.parent }
 
 val IrDeclaration.parents: Sequence<IrDeclarationParent>
-    get() = parentsWithSelf.drop(1)
+    get() = generateSequence(parent) { (it as? IrDeclaration)?.parent }
 
 object BOUND_VALUE_PARAMETER : IrDeclarationOriginImpl("BOUND_VALUE_PARAMETER")
 
@@ -76,9 +77,10 @@ object BOUND_RECEIVER_PARAMETER : IrDeclarationOriginImpl("BOUND_RECEIVER_PARAME
 class LocalDeclarationsLowering(
     val context: CommonBackendContext,
     val localNameProvider: LocalNameProvider = LocalNameProvider.DEFAULT,
-    val visibilityPolicy: VisibilityPolicy = VisibilityPolicy.DEFAULT
+    val visibilityPolicy: VisibilityPolicy = VisibilityPolicy.DEFAULT,
+    val suggestUniqueNames: Boolean = true, // When `true` appends a `-#index` suffix to lifted declaration names
 ) :
-    BodyLoweringPass {
+    BodyAndScriptBodyLoweringPass {
 
     override fun lower(irFile: IrFile) {
         runOnFilePostfix(irFile, allowDeclarationModification = true)
@@ -90,15 +92,17 @@ class LocalDeclarationsLowering(
     object DECLARATION_ORIGIN_FIELD_FOR_CROSSINLINE_CAPTURED_VALUE :
         IrDeclarationOriginImpl("FIELD_FOR_CROSSINLINE_CAPTURED_VALUE", isSynthetic = true)
 
-    private object STATEMENT_ORIGIN_INITIALIZER_OF_FIELD_FOR_CAPTURED_VALUE :
-        IrStatementOriginImpl("INITIALIZER_OF_FIELD_FOR_CAPTURED_VALUE")
-
     override fun lower(irBody: IrBody, container: IrDeclaration) {
-        LocalDeclarationsTransformer(irBody, container, null).lowerLocalDeclarations()
+        LocalDeclarationsTransformer(irBody, container, null, false).lowerLocalDeclarations()
     }
 
+    override fun lowerScriptBody(irDeclarationContainer: IrDeclarationContainer, container: IrDeclaration) {
+        LocalDeclarationsTransformer(irDeclarationContainer, container, null, true).lowerLocalDeclarations()
+    }
+
+
     fun lower(irElement: IrElement, container: IrDeclaration, classesToLower: Set<IrClass>) {
-        LocalDeclarationsTransformer(irElement, container, classesToLower).lowerLocalDeclarations()
+        LocalDeclarationsTransformer(irElement, container, classesToLower, false).lowerLocalDeclarations()
     }
 
     internal class ScopeWithCounter(val irElement: IrElement) {
@@ -181,7 +185,8 @@ class LocalDeclarationsLowering(
         override fun irGet(startOffset: Int, endOffset: Int, valueDeclaration: IrValueDeclaration): IrExpression? {
             val field = classContext.capturedValueToField[valueDeclaration] ?: return null
 
-            val receiver = member.dispatchReceiverParameter!!
+            val receiver = member.dispatchReceiverParameter
+                ?: error("No dispatch receiver parameter for ${member.render()}")
             return IrGetFieldImpl(
                 startOffset, endOffset, field.symbol, field.type,
                 receiver = IrGetValueImpl(startOffset, endOffset, receiver.type, receiver.symbol)
@@ -201,7 +206,7 @@ class LocalDeclarationsLowering(
     }
 
     private inner class LocalDeclarationsTransformer(
-        val irElement: IrElement, val container: IrDeclaration, val classesToLower: Set<IrClass>?
+        val irElement: IrElement, val container: IrDeclaration, val classesToLower: Set<IrClass>?, val isScriptMode: Boolean
     ) {
         val localFunctions: MutableMap<IrFunction, LocalFunctionContext> = LinkedHashMap()
         val localClasses: MutableMap<IrClass, LocalClassContext> = LinkedHashMap()
@@ -463,6 +468,8 @@ class LocalDeclarationsLowering(
 
             irClass.transformChildrenVoid(FunctionBodiesRewriter(localClassContext))
 
+            if (isScriptMode && constructors.isEmpty()) return
+
             val constructorsCallingSuper = constructors
                 .asSequence()
                 .map { localClassConstructors[it]!! }
@@ -490,7 +497,7 @@ class LocalDeclarationsLowering(
                             IrGetValueImpl(UNDEFINED_OFFSET, UNDEFINED_OFFSET, irClass.thisReceiver!!.symbol),
                             constructorContext.irGet(UNDEFINED_OFFSET, UNDEFINED_OFFSET, capturedValue)!!,
                             context.irBuiltIns.unitType,
-                            STATEMENT_ORIGIN_INITIALIZER_OF_FIELD_FOR_CAPTURED_VALUE
+                            LoweredStatementOrigins.STATEMENT_ORIGIN_INITIALIZER_OF_FIELD_FOR_CAPTURED_VALUE
                         )
                     }
                 )
@@ -565,7 +572,7 @@ class LocalDeclarationsLowering(
             localFunctions[declaration]?.let {
                 val baseName = if (declaration.name.isSpecial) "lambda" else declaration.name
                 if (it.index >= 0)
-                    return "$baseName-${it.index}"
+                    return if (suggestUniqueNames) "$baseName-${it.index}" else "$baseName"
             }
 
             return localNameProvider.localName(declaration)
@@ -632,7 +639,8 @@ class LocalDeclarationsLowering(
             newDeclaration.copyAttributes(oldDeclaration)
 
             newDeclaration.valueParameters += createTransformedValueParameters(
-                capturedValues, localFunctionContext, oldDeclaration, newDeclaration, isExplicitLocalFunction = oldDeclaration.origin != IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
+                capturedValues, localFunctionContext, oldDeclaration, newDeclaration,
+                isExplicitLocalFunction = oldDeclaration.origin == IrDeclarationOrigin.LOCAL_FUNCTION
             )
             newDeclaration.recordTransformedValueParameters(localFunctionContext)
 
@@ -785,9 +793,6 @@ class LocalDeclarationsLowering(
             }
         }
 
-        private fun Name.stripSpecialMarkers(): String =
-            if (isSpecial) asString().substring(1, asString().length - 1) else asString()
-
         private fun suggestNameForCapturedValue(declaration: IrValueDeclaration, usedNames: MutableSet<String>, isExplicitLocalFunction: Boolean = false): Name {
             if (declaration is IrValueParameter) {
                 if (declaration.name.asString() == "<this>" && declaration.isDispatchReceiver()) {
@@ -808,7 +813,7 @@ class LocalDeclarationsLowering(
             }
 
             val base = if (declaration.name.isSpecial) {
-                declaration.name.stripSpecialMarkers()
+                declaration.name.asStringStripSpecialMarkers()
             } else {
                 declaration.name.asString()
             }
@@ -859,9 +864,9 @@ class LocalDeclarationsLowering(
                 val correspondingProperty = parentFun.safeAs<IrSimpleFunction>()?.correspondingPropertySymbol?.owner
                 return when {
                     correspondingProperty != null ->
-                        correspondingProperty.name.stripSpecialMarkers()
+                        correspondingProperty.name.asStringStripSpecialMarkers()
                     else ->
-                        parentFun.name.stripSpecialMarkers()
+                        parentFun.name.asStringStripSpecialMarkers()
                 }
             }
 
@@ -933,7 +938,11 @@ class LocalDeclarationsLowering(
                 override fun visitConstructor(declaration: IrConstructor, data: Data) {
                     super.visitConstructor(declaration, data)
 
-                    if (!declaration.constructedClass.isLocalNotInner()) return
+                    if (!isScriptMode && !declaration.constructedClass.isLocalNotInner()) return
+                    // Inner classes in scripts are handled properly in the InnerClassesLowering
+                    if (isScriptMode && declaration.constructedClass.isInner) return
+                    // LDL doesn't work on the enums because local enums are not allowed, so skipping them in scripts too
+                    if (isScriptMode && declaration.constructedClass.kind == ClassKind.ENUM_CLASS) return
 
                     localClassConstructors[declaration] = LocalClassConstructorContext(declaration, data.inInlineFunctionScope)
                 }
@@ -942,7 +951,11 @@ class LocalDeclarationsLowering(
                     if (classesToLower?.contains(declaration) == false) return
                     super.visitClass(declaration, data.withCurrentClass(declaration))
 
-                    if (!declaration.isLocalNotInner()) return
+                    if (!isScriptMode && !declaration.isLocalNotInner()) return
+                    // Inner classes in scripts are handled properly in the InnerClassesLowering
+                    if (isScriptMode && declaration.isInner) return
+                    // LDL doesn't work on the enums because local enums are not allowed, so skipping them in scripts too
+                    if (isScriptMode && declaration.kind == ClassKind.ENUM_CLASS) return
 
                     localClasses[declaration] = LocalClassContext(declaration, data.inInlineFunctionScope)
                 }

@@ -5,12 +5,12 @@
 
 package org.jetbrains.kotlin.fir.resolve.calls.tower
 
+import org.jetbrains.kotlin.fir.declarations.FirTypedDeclaration
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirResolvedQualifier
-import org.jetbrains.kotlin.fir.expressions.builder.FirQualifiedAccessExpressionBuilder
+import org.jetbrains.kotlin.fir.expressions.builder.FirPropertyAccessExpressionBuilder
 import org.jetbrains.kotlin.fir.resolve.*
 import org.jetbrains.kotlin.fir.resolve.calls.*
-import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.firUnsafe
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassLikeSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
@@ -277,14 +277,14 @@ private fun BodyResolveComponents.createExplicitReceiverForInvokeByCallable(
     extensionReceiverExpression: FirExpression,
     symbol: FirCallableSymbol<*>
 ): FirExpression {
-    return FirQualifiedAccessExpressionBuilder().apply {
+    return FirPropertyAccessExpressionBuilder().apply {
         calleeReference = FirNamedReferenceWithCandidate(
             null,
             symbol.callableId.callableName,
             candidate
         )
         dispatchReceiver = candidate.dispatchReceiverExpression()
-        this.typeRef = returnTypeCalculator.tryCalculateReturnType(symbol.firUnsafe())
+        this.typeRef = returnTypeCalculator.tryCalculateReturnType(symbol.fir as FirTypedDeclaration)
 
         if (!invokeBuiltinExtensionMode) {
             extensionReceiver = extensionReceiverExpression

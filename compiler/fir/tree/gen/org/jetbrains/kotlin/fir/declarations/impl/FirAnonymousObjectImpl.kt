@@ -6,8 +6,9 @@
 package org.jetbrains.kotlin.fir.declarations.impl
 
 import org.jetbrains.kotlin.descriptors.ClassKind
-import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.FirSourceElement
+import org.jetbrains.kotlin.fir.declarations.DeprecationsPerUseSite
 import org.jetbrains.kotlin.fir.declarations.FirAnonymousObject
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationAttributes
@@ -28,17 +29,18 @@ import org.jetbrains.kotlin.fir.visitors.*
 
 internal class FirAnonymousObjectImpl(
     override val source: FirSourceElement?,
-    override val declarationSiteSession: FirSession,
+    override val moduleData: FirModuleData,
+    @Volatile
     override var resolvePhase: FirResolvePhase,
     override val origin: FirDeclarationOrigin,
     override val attributes: FirDeclarationAttributes,
+    override var deprecation: DeprecationsPerUseSite?,
     override val typeParameters: MutableList<FirTypeParameterRef>,
     override val classKind: ClassKind,
     override val superTypeRefs: MutableList<FirTypeRef>,
     override val declarations: MutableList<FirDeclaration>,
     override val annotations: MutableList<FirAnnotationCall>,
     override val scopeProvider: FirScopeProvider,
-    override var typeRef: FirTypeRef,
     override val symbol: FirAnonymousObjectSymbol,
 ) : FirAnonymousObject() {
     override var controlFlowGraphReference: FirControlFlowGraphReference? = null
@@ -53,7 +55,6 @@ internal class FirAnonymousObjectImpl(
         declarations.forEach { it.accept(visitor, data) }
         annotations.forEach { it.accept(visitor, data) }
         controlFlowGraphReference?.accept(visitor, data)
-        typeRef.accept(visitor, data)
     }
 
     override fun <D> transformChildren(transformer: FirTransformer<D>, data: D): FirAnonymousObjectImpl {
@@ -62,7 +63,6 @@ internal class FirAnonymousObjectImpl(
         transformDeclarations(transformer, data)
         transformAnnotations(transformer, data)
         controlFlowGraphReference = controlFlowGraphReference?.transform(transformer, data)
-        typeRef = typeRef.transform(transformer, data)
         return this
     }
 
@@ -90,6 +90,10 @@ internal class FirAnonymousObjectImpl(
         resolvePhase = newResolvePhase
     }
 
+    override fun replaceDeprecation(newDeprecation: DeprecationsPerUseSite?) {
+        deprecation = newDeprecation
+    }
+
     override fun replaceSuperTypeRefs(newSuperTypeRefs: List<FirTypeRef>) {
         superTypeRefs.clear()
         superTypeRefs.addAll(newSuperTypeRefs)
@@ -97,9 +101,5 @@ internal class FirAnonymousObjectImpl(
 
     override fun replaceControlFlowGraphReference(newControlFlowGraphReference: FirControlFlowGraphReference?) {
         controlFlowGraphReference = newControlFlowGraphReference
-    }
-
-    override fun replaceTypeRef(newTypeRef: FirTypeRef) {
-        typeRef = newTypeRef
     }
 }

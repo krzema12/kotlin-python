@@ -1,9 +1,0 @@
-// "Remove useless cast" "true"
-fun foo() {}
-
-fun main() {
-    foo();
-    { "" }
-}
-
-/* IGNORE_FIR */

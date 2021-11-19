@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.fir.tree.generator.util.traverseParents
 object BuilderConfigurator : AbstractBuilderConfigurator<FirTreeBuilder>(FirTreeBuilder) {
     fun configureBuilders() = with(firTreeBuilder) {
         val declarationBuilder by builder {
-            fields from declaration
+            fields from declaration without "symbol"
         }
 
         val annotationContainerBuilder by builder {
@@ -126,6 +126,11 @@ object BuilderConfigurator : AbstractBuilderConfigurator<FirTreeBuilder>(FirTree
             useTypes(stubReferenceType)
         }
 
+        builder(propertyAccessExpression) {
+            parents += qualifiedAccessBuilder
+            defaultNoReceivers()
+        }
+
         builder(callableReferenceAccess) {
             parents += qualifiedAccessBuilder
             defaultNull("explicitReceiver")
@@ -152,6 +157,10 @@ object BuilderConfigurator : AbstractBuilderConfigurator<FirTreeBuilder>(FirTree
             defaultNull("label")
         }
 
+        builder(errorExpression) {
+            defaultNull("expression")
+        }
+
         builder(errorLoop) {
             defaultNull("label")
         }
@@ -176,13 +185,13 @@ object BuilderConfigurator : AbstractBuilderConfigurator<FirTreeBuilder>(FirTree
             useTypes(emptyArgumentListType)
         }
 
-        builder(functionCall, init = configurationForFunctionCallBuilder)
-        builder(implicitInvokeCall, init = configurationForFunctionCallBuilder)
-
-        builder(qualifiedAccessExpression) {
-            parents += qualifiedAccessBuilder
-            defaultNoReceivers()
+        builder(functionCall) {
+            configurationForFunctionCallBuilder()
+            default("origin") {
+                value = "FirFunctionCallOrigin.Regular"
+            }
         }
+        builder(implicitInvokeCall, init = configurationForFunctionCallBuilder)
 
         builder(getClassCall) {
             parents += callBuilder
@@ -193,6 +202,7 @@ object BuilderConfigurator : AbstractBuilderConfigurator<FirTreeBuilder>(FirTree
             parents += typeParametersOwnerBuilder
             defaultNull("getter", "setter", "containerSource", "delegateFieldSymbol")
             default("resolvePhase", "FirResolvePhase.RAW_FIR")
+            defaultFalse("initializerAndAccessorsAreResolved")
             withCopy()
         }
 
@@ -268,7 +278,7 @@ object BuilderConfigurator : AbstractBuilderConfigurator<FirTreeBuilder>(FirTree
         }
 
         builder(valueParameter, type = "FirDefaultSetterValueParameter") {
-            defaultNull("defaultValue", "initializer", "delegate", "receiverTypeRef", "delegateFieldSymbol", "getter", "setter")
+            defaultNull("defaultValue", "initializer", "delegate", "receiverTypeRef", "getter", "setter")
             defaultFalse("isCrossinline", "isNoinline", "isVararg", "isVar")
             defaultTrue("isVal")
         }
@@ -332,8 +342,7 @@ object BuilderConfigurator : AbstractBuilderConfigurator<FirTreeBuilder>(FirTree
         val elementsWithDefaultTypeRef = listOf(
             thisReceiverExpression,
             callableReferenceAccess,
-            anonymousObject,
-            qualifiedAccessExpression,
+            propertyAccessExpression,
             functionCall,
             anonymousFunction,
             whenExpression,

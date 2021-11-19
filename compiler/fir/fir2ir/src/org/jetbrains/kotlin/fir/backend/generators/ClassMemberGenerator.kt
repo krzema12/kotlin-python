@@ -10,6 +10,10 @@ import org.jetbrains.kotlin.fir.backend.*
 import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.declarations.impl.FirDefaultPropertyGetter
 import org.jetbrains.kotlin.fir.declarations.impl.FirDefaultPropertySetter
+import org.jetbrains.kotlin.fir.declarations.utils.isExpect
+import org.jetbrains.kotlin.fir.declarations.utils.isFromEnumClass
+import org.jetbrains.kotlin.fir.declarations.utils.primaryConstructor
+import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.dispatchReceiverClassOrNull
 import org.jetbrains.kotlin.fir.expressions.FirDelegatedConstructorCall
 import org.jetbrains.kotlin.fir.expressions.FirExpression
@@ -41,7 +45,7 @@ internal class ClassMemberGenerator(
 
     private fun <T : IrDeclaration> applyParentFromStackTo(declaration: T): T = conversionScope.applyParentFromStackTo(declaration)
 
-    fun convertClassContent(irClass: IrClass, klass: FirClass<*>) {
+    fun convertClassContent(irClass: IrClass, klass: FirClass) {
         declarationStorage.enterScope(irClass)
         conversionScope.withClass(irClass) {
             val primaryConstructor = klass.primaryConstructor
@@ -54,6 +58,8 @@ internal class ClassMemberGenerator(
                 }
             }
             fakeOverrideGenerator.bindOverriddenSymbols(irClass.declarations)
+            components.delegatedMemberGenerator.bindDelegatedMembersOverriddenSymbols(irClass)
+
             klass.declarations.forEach { declaration ->
                 when {
                     declaration is FirTypeAlias -> {
@@ -78,7 +84,7 @@ internal class ClassMemberGenerator(
         declarationStorage.leaveScope(irClass)
     }
 
-    fun <T : IrFunction> convertFunctionContent(irFunction: T, firFunction: FirFunction<*>?, containingClass: FirClass<*>?): T {
+    fun <T : IrFunction> convertFunctionContent(irFunction: T, firFunction: FirFunction?, containingClass: FirClass?): T {
         conversionScope.withParent(irFunction) {
             if (firFunction != null) {
                 if (irFunction !is IrConstructor || !irFunction.isPrimary) {
@@ -151,7 +157,7 @@ internal class ClassMemberGenerator(
         return irFunction
     }
 
-    fun convertPropertyContent(irProperty: IrProperty, property: FirProperty, containingClass: FirClass<*>?): IrProperty {
+    fun convertPropertyContent(irProperty: IrProperty, property: FirProperty, containingClass: FirClass?): IrProperty {
         val initializer = property.initializer
         val delegate = property.delegate
         val propertyType = property.returnTypeRef.toIrType()
@@ -225,7 +231,7 @@ internal class ClassMemberGenerator(
         propertyType: IrType,
         isDefault: Boolean,
         isGetter: Boolean,
-        containingClass: FirClass<*>?
+        containingClass: FirClass?
     ) {
         conversionScope.withFunction(this) {
             applyParentFromStackTo(this)

@@ -135,6 +135,12 @@ public class IrLocalVariableTestGenerated extends AbstractIrLocalVariableTest {
     }
 
     @Test
+    @TestMetadata("tryFinally17.kt")
+    public void testTryFinally17() throws Exception {
+        runTest("compiler/testData/debug/localVariables/tryFinally17.kt");
+    }
+
+    @Test
     @TestMetadata("tryFinally2.kt")
     public void testTryFinally2() throws Exception {
         runTest("compiler/testData/debug/localVariables/tryFinally2.kt");
@@ -273,6 +279,12 @@ public class IrLocalVariableTestGenerated extends AbstractIrLocalVariableTest {
         @TestMetadata("localsStateMachineTransform.kt")
         public void testLocalsStateMachineTransform() throws Exception {
             runTest("compiler/testData/debug/localVariables/suspend/localsStateMachineTransform.kt");
+        }
+
+        @Test
+        @TestMetadata("mergeLvt.kt")
+        public void testMergeLvt() throws Exception {
+            runTest("compiler/testData/debug/localVariables/suspend/mergeLvt.kt");
         }
 
         @Test

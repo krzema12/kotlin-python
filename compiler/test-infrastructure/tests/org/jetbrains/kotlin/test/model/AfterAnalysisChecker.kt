@@ -5,14 +5,13 @@
 
 package org.jetbrains.kotlin.test.model
 
-import org.jetbrains.kotlin.test.directives.model.DirectivesContainer
+import org.jetbrains.kotlin.test.WrappedException
 import org.jetbrains.kotlin.test.services.TestServices
 
-abstract class AfterAnalysisChecker(protected val testServices: TestServices) {
-    open val directives: List<DirectivesContainer>
-        get() = emptyList()
+abstract class AfterAnalysisChecker(protected val testServices: TestServices) : ServicesAndDirectivesContainer {
+    open fun check(failedAssertions: List<WrappedException>) {}
 
-    open fun check(failedAssertions: List<Throwable>) {}
+    open fun suppressIfNeeded(failedAssertions: List<WrappedException>): List<WrappedException> = failedAssertions
 
-    open fun suppressIfNeeded(failedAssertions: List<Throwable>): List<Throwable> = failedAssertions
+    protected fun Throwable.wrap(): WrappedException = WrappedException.FromAfterAnalysisChecker(this)
 }

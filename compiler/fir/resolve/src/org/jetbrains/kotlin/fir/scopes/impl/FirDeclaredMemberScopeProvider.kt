@@ -9,20 +9,21 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.FirSessionComponent
 import org.jetbrains.kotlin.fir.ThreadSafeMutableState
 import org.jetbrains.kotlin.fir.declarations.FirClass
-import org.jetbrains.kotlin.fir.declarations.classId
+import org.jetbrains.kotlin.fir.declarations.utils.classId
 import org.jetbrains.kotlin.fir.resolve.declaredMemberScopeProvider
 import org.jetbrains.kotlin.fir.resolve.providers.FirSymbolProvider
 import org.jetbrains.kotlin.fir.scopes.FirScope
+import org.jetbrains.kotlin.fir.symbols.impl.FirClassSymbol
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.utils.getOrPutNullable
 
 @ThreadSafeMutableState
 class FirDeclaredMemberScopeProvider(val useSiteSession: FirSession) : FirSessionComponent {
-    private val declaredMemberCache = mutableMapOf<FirClass<*>, FirClassDeclaredMemberScope>()
-    private val nestedClassifierCache = mutableMapOf<FirClass<*>, FirNestedClassifierScope?>()
+    private val declaredMemberCache = mutableMapOf<FirClass, FirClassDeclaredMemberScope>()
+    private val nestedClassifierCache = mutableMapOf<FirClass, FirNestedClassifierScope?>()
 
-    fun getClassByClassId(classId: ClassId): FirClass<*>? {
+    fun getClassByClassId(classId: ClassId): FirClass? {
         for ((clazz, _) in declaredMemberCache) {
             if (clazz.classId.packageFqName == classId.packageFqName
                 && clazz.classId.relativeClassName == classId.relativeClassName
@@ -41,7 +42,7 @@ class FirDeclaredMemberScopeProvider(val useSiteSession: FirSession) : FirSessio
     }
 
     fun declaredMemberScope(
-        klass: FirClass<*>,
+        klass: FirClass,
         useLazyNestedClassifierScope: Boolean,
         existingNames: List<Name>?,
         symbolProvider: FirSymbolProvider?
@@ -51,20 +52,24 @@ class FirDeclaredMemberScopeProvider(val useSiteSession: FirSession) : FirSessio
         }
     }
 
-    fun nestedClassifierScope(klass: FirClass<*>): FirNestedClassifierScope? {
+    fun nestedClassifierScope(klass: FirClass): FirNestedClassifierScope? {
         return nestedClassifierCache.getOrPutNullable(klass) {
             FirNestedClassifierScope(klass, useSiteSession).takeUnless { it.isEmpty() }
         }
     }
 }
 
-fun FirSession.declaredMemberScope(klass: FirClass<*>): FirClassDeclaredMemberScope {
+fun FirSession.declaredMemberScope(klass: FirClass): FirClassDeclaredMemberScope {
     return declaredMemberScopeProvider
         .declaredMemberScope(klass, useLazyNestedClassifierScope = false, existingNames = null, symbolProvider = null)
 }
 
+fun FirSession.declaredMemberScope(klass: FirClassSymbol<*>): FirClassDeclaredMemberScope {
+    return declaredMemberScope(klass.fir)
+}
+
 fun FirSession.declaredMemberScopeWithLazyNestedScope(
-    klass: FirClass<*>,
+    klass: FirClass,
     existingNames: List<Name>,
     symbolProvider: FirSymbolProvider
 ): FirScope {
@@ -72,7 +77,7 @@ fun FirSession.declaredMemberScopeWithLazyNestedScope(
         .declaredMemberScope(klass, useLazyNestedClassifierScope = true, existingNames = existingNames, symbolProvider = symbolProvider)
 }
 
-fun FirSession.nestedClassifierScope(klass: FirClass<*>): FirNestedClassifierScope? {
+fun FirSession.nestedClassifierScope(klass: FirClass): FirNestedClassifierScope? {
     return declaredMemberScopeProvider
         .nestedClassifierScope(klass)
 }

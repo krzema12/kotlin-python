@@ -8,10 +8,12 @@
 #include "Common.h"
 #include "ObjectOps.hpp"
 #include "ThreadData.hpp"
+#include "ThreadState.hpp"
 
 using namespace kotlin;
 
 OBJ_GETTER(mm::InitThreadLocalSingleton, ThreadData* threadData, ObjHeader** location, const TypeInfo* typeInfo, void (*ctor)(ObjHeader*)) {
+    AssertThreadState(threadData, ThreadState::kRunnable);
     if (auto* value = *location) {
         // Initialized by someone else.
         RETURN_OBJ(value);
@@ -33,6 +35,7 @@ OBJ_GETTER(mm::InitThreadLocalSingleton, ThreadData* threadData, ObjHeader** loc
 }
 
 OBJ_GETTER(mm::InitSingleton, ThreadData* threadData, ObjHeader** location, const TypeInfo* typeInfo, void (*ctor)(ObjHeader*)) {
+    AssertThreadState(threadData, ThreadState::kRunnable);
     auto& initializingSingletons = threadData->initializingSingletons();
 
     // Search from the top of the stack.
@@ -46,7 +49,10 @@ OBJ_GETTER(mm::InitSingleton, ThreadData* threadData, ObjHeader** location, cons
 
     // Spin lock.
     ObjHeader* value = nullptr;
-    while ((value = __sync_val_compare_and_swap(location, nullptr, initializing)) == initializing) {
+    {
+        ThreadStateGuard guard(ThreadState::kNative);
+        while ((value = __sync_val_compare_and_swap(location, nullptr, initializing)) == initializing) {
+        }
     }
     if (value != nullptr) {
         // Initialized by someone else.

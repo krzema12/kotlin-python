@@ -10,13 +10,13 @@ import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirRegularClass
-import org.jetbrains.kotlin.fir.declarations.collectEnumEntries
-import org.jetbrains.kotlin.fir.declarations.isStatic
-import org.jetbrains.kotlin.fir.declarations.modality
+import org.jetbrains.kotlin.fir.declarations.utils.collectEnumEntries
+import org.jetbrains.kotlin.fir.declarations.utils.isStatic
+import org.jetbrains.kotlin.fir.declarations.utils.modality
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.builder.buildConstExpression
-import org.jetbrains.kotlin.fir.expressions.builder.buildQualifiedAccessExpression
+import org.jetbrains.kotlin.fir.expressions.builder.buildPropertyAccessExpression
 import org.jetbrains.kotlin.fir.java.declarations.FirJavaClass
 import org.jetbrains.kotlin.fir.java.declarations.FirJavaField
 import org.jetbrains.kotlin.fir.references.builder.buildResolvedNamedReference
@@ -97,7 +97,7 @@ private fun ConeKotlinType.enhanceConeKotlinType(
                 lowerResult === lowerBound && upperResult === upperBound -> this
                 this is ConeRawType -> ConeRawType(lowerResult, upperResult)
                 else -> coneFlexibleOrSimpleType(
-                    session, lowerResult, upperResult, isNotNullTypeParameter = qualifiers(index).isNotNullTypeParameter
+                    session, lowerResult, upperResult, isNotNullTypeParameter = qualifiers(index).definitelyNotNull
                 )
             }
         }
@@ -128,7 +128,11 @@ private fun coneFlexibleOrSimpleType(
                     type is ConeTypeParameterType || type.isNullable
                 }
             ) {
-                return ConeDefinitelyNotNullType.create(lowerBound) ?: lowerBound
+                return ConeDefinitelyNotNullType.create(
+                    lowerBound,
+                    session.typeContext,
+                    useCorrectedNullabilityForFlexibleTypeParameters = true
+                ) ?: lowerBound
             }
         }
         return lowerBound
@@ -245,6 +249,7 @@ private fun ConeClassifierLookupTag.enhanceMutability(
                 return ConeClassLikeLookupTagImpl(mutableId)
             }
         }
+        null -> {}
     }
 
     return this
@@ -299,7 +304,7 @@ internal fun ConeKotlinType.lexicalCastFrom(session: FirSession, value: String):
         val name = Name.identifier(value)
         val firEnumEntry = firElement.collectEnumEntries().find { it.name == name }
 
-        return if (firEnumEntry != null) buildQualifiedAccessExpression {
+        return if (firEnumEntry != null) buildPropertyAccessExpression {
             calleeReference = buildResolvedNamedReference {
                 this.name = name
                 resolvedSymbol = firEnumEntry.symbol
@@ -309,7 +314,7 @@ internal fun ConeKotlinType.lexicalCastFrom(session: FirSession, value: String):
                 it.isStatic && it.modality == Modality.FINAL && it.name == name
             }
             if (firStaticProperty != null) {
-                buildQualifiedAccessExpression {
+                buildPropertyAccessExpression {
                     calleeReference = buildResolvedNamedReference {
                         this.name = name
                         resolvedSymbol = firStaticProperty.symbol

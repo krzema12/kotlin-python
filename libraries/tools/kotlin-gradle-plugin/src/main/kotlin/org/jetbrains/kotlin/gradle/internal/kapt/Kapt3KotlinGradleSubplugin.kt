@@ -11,7 +11,6 @@ import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.SourceKind
 import com.intellij.openapi.util.SystemInfo
 import com.intellij.util.lang.JavaVersion
-import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.Dependency
@@ -27,6 +26,7 @@ import org.gradle.process.CommandLineArgumentProvider
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
 import org.gradle.util.GradleVersion
 import org.jetbrains.kotlin.gradle.dsl.KotlinCommonOptions
+import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 import org.jetbrains.kotlin.gradle.internal.kapt.incremental.CLASS_STRUCTURE_ARTIFACT_TYPE
 import org.jetbrains.kotlin.gradle.internal.kapt.incremental.StructureTransformAction
 import org.jetbrains.kotlin.gradle.internal.kapt.incremental.StructureTransformLegacyAction
@@ -53,10 +53,14 @@ class Kapt3GradleSubplugin @Inject internal constructor(private val registry: To
         target.extensions.create("kapt", KaptExtension::class.java)
 
         target.configurations.create(KAPT_WORKER_DEPENDENCIES_CONFIGURATION_NAME).apply {
-            target.getKotlinPluginVersion()?.let { kotlinPluginVersion ->
-                val kaptDependency = getPluginArtifact().run { "$groupId:$artifactId:$kotlinPluginVersion" }
-                dependencies.add(target.dependencies.create(kaptDependency))
-            } ?: throw GradleException("Kotlin plugin should be enabled before 'kotlin-kapt'")
+            val kaptDependency = getPluginArtifact().run { "$groupId:$artifactId:${target.getKotlinPluginVersion()}" }
+            dependencies.add(target.dependencies.create(kaptDependency))
+            dependencies.add(
+                target.kotlinDependency(
+                    "kotlin-stdlib",
+                    target.kotlinExtension.coreLibrariesVersion
+                )
+            )
         }
 
         registry.register(KaptModelBuilder())
@@ -226,6 +230,8 @@ class Kapt3GradleSubplugin @Inject internal constructor(private val registry: To
 
     private fun Kapt3SubpluginContext.getKaptIncrementalDataDir() = temporaryKaptDirectory("incrementalData")
 
+    private fun Kapt3SubpluginContext.getKaptClasspathSnapshotDir() = temporaryKaptDirectory("classpath-snapshot")
+
     private fun Kapt3SubpluginContext.getKaptIncrementalAnnotationProcessingCache() = temporaryKaptDirectory("incApCache")
 
     private fun Kapt3SubpluginContext.temporaryKaptDirectory(
@@ -295,8 +301,6 @@ class Kapt3GradleSubplugin @Inject internal constructor(private val registry: To
         val kaptTaskProvider: TaskProvider<out KaptTask> = context.createKaptKotlinTask(useWorkerApi = project.isUseWorkerApi())
 
         kaptGenerateStubsTaskProvider.configure { kaptGenerateStubsTask ->
-            kaptGenerateStubsTask.source(*kaptConfigurations.toTypedArray())
-
             kaptGenerateStubsTask.dependsOn(*buildDependencies.toTypedArray())
             kaptGenerateStubsTask.dependsOn(
                 project.provider {
@@ -514,6 +518,7 @@ class Kapt3GradleSubplugin @Inject internal constructor(private val registry: To
                 KaptWithoutKotlincTask.Configurator(kotlinCompileTask).configure(kaptTask)
             } else {
                 KaptWithKotlincTask.Configurator(kotlinCompileTask).configure(kaptTask as KaptWithKotlincTask)
+                PropertiesProvider(project).mapKotlinDaemonProperties(kaptTask)
             }
 
             kaptTask.stubsDir.set(getKaptStubsDir())
@@ -521,7 +526,7 @@ class Kapt3GradleSubplugin @Inject internal constructor(private val registry: To
             kaptTask.destinationDir = sourcesOutputDir
             kaptTask.kotlinSourcesDestinationDir = kotlinSourcesOutputDir
             kaptTask.classesDir = classesOutputDir
-            kaptTask.includeCompileClasspath = includeCompileClasspath
+            kaptTask.includeCompileClasspath.set(includeCompileClasspath)
 
             kaptTask.isIncremental = project.isIncrementalKapt()
 
@@ -599,7 +604,6 @@ class Kapt3GradleSubplugin @Inject internal constructor(private val registry: To
         if (taskClass == KaptWithoutKotlincTask::class.java) {
             kaptTaskProvider.configure {
                 it as KaptWithoutKotlincTask
-                it.isVerbose = project.isKaptVerbose()
                 it.mapDiagnosticLocations = kaptExtension.mapDiagnosticLocations
                 it.annotationProcessorFqNames = kaptExtension.processors.split(',').filter { it.isNotEmpty() }
                 it.javacOptions = dslJavacOptions.get()
@@ -621,7 +625,7 @@ class Kapt3GradleSubplugin @Inject internal constructor(private val registry: To
         kaptTaskProvider.configure { task ->
             task.onlyIf {
                 it as KaptTask
-                it.includeCompileClasspath || !it.kaptClasspath.isEmpty()
+                it.includeCompileClasspath.get() || !it.kaptClasspath.isEmpty
             }
         }
 
@@ -650,10 +654,20 @@ class Kapt3GradleSubplugin @Inject internal constructor(private val registry: To
     }
 
     private fun Kapt3SubpluginContext.createKaptGenerateStubsTask(): TaskProvider<KaptGenerateStubsTask> {
+        val properties = PropertiesProvider(project)
         val kaptTaskName = getKaptTaskName("kaptGenerateStubs")
+        val kaptTaskProvider = project.registerTask<KaptGenerateStubsTask>(kaptTaskName)
 
-        val kaptTaskProvider = project.registerTask<KaptGenerateStubsTask>(kaptTaskName) { kaptTask ->
-            KaptGenerateStubsTask.Configurator(kotlinCompile.get(), kotlinCompilation).configure(kaptTask)
+        val configurator = KaptGenerateStubsTask.Configurator(
+            kotlinCompile,
+            kotlinCompilation,
+            properties,
+            getKaptClasspathSnapshotDir()
+        )
+        configurator.runAtConfigurationTime(kaptTaskProvider, project)
+
+        kaptTaskProvider.configure { kaptTask ->
+            configurator.configure(kaptTask)
 
             kaptTask.stubsDir.set(getKaptStubsDir())
             kaptTask.destinationDirectory.set(getKaptIncrementalDataDir())
@@ -661,7 +675,7 @@ class Kapt3GradleSubplugin @Inject internal constructor(private val registry: To
 
             kaptTask.kaptClasspath.from(kaptClasspathConfigurations)
 
-            PropertiesProvider(project).mapKotlinTaskProperties(kaptTask)
+            properties.mapKotlinTaskProperties(kaptTask)
 
             if (!includeCompileClasspath) {
                 kaptTask.onlyIf {
@@ -825,7 +839,7 @@ private val BaseVariant.dataBindingDependencyArtifactsIfSupported: FileCollectio
         ?.invoke(this) as? FileCollection
 
 //region Stub implementation for legacy API, KT-39809
-@Suppress("DEPRECATION") // implementing to fix KT-39809
+@Suppress("DEPRECATION_ERROR") // implementing to fix KT-39809
 class Kapt3KotlinGradleSubplugin : KotlinGradleSubplugin<AbstractCompile> {
     override fun isApplicable(project: Project, task: AbstractCompile): Boolean = false
 

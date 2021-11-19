@@ -6,15 +6,13 @@
 package org.jetbrains.kotlin.backend.jvm.codegen
 
 import org.jetbrains.kotlin.backend.common.ir.allOverridden
-import org.jetbrains.kotlin.backend.common.ir.isFromJava
 import org.jetbrains.kotlin.backend.common.ir.isMethodOfAny
 import org.jetbrains.kotlin.backend.common.ir.isTopLevel
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
 import org.jetbrains.kotlin.backend.jvm.JvmBackendContext
 import org.jetbrains.kotlin.backend.jvm.JvmLoweredDeclarationOrigin
 import org.jetbrains.kotlin.backend.jvm.ir.*
-import org.jetbrains.kotlin.backend.jvm.lower.inlineclasses.unboxInlineClass
-import org.jetbrains.kotlin.backend.jvm.lower.suspendFunctionOriginal
+import org.jetbrains.kotlin.backend.jvm.unboxInlineClass
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
 import org.jetbrains.kotlin.codegen.JvmCodegenUtil
@@ -28,11 +26,12 @@ import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.declarations.lazy.IrLazyClass
-import org.jetbrains.kotlin.ir.declarations.lazy.IrLazyFunction
 import org.jetbrains.kotlin.ir.declarations.lazy.IrLazyFunctionBase
+import org.jetbrains.kotlin.ir.declarations.lazy.IrMaybeDeserializedClass
 import org.jetbrains.kotlin.ir.descriptors.IrBasedSimpleFunctionDescriptor
 import org.jetbrains.kotlin.ir.descriptors.toIrBasedDescriptor
-import org.jetbrains.kotlin.ir.expressions.*
+import org.jetbrains.kotlin.ir.expressions.IrCall
+import org.jetbrains.kotlin.ir.expressions.IrConst
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.load.java.*
@@ -132,6 +131,7 @@ class MethodSignatureMapper(private val context: JvmBackendContext) {
         if (visibility == DescriptorVisibilities.INTERNAL &&
             origin != JvmLoweredDeclarationOrigin.STATIC_INLINE_CLASS_CONSTRUCTOR &&
             origin != JvmLoweredDeclarationOrigin.SYNTHETIC_METHOD_FOR_PROPERTY_OR_TYPEALIAS_ANNOTATIONS &&
+            origin != IrDeclarationOrigin.PROPERTY_DELEGATE &&
             !isPublishedApi()
         ) {
             return originalFunction.takeIf { it != this }
@@ -149,7 +149,7 @@ class MethodSignatureMapper(private val context: JvmBackendContext) {
         } else null
 
     private fun getModuleName(function: IrSimpleFunction): String =
-        (if (function is IrLazyFunction)
+        (if (function is IrLazyFunctionBase)
             getJvmModuleNameForDeserialized(function)
         else null) ?: context.state.moduleName
 
@@ -308,7 +308,7 @@ class MethodSignatureMapper(private val context: JvmBackendContext) {
 
     // Boxing is only necessary for 'remove(E): Boolean' of a MutableCollection<Int> implementation.
     // Otherwise this method might clash with 'remove(I): E' defined in the java.util.List JDK interface (mapped to kotlin 'removeAt').
-    internal fun shouldBoxSingleValueParameterForSpecialCaseOfRemove(irFunction: IrFunction): Boolean {
+    fun shouldBoxSingleValueParameterForSpecialCaseOfRemove(irFunction: IrFunction): Boolean {
         if (irFunction !is IrSimpleFunction) return false
         if (irFunction.name.asString() != "remove" && !irFunction.name.asString().startsWith("remove-")) return false
         if (irFunction.isFromJava()) return false
@@ -380,7 +380,10 @@ class MethodSignatureMapper(private val context: JvmBackendContext) {
     internal fun mapToCallableMethod(expression: IrCall, caller: IrFunction?): IrCallableMethod {
         val callee = expression.symbol.owner
         val calleeParent = expression.superQualifierSymbol?.owner
-            ?: expression.dispatchReceiver?.type?.classOrNull?.owner
+            ?: expression.dispatchReceiver?.type?.classOrNull?.owner?.let {
+                // Calling Object class methods on interfaces is permitted, but they're not interface methods.
+                if (it.isJvmInterface && callee.isMethodOfAny()) context.irBuiltIns.anyClass.owner else it
+            }
             ?: callee.parentAsClass // Static call or type parameter
         val owner = typeMapper.mapOwner(calleeParent)
 
@@ -422,7 +425,7 @@ class MethodSignatureMapper(private val context: JvmBackendContext) {
         return null
     }
 
-    internal fun mapCalleeToAsmMethod(function: IrSimpleFunction, isSuperCall: Boolean = false): Method =
+    fun mapCalleeToAsmMethod(function: IrSimpleFunction, isSuperCall: Boolean = false): Method =
         mapAsmMethod(findSuperDeclaration(function, isSuperCall))
 
     // Copied from KotlinTypeMapper.findSuperDeclaration.
@@ -494,7 +497,7 @@ class MethodSignatureMapper(private val context: JvmBackendContext) {
     }
 
     // From org.jetbrains.kotlin.load.kotlin.getJvmModuleNameForDeserializedDescriptor
-    private fun getJvmModuleNameForDeserialized(function: IrLazyFunction): String? {
+    private fun getJvmModuleNameForDeserialized(function: IrLazyFunctionBase): String? {
         var current: IrDeclarationParent? = function.parent
         while (current != null) {
             when (current) {
@@ -505,6 +508,8 @@ class MethodSignatureMapper(private val context: JvmBackendContext) {
                         ?.let(nameResolver::getString)
                         ?: JvmProtoBufUtil.DEFAULT_MODULE_NAME
                 }
+                is IrMaybeDeserializedClass ->
+                    return current.moduleName
                 is IrExternalPackageFragment -> {
                     val source = current.containerSource ?: return null
                     return (source as? JvmPackagePartSource)?.moduleName

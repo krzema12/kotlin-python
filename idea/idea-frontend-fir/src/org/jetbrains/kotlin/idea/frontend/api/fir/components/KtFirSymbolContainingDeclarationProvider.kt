@@ -6,20 +6,20 @@
 package org.jetbrains.kotlin.idea.frontend.api.fir.components
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.util.parentOfType
 import org.jetbrains.kotlin.fir.FirFakeSourceElementKind
+import org.jetbrains.kotlin.fir.FirRealSourceElementKind
+import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.psi
+import org.jetbrains.kotlin.idea.fir.low.level.api.util.parentOfType
 import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
 import org.jetbrains.kotlin.idea.frontend.api.components.KtSymbolContainingDeclarationProvider
 import org.jetbrains.kotlin.idea.frontend.api.fir.KtFirAnalysisSession
 import org.jetbrains.kotlin.idea.frontend.api.fir.symbols.KtFirSymbol
+import org.jetbrains.kotlin.idea.frontend.api.fir.utils.firRef
 import org.jetbrains.kotlin.idea.frontend.api.symbols.*
 import org.jetbrains.kotlin.idea.frontend.api.symbols.markers.KtSymbolKind
 import org.jetbrains.kotlin.idea.frontend.api.symbols.markers.KtSymbolWithKind
-import org.jetbrains.kotlin.name.ClassId
-import org.jetbrains.kotlin.psi.KtDeclaration
-import org.jetbrains.kotlin.psi.KtObjectLiteralExpression
-import org.jetbrains.kotlin.psi.KtPrimaryConstructor
+import org.jetbrains.kotlin.psi.*
 
 internal class KtFirSymbolContainingDeclarationProvider(
     override val analysisSession: KtFirAnalysisSession,
@@ -28,6 +28,14 @@ internal class KtFirSymbolContainingDeclarationProvider(
     override fun getContainingDeclaration(symbol: KtSymbolWithKind): KtSymbolWithKind? {
         if (symbol is KtPackageSymbol) return null
         if (symbol.symbolKind == KtSymbolKind.TOP_LEVEL) return null
+        if (symbol is KtCallableSymbol) {
+            val classId = symbol.callableIdIfNonLocal?.classId
+            if (classId != null) {
+                with(analysisSession) {
+                    return classId.getCorrespondingToplevelClassOrObjectSymbol()
+                }
+            }
+        }
         return when (symbol.origin) {
             KtSymbolOrigin.SOURCE, KtSymbolOrigin.SOURCE_MEMBER_GENERATED ->
                 getContainingDeclarationForKotlinInSourceSymbol(symbol)
@@ -47,19 +55,9 @@ internal class KtFirSymbolContainingDeclarationProvider(
 
     private fun getContainingDeclarationForKotlinInSourceSymbol(symbol: KtSymbolWithKind): KtSymbolWithKind = with(analysisSession) {
         require(symbol.origin == KtSymbolOrigin.SOURCE || symbol.origin == KtSymbolOrigin.SOURCE_MEMBER_GENERATED)
+        require(symbol is KtFirSymbol<*>)
 
-        val psi = when (val psi = symbol.getPsi()) {
-            is KtDeclaration -> psi
-            is KtObjectLiteralExpression -> psi.objectDeclaration
-            else -> error { "PSI of kotlin declaration should be KtDeclaration but was ${psi::class.simpleName}" }
-        }
-
-        val containingDeclaration = when (symbol.origin) {
-            KtSymbolOrigin.SOURCE -> psi.parentOfType()
-                ?: error("Containing declaration should present for non-toplevel declaration")
-            KtSymbolOrigin.SOURCE_MEMBER_GENERATED -> psi
-            else -> error("Unsupported declaration origin ${symbol.origin}")
-        }
+        val containingDeclaration = getContainingPsi(symbol)
 
         return with(analysisSession) {
             val containingSymbol = containingDeclaration.getSymbol()
@@ -68,17 +66,30 @@ internal class KtFirSymbolContainingDeclarationProvider(
         }
     }
 
-    private fun KtSymbolWithKind.getPsi(): PsiElement {
-        require(this is KtFirSymbol<*>)
-        return getPropertyByParameterPsi()
-            ?: psi
-            ?: error("PSI should present for declaration built by Kotlin code")
+    private fun getContainingPsi(symbol: KtFirSymbol<*>): KtDeclaration {
+        val source = symbol.firRef.withFir(action = FirDeclaration::source)
+        val thisSource = when (source?.kind) {
+            null -> error("PSI should present for declaration built by Kotlin code")
+            FirFakeSourceElementKind.ImplicitConstructor ->
+                return source.psi as KtDeclaration
+            FirFakeSourceElementKind.PropertyFromParameter -> return source.psi?.parentOfType<KtPrimaryConstructor>()!!
+            FirRealSourceElementKind -> source.psi!!
+            else -> error("Unexpected FirSourceElement: kind=${source.kind} element=${source.psi!!::class.simpleName}")
+        }
+
+        return when (symbol.origin) {
+            KtSymbolOrigin.SOURCE -> thisSource.getContainingKtDeclaration()
+                ?: error("Containing declaration should present for non-toplevel declaration")
+            KtSymbolOrigin.SOURCE_MEMBER_GENERATED -> thisSource as KtDeclaration
+            else -> error("Unsupported declaration origin ${symbol.origin}")
+        }
     }
 
-    private fun KtFirSymbol<*>.getPropertyByParameterPsi() = firRef.withFir { fir ->
-        if (fir.source?.kind == FirFakeSourceElementKind.PropertyFromParameter) fir.psi?.parentOfType<KtPrimaryConstructor>()
-        else null
-    }
+    private fun PsiElement.getContainingKtDeclaration(): KtDeclaration? =
+        when (val container = this.parentOfType<KtDeclaration>()) {
+            is KtDestructuringDeclaration -> container.parentOfType()
+            else -> container
+        }
 
     private fun getContainingDeclarationForLibrarySymbol(symbol: KtSymbolWithKind): KtSymbolWithKind = with(analysisSession) {
         require(symbol.origin == KtSymbolOrigin.LIBRARY || symbol.origin == KtSymbolOrigin.JAVA)
@@ -100,6 +111,10 @@ internal class KtFirSymbolContainingDeclarationProvider(
             is KtPropertySymbol -> {
                 val fqName = symbol.callableIdIfNonLocal ?: error("fqName should not be null for non-local declaration")
                 fqName.classId
+            }
+            is KtConstructorSymbol -> {
+                symbol.containingClassIdIfNonLocal
+                    ?: error("fqName should not be null for non-local declaration")
             }
             else -> error("We should not have a ${symbol::class} from a library")
         } ?: error("outerClassId should not be null for member declaration")

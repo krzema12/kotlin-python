@@ -28,11 +28,11 @@ import java.util.*
 
 @OptIn(ObsoleteDescriptorBasedAPI::class)
 abstract class TypeTranslator(
-    private val symbolTable: ReferenceSymbolTable,
+    protected val symbolTable: ReferenceSymbolTable,
     val languageVersionSettings: LanguageVersionSettings,
     typeParametersResolverBuilder: () -> TypeParametersResolver = { ScopedTypeParametersResolver() },
     private val enterTableScope: Boolean = false,
-    private val extensions: StubGeneratorExtensions = StubGeneratorExtensions.EMPTY
+    protected val extensions: StubGeneratorExtensions = StubGeneratorExtensions.EMPTY
 ) {
     abstract val constantValueGenerator: ConstantValueGenerator
 
@@ -43,6 +43,8 @@ abstract class TypeTranslator(
     private val typeParametersResolver by threadLocal { typeParametersResolverBuilder() }
 
     private val erasureStack = Stack<PropertyDescriptor>()
+
+    protected abstract fun isTypeAliasAccessibleHere(typeAliasDescriptor: TypeAliasDescriptor): Boolean
 
     fun enterScope(irElement: IrTypeParametersContainer) {
         typeParametersResolver.enterTypeParameterScope(irElement)
@@ -67,7 +69,7 @@ abstract class TypeTranslator(
         }
     }
 
-    inline fun <T> buildWithScope(container: IrTypeParametersContainer, builder: () -> T): T {
+    fun <T> buildWithScope(container: IrTypeParametersContainer, builder: () -> T): T {
         enterScope(container)
         val result = builder()
         leaveScope(container)
@@ -167,6 +169,11 @@ abstract class TypeTranslator(
     private fun SimpleType.toIrTypeAbbreviation(): IrTypeAbbreviation? {
         // Abbreviated type's classifier might not be TypeAliasDescriptor in case it's MockClassDescriptor (not found in dependencies).
         val typeAliasDescriptor = constructor.declarationDescriptor as? TypeAliasDescriptor ?: return null
+
+        // There is possible situation when we have private top-level type alias visible outside its file which is illegal from klib POV.
+        // In that specific case don't generate type abbreviation
+        if (!isTypeAliasAccessibleHere(typeAliasDescriptor)) return null
+
         return IrTypeAbbreviationImpl(
             symbolTable.referenceTypeAlias(typeAliasDescriptor),
             isMarkedNullable,
@@ -224,12 +231,22 @@ abstract class TypeTranslator(
         if (flexibleType.isNullabilityFlexible()) {
             irAnnotations.addSpecialAnnotation(extensions.flexibleNullabilityAnnotationConstructor)
         }
+        if (flexibleType.isMutabilityFlexible()) {
+            irAnnotations.addSpecialAnnotation(extensions.flexibleMutabilityAnnotationConstructor)
+        }
 
         if (flexibleType is RawType) {
             irAnnotations.addSpecialAnnotation(extensions.rawTypeAnnotationConstructor)
         }
 
         return irAnnotations
+    }
+
+    private fun KotlinType.isMutabilityFlexible(): Boolean {
+        val flexibility = unwrap()
+        return flexibility is FlexibleType && flexibility.lowerBound.constructor != flexibility.upperBound.constructor &&
+                FlexibleTypeBoundsChecker.getBaseBoundFqNameByMutability(flexibility.lowerBound) ==
+                FlexibleTypeBoundsChecker.getBaseBoundFqNameByMutability(flexibility.upperBound)
     }
 
     private fun MutableList<IrConstructorCall>.addSpecialAnnotation(irConstructor: IrConstructor?) {

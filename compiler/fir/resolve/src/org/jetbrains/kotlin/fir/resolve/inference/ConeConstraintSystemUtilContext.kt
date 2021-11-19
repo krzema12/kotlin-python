@@ -44,9 +44,11 @@ object ConeConstraintSystemUtilContext : ConstraintSystemUtilContext {
         return this
     }
 
-    override fun <T> createArgumentConstraintPosition(argument: T): ArgumentConstraintPosition<T> {
-        @Suppress("UNCHECKED_CAST")
-        return ConeArgumentConstraintPosition() as ArgumentConstraintPosition<T>
+    override fun createArgumentConstraintPosition(argument: PostponedAtomWithRevisableExpectedType): ArgumentConstraintPosition<*> {
+        require(argument is PostponedResolvedAtom) {
+            "${argument::class}"
+        }
+        return ConeArgumentConstraintPosition(argument.atom)
     }
 
     override fun <T> createFixVariableConstraintPosition(variable: TypeVariableMarker, atom: T): FixVariableConstraintPosition<T> {
@@ -60,7 +62,7 @@ object ConeConstraintSystemUtilContext : ConstraintSystemUtilContext {
         require(declaration is PostponedResolvedAtom)
         return when (declaration) {
             is LambdaWithTypeVariableAsExpectedTypeAtom -> {
-                val atom = declaration.atom
+                val atom = declaration.atom.anonymousFunction
                 return if (atom.isLambda) { // lambda - must return null in case of absent parameters
                     if (atom.valueParameters.isNotEmpty())
                         atom.collectDeclaredValueParameterTypes()
@@ -81,12 +83,12 @@ object ConeConstraintSystemUtilContext : ConstraintSystemUtilContext {
 
     override fun PostponedAtomWithRevisableExpectedType.isAnonymousFunction(): Boolean {
         require(this is PostponedResolvedAtom)
-        return this is LambdaWithTypeVariableAsExpectedTypeAtom && !this.atom.isLambda
+        return this is LambdaWithTypeVariableAsExpectedTypeAtom && !this.atom.anonymousFunction.isLambda
     }
 
     override fun PostponedAtomWithRevisableExpectedType.isFunctionExpressionWithReceiver(): Boolean {
         require(this is PostponedResolvedAtom)
-        return this is LambdaWithTypeVariableAsExpectedTypeAtom && !this.atom.isLambda && this.atom.receiverTypeRef?.coneType != null
+        return this is LambdaWithTypeVariableAsExpectedTypeAtom && !this.atom.anonymousFunction.isLambda && this.atom.anonymousFunction.receiverTypeRef?.coneType != null
     }
 
     override fun createTypeVariableForLambdaReturnType(): TypeVariableMarker {
@@ -97,8 +99,9 @@ object ConeConstraintSystemUtilContext : ConstraintSystemUtilContext {
         argument: PostponedAtomWithRevisableExpectedType,
         index: Int
     ): TypeVariableMarker {
-        return ConeTypeVariableForPostponedAtom(
-            PostponedArgumentInputTypesResolver.TYPE_VARIABLE_NAME_PREFIX_FOR_LAMBDA_PARAMETER_TYPE + index
+        return ConeTypeVariableForLambdaParameterType(
+            PostponedArgumentInputTypesResolver.TYPE_VARIABLE_NAME_PREFIX_FOR_LAMBDA_PARAMETER_TYPE + index,
+            index
         )
     }
 

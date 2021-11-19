@@ -6,7 +6,6 @@
 package org.jetbrains.kotlin.gradle.targets.js.yarn
 
 import com.google.gson.Gson
-import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.jetbrains.kotlin.gradle.targets.js.npm.GradleNodeModule
 import org.jetbrains.kotlin.gradle.targets.js.npm.NpmProject
@@ -31,19 +30,10 @@ class YarnImportedPackagesVersionResolver(
     }
 
     fun resolveAndUpdatePackages(): MutableList<String> {
-        resolve(externalModules, false)
+        resolve(externalModules, true)
         resolve(internalCompositeModules, true)
 
-        npmProjects.forEach {
-            writePackageJson(
-                packageJson = it.packageJson,
-                path = it.npmProject.packageJsonFile,
-                forceWrite = true
-            )
-        }
-
         if (resolvedVersion.isNotEmpty()) {
-            updatePackages(externalModules)
             updatePackages(internalCompositeModules)
         }
 

@@ -6,27 +6,30 @@
 package org.jetbrains.kotlin.test.builders
 
 import com.intellij.openapi.Disposable
-import org.jetbrains.kotlin.test.Constructor
-import org.jetbrains.kotlin.test.TestConfiguration
-import org.jetbrains.kotlin.test.TestInfrastructureInternals
+import org.jetbrains.kotlin.fir.PrivateForInline
+import org.jetbrains.kotlin.test.*
 import org.jetbrains.kotlin.test.directives.model.DirectivesContainer
 import org.jetbrains.kotlin.test.impl.TestConfigurationImpl
 import org.jetbrains.kotlin.test.model.*
 import org.jetbrains.kotlin.test.services.*
+import kotlin.io.path.Path
 
 @DefaultsDsl
-@OptIn(TestInfrastructureInternals::class)
+@OptIn(TestInfrastructureInternals::class, PrivateForInline::class)
 class TestConfigurationBuilder {
     val defaultsProviderBuilder: DefaultsProviderBuilder = DefaultsProviderBuilder()
     lateinit var assertions: AssertionsService
 
-    private val facades: MutableList<Constructor<AbstractTestFacade<*, *>>> = mutableListOf()
+    @PrivateForInline
+    val steps: MutableList<TestStepBuilder<*, *>> = mutableListOf()
 
-    private val handlers: MutableList<Constructor<AnalysisHandler<*>>> = mutableListOf()
+    @PrivateForInline
+    val namedSteps: MutableMap<String, TestStepBuilder<*, *>> = mutableMapOf()
 
     private val sourcePreprocessors: MutableList<Constructor<SourceFilePreprocessor>> = mutableListOf()
     private val additionalMetaInfoProcessors: MutableList<Constructor<AdditionalMetaInfoProcessor>> = mutableListOf()
     private val environmentConfigurators: MutableList<Constructor<EnvironmentConfigurator>> = mutableListOf()
+    private val preAnalysisHandlers: MutableList<Constructor<PreAnalysisHandler>> = mutableListOf()
 
     private val additionalSourceProviders: MutableList<Constructor<AdditionalSourceProvider>> = mutableListOf()
     private val moduleStructureTransformers: MutableList<ModuleStructureTransformer> = mutableListOf()
@@ -44,8 +47,11 @@ class TestConfigurationBuilder {
     private val additionalServices: MutableList<ServiceRegistrationData> = mutableListOf()
 
     private var compilerConfigurationProvider: ((Disposable, List<EnvironmentConfigurator>) -> CompilerConfigurationProvider)? = null
+    private var runtimeClasspathProviders: MutableList<Constructor<RuntimeClasspathProvider>> = mutableListOf()
 
     lateinit var testInfo: KotlinTestInfo
+
+    lateinit var startingArtifactFactory: (TestModule) -> ResultingArtifact<*>
 
     inline fun <reified T : TestService> useAdditionalService(noinline serviceConstructor: (TestServices) -> T) {
         useAdditionalService(service(serviceConstructor))
@@ -69,7 +75,10 @@ class TestConfigurationBuilder {
         return """$this|$other"""
     }
 
-    private fun String.toMatchingRegexString(): String = """^${replace("*", ".*")}$"""
+    private fun String.toMatchingRegexString(): String = when (this) {
+        "*" -> ".*"
+        else -> """^.*/(${replace("*", ".*")})$"""
+    }
 
     fun forTestsMatching(pattern: Regex, configuration: TestConfigurationBuilder.() -> Unit) {
         configurationsByPositiveTestDataCondition += pattern to configuration
@@ -83,32 +92,47 @@ class TestConfigurationBuilder {
         defaultsProviderBuilder.apply(init)
     }
 
-    fun unregisterAllFacades() {
-        facades.clear()
+    fun <I : ResultingArtifact<I>, O : ResultingArtifact<O>> facadeStep(
+        facade: Constructor<AbstractTestFacade<I, O>>,
+    ): FacadeStepBuilder<I, O> {
+        return FacadeStepBuilder(facade).also {
+            steps += it
+        }
     }
 
-    fun useFrontendFacades(vararg constructor: Constructor<FrontendFacade<*>>) {
-        facades += constructor
+    inline fun <I : ResultingArtifact<I>> handlersStep(
+        artifactKind: TestArtifactKind<I>,
+        init: HandlersStepBuilder<I>.() -> Unit
+    ): HandlersStepBuilder<I> {
+        return HandlersStepBuilder(artifactKind).also {
+            it.init()
+            steps += it
+        }
     }
 
-    fun useBackendFacades(vararg constructor: Constructor<BackendFacade<*, *>>) {
-        facades += constructor
+    inline fun <I : ResultingArtifact<I>> namedHandlersStep(
+        name: String,
+        artifactKind: TestArtifactKind<I>,
+        init: HandlersStepBuilder<I>.() -> Unit
+    ): HandlersStepBuilder<I> {
+        val step = handlersStep(artifactKind, init)
+        val previouslyContainedStep = namedSteps.put(name, step)
+        if (previouslyContainedStep != null) {
+            error { "Step with name \"$name\" already registered" }
+        }
+        return step
     }
 
-    fun useFrontend2BackendConverters(vararg constructor: Constructor<Frontend2BackendConverter<*, *>>) {
-        facades += constructor
-    }
-
-    fun useFrontendHandlers(vararg constructor: Constructor<FrontendOutputHandler<*>>) {
-        handlers += constructor
-    }
-
-    fun useBackendHandlers(vararg constructor: Constructor<BackendInputHandler<*>>) {
-        handlers += constructor
-    }
-
-    fun useArtifactsHandlers(vararg constructor: Constructor<BinaryArtifactHandler<*>>) {
-        handlers += constructor
+    inline fun <I : ResultingArtifact<I>> configureNamedHandlersStep(
+        name: String,
+        artifactKind: TestArtifactKind<I>,
+        init: HandlersStepBuilder<I>.() -> Unit
+    ) {
+        val step = namedSteps[name] ?: error { "Step \"$name\" not found" }
+        require(step is HandlersStepBuilder<*>) { "Step '$name' is not a handlers step" }
+        require(step.artifactKind == artifactKind) { "Step kind: ${step.artifactKind}, passed kind is $artifactKind" }
+        @Suppress("UNCHECKED_CAST")
+        (step as HandlersStepBuilder<I>).apply(init)
     }
 
     fun useSourcePreprocessor(vararg preprocessors: Constructor<SourceFilePreprocessor>, needToPrepend: Boolean = false) {
@@ -127,12 +151,21 @@ class TestConfigurationBuilder {
         this.environmentConfigurators += environmentConfigurators
     }
 
+    fun usePreAnalysisHandlers(vararg handlers: Constructor<PreAnalysisHandler>) {
+        this.preAnalysisHandlers += handlers
+    }
+
     fun useMetaInfoProcessors(vararg updaters: Constructor<AdditionalMetaInfoProcessor>) {
         additionalMetaInfoProcessors += updaters
     }
 
     fun useAdditionalSourceProviders(vararg providers: Constructor<AdditionalSourceProvider>) {
         additionalSourceProviders += providers
+    }
+
+    @TestInfrastructureInternals
+    fun resetModuleStructureTransformers() {
+        moduleStructureTransformers.clear()
     }
 
     @TestInfrastructureInternals
@@ -143,6 +176,10 @@ class TestConfigurationBuilder {
     @TestInfrastructureInternals
     fun useCustomCompilerConfigurationProvider(provider: (Disposable, List<EnvironmentConfigurator>) -> CompilerConfigurationProvider) {
         compilerConfigurationProvider = provider
+    }
+
+    fun useCustomRuntimeClasspathProvider(provider: Constructor<RuntimeClasspathProvider>) {
+        runtimeClasspathProviders += provider
     }
 
     fun useMetaTestConfigurators(vararg configurators: Constructor<MetaTestConfigurator>) {
@@ -162,13 +199,16 @@ class TestConfigurationBuilder {
     }
 
     fun build(testDataPath: String): TestConfiguration {
+        // We use URI here because we use '/' in our codebase, and URI also uses it (unlike OS-dependent `toString()`)
+        val absoluteTestDataPath = Path(testDataPath).normalize().toUri().toString()
+
         for ((regex, configuration) in configurationsByPositiveTestDataCondition) {
-            if (regex.matches(testDataPath)) {
+            if (regex.matches(absoluteTestDataPath)) {
                 this.configuration()
             }
         }
         for ((regex, configuration) in configurationsByNegativeTestDataCondition) {
-            if (!regex.matches(testDataPath)) {
+            if (!regex.matches(absoluteTestDataPath)) {
                 this.configuration()
             }
         }
@@ -176,19 +216,21 @@ class TestConfigurationBuilder {
             testInfo,
             defaultsProviderBuilder.build(),
             assertions,
-            facades,
-            handlers,
+            steps,
             sourcePreprocessors,
             additionalMetaInfoProcessors,
             environmentConfigurators,
             additionalSourceProviders,
+            preAnalysisHandlers,
             moduleStructureTransformers,
             metaTestConfigurators,
             afterAnalysisCheckers,
             compilerConfigurationProvider,
+            runtimeClasspathProviders,
             metaInfoHandlerEnabled,
             directives,
             defaultRegisteredDirectivesBuilder.build(),
+            startingArtifactFactory,
             additionalServices
         )
     }

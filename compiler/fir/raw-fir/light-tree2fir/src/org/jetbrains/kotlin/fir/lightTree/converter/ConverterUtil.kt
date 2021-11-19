@@ -7,13 +7,12 @@ package org.jetbrains.kotlin.fir.lightTree.converter
 
 import com.intellij.lang.LighterASTNode
 import com.intellij.psi.tree.IElementType
-import com.intellij.psi.tree.TokenSet
 import org.jetbrains.kotlin.KtNodeType
 import org.jetbrains.kotlin.KtNodeTypes.*
 import org.jetbrains.kotlin.descriptors.Modality
-import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.FirFakeSourceElementKind
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.builder.generateResolvedAccessExpression
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
 import org.jetbrains.kotlin.fir.declarations.FirVariable
@@ -30,6 +29,7 @@ import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.parsing.KotlinExpressionParsing
+import org.jetbrains.kotlin.psi.KtPsiUtil
 import org.jetbrains.kotlin.psi.stubs.elements.KtConstantExpressionElementType
 import org.jetbrains.kotlin.psi.stubs.elements.KtStringTemplateExpressionElementType
 
@@ -40,11 +40,9 @@ private val expressionSet = listOf(
     FUN
 )
 
-val qualifiedAccessTokens = TokenSet.create(DOT_QUALIFIED_EXPRESSION, SAFE_ACCESS_EXPRESSION)
-
 fun String?.nameAsSafeName(defaultName: String = ""): Name {
     return when {
-        this != null -> Name.identifier(this.replace("`", ""))
+        this != null -> Name.identifier(KtPsiUtil.unquoteIdentifier(this))
         defaultName.isNotEmpty() -> Name.identifier(defaultName)
         else -> SpecialNames.NO_NAME_PROVIDED
     }
@@ -86,16 +84,17 @@ inline fun isClassLocal(classNode: LighterASTNode, getParent: LighterASTNode.() 
     while (currentNode != null) {
         val tokenType = currentNode.tokenType
         val parent = currentNode.getParent()
+        val parentTokenType = parent?.tokenType
         if (tokenType == PROPERTY || tokenType == FUN) {
             val grandParent = parent?.getParent()
             when {
-                parent?.tokenType == KT_FILE -> return true
-                parent?.tokenType == CLASS_BODY && !(grandParent?.tokenType == OBJECT_DECLARATION && grandParent?.getParent()?.tokenType == OBJECT_LITERAL) -> return true
-                parent?.tokenType == BLOCK && grandParent?.tokenType == SCRIPT -> return true
+                parentTokenType == KT_FILE -> return true
+                parentTokenType == CLASS_BODY && !(grandParent?.tokenType == OBJECT_DECLARATION && grandParent?.getParent()?.tokenType == OBJECT_LITERAL) -> return true
+                parentTokenType == BLOCK && grandParent?.tokenType == SCRIPT -> return true
             }
         }
         // NB: enum entry nested classes are considered local by FIR design (see discussion in KT-45115)
-        if (parent?.tokenType == ENUM_ENTRY) {
+        if (parentTokenType == ENUM_ENTRY) {
             return true
         }
         if (tokenType == BLOCK) {
@@ -107,9 +106,9 @@ inline fun isClassLocal(classNode: LighterASTNode, getParent: LighterASTNode.() 
 }
 
 fun generateDestructuringBlock(
-    session: FirSession,
+    moduleData: FirModuleData,
     multiDeclaration: DestructuringDeclaration,
-    container: FirVariable<*>,
+    container: FirVariable,
     tmpVariable: Boolean
 ): FirBlock {
     return buildBlock {
@@ -120,7 +119,7 @@ fun generateDestructuringBlock(
         for ((index, entry) in multiDeclaration.entries.withIndex()) {
             if (entry == null) continue
             statements += buildProperty {
-                declarationSiteSession = session
+                this.moduleData = moduleData
                 origin = FirDeclarationOrigin.Source
                 returnTypeRef = entry.returnTypeRef
                 name = entry.name

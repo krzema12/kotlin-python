@@ -1,5 +1,6 @@
 // !LANGUAGE: +NewInference
 // !DIAGNOSTICS: -UNUSED_EXPRESSION
+// COMPARE_WITH_LIGHT_TREE
 // SKIP_TXT
 
 // TESTCASE NUMBER: 1
@@ -14,7 +15,7 @@ fun case_1(x: Any?) {
 fun case_2(x: Any?) {
     (x as Nothing?)!!
     <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & kotlin.Nothing?")!>x<!>
-    <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & kotlin.Nothing?")!>x<!><!UNSAFE_CALL!>.<!>inv()
+    <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & kotlin.Nothing?")!>x<!><!UNSAFE_CALL!>.<!><!UNRESOLVED_REFERENCE{LT}!>inv<!>()
 }
 
 // TESTCASE NUMBER: 3
@@ -37,7 +38,7 @@ fun case_4(x: Any?) {
 fun case_5(x: Any?) {
     if (x as Nothing? is Nothing) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & kotlin.Nothing?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & kotlin.Nothing?")!>x<!><!UNSAFE_CALL!>.<!>inv()
+        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & kotlin.Nothing?")!>x<!><!UNSAFE_CALL!>.<!><!UNRESOLVED_REFERENCE{LT}!>inv<!>()
     }
 }
 

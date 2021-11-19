@@ -10,10 +10,13 @@ import groovy.lang.Closure
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.artifacts.*
+import org.gradle.api.artifacts.component.ModuleComponentIdentifier
+import org.gradle.api.artifacts.component.ModuleComponentSelector
+import org.gradle.api.artifacts.result.DependencyResult
+import org.gradle.api.artifacts.result.ResolvedDependencyResult
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileTree
-import org.gradle.api.logging.Logger
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.*
 import org.gradle.api.tasks.compile.AbstractCompile
@@ -23,7 +26,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCommonToolOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.NativeCacheKind
 import org.jetbrains.kotlin.gradle.internal.ensureParentDirsCreated
-import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
+import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.asValidFrameworkName
 import org.jetbrains.kotlin.gradle.plugin.mpp.*
 import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.KotlinNativeCompilationData
@@ -31,9 +34,10 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.KotlinNativeFragmentMetadataC
 import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.isMainCompilationData
 import org.jetbrains.kotlin.gradle.plugin.sources.DefaultLanguageSettingsBuilder
 import org.jetbrains.kotlin.gradle.targets.native.internal.isAllowCommonizer
-import org.jetbrains.kotlin.gradle.utils.getValue
+import org.jetbrains.kotlin.gradle.utils.*
 import org.jetbrains.kotlin.gradle.utils.klibModuleName
 import org.jetbrains.kotlin.gradle.utils.listFilesOrEmpty
+import org.jetbrains.kotlin.konan.CompilerVersion
 import org.jetbrains.kotlin.konan.library.KLIB_INTEROP_IR_PROVIDER_IDENTIFIER
 import org.jetbrains.kotlin.konan.properties.resolvablePropertyList
 import org.jetbrains.kotlin.konan.properties.saveToFile
@@ -44,12 +48,16 @@ import org.jetbrains.kotlin.konan.target.HostManager
 import org.jetbrains.kotlin.konan.target.KonanTarget
 import org.jetbrains.kotlin.library.*
 import org.jetbrains.kotlin.project.model.LanguageSettings
+import org.jetbrains.kotlin.utils.ResolvedDependency as KResolvedDependency
+import org.jetbrains.kotlin.utils.ResolvedDependencyId as KResolvedDependencyId
+import org.jetbrains.kotlin.utils.ResolvedDependencies as KResolvedDependencies
+import org.jetbrains.kotlin.utils.ResolvedDependenciesSupport as KResolvedDependenciesSupport
+import org.jetbrains.kotlin.utils.ResolvedDependencyArtifactPath as KResolvedDependencyArtifactPath
+import org.jetbrains.kotlin.utils.ResolvedDependencyVersion as KResolvedDependencyVersion
 import java.io.File
-import java.nio.charset.StandardCharsets
-import java.security.MessageDigest
+import java.nio.file.Files
 import javax.inject.Inject
 import org.jetbrains.kotlin.konan.file.File as KFile
-import org.jetbrains.kotlin.util.Logger as KLogger
 
 // TODO: It's just temporary tasks used while KN isn't integrated with Big Kotlin compilation infrastructure.
 // region Useful extensions
@@ -147,6 +155,7 @@ abstract class AbstractKotlinNativeCompile<T : KotlinCommonToolOptions, K : Kotl
     }
 
     // Inputs and outputs
+    @IgnoreEmptyDirectories
     @InputFiles
     @SkipWhenEmpty
     @PathSensitive(PathSensitivity.RELATIVE)
@@ -197,6 +206,10 @@ abstract class AbstractKotlinNativeCompile<T : KotlinCommonToolOptions, K : Kotl
     val kotlinNativeVersion: String
         get() = project.konanVersion.toString()
 
+    @get:Input
+    internal val useEmbeddableCompilerJar: Boolean
+        get() = project.nativeUseEmbeddableCompilerJar
+
     @Internal
     open val outputFile: Provider<File> = project.provider {
         val prefix = outputKind.prefix(konanTarget)
@@ -226,6 +239,13 @@ abstract class AbstractKotlinNativeCompile<T : KotlinCommonToolOptions, K : Kotl
     @Classpath
     var compilerPluginClasspath: FileCollection? = null
 
+    /**
+     * Plugin Data provided by [KpmCompilerPlugin]
+     */
+    @get:Optional
+    @get:Nested
+    var kotlinPluginData: Provider<KotlinCompilerPluginData>? = null
+
     // Used by IDE via reflection.
     @get:Internal
     val serializedCompilerArguments: List<String>
@@ -248,16 +268,19 @@ abstract class AbstractKotlinNativeCompile<T : KotlinCommonToolOptions, K : Kotl
             add("-no-endorsed-libs")
         }
 
-        // Compiler plugins.
-        compilerPluginClasspath?.let { pluginClasspath ->
-            pluginClasspath.map { it.canonicalPath }.sorted().forEach { path ->
+        fun addPluginOptions(classpath: FileCollection, options: CompilerPluginOptions) {
+            classpath.map { it.canonicalPath }.sorted().forEach { path ->
                 add("-Xplugin=$path")
             }
-            compilerPluginOptions.arguments.forEach {
+            options.arguments.forEach {
                 add("-P")
                 add(it)
             }
         }
+
+        // Compiler plugins.
+        compilerPluginClasspath?.let { addPluginOptions(it, compilerPluginOptions) }
+        kotlinPluginData?.orNull?.let { addPluginOptions(it.classpath, it.options) }
 
         // kotlin options
         addKey("-Werror", kotlinOptions.allWarningsAsErrors)
@@ -413,8 +436,12 @@ constructor(
     val enabledLanguageFeatures: Set<String>
         @Input get() = languageSettings.enabledLanguageFeatures
 
+    @Deprecated("Unsupported and will be removed in next major releases", replaceWith = ReplaceWith("optInAnnotationsInUse"))
     val experimentalAnnotationsInUse: Set<String>
-        @Input get() = languageSettings.experimentalAnnotationsInUse
+        @Internal get() = languageSettings.experimentalAnnotationsInUse
+
+    val optInAnnotationsInUse: Set<String>
+        @Input get() = languageSettings.optInAnnotationsInUse
     // endregion.
 
     // region Kotlin options.
@@ -447,8 +474,8 @@ constructor(
         enabledLanguageFeatures.forEach { featureName ->
             add("-XXLanguage:+$featureName")
         }
-        experimentalAnnotationsInUse.forEach { annotationName ->
-            add("-Xopt-in=$annotationName")
+        optInAnnotationsInUse.forEach { annotationName ->
+            add("-opt-in=$annotationName")
         }
     }
 
@@ -497,6 +524,7 @@ constructor(
     @Internal // Taken into account by getSources().
     val intermediateLibrary: Provider<File> = project.provider { compilation.compileKotlinTask.outputFile.get() }
 
+    @IgnoreEmptyDirectories
     @InputFiles
     @SkipWhenEmpty
     override fun getSource(): FileTree =
@@ -561,6 +589,19 @@ constructor(
     val linkerOpts: List<String>
         @Input get() = binary.linkerOpts
 
+    val binaryOptions: Map<String, String>
+        @Input get() = binary.binaryOptions
+
+    val projectWideBinaryOptions: Map<String, String>
+        @Input get() = project.properties.mapNotNull { (name, value) ->
+            val prefix = KOTLIN_NATIVE_BINARY_OPTION_PREFIX
+            if (name.startsWith(prefix) && value is String) {
+                name.removePrefix(prefix) to value
+            } else {
+                null
+            }
+        }.toMap()
+
     val processTests: Boolean
         @Input get() = binary is TestExecutable
 
@@ -588,7 +629,10 @@ constructor(
     override fun buildCompilerArgs(): List<String> = mutableListOf<String>().apply {
         addAll(super.buildCompilerArgs())
 
-        addAll(CacheBuilder(project, binary, konanTarget).buildCompilerArgs())
+        val externalDependenciesArgs = ExternalDependenciesBuilder(project, compilation).buildCompilerArgs()
+        addAll(externalDependenciesArgs)
+
+        addAll(CacheBuilder(project, binary, konanTarget, externalDependenciesArgs).buildCompilerArgs())
 
         addKey("-tr", processTests)
         addArgIfNotNull("-entry", entryPoint)
@@ -601,6 +645,9 @@ constructor(
         linkerOpts.forEach {
             addArg("-linker-option", it)
         }
+        (projectWideBinaryOptions + binaryOptions).forEach { (name, value) ->
+            add("-Xbinary=$name=$value")
+        }
         exportLibraries.files.filterKlibsPassedToCompiler().forEach {
             add("-Xexport-library=${it.absolutePath}")
         }
@@ -612,8 +659,8 @@ constructor(
             it.enabledLanguageFeatures.forEach { featureName ->
                 add("-XXLanguage:+$featureName")
             }
-            it.experimentalAnnotationsInUse.forEach { annotationName ->
-                add("-Xopt-in=$annotationName")
+            it.optInAnnotationsInUse.forEach { annotationName ->
+                add("-opt-in=$annotationName")
             }
         }
     }
@@ -663,11 +710,189 @@ constructor(
         super.compile()
     }
 
-    companion object {
+    private companion object {
+        const val KOTLIN_NATIVE_BINARY_OPTION_PREFIX = "kotlin.native.binary."
     }
 }
 
-internal class CacheBuilder(val project: Project, val binary: NativeBinary, val konanTarget: KonanTarget) {
+private class ExternalDependenciesBuilder(
+    val project: Project,
+    val compilation: KotlinCompilation<*>,
+    intermediateLibraryName: String?
+) {
+    constructor(project: Project, compilation: KotlinNativeCompilation) : this(
+        project, compilation, compilation.compileKotlinTask.moduleName
+    )
+
+    private val compileDependencyConfiguration: Configuration
+        get() = project.configurations.getByName(compilation.compileDependencyConfigurationName)
+
+    private val sourceCodeModuleId: KResolvedDependencyId =
+        intermediateLibraryName?.let { KResolvedDependencyId(it) } ?: KResolvedDependencyId.DEFAULT_SOURCE_CODE_MODULE_ID
+
+    fun buildCompilerArgs(): List<String> {
+        val konanVersion = Distribution(project.konanHome).compilerVersion?.let(CompilerVersion.Companion::fromString)
+            ?: project.konanVersion
+
+        if (konanVersion.isAtLeast(1, 6, 0)) {
+            val dependenciesFile = writeDependenciesFile(buildDependencies(), deleteOnExit = true)
+            if (dependenciesFile != null)
+                return listOf("-Xexternal-dependencies=${dependenciesFile.path}")
+        }
+
+        return emptyList()
+    }
+
+    private fun buildDependencies(): Collection<KResolvedDependency> {
+        // Collect all artifacts.
+        val moduleNameToArtifactPaths: MutableMap</* unique name*/ String, MutableSet<KResolvedDependencyArtifactPath>> = mutableMapOf()
+        compileDependencyConfiguration.incoming.artifacts.artifacts.mapNotNull { resolvedArtifact ->
+            val uniqueName = (resolvedArtifact.id.componentIdentifier as? ModuleComponentIdentifier)?.uniqueName ?: return@mapNotNull null
+            val artifactPath = resolvedArtifact.file.absolutePath
+
+            moduleNameToArtifactPaths.getOrPut(uniqueName) { mutableSetOf() } += KResolvedDependencyArtifactPath(artifactPath)
+        }
+
+        // The build system may express the single module as two modules where the first one is a common
+        // module without artifacts and the second one is a platform-specific module with mandatory artifact.
+        // Example: "org.jetbrains.kotlinx:atomicfu" (common) and "org.jetbrains.kotlinx:atomicfu-macosx64" (platform-specific).
+        // Both such modules should be merged into a single module with just two names:
+        // "org.jetbrains.kotlinx:atomicfu (org.jetbrains.kotlinx:atomicfu-macosx64)".
+        val moduleIdsToMerge: MutableMap</* platform-specific */ KResolvedDependencyId, /* common */ KResolvedDependencyId> = mutableMapOf()
+
+        // Collect plain modules.
+        val plainModules: MutableMap<KResolvedDependencyId, KResolvedDependency> = mutableMapOf()
+        fun processModule(resolvedDependency: DependencyResult, incomingDependencyId: KResolvedDependencyId) {
+            if (resolvedDependency !is ResolvedDependencyResult) return
+
+            val requestedModule = resolvedDependency.requested as? ModuleComponentSelector ?: return
+            val selectedModule = resolvedDependency.selected
+            val selectedModuleId = selectedModule.id as? ModuleComponentIdentifier ?: return
+
+            val moduleId = KResolvedDependencyId(selectedModuleId.uniqueName)
+            val module = plainModules.getOrPut(moduleId) {
+                val artifactPaths = moduleId.uniqueNames.asSequence()
+                    .mapNotNull { uniqueName -> moduleNameToArtifactPaths[uniqueName] }
+                    .firstOrNull()
+                    .orEmpty()
+
+                KResolvedDependency(
+                    id = moduleId,
+                    selectedVersion = KResolvedDependencyVersion(selectedModuleId.version),
+                    requestedVersionsByIncomingDependencies = mutableMapOf(), // To be filled in just below.
+                    artifactPaths = artifactPaths.toMutableSet()
+                )
+            }
+
+            // Record the requested version of the module by the current incoming dependency.
+            module.requestedVersionsByIncomingDependencies[incomingDependencyId] = KResolvedDependencyVersion(requestedModule.version)
+
+            // TODO: Use [ResolvedDependencyResult.resolvedVariant.externalVariant] to find a connection between platform-specific
+            //  and common modules when "resolvedVariant" and "externalVariant" graduate from incubating state.
+            if (module.artifactPaths.isNotEmpty()) {
+                val originModuleId = resolvedDependency.from.id as? ModuleComponentIdentifier
+                if (originModuleId != null
+                    && selectedModuleId.group == originModuleId.group
+                    && selectedModuleId.module.startsWith(originModuleId.module)
+                    && selectedModuleId.version == originModuleId.version
+                ) {
+                    // These two modules should be merged.
+                    moduleIdsToMerge[moduleId] = KResolvedDependencyId(originModuleId.uniqueName)
+                }
+            }
+
+            selectedModule.dependencies.forEach { processModule(it, incomingDependencyId = moduleId) }
+        }
+
+        compileDependencyConfiguration.incoming.resolutionResult.root.dependencies.forEach { dependencyResult ->
+            processModule(dependencyResult, incomingDependencyId = sourceCodeModuleId)
+        }
+
+        if (moduleIdsToMerge.isEmpty())
+            return plainModules.values
+
+        // Do merge.
+        val replacedModules: MutableMap</* old module ID */ KResolvedDependencyId, /* new module */ KResolvedDependency> = mutableMapOf()
+        moduleIdsToMerge.forEach { (platformSpecificModuleId, commonModuleId) ->
+            val platformSpecificModule = plainModules.getValue(platformSpecificModuleId)
+            val commonModule = plainModules.getValue(commonModuleId)
+
+            val replacementModuleId = KResolvedDependencyId(platformSpecificModuleId.uniqueNames + commonModuleId.uniqueNames)
+            val replacementModule = KResolvedDependency(
+                id = replacementModuleId,
+                visibleAsFirstLevelDependency = commonModule.visibleAsFirstLevelDependency,
+                selectedVersion = commonModule.selectedVersion,
+                requestedVersionsByIncomingDependencies = mutableMapOf<KResolvedDependencyId, KResolvedDependencyVersion>().apply {
+                    this += commonModule.requestedVersionsByIncomingDependencies
+                    this += platformSpecificModule.requestedVersionsByIncomingDependencies - commonModuleId
+                },
+                artifactPaths = mutableSetOf<KResolvedDependencyArtifactPath>().apply {
+                    this += commonModule.artifactPaths
+                    this += platformSpecificModule.artifactPaths
+                }
+            )
+
+            replacedModules[platformSpecificModuleId] = replacementModule
+            replacedModules[commonModuleId] = replacementModule
+        }
+
+        // Assemble new modules together (without "replaced" and with "replacements").
+        val mergedModules: MutableMap<KResolvedDependencyId, KResolvedDependency> = mutableMapOf()
+        mergedModules += plainModules - replacedModules.keys
+        replacedModules.values.forEach { replacementModule -> mergedModules[replacementModule.id] = replacementModule }
+
+        // Fix references to point to "replacement" modules instead of "replaced" modules.
+        mergedModules.values.forEach { module ->
+            module.requestedVersionsByIncomingDependencies.mapNotNull { (replacedModuleId, requestedVersion) ->
+                val replacementModuleId = replacedModules[replacedModuleId]?.id ?: return@mapNotNull null
+                Triple(replacedModuleId, replacementModuleId, requestedVersion)
+            }.forEach { (replacedModuleId, replacementModuleId, requestedVersion) ->
+                module.requestedVersionsByIncomingDependencies.remove(replacedModuleId)
+                module.requestedVersionsByIncomingDependencies[replacementModuleId] = requestedVersion
+            }
+        }
+
+        return mergedModules.values
+    }
+
+    private fun writeDependenciesFile(dependencies: Collection<KResolvedDependency>, deleteOnExit: Boolean): File? {
+        if (dependencies.isEmpty()) return null
+
+        val dependenciesFile = Files.createTempFile("kotlin-native-external-dependencies", ".deps").toAbsolutePath().toFile()
+        if (deleteOnExit) dependenciesFile.deleteOnExit()
+        dependenciesFile.writeText(KResolvedDependenciesSupport.serialize(KResolvedDependencies(dependencies, sourceCodeModuleId)))
+        return dependenciesFile
+    }
+
+    private val ModuleComponentIdentifier.uniqueName: String
+        get() = "$group:$module"
+
+    companion object {
+        @Suppress("unused") // Used for tests only. Accessed via reflection.
+        @JvmStatic
+        fun buildExternalDependenciesFileForTests(project: Project): File? {
+            val compilation = project.tasks.asSequence()
+                .filterIsInstance<KotlinNativeLink>()
+                .map { it.binary }
+                .filterIsInstance<Executable>() // Not TestExecutable or any other kind of NativeBinary. Strictly Executable!
+                .firstOrNull()
+                ?.compilation
+                ?: return null
+
+            return with(ExternalDependenciesBuilder(project, compilation)) {
+                val dependencies = buildDependencies().sortedBy { it.id.toString() }
+                writeDependenciesFile(dependencies, deleteOnExit = false)
+            }
+        }
+    }
+}
+
+internal class CacheBuilder(
+    val project: Project,
+    val binary: NativeBinary,
+    val konanTarget: KonanTarget,
+    val externalDependenciesArgs: List<String>
+) {
 
     private val nativeSingleFileResolveStrategy: SingleFileKlibResolveStrategy
         get() = CompilerSingleFileKlibResolveAllowingIrProvidersStrategy(
@@ -696,38 +921,10 @@ internal class CacheBuilder(val project: Project, val binary: NativeBinary, val 
         getRootCacheDirectory(File(project.konanHome), konanTarget, debuggable, konanCacheKind)
     }
 
-    private fun getAllDependencies(dependency: ResolvedDependency): Set<ResolvedDependency> {
-        val allDependencies = mutableSetOf<ResolvedDependency>()
-
-        fun traverseAllDependencies(dependency: ResolvedDependency) {
-            if (dependency in allDependencies)
-                return
-            allDependencies.add(dependency)
-            dependency.children.forEach { traverseAllDependencies(it) }
-        }
-
-        dependency.children.forEach { traverseAllDependencies(it) }
-        return allDependencies
-    }
-
-    private fun ByteArray.toHexString() = joinToString("") { (0xFF and it.toInt()).toString(16).padStart(2, '0') }
-
-    private fun computeDependenciesHash(dependency: ResolvedDependency): String {
-        val allArtifactsPaths =
-            (dependency.moduleArtifacts + getAllDependencies(dependency).flatMap { it.moduleArtifacts })
-                .map { it.file.absolutePath }
-                .distinct()
-                .sortedBy { it }
-                .joinToString("|") { it }
-        val digest = MessageDigest.getInstance("SHA-256")
-        val hash = digest.digest(allArtifactsPaths.toByteArray(StandardCharsets.UTF_8))
-        return hash.toHexString()
-    }
-
-    private fun getCacheDirectory(dependency: ResolvedDependency): File {
-        val moduleCacheDirectory = File(rootCacheDirectory, dependency.moduleName)
-        val versionCacheDirectory = File(moduleCacheDirectory, dependency.moduleVersion)
-        return File(versionCacheDirectory, computeDependenciesHash(dependency))
+    private fun getCacheDirectory(
+        dependency: ResolvedDependency
+    ): File {
+        return getCacheDirectory(rootCacheDirectory, dependency)
     }
 
     private fun needCache(libraryPath: String) =
@@ -742,16 +939,11 @@ internal class CacheBuilder(val project: Project, val binary: NativeBinary, val 
         val artifactsToAddToCache = dependency.moduleArtifacts.filter { needCache(it.file.absolutePath) }
         if (artifactsToAddToCache.isEmpty()) return
 
-        val dependenciesCacheDirectories = getAllDependencies(dependency)
-            .map { childDependency ->
-                val hasKlibs = childDependency.moduleArtifacts.any { it.file.absolutePath.endsWith(".klib") }
-                val cacheDirectory = getCacheDirectory(childDependency)
-                // We can only compile klib to cache if all of its dependencies are also cached.
-                if (hasKlibs && !cacheDirectory.exists())
-                    return
-                cacheDirectory
-            }
-            .filter { it.exists() }
+        val dependenciesCacheDirectories = getDependenciesCacheDirectories(
+            rootCacheDirectory,
+            dependency
+        ) ?: return
+
         val cacheDirectory = getCacheDirectory(dependency)
         cacheDirectory.mkdirs()
 
@@ -794,6 +986,14 @@ internal class CacheBuilder(val project: Project, val binary: NativeBinary, val 
             )
             if (debuggable)
                 args += "-g"
+            // It's a dirty workaround, but we need a Gradle Build Service for a proper solution,
+            // which is too big to put in 1.6.0, so let's use ad-hoc solution for now.
+            // TODO: https://youtrack.jetbrains.com/issue/KT-48553.
+            if (konanTarget == KonanTarget.IOS_ARM64) {
+                // See https://youtrack.jetbrains.com/issue/KT-48552
+                args += "-Xembed-bitcode-marker"
+            }
+            args += externalDependenciesArgs
             args += "-Xadd-cache=${library.libraryFile.absolutePath}"
             args += "-Xcache-directory=${cacheDirectory.absolutePath}"
             args += "-Xcache-directory=${rootCacheDirectory.absolutePath}"
@@ -847,6 +1047,13 @@ internal class CacheBuilder(val project: Project, val binary: NativeBinary, val 
         )
         if (debuggable)
             args += "-g"
+        // It's a dirty workaround, but we need a Gradle Build Service for a proper solution,
+        // which is too big to put in 1.6.0, so let's use ad-hoc solution for now.
+        // TODO: https://youtrack.jetbrains.com/issue/KT-48553.
+        if (konanTarget == KonanTarget.IOS_ARM64) {
+            // See https://youtrack.jetbrains.com/issue/KT-48552
+            args += "-Xembed-bitcode-marker"
+        }
         args += "-Xadd-cache=${platformLib.absolutePath}"
         args += "-Xcache-directory=${rootCacheDirectory.absolutePath}"
         KotlinNativeCompilerRunner(project).run(args)
@@ -854,13 +1061,14 @@ internal class CacheBuilder(val project: Project, val binary: NativeBinary, val 
 
     private fun ensureCompilerProvidedLibsPrecached() {
         val distribution = Distribution(project.konanHome)
-        val platformLibs = (listOf(File(distribution.stdlib)) + File(distribution.platformLibs(konanTarget))
-            .listFiles()).associateBy { it.name }
+        val platformLibs = mutableListOf<File>().apply {
+            this += File(distribution.stdlib)
+            this += File(distribution.platformLibs(konanTarget)).listFiles().orEmpty()
+        }.associateBy { it.name }
         val visitedLibs = mutableSetOf<String>()
         for (platformLibName in platformLibs.keys)
             ensureCompilerProvidedLibPrecached(platformLibName, platformLibs, visitedLibs)
     }
-
 
     fun buildCompilerArgs(): List<String> = mutableListOf<String>().apply {
         if (konanCacheKind != NativeCacheKind.NONE && !optimized && cacheWorksFor(konanTarget, project)) {
@@ -883,13 +1091,6 @@ internal class CacheBuilder(val project: Project, val binary: NativeBinary, val 
         }
     }
 
-    private class GradleLoggerAdapter(private val gradleLogger: Logger) : KLogger {
-        override fun log(message: String) = gradleLogger.info(message)
-        override fun warning(message: String) = gradleLogger.warn(message)
-        override fun error(message: String) = kotlin.error(message)
-        override fun fatal(message: String): Nothing = kotlin.error(message)
-    }
-
     companion object {
         internal fun getRootCacheDirectory(konanHome: File, target: KonanTarget, debuggable: Boolean, cacheKind: NativeCacheKind): File {
             require(cacheKind != NativeCacheKind.NONE) { "Usupported cache kind: ${NativeCacheKind.NONE}" }
@@ -909,9 +1110,18 @@ internal class CacheBuilder(val project: Project, val binary: NativeBinary, val 
                 .map { KonanTarget.predefinedTargets.getValue(it) }
 
         // Targets with well-tested static caches that can be enabled by default.
-        // TODO: Move it to konan.properties.
-        private val targetsWithStableStaticCaches =
-            setOf(KonanTarget.IOS_X64, KonanTarget.MACOS_X64)
+        // TODO: There is a corresponding property in konan.properties (optInCacheableTargets),
+        //  but naïve implementation makes build slower because it makes reading of konan.properties significantly more frequent.
+        //  One possible solution is to use [Gradle Build service](https://docs.gradle.org/current/userguide/build_services.html).
+        //  Tracking issue: https://youtrack.jetbrains.com/issue/KT-47529
+        private val targetsWithStableStaticCaches = setOf(
+                KonanTarget.IOS_X64,
+                KonanTarget.MACOS_X64,
+                KonanTarget.IOS_SIMULATOR_ARM64,
+                KonanTarget.MACOS_ARM64,
+                KonanTarget.IOS_ARM64,
+                KonanTarget.LINUX_X64
+            )
 
         internal fun cacheWorksFor(target: KonanTarget, project: Project) =
             target in getCacheableTargets(project)
@@ -976,6 +1186,7 @@ open class CInteropProcess @Inject constructor(@get:Internal val settings: Defau
     val linkerOpts: List<String>
         @Input get() = settings.linkerOpts
 
+    @get:IgnoreEmptyDirectories
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
     val headers: FileCollection
@@ -987,6 +1198,7 @@ open class CInteropProcess @Inject constructor(@get:Internal val settings: Defau
     val headerFilterDirs: Set<File>
         @Input get() = settings.includeDirs.headerFilterDirs.files
 
+    @get:IgnoreEmptyDirectories
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
     val libraries: FileCollection

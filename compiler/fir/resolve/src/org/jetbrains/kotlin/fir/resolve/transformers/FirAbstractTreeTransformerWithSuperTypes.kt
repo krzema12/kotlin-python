@@ -6,10 +6,7 @@
 package org.jetbrains.kotlin.fir.resolve.transformers
 
 import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.declarations.FirClass
-import org.jetbrains.kotlin.fir.declarations.FirMemberDeclaration
-import org.jetbrains.kotlin.fir.declarations.FirRegularClass
-import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
+import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.diagnostics.ConeSimpleDiagnostic
 import org.jetbrains.kotlin.fir.diagnostics.DiagnosticKind
 import org.jetbrains.kotlin.fir.expressions.FirStatement
@@ -33,6 +30,7 @@ abstract class FirAbstractTreeTransformerWithSuperTypes(
     protected val scopeSession: ScopeSession
 ) : FirAbstractTreeTransformer<Any?>(phase) {
     protected val scopes = mutableListOf<FirScope>()
+    protected val classDeclarationsStack = ArrayDeque<FirRegularClass>()
     protected val towerScope = FirCompositeScope(scopes.asReversed())
 
     protected inline fun <T> withScopeCleanup(crossinline l: () -> T): T {
@@ -46,11 +44,16 @@ abstract class FirAbstractTreeTransformerWithSuperTypes(
         return result
     }
 
+    protected inline fun <T> withClassDeclarationCleanup(declaration: FirRegularClass, crossinline l: () -> T): T {
+        withClassDeclarationCleanup(classDeclarationsStack, declaration) {
+            return l()
+        }
+    }
+
     protected fun resolveNestedClassesSupertypes(
-        firClass: FirClass<*>,
+        firClass: FirClass,
         data: Any?
     ): FirStatement {
-        firClass.replaceResolvePhase(transformerPhase)
         return withScopeCleanup {
             // Otherwise annotations may try to resolve
             // themselves as inner classes of the `firClass`
@@ -83,7 +86,7 @@ abstract class FirAbstractTreeTransformerWithSuperTypes(
 
             // Note that annotations are still visited here
             // again, although there's no need in it
-            transformElement(firClass, data)
+            transformDeclarationContent(firClass, data) as FirClass
         }
     }
 
@@ -91,6 +94,10 @@ abstract class FirAbstractTreeTransformerWithSuperTypes(
         if (typeParameters.isNotEmpty()) {
             scopes.add(FirMemberTypeParameterScope(this))
         }
+    }
+
+    open fun transformDeclarationContent(declaration: FirDeclaration, data: Any?): FirDeclaration {
+        return transformElement(declaration, data)
     }
 }
 

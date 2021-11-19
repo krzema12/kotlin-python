@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.ideaExt.idea
 
 plugins {
     kotlin("jvm")
@@ -7,36 +6,49 @@ plugins {
 
 dependencies {
     compile(project(":compiler:psi"))
-    compile(project(":idea:idea-frontend-independent"))
-    compile(project(":idea:idea-frontend-api"))
-    compile(project(":idea:idea-core"))
     compile(project(":compiler:fir:fir2ir"))
     compile(project(":compiler:ir.tree"))
     compile(project(":compiler:fir:resolve"))
     compile(project(":compiler:fir:checkers"))
+    compile(project(":compiler:fir:checkers:checkers.jvm"))
     compile(project(":compiler:fir:java"))
     compile(project(":compiler:fir:jvm"))
-    compile(project(":idea:idea-frontend-fir:idea-fir-low-level-api"))
-    compile(intellijDep())
+    compile(project(":idea-frontend-fir:idea-fir-low-level-api"))
+    compile(project(":idea-frontend-api"))
+    compile(project(":compiler:light-classes"))
     compile(intellijCoreDep())
+    implementation(project(":analysis:analysis-api-providers"))
 
-// <temp>
-    compile(project(":idea:idea-core"))
-// </temp>
-
-    testCompile(project(":idea:idea-fir"))
-    testCompile(intellijDep())
-    testCompile(intellijCoreDep())
-    testCompile(toolsJar())
-    testCompile(project(":kotlin-reflect"))
-    testCompile(projectTests(":idea"))
+    testCompile(projectTests(":idea-frontend-fir:idea-fir-low-level-api"))
     testCompile(projectTests(":compiler:tests-common"))
-    testCompile(projectTests(":idea:idea-test-framework"))
+    testCompile(projectTests(":compiler:test-infrastructure-utils"))
+    testCompile(projectTests(":compiler:test-infrastructure"))
+    testCompile(projectTests(":compiler:tests-common-new"))
+    testCompile(projectTests(":compiler:fir:analysis-tests:legacy-fir-tests"))
     testCompile(project(":kotlin-test:kotlin-test-junit"))
-    testCompile(commonDep("junit:junit"))
-    testCompile(projectTests(":idea:idea-frontend-independent"))
+    testCompile(toolsJar())
+    testApiJUnit5()
+    testRuntime(project(":analysis:symbol-light-classes"))
 
-    compile(intellijPluginDep("java"))
+    testRuntimeOnly(intellijDep()) {
+        includeJars(
+            "jps-model",
+            "extensions",
+            "util",
+            "platform-api",
+            "platform-impl",
+            "idea",
+            "guava",
+            "trove4j",
+            "asm-all",
+            "log4j",
+            "jdom",
+            "streamex",
+            "bootstrap",
+            "jna",
+            rootProject = rootProject
+        )
+    }
 }
 
 sourceSets {
@@ -44,23 +56,26 @@ sourceSets {
     "test" { projectDefault() }
 }
 
-projectTest {
+projectTest(jUnit5Enabled = true) {
     dependsOn(":dist")
     workingDir = rootDir
-    val useFirIdeaPlugin = kotlinBuildProperties.useFirIdeaPlugin
-    doFirst {
-        if (!useFirIdeaPlugin) {
-            error("Test task in the module should be executed with -Pidea.fir.plugin=true")
-        }
-    }
+    useJUnitPlatform()
 }
 
 testsJar()
 
+allprojects {
+    tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>> {
+        kotlinOptions {
+            freeCompilerArgs += "-Xopt-in=org.jetbrains.kotlin.fir.symbols.SymbolInternals"
+        }
+    }
+}
+
 val generatorClasspath by configurations.creating
 
 dependencies {
-    generatorClasspath(project("idea-frontend-fir-generator"))
+    generatorClasspath(project(":idea-frontend-fir:idea-frontend-fir-generator"))
 }
 
 val generateCode by tasks.registering(NoDebugJavaExec::class) {

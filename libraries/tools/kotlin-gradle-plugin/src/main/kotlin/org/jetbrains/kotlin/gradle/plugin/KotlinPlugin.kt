@@ -6,22 +6,23 @@
 package org.jetbrains.kotlin.gradle.plugin
 
 import com.android.build.gradle.*
+import com.android.build.gradle.BasePlugin
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.SourceKind
 import org.gradle.api.*
 import org.gradle.api.artifacts.maven.Conf2ScopeMappingContainer
 import org.gradle.api.artifacts.maven.MavenResolver
+import org.gradle.api.artifacts.repositories.ArtifactRepository
+import org.gradle.api.attributes.Bundling
+import org.gradle.api.attributes.Category
 import org.gradle.api.attributes.Usage
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.SourceDirectorySet
 import org.gradle.api.logging.Logging
-import org.gradle.api.plugins.InvalidPluginException
-import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.JavaPluginConvention
-import org.gradle.api.plugins.MavenPluginConvention
+import org.gradle.api.plugins.*
 import org.gradle.api.provider.Provider
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPom
@@ -46,6 +47,7 @@ import org.jetbrains.kotlin.gradle.targets.js.jsPluginDeprecationMessage
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 import org.jetbrains.kotlin.gradle.tasks.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.tooling.includeKotlinToolingMetadataInApk
 import org.jetbrains.kotlin.gradle.utils.*
 import java.io.File
 import java.net.URL
@@ -575,13 +577,13 @@ internal abstract class AbstractKotlinPlugin(
             if (kotlinTarget.platformType != KotlinPlatformType.common) {
                 project.configurations.getByName(kotlinTarget.apiElementsConfigurationName).run {
                     attributes.attribute(Usage.USAGE_ATTRIBUTE, KotlinUsages.producerApiUsage(kotlinTarget))
-                    setupAsPublicConfigurationIfSupported(kotlinTarget)
+                    attributes.attribute(Category.CATEGORY_ATTRIBUTE, project.categoryByName(Category.LIBRARY))
                     usesPlatformOf(kotlinTarget)
                 }
 
                 project.configurations.getByName(kotlinTarget.runtimeElementsConfigurationName).run {
                     attributes.attribute(Usage.USAGE_ATTRIBUTE, KotlinUsages.producerRuntimeUsage(kotlinTarget))
-                    setupAsPublicConfigurationIfSupported(kotlinTarget)
+                    attributes.attribute(Category.CATEGORY_ATTRIBUTE, project.categoryByName(Category.LIBRARY))
                     usesPlatformOf(kotlinTarget)
                 }
             }
@@ -689,18 +691,18 @@ internal open class KotlinAndroidPlugin(
     override fun apply(project: Project) {
         checkGradleCompatibility()
 
-        val androidTarget = KotlinAndroidTarget("", project)
-        (project.kotlinExtension as KotlinAndroidProjectExtension).target = androidTarget
-
-        applyToTarget(androidTarget)
-
-        applyUserDefinedAttributes(androidTarget)
-
-        customizeKotlinDependencies(project)
-
-        registry.register(KotlinModelBuilder(project.getKotlinPluginVersion(), androidTarget))
-
-        project.whenEvaluated { project.components.addAll(androidTarget.components) }
+        project.dynamicallyApplyWhenAndroidPluginIsApplied(
+            {
+                KotlinAndroidTarget("", project).also {
+                    (project.kotlinExtension as KotlinAndroidProjectExtension).target = it
+                }
+            }
+        ) { androidTarget ->
+            applyUserDefinedAttributes(androidTarget)
+            customizeKotlinDependencies(project)
+            registry.register(KotlinModelBuilder(project.getKotlinPluginVersion(), androidTarget))
+            project.whenEvaluated { project.components.addAll(androidTarget.components) }
+        }
     }
 
     companion object {
@@ -721,8 +723,32 @@ internal open class KotlinAndroidPlugin(
             return Android25ProjectHandler(kotlinTools)
         }
 
-        fun applyToTarget(kotlinTarget: KotlinAndroidTarget) {
-            androidTargetHandler().configureTarget(kotlinTarget)
+        internal fun Project.dynamicallyApplyWhenAndroidPluginIsApplied(
+            kotlinAndroidTargetProvider: () -> KotlinAndroidTarget,
+            additionalConfiguration: (KotlinAndroidTarget) -> Unit = {}
+        ) {
+            var wasConfigured = false
+
+            androidPluginIds.forEach { pluginId ->
+                plugins.withId(pluginId) {
+                    wasConfigured = true
+                    val target = kotlinAndroidTargetProvider()
+                    androidTargetHandler().configureTarget(target)
+                    additionalConfiguration(target)
+                }
+            }
+
+            afterEvaluate {
+                if (!wasConfigured) {
+                    throw GradleException(
+                        """
+                        |'kotlin-android' plugin requires one of the Android Gradle plugins.
+                        |Please apply one of the following plugins to '${project.path}' project:
+                        |${androidPluginIds.joinToString(prefix = "- ", separator = "\n\t- ")}
+                        """.trimMargin()
+                    )
+                }
+            }
         }
     }
 }
@@ -778,14 +804,13 @@ abstract class AbstractAndroidProjectHandler(private val kotlinConfigurationTool
         kotlinOptions.noJdk = true
         ext.addExtension(KOTLIN_OPTIONS_DSL_NAME, kotlinOptions)
 
-        val plugin by lazy {
-            androidPluginIds.asSequence()
-                .mapNotNull { project.plugins.findPlugin(it) as? BasePlugin<*> }
-                .firstOrNull()
-                ?: throw InvalidPluginException("'kotlin-android' expects one of the Android Gradle " +
-                                                        "plugins to be applied to the project:\n\t" +
-                                                        androidPluginIds.joinToString("\n\t") { "* $it" })
-        }
+        val plugin = androidPluginIds
+            .asSequence()
+            .mapNotNull { project.plugins.findPlugin(it) as? BasePlugin<*> }
+            .firstOrNull()
+            ?: throw InvalidPluginException("'kotlin-android' expects one of the Android Gradle " +
+                                                    "plugins to be applied to the project:\n\t" +
+                                                    androidPluginIds.joinToString("\n\t") { "* $it" })
 
         project.forEachVariant { variant ->
             val variantName = getVariantName(variant)
@@ -818,6 +843,8 @@ abstract class AbstractAndroidProjectHandler(private val kotlinConfigurationTool
 
             addKotlinDependenciesToAndroidSourceSets(project, kotlinAndroidTarget)
         }
+
+        project.includeKotlinToolingMetadataInApk()
     }
 
     /**
@@ -938,7 +965,7 @@ abstract class AbstractAndroidProjectHandler(private val kotlinConfigurationTool
             it.parentKotlinOptionsImpl.set(rootKotlinOptions)
 
             // store kotlin classes in separate directory. They will serve as class-path to java compiler
-            it.destinationDirectory.set(project.layout.buildDirectory.dir( "tmp/kotlin-classes/$variantDataName"))
+            it.destinationDirectory.set(project.layout.buildDirectory.dir("tmp/kotlin-classes/$variantDataName"))
             it.description = "Compiles the $variantDataName kotlin."
         }
 

@@ -5,47 +5,32 @@
 
 package org.jetbrains.kotlin.fir.analysis.collectors
 
-import org.jetbrains.kotlin.fir.*
-import org.jetbrains.kotlin.fir.analysis.collectors.components.*
+import org.jetbrains.kotlin.fir.FirAnnotationContainer
+import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.analysis.collectors.components.AbstractDiagnosticCollectorComponent
 import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporter
-import org.jetbrains.kotlin.fir.analysis.diagnostics.FirDiagnostic
-import org.jetbrains.kotlin.fir.declarations.*
-import org.jetbrains.kotlin.fir.expressions.*
+import org.jetbrains.kotlin.fir.declarations.FirDeclaration
+import org.jetbrains.kotlin.fir.expressions.FirConstExpression
+import org.jetbrains.kotlin.fir.expressions.FirVarargArgumentsExpression
+import org.jetbrains.kotlin.fir.expressions.arguments
 import org.jetbrains.kotlin.fir.resolve.ScopeSession
 import org.jetbrains.kotlin.fir.resolve.SessionHolder
+import org.jetbrains.kotlin.fir.types.ConeClassLikeType
+import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.name.StandardClassIds
-import org.jetbrains.kotlin.fir.types.*
 
 abstract class AbstractDiagnosticCollector(
     override val session: FirSession,
     override val scopeSession: ScopeSession = ScopeSession(),
+    protected val createComponents: (DiagnosticReporter) -> List<AbstractDiagnosticCollectorComponent>,
 ) : SessionHolder {
-    fun collectDiagnostics(firDeclaration: FirDeclaration): List<FirDiagnostic<*>> {
-        if (!componentsInitialized) {
-            throw IllegalStateException("Components are not initialized")
-        }
-        initializeCollector()
+    fun collectDiagnostics(firDeclaration: FirDeclaration, reporter: DiagnosticReporter) {
+        val components = createComponents(reporter)
+        val visitor = createVisitor(components)
         firDeclaration.accept(visitor, null)
-        return getCollectedDiagnostics()
     }
 
-    protected abstract fun initializeCollector()
-    protected abstract fun getCollectedDiagnostics(): List<FirDiagnostic<*>>
-    abstract val reporter: DiagnosticReporter
-
-    protected val components: MutableList<AbstractDiagnosticCollectorComponent> = mutableListOf()
-    private var componentsInitialized = false
-
-    protected abstract val visitor: CheckerRunningDiagnosticCollectorVisitor
-
-    fun initializeComponents(vararg components: AbstractDiagnosticCollectorComponent) {
-        if (componentsInitialized) {
-            throw IllegalStateException()
-        }
-        this.components += components
-        componentsInitialized = true
-    }
-
+    protected abstract fun createVisitor(components: List<AbstractDiagnosticCollectorComponent>): CheckerRunningDiagnosticCollectorVisitor
 
     companion object {
         const val SUPPRESS_ALL_INFOS = "infos"
@@ -65,15 +50,4 @@ abstract class AbstractDiagnosticCollector(
             }
         }
     }
-}
-
-
-fun AbstractDiagnosticCollector.registerAllComponents() {
-    initializeComponents(
-        DeclarationCheckersDiagnosticComponent(this),
-        ExpressionCheckersDiagnosticComponent(this),
-        TypeCheckersDiagnosticComponent(this),
-        ErrorNodeDiagnosticCollectorComponent(this),
-        ControlFlowAnalysisDiagnosticComponent(this),
-    )
 }

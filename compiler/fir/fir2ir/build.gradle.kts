@@ -17,10 +17,6 @@ dependencies {
 
     compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
 
-    testCompileOnly(intellijDep())
-
-    testRuntimeOnly(intellijDep())
-
     testCompileOnly(project(":kotlin-test:kotlin-test-jvm"))
     testCompileOnly(project(":kotlin-test:kotlin-test-junit"))
     testApi(projectTests(":compiler:test-infrastructure"))
@@ -34,11 +30,20 @@ dependencies {
 
     testCompileOnly(project(":kotlin-reflect-api"))
     testRuntimeOnly(project(":kotlin-reflect"))
+    testRuntimeOnly(project(":core:deserialization"))
     testRuntimeOnly(project(":core:descriptors.runtime"))
+    testRuntimeOnly(project(":core:descriptors.jvm"))
     testRuntimeOnly(project(":compiler:fir:fir2ir:jvm-backend"))
+    testRuntimeOnly(project(":generators"))
 
     testCompileOnly(intellijCoreDep()) { includeJars("intellij-core") }
     testRuntimeOnly(intellijCoreDep()) { includeJars("intellij-core") }
+
+    testRuntimeOnly(intellijDep()) {
+        includeJars("jna", rootProject = rootProject)
+    }
+
+    testRuntimeOnly(intellijDep()) { includeJars("intellij-deps-fastutil-8.4.1-4") }
 }
 
 val generationRoot = projectDir.resolve("tests-gen")
@@ -51,6 +56,14 @@ sourceSets {
     }
 }
 
+tasks {
+    val compileKotlin by existing(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class) {
+        kotlinOptions {
+            freeCompilerArgs += "-Xopt-in=org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI"
+        }
+    }
+}
+
 if (kotlinBuildProperties.isInJpsBuildIdeaSync) {
     apply(plugin = "idea")
     idea {
@@ -59,6 +72,7 @@ if (kotlinBuildProperties.isInJpsBuildIdeaSync) {
 }
 
 projectTest(jUnit5Enabled = true) {
+    dependsOn(":dist")
     workingDir = rootDir
     useJUnitPlatform()
 }

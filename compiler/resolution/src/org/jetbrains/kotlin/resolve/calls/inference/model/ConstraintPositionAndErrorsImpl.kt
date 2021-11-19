@@ -15,6 +15,15 @@ class ExplicitTypeParameterConstraintPositionImpl(
     typeArgument: SimpleTypeArgument
 ) : ExplicitTypeParameterConstraintPosition<SimpleTypeArgument>(typeArgument)
 
+class InjectedAnotherStubTypeConstraintPositionImpl(builderInferenceLambdaOfInjectedStubType: LambdaKotlinCallArgument) :
+    InjectedAnotherStubTypeConstraintPosition<LambdaKotlinCallArgument>(builderInferenceLambdaOfInjectedStubType)
+
+class BuilderInferenceSubstitutionConstraintPositionImpl(
+    builderInferenceLambda: LambdaKotlinCallArgument, initialConstraint: InitialConstraint
+) : BuilderInferenceSubstitutionConstraintPosition<LambdaKotlinCallArgument, InitialConstraint>(
+    builderInferenceLambda, initialConstraint
+)
+
 class ExpectedTypeConstraintPositionImpl(topLevelCall: KotlinCall) : ExpectedTypeConstraintPosition<KotlinCall>(topLevelCall)
 
 class DeclaredUpperBoundConstraintPositionImpl(
@@ -34,16 +43,12 @@ class FixVariableConstraintPositionImpl(
 
 class KnownTypeParameterConstraintPositionImpl(typeArgument: KotlinType) : KnownTypeParameterConstraintPosition<KotlinType>(typeArgument)
 
-class LHSArgumentConstraintPositionImpl(
-    argument: CallableReferenceKotlinCallArgument,
-    receiver: DetailedReceiver
-) : LHSArgumentConstraintPosition<CallableReferenceKotlinCallArgument, DetailedReceiver>(argument, receiver)
-
 class LambdaArgumentConstraintPositionImpl(lambda: ResolvedLambdaAtom) : LambdaArgumentConstraintPosition<ResolvedLambdaAtom>(lambda)
 
 class DelegatedPropertyConstraintPositionImpl(topLevelCall: KotlinCall) : DelegatedPropertyConstraintPosition<KotlinCall>(topLevelCall)
 
 class NotEnoughInformationForTypeParameterImpl(
     typeVariable: TypeVariableMarker,
-    resolvedAtom: ResolvedAtom
-) : NotEnoughInformationForTypeParameter<ResolvedAtom>(typeVariable, resolvedAtom)
+    resolvedAtom: ResolvedAtom,
+    couldBeResolvedWithUnrestrictedBuilderInference: Boolean
+) : NotEnoughInformationForTypeParameter<ResolvedAtom>(typeVariable, resolvedAtom, couldBeResolvedWithUnrestrictedBuilderInference)

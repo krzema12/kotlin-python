@@ -281,8 +281,6 @@ private fun IrFunction.findBaseFunctionWithDefaultArguments(skipInlineMethods: B
     return dfsImpl()
 }
 
-val DEFAULT_DISPATCH_CALL = object : IrStatementOriginImpl("DEFAULT_DISPATCH_CALL") {}
-
 open class DefaultParameterInjector(
     open val context: CommonBackendContext,
     private val skipInline: Boolean = true,
@@ -305,16 +303,29 @@ open class DefaultParameterInjector(
         }
         symbol.owner.typeParameters.forEach { log { "${symbol.owner}[${it.index}] : $it" } }
 
+        val isStatic = isStatic(expression.symbol.owner)
+
         return builder(symbol).apply {
             copyTypeArgumentsFrom(expression)
 
-            params.forEachIndexed { i, value ->
+            var receivers = 0
+
+            if (isStatic) {
+                if (symbol.owner.dispatchReceiverParameter != null) {
+                    dispatchReceiver = params[receivers++]
+                }
+                if (symbol.owner.extensionReceiverParameter != null) {
+                    extensionReceiver = params[receivers++]
+                }
+            } else {
+                dispatchReceiver = expression.dispatchReceiver
+                extensionReceiver = expression.extensionReceiver
+            }
+
+            params.drop(receivers).forEachIndexed { i, value ->
                 log { "call::params@$i/${symbol.owner.valueParameters[i].name}: ${ir2string(value)}" }
                 putValueArgument(i, value)
             }
-
-            dispatchReceiver = expression.dispatchReceiver
-            extensionReceiver = expression.extensionReceiver
 
             log { "call::extension@: ${ir2string(expression.extensionReceiver)}" }
             log { "call::dispatch@: ${ir2string(expression.dispatchReceiver)}" }
@@ -338,7 +349,7 @@ open class DefaultParameterInjector(
         expression.transformChildrenVoid()
         return visitFunctionAccessExpression(expression) {
             with(expression) {
-                IrConstructorCallImpl.fromSymbolOwner(startOffset, endOffset, type, it as IrConstructorSymbol, DEFAULT_DISPATCH_CALL)
+                IrConstructorCallImpl.fromSymbolOwner(startOffset, endOffset, type, it as IrConstructorSymbol, LoweredStatementOrigins.DEFAULT_DISPATCH_CALL)
             }
         }
     }
@@ -364,7 +375,7 @@ open class DefaultParameterInjector(
                     startOffset, endOffset, type, it as IrSimpleFunctionSymbol,
                     typeArgumentsCount = typeArgumentsCount,
                     valueArgumentsCount = it.owner.valueParameters.size,
-                    origin = DEFAULT_DISPATCH_CALL,
+                    origin = LoweredStatementOrigins.DEFAULT_DISPATCH_CALL,
                     superQualifierSymbol = superQualifierSymbol
                 )
             }
@@ -395,12 +406,19 @@ open class DefaultParameterInjector(
 
         val realArgumentsNumber = declaration.valueParameters.size
         val maskValues = IntArray((declaration.valueParameters.size + 31) / 32)
-        assert((stubFunction.valueParameters.size - realArgumentsNumber - maskValues.size) in listOf(0, 1)) {
+        assert(
+            ((if (isStatic(expression.symbol.owner) && stubFunction.extensionReceiverParameter != null) 1 else 0) +
+                    stubFunction.valueParameters.size - realArgumentsNumber - maskValues.size) in listOf(0, 1)
+        ) {
             "argument count mismatch: expected $realArgumentsNumber arguments + ${maskValues.size} masks + optional handler/marker, " +
                     "got ${stubFunction.valueParameters.size} total in ${stubFunction.render()}"
         }
         var sourceParameterIndex = -1
-        return stubFunction.symbol to stubFunction.valueParameters.mapIndexed { i, parameter ->
+        val valueParametersPrefix =
+            if (isStatic(expression.symbol.owner))
+                listOfNotNull(stubFunction.dispatchReceiverParameter, stubFunction.extensionReceiverParameter)
+            else emptyList()
+        return stubFunction.symbol to (valueParametersPrefix + stubFunction.valueParameters).mapIndexed { i, parameter ->
             if (!parameter.isMovedReceiver()) {
                 ++sourceParameterIndex
             }
@@ -439,6 +457,8 @@ open class DefaultParameterInjector(
     protected open fun defaultArgumentStubVisibility(function: IrFunction) = DescriptorVisibilities.PUBLIC
 
     protected open fun useConstructorMarker(function: IrFunction) = function is IrConstructor
+
+    protected open fun isStatic(function: IrFunction): Boolean = false
 
     private fun log(msg: () -> String) = context.log { "DEFAULT-INJECTOR: ${msg()}" }
 }

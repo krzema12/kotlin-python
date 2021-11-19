@@ -1,5 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import proguard.gradle.ProGuardTask
+import org.gradle.internal.jvm.Jvm
 
 description = "Kotlin \"main\" script definition"
 
@@ -8,7 +8,6 @@ plugins {
     id("jps-compatible")
 }
 
-val JDK_18: String by rootProject.extra
 val jarBaseName = property("archivesBaseName") as String
 
 val localPackagesToRelocate =
@@ -27,20 +26,18 @@ val relocatedJarContents by configurations.creating
 val embedded by configurations
 
 dependencies {
-    compileOnly("org.apache.ivy:ivy:2.5.0")
     compileOnly(project(":compiler:cli-common"))
     compileOnly(project(":kotlin-scripting-jvm-host-unshaded"))
-    compileOnly(project(":kotlin-scripting-dependencies"))
+    compileOnly(project(":kotlin-scripting-dependencies-maven"))
     runtimeOnly(project(":kotlin-scripting-compiler-embeddable"))
     runtimeOnly(kotlinStdlib())
     runtimeOnly(project(":kotlin-reflect"))
     embedded(project(":kotlin-scripting-common")) { isTransitive = false }
     embedded(project(":kotlin-scripting-jvm")) { isTransitive = false }
     embedded(project(":kotlin-scripting-jvm-host-unshaded")) { isTransitive = false }
-    embedded(project(":kotlin-scripting-dependencies")) { isTransitive = false }
-    embedded("org.apache.ivy:ivy:2.5.0")
-    embedded(commonDep("org.jetbrains.kotlinx", "kotlinx-coroutines-core")) { isTransitive = false }
-    embedded(commonDep("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm")) { 
+    embedded(project(":kotlin-scripting-dependencies-maven-all"))
+    embedded("org.slf4j:slf4j-nop:1.7.30")
+    embedded(commonDep("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm")) {
         isTransitive = false
         attributes {
             attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
@@ -88,13 +85,28 @@ val proguard by task<CacheableProguardTask> {
 
     outjars(fileFrom(buildDir, "libs", "$jarBaseName-$version-after-proguard.jar"))
 
-    jdkHome = File(JDK_18)
+    javaLauncher.set(project.getToolchainLauncherFor(JdkMajorVersion.JDK_1_8))
+
     libraryjars(mapOf("filter" to "!META-INF/versions/**"), proguardLibraryJars)
     libraryjars(
         files(
-            firstFromJavaHomeThatExists("jre/lib/rt.jar", "../Classes/classes.jar", jdkHome = jdkHome!!),
-            firstFromJavaHomeThatExists("jre/lib/jsse.jar", "../Classes/jsse.jar", jdkHome = jdkHome!!),
-            toolsJarFile(jdkHome = jdkHome!!)
+            javaLauncher.map {
+                firstFromJavaHomeThatExists(
+                    "jre/lib/rt.jar",
+                    "../Classes/classes.jar",
+                    jdkHome = it.metadata.installationPath.asFile
+                )
+            },
+            javaLauncher.map {
+                firstFromJavaHomeThatExists(
+                    "jre/lib/jsse.jar",
+                    "../Classes/jsse.jar",
+                    jdkHome = it.metadata.installationPath.asFile
+                )
+            },
+            javaLauncher.map {
+                Jvm.forHome(it.metadata.installationPath.asFile).toolsJar
+            }
         )
     )
 }

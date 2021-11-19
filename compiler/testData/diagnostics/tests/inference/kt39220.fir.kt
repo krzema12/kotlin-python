@@ -51,7 +51,7 @@ val String.x1 get() = ""
 
 fun <K> bar1(f: KFunction2<K, String, String>) {}
 
-fun <K> bar2(f: <!CONFLICTING_PROJECTION!>KFunction2<out K, String, String><!>) {}
+fun <K> bar2(f: KFunction2<<!CONFLICTING_PROJECTION!>out<!> K, String, String>) {}
 
 fun <K> bar3(f: Any?) {}
 
@@ -86,12 +86,12 @@ fun <T : Foo, R: Number, D: Int> main() {
     // with LHS and conflicting projection
     bar2<T>(Foo::<!OVERLOAD_RESOLUTION_AMBIGUITY!>resolve<!>)
     bar2<Foo>(Foo::<!OVERLOAD_RESOLUTION_AMBIGUITY!>resolve<!>)
-    bar2(Foo::<!OVERLOAD_RESOLUTION_AMBIGUITY!>resolve<!>)
+    <!NEW_INFERENCE_NO_INFORMATION_FOR_PARAMETER!>bar2<!>(Foo::<!OVERLOAD_RESOLUTION_AMBIGUITY!>resolve<!>)
 
     // with LHS and Any? expected type
     bar3<T>(Foo::<!OVERLOAD_RESOLUTION_AMBIGUITY!>resolve<!>)
     bar3<Foo>(Foo::<!OVERLOAD_RESOLUTION_AMBIGUITY!>resolve<!>)
-    bar3(Foo::<!OVERLOAD_RESOLUTION_AMBIGUITY!>resolve<!>)
+    <!NEW_INFERENCE_NO_INFORMATION_FOR_PARAMETER!>bar3<!>(Foo::<!OVERLOAD_RESOLUTION_AMBIGUITY!>resolve<!>)
 
     // with LHS and `Function` expected type
     bar4<T>(Foo::resolve) // ERROR before the fix in NI

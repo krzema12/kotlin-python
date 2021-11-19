@@ -30,6 +30,7 @@ import org.jetbrains.kotlin.resolve.BindingContext.SMARTCAST
 import org.jetbrains.kotlin.resolve.BindingTrace
 import org.jetbrains.kotlin.resolve.calls.ArgumentTypeResolver
 import org.jetbrains.kotlin.resolve.calls.context.ResolutionContext
+import org.jetbrains.kotlin.resolve.calls.inference.BuilderInferenceSession
 import org.jetbrains.kotlin.resolve.scopes.receivers.ImplicitReceiver
 import org.jetbrains.kotlin.resolve.scopes.receivers.ReceiverValue
 import org.jetbrains.kotlin.types.KotlinType
@@ -136,7 +137,10 @@ class SmartCastManager(private val argumentTypeResolver: ArgumentTypeResolver) {
         else
             listOf(expectedType)
 
-        val collectedTypes = c.dataFlowInfo.getCollectedTypes(dataFlowValue, c.languageVersionSettings).toMutableList()
+        val builderInferenceSubstitutor = (c.inferenceSession as? BuilderInferenceSession)?.getNotFixedToInferredTypesSubstitutor()
+        val collectedTypes = c.dataFlowInfo.getCollectedTypes(dataFlowValue, c.languageVersionSettings).let { types ->
+            if (builderInferenceSubstitutor != null) types.map { builderInferenceSubstitutor.safeSubstitute(it.unwrap()) } else types
+        }.toMutableList()
 
         if (collectedTypes.isNotEmpty() && c.languageVersionSettings.supportsFeature(LanguageFeature.NewInference)) {
             // Sometime expected type may be inferred to be an intersection of all of the smart-cast types
@@ -222,7 +226,9 @@ class SmartCastManager(private val argumentTypeResolver: ArgumentTypeResolver) {
         ) {
             if (KotlinBuiltIns.isNullableNothing(type)) return
             if (dataFlowValue.isStable) {
-                if (dataFlowValue.kind == DataFlowValue.Kind.LEGACY_STABLE_LOCAL_DELEGATED_PROPERTY) {
+                if (dataFlowValue.kind == DataFlowValue.Kind.LEGACY_ALIEN_BASE_PROPERTY ||
+                    dataFlowValue.kind == DataFlowValue.Kind.LEGACY_STABLE_LOCAL_DELEGATED_PROPERTY
+                ) {
                     trace.report(Errors.DEPRECATED_SMARTCAST.on(expression, type, expression.text, dataFlowValue.kind.description))
                 }
 

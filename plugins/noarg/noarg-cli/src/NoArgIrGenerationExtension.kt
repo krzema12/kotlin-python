@@ -11,15 +11,21 @@ import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.extensions.AnnotationBasedExtension
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.builders.declarations.buildConstructor
-import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.declarations.IrClass
+import org.jetbrains.kotlin.ir.declarations.IrConstructor
+import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.descriptors.toIrBasedDescriptor
-import org.jetbrains.kotlin.ir.expressions.impl.*
+import org.jetbrains.kotlin.ir.expressions.impl.IrDelegatingConstructorCallImpl
+import org.jetbrains.kotlin.ir.expressions.impl.IrInstanceInitializerCallImpl
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.getClass
-import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.ir.util.constructors
+import org.jetbrains.kotlin.ir.util.defaultType
+import org.jetbrains.kotlin.ir.util.hasAnnotation
+import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitorVoid
+import org.jetbrains.kotlin.name.JvmNames.JVM_OVERLOADS_FQ_NAME
 import org.jetbrains.kotlin.psi.KtModifierListOwner
-import org.jetbrains.kotlin.resolve.jvm.annotations.JVM_OVERLOADS_FQ_NAME
 
 internal class NoArgIrGenerationExtension(
     private val annotations: List<String>,
@@ -44,10 +50,7 @@ private class NoArgIrTransformer(
     override fun visitClass(declaration: IrClass) {
         super.visitClass(declaration)
 
-        if (declaration.kind == ClassKind.CLASS &&
-            declaration.isAnnotatedWithNoarg() &&
-            declaration.constructors.none { it.isZeroParameterConstructor() }
-        ) {
+        if (needsNoargConstructor(declaration)) {
             declaration.declarations.add(getOrGenerateNoArgConstructor(declaration))
         }
     }
@@ -60,7 +63,7 @@ private class NoArgIrTransformer(
                 ?: context.irBuiltIns.anyClass.owner
 
         val superConstructor =
-            if (superClass.isAnnotatedWithNoarg())
+            if (needsNoargConstructor(superClass))
                 getOrGenerateNoArgConstructor(superClass)
             else superClass.constructors.singleOrNull { it.isZeroParameterConstructor() }
                 ?: error("No noarg super constructor for ${klass.render()}:\n" + superClass.constructors.joinToString("\n") { it.render() })
@@ -83,6 +86,11 @@ private class NoArgIrTransformer(
             )
         }
     }
+
+    private fun needsNoargConstructor(declaration: IrClass): Boolean =
+        declaration.kind == ClassKind.CLASS &&
+                declaration.isAnnotatedWithNoarg() &&
+                declaration.constructors.none { it.isZeroParameterConstructor() }
 
     private fun IrClass.isAnnotatedWithNoarg(): Boolean =
         toIrBasedDescriptor().hasSpecialAnnotation(null)

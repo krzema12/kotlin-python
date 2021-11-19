@@ -17,6 +17,8 @@ import org.jetbrains.kotlin.fir.backend.left
 import org.jetbrains.kotlin.fir.backend.right
 import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.declarations.impl.FirDefaultPropertyAccessor
+import org.jetbrains.kotlin.fir.declarations.utils.classId
+import org.jetbrains.kotlin.fir.declarations.utils.expandedConeType
 import org.jetbrains.kotlin.fir.diagnostics.ConeDiagnostic
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.expressions.impl.FirElseIfTrueCondition
@@ -28,7 +30,6 @@ import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeInapplicableCandidateErr
 import org.jetbrains.kotlin.fir.resolve.directExpansionType
 import org.jetbrains.kotlin.fir.resolve.fullyExpandedType
 import org.jetbrains.kotlin.fir.resolve.toSymbol
-import org.jetbrains.kotlin.fir.symbols.AbstractFirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassLikeSymbol
@@ -317,7 +318,7 @@ class MultiModuleHtmlFirDump(private val outputRoot: File) {
         require(inModule)
 
         val dumpOutput = index.files[file] ?: error("No location for ${file.name}")
-        val dumper = HtmlFirDump(LinkResolver(dumpOutput), file.declarationSiteSession)
+        val dumper = HtmlFirDump(LinkResolver(dumpOutput), file.moduleData.session)
         val builder = StringBuilder()
         dumper.generate(file, builder)
 
@@ -377,12 +378,12 @@ class MultiModuleHtmlFirDump(private val outputRoot: File) {
                     visitElement(regularClass)
                 }
 
-                fun indexDeclaration(symbolOwner: FirSymbolOwner<*>) {
-                    symbols[symbolOwner.symbol] = location
-                    symbolIds[symbolOwner.symbol] = symbolCounter++
+                fun indexDeclaration(declaration: FirDeclaration) {
+                    symbols[declaration.symbol] = location
+                    symbolIds[declaration.symbol] = symbolCounter++
                 }
 
-                override fun <F : FirVariable<F>> visitVariable(variable: FirVariable<F>) {
+                override fun visitVariable(variable: FirVariable) {
                     indexDeclaration(variable)
                     visitElement(variable)
                 }
@@ -676,7 +677,7 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
             AbstractStrictEqualityTypeChecker.strictEqualTypes(
                 session.typeContext,
                 flexibleType.lowerBound,
-                flexibleType.upperBound.withNullability(ConeNullability.NOT_NULL)
+                flexibleType.upperBound.withNullability(ConeNullability.NOT_NULL, session.typeContext)
             )
         ) {
             generate(flexibleType.lowerBound)
@@ -852,10 +853,12 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
             is ConeCapturedType -> inlineUnsupported(type)
             is ConeDefinitelyNotNullType -> resolved {
                 generate(type.original)
-                +"!!"
+                +" & Any"
             }
             is ConeIntersectionType -> resolved { generate(type) }
             is ConeIntegerLiteralType -> inlineUnsupported(type)
+            is ConeLookupTagBasedType,
+            is ConeStubType -> {}
         }
         generateTypeArguments(type)
         if (type.isMarkedNullable) {
@@ -918,7 +921,7 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
             is FirEnumEntry -> generate(memberDeclaration)
             is FirRegularClass -> generate(memberDeclaration)
             is FirSimpleFunction -> generate(memberDeclaration)
-            is FirProperty -> if (memberDeclaration.isLocal) generate(memberDeclaration as FirVariable<*>) else generate(memberDeclaration)
+            is FirProperty -> if (memberDeclaration.isLocal) generate(memberDeclaration as FirVariable) else generate(memberDeclaration)
             is FirConstructor -> generate(memberDeclaration)
             is FirTypeAlias -> generate(memberDeclaration)
             else -> unsupported(memberDeclaration)
@@ -961,7 +964,7 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
         +"> "
     }
 
-    private fun FlowContent.generateReceiver(declaration: FirCallableDeclaration<*>) {
+    private fun FlowContent.generateReceiver(declaration: FirCallableDeclaration) {
         generateReceiver(declaration.receiverTypeRef)
     }
 
@@ -1046,7 +1049,7 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
             is FirWhenExpression -> generate(statement, isStatement = true)
             is FirTryExpression -> generate(statement, isStatement = true)
             is FirExpression -> iline { generate(statement) }
-            is FirVariable<*> -> iline { generate(statement) }
+            is FirVariable -> iline { generate(statement) }
             is FirVariableAssignment -> iline { generate(statement) }
             else -> unsupported(statement)
         }
@@ -1071,7 +1074,7 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
         }
     }
 
-    private fun FlowContent.generate(variable: FirVariable<*>) {
+    private fun FlowContent.generate(variable: FirVariable) {
         if (variable.isVal) {
             keyword("val ")
         } else {
@@ -1111,7 +1114,7 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
         }
     }
 
-    private fun FlowContent.describeVerbose(symbol: FirCallableSymbol<*>, fir: FirFunction<*>) {
+    private fun FlowContent.describeVerbose(symbol: FirCallableSymbol<*>, fir: FirFunction) {
         describeTypeParameters(fir)
 
         fir.receiverTypeRef?.let {
@@ -1130,7 +1133,7 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
         generate(fir.returnTypeRef)
     }
 
-    private fun FlowContent.describeVerbose(symbol: FirCallableSymbol<*>, fir: FirVariable<*>) {
+    private fun FlowContent.describeVerbose(symbol: FirCallableSymbol<*>, fir: FirVariable) {
         if (fir is FirTypeParametersOwner) describeTypeParameters(fir)
 
         fir.receiverTypeRef?.let {
@@ -1509,13 +1512,14 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
     private fun FlowContent.generate(expression: FirExpression) {
         exprType(expression.typeRef) {
             when (expression) {
+                is FirBlock -> generateBlockIfAny(expression)
                 is FirGetClassCall -> generate(expression)
                 is FirContinueExpression -> generate(expression)
                 is FirBreakExpression -> generate(expression)
-                is FirAnonymousObject -> generate(expression)
+                is FirAnonymousObjectExpression -> generate(expression.anonymousObject)
+                is FirAnonymousFunctionExpression -> generate(expression.anonymousFunction, isStatement = false)
                 is FirUnitExpression -> generate(expression)
                 is FirStringConcatenationCall -> generate(expression)
-                is FirAnonymousFunction -> generate(expression, isStatement = false)
                 is FirThrowExpression -> generate(expression)
                 is FirWhenSubjectExpression -> generate(expression)
                 is FirElseIfTrueCondition -> generate(expression)
@@ -1524,7 +1528,7 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
                 is FirConstExpression<*> -> generate(expression)
                 is FirReturnExpression -> {
                     span("return-label") {
-                        symbolRef((expression.target.labeledElement as? FirSymbolOwner<*>)?.symbol) {
+                        symbolRef(expression.target.labeledElement.symbol) {
                             +"^"
                             +(expression.target.labelName ?: "")
                         }
@@ -1555,7 +1559,6 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
                     generate(expression.expression)
                 }
                 is FirTypeOperatorCall -> generate(expression)
-                is FirAssignmentOperatorStatement -> generateBinary(expression.leftArgument, expression.rightArgument, expression.operation)
                 is FirEqualityOperatorCall -> generate(expression)
                 is FirBinaryLogicExpression -> generate(expression)
                 is FirCheckNotNullCall -> generate(expression)
@@ -1630,7 +1633,7 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
         }
     }
 
-    private fun FlowContent.symbolAnchor(symbol: AbstractFirBasedSymbol<*>, body: FlowContent.() -> Unit) {
+    private fun FlowContent.symbolAnchor(symbol: FirBasedSymbol<*>, body: FlowContent.() -> Unit) {
         span(classes = "declaration") {
             id = linkResolver.symbolSignature(symbol)
             body()
@@ -1770,7 +1773,7 @@ class HtmlFirDump internal constructor(private var linkResolver: FirLinkResolver
     private fun FlowContent.generate(declaration: FirDeclaration) {
         when (declaration) {
             is FirAnonymousInitializer -> generate(declaration)
-            is FirMemberDeclaration -> generate(declaration)
+            is FirMemberDeclaration -> generate(declaration as FirMemberDeclaration)
             else -> unsupported(declaration)
         }
     }

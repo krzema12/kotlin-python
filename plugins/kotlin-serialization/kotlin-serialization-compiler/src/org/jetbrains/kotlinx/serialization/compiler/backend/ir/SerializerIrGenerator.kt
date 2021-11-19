@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.backend.common.lower.irIfThen
 import org.jetbrains.kotlin.backend.common.lower.irThrow
 import org.jetbrains.kotlin.builtins.PrimitiveType
+import org.jetbrains.kotlin.codegen.CompilationException
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.ir.builders.*
 import org.jetbrains.kotlin.ir.declarations.*
@@ -20,8 +21,8 @@ import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.impl.IrAnonymousInitializerSymbolImpl
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
-import org.jetbrains.kotlin.platform.jvm.isJvm
 import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.resolve.DescriptorUtils
 import org.jetbrains.kotlin.resolve.calls.components.hasDefaultValue
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 import org.jetbrains.kotlin.resolve.isInlineClass
@@ -94,7 +95,7 @@ open class SerializerIrGenerator(
                         addElementsContentToDescriptor(serialDescImplClass, localDesc, addFuncS)
                         // add class annotations
                         copySerialInfoAnnotationsToDescriptor(
-                            serializableIrClass.annotations,
+                            collectSerialInfoAnnotations(serializableIrClass),
                             localDesc,
                             serialDescImplClass.referenceFunctionSymbol(CallingConventions.addClassAnnotation)
                         )
@@ -156,24 +157,8 @@ open class SerializerIrGenerator(
         receiver: IrVariable,
         method: IrFunctionSymbol
     ) {
-        for (annotationCall in annotations) {
-            val annotationClass = annotationCall.symbol.owner.parentAsClass
-            if (!annotationClass.descriptor.isSerialInfoAnnotation) continue
-
-            val createAnnotation = if (compilerContext.platform.isJvm()) {
-                val implClass = serialInfoJvmGenerator.getImplClass(annotationClass)
-                val ctor = implClass.constructors.singleOrNull { it.valueParameters.size == annotationCall.valueArgumentsCount }
-                    ?: error("No constructor args found for SerialInfo annotation Impl class: ${implClass.render()}")
-                irCall(ctor).apply {
-                    for (i in 0 until annotationCall.valueArgumentsCount) {
-                        putValueArgument(i, annotationCall.getValueArgument(i)!!.deepCopyWithVariables())
-                    }
-                }
-            } else {
-                annotationCall.deepCopyWithVariables()
-            }
-
-            +irInvoke(irGet(receiver), method, createAnnotation)
+        copyAnnotationsFrom(annotations).forEach {
+            +irInvoke(irGet(receiver), method, it)
         }
     }
 
@@ -474,6 +459,15 @@ open class SerializerIrGenerator(
             val ctor: IrConstructorSymbol = serializableSyntheticConstructor(serializableIrClass)
             +irReturn(irInvoke(null, ctor, typeArgs, args))
         } else {
+            if (DescriptorUtils.isLocal(serializerDescriptor)) {
+                // if the serializer is local, then the serializable class too, since they must be in the same scope
+                throw CompilationException(
+                    "External serializer class `${serializerDescriptor.fqNameSafe}` is local. Local external serializers are not supported yet.",
+                    null,
+                    null
+                )
+            }
+
             generateGoldenMaskCheck(bitMasks, properties, localSerialDesc.get())
 
             val ctor: IrConstructorSymbol =
@@ -572,7 +566,7 @@ open class SerializerIrGenerator(
         ) {
             val serializableDesc = getSerializableClassDescriptorBySerializer(irClass.symbol.descriptor) ?: return
             val generator = when {
-                serializableDesc.isSerializableEnum() -> SerializerForEnumsGenerator(irClass, context, bindingContext, serialInfoJvmGenerator)
+                serializableDesc.isInternallySerializableEnum() -> SerializerForEnumsGenerator(irClass, context, bindingContext, serialInfoJvmGenerator)
                 serializableDesc.isInlineClass() -> SerializerForInlineClassGenerator(irClass, context, bindingContext, serialInfoJvmGenerator)
                 else -> SerializerIrGenerator(irClass, context, bindingContext, metadataPlugin, serialInfoJvmGenerator)
             }

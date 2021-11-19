@@ -26,6 +26,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMetadataTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithHostTests
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
+import org.jetbrains.kotlin.gradle.tooling.BuildKotlinToolingMetadataTask
 import org.jetbrains.kotlin.gradle.tooling.buildKotlinToolingMetadataTask
 import org.jetbrains.kotlin.konan.target.KonanTarget
 import org.jetbrains.kotlin.library.KotlinAbiVersion
@@ -37,7 +38,7 @@ import kotlin.test.assertTrue
 
 class BuildKotlinToolingMetadataTest {
 
-    private val project = ProjectBuilder.builder().build() as ProjectInternal
+    private val project = ProjectBuilder.builder().build().also{ addBuildEventsListenerRegistryMock(it) } as ProjectInternal
     private val multiplatformExtension get() = project.extensions.getByType(KotlinMultiplatformExtension::class.java)
     private val jsExtension get() = project.extensions.getByType(KotlinJsProjectExtension::class.java)
 
@@ -54,7 +55,7 @@ class BuildKotlinToolingMetadataTest {
         assertEquals("Gradle", metadata.buildSystem)
         assertEquals(project.gradle.gradleVersion, metadata.buildSystemVersion)
         assertEquals(KotlinMultiplatformPluginWrapper::class.java.canonicalName, metadata.buildPlugin)
-        assertEquals(project.getKotlinPluginVersion().toString(), metadata.buildPluginVersion)
+        assertEquals(project.getKotlinPluginVersion(), metadata.buildPluginVersion)
         assertEquals(1, metadata.projectTargets.size, "Expected one target (metadata)")
         assertTrue(
             KotlinMetadataTarget::class.java.isAssignableFrom(Class.forName(metadata.projectTargets.single().target)),
@@ -186,7 +187,7 @@ class BuildKotlinToolingMetadataTest {
     }
 
     private fun getKotlinToolingMetadata(): KotlinToolingMetadata {
-        val task = project.buildKotlinToolingMetadataTask!!.get()
-        return task.getKotlinToolingMetadata()
+        val task = project.buildKotlinToolingMetadataTask?.get() ?: error("No ${BuildKotlinToolingMetadataTask.defaultTaskName} task")
+        return task.kotlinToolingMetadata
     }
 }

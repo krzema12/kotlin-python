@@ -236,6 +236,9 @@ internal class FunctionReferenceLowering(val context: Context): FileLoweringPass
             ).apply {
                 parent = this@FunctionReferenceBuilder.parent
                 createParameterDeclarations()
+
+                // copy the generated name for IrClass, partially solves KT-47194
+                context.copyLocalClassName(functionReference, this)
             }
 
         private val functionReferenceThis = functionReferenceClass.thisReceiver!!
@@ -309,7 +312,7 @@ internal class FunctionReferenceLowering(val context: Context): FileLoweringPass
 
             functionReferenceClass.superTypes += superTypes
 
-            functionReferenceClass.addFakeOverrides(context.irBuiltIns)
+            functionReferenceClass.addFakeOverrides(context.typeSystem)
 
             return BuiltFunctionReference(functionReferenceClass, buildConstructor())
         }

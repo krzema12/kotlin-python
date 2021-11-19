@@ -1860,27 +1860,27 @@ public inline fun <T> Iterable<T>.forEachIndexed(action: (index: Int, T) -> Unit
 }
 
 @Deprecated("Use maxOrNull instead.", ReplaceWith("this.maxOrNull()"))
-@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5")
+@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5", hiddenSince = "1.6")
 @SinceKotlin("1.1")
 public fun Iterable<Double>.max(): Double? {
     return maxOrNull()
 }
 
 @Deprecated("Use maxOrNull instead.", ReplaceWith("this.maxOrNull()"))
-@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5")
+@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5", hiddenSince = "1.6")
 @SinceKotlin("1.1")
 public fun Iterable<Float>.max(): Float? {
     return maxOrNull()
 }
 
 @Deprecated("Use maxOrNull instead.", ReplaceWith("this.maxOrNull()"))
-@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5")
+@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5", hiddenSince = "1.6")
 public fun <T : Comparable<T>> Iterable<T>.max(): T? {
     return maxOrNull()
 }
 
 @Deprecated("Use maxByOrNull instead.", ReplaceWith("this.maxByOrNull(selector)"))
-@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5")
+@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5", hiddenSince = "1.6")
 public inline fun <T, R : Comparable<R>> Iterable<T>.maxBy(selector: (T) -> R): T? {
     return maxByOrNull(selector)
 }
@@ -2134,7 +2134,7 @@ public fun <T : Comparable<T>> Iterable<T>.maxOrNull(): T? {
 }
 
 @Deprecated("Use maxWithOrNull instead.", ReplaceWith("this.maxWithOrNull(comparator)"))
-@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5")
+@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5", hiddenSince = "1.6")
 public fun <T> Iterable<T>.maxWith(comparator: Comparator<in T>): T? {
     return maxWithOrNull(comparator)
 }
@@ -2155,27 +2155,27 @@ public fun <T> Iterable<T>.maxWithOrNull(comparator: Comparator<in T>): T? {
 }
 
 @Deprecated("Use minOrNull instead.", ReplaceWith("this.minOrNull()"))
-@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5")
+@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5", hiddenSince = "1.6")
 @SinceKotlin("1.1")
 public fun Iterable<Double>.min(): Double? {
     return minOrNull()
 }
 
 @Deprecated("Use minOrNull instead.", ReplaceWith("this.minOrNull()"))
-@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5")
+@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5", hiddenSince = "1.6")
 @SinceKotlin("1.1")
 public fun Iterable<Float>.min(): Float? {
     return minOrNull()
 }
 
 @Deprecated("Use minOrNull instead.", ReplaceWith("this.minOrNull()"))
-@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5")
+@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5", hiddenSince = "1.6")
 public fun <T : Comparable<T>> Iterable<T>.min(): T? {
     return minOrNull()
 }
 
 @Deprecated("Use minByOrNull instead.", ReplaceWith("this.minByOrNull(selector)"))
-@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5")
+@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5", hiddenSince = "1.6")
 public inline fun <T, R : Comparable<R>> Iterable<T>.minBy(selector: (T) -> R): T? {
     return minByOrNull(selector)
 }
@@ -2429,7 +2429,7 @@ public fun <T : Comparable<T>> Iterable<T>.minOrNull(): T? {
 }
 
 @Deprecated("Use minWithOrNull instead.", ReplaceWith("this.minWithOrNull(comparator)"))
-@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5")
+@DeprecatedSinceKotlin(warningSince = "1.4", errorSince = "1.5", hiddenSince = "1.6")
 public fun <T> Iterable<T>.minWith(comparator: Comparator<in T>): T? {
     return minWithOrNull(comparator)
 }
@@ -2990,20 +2990,22 @@ public operator fun <T> Iterable<T>.minus(element: T): List<T> {
 /**
  * Returns a list containing all elements of the original collection except the elements contained in the given [elements] array.
  * 
- * The [elements] array may be converted to a [HashSet] to speed up the operation, thus the elements are required to have
- * a correct and stable implementation of `hashCode()` that doesn't change between successive invocations.
+ * Before Kotlin 1.6, the [elements] array may have been converted to a [HashSet] to speed up the operation, thus the elements were required to have
+ * a correct and stable implementation of `hashCode()` that didn't change between successive invocations.
+ * On JVM, you can enable this behavior back with the system property `kotlin.collections.convert_arg_to_set_in_removeAll` set to `true`.
  */
 public operator fun <T> Iterable<T>.minus(elements: Array<out T>): List<T> {
     if (elements.isEmpty()) return this.toList()
-    val other = elements.toHashSet()
+    val other = elements.convertToSetForSetOperation()
     return this.filterNot { it in other }
 }
 
 /**
  * Returns a list containing all elements of the original collection except the elements contained in the given [elements] collection.
  * 
- * The [elements] collection may be converted to a [HashSet] to speed up the operation, thus the elements are required to have
- * a correct and stable implementation of `hashCode()` that doesn't change between successive invocations.
+ * Before Kotlin 1.6, the [elements] collection may have been converted to a [HashSet] to speed up the operation, thus the elements were required to have
+ * a correct and stable implementation of `hashCode()` that didn't change between successive invocations.
+ * On JVM, you can enable this behavior back with the system property `kotlin.collections.convert_arg_to_set_in_removeAll` set to `true`.
  */
 public operator fun <T> Iterable<T>.minus(elements: Iterable<T>): List<T> {
     val other = elements.convertToSetForSetOperationWith(this)
@@ -3015,11 +3017,12 @@ public operator fun <T> Iterable<T>.minus(elements: Iterable<T>): List<T> {
 /**
  * Returns a list containing all elements of the original collection except the elements contained in the given [elements] sequence.
  * 
- * The [elements] sequence may be converted to a [HashSet] to speed up the operation, thus the elements are required to have
- * a correct and stable implementation of `hashCode()` that doesn't change between successive invocations.
+ * Before Kotlin 1.6, the [elements] sequence may have been converted to a [HashSet] to speed up the operation, thus the elements were required to have
+ * a correct and stable implementation of `hashCode()` that didn't change between successive invocations.
+ * On JVM, you can enable this behavior back with the system property `kotlin.collections.convert_arg_to_set_in_removeAll` set to `true`.
  */
 public operator fun <T> Iterable<T>.minus(elements: Sequence<T>): List<T> {
-    val other = elements.toHashSet()
+    val other = elements.convertToSetForSetOperation()
     if (other.isEmpty())
         return this.toList()
     return this.filterNot { it in other }

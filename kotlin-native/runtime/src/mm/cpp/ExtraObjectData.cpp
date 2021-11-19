@@ -65,6 +65,12 @@ void mm::ExtraObjectData::Uninstall(ObjHeader* object) noexcept {
     delete &data;
 }
 
+void mm::ExtraObjectData::DetachAssociatedObject() noexcept {
+#ifdef KONAN_OBJC_INTEROP
+    Kotlin_ObjCExport_detachAssociatedObject(associatedObject_);
+#endif
+}
+
 bool mm::ExtraObjectData::HasWeakReferenceCounter() noexcept {
     return weakReferenceCounter_ != nullptr;
 }
@@ -73,7 +79,10 @@ void mm::ExtraObjectData::ClearWeakReferenceCounter() noexcept {
     if (!HasWeakReferenceCounter()) return;
 
     WeakReferenceCounterClear(weakReferenceCounter_);
-    mm::SetHeapRef(&weakReferenceCounter_, nullptr);
+    // Not using `mm::SetHeapRef here`, because this code is called during sweep phase by the GC thread,
+    // and so cannot affect marking.
+    // TODO: Asserts on the above?
+    weakReferenceCounter_ = nullptr;
 }
 
 mm::ExtraObjectData::~ExtraObjectData() {

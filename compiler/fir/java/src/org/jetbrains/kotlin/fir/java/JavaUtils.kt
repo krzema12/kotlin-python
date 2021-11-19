@@ -12,8 +12,13 @@ import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.fir.*
 import org.jetbrains.kotlin.fir.builder.FirAnnotationContainerBuilder
 import org.jetbrains.kotlin.fir.builder.FirBuilderDsl
-import org.jetbrains.kotlin.fir.declarations.*
-import org.jetbrains.kotlin.fir.diagnostics.*
+import org.jetbrains.kotlin.fir.declarations.FirConstructor
+import org.jetbrains.kotlin.fir.declarations.FirRegularClass
+import org.jetbrains.kotlin.fir.declarations.FirTypeParameter
+import org.jetbrains.kotlin.fir.declarations.FirValueParameter
+import org.jetbrains.kotlin.fir.diagnostics.ConeIntermediateDiagnostic
+import org.jetbrains.kotlin.fir.diagnostics.ConeSimpleDiagnostic
+import org.jetbrains.kotlin.fir.diagnostics.DiagnosticKind
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.expressions.builder.*
 import org.jetbrains.kotlin.fir.java.declarations.FirJavaClass
@@ -25,13 +30,13 @@ import org.jetbrains.kotlin.fir.references.impl.FirReferencePlaceholderForResolv
 import org.jetbrains.kotlin.fir.resolve.bindSymbolToLookupTag
 import org.jetbrains.kotlin.fir.resolve.defaultType
 import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeUnresolvedReferenceError
+import org.jetbrains.kotlin.fir.resolve.inference.inferenceComponents
 import org.jetbrains.kotlin.fir.resolve.providers.getClassDeclaredPropertySymbols
 import org.jetbrains.kotlin.fir.resolve.symbolProvider
 import org.jetbrains.kotlin.fir.resolve.toSymbol
 import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.expectedConeType
 import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.firUnsafe
 import org.jetbrains.kotlin.fir.symbols.ConeClassLikeLookupTag
-import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.fir.symbols.impl.ConeClassLikeLookupTagImpl
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
 import org.jetbrains.kotlin.fir.types.*
@@ -47,6 +52,7 @@ import org.jetbrains.kotlin.load.java.typeEnhancement.TypeComponentPosition
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.types.ConstantValueKind
 import org.jetbrains.kotlin.types.Variance.*
 import org.jetbrains.kotlin.util.capitalizeDecapitalize.capitalizeAsciiOnly
@@ -56,6 +62,33 @@ import java.lang.annotation.Documented
 import java.lang.annotation.Retention
 import java.lang.annotation.Target
 import java.util.*
+import kotlin.Any
+import kotlin.Array
+import kotlin.Boolean
+import kotlin.BooleanArray
+import kotlin.Byte
+import kotlin.ByteArray
+import kotlin.Char
+import kotlin.CharArray
+import kotlin.Double
+import kotlin.DoubleArray
+import kotlin.Float
+import kotlin.FloatArray
+import kotlin.Int
+import kotlin.IntArray
+import kotlin.Long
+import kotlin.LongArray
+import kotlin.Short
+import kotlin.ShortArray
+import kotlin.String
+import kotlin.Suppress
+import kotlin.also
+import kotlin.arrayOf
+import kotlin.emptyArray
+import kotlin.error
+import kotlin.let
+import kotlin.run
+import kotlin.to
 
 internal val JavaModifierListOwner.modality: Modality
     get() = when {
@@ -274,7 +307,7 @@ private fun computeRawProjection(
     session: FirSession,
     parameter: FirTypeParameter,
     attr: TypeComponentPosition,
-    erasedUpperBound: ConeKotlinType = parameter.getErasedUpperBound()
+    erasedUpperBound: ConeKotlinType = parameter.getErasedUpperBound(session)
 ) = when (attr) {
     // Raw(List<T>) => (List<Any?>..List<*>)
     // Raw(Enum<T>) => (Enum<Enum<*>>..Enum<out Enum<*>>)
@@ -306,6 +339,7 @@ private fun computeRawProjection(
 // ErasedUpperBound(T : A) = A // UpperBound(T) is a type A without arguments
 // ErasedUpperBound(T : F) = UpperBound(F) // UB(T) is another type parameter F
 private fun FirTypeParameter.getErasedUpperBound(
+    session: FirSession,
     // Calculation of `potentiallyRecursiveTypeParameter.upperBounds` may recursively depend on `this.getErasedUpperBound`
     // E.g. `class A<T extends A, F extends A>`
     // To prevent recursive calls return defaultValue() instead
@@ -318,10 +352,11 @@ private fun FirTypeParameter.getErasedUpperBound(
 
     val firstUpperBound = this.bounds.first().coneType
 
-    return getErasedVersionOfFirstUpperBound(firstUpperBound, mutableSetOf(this, potentiallyRecursiveTypeParameter), defaultValue)
+    return getErasedVersionOfFirstUpperBound(session, firstUpperBound, mutableSetOf(this, potentiallyRecursiveTypeParameter), defaultValue)
 }
 
 private fun getErasedVersionOfFirstUpperBound(
+    session: FirSession,
     firstUpperBound: ConeKotlinType,
     alreadyVisitedParameters: MutableSet<FirTypeParameter?>,
     defaultValue: () -> ConeKotlinType
@@ -332,18 +367,18 @@ private fun getErasedVersionOfFirstUpperBound(
 
         is ConeFlexibleType -> {
             val lowerBound =
-                getErasedVersionOfFirstUpperBound(firstUpperBound.lowerBound, alreadyVisitedParameters, defaultValue)
+                getErasedVersionOfFirstUpperBound(session, firstUpperBound.lowerBound, alreadyVisitedParameters, defaultValue)
                     .lowerBoundIfFlexible()
             if (firstUpperBound.upperBound is ConeTypeParameterType) {
                 // Avoid exponential complexity
                 ConeFlexibleType(
                     lowerBound,
-                    lowerBound.withNullability(ConeNullability.NULLABLE)
+                    lowerBound.withNullability(ConeNullability.NULLABLE, session.inferenceComponents.ctx)
                 )
             } else {
                 ConeFlexibleType(
                     lowerBound,
-                    getErasedVersionOfFirstUpperBound(firstUpperBound.upperBound, alreadyVisitedParameters, defaultValue)
+                    getErasedVersionOfFirstUpperBound(session, firstUpperBound.upperBound, alreadyVisitedParameters, defaultValue)
                 )
             }
         }
@@ -352,7 +387,7 @@ private fun getErasedVersionOfFirstUpperBound(
 
             if (alreadyVisitedParameters.add(current)) {
                 val nextUpperBound = current.bounds.first().coneType
-                getErasedVersionOfFirstUpperBound(nextUpperBound, alreadyVisitedParameters, defaultValue)
+                getErasedVersionOfFirstUpperBound(session, nextUpperBound, alreadyVisitedParameters, defaultValue)
             } else {
                 defaultValue()
             }
@@ -379,7 +414,7 @@ private fun JavaClassifierType.toConeKotlinTypeForFlexibleBound(
                 JavaToKotlinClassMap.mapJavaToKotlin(classifier.fqName!!)
             } ?: classifier.classId!!
 
-            if (isLowerBound) {
+            if (isLowerBound || argumentsMakeSenseOnlyForMutableContainer(classId, session)) {
                 classId = classId.readOnlyToMutable() ?: classId
             }
 
@@ -389,8 +424,6 @@ private fun JavaClassifierType.toConeKotlinTypeForFlexibleBound(
                     lowerBound.typeArguments, isNullable = true
                 )
             }
-
-            val classSymbol = session.symbolProvider.getClassLikeSymbolByFqName(classId) as? FirRegularClassSymbol
 
             val mappedTypeArguments = if (isRaw) {
                 val defaultArgs = (1..classifier.typeParameters.size).map { ConeStarProjection }
@@ -402,10 +435,14 @@ private fun JavaClassifierType.toConeKotlinTypeForFlexibleBound(
                 } else {
                     val position = if (isLowerBound) TypeComponentPosition.FLEXIBLE_LOWER else TypeComponentPosition.FLEXIBLE_UPPER
 
+                    val classSymbol = session.symbolProvider.getClassLikeSymbolByFqName(classId) as? FirRegularClassSymbol
                     classSymbol?.fir?.createRawArguments(session, defaultArgs, position) ?: defaultArgs
                 }
             } else {
-                val typeParameters = runIf(!forTypeParameterBounds && !isForSupertypes) { classSymbol?.fir?.typeParameters } ?: emptyList()
+                val typeParameters = runIf(!forTypeParameterBounds && !isForSupertypes) {
+                    val classSymbol = session.symbolProvider.getClassLikeSymbolByFqName(classId) as? FirRegularClassSymbol
+                    classSymbol?.fir?.typeParameters
+                } ?: emptyList()
 
                 typeArguments.indices.map { index ->
                     val argument = typeArguments[index]
@@ -424,16 +461,42 @@ private fun JavaClassifierType.toConeKotlinTypeForFlexibleBound(
             val symbol = javaTypeParameterStack[classifier]
             ConeTypeParameterTypeImpl(symbol.toLookupTag(), isNullable = !isLowerBound)
         }
+        null -> {
+            val classId = ClassId.topLevel(FqName(this.classifierQualifiedName))
+            ConeClassLikeLookupTagImpl(classId).constructClassType(
+                emptyArray(), isNullable = !isLowerBound, attributes,
+            )
+        }
         else -> ConeKotlinErrorType(ConeSimpleDiagnostic("Unexpected classifier: $classifier", DiagnosticKind.Java))
     }
 }
+
+// Returns true for covariant read-only container that has mutable pair with invariant parameter
+// List<in A> does not make sense, but MutableList<in A> does
+// Same for Map<K, in V>
+// But both Iterable<in A>, MutableIterable<in A> don't make sense as they are covariant, so return false
+private fun JavaClassifierType.argumentsMakeSenseOnlyForMutableContainer(
+    classId: ClassId,
+    session: FirSession,
+): Boolean {
+    if (!JavaToKotlinClassMap.isReadOnly(classId.asSingleFqName().toUnsafe())) return false
+    val mutableClassId = classId.readOnlyToMutable() ?: return false
+
+    if (!typeArguments.lastOrNull().isSuperWildcard()) return false
+    val mutableLastParameterVariance =
+        (mutableClassId.toLookupTag().toSymbol(session)?.fir as? FirRegularClass)?.typeParameters?.lastOrNull()?.symbol?.fir?.variance
+            ?: return false
+
+    return mutableLastParameterVariance != OUT_VARIANCE
+}
+
 
 private fun FirRegularClass.createRawArguments(
     session: FirSession,
     defaultArgs: List<ConeStarProjection>,
     position: TypeComponentPosition
 ): List<ConeTypeProjection> = typeParameters.filterIsInstance<FirTypeParameter>().map { typeParameter ->
-    val erasedUpperBound = typeParameter.getErasedUpperBound {
+    val erasedUpperBound = typeParameter.getErasedUpperBound(session) {
         defaultType().withArguments(defaultArgs.toTypedArray())
     }
     computeRawProjection(session, typeParameter, position, erasedUpperBound)
@@ -583,11 +646,11 @@ internal fun MutableList<FirAnnotationCall>.addAnnotationsFrom(
 }
 
 internal fun JavaValueParameter.toFirValueParameter(
-    session: FirSession, index: Int, javaTypeParameterStack: JavaTypeParameterStack
+    session: FirSession, moduleData: FirModuleData, index: Int, javaTypeParameterStack: JavaTypeParameterStack
 ): FirValueParameter {
     return buildJavaValueParameter {
         source = (this@toFirValueParameter as? JavaElementImpl<*>)?.psi?.toFirPsiSourceElement()
-        declarationSiteSession = session
+        this.moduleData = moduleData
         name = this@toFirValueParameter.name ?: Name.identifier("p$index")
         returnTypeRef = type.toFirJavaTypeRef(session, javaTypeParameterStack)
         isVararg = this@toFirValueParameter.isVararg

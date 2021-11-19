@@ -5,19 +5,21 @@
 
 package org.jetbrains.kotlin.compilerRunner
 
-import org.gradle.api.Project
 import org.gradle.api.logging.Logger
-import org.jetbrains.kotlin.build.ExecutionStrategy
 import org.jetbrains.kotlin.build.report.metrics.*
+import org.jetbrains.kotlin.cli.common.CompilerSystemProperties
+import org.jetbrains.kotlin.cli.common.CompilerSystemProperties.COMPILE_INCREMENTAL_WITH_CLASSPATH_SNAPSHOTS
 import org.jetbrains.kotlin.cli.common.ExitCode
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
+import org.jetbrains.kotlin.cli.common.toBooleanLenient
 import org.jetbrains.kotlin.config.Services
 import org.jetbrains.kotlin.daemon.common.*
 import org.jetbrains.kotlin.gradle.logging.*
 import org.jetbrains.kotlin.gradle.plugin.internal.state.TaskExecutionResults
 import org.jetbrains.kotlin.gradle.plugin.internal.state.TaskLoggers
-import org.jetbrains.kotlin.gradle.report.BuildReportMode
-import org.jetbrains.kotlin.gradle.report.ReportingSettings
+import org.jetbrains.kotlin.gradle.report.*
+import org.jetbrains.kotlin.gradle.report.TaskExecutionInfo
+import org.jetbrains.kotlin.gradle.report.TaskExecutionProperties.ABI_SNAPSHOT
 import org.jetbrains.kotlin.gradle.report.TaskExecutionResult
 import org.jetbrains.kotlin.gradle.tasks.clearLocalState
 import org.jetbrains.kotlin.gradle.tasks.throwGradleExceptionIfError
@@ -32,6 +34,7 @@ import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 internal class ProjectFilesForCompilation(
     val projectRootFile: File,
@@ -65,7 +68,7 @@ internal class GradleKotlinCompilerWorkArguments(
     val reportingSettings: ReportingSettings,
     val kotlinScriptExtensions: Array<String>,
     val allWarningsAsErrors: Boolean,
-    val javaExecutable: File
+    val daemonJvmArgs: List<String>?
 ) : Serializable {
     companion object {
         const val serialVersionUID: Long = 0
@@ -108,7 +111,7 @@ internal class GradleKotlinCompilerWork @Inject constructor(
     private val buildDir = config.projectFiles.buildDir
     private val metrics = if (reportingSettings.reportMetrics) BuildMetricsReporterImpl() else DoNothingBuildMetricsReporter
     private var icLogLines: List<String> = emptyList()
-    private val javaExecutable = config.javaExecutable
+    private val daemonJvmArgs = config.daemonJvmArgs
 
     private val log: KotlinLogger =
         TaskLoggers.get(taskPath)?.let { GradleKotlinLogger(it).apply { debug("Using '$taskPath' logger") } }
@@ -136,7 +139,19 @@ internal class GradleKotlinCompilerWork @Inject constructor(
 
             throwGradleExceptionIfError(exitCode)
         } finally {
-            val result = TaskExecutionResult(buildMetrics = metrics.getMetrics(), icLogLines = icLogLines)
+            val properties = ArrayList<TaskExecutionProperties>()
+            COMPILE_INCREMENTAL_WITH_CLASSPATH_SNAPSHOTS.value.toBooleanLenient()?.let {
+                if (it) properties.add(ABI_SNAPSHOT)
+            }
+            CompilerSystemProperties.COMPILE_INCREMENTAL_WITH_ARTIFACT_TRANSFORM.value.toBooleanLenient()?.let {
+                if (it) properties.add(TaskExecutionProperties.ARTIFACT_TRANSFORM)
+            }
+
+            val taskInfo = TaskExecutionInfo(
+                changedFiles = incrementalCompilationEnvironment?.changedFiles,
+                properties = properties
+            )
+            val result = TaskExecutionResult(buildMetrics = metrics.getMetrics(), icLogLines = icLogLines, taskInfo = taskInfo)
             TaskExecutionResults[taskPath] = result
         }
     }
@@ -178,9 +193,9 @@ internal class GradleKotlinCompilerWork @Inject constructor(
                         clientIsAliveFlagFile,
                         sessionFlagFile,
                         compilerFullClasspath,
-                        javaExecutable,
                         daemonMessageCollector,
-                        isDebugEnabled = isDebugEnabled
+                        isDebugEnabled = isDebugEnabled,
+                        daemonJvmArgs = daemonJvmArgs
                     )
                 } catch (e: Throwable) {
                     log.error("Caught an exception trying to connect to Kotlin Daemon:")
@@ -255,8 +270,12 @@ internal class GradleKotlinCompilerWork @Inject constructor(
             kotlinScriptExtensions = kotlinScriptExtensions
         )
         val servicesFacade = GradleCompilerServicesFacadeImpl(log, bufferingMessageCollector)
+        val compilationResults = GradleCompilationResults(log, projectRootFile)
         return metrics.measure(BuildTime.NON_INCREMENTAL_COMPILATION_DAEMON) {
-            daemon.compile(sessionId, compilerArgs, compilationOptions, servicesFacade, compilationResults = null)
+            daemon.compile(sessionId, compilerArgs, compilationOptions, servicesFacade, compilationResults)
+        }.also {
+            metrics.addMetrics(compilationResults.buildMetrics)
+            icLogLines = compilationResults.icLogLines
         }
     }
 
@@ -273,6 +292,7 @@ internal class GradleKotlinCompilerWork @Inject constructor(
             areFileChangesKnown = knownChangedFiles != null,
             modifiedFiles = knownChangedFiles?.modified,
             deletedFiles = knownChangedFiles?.removed,
+            classpathChanges = icEnv.classpathChanges,
             workingDir = icEnv.workingDir,
             reportCategories = reportCategories(isVerbose),
             reportSeverity = reportSeverity(isVerbose),

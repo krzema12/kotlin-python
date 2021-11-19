@@ -13,13 +13,13 @@ plugins {
 dependencies {
     compileOnly(intellijCoreDep()) { includeJars("intellij-core", "guava", rootProject = rootProject) }
 
-    testApi(intellijDep())
     testApi(projectTests(":compiler:test-infrastructure"))
     testApi(projectTests(":compiler:test-infrastructure-utils"))
     testApi(projectTests(":compiler:tests-compiler-utils"))
     testApi(projectTests(":compiler:tests-common-new"))
     testApi(project(":compiler:cli"))
     testApi(project(":compiler:fir:checkers"))
+    testApi(project(":compiler:fir:checkers:checkers.jvm"))
     testApi(project(":compiler:fir:fir-serialization"))
     testApi(project(":compiler:fir:entrypoint"))
     testApi(project(":compiler:frontend"))
@@ -33,31 +33,10 @@ dependencies {
 
     testImplementation(intellijCoreDep()) { includeJars("intellij-core") }
     testRuntimeOnly(intellijDep()) {
-        includeJars(
-            "jps-model",
-            "extensions",
-            "util",
-            "platform-api",
-            "platform-impl",
-            "idea",
-            "guava",
-            "trove4j",
-            "asm-all",
-            "log4j",
-            "jdom",
-            "streamex",
-            "bootstrap",
-            "jna",
-            rootProject = rootProject
-        )
+        includeJars("jna", rootProject = rootProject)
     }
 
-    Platform[202] {
-        testRuntimeOnly(intellijDep()) { includeJars("intellij-deps-fastutil-8.3.1-1") }
-    }
-    Platform[203].orHigher {
-        testRuntimeOnly(intellijDep()) { includeJars("intellij-deps-fastutil-8.3.1-3") }
-    }
+    testRuntimeOnly(intellijDep()) { includeJars("intellij-deps-fastutil-8.4.1-4") }
     testRuntimeOnly(toolsJar())
 }
 

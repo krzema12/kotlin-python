@@ -19,6 +19,7 @@ import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
 import org.jetbrains.kotlin.ir.symbols.IrFieldSymbol
 import org.jetbrains.kotlin.ir.symbols.IrPropertySymbol
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
+import org.jetbrains.kotlin.ir.util.IdSignature
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedContainerSource
 
@@ -42,6 +43,8 @@ internal abstract class PersistentIrPropertyCommon(
     PersistentIrDeclarationBase<PropertyCarrier>,
     PropertyCarrier {
 
+    override var signature: IdSignature? = factory.currentSignature(this)
+
     override var lastModified: Int = factory.stageController.currentStage
     override var loweredUpTo: Int = factory.stageController.currentStage
     override var values: Array<Carrier>? = null
@@ -51,6 +54,9 @@ internal abstract class PersistentIrPropertyCommon(
     override var originField: IrDeclarationOrigin = origin
     override var removedOn: Int = Int.MAX_VALUE
     override var annotationsField: List<IrConstructorCall> = emptyList()
+    private val hashCodeValue: Int = PersistentIrDeclarationBase.hashCodeCounter++
+    override fun hashCode(): Int = hashCodeValue
+    override fun equals(other: Any?): Boolean = (this === other)
 
     override var backingFieldField: IrField? = null
 

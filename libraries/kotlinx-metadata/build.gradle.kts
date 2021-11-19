@@ -11,8 +11,7 @@ pill {
     variant = PillExtension.Variant.FULL
 }
 
-jvmTarget = "1.6"
-javaHome = rootProject.extra["JDK_16"] as String
+project.configureJvmToolchain(JdkMajorVersion.JDK_1_6)
 
 sourceSets {
     "main" { projectDefault() }
@@ -23,10 +22,4 @@ dependencies {
     compile(kotlinStdlib())
     compileOnly(project(":core:metadata"))
     compileOnly(protobufLite())
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>> {
-    kotlinOptions {
-        freeCompilerArgs += "-Xsuppress-deprecated-jvm-target-warning"
-    }
 }

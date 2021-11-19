@@ -1,3 +1,4 @@
+// JSPECIFY_STATE: warn
 // MUTE_FOR_PSI_CLASS_FILES_READING
 
 // FILE: TypeArgumentsFromParameterBounds.java
@@ -40,10 +41,8 @@ fun main(
     // jspecify_nullness_mismatch
     a.bar(<!NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS!>aNotNullNullNull<!>)
 
-    // jspecify_nullness_mismatch
-    b.bar(<!NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS!>aNotNullNotNullNotNull<!>)
-    // jspecify_nullness_mismatch
-    b.bar(<!NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS!>aNotNullNotNullNull<!>)
+    b.bar(aNotNullNotNullNotNull)
+    b.bar(aNotNullNotNullNull)
     b.bar(aNotNullNullNotNull)
     b.bar(aNotNullNullNull)
 }

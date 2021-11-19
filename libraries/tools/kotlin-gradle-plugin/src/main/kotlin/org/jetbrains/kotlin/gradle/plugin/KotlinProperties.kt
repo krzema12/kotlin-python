@@ -6,11 +6,17 @@
 package org.jetbrains.kotlin.gradle.plugin
 
 import org.gradle.api.Project
+import org.jetbrains.kotlin.cli.common.CompilerSystemProperties
+import org.jetbrains.kotlin.cli.common.toBooleanLenient
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.NativeCacheKind
 import org.jetbrains.kotlin.gradle.internal.testing.TCServiceMessageOutputStreamHandler.Companion.IGNORE_TCSM_OVERFLOW
 import org.jetbrains.kotlin.gradle.plugin.Kotlin2JsPlugin.Companion.NOWARN_2JS_FLAG
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType.Companion.jsCompilerProperty
+import org.jetbrains.kotlin.gradle.plugin.PropertiesProvider.PropertyNames.KOTLIN_MPP_ENABLE_GRANULAR_SOURCE_SETS_METADATA
+import org.jetbrains.kotlin.gradle.plugin.PropertiesProvider.PropertyNames.KOTLIN_MPP_HIERARCHICAL_STRUCTURE_BY_DEFAULT
+import org.jetbrains.kotlin.gradle.plugin.PropertiesProvider.PropertyNames.KOTLIN_MPP_HIERARCHICAL_STRUCTURE_SUPPORT
+import org.jetbrains.kotlin.gradle.plugin.PropertiesProvider.PropertyNames.KOTLIN_NATIVE_DEPENDENCY_PROPAGATION
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMultiplatformPlugin
 import org.jetbrains.kotlin.gradle.plugin.statistics.KotlinBuildStatsService
 import org.jetbrains.kotlin.gradle.targets.js.dukat.ExternalsOutputFormat
@@ -18,6 +24,7 @@ import org.jetbrains.kotlin.gradle.targets.js.dukat.ExternalsOutputFormat.Compan
 import org.jetbrains.kotlin.gradle.targets.js.webpack.WebpackMajorVersion
 import org.jetbrains.kotlin.gradle.targets.native.DisabledNativeTargetsReporter
 import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.CompileUsingKotlinDaemon
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.utils.SingleWarningPerBuild
@@ -28,18 +35,18 @@ import java.io.File
 import java.util.*
 
 internal fun PropertiesProvider.mapKotlinTaskProperties(task: AbstractKotlinCompile<*>) {
-    useFallbackCompilerSearch?.let { task.useFallbackCompilerSearch = it }
-
     if (task is KotlinCompile) {
         incrementalJvm?.let { task.incremental = it }
         usePreciseJavaTracking?.let {
             task.usePreciseJavaTracking = it
         }
+        task.classpathSnapshotProperties.useClasspathSnapshot.value(useClasspathSnapshot).disallowChanges()
         useFir?.let {
             if (it == true) {
                 task.kotlinOptions.useFir = true
             }
         }
+        task.jvmTargetValidationMode.set(jvmTargetValidationMode)
     }
 
     if (task is Kotlin2JsCompile) {
@@ -48,7 +55,13 @@ internal fun PropertiesProvider.mapKotlinTaskProperties(task: AbstractKotlinComp
     }
 }
 
-internal class PropertiesProvider private constructor(private val project: Project) {
+internal fun PropertiesProvider.mapKotlinDaemonProperties(task: CompileUsingKotlinDaemon) {
+    kotlinDaemonJvmArgs?.let {
+        task.kotlinDaemonJvmArguments.set(it.split("\\s+".toRegex()))
+    }
+}
+
+ internal class PropertiesProvider private constructor(private val project: Project) {
     private val localProperties: Properties by lazy {
         Properties().apply {
             val localPropertiesFile = project.rootProject.file("local.properties")
@@ -87,28 +100,27 @@ internal class PropertiesProvider private constructor(private val project: Proje
     val incrementalJsKlib: Boolean?
         get() = booleanProperty("kotlin.incremental.js.klib")
 
+    val incrementalJsIr: Boolean
+        get() = booleanProperty("kotlin.incremental.js.ir") ?: false
+
     val incrementalMultiplatform: Boolean?
         get() = booleanProperty("kotlin.incremental.multiplatform")
 
     val usePreciseJavaTracking: Boolean?
         get() = booleanProperty("kotlin.incremental.usePreciseJavaTracking")
 
+    val useClasspathSnapshot: Boolean
+        get() {
+            // The feature should be controlled by a Gradle property.
+            // Currently, we also allow it to be controlled by a system property to make it easier to test the feature during development.
+            // TODO: Remove the system property later.
+            val gradleProperty = booleanProperty(CompilerSystemProperties.COMPILE_INCREMENTAL_WITH_ARTIFACT_TRANSFORM.property) ?: false
+            val systemProperty = CompilerSystemProperties.COMPILE_INCREMENTAL_WITH_ARTIFACT_TRANSFORM.value.toBooleanLenient() ?: false
+            return gradleProperty || systemProperty
+        }
+
     val useFir: Boolean?
         get() = booleanProperty("kotlin.useFir")
-
-    private val useFallbackCompilerSearchPropName = "kotlin.useFallbackCompilerSearch"
-
-    @Deprecated("Unsupported and will be removed in next major releases")
-    val useFallbackCompilerSearch: Boolean?
-        get() {
-            if (property(useFallbackCompilerSearchPropName) != null) {
-                SingleWarningPerBuild.show(
-                    project,
-                    "Project property '$useFallbackCompilerSearchPropName' is deprecated."
-                )
-            }
-            return booleanProperty(useFallbackCompilerSearchPropName)
-        }
 
     val keepMppDependenciesIntactInPoms: Boolean?
         get() = booleanProperty("kotlin.mpp.keepMppDependenciesIntactInPoms")
@@ -119,14 +131,30 @@ internal class PropertiesProvider private constructor(private val project: Proje
     val setJvmTargetFromAndroidCompileOptions: Boolean?
         get() = booleanProperty("kotlin.setJvmTargetFromAndroidCompileOptions")
 
+    val keepAndroidBuildTypeAttribute: Boolean
+        get() = booleanProperty("kotlin.android.buildTypeAttribute.keep") ?: false
+
     val enableGranularSourceSetsMetadata: Boolean?
-        get() = booleanProperty("kotlin.mpp.enableGranularSourceSetsMetadata")
+        get() = booleanProperty(KOTLIN_MPP_ENABLE_GRANULAR_SOURCE_SETS_METADATA)
+
+    val hierarchicalStructureSupport: Boolean
+        get() = booleanProperty(KOTLIN_MPP_HIERARCHICAL_STRUCTURE_SUPPORT) ?: mppHierarchicalStructureByDefault
+
+    val nativeDependencyPropagation: Boolean?
+        get() = booleanProperty(KOTLIN_NATIVE_DEPENDENCY_PROPAGATION)
+
+    var mpp13XFlagsSetByPlugin: Boolean
+        get() = booleanProperty("kotlin.internal.mpp.13X.flags.setByPlugin") ?: false
+        set(value) { project.extensions.extraProperties.set("kotlin.internal.mpp.13X.flags.setByPlugin") { "$value" } }
+
+    val mppHierarchicalStructureByDefault: Boolean
+        get() = booleanProperty(KOTLIN_MPP_HIERARCHICAL_STRUCTURE_BY_DEFAULT) ?: false
 
     val enableCompatibilityMetadataVariant: Boolean
-        get() = booleanProperty("kotlin.mpp.enableCompatibilityMetadataVariant") ?: true
+        get() = booleanProperty("kotlin.mpp.enableCompatibilityMetadataVariant") ?: !mppHierarchicalStructureByDefault
 
     val enableKotlinToolingMetadataArtifact: Boolean
-        get() = booleanProperty("kotlin.mpp.enableKotlinToolingMetadataArtifact") ?: false
+        get() = booleanProperty("kotlin.mpp.enableKotlinToolingMetadataArtifact") ?: true
 
     val mppStabilityNoWarn: Boolean?
         get() = booleanProperty(KotlinMultiplatformPlugin.STABILITY_NOWARN_FLAG)
@@ -227,6 +255,14 @@ internal class PropertiesProvider private constructor(private val project: Proje
         get() = booleanProperty("kotlin.native.disableCompilerDaemon")
 
     /**
+     * Switches Kotlin/Native tasks to using embeddable compiler jar,
+     * allowing to apply backend-agnostic compiler plugin artifacts.
+     * Will be default after proper migration.
+     */
+    val nativeUseEmbeddableCompilerJar: Boolean
+        get() = booleanProperty("kotlin.native.useEmbeddableCompilerJar") ?: false
+
+    /**
      * Allows a user to specify additional arguments of a JVM executing KLIB commonizer.
      */
     val commonizerJvmArgs: String?
@@ -241,12 +277,6 @@ internal class PropertiesProvider private constructor(private val project: Proje
 
     val commonizerLogLevel: String?
         get() = property("kotlin.mpp.commonizerLogLevel")
-
-    /**
-     * Enables experimental commonization of 'higher level' shared native source sets
-     */
-    val enableHierarchicalCommonization: Boolean
-        get() = booleanProperty("kotlin.mpp.enableHierarchicalCommonization") ?: true
 
     val enableNativeDistributionCommonizationCache: Boolean
         get() = booleanProperty("kotlin.mpp.enableNativeDistributionCommonizationCache") ?: true
@@ -328,6 +358,16 @@ internal class PropertiesProvider private constructor(private val project: Proje
     val kotlinTestInferJvmVariant: Boolean
         get() = booleanProperty("kotlin.test.infer.jvm.variant") ?: true
 
+    enum class JvmTargetValidationMode {
+        IGNORE, WARNING, ERROR
+    }
+
+    val jvmTargetValidationMode: JvmTargetValidationMode
+        get() = enumProperty("kotlin.jvm.target.validation.mode", JvmTargetValidationMode.WARNING)
+
+    val kotlinDaemonJvmArgs: String?
+        get() = property("kotlin.daemon.jvmargs")
+
     private fun propertyWithDeprecatedVariant(propName: String, deprecatedPropName: String): String? {
         val deprecatedProperty = property(deprecatedPropName)
         if (deprecatedProperty != null) {
@@ -339,12 +379,24 @@ internal class PropertiesProvider private constructor(private val project: Proje
     private fun booleanProperty(propName: String): Boolean? =
         property(propName)?.toBoolean()
 
+    private inline fun <reified T : Enum<T>> enumProperty(
+        propName: String,
+        defaultValue: T
+    ): T = property(propName)?.let { enumValueOf<T>(it.toUpperCase()) } ?: defaultValue
+
     private fun property(propName: String): String? =
         if (project.hasProperty(propName)) {
             project.property(propName) as? String
         } else {
             localProperties.getProperty(propName)
         }
+
+     object PropertyNames {
+        const val KOTLIN_MPP_ENABLE_GRANULAR_SOURCE_SETS_METADATA = "kotlin.mpp.enableGranularSourceSetsMetadata"
+        const val KOTLIN_MPP_HIERARCHICAL_STRUCTURE_BY_DEFAULT = "kotlin.internal.mpp.hierarchicalStructureByDefault"
+        const val KOTLIN_MPP_HIERARCHICAL_STRUCTURE_SUPPORT = "kotlin.mpp.hierarchicalStructureSupport"
+        const val KOTLIN_NATIVE_DEPENDENCY_PROPAGATION = "kotlin.native.enableDependencyPropagation"
+    }
 
     companion object {
         internal const val KOTLIN_NATIVE_HOME = "kotlin.native.home"

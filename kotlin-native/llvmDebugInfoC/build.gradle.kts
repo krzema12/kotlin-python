@@ -28,19 +28,14 @@ val llvmDir = project.findProperty("llvmDir")
 
 native {
     val obj = if (HostManager.hostIsMingw) "obj" else "o"
-    val host = rootProject.project(":kotlin-native").extra["hostName"]
-    val hostLibffiDir = rootProject.project(":kotlin-native").extra["${host}LibffiDir"]
     val cxxflags = mutableListOf(
         "--std=c++17",
         "-I${llvmDir}/include",
         "-I${projectDir}/src/main/include"
     )
-    if (!HostManager.hostIsMingw) {
-        cxxflags += "-fPIC"
-    }
     suffixes {
         (".cpp" to ".$obj") {
-            tool(*platformManager.hostPlatform.clang.clangCXX("").toTypedArray())
+            tool(*platformManager.hostPlatform.clangForJni.clangCXX("").toTypedArray())
             flags(*cxxflags.toTypedArray(), "-c", "-o", ruleOut(), ruleInFirst())
         }
 
@@ -53,7 +48,7 @@ native {
     val objSet = sourceSets["main"]!!.transform(".cpp" to ".$obj")
 
     target(lib("debugInfo"), objSet) {
-        tool(*platformManager.hostPlatform.clang.llvmAr("").toTypedArray())
+        tool(*platformManager.hostPlatform.clangForJni.llvmAr("").toTypedArray())
         flags("-qv", ruleOut(), *ruleInAll())
     }
 }

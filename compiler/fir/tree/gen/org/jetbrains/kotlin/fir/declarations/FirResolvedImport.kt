@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.fir.declarations
 
 import org.jetbrains.kotlin.fir.FirElement
+import org.jetbrains.kotlin.fir.FirPureAbstractElement
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
@@ -17,11 +18,12 @@ import org.jetbrains.kotlin.fir.visitors.*
  * DO NOT MODIFY IT MANUALLY
  */
 
-abstract class FirResolvedImport : FirImport() {
+abstract class FirResolvedImport : FirPureAbstractElement(), FirImport {
     abstract override val source: FirSourceElement?
     abstract override val importedFqName: FqName?
     abstract override val isAllUnder: Boolean
     abstract override val aliasName: Name?
+    abstract override val aliasSource: FirSourceElement?
     abstract val delegate: FirImport
     abstract val packageFqName: FqName
     abstract val relativeClassName: FqName?

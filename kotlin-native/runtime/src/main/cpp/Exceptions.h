@@ -23,18 +23,8 @@
 extern "C" {
 #endif
 
-// Returns current stacktrace as Array<String>.
-OBJ_GETTER0(Kotlin_getCurrentStackTrace);
-
-OBJ_GETTER(GetStackTraceStrings, KConstRef stackTrace);
-
 // Throws arbitrary exception.
 void ThrowException(KRef exception);
-
-// RuntimeUtils.kt
-void OnUnhandledException(KRef throwable);
-
-RUNTIME_NORETURN void TerminateWithUnhandledException(KRef exception);
 
 void SetKonanTerminateHandler();
 
@@ -63,6 +53,7 @@ void RUNTIME_NORETURN ThrowIllegalArgumentException();
 void RUNTIME_NORETURN ThrowIllegalStateException();
 void RUNTIME_NORETURN ThrowInvalidMutabilityException(KConstRef where);
 void RUNTIME_NORETURN ThrowIncorrectDereferenceException();
+void RUNTIME_NORETURN ThrowFileFailedToInitializeException();
 void RUNTIME_NORETURN ThrowIllegalObjectSharingException(KConstNativePtr typeInfo, KConstNativePtr address);
 void RUNTIME_NORETURN ThrowFreezingException(KRef toFreeze, KRef blocker);
 // Prints out message of Throwable.
@@ -72,7 +63,11 @@ void PrintThrowable(KRef);
 } // extern "C"
 #endif
 
-// It's not always safe to extract SourceInfo during unhandled exception termination.
-void DisallowSourceInfo();
+namespace kotlin {
+
+void ProcessUnhandledException(KRef exception) noexcept;
+void RUNTIME_NORETURN TerminateWithUnhandledException(KRef exception) noexcept;
+
+} // namespace kotlin
 
 #endif // RUNTIME_NAMES_H

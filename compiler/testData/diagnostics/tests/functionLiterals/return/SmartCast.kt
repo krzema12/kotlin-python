@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // NI_EXPECTED_FILE
 // KT-6822 Smart cast doesn't work inside local returned expression in lambda
 
@@ -10,7 +9,7 @@ val a /* :(Int?) -> Int? */ = l@ { it: Int? -> // but must be (Int?) -> Int
 fun <R> let(f: (Int?) -> R): R = null!!
 
 val b /*: Int? */ = let { // but must be Int
-    if (it != null) return@let <!DEBUG_INFO_SMARTCAST{NI}!>it<!>
+    if (it != null) return@let <!DEBUG_INFO_SMARTCAST!>it<!>
     5
 }
 

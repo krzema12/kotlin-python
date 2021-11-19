@@ -6,9 +6,9 @@
 package org.jetbrains.kotlin.backend.wasm.lower
 
 import org.jetbrains.kotlin.backend.common.ir.SharedVariablesManager
-import org.jetbrains.kotlin.backend.common.lower.InnerClassesSupport
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.Modality
+import org.jetbrains.kotlin.ir.IrBuiltIns
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.backend.js.JsCommonBackendContext
 import org.jetbrains.kotlin.ir.backend.js.JsLoweredDeclarationOrigin
@@ -17,7 +17,6 @@ import org.jetbrains.kotlin.ir.builders.declarations.buildClass
 import org.jetbrains.kotlin.ir.builders.declarations.buildValueParameter
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.declarations.impl.IrVariableImpl
-import org.jetbrains.kotlin.ir.descriptors.IrBuiltIns
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrGetValue
 import org.jetbrains.kotlin.ir.expressions.IrSetValue
@@ -32,6 +31,7 @@ import org.jetbrains.kotlin.ir.types.impl.IrSimpleTypeImpl
 import org.jetbrains.kotlin.ir.util.defaultType
 import org.jetbrains.kotlin.ir.util.parentAsClass
 import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.name.SpecialNames
 
 /**
  * This is a copy of an old version of JS lowering, because JS did platform-specific optimization incompatible with Wasm.
@@ -174,7 +174,7 @@ class WasmSharedVariablesManager(val context: JsCommonBackendContext, val builtI
         return context.irFactory.createField(
             UNDEFINED_OFFSET,
             UNDEFINED_OFFSET,
-            InnerClassesSupport.FIELD_FOR_OUTER_THIS,
+            IrDeclarationOrigin.FIELD_FOR_OUTER_THIS,
             symbol,
             fieldName,
             builtIns.anyNType,
@@ -193,7 +193,7 @@ class WasmSharedVariablesManager(val context: JsCommonBackendContext, val builtI
 
         val declaration = context.irFactory.createConstructor(
             UNDEFINED_OFFSET, UNDEFINED_OFFSET, JsLoweredDeclarationOrigin.JS_CLOSURE_BOX_CLASS_DECLARATION, symbol,
-            Name.special("<init>"), DescriptorVisibilities.PUBLIC, closureBoxClassDeclaration.defaultType,
+            SpecialNames.INIT, DescriptorVisibilities.PUBLIC, closureBoxClassDeclaration.defaultType,
             isInline = false, isExternal = false, isPrimary = true, isExpect = false
         )
 

@@ -10,7 +10,10 @@ import org.jetbrains.kotlin.gradle.plugin.*
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinCompilationFactory
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinOnlyTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinOnlyTargetPreset
+import org.jetbrains.kotlin.gradle.plugin.statistics.KotlinBuildStatsService
 import org.jetbrains.kotlin.gradle.utils.lowerCamelCaseName
+import org.jetbrains.kotlin.gradle.utils.runProjectConfigurationHealthCheckWhenEvaluated
+import org.jetbrains.kotlin.statistics.metrics.StringMetrics
 
 open class KotlinJsIrTargetPreset(
     project: Project
@@ -29,7 +32,7 @@ open class KotlinJsIrTargetPreset(
         return project.objects.newInstance(KotlinJsIrTarget::class.java, project, platformType, mixedMode).apply {
             this.isMpp = this@KotlinJsIrTargetPreset.isMpp
             if (!mixedMode) {
-                project.whenEvaluated {
+                project.runProjectConfigurationHealthCheckWhenEvaluated {
                     if (!isBrowserConfigured && !isNodejsConfigured) {
                         project.logger.warn(
                             """
@@ -45,6 +48,14 @@ open class KotlinJsIrTargetPreset(
                             """.trimIndent()
                         )
                     }
+                    val buildStatsService = KotlinBuildStatsService.getInstance()
+                    when {
+                        isBrowserConfigured && isNodejsConfigured -> buildStatsService?.report(StringMetrics.JS_TARGET_MODE, "both")
+                        isBrowserConfigured -> buildStatsService?.report(StringMetrics.JS_TARGET_MODE, "browser")
+                        isNodejsConfigured -> buildStatsService?.report(StringMetrics.JS_TARGET_MODE, "nodejs")
+                        !isBrowserConfigured && !isNodejsConfigured -> buildStatsService?.report(StringMetrics.JS_TARGET_MODE, "none")
+                    }
+                    Unit
                 }
             }
         }

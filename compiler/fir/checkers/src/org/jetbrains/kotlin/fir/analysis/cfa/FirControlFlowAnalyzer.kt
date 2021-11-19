@@ -25,17 +25,17 @@ class FirControlFlowAnalyzer(
 
     // Currently declaration in analyzeXXX is not used, but it may be useful in future
     @Suppress("UNUSED_PARAMETER")
-    fun analyzeClassInitializer(klass: FirClass<*>, graph: ControlFlowGraph, context: CheckerContext, reporter: DiagnosticReporter) {
+    fun analyzeClassInitializer(klass: FirClass, graph: ControlFlowGraph, context: CheckerContext, reporter: DiagnosticReporter) {
         if (graph.owner != null) return
         cfaCheckers.forEach { it.analyze(graph, reporter, context) }
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun analyzeFunction(function: FirFunction<*>, graph: ControlFlowGraph, context: CheckerContext, reporter: DiagnosticReporter) {
+    fun analyzeFunction(function: FirFunction, graph: ControlFlowGraph, context: CheckerContext, reporter: DiagnosticReporter) {
         if (graph.owner != null) return
 
         cfaCheckers.forEach { it.analyze(graph, reporter, context) }
-        if (context.containingDeclarations.any { it is FirProperty || it is FirFunction<*> }) return
+        if (context.containingDeclarations.any { it is FirProperty || it is FirFunction }) return
         runAssignmentCfaCheckers(graph, reporter, context)
     }
 
@@ -61,9 +61,9 @@ class FirControlFlowAnalyzer(
     }
 
     private fun runAssignmentCfaCheckers(graph: ControlFlowGraph, reporter: DiagnosticReporter, context: CheckerContext) {
-        val properties = LocalPropertyCollector.collect(graph)
+        val (properties, capturedWrites) = LocalPropertyAndCapturedWriteCollector.collect(graph)
         if (properties.isEmpty()) return
         val data = PropertyInitializationInfoCollector(properties).getData(graph)
-        variableAssignmentCheckers.forEach { it.analyze(graph, reporter, data, properties, context) }
+        variableAssignmentCheckers.forEach { it.analyze(graph, reporter, data, properties, capturedWrites, context) }
     }
 }

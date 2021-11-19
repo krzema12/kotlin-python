@@ -6,10 +6,11 @@
 package org.jetbrains.kotlin.fir.declarations.builder
 
 import kotlin.contracts.*
-import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.builder.FirAnnotationContainerBuilder
 import org.jetbrains.kotlin.fir.builder.FirBuilderDsl
+import org.jetbrains.kotlin.fir.declarations.DeprecationsPerUseSite
 import org.jetbrains.kotlin.fir.declarations.FirConstructor
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationAttributes
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
@@ -37,17 +38,18 @@ import org.jetbrains.kotlin.serialization.deserialization.descriptors.Deserializ
 @FirBuilderDsl
 open class FirConstructorBuilder : FirAbstractConstructorBuilder, FirAnnotationContainerBuilder {
     override var source: FirSourceElement? = null
-    override lateinit var declarationSiteSession: FirSession
+    override lateinit var moduleData: FirModuleData
     override var resolvePhase: FirResolvePhase = FirResolvePhase.RAW_FIR
     override lateinit var origin: FirDeclarationOrigin
     override var attributes: FirDeclarationAttributes = FirDeclarationAttributes()
     override lateinit var returnTypeRef: FirTypeRef
-    override var receiverTypeRef: FirTypeRef? = null
     override val typeParameters: MutableList<FirTypeParameterRef> = mutableListOf()
-    override val valueParameters: MutableList<FirValueParameter> = mutableListOf()
     override lateinit var status: FirDeclarationStatus
+    override var receiverTypeRef: FirTypeRef? = null
+    override var deprecation: DeprecationsPerUseSite? = null
     override var containerSource: DeserializedContainerSource? = null
     override var dispatchReceiverType: ConeKotlinType? = null
+    override val valueParameters: MutableList<FirValueParameter> = mutableListOf()
     override val annotations: MutableList<FirAnnotationCall> = mutableListOf()
     override lateinit var symbol: FirConstructorSymbol
     override var delegatedConstructor: FirDelegatedConstructorCall? = null
@@ -56,17 +58,18 @@ open class FirConstructorBuilder : FirAbstractConstructorBuilder, FirAnnotationC
     override fun build(): FirConstructor {
         return FirConstructorImpl(
             source,
-            declarationSiteSession,
+            moduleData,
             resolvePhase,
             origin,
             attributes,
             returnTypeRef,
-            receiverTypeRef,
             typeParameters,
-            valueParameters,
             status,
+            receiverTypeRef,
+            deprecation,
             containerSource,
             dispatchReceiverType,
+            valueParameters,
             annotations,
             symbol,
             delegatedConstructor,
@@ -98,17 +101,18 @@ inline fun buildConstructorCopy(original: FirConstructor, init: FirConstructorBu
     }
     val copyBuilder = FirConstructorBuilder()
     copyBuilder.source = original.source
-    copyBuilder.declarationSiteSession = original.declarationSiteSession
+    copyBuilder.moduleData = original.moduleData
     copyBuilder.resolvePhase = original.resolvePhase
     copyBuilder.origin = original.origin
     copyBuilder.attributes = original.attributes.copy()
     copyBuilder.returnTypeRef = original.returnTypeRef
-    copyBuilder.receiverTypeRef = original.receiverTypeRef
     copyBuilder.typeParameters.addAll(original.typeParameters)
-    copyBuilder.valueParameters.addAll(original.valueParameters)
     copyBuilder.status = original.status
+    copyBuilder.receiverTypeRef = original.receiverTypeRef
+    copyBuilder.deprecation = original.deprecation
     copyBuilder.containerSource = original.containerSource
     copyBuilder.dispatchReceiverType = original.dispatchReceiverType
+    copyBuilder.valueParameters.addAll(original.valueParameters)
     copyBuilder.annotations.addAll(original.annotations)
     copyBuilder.symbol = original.symbol
     copyBuilder.delegatedConstructor = original.delegatedConstructor

@@ -1,5 +1,4 @@
 //!DIAGNOSTICS: -UNUSED_PARAMETER -UNUSED_VARIABLE
-// !WITH_NEW_INFERENCE
 
 <!CONFLICTING_OVERLOADS!>@Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 @kotlin.jvm.JvmName("containsAny")
@@ -18,7 +17,7 @@ public fun <K, V> Map<K, V>.get1(key: Any?): Int = null!!
 public fun <@kotlin.internal.OnlyInputTypes K, V> Map<out K, V>.get1(key: K): V? = null!!
 
 fun test(map: Map<Int, String>) {
-    val a: Int = <!INITIALIZER_TYPE_MISMATCH!>listOf(1).contains1("")<!>
+    val a: Int = <!INITIALIZER_TYPE_MISMATCH, TYPE_MISMATCH!>listOf(1).contains1("")<!>
     val b: Boolean = listOf(1).contains1(1)
 
     val c: String? = map.get1("")

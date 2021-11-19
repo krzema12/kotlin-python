@@ -18,6 +18,8 @@ interface B {
 
         }
 
+        @JvmStatic external fun a5()
+
         @JvmStatic
         var foo = 1
 
@@ -45,10 +47,15 @@ interface B {
             @JvmStatic get
 
         private var foo8 = 1
-        @JvmStatic public set
+        @JvmStatic <!SETTER_VISIBILITY_INCONSISTENT_WITH_PROPERTY_VISIBILITY!>public<!> set
 
         public var foo9 = 1
         @JvmStatic private set
+
+        @JvmStatic
+        val foo10: Int external get
+
+        val foo11: Int @JvmStatic external get
     }
 
 }

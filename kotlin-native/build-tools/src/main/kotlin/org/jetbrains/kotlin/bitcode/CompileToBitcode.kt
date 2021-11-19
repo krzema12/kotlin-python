@@ -44,7 +44,7 @@ open class CompileToBitcode @Inject constructor(
 
     // Source files and headers are registered as inputs by the `inputFiles` and `headers` properties.
     var srcDirs: FileCollection = project.files(srcRoot.resolve("cpp"))
-    var headersDirs: FileCollection = project.files(srcRoot.resolve("headers"))
+    var headersDirs: FileCollection = srcDirs + project.files(srcRoot.resolve("headers"))
 
     @Input
     var language = Language.CPP
@@ -91,8 +91,8 @@ open class CompileToBitcode @Inject constructor(
                 Language.CPP ->
                     listOfNotNull("-std=c++17", "-Werror", "-O2",
                             "-Wall", "-Wextra",
-                            "-Wno-unused-parameter",  // False positives with polymorphic functions.
-                            "-fPIC".takeIf { !HostManager().targetByName(target).isMINGW })
+                            "-Wno-unused-parameter"  // False positives with polymorphic functions.
+                    )
             }
             return commonFlags + sanitizerFlags + languageFlags + compilerArgs
         }

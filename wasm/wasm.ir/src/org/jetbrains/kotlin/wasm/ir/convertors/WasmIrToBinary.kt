@@ -27,6 +27,7 @@ class WasmIrToBinary(outputStream: OutputStream, val module: WasmModule) {
                     when (it) {
                         is WasmStructDeclaration -> appendStructTypeDeclaration(it)
                         is WasmArrayDeclaration -> appendArrayTypeDeclaration(it)
+                        is WasmFunctionType -> {}
                     }
                 }
             }
@@ -398,7 +399,7 @@ class WasmIrToBinary(outputStream: OutputStream, val module: WasmModule) {
         }
         if (type is WasmRtt) {
             b.writeVarUInt32(type.depth)
-            appendHeapType(type.heapType)
+            appendModuleFieldReference(type.type.owner)
         }
     }
 

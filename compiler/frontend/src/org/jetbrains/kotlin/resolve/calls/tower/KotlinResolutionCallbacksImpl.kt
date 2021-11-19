@@ -41,7 +41,7 @@ import org.jetbrains.kotlin.types.*
 import org.jetbrains.kotlin.types.expressions.DoubleColonExpressionResolver
 import org.jetbrains.kotlin.types.expressions.ExpressionTypingServices
 import org.jetbrains.kotlin.types.expressions.KotlinTypeInfo
-import org.jetbrains.kotlin.types.refinement.TypeRefinement
+import org.jetbrains.kotlin.types.TypeRefinement
 import org.jetbrains.kotlin.types.typeUtil.isUnit
 import org.jetbrains.kotlin.types.typeUtil.makeNullable
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
@@ -71,7 +71,7 @@ class KotlinResolutionCallbacksImpl(
     private val doubleColonExpressionResolver: DoubleColonExpressionResolver,
     private val deprecationResolver: DeprecationResolver,
     private val moduleDescriptor: ModuleDescriptor,
-    private val topLevelCallContext: BasicCallResolutionContext?,
+    private val topLevelCallContext: BasicCallResolutionContext,
     private val missingSupertypesResolver: MissingSupertypesResolver
 ) : KotlinResolutionCallbacks {
     class LambdaInfo(val expectedType: UnwrappedType, val contextDependency: ContextDependency) {
@@ -90,7 +90,7 @@ class KotlinResolutionCallbacksImpl(
         parameters: List<UnwrappedType>,
         expectedReturnType: UnwrappedType?,
         annotations: Annotations,
-        stubsForPostponedVariables: Map<NewTypeVariable, StubType>,
+        stubsForPostponedVariables: Map<NewTypeVariable, StubTypeForBuilderInference>,
     ): ReturnArgumentsAnalysisResult {
         val psiCallArgument = lambdaArgument.psiCallArgument as PSIFunctionKotlinCallArgument
         val outerCallContext = psiCallArgument.outerCallContext
@@ -160,14 +160,12 @@ class KotlinResolutionCallbacksImpl(
 
         val coroutineSession =
             if (stubsForPostponedVariables.isNotEmpty()) {
-                require(topLevelCallContext != null) { "Top level call context should not be null to analyze coroutine-lambda" }
-
                 BuilderInferenceSession(
                     psiCallResolver, postponedArgumentsAnalyzer, kotlinConstraintSystemCompleter,
                     callComponents, builtIns, topLevelCallContext, stubsForPostponedVariables, trace,
                     kotlinToResolvedCallTransformer, expressionTypingServices, argumentTypeResolver,
                     doubleColonExpressionResolver, deprecationResolver, moduleDescriptor, typeApproximator,
-                    missingSupertypesResolver
+                    missingSupertypesResolver, lambdaArgument
                 )
             } else {
                 null
@@ -281,7 +279,7 @@ class KotlinResolutionCallbacksImpl(
 
     private fun findCommonParent(callElement: KtExpression, receiver: ReceiverKotlinCallArgument?): KtExpression {
         if (receiver == null) return callElement
-        return PsiTreeUtil.findCommonParent(callElement, receiver.psiExpression)?.safeAs() ?: callElement
+        return PsiTreeUtil.findCommonParent(callElement, receiver.psiExpression) as? KtExpression? ?: callElement
     }
 
     override fun getExpectedTypeFromAsExpressionAndRecordItInTrace(resolvedAtom: ResolvedCallAtom): UnwrappedType? {
@@ -303,8 +301,7 @@ class KotlinResolutionCallbacksImpl(
 
     override fun disableContractsIfNecessary(resolvedAtom: ResolvedCallAtom) {
         val atom = resolvedAtom.atom as? PSIKotlinCall ?: return
-        val context = topLevelCallContext ?: return
-        disableContractsInsideContractsBlock(atom.psiCall, resolvedAtom.candidateDescriptor, context.scope, trace)
+        disableContractsInsideContractsBlock(atom.psiCall, resolvedAtom.candidateDescriptor, topLevelCallContext.scope, trace)
     }
 
     override fun convertSignedConstantToUnsigned(argument: KotlinCallArgument): IntegerValueTypeConstant? {

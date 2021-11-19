@@ -19,13 +19,14 @@ internal class FileStructureElementDiagnosticsCollector private constructor(priv
     fun collectForStructureElement(
         firDeclaration: FirDeclaration,
         createVisitor: (components: List<AbstractDiagnosticCollectorComponent>) -> CheckerRunningDiagnosticCollectorVisitor,
-    ): FileStructureElementDiagnosticList =
-        FirIdeStructureElementDiagnosticsCollector(
-            firDeclaration.declarationSiteSession,
+    ): FileStructureElementDiagnosticList {
+        val reporter = FirIdeDiagnosticReporter()
+        val collector = FirIdeStructureElementDiagnosticsCollector(
+            firDeclaration.moduleData.session,
             createVisitor,
             useExtendedCheckers,
-        ).let { collector ->
-            collector.collectDiagnostics(firDeclaration)
-            FileStructureElementDiagnosticList(collector.result)
-        }
+        )
+        collector.collectDiagnostics(firDeclaration, reporter)
+        return FileStructureElementDiagnosticList(reporter.diagnostics)
+    }
 }

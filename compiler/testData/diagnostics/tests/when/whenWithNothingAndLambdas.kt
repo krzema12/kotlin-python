@@ -1,4 +1,4 @@
-// !WITH_NEW_INFERENCE
+// FIR_IDENTICAL
 // NI_EXPECTED_FILE
 /*
  * KOTLIN DIAGNOSTICS SPEC TEST (NEGATIVE)
@@ -12,8 +12,8 @@
  * overload-resolution, determining-function-applicability-for-a-specific-call, description -> paragraph 1 -> sentence 3
  */
 
-val <!IMPLICIT_NOTHING_PROPERTY_TYPE{OI}!>test1<!> = when {
-    true -> { <!TYPE_MISMATCH{OI}!>{ true }<!> }
+val test1 = when {
+    true -> { { true } }
     else -> TODO()
 }
 
@@ -22,10 +22,10 @@ val test1a: () -> Boolean = when {
     else -> TODO()
 }
 
-val <!IMPLICIT_NOTHING_PROPERTY_TYPE{OI}!>test2<!> = when {
-    true -> { <!TYPE_MISMATCH{OI}!>{ true }<!> }
+val test2 = when {
+    true -> { { true } }
     else -> when {
-        true -> { <!TYPE_MISMATCH{OI}!>{ true }<!> }
+        true -> { { true } }
         else -> TODO()
     }
 }
@@ -33,14 +33,14 @@ val <!IMPLICIT_NOTHING_PROPERTY_TYPE{OI}!>test2<!> = when {
 val test2a: () -> Boolean = when {
     true -> { { true } }
     else -> when {
-        true -> { <!TYPE_MISMATCH{OI}!>{ true }<!> } // TODO
+        true -> { { true } } // TODO
         else -> TODO()
     }
 }
 
-val <!IMPLICIT_NOTHING_PROPERTY_TYPE{OI}!>test3<!> = when {
-    true -> { <!TYPE_MISMATCH{OI}!>{ true }<!> }
-    true -> { <!TYPE_MISMATCH{OI}!>{ true }<!> }
+val test3 = when {
+    true -> { { true } }
+    true -> { { true } }
     else -> TODO()
 }
 

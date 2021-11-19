@@ -120,15 +120,6 @@ allprojects {
         }
     }
 
-    if (findProperty("kotlin.build.useIR") == "true") {
-        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-            kotlinOptions {
-                useIR = true
-                freeCompilerArgs += ["-Xir-binary-with-stable-abi"]
-            }
-        }
-    }
-
     setupHostAndTarget()
     loadCommandLineProperties()
     loadLocalProperties()
@@ -178,6 +169,7 @@ dependencies {
     distPack project(':kotlin-native:Interop:Runtime')
     distPack project(':kotlin-native:Interop:Indexer')
     distPack project(':kotlin-native:Interop:StubGenerator')
+    distPack project(':kotlin-native:Interop:Skia')
     distPack project(':kotlin-native:backend.native')
     distPack project(':kotlin-native:utilities:cli-runner')
     distPack project(':kotlin-native:utilities:basic-utils')
@@ -254,6 +246,7 @@ task shadowJar(type: ShadowJar) {
 task distCompiler(type: Copy) {
     dependsOn ":kotlin-native:dependencies:update"
     dependsOn ':kotlin-native:shadowJar'
+    dependsOn ":kotlin-native-compiler-embeddable:kotlin-native-compiler-embeddable"
 
     destinationDir distDir
 
@@ -263,6 +256,10 @@ task distCompiler(type: Copy) {
 
     from(project(':kotlin-native:backend.native').file('build/external_jars/trove4j.jar')) {
         into('konan/lib')
+    }
+
+    from(project(":kotlin-native-compiler-embeddable").file("build/libs")) {
+        into("konan/lib")
     }
 
     from(project(':kotlin-native:Interop').file('Indexer/build/nativelibs')) {
@@ -306,6 +303,17 @@ task distCompiler(type: Copy) {
         into('konan')
         include('**/*.properties')
         filter(ReplaceTokens, tokens: [compilerVersion: konanVersionFull.toString()])
+        // Set LLVM variant that will be used by default in the distribution.
+        // `user` - smaller, includes only necessary components.
+        // `dev` - bigger, includes (almost) every possible component. Use this one,
+        //          if your feature requires component that is not a part of user distribution (yet).
+        // Note: by default konan.properties use `dev` variant because it is needed for building our LLVM dynamic library.
+        String llvmVariant = 'user'
+        filter(ReplaceTokens,
+                beginToken: '$',
+                endToken: '',
+                tokens: [("llvm.${hostName}.dev".toString()): "\$llvm.${hostName}.${llvmVariant}".toString()]
+        )
     }
     if (experimentalEnabled) {
         file('konan/experimentalTargetsEnabled').text = ""
@@ -479,7 +487,7 @@ task bundle {
 }
 
 task bundleRegular(type: (isWindows()) ? Zip : Tar) {
-    def simpleOsName = HostManager.simpleOsName()
+    def simpleOsName = HostManager.platformName()
     archiveBaseName.set("kotlin-native-$simpleOsName-$konanVersionFull")
     from(UtilsKt.getKotlinNativeDist(project)) {
         include '**'
@@ -500,7 +508,7 @@ task bundleRegular(type: (isWindows()) ? Zip : Tar) {
 
 task bundlePrebuilt(type: (isWindows()) ? Zip : Tar) {
     dependsOn("crossDistPlatformLibs")
-    def simpleOsName = HostManager.simpleOsName()
+    def simpleOsName = HostManager.platformName()
     archiveBaseName.set("kotlin-native-prebuilt-$simpleOsName-$konanVersionFull")
     from(UtilsKt.getKotlinNativeDist(project)) {
         include '**'
@@ -538,7 +546,7 @@ configure([bundleRegular, bundlePrebuilt]) {
 task 'tc-dist'(type: (isWindows()) ? Zip : Tar) {
     dependsOn('dist')
     dependsOn('distSources')
-    def simpleOsName = HostManager.simpleOsName()
+    def simpleOsName = HostManager.platformName()
     archiveBaseName.set("kotlin-native-dist-$simpleOsName-$konanVersionFull")
     from(UtilsKt.getKotlinNativeDist(project)) {
         include '**'
@@ -612,7 +620,7 @@ task uploadBundle {
                 server: project.findProperty("cdnUrl") ?: System.getenv("CDN_URL"),
                 userid: project.findProperty("cdnUser") ?: System.getenv("CDN_USER"),
                 password: project.findProperty("cdnPass") ?: System.getenv("CDN_PASS"),
-                remoteDir: "/builds/$kind/$konanVersion/${HostManager.simpleOsName()}"
+                remoteDir: "/builds/$kind/$konanVersion/${HostManager.platformName()}"
         ]
         ant {
             taskdef(name: 'ftp',

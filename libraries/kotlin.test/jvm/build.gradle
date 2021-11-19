@@ -4,8 +4,7 @@ apply plugin: 'kotlin-platform-jvm'
 
 archivesBaseName = 'kotlin-test'
 
-configureJvm6Project(project)
-
+JvmToolchain.configureJvmToolchain(project, JdkMajorVersion.JDK_1_6)
 
 def includeJava9 = BuildPropertiesExtKt.getIncludeJava9(project.kotlinBuildProperties)
 
@@ -43,7 +42,6 @@ configureJavadocJar()
 compileKotlin {
     kotlinOptions.freeCompilerArgs = [
         "-Xallow-kotlin-package",
-        "-Xnormalize-constructor-calls=enable",
         "-Xopt-in=kotlin.contracts.ExperimentalContracts",
         "-Xsuppress-deprecated-jvm-target-warning",
         "-Xopt-in=kotlin.RequiresOptIn",
@@ -59,8 +57,6 @@ compileTestKotlin {
     ]
 }
 
-configureJvmIrBackend(project)
-
 if (includeJava9) {
-    compileJava9Sources(project, 'kotlin.test')
+    LibrariesCommon.configureJava9Compilation(project, 'kotlin.test')
 }

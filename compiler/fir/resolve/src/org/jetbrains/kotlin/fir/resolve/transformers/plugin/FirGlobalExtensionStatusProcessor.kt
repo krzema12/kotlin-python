@@ -51,7 +51,7 @@ class FirTransformerBasedExtensionStatusProcessor(
 
         private fun FirMemberDeclaration.updateStatus() {
             if (extensions.isEmpty()) return
-            val owners = predicateBasedProvider.getOwnersOfDeclaration(this)
+            val owners = predicateBasedProvider.getOwnersOfDeclaration(this as FirAnnotatedDeclaration)
             requireNotNull(owners)
             var status = this.status
             for (extension in extensions) {
@@ -64,7 +64,7 @@ class FirTransformerBasedExtensionStatusProcessor(
             return element
         }
 
-        override fun transformTypeAlias(typeAlias: FirTypeAlias, data: Nothing?): FirDeclaration {
+        override fun transformTypeAlias(typeAlias: FirTypeAlias, data: Nothing?): FirTypeAlias {
             typeAlias.updateStatus()
             return typeAlias
         }
@@ -75,29 +75,29 @@ class FirTransformerBasedExtensionStatusProcessor(
             return regularClass
         }
 
-        override fun transformConstructor(constructor: FirConstructor, data: Nothing?): FirDeclaration {
+        override fun transformConstructor(constructor: FirConstructor, data: Nothing?): FirConstructor {
             constructor.updateStatus()
             return constructor
         }
 
-        override fun transformProperty(property: FirProperty, data: Nothing?): FirDeclaration {
+        override fun transformProperty(property: FirProperty, data: Nothing?): FirProperty {
             property.updateStatus()
             property.transformGetter(this, data)
             property.transformSetter(this, data)
             return property
         }
 
-        override fun transformField(field: FirField, data: Nothing?): FirDeclaration {
+        override fun transformField(field: FirField, data: Nothing?): FirField {
             field.updateStatus()
             return field
         }
 
-        override fun transformEnumEntry(enumEntry: FirEnumEntry, data: Nothing?): FirDeclaration {
+        override fun transformEnumEntry(enumEntry: FirEnumEntry, data: Nothing?): FirEnumEntry {
             enumEntry.updateStatus()
             return enumEntry
         }
 
-        override fun transformSimpleFunction(simpleFunction: FirSimpleFunction, data: Nothing?): FirDeclaration {
+        override fun transformSimpleFunction(simpleFunction: FirSimpleFunction, data: Nothing?): FirSimpleFunction {
             simpleFunction.updateStatus()
             return simpleFunction
         }

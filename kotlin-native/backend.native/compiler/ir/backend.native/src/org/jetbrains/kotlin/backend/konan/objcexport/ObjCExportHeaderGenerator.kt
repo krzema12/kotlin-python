@@ -283,11 +283,7 @@ internal class ObjCExportTranslatorImpl(
             return translateUnexposedClassAsUnavailableStub(descriptor)
         }
 
-        val genericExportScope = if (objcGenerics) {
-            ObjCClassExportScope(descriptor, namer)
-        } else {
-            ObjCNoneExportScope
-        }
+        val genericExportScope = createGenericExportScope(descriptor)
 
         fun superClassGenerics(genericExportScope: ObjCExportScope): List<ObjCNonNullReferenceType> {
             if (objcGenerics) {
@@ -352,14 +348,35 @@ internal class ObjCExportTranslatorImpl(
                         }
                     }
 
+            if (descriptor.needCompanionObjectProperty(namer, mapper)) {
+                add {
+                    ObjCProperty(
+                            ObjCExportNamer.companionObjectPropertyName, null,
+                            mapReferenceType(descriptor.companionObjectDescriptor!!.defaultType, genericExportScope),
+                            listOf("class", "readonly"),
+                            getterName = namer.getCompanionObjectPropertySelector(descriptor),
+                            declarationAttributes = listOf(swiftNameAttribute(ObjCExportNamer.companionObjectPropertyName))
+                    )
+                }
+            }
             // TODO: consider adding exception-throwing impls for these.
             when (descriptor.kind) {
-                ClassKind.OBJECT -> add {
-                    ObjCMethod(
-                            null, false, ObjCInstanceType,
-                            listOf(namer.getObjectInstanceSelector(descriptor)), emptyList(),
-                            listOf(swiftNameAttribute("init()"))
-                    )
+                ClassKind.OBJECT -> {
+                    add {
+                        ObjCMethod(
+                                null, false, ObjCInstanceType,
+                                listOf(namer.getObjectInstanceSelector(descriptor)), emptyList(),
+                                listOf(swiftNameAttribute("init()"))
+                        )
+                    }
+                    add {
+                        ObjCProperty(
+                                ObjCExportNamer.objectPropertyName, null,
+                                mapReferenceType(descriptor.defaultType, genericExportScope), listOf("class", "readonly"),
+                                getterName = namer.getObjectPropertySelector(descriptor),
+                                declarationAttributes = listOf(swiftNameAttribute(ObjCExportNamer.objectPropertyName))
+                        )
+                    }
                 }
                 ClassKind.ENUM_CLASS -> {
                     val type = mapType(descriptor.defaultType, ReferenceBridge, ObjCNoneExportScope)
@@ -408,6 +425,12 @@ internal class ObjCExportTranslatorImpl(
                 members = members,
                 attributes = attributes
         )
+    }
+
+    internal fun createGenericExportScope(descriptor: ClassDescriptor): ObjCExportScope = if (objcGenerics) {
+        ObjCClassExportScope(descriptor, namer)
+    } else {
+        ObjCNoneExportScope
     }
 
     private fun buildThrowableAsErrorMethod(): ObjCMethod {
@@ -589,7 +612,7 @@ internal class ObjCExportTranslatorImpl(
         return ObjCProperty(name, property, type, attributes, setterName, getterName, declarationAttributes)
     }
 
-    private fun buildMethod(
+    internal fun buildMethod(
             method: FunctionDescriptor,
             baseMethod: FunctionDescriptor,
             objCExportScope: ObjCExportScope,
@@ -633,10 +656,14 @@ internal class ObjCExportTranslatorImpl(
                         ObjCPointerType(ObjCNullableReferenceType(ObjCClassType("NSError")), nullable = true)
 
                     MethodBridgeValueParameter.SuspendCompletion -> {
+                        val resultType = when (val it = mapReferenceType(method.returnType!!, objCExportScope)) {
+                            is ObjCNonNullReferenceType -> ObjCNullableReferenceType(it, isNullableResult = false)
+                            is ObjCNullableReferenceType -> ObjCNullableReferenceType(it.nonNullType, isNullableResult = true)
+                        }
                         ObjCBlockPointerType(
                                 returnType = ObjCVoidType,
                                 parameterTypes = listOf(
-                                        mapReferenceType(method.returnType!!, objCExportScope).makeNullable(),
+                                        resultType,
                                         ObjCNullableReferenceType(ObjCClassType("NSError"))
                                 )
                         )
@@ -1028,11 +1055,20 @@ abstract class ObjCExportHeaderGenerator internal constructor(
         }
         add("")
 
+        // If _Nullable_result is not supported, then use _Nullable:
+        add("#pragma push_macro(\"$objcNullableResultAttribute\")")
+        add("#if !__has_feature(nullability_nullable_result)")
+        add("#undef $objcNullableResultAttribute")
+        add("#define $objcNullableResultAttribute $objcNullableAttribute")
+        add("#endif")
+        add("")
+
         stubs.forEach {
             addAll(StubRenderer.render(it, shouldExportKDoc))
             add("")
         }
 
+        add("#pragma pop_macro(\"$objcNullableResultAttribute\")")
         add("#pragma clang diagnostic pop")
         add("NS_ASSUME_NONNULL_END")
     }
@@ -1291,6 +1327,17 @@ internal object ObjCNoneExportScope: ObjCExportScope{
 private fun computeSuperClassType(descriptor: ClassDescriptor): KotlinType? = descriptor.typeConstructor.supertypes.filter { !it.isInterface() }.firstOrNull()
 
 internal const val OBJC_SUBCLASSING_RESTRICTED = "objc_subclassing_restricted"
+
+internal fun ClassDescriptor.needCompanionObjectProperty(namer: ObjCExportNamer, mapper: ObjCExportMapper): Boolean {
+    val companionObject = companionObjectDescriptor
+    if (companionObject == null || !mapper.shouldBeExposed(companionObject)) return false
+
+    if (kind == ClassKind.ENUM_CLASS && enumEntries.any { namer.getEnumEntrySelector(it) == ObjCExportNamer.companionObjectPropertyName })
+        return false // 'companion' property would clash with enum entry, don't generate it.
+
+    return true
+}
+
 
 private fun Deprecation.toDeprecationAttribute(): String {
     val attribute = when (deprecationLevel) {

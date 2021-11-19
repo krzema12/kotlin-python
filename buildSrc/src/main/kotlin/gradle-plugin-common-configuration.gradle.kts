@@ -8,7 +8,7 @@ plugins {
     kotlin("jvm")
 }
 
-publish()
+publishGradlePlugin()
 standardPublicJars()
 
 extensions.extraProperties["kotlin.stdlib.default.dependency"] = "false"
@@ -37,12 +37,12 @@ configurations {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.languageVersion = "1.3"
-    kotlinOptions.apiVersion = "1.3"
+    kotlinOptions.languageVersion = "1.4"
+    kotlinOptions.apiVersion = "1.4"
     kotlinOptions.freeCompilerArgs += listOf(
         "-Xskip-prerelease-check",
-        "-Xskip-runtime-version-check",
-        "-Xsuppress-version-warnings"
+        "-Xsuppress-version-warnings",
+        "-Xuse-ir" // Needed as long as languageVersion is less than 1.5.
     )
 }
 

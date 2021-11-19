@@ -14,6 +14,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.attributes.Attribute
+import org.gradle.api.attributes.Category
 import org.gradle.api.file.FileCollection
 import org.gradle.api.specs.Spec
 import org.gradle.api.tasks.PathSensitivity
@@ -59,7 +60,9 @@ class Android25ProjectHandler(
 
         val preJavaClasspathKey = variantData.registerPreJavacGeneratedBytecode(preJavaKotlinOutput)
         kotlinTask.configure { kotlinTaskInstance ->
-            kotlinTaskInstance.inputs.files(variantData.getSourceFolders(SourceKind.JAVA)).withPathSensitivity(PathSensitivity.RELATIVE)
+            kotlinTaskInstance.source(
+                variantData.getSourceFolders(SourceKind.JAVA)
+            )
 
             kotlinTaskInstance.classpath = project.files()
                 .from(variantData.getCompileClasspath(preJavaClasspathKey))
@@ -141,7 +144,10 @@ class Android25ProjectHandler(
         }
 
         listOf(apiElementsConfigurationName, runtimeElementsConfigurationName).forEach { outputConfigurationName ->
-            project.configurations.findByName(outputConfigurationName)?.usesPlatformOf(compilation.target)
+            project.configurations.findByName(outputConfigurationName)?.let { configuration ->
+                configuration.usesPlatformOf(compilation.target)
+                configuration.attributes.attribute(Category.CATEGORY_ATTRIBUTE, project.categoryByName(Category.LIBRARY))
+            }
         }
     }
 }

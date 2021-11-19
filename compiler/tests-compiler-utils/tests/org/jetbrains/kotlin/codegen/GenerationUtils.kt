@@ -9,16 +9,17 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElementFinder
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.ProjectScope
+import org.jetbrains.kotlin.ObsoleteTestInfrastructure
 import org.jetbrains.kotlin.TestsCompiletimeError
 import org.jetbrains.kotlin.analyzer.AnalysisResult
 import org.jetbrains.kotlin.asJava.finder.JavaElementFinder
-import org.jetbrains.kotlin.backend.common.phaser.PhaseConfig
 import org.jetbrains.kotlin.backend.jvm.JvmGeneratorExtensionsImpl
 import org.jetbrains.kotlin.backend.jvm.JvmIrCodegenFactory
-import org.jetbrains.kotlin.backend.jvm.jvmPhases
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
+import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
+import org.jetbrains.kotlin.cli.common.messages.GroupingMessageCollector
+import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.cli.common.output.writeAllTo
-import org.jetbrains.kotlin.cli.js.messageCollectorLogger
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
 import org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM
@@ -27,8 +28,6 @@ import org.jetbrains.kotlin.config.CommonConfigurationKeys
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.JVMConfigurationKeys
 import org.jetbrains.kotlin.config.languageVersionSettings
-import org.jetbrains.kotlin.container.get
-import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.fir.analysis.FirAnalyzerFacade
 import org.jetbrains.kotlin.fir.backend.jvm.FirJvmBackendClassResolver
 import org.jetbrains.kotlin.fir.backend.jvm.FirJvmBackendExtension
@@ -38,10 +37,9 @@ import org.jetbrains.kotlin.load.kotlin.PackagePartProvider
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.AnalyzingUtils
 import org.jetbrains.kotlin.resolve.BindingTrace
-import org.jetbrains.kotlin.resolve.CompilerEnvironment
 import org.jetbrains.kotlin.resolve.lazy.JvmResolveUtil
-import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProviderFactory
 import org.jetbrains.kotlin.util.DummyLogger
+import org.jetbrains.kotlin.util.Logger
 import java.io.File
 
 object GenerationUtils {
@@ -76,7 +74,7 @@ object GenerationUtils {
     ): GenerationState {
         val project = files.first().project
         val state = if (configuration.getBoolean(CommonConfigurationKeys.USE_FIR)) {
-            compileFilesUsingFrontendIR(project, files, configuration, classBuilderFactory, packagePartProvider, trace)
+            compileFilesUsingFrontendIR(project, files, configuration, classBuilderFactory, packagePartProvider)
         } else {
             compileFilesUsingStandardMode(project, files, configuration, classBuilderFactory, packagePartProvider, trace)
         }
@@ -91,13 +89,13 @@ object GenerationUtils {
         return state
     }
 
+    @OptIn(ObsoleteTestInfrastructure::class)
     private fun compileFilesUsingFrontendIR(
         project: Project,
         files: List<KtFile>,
         configuration: CompilerConfiguration,
         classBuilderFactory: ClassBuilderFactory,
-        packagePartProvider: (GlobalSearchScope) -> PackagePartProvider,
-        trace: BindingTrace
+        packagePartProvider: (GlobalSearchScope) -> PackagePartProvider
     ): GenerationState {
         PsiElementFinder.EP.getPoint(project).unregisterExtension(JavaElementFinder::class.java)
 
@@ -108,19 +106,18 @@ object GenerationUtils {
 
         // TODO: add running checkers and check that it's safe to compile
         val firAnalyzerFacade = FirAnalyzerFacade(session, configuration.languageVersionSettings, files)
-        val extensions = JvmGeneratorExtensionsImpl()
+        val extensions = JvmGeneratorExtensionsImpl(configuration)
         val (moduleFragment, symbolTable, components) = firAnalyzerFacade.convertToIr(extensions)
         val dummyBindingContext = NoScopeRecordCliBindingTrace().bindingContext
 
-        val codegenFactory = JvmIrCodegenFactory(configuration.get(CLIConfigurationKeys.PHASE_CONFIG) ?: PhaseConfig(jvmPhases))
-
-        // Create and initialize the test module and its dependencies
-        val container = TopDownAnalyzerFacadeForJVM.createContainer(
-            project, files, trace, configuration, packagePartProvider, ::FileBasedDeclarationProviderFactory, CompilerEnvironment,
-            TopDownAnalyzerFacadeForJVM.newModuleSearchScope(project, files), emptyList()
+        val codegenFactory = JvmIrCodegenFactory(
+            configuration,
+            configuration.get(CLIConfigurationKeys.PHASE_CONFIG),
+            jvmGeneratorExtensions = extensions
         )
+
         val generationState = GenerationState.Builder(
-            project, classBuilderFactory, container.get<ModuleDescriptor>(), dummyBindingContext, files, configuration
+            project, classBuilderFactory, moduleFragment.descriptor, dummyBindingContext, files, configuration
         ).codegenFactory(
             codegenFactory
         ).isIrBackend(
@@ -136,6 +133,17 @@ object GenerationUtils {
 
         generationState.factory.done()
         return generationState
+    }
+
+    fun messageCollectorLogger(collector: MessageCollector) = object : Logger {
+        override fun warning(message: String) = collector.report(CompilerMessageSeverity.STRONG_WARNING, message)
+        override fun error(message: String) = collector.report(CompilerMessageSeverity.ERROR, message)
+        override fun log(message: String) = collector.report(CompilerMessageSeverity.LOGGING, message)
+        override fun fatal(message: String): Nothing {
+            collector.report(CompilerMessageSeverity.ERROR, message)
+            (collector as? GroupingMessageCollector)?.flush()
+            kotlin.error(message)
+        }
     }
 
     private fun compileFilesUsingStandardMode(
@@ -178,7 +186,7 @@ object GenerationUtils {
             files, configuration
         ).codegenFactory(
             if (isIrBackend)
-                JvmIrCodegenFactory(configuration.get(CLIConfigurationKeys.PHASE_CONFIG) ?: PhaseConfig(jvmPhases))
+                JvmIrCodegenFactory(configuration, configuration.get(CLIConfigurationKeys.PHASE_CONFIG))
             else DefaultCodegenFactory
         ).isIrBackend(isIrBackend).apply(configureGenerationState).build()
         if (analysisResult.shouldGenerateCode) {

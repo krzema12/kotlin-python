@@ -6,12 +6,14 @@
 package org.jetbrains.kotlin.gradle.internal
 
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.FileCollection
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.*
 import org.gradle.api.tasks.incremental.IncrementalTaskInputs
 import org.gradle.process.CommandLineArgumentProvider
+import org.gradle.work.InputChanges
 import org.gradle.workers.IsolationMode
 import org.gradle.workers.WorkAction
 import org.gradle.workers.WorkParameters
@@ -23,7 +25,6 @@ import org.jetbrains.kotlin.gradle.internal.kapt.incremental.KaptIncrementalChan
 import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.CompilerPluginOptions
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.gradle.tasks.findKotlinStdlibClasspath
 import org.jetbrains.kotlin.gradle.utils.isGradleVersionAtLeast
 import org.jetbrains.kotlin.utils.PathUtil
 import org.slf4j.LoggerFactory
@@ -49,13 +50,8 @@ abstract class KaptWithoutKotlincTask @Inject constructor(
         }
     }
 
-    @get:InputFiles
     @get:Classpath
-    @Suppress("unused")
     abstract val kaptJars: ConfigurableFileCollection
-
-    @get:Input
-    var isVerbose: Boolean = false
 
     @get:Input
     var classLoadersCacheSize: Int = 0
@@ -77,9 +73,6 @@ abstract class KaptWithoutKotlincTask @Inject constructor(
 
     @get:Input
     internal abstract val addJdkClassesToClasspath: Property<Boolean>
-
-    @get:Classpath
-    internal val kotlinStdlibClasspath = findKotlinStdlibClasspath(project)
 
     @get:Internal
     internal val projectDir = project.projectDir
@@ -103,11 +96,11 @@ abstract class KaptWithoutKotlincTask @Inject constructor(
     }
 
     @TaskAction
-    fun compile(inputs: IncrementalTaskInputs) {
+    fun compile(inputChanges: InputChanges) {
         logger.info("Running kapt annotation processing using the Gradle Worker API")
         checkAnnotationProcessorClasspath()
 
-        val incrementalChanges = getIncrementalChanges(inputs)
+        val incrementalChanges = getIncrementalChanges(inputChanges)
         val (changedFiles, classpathChanges) = when (incrementalChanges) {
             is KaptIncrementalChanges.Unknown -> Pair(emptyList<File>(), emptyList<String>())
             is KaptIncrementalChanges.Known -> Pair(incrementalChanges.changedSources.toList(), incrementalChanges.changedClasspathJvmNames)
@@ -119,9 +112,9 @@ abstract class KaptWithoutKotlincTask @Inject constructor(
         }
 
         val kaptFlagsForWorker = mutableSetOf<String>().apply {
-            if (isVerbose) add("VERBOSE")
+            if (verbose.get()) add("VERBOSE")
             if (mapDiagnosticLocations) add("MAP_DIAGNOSTIC_LOCATIONS")
-            if (includeCompileClasspath) add("INCLUDE_COMPILE_CLASSPATH")
+            if (includeCompileClasspath.get()) add("INCLUDE_COMPILE_CLASSPATH")
             if (incrementalChanges is KaptIncrementalChanges.Known) add("INCREMENTAL_APT")
         }
 
@@ -157,10 +150,11 @@ abstract class KaptWithoutKotlincTask @Inject constructor(
             return
         }
 
-        val kaptClasspath = kaptJars.toList() + kotlinStdlibClasspath
+        val kaptClasspath = kaptJars
         val isolationMode = getWorkerIsolationMode()
         logger.info("Using workers $isolationMode isolation mode to run kapt")
-        val toolsJarURLSpec = kotlinJavaToolchainProvider.get().jdkToolsJar.orNull?.toURI()?.toURL()?.toString().orEmpty()
+        val toolsJarURLSpec = defaultKotlinJavaToolchain.get()
+            .jdkToolsJar.orNull?.toURI()?.toURL()?.toString().orEmpty()
 
         submitWork(
             isolationMode,
@@ -171,12 +165,12 @@ abstract class KaptWithoutKotlincTask @Inject constructor(
     }
 
     private fun getWorkerIsolationMode(): IsolationMode {
-        val kotlinJavaToolchain = kotlinJavaToolchainProvider.get()
-        val gradleJvm = kotlinJavaToolchain.currentJvm.get()
+        val toolchainProvider = defaultKotlinJavaToolchain.get()
+        val gradleJvm = toolchainProvider.currentJvm.get()
         // Ensuring Gradle build JDK is set to kotlin toolchain by also comparing javaExecutable paths,
         // as user may set JDK with same major Java version, but from different vendor
-        val isRunningOnGradleJvm = gradleJvm.javaVersion == kotlinJavaToolchain.javaVersion.get() &&
-                gradleJvm.javaExecutable.absolutePath == kotlinJavaToolchain.javaExecutable.get().asFile.absolutePath
+        val isRunningOnGradleJvm = gradleJvm.javaVersion == toolchainProvider.javaVersion.get() &&
+                gradleJvm.javaExecutable.absolutePath == toolchainProvider.javaExecutable.get().asFile.absolutePath
         val isolationModeStr = getValue("kapt.workers.isolation")?.toLowerCase()
         return when {
             (isolationModeStr == null || isolationModeStr == "none") && isRunningOnGradleJvm -> IsolationMode.NONE
@@ -193,7 +187,7 @@ abstract class KaptWithoutKotlincTask @Inject constructor(
         isolationMode: IsolationMode,
         optionsForWorker: KaptOptionsForWorker,
         toolsJarURLSpec: String,
-        kaptClasspath: List<File>
+        kaptClasspath: FileCollection
     ) {
         val workQueue = when (isolationMode) {
             IsolationMode.PROCESS -> workerExecutor.processIsolation {
@@ -201,7 +195,10 @@ abstract class KaptWithoutKotlincTask @Inject constructor(
                     // for tests
                     it.forkOptions.jvmArgs("-verbose:class")
                 }
-                it.forkOptions.executable = kotlinJavaToolchainProvider.get().javaExecutable.asFile.get().absolutePath
+                it.forkOptions.executable = defaultKotlinJavaToolchain.get()
+                    .javaExecutable
+                    .asFile.get()
+                    .absolutePath
                 logger.info("Kapt worker classpath: ${it.classpath}")
             }
             IsolationMode.NONE -> workerExecutor.noIsolation()
@@ -340,7 +337,8 @@ private class KaptExecution @Inject constructor(
             detectMemoryLeaksMode,
 
             processingClassLoader,
-            disableClassloaderCacheForProcessors
+            disableClassloaderCacheForProcessors,
+            /*processorsPerfReportFile=*/null
         )
     }
 

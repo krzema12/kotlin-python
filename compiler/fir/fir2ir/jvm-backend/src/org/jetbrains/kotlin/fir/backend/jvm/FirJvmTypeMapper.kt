@@ -12,6 +12,9 @@ import org.jetbrains.kotlin.codegen.state.KotlinTypeMapper
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.fir.*
 import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.utils.classId
+import org.jetbrains.kotlin.fir.declarations.utils.isInner
+import org.jetbrains.kotlin.fir.declarations.utils.isLocal
 import org.jetbrains.kotlin.fir.resolve.defaultType
 import org.jetbrains.kotlin.fir.resolve.fullyExpandedType
 import org.jetbrains.kotlin.fir.resolve.inference.*
@@ -53,8 +56,8 @@ class FirJvmTypeMapper(val session: FirSession) : TypeMappingContext<JvmSignatur
     override fun getScriptInternalName(typeConstructor: TypeConstructorMarker): String =
         TODO("Not yet implemented")
 
-    override fun JvmSignatureWriter.writeGenericType(type: SimpleTypeMarker, asmType: Type, mode: TypeMappingMode) {
-        if (type !is ConeClassLikeType) return
+    override fun JvmSignatureWriter.writeGenericType(type: KotlinTypeMarker, asmType: Type, mode: TypeMappingMode) {
+        if (type !is ConeKotlinType) return
         if (skipGenericSignature() || hasNothingInNonContravariantPosition(type) || type.typeArguments.isEmpty()) {
             writeAsmType(asmType)
             return
@@ -89,17 +92,19 @@ class FirJvmTypeMapper(val session: FirSession) : TypeMappingContext<JvmSignatur
         typeContext.hasNothingInNonContravariantPosition(type)
     }
 
-    private fun FirClassLikeSymbol<*>.toRegularClassSymbol(): FirRegularClassSymbol? = when (this) {
-        is FirRegularClassSymbol -> this
-        is FirTypeAliasSymbol -> {
-            val expandedType = fir.expandedTypeRef.coneType.fullyExpandedType(session) as? ConeClassLikeType
-            expandedType?.lookupTag?.toSymbol(session) as? FirRegularClassSymbol
-        }
-        else -> null
-    }
+    private fun ConeKotlinType.buildPossiblyInnerType(): PossiblyInnerConeType? {
+        if (this !is ConeClassLikeType) return null
 
-    private fun ConeClassLikeType.buildPossiblyInnerType(): PossiblyInnerConeType? =
-        buildPossiblyInnerType(lookupTag.toSymbol(session)?.toRegularClassSymbol(), 0)
+        return when (val symbol = lookupTag.toSymbol(session)) {
+            is FirRegularClassSymbol -> buildPossiblyInnerType(symbol, 0)
+            is FirTypeAliasSymbol -> {
+                val expandedType = fullyExpandedType(session) as? ConeClassLikeType
+                val classSymbol = expandedType?.lookupTag?.toSymbol(session) as? FirRegularClassSymbol
+                classSymbol?.let { expandedType.buildPossiblyInnerType(it, 0) }
+            }
+            else -> null
+        }
+    }
 
     private fun ConeClassLikeType.parentClassOrNull(): FirRegularClassSymbol? {
         val parentClassId = classId?.outerClassId ?: return null
@@ -233,7 +238,10 @@ class ConeTypeSystemCommonBackendContextForTypeMapping(
             require(it is ConeKotlinType)
         }
         @Suppress("UNCHECKED_CAST")
-        return defaultType().withArguments((arguments as List<ConeKotlinType>).toTypedArray())
+        return defaultType().withArguments(
+            (arguments as List<ConeKotlinType>).toTypedArray(),
+            session.typeContext,
+        )
     }
 
     override fun TypeParameterMarker.representativeUpperBound(): ConeKotlinType {

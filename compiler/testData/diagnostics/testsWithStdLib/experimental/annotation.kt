@@ -1,3 +1,4 @@
+// FIR_IDENTICAL
 // !USE_EXPERIMENTAL: kotlin.RequiresOptIn
 // !DIAGNOSTICS: -UNUSED_PARAMETER
 // FILE: api.kt
@@ -5,13 +6,15 @@
 package api
 
 @RequiresOptIn(level = RequiresOptIn.Level.WARNING)
-@Target(AnnotationTarget.TYPE, AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY, AnnotationTarget.TYPEALIAS,
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY, AnnotationTarget.TYPEALIAS,
         AnnotationTarget.VALUE_PARAMETER)
+@Retention(AnnotationRetention.BINARY)
 annotation class ExperimentalAPI
 
 @ExperimentalAPI
-@Target(AnnotationTarget.TYPE, AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY, AnnotationTarget.TYPEALIAS,
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY, AnnotationTarget.TYPEALIAS,
         AnnotationTarget.VALUE_PARAMETER)
+@Retention(AnnotationRetention.BINARY)
 annotation class EAnno
 
 // FILE: usage-propagate.kt
@@ -27,10 +30,10 @@ import api.*
 fun parameter(@EAnno p: String) {}
 
 @ExperimentalAPI
-fun parameterType(p: @EAnno String) {}
+fun parameterType(p: <!WRONG_ANNOTATION_TARGET!>@EAnno<!> String) {}
 
 @ExperimentalAPI
-fun returnType(): @EAnno Unit {}
+fun returnType(): <!WRONG_ANNOTATION_TARGET!>@EAnno<!> Unit {}
 
 @ExperimentalAPI
 @EAnno val property = ""
@@ -72,10 +75,10 @@ import api.*
 fun parameter(@EAnno p: String) {}
 
 @OptIn(ExperimentalAPI::class)
-fun parameterType(p: @EAnno String) {}
+fun parameterType(p: <!WRONG_ANNOTATION_TARGET!>@EAnno<!> String) {}
 
 @OptIn(ExperimentalAPI::class)
-fun returnType(): @EAnno Unit {}
+fun returnType(): <!WRONG_ANNOTATION_TARGET!>@EAnno<!> Unit {}
 
 @OptIn(ExperimentalAPI::class)
 @EAnno val property = ""
@@ -112,9 +115,9 @@ import api.*
 
 fun parameter(@<!EXPERIMENTAL_API_USAGE!>EAnno<!> p: String) {}
 
-fun parameterType(p: @<!EXPERIMENTAL_API_USAGE!>EAnno<!> String) {}
+fun parameterType(p: <!WRONG_ANNOTATION_TARGET!>@<!EXPERIMENTAL_API_USAGE!>EAnno<!><!> String) {}
 
-fun returnType(): @<!EXPERIMENTAL_API_USAGE!>EAnno<!> Unit {}
+fun returnType(): <!WRONG_ANNOTATION_TARGET!>@<!EXPERIMENTAL_API_USAGE!>EAnno<!><!> Unit {}
 
 @<!EXPERIMENTAL_API_USAGE!>EAnno<!> val property = ""
 

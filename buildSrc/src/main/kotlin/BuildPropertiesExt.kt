@@ -19,4 +19,17 @@ val KotlinBuildProperties.jarCompression: Boolean get() = getBoolean("kotlin.bui
 
 val KotlinBuildProperties.ignoreTestFailures: Boolean get() = getBoolean("ignoreTestFailures", isTeamcityBuild)
 
-val KotlinBuildProperties.disableWerror: Boolean get() = getBoolean("kotlin.build.disable.werror", false)
+val KotlinBuildProperties.disableWerror: Boolean
+    get() = getBoolean("kotlin.build.disable.werror") || useFir || isInJpsBuildIdeaSync || getBoolean("test.progressive.mode")
+
+val KotlinBuildProperties.pathToKotlinModularizedTestData: String?
+    get() = getOrNull("kotlin.fir.modularized.testdata.kotlin") as? String
+
+val KotlinBuildProperties.pathToIntellijModularizedTestData: String?
+    get() = getOrNull("kotlin.fir.modularized.testdata.intellij") as? String
+
+val KotlinBuildProperties.pathToYoutrackModularizedTestData: String?
+    get() = getOrNull("kotlin.fir.modularized.testdata.youtrack") as? String
+
+val KotlinBuildProperties.isObsoleteJdkOverrideEnabled: Boolean
+    get() = getBoolean("kotlin.build.isObsoleteJdkOverrideEnabled", false)

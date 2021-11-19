@@ -7,20 +7,30 @@ package org.jetbrains.kotlin.backend.jvm
 
 import org.jetbrains.kotlin.backend.common.ir.createImplicitParameterDeclarationWithWrappedDescriptor
 import org.jetbrains.kotlin.backend.common.ir.createParameterDeclarations
-import org.jetbrains.kotlin.codegen.JvmSamTypeFactory
+import org.jetbrains.kotlin.backend.common.serialization.signature.PublicIdSignatureComputer
+import org.jetbrains.kotlin.backend.jvm.lower.SingletonObjectJvmStaticTransformer
+import org.jetbrains.kotlin.backend.jvm.serialization.deserializeClassFromByteArray
+import org.jetbrains.kotlin.backend.jvm.serialization.deserializeIrFileFromByteArray
+import org.jetbrains.kotlin.config.CompilerConfiguration
+import org.jetbrains.kotlin.config.JVMConfigurationKeys
+import org.jetbrains.kotlin.config.languageVersionSettings
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.annotations.FilteredAnnotations
 import org.jetbrains.kotlin.incremental.components.NoLookupLocation
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
+import org.jetbrains.kotlin.ir.backend.jvm.serialization.JvmIrMangler
 import org.jetbrains.kotlin.ir.builders.declarations.addConstructor
 import org.jetbrains.kotlin.ir.builders.declarations.buildClass
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.declarations.impl.IrExternalPackageFragmentImpl
 import org.jetbrains.kotlin.ir.declarations.impl.IrFactoryImpl
-import org.jetbrains.kotlin.ir.descriptors.IrBuiltIns
+import org.jetbrains.kotlin.ir.declarations.lazy.IrLazyClass
+import org.jetbrains.kotlin.ir.IrBuiltIns
 import org.jetbrains.kotlin.ir.expressions.IrDelegatingConstructorCall
 import org.jetbrains.kotlin.ir.expressions.impl.IrDelegatingConstructorCallImpl
 import org.jetbrains.kotlin.ir.symbols.impl.DescriptorlessExternalPackageFragmentSymbol
+import org.jetbrains.kotlin.ir.util.DeclarationStubGenerator
+import org.jetbrains.kotlin.ir.util.SymbolTable
 import org.jetbrains.kotlin.ir.util.constructors
 import org.jetbrains.kotlin.load.java.JvmAnnotationNames
 import org.jetbrains.kotlin.load.java.descriptors.JavaCallableMemberDescriptor
@@ -29,6 +39,7 @@ import org.jetbrains.kotlin.load.java.descriptors.getParentJavaStaticClassScope
 import org.jetbrains.kotlin.load.java.sam.JavaSingleAbstractMethodUtils
 import org.jetbrains.kotlin.load.java.typeEnhancement.hasEnhancedNullability
 import org.jetbrains.kotlin.load.kotlin.JvmPackagePartSource
+import org.jetbrains.kotlin.load.kotlin.KotlinJvmBinarySourceElement
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtPureClassOrObject
 import org.jetbrains.kotlin.psi.psiUtil.pureEndOffset
@@ -45,11 +56,19 @@ import org.jetbrains.kotlin.resolve.jvm.annotations.hasJvmFieldAnnotation
 import org.jetbrains.kotlin.resolve.jvm.annotations.isJvmRecord
 import org.jetbrains.kotlin.resolve.scopes.MemberScope
 import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedContainerSource
+import org.jetbrains.kotlin.synthetic.SyntheticJavaPropertyDescriptor
 import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.typeUtil.replaceAnnotations
 
-open class JvmGeneratorExtensionsImpl(private val generateFacades: Boolean = true) : GeneratorExtensions(), JvmGeneratorExtensions {
+open class JvmGeneratorExtensionsImpl(
+    configuration: CompilerConfiguration,
+    private val generateFacades: Boolean = true,
+) : GeneratorExtensions(), JvmGeneratorExtensions {
     override val classNameOverride: MutableMap<IrClass, JvmClassName> = mutableMapOf()
+
+    override val irDeserializationEnabled: Boolean = configuration.getBoolean(JVMConfigurationKeys.SERIALIZE_IR)
+
+    override val cachedFields = CachedFieldsForObjectInstances(IrFactoryImpl, configuration.languageVersionSettings)
 
     override val samConversion: SamConversion
         get() = JvmSamConversion
@@ -58,9 +77,6 @@ open class JvmGeneratorExtensionsImpl(private val generateFacades: Boolean = tru
 
         override fun isPlatformSamType(type: KotlinType): Boolean =
             JavaSingleAbstractMethodUtils.isSamType(type)
-
-        override fun getSamTypeForValueParameter(valueParameter: ValueParameterDescriptor): KotlinType? =
-            JvmSamTypeFactory.createByValueParameter(valueParameter)?.type
 
         companion object Instance : JvmSamConversion()
     }
@@ -77,16 +93,50 @@ open class JvmGeneratorExtensionsImpl(private val generateFacades: Boolean = tru
         else
             IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB
 
-    override fun generateFacadeClass(irFactory: IrFactory, source: DeserializedContainerSource): IrClass? {
-        if (!generateFacades || source !is JvmPackagePartSource) return null
-        val facadeName = source.facadeClassName ?: source.className
-        return irFactory.buildClass {
-            origin = if (source.facadeClassName != null) IrDeclarationOrigin.JVM_MULTIFILE_CLASS else IrDeclarationOrigin.FILE_CLASS
-            name = facadeName.fqNameForTopLevelClassMaybeWithDollars.shortName()
-        }.also {
+    override fun generateFacadeClass(
+        irFactory: IrFactory,
+        deserializedSource: DeserializedContainerSource,
+        stubGenerator: DeclarationStubGenerator
+    ): IrClass? {
+        if (!generateFacades || deserializedSource !is JvmPackagePartSource) return null
+        val facadeName = deserializedSource.facadeClassName ?: deserializedSource.className
+        return JvmFileFacadeClass(
+            if (deserializedSource.facadeClassName != null) IrDeclarationOrigin.JVM_MULTIFILE_CLASS else IrDeclarationOrigin.FILE_CLASS,
+            facadeName.fqNameForTopLevelClassMaybeWithDollars.shortName(),
+            deserializedSource,
+            stubGenerator
+        ).also {
             it.createParameterDeclarations()
             classNameOverride[it] = facadeName
         }
+    }
+
+    override fun deserializeLazyClass(
+        irClass: IrLazyClass,
+        stubGenerator: DeclarationStubGenerator,
+        parent: IrDeclarationParent,
+        allowErrorNodes: Boolean
+    ): Boolean {
+        val serializedIr = (irClass.source as? KotlinJvmBinarySourceElement)?.binaryClass?.classHeader?.serializedIr ?: return false
+        deserializeClassFromByteArray(
+            serializedIr, stubGenerator, irClass, JvmIrTypeSystemContext(stubGenerator.irBuiltIns), allowErrorNodes
+        )
+        irClass.transform(SingletonObjectJvmStaticTransformer(stubGenerator.irBuiltIns, cachedFields), null)
+        return true
+    }
+
+    override fun deserializeFacadeClass(
+        irClass: IrClass,
+        stubGenerator: DeclarationStubGenerator,
+        parent: IrDeclarationParent,
+        allowErrorNodes: Boolean
+    ): Boolean {
+        val serializedIr = (irClass.source as? JvmPackagePartSource)?.knownJvmBinaryClass?.classHeader?.serializedIr ?: return false
+        deserializeIrFileFromByteArray(
+            serializedIr, stubGenerator, irClass, JvmIrTypeSystemContext(stubGenerator.irBuiltIns), allowErrorNodes
+        )
+        irClass.transform(SingletonObjectJvmStaticTransformer(stubGenerator.irBuiltIns, cachedFields), null)
+        return true
     }
 
     override fun isPropertyWithPlatformField(descriptor: PropertyDescriptor): Boolean =
@@ -126,6 +176,8 @@ open class JvmGeneratorExtensionsImpl(private val generateFacades: Boolean = tru
     private val kotlinJvmInternalPackage =
         IrExternalPackageFragmentImpl(DescriptorlessExternalPackageFragmentSymbol(), JvmAnnotationNames.KOTLIN_JVM_INTERNAL)
 
+    private val specialAnnotationConstructors = mutableListOf<IrConstructor>()
+
     private fun createSpecialAnnotationClass(fqn: FqName, parent: IrPackageFragment) =
         IrFactoryImpl.buildClass {
             kind = ClassKind.ANNOTATION_CLASS
@@ -135,6 +187,8 @@ open class JvmGeneratorExtensionsImpl(private val generateFacades: Boolean = tru
             this.parent = parent
             addConstructor {
                 isPrimary = true
+            }.also { constructor ->
+                specialAnnotationConstructors.add(constructor)
             }
         }
 
@@ -160,11 +214,16 @@ open class JvmGeneratorExtensionsImpl(private val generateFacades: Boolean = tru
         )
     }
 
+    override fun registerDeclarations(symbolTable: SymbolTable) {
+        val signatureComputer = PublicIdSignatureComputer(JvmIrMangler)
+        specialAnnotationConstructors.forEach { constructor ->
+            symbolTable.declareConstructorWithSignature(signatureComputer.composePublicIdSignature(constructor, false), constructor.symbol)
+        }
+        super.registerDeclarations(symbolTable)
+    }
+
     override val shouldPreventDeprecatedIntegerValueTypeLiteralConversion: Boolean
         get() = true
-
-    private val flexibleNullabilityAnnotationClass =
-        createSpecialAnnotationClass(JvmSymbols.FLEXIBLE_NULLABILITY_ANNOTATION_FQ_NAME, kotlinIrInternalPackage)
 
     private val rawTypeAnnotationClass =
         createSpecialAnnotationClass(JvmSymbols.RAW_TYPE_ANNOTATION_FQ_NAME, kotlinIrInternalPackage)
@@ -174,11 +233,21 @@ open class JvmGeneratorExtensionsImpl(private val generateFacades: Boolean = tru
         createSpecialAnnotationClass(JvmAnnotationNames.ENHANCED_NULLABILITY_ANNOTATION, kotlinJvmInternalPackage)
 
     override val flexibleNullabilityAnnotationConstructor: IrConstructor =
-        flexibleNullabilityAnnotationClass.constructors.single()
+        createSpecialAnnotationClass(JvmSymbols.FLEXIBLE_NULLABILITY_ANNOTATION_FQ_NAME, kotlinIrInternalPackage).constructors.single()
+
+    override val flexibleMutabilityAnnotationConstructor: IrConstructor =
+        createSpecialAnnotationClass(JvmSymbols.FLEXIBLE_MUTABILITY_ANNOTATION_FQ_NAME, kotlinIrInternalPackage).constructors.single()
 
     override val enhancedNullabilityAnnotationConstructor: IrConstructor =
         enhancedNullabilityAnnotationClass.constructors.single()
 
     override val rawTypeAnnotationConstructor: IrConstructor =
         rawTypeAnnotationClass.constructors.single()
+
+    override fun unwrapSyntheticJavaProperty(descriptor: PropertyDescriptor): Pair<FunctionDescriptor, FunctionDescriptor?>? {
+        if (descriptor is SyntheticJavaPropertyDescriptor) {
+            return descriptor.getMethod to descriptor.setMethod
+        }
+        return null
+    }
 }

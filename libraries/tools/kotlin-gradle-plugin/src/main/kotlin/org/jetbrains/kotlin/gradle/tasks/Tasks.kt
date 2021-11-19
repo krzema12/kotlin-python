@@ -5,27 +5,29 @@
 
 package org.jetbrains.kotlin.gradle.tasks
 
+import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileCollection
-import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.file.*
+import org.gradle.api.invocation.Gradle
+import org.gradle.api.attributes.Attribute
 import org.gradle.api.logging.Logger
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.model.ReplacedBy
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
+import org.gradle.api.services.BuildService
+import org.gradle.api.services.BuildServiceParameters
 import org.gradle.api.tasks.*
 import org.gradle.api.tasks.compile.AbstractCompile
 import org.gradle.api.tasks.compile.JavaCompile
-import org.gradle.api.tasks.incremental.IncrementalTaskInputs
+import org.gradle.work.ChangeType
+import org.gradle.work.Incremental
+import org.gradle.work.InputChanges
 import org.gradle.workers.WorkerExecutor
 import org.jetbrains.kotlin.build.DEFAULT_KOTLIN_SOURCE_FILES_EXTENSIONS
-import org.jetbrains.kotlin.build.report.metrics.BuildMetricsReporter
-import org.jetbrains.kotlin.build.report.metrics.BuildMetricsReporterImpl
-import org.jetbrains.kotlin.build.report.metrics.BuildTime
-import org.jetbrains.kotlin.build.report.metrics.measure
+import org.jetbrains.kotlin.build.report.metrics.*
 import org.jetbrains.kotlin.cli.common.CompilerSystemProperties
 import org.jetbrains.kotlin.cli.common.arguments.CommonCompilerArguments
 import org.jetbrains.kotlin.cli.common.arguments.CommonToolArguments
@@ -35,28 +37,32 @@ import org.jetbrains.kotlin.compilerRunner.*
 import org.jetbrains.kotlin.compilerRunner.GradleCompilerRunner.Companion.normalizeForFlagFile
 import org.jetbrains.kotlin.daemon.common.MultiModuleICSettings
 import org.jetbrains.kotlin.gradle.dsl.*
-import org.jetbrains.kotlin.gradle.incremental.ChangedFiles
-import org.jetbrains.kotlin.gradle.incremental.IncrementalModuleInfoBuildService
-import org.jetbrains.kotlin.gradle.incremental.IncrementalModuleInfoProvider
+import org.jetbrains.kotlin.gradle.incremental.*
 import org.jetbrains.kotlin.gradle.internal.*
 import org.jetbrains.kotlin.gradle.internal.tasks.TaskConfigurator
 import org.jetbrains.kotlin.gradle.internal.tasks.TaskWithLocalState
 import org.jetbrains.kotlin.gradle.internal.tasks.allOutputFiles
+import org.jetbrains.kotlin.gradle.internal.transforms.CLASSPATH_ENTRY_SNAPSHOT_FILE_NAME
+import org.jetbrains.kotlin.gradle.internal.transforms.ClasspathEntrySnapshotTransform
 import org.jetbrains.kotlin.gradle.logging.GradleKotlinLogger
 import org.jetbrains.kotlin.gradle.logging.GradlePrintingMessageCollector
 import org.jetbrains.kotlin.gradle.logging.kotlinDebug
 import org.jetbrains.kotlin.gradle.plugin.*
-import org.jetbrains.kotlin.gradle.plugin.mpp.associateWithTransitiveClosure
+import org.jetbrains.kotlin.gradle.plugin.mpp.*
 import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.KotlinCompilationData
+import org.jetbrains.kotlin.gradle.plugin.statistics.KotlinBuildStatsService
 import org.jetbrains.kotlin.gradle.report.ReportingSettings
 import org.jetbrains.kotlin.gradle.targets.js.ir.isProduceUnzippedKlib
 import org.jetbrains.kotlin.gradle.utils.*
-import org.jetbrains.kotlin.gradle.utils.isParentOf
-import org.jetbrains.kotlin.gradle.utils.pathsAsStringRelativeTo
+import org.jetbrains.kotlin.incremental.ClasspathChanges
 import org.jetbrains.kotlin.incremental.ChangedFiles
+import org.jetbrains.kotlin.incremental.IncrementalCompilerRunner
 import org.jetbrains.kotlin.library.impl.isKotlinLibrary
+import org.jetbrains.kotlin.statistics.metrics.BooleanMetrics
 import org.jetbrains.kotlin.utils.JsLibraryUtils
+import org.jetbrains.kotlin.utils.addToStdlib.cast
 import java.io.File
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
 const val KOTLIN_BUILD_DIR_NAME = "kotlin"
@@ -69,19 +75,28 @@ abstract class AbstractKotlinCompileTool<T : CommonToolArguments>
     CompilerArgumentAwareWithInput<T>,
     TaskWithLocalState {
 
-    @InputFiles
-    @PathSensitive(PathSensitivity.RELATIVE)
+    @ReplacedBy("stableSources")
     override fun getSource() = super.getSource()
 
-    @get:Input
-    internal var useFallbackCompilerSearch: Boolean = false
+    @get:InputFiles
+    @get:SkipWhenEmpty
+    @get:IgnoreEmptyDirectories
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    internal val stableSources: FileCollection = project.files(
+        { source }
+    )
+
+    @Incremental
+    override fun getClasspath(): FileCollection {
+        return super.getClasspath()
+    }
 
     @get:Internal
     override val metrics: BuildMetricsReporter =
         BuildMetricsReporterImpl()
 
     /**
-     * By default should be set by plugin from [COMPILER_CLASSPATH_CONFIGURATION_NAME] configuration.
+     * By default, should be set by plugin from [COMPILER_CLASSPATH_CONFIGURATION_NAME] configuration.
      *
      * Empty classpath will fail the build.
      */
@@ -89,53 +104,71 @@ abstract class AbstractKotlinCompileTool<T : CommonToolArguments>
     internal val defaultCompilerClasspath: ConfigurableFileCollection =
         project.objects.fileCollection()
 
-    @get:Classpath
-    @get:InputFiles
-    internal val computedCompilerClasspath: FileCollection = project.objects.fileCollection().from({
-        when {
-            useFallbackCompilerSearch -> findKotlinCompilerClasspath(project)
-            else -> defaultCompilerClasspath
-        }
-    })
-
-    protected abstract fun findKotlinCompilerClasspath(project: Project): List<File>
-
     init {
-        doFirst {
+        this.doFirst {
             require(!defaultCompilerClasspath.isEmpty) {
-                "Default Kotlin compiler classpath is empty! Task: ${path} (${this::class.qualifiedName})"
+                "Default Kotlin compiler classpath is empty! Task: $path (${this::class.qualifiedName})"
             }
         }
     }
 }
 
-class GradleCompileTaskProvider(task: Task) {
+abstract class GradleCompileTaskProvider @Inject constructor(
+    objectFactory: ObjectFactory,
+    projectLayout: ProjectLayout,
+    gradle: Gradle,
+    task: Task,
+    project: Project
+) {
 
-    val path: String = task.path
-    val logger: Logger = task.logger
-    val buildDir: File = task.project.buildDir
-    val projectDir: File = task.project.rootProject.projectDir
-    val rootDir: File = task.project.rootProject.rootDir
-    val sessionsDir: File = GradleCompilerRunner.sessionsDir(task.project)
-    val projectName: String = task.project.rootProject.name.normalizeForFlagFile()
-    val buildModulesInfo: Provider<out IncrementalModuleInfoProvider> = run {
-        val modulesInfo = GradleCompilerRunner.buildModulesInfo(task.project.gradle)
+    @get:Internal
+    val path: Provider<String> = objectFactory.property(task.path)
+
+    @get:Internal
+    val logger: Provider<Logger> = objectFactory.property(task.logger)
+
+    @get:Internal
+    val buildDir: DirectoryProperty = projectLayout.buildDirectory
+
+    @get:Internal
+    val projectDir: Provider<File> = objectFactory
+        .property(project.rootProject.projectDir)
+
+    @get:Internal
+    val rootDir: Provider<File> = objectFactory
+        .property(project.rootProject.rootDir)
+
+    @get:Internal
+    val sessionsDir: Provider<File> = objectFactory
+        .property(GradleCompilerRunner.sessionsDir(project.rootProject.buildDir))
+
+    @get:Internal
+    val projectName: Provider<String> = objectFactory
+        .property(project.rootProject.name.normalizeForFlagFile())
+
+    @get:Internal
+    val buildModulesInfo: Provider<out IncrementalModuleInfoProvider> = objectFactory.property(
         /**
          * See https://youtrack.jetbrains.com/issue/KT-46820. Build service that holds the incremental info may
          * be instantiated during execution phase and there could be multiple threads trying to do that. Because the
          * underlying mechanism does not support multi-threaded access, we need to add external synchronization.
          */
-        synchronized(task.project.gradle.sharedServices) {
-            task.project.gradle.sharedServices.registerIfAbsent(
+        synchronized(gradle.sharedServices) {
+            gradle.sharedServices.registerIfAbsent(
                 IncrementalModuleInfoBuildService.getServiceName(), IncrementalModuleInfoBuildService::class.java
             ) {
-                it.parameters.info.set(modulesInfo)
+                it.parameters.info.set(
+                    objectFactory.providerWithLazyConvention {
+                        GradleCompilerRunner.buildModulesInfo(gradle)
+                    }
+                )
             }
         }
-    }
+    )
 }
 
-abstract class AbstractKotlinCompile<T : CommonCompilerArguments> : AbstractKotlinCompileTool<T>(), UsesKotlinJavaToolchain {
+abstract class AbstractKotlinCompile<T : CommonCompilerArguments> : AbstractKotlinCompileTool<T>(),
+    CompileUsingKotlinDaemonWithNormalization {
 
     open class Configurator<T : AbstractKotlinCompile<*>>(protected val compilation: KotlinCompilationData<*>) : TaskConfigurator<T> {
         override fun configure(task: T) {
@@ -161,11 +194,17 @@ abstract class AbstractKotlinCompile<T : CommonCompilerArguments> : AbstractKotl
                     project.plugins.any { it is KotlinPlatformPluginBase || it is KotlinMultiplatformPluginWrapper || it is KotlinPm20PluginWrapper }
                 }
             ).disallowChanges()
-            task.taskBuildDirectory.value(
-                project.layout.buildDirectory.dir("$KOTLIN_BUILD_DIR_NAME/${task.name}")
-            ).disallowChanges()
+            task.taskBuildDirectory.value(getKotlinBuildDir(task)).disallowChanges()
             task.localStateDirectories.from(task.taskBuildDirectory).disallowChanges()
+
+            PropertiesProvider(task.project).mapKotlinDaemonProperties(task)
         }
+
+        private fun getKotlinBuildDir(task: T): Provider<Directory> =
+            task.project.layout.buildDirectory.dir("$KOTLIN_BUILD_DIR_NAME/${task.name}")
+
+        protected open fun getClasspathSnapshotDir(task: T): Provider<Directory> =
+            task.project.layout.buildDirectory.dir("$KOTLIN_BUILD_DIR_NAME/classpath-snapshot/${task.name}")
     }
 
     init {
@@ -210,7 +249,6 @@ abstract class AbstractKotlinCompile<T : CommonCompilerArguments> : AbstractKotl
     protected val multiModuleICSettings: MultiModuleICSettings
         get() = MultiModuleICSettings(buildHistoryFile.get().asFile, useModuleDetection.get())
 
-    @get:InputFiles
     @get:Classpath
     open val pluginClasspath: ConfigurableFileCollection = objects.fileCollection()
 
@@ -219,6 +257,14 @@ abstract class AbstractKotlinCompile<T : CommonCompilerArguments> : AbstractKotl
 
     @get:Input
     val sourceFilesExtensions: ListProperty<String> = objects.listProperty(String::class.java).value(DEFAULT_KOTLIN_SOURCE_FILES_EXTENSIONS)
+
+    /**
+     * Plugin Data provided by [KpmCompilerPlugin]
+     */
+    @get:Optional
+    @get:Nested
+    // TODO: replace with objects.property and introduce task configurator
+    internal var kotlinPluginData: Provider<KotlinCompilerPluginData>? = null
 
     // Input is needed to force rebuild even if source files are not changed
     @get:Input
@@ -231,11 +277,23 @@ abstract class AbstractKotlinCompile<T : CommonCompilerArguments> : AbstractKotl
     internal val sourceSetName: Property<String> = objects.property(String::class.java)
 
     @get:InputFiles
+    @get:IgnoreEmptyDirectories
+    @get:Incremental
     @get:PathSensitive(PathSensitivity.RELATIVE)
     internal val commonSourceSet: ConfigurableFileCollection = objects.fileCollection()
 
     @get:Input
     internal val moduleName: Property<String> = objects.property(String::class.java)
+
+    @get:Internal
+    val abiSnapshotFile
+        get() = taskBuildDirectory.file(IncrementalCompilerRunner.ABI_SNAPSHOT_FILE_NAME)
+
+    @get:Input
+    val abiSnapshotRelativePath: Property<String> = objects.property(String::class.java).value(
+        //TODO update to support any jar changes
+        "$name/${IncrementalCompilerRunner.ABI_SNAPSHOT_FILE_NAME}"
+    )
 
     @get:Internal
     internal val friendSourceSets = objects.listProperty(String::class.java)
@@ -245,70 +303,68 @@ abstract class AbstractKotlinCompile<T : CommonCompilerArguments> : AbstractKotl
 
     private val kotlinLogger by lazy { GradleKotlinLogger(logger) }
 
-    override val kotlinJavaToolchainProvider: Provider<KotlinJavaToolchainProvider> =
-        objects.propertyWithNewInstance()
+    abstract override val kotlinDaemonJvmArguments: ListProperty<String>
 
     @get:Internal
-    internal val compilerRunner: Provider<GradleCompilerRunner> =
-        objects.propertyWithConvention(
-            kotlinJavaToolchainProvider.map {
-                compilerRunner(
-                    it.javaExecutable.get().asFile,
-                    it.jdkToolsJar.orNull
-                )
-            }
+    protected val gradleCompileTaskProvider: Provider<GradleCompileTaskProvider> = objects
+        .property(
+            objects.newInstance<GradleCompileTaskProvider>(project.gradle, this, project)
         )
 
-    // Moved creation here to not violate Gradle configuration cache as [compilerRunner] method is called
-    // at execution time
-    // by lazy is added so properties of task extending this one are captured - required for incremental
-    // compilation
     @get:Internal
-    protected val gradleCompileTaskProvider by lazy {
-        GradleCompileTaskProvider(this)
-    }
-
-    internal open fun compilerRunner(
-        javaExecutable: File,
-        jdkToolsJar: File?
-    ): GradleCompilerRunner = GradleCompilerRunner(
-        gradleCompileTaskProvider,
-        javaExecutable,
-        jdkToolsJar
-    )
+    internal open val compilerRunner: Provider<GradleCompilerRunner> =
+        objects.propertyWithConvention(
+            gradleCompileTaskProvider.map {
+                GradleCompilerRunner(it, null, normalizedKotlinDaemonJvmArguments.orNull)
+            }
+        )
 
     private val systemPropertiesService = CompilerSystemPropertiesService.registerIfAbsent(project.gradle)
 
     @TaskAction
-    fun execute(inputs: IncrementalTaskInputs) {
-        systemPropertiesService.get().startIntercept()
-        CompilerSystemProperties.KOTLIN_COMPILER_ENVIRONMENT_KEEPALIVE_PROPERTY.value = "true"
+    fun execute(inputChanges: InputChanges) {
+        metrics.measure(BuildTime.GRADLE_TASK_ACTION) {
+            systemPropertiesService.get().startIntercept()
+            CompilerSystemProperties.KOTLIN_COMPILER_ENVIRONMENT_KEEPALIVE_PROPERTY.value = "true"
 
-        // If task throws exception, but its outputs are changed during execution,
-        // then Gradle forces next build to be non-incremental (see Gradle's DefaultTaskArtifactStateRepository#persistNewOutputs)
-        // To prevent this, we backup outputs before incremental build and restore when exception is thrown
-        val outputsBackup: TaskOutputsBackup? =
-            if (isIncrementalCompilationEnabled() && inputs.isIncremental)
-                metrics.measure(BuildTime.BACKUP_OUTPUT) {
-                    TaskOutputsBackup(allOutputFiles())
-                }
-            else null
+            // If task throws exception, but its outputs are changed during execution,
+            // then Gradle forces next build to be non-incremental (see Gradle's DefaultTaskArtifactStateRepository#persistNewOutputs)
+            // To prevent this, we backup outputs before incremental build and restore when exception is thrown
+            val outputsBackup: TaskOutputsBackup? =
+                if (isIncrementalCompilationEnabled() && inputChanges.isIncremental)
+                    metrics.measure(BuildTime.BACKUP_OUTPUT) {
+                        TaskOutputsBackup(allOutputFiles())
+                    }
+                else null
 
-        if (!isIncrementalCompilationEnabled()) {
-            clearLocalState("IC is disabled")
-        } else if (!inputs.isIncremental) {
-            clearLocalState("Task cannot run incrementally")
-        }
-
-        try {
-            executeImpl(inputs)
-        } catch (t: Throwable) {
-            if (outputsBackup != null) {
-                metrics.measure(BuildTime.RESTORE_OUTPUT_FROM_BACKUP) {
-                    outputsBackup.restoreOutputs()
-                }
+            if (!isIncrementalCompilationEnabled()) {
+                clearLocalState("IC is disabled")
+            } else if (!inputChanges.isIncremental) {
+                clearLocalState("Task cannot run incrementally")
             }
-            throw t
+
+            try {
+                executeImpl(inputChanges)
+                metrics.measure(BuildTime.CALCULATE_OUTPUT_SIZE) {
+                    metrics.addMetric(
+                        BuildPerformanceMetric.SNAPSHOT_SIZE,
+                        taskBuildDirectory.file("build-history.bin").get().asFile.length() +
+                                taskBuildDirectory.file("last-build.bin").get().asFile.length() +
+                                taskBuildDirectory.file("abi-snapshot.bin").get().asFile.length()
+                    )
+                    metrics.addMetric(BuildPerformanceMetric.OUTPUT_SIZE,
+                                      taskBuildDirectory.dir("caches-jvm").get().asFileTree.files.filter { it.isFile }.map { it.length() }
+                                          .sum()
+                    )
+                }
+            } catch (t: Throwable) {
+                if (outputsBackup != null) {
+                    metrics.measure(BuildTime.RESTORE_OUTPUT_FROM_BACKUP) {
+                        outputsBackup.restoreOutputs()
+                    }
+                }
+                throw t
+            }
         }
     }
 
@@ -317,13 +373,21 @@ abstract class AbstractKotlinCompile<T : CommonCompilerArguments> : AbstractKotl
 
     private val projectDir = project.rootProject.projectDir
 
-    private fun executeImpl(inputs: IncrementalTaskInputs) {
+    @get:Internal
+    protected open val incrementalProps: List<FileCollection>
+        get() = listOfNotNull(
+            stableSources,
+            classpath,
+            commonSourceSet
+        )
+
+    private fun executeImpl(inputChanges: InputChanges) {
         val sourceRoots = getSourceRoots()
         val allKotlinSources = sourceRoots.kotlinSourceFiles
 
         logger.kotlinDebug { "All kotlin sources: ${allKotlinSources.pathsAsStringRelativeTo(projectDir)}" }
 
-        if (!inputs.isIncremental && skipCondition()) {
+        if (!inputChanges.isIncremental && skipCondition()) {
             // Skip running only if non-incremental run. Otherwise, we may need to do some cleanup.
             logger.kotlinDebug { "No Kotlin files found, skipping Kotlin compiler task" }
             return
@@ -332,7 +396,33 @@ abstract class AbstractKotlinCompile<T : CommonCompilerArguments> : AbstractKotl
         sourceRoots.log(this.name, logger)
         val args = prepareCompilerArguments()
         taskBuildDirectory.get().asFile.mkdirs()
-        callCompilerAsync(args, sourceRoots, ChangedFiles(inputs))
+        callCompilerAsync(
+            args,
+            sourceRoots,
+            getChangedFiles(inputChanges, incrementalProps)
+        )
+    }
+
+    protected fun getChangedFiles(
+        inputChanges: InputChanges,
+        incrementalProps: List<FileCollection>
+    ) = if (!inputChanges.isIncremental) {
+        ChangedFiles.Unknown()
+    } else {
+        incrementalProps
+            .fold(mutableListOf<File>() to mutableListOf<File>()) { (modified, removed), prop ->
+                inputChanges.getFileChanges(prop).forEach {
+                    when (it.changeType) {
+                        ChangeType.ADDED, ChangeType.MODIFIED -> modified.add(it.file)
+                        ChangeType.REMOVED -> removed.add(it.file)
+                        else -> Unit
+                    }
+                }
+                modified to removed
+            }
+            .run {
+                ChangedFiles.Known(first, second)
+            }
     }
 
     @Internal
@@ -360,11 +450,6 @@ abstract class AbstractKotlinCompile<T : CommonCompilerArguments> : AbstractKotl
             compilerArgumentsConfigurationFlags(defaultsOnly, ignoreClasspathResolutionErrors)
         )
     }
-
-    protected fun hasFilesInTaskBuildDirectory(): Boolean {
-        val taskBuildDir = taskBuildDirectory.get().asFile
-        return taskBuildDir.walk().any { it != taskBuildDir && it.isFile }
-    }
 }
 
 open class KotlinCompileArgumentsProvider<T : AbstractKotlinCompile<out CommonCompilerArguments>>(taskProvider: T) {
@@ -372,8 +457,9 @@ open class KotlinCompileArgumentsProvider<T : AbstractKotlinCompile<out CommonCo
     val coroutines: Provider<Coroutines> = taskProvider.coroutines
     val logger: Logger = taskProvider.logger
     val isMultiplatform: Boolean = taskProvider.multiPlatformEnabled.get()
-    val pluginClasspath: FileCollection = taskProvider.pluginClasspath
-    val pluginOptions: CompilerPluginOptions = taskProvider.pluginOptions
+    private val pluginData = taskProvider.kotlinPluginData?.orNull
+    val pluginClasspath: FileCollection = listOfNotNull(taskProvider.pluginClasspath, pluginData?.classpath).reduce(FileCollection::plus)
+    val pluginOptions: CompilerPluginOptions = listOfNotNull(taskProvider.pluginOptions, pluginData?.options).reduce(CompilerPluginOptions::plus)
 }
 
 class KotlinJvmCompilerArgumentsProvider
@@ -394,9 +480,93 @@ internal inline val <reified T : Task> T.thisTaskProvider: TaskProvider<out T>
 @CacheableTask
 abstract class KotlinCompile @Inject constructor(
     override val kotlinOptions: KotlinJvmOptions
-) : AbstractKotlinCompile<K2JVMCompilerArguments>(), KotlinJvmCompile {
+) : AbstractKotlinCompile<K2JVMCompilerArguments>(),
+    KotlinJvmCompile,
+    UsesKotlinJavaToolchain {
 
-    class Configurator(kotlinCompilation: KotlinCompilationData<*>) : AbstractKotlinCompile.Configurator<KotlinCompile>(kotlinCompilation) {
+    internal open class Configurator<T : KotlinCompile>(
+        kotlinCompilation: KotlinCompilationData<*>,
+        private val properties: PropertiesProvider
+    ) : AbstractKotlinCompile.Configurator<T>(kotlinCompilation) {
+
+        companion object {
+            private const val TRANSFORMS_REGISTERED = "_kgp_internal_kotlin_compile_transforms_registered"
+
+            val ARTIFACT_TYPE_ATTRIBUTE: Attribute<String> = Attribute.of("artifactType", String::class.java)
+            private const val DIRECTORY_ARTIFACT_TYPE = "directory"
+            private const val JAR_ARTIFACT_TYPE = "jar"
+            const val CLASSPATH_ENTRY_SNAPSHOT_ARTIFACT_TYPE = "classpath-entry-snapshot"
+        }
+
+        /**
+         * Prepares for configuration of the task. This method must be called during build configuration, not during task configuration
+         * (which typically happens after build configuration). The reason is that some actions must be performed early (e.g., creating
+         * configurations should be done early to avoid issues with composite builds (https://issuetracker.google.com/183952598)).
+         */
+        fun runAtConfigurationTime(taskProvider: TaskProvider<T>, project: Project) {
+            if (properties.useClasspathSnapshot) {
+                registerTransformsOnce(project)
+                project.configurations.create(classpathSnapshotConfigurationName(taskProvider.name)).apply {
+                    project.dependencies.add(name, project.files(project.provider { taskProvider.get().classpath }))
+                }
+            }
+        }
+
+        private fun registerTransformsOnce(project: Project) {
+            if (project.extensions.extraProperties.has(TRANSFORMS_REGISTERED)) {
+                return
+            }
+            project.extensions.extraProperties[TRANSFORMS_REGISTERED] = true
+
+            project.dependencies.registerTransform(ClasspathEntrySnapshotTransform::class.java) {
+                it.from.attribute(ARTIFACT_TYPE_ATTRIBUTE, JAR_ARTIFACT_TYPE)
+                it.to.attribute(ARTIFACT_TYPE_ATTRIBUTE, CLASSPATH_ENTRY_SNAPSHOT_ARTIFACT_TYPE)
+            }
+            project.dependencies.registerTransform(ClasspathEntrySnapshotTransform::class.java) {
+                it.from.attribute(ARTIFACT_TYPE_ATTRIBUTE, DIRECTORY_ARTIFACT_TYPE)
+                it.to.attribute(ARTIFACT_TYPE_ATTRIBUTE, CLASSPATH_ENTRY_SNAPSHOT_ARTIFACT_TYPE)
+            }
+        }
+
+        private fun classpathSnapshotConfigurationName(taskName: String) = "_kgp_internal_${taskName}_classpath_snapshot"
+
+        override fun configure(task: T) {
+            super.configure(task)
+
+            val compileJavaTaskProvider = when (compilation) {
+                is KotlinJvmCompilation -> compilation.compileJavaTaskProvider
+                is KotlinJvmAndroidCompilation -> compilation.compileJavaTaskProvider
+                is KotlinWithJavaCompilation -> compilation.compileJavaTaskProvider
+                else -> null
+            }
+
+            if (compileJavaTaskProvider != null) {
+                task.associatedJavaCompileTaskTargetCompatibility.set(
+                    compileJavaTaskProvider.map { it.targetCompatibility }
+                )
+                task.associatedJavaCompileTaskSources.from(
+                    compileJavaTaskProvider.map { javaTask ->
+                        javaTask.source
+                    }
+                )
+                task.associatedJavaCompileTaskName.set(
+                    compileJavaTaskProvider.map { it.name }
+                )
+            }
+            task.moduleName.set(task.project.provider {
+                task.kotlinOptions.moduleName ?: task.parentKotlinOptionsImpl.orNull?.moduleName ?: compilation.moduleName
+            })
+
+            if (properties.useClasspathSnapshot) {
+                val classpathSnapshot = task.project.configurations.getByName(classpathSnapshotConfigurationName(task.name))
+                task.classpathSnapshotProperties.classpathSnapshot.from(
+                    classpathSnapshot.incoming.artifactView {
+                        it.attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, CLASSPATH_ENTRY_SNAPSHOT_ARTIFACT_TYPE)
+                    }.files
+                )
+                task.classpathSnapshotProperties.classpathSnapshotDir.value(getClasspathSnapshotDir(task)).disallowChanges()
+            }
+        }
     }
 
     @get:Internal
@@ -426,12 +596,62 @@ abstract class KotlinCompile @Inject constructor(
             logger.kotlinDebug { "Set $this.usePreciseJavaTracking=$value" }
         }
 
+    @get:Nested
+    abstract val classpathSnapshotProperties: ClasspathSnapshotProperties
+
+    /** Properties related to the `kotlin.incremental.useClasspathSnapshot` feature. */
+    abstract class ClasspathSnapshotProperties {
+        @get:Input
+        abstract val useClasspathSnapshot: Property<Boolean>
+
+        @get:Classpath
+        @get:Incremental
+        @get:Optional // Set if useClasspathSnapshot == true
+        abstract val classpathSnapshot: ConfigurableFileCollection
+
+        @get:OutputDirectory
+        @get:Optional // Set if useClasspathSnapshot == true
+        abstract val classpathSnapshotDir: DirectoryProperty
+    }
+
+    @get:Internal
+    internal val defaultKotlinJavaToolchain: Provider<DefaultKotlinJavaToolchain> = objects
+        .propertyWithNewInstance(
+            project.gradle,
+            { this }
+        )
+
+    final override val kotlinJavaToolchainProvider: Provider<KotlinJavaToolchain> = defaultKotlinJavaToolchain.cast()
+
+    @get:Internal
+    override val compilerRunner: Provider<GradleCompilerRunner> = objects.propertyWithConvention(
+        // From Gradle 6.6 better to replace flatMap with provider.zip()
+        defaultKotlinJavaToolchain.flatMap { toolchain ->
+            objects.property(gradleCompileTaskProvider.map {
+                GradleCompilerRunner(
+                    it,
+                    toolchain.currentJvmJdkToolsJar.orNull,
+                    normalizedKotlinDaemonJvmArguments.orNull
+                )
+            })
+        }
+    )
+
+    @get:Internal
+    internal abstract val associatedJavaCompileTaskTargetCompatibility: Property<String>
+
+    @get:Internal
+    internal abstract val associatedJavaCompileTaskSources: ConfigurableFileCollection
+
+    @get:Internal
+    internal abstract val associatedJavaCompileTaskName: Property<String>
+
+    @get:Internal
+    internal abstract val jvmTargetValidationMode: Property<PropertiesProvider.JvmTargetValidationMode>
+
     init {
         incremental = true
     }
-
-    override fun findKotlinCompilerClasspath(project: Project): List<File> =
-        findKotlinJvmCompilerClasspath(project)
 
     override fun createCompilerArgs(): K2JVMCompilerArguments =
         K2JVMCompilerArguments()
@@ -443,6 +663,11 @@ abstract class KotlinCompile @Inject constructor(
                 ignoreClasspathResolutionErrors
             )
         )
+
+        // This method could be called on configuration phase to calculate `filteredArgumentsMap` property
+        if (state.executing) {
+            defaultKotlinJavaToolchain.get().updateJvmTarget(this, args)
+        }
     }
 
     @get:Internal
@@ -450,20 +675,34 @@ abstract class KotlinCompile @Inject constructor(
         KotlinJvmCompilerArgumentsContributor(KotlinJvmCompilerArgumentsProvider(this))
     }
 
+    override val incrementalProps: List<FileCollection>
+        get() = super.incrementalProps + listOf(classpathSnapshotProperties.classpathSnapshot)
+
     override fun getSourceRoots(): SourceRoots.ForJvm = jvmSourceRoots
 
     override fun callCompilerAsync(args: K2JVMCompilerArguments, sourceRoots: SourceRoots, changedFiles: ChangedFiles) {
         sourceRoots as SourceRoots.ForJvm
+
+        validateKotlinAndJavaHasSameTargetCompatibility(args)
 
         val messageCollector = GradlePrintingMessageCollector(logger, args.allWarningsAsErrors)
         val outputItemCollector = OutputItemsCollectorImpl()
         val compilerRunner = compilerRunner.get()
 
         val icEnv = if (isIncrementalCompilationEnabled()) {
+            val classpathChanges = when {
+                !classpathSnapshotProperties.useClasspathSnapshot.get() -> ClasspathChanges.NotAvailable.ClasspathSnapshotIsDisabled
+                else -> when (changedFiles) {
+                    is ChangedFiles.Known -> getClasspathChanges()
+                    is ChangedFiles.Unknown -> ClasspathChanges.NotAvailable.ForNonIncrementalRun
+                    is ChangedFiles.Dependencies -> error("Unexpected type: ${changedFiles.javaClass.name}")
+                }
+            }
             logger.info(USING_JVM_INCREMENTAL_COMPILATION_MESSAGE)
             IncrementalCompilationEnvironment(
-                if (hasFilesInTaskBuildDirectory()) changedFiles else ChangedFiles.Unknown(),
-                taskBuildDirectory.get().asFile,
+                changedFiles = changedFiles,
+                classpathChanges = classpathChanges,
+                workingDir = taskBuildDirectory.get().asFile,
                 usePreciseJavaTracking = usePreciseJavaTracking,
                 disableMultiModuleIC = disableMultiModuleIC,
                 multiModuleICSettings = multiModuleICSettings
@@ -471,20 +710,53 @@ abstract class KotlinCompile @Inject constructor(
         } else null
 
         val environment = GradleCompilerEnvironment(
-            computedCompilerClasspath, messageCollector, outputItemCollector,
+            defaultCompilerClasspath, messageCollector, outputItemCollector,
             outputFiles = allOutputFiles(),
             reportingSettings = reportingSettings,
             incrementalCompilationEnvironment = icEnv,
             kotlinScriptExtensions = sourceFilesExtensions.get().toTypedArray()
         )
         compilerRunner.runJvmCompilerAsync(
-            sourceRoots.kotlinSourceFiles,
+            sourceRoots.kotlinSourceFiles.files.toList(),
             commonSourceSet.toList(),
             sourceRoots.javaSourceRoots,
             javaPackagePrefix,
             args,
-            environment
+            environment,
+            defaultKotlinJavaToolchain.get().providedJvm.get().javaHome
         )
+
+        with(classpathSnapshotProperties) {
+            if (isIncrementalCompilationEnabled() && useClasspathSnapshot.get()) {
+                copyClasspathSnapshotFilesToDir(classpathSnapshot.files.toList(), classpathSnapshotDir.get().asFile)
+            }
+        }
+    }
+
+    private fun validateKotlinAndJavaHasSameTargetCompatibility(args: K2JVMCompilerArguments) {
+        if (!associatedJavaCompileTaskSources.isEmpty) {
+            associatedJavaCompileTaskTargetCompatibility.orNull?.let { targetCompatibility ->
+                val normalizedJavaTarget = when (targetCompatibility) {
+                    "6" -> "1.6"
+                    "7" -> "1.7"
+                    "8" -> "1.8"
+                    "1.9" -> "9"
+                    else -> targetCompatibility
+                }
+
+                if (normalizedJavaTarget != args.jvmTarget) {
+                    val javaTaskName = associatedJavaCompileTaskName.get()
+                    val errorMessage = "'$javaTaskName' task (current target is $targetCompatibility) and " +
+                            "'$name' task (current target is ${args.jvmTarget}) " +
+                            "jvm target compatibility should be set to the same Java version."
+                    when (jvmTargetValidationMode.get()) {
+                        PropertiesProvider.JvmTargetValidationMode.ERROR -> throw GradleException(errorMessage)
+                        PropertiesProvider.JvmTargetValidationMode.WARNING -> logger.warn(errorMessage)
+                        else -> Unit
+                    }
+                }
+            }
+        }
     }
 
     @get:Input
@@ -526,57 +798,98 @@ abstract class KotlinCompile @Inject constructor(
         sourceRootsContainer.add(*sources)
         return super.source(*sources)
     }
+
+    private fun getClasspathChanges(): ClasspathChanges {
+        val currentSnapshotFiles = classpathSnapshotProperties.classpathSnapshot.files.toList()
+        val previousSnapshotFiles = getClasspathSnapshotFilesInDir(classpathSnapshotProperties.classpathSnapshotDir.get().asFile)
+
+        val currentSnapshot = ClasspathSnapshotSerializer.load(currentSnapshotFiles)
+        val previousSnapshot = ClasspathSnapshotSerializer.load(previousSnapshotFiles)
+
+        return ClasspathChangesComputer.getChanges(currentSnapshot, previousSnapshot)
+    }
+
+    /**
+     * Copies classpath snapshot files to the given directory.
+     *
+     * To preserve their order, we put them in subdirectories with names being their indices in the original list, as shown below:
+     *     classpathSnapshotDir/0/snapshotFileName
+     *     classpathSnapshotDir/1/snapshotFileName
+     *     ...
+     *     classpathSnapshotDir/N-1/snapshotFileName
+     */
+    private fun copyClasspathSnapshotFilesToDir(classpathSnapshotFiles: List<File>, classpathSnapshotDir: File) {
+        classpathSnapshotDir.deleteRecursively()
+        classpathSnapshotDir.mkdirs()
+        for ((index, file) in classpathSnapshotFiles.withIndex()) {
+            file.copyTo(File("$classpathSnapshotDir/$index/$CLASSPATH_ENTRY_SNAPSHOT_FILE_NAME"), overwrite = true)
+        }
+    }
+
+    /**
+     * Returns all classpath snapshot files in the given directory, sorted by their original indices (the subdirectories' names).
+     *
+     * See [copyClasspathSnapshotFilesToDir] for the structure of the classpath snapshot directory.
+     */
+    private fun getClasspathSnapshotFilesInDir(classpathSnapshotDir: File): List<File> {
+        val subDirs = classpathSnapshotDir.listFiles() ?: return emptyList()
+        return subDirs.toList().sortedBy { it.name.toInt() }.map { File(it, CLASSPATH_ENTRY_SNAPSHOT_FILE_NAME) }
+    }
 }
 
 @CacheableTask
 internal abstract class KotlinCompileWithWorkers @Inject constructor(
     kotlinOptions: KotlinJvmOptions,
-    private val workerExecutor: WorkerExecutor
+    workerExecutor: WorkerExecutor
 ) : KotlinCompile(kotlinOptions) {
-
-    override fun compilerRunner(
-        javaExecutable: File,
-        jdkToolsJar: File?
-    ) = GradleCompilerRunnerWithWorkers(
-        gradleCompileTaskProvider,
-        javaExecutable,
-        jdkToolsJar,
-        workerExecutor
-    )
+    override val compilerRunner: Provider<GradleCompilerRunner> =
+        defaultKotlinJavaToolchain.flatMap { toolchain ->
+            objects.property(gradleCompileTaskProvider.map {
+                GradleCompilerRunnerWithWorkers(
+                    it,
+                    toolchain.currentJvmJdkToolsJar.orNull,
+                    normalizedKotlinDaemonJvmArguments.orNull,
+                    workerExecutor
+                ) as GradleCompilerRunner
+            })
+        }
 }
 
 @CacheableTask
 internal abstract class Kotlin2JsCompileWithWorkers @Inject constructor(
     kotlinOptions: KotlinJsOptions,
     objectFactory: ObjectFactory,
-    private val workerExecutor: WorkerExecutor
+    workerExecutor: WorkerExecutor
 ) : Kotlin2JsCompile(kotlinOptions, objectFactory) {
-
-    override fun compilerRunner(
-        javaExecutable: File,
-        jdkToolsJar: File?
-    ) = GradleCompilerRunnerWithWorkers(
-        gradleCompileTaskProvider,
-        javaExecutable,
-        jdkToolsJar,
-        workerExecutor
-    )
+    override val compilerRunner: Provider<GradleCompilerRunner> =
+        objects.propertyWithConvention(
+            gradleCompileTaskProvider.map {
+                GradleCompilerRunnerWithWorkers(
+                    it,
+                    null,
+                    normalizedKotlinDaemonJvmArguments.orNull,
+                    workerExecutor
+                ) as GradleCompilerRunner
+            }
+        )
 }
 
 @CacheableTask
 internal abstract class KotlinCompileCommonWithWorkers @Inject constructor(
     kotlinOptions: KotlinMultiplatformCommonOptions,
-    private val workerExecutor: WorkerExecutor
+    workerExecutor: WorkerExecutor
 ) : KotlinCompileCommon(kotlinOptions) {
-    override fun compilerRunner(
-        javaExecutable: File,
-        jdkToolsJar: File?
-    ) = GradleCompilerRunnerWithWorkers(
-        gradleCompileTaskProvider,
-        javaExecutable,
-        jdkToolsJar,
-        workerExecutor
-    )
+    override val compilerRunner: Provider<GradleCompilerRunner> =
+        objects.propertyWithConvention(
+            gradleCompileTaskProvider.map {
+                GradleCompilerRunnerWithWorkers(
+                    it,
+                    null,
+                    normalizedKotlinDaemonJvmArguments.orNull,
+                    workerExecutor
+                ) as GradleCompilerRunner
+            }
+        )
 }
 
 @CacheableTask
@@ -589,7 +902,8 @@ abstract class Kotlin2JsCompile @Inject constructor(
         incremental = true
     }
 
-    open class Configurator<T : Kotlin2JsCompile>(compilation: KotlinCompilationData<*>) : AbstractKotlinCompile.Configurator<T>(compilation) {
+    open class Configurator<T : Kotlin2JsCompile>(compilation: KotlinCompilationData<*>) :
+        AbstractKotlinCompile.Configurator<T>(compilation) {
 
         override fun configure(task: T) {
             super.configure(task)
@@ -607,6 +921,25 @@ abstract class Kotlin2JsCompile @Inject constructor(
                     }
                 }
             ).disallowChanges()
+            val libraryCacheService = task.project.rootProject.gradle.sharedServices.registerIfAbsent(
+                "${LibraryFilterCachingService::class.java.canonicalName}_${LibraryFilterCachingService::class.java.classLoader.hashCode()}",
+                LibraryFilterCachingService::class.java
+            ) {}
+            task.libraryCache.set(libraryCacheService).also { task.libraryCache.disallowChanges() }
+        }
+    }
+
+    internal abstract class LibraryFilterCachingService : BuildService<BuildServiceParameters.None>, AutoCloseable {
+        internal data class LibraryFilterCacheKey(val dependency: File, val irEnabled: Boolean, val preIrDisabled: Boolean)
+
+        private val cache = ConcurrentHashMap<LibraryFilterCacheKey, Boolean>()
+
+        fun getOrCompute(key: LibraryFilterCacheKey, compute: (File) -> Boolean) = cache.computeIfAbsent(key) {
+            compute(it.dependency)
+        }
+
+        override fun close() {
+            cache.clear()
         }
     }
 
@@ -615,9 +948,21 @@ abstract class Kotlin2JsCompile @Inject constructor(
 
     override fun isIncrementalCompilationEnabled(): Boolean =
         when {
-            "-Xir-produce-js" in kotlinOptions.freeCompilerArgs -> false
-            "-Xir-produce-klib-dir" in kotlinOptions.freeCompilerArgs -> false // TODO: it's not supported yet
-            "-Xir-produce-klib-file" in kotlinOptions.freeCompilerArgs -> incrementalJsKlib
+            "-Xir-produce-js" in kotlinOptions.freeCompilerArgs -> {
+                false
+            }
+            "-Xir-produce-klib-dir" in kotlinOptions.freeCompilerArgs -> {
+                KotlinBuildStatsService.applyIfInitialised {
+                    it.report(BooleanMetrics.JS_KLIB_INCREMENTAL, incrementalJsKlib)
+                }
+                incrementalJsKlib
+            }
+            "-Xir-produce-klib-file" in kotlinOptions.freeCompilerArgs -> {
+                KotlinBuildStatsService.applyIfInitialised {
+                    it.report(BooleanMetrics.JS_KLIB_INCREMENTAL, incrementalJsKlib)
+                }
+                incrementalJsKlib
+            }
             else -> incremental
         }
 
@@ -633,9 +978,6 @@ abstract class Kotlin2JsCompile @Inject constructor(
     @get:OutputFile
     @get:Optional
     abstract val optionalOutputFile: RegularFileProperty
-
-    override fun findKotlinCompilerClasspath(project: Project): List<File> =
-        findKotlinJsCompilerClasspath(project)
 
     override fun createCompilerArgs(): K2JSCompilerArguments =
         K2JSCompilerArguments()
@@ -661,6 +1003,8 @@ abstract class Kotlin2JsCompile @Inject constructor(
     override fun getSourceRoots() = SourceRoots.KotlinOnly.create(getSource(), sourceFilesExtensions.get())
 
     @get:InputFiles
+    @get:IgnoreEmptyDirectories
+    @get:Incremental
     @get:Optional
     @get:PathSensitive(PathSensitivity.RELATIVE)
     internal val friendDependencies: FileCollection = objectFactory
@@ -675,6 +1019,7 @@ abstract class Kotlin2JsCompile @Inject constructor(
 
     @Suppress("unused")
     @get:InputFiles
+    @get:IgnoreEmptyDirectories
     @get:Optional
     @get:PathSensitive(PathSensitivity.RELATIVE)
     internal val sourceMapBaseDirs: FileCollection?
@@ -698,14 +1043,23 @@ abstract class Kotlin2JsCompile @Inject constructor(
             "-Xir-produce-klib-file"
         ).any(freeCompilerArgs::contains)
 
+    private val File.asLibraryFilterCacheKey: LibraryFilterCachingService.LibraryFilterCacheKey
+        get() = LibraryFilterCachingService.LibraryFilterCacheKey(
+            this,
+            irEnabled = kotlinOptions.isIrBackendEnabled(),
+            preIrDisabled = kotlinOptions.isPreIrBackendDisabled()
+        )
+
     // Kotlin/JS can operate in 3 modes:
     //  1) purely pre-IR backend
     //  2) purely IR backend
     //  3) hybrid pre-IR and IR backend. Can only accept libraries with both JS and IR parts.
-    private val libraryFilter: (File) -> Boolean
+    private val libraryFilterBody: (File) -> Boolean
         get() = if (kotlinOptions.isIrBackendEnabled()) {
             if (kotlinOptions.isPreIrBackendDisabled()) {
-                ::isKotlinLibrary
+                //::isKotlinLibrary
+                // Workaround for KT-47797
+                { isKotlinLibrary(it) }
             } else {
                 ::isHybridKotlinJsLibrary
             }
@@ -714,11 +1068,19 @@ abstract class Kotlin2JsCompile @Inject constructor(
         }
 
     @get:Internal
-    internal val absolutePathProvider = project.projectDir.absolutePath
+    internal abstract val libraryCache: Property<LibraryFilterCachingService>
 
     @get:Internal
-    override val kotlinJavaToolchainProvider: Provider<KotlinJavaToolchainProvider>
-        get() = super.kotlinJavaToolchainProvider
+    protected val libraryFilter: (File) -> Boolean
+        get() = { file ->
+            libraryCache.get().getOrCompute(file.asLibraryFilterCacheKey, libraryFilterBody)
+        }
+
+    @get:Internal
+    internal val absolutePathProvider = project.projectDir.absolutePath
+
+    override val incrementalProps: List<FileCollection>
+        get() = super.incrementalProps + listOf(friendDependencies)
 
     override fun callCompilerAsync(args: K2JSCompilerArguments, sourceRoots: SourceRoots, changedFiles: ChangedFiles) {
         sourceRoots as SourceRoots.KotlinOnly
@@ -755,18 +1117,52 @@ abstract class Kotlin2JsCompile @Inject constructor(
         val icEnv = if (isIncrementalCompilationEnabled()) {
             logger.info(USING_JS_INCREMENTAL_COMPILATION_MESSAGE)
             IncrementalCompilationEnvironment(
-                if (hasFilesInTaskBuildDirectory()) changedFiles else ChangedFiles.Unknown(),
+                changedFiles,
+                ClasspathChanges.NotAvailable.ForJSCompiler,
                 taskBuildDirectory.get().asFile,
                 multiModuleICSettings = multiModuleICSettings
             )
         } else null
 
         val environment = GradleCompilerEnvironment(
-            computedCompilerClasspath, messageCollector, outputItemCollector,
+            defaultCompilerClasspath, messageCollector, outputItemCollector,
             outputFiles = allOutputFiles(),
             reportingSettings = reportingSettings,
             incrementalCompilationEnvironment = icEnv
         )
-        compilerRunner.runJsCompilerAsync(sourceRoots.kotlinSourceFiles, commonSourceSet.toList(), args, environment)
+        compilerRunner.runJsCompilerAsync(
+            sourceRoots.kotlinSourceFiles.files.toList(),
+            commonSourceSet.toList(),
+            args,
+            environment
+        )
     }
 }
+
+data class KotlinCompilerPluginData(
+    @get:Classpath
+    val classpath: FileCollection,
+
+    @get:Internal
+    val options: CompilerPluginOptions,
+
+    /**
+     * Used only for Up-to-date checks
+     */
+    @get:Nested
+    val inputsOutputsState: InputsOutputsState
+) {
+    data class InputsOutputsState(
+        @get:Input
+        val inputs: Map<String, String>,
+
+        @get:InputFiles
+        @get:IgnoreEmptyDirectories
+        @get:PathSensitive(PathSensitivity.RELATIVE)
+        val inputFiles: Set<File>,
+
+        @get:OutputFiles
+        val outputFiles: Set<File>
+    )
+}
+

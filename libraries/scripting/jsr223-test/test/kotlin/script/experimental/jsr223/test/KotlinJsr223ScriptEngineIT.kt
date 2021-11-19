@@ -8,7 +8,9 @@ package kotlin.script.experimental.jsr223.test
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 import org.junit.Assert
+import org.junit.Ignore
 import org.junit.Test
+import java.lang.management.ManagementFactory
 import javax.script.*
 import kotlin.script.experimental.jvmhost.jsr223.KotlinJsr223ScriptEngineImpl
 
@@ -70,6 +72,29 @@ class KotlinJsr223ScriptEngineIT {
         val res2 = engine.eval("x + 2")
         Assert.assertEquals(5, res2)
     }
+
+    @Test
+    @Ignore // Probably not possible to make it sensible on CI and with parallel run, so leaving it here for manual testing only
+    fun testMemory() {
+        val memoryMXBean = ManagementFactory.getMemoryMXBean()!!
+        var prevMem = memoryMXBean.getHeapMemoryUsage().getUsed()
+        for (i in 1..10) {
+            with(ScriptEngineManager().getEngineByExtension("kts")) {
+                val res1 = eval("val x = 3")
+                Assert.assertNull(res1)
+                val res2 = eval("x + 2")
+                Assert.assertEquals(5, res2)
+            }
+            System.gc()
+            val curMem = memoryMXBean.getHeapMemoryUsage().getUsed()
+            if (i > 3 && curMem > prevMem) {
+                Assert.assertTrue("Memory leak: iter: $i prev: $prevMem, cur: $curMem", (curMem - prevMem) < 1024*1024 )
+            }
+            println("${curMem/1024/1024}Mb")
+            prevMem = curMem
+        }
+    }
+
 
     @Test
     fun testIncomplete() {
@@ -174,6 +199,18 @@ obj
         Assert.assertNull(res1)
         val res2 = comp2.eval()
         Assert.assertEquals(5, res2)
+    }
+
+    @Test
+    fun testSimpleCompilableWithBindings() {
+        val engine = ScriptEngineManager().getEngineByExtension("kts")
+        engine.put("z", 33)
+        val comp = (engine as Compilable).compile("val x = 10 + bindings[\"z\"] as Int\nx + 20")
+        val res1 = comp.eval()
+        Assert.assertEquals(63, res1)
+        engine.put("z", 44)
+        val res2 = comp.eval()
+        Assert.assertEquals(74, res2)
     }
 
     @Test

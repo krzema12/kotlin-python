@@ -13,11 +13,15 @@ import org.jetbrains.kotlin.backend.common.phaser.namedUnitPhase
 import org.jetbrains.kotlin.backend.konan.*
 import org.jetbrains.kotlin.backend.konan.descriptors.GlobalHierarchyAnalysis
 import org.jetbrains.kotlin.backend.konan.lower.RedundantCoercionsCleaner
+import org.jetbrains.kotlin.backend.konan.lower.ReturnsInsertionLowering
 import org.jetbrains.kotlin.backend.konan.optimizations.*
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.ir.util.defaultType
+import org.jetbrains.kotlin.ir.util.isFunction
+import org.jetbrains.kotlin.ir.util.isReal
+import org.jetbrains.kotlin.ir.util.parentAsClass
 import org.jetbrains.kotlin.ir.visitors.*
 import org.jetbrains.kotlin.util.OperatorNameConventions
 import org.jetbrains.kotlin.utils.addToStdlib.cast
@@ -108,13 +112,20 @@ internal val buildDFGPhase = makeKonanModuleOpPhase(
         }
 )
 
-internal val devirtualizationPhase = makeKonanModuleOpPhase(
-        name = "Devirtualization",
-        description = "Devirtualization",
+internal val returnsInsertionPhase = makeKonanModuleOpPhase(
+        name = "ReturnsInsertion",
+        description = "Returns insertion for Unit functions",
+        prerequisite = setOf(autoboxPhase, coroutinesPhase, enumClassPhase),
+        op = { context, irModule -> irModule.files.forEach { ReturnsInsertionLowering(context).lower(it) } }
+)
+
+internal val devirtualizationAnalysisPhase = makeKonanModuleOpPhase(
+        name = "DevirtualizationAnalysis",
+        description = "Devirtualization analysis",
         prerequisite = setOf(buildDFGPhase),
-        op = { context, irModule ->
-            context.devirtualizationAnalysisResult = Devirtualization.run(
-                    irModule, context, context.moduleDFG!!, ExternalModulesDFG(emptyList(), emptyMap(), emptyMap(), emptyMap())
+        op = { context, _ ->
+            context.devirtualizationAnalysisResult = DevirtualizationAnalysis.run(
+                    context, context.moduleDFG!!, ExternalModulesDFG(emptyList(), emptyMap(), emptyMap(), emptyMap())
             )
         }
 )
@@ -137,7 +148,7 @@ internal val IrFunction.longName: String
 internal val dcePhase = makeKonanModuleOpPhase(
         name = "DCEPhase",
         description = "Dead code elimination",
-        prerequisite = setOf(devirtualizationPhase),
+        prerequisite = setOf(devirtualizationAnalysisPhase),
         op = { context, _ ->
             val externalModulesDFG = ExternalModulesDFG(emptyList(), emptyMap(), emptyMap(), emptyMap())
 
@@ -151,11 +162,11 @@ internal val dcePhase = makeKonanModuleOpPhase(
 
             val referencedFunctions = mutableSetOf<IrFunction>()
             callGraph.rootExternalFunctions.forEach {
-                if (!it.isGlobalInitializer)
+                if (!it.isTopLevelFieldInitializer)
                     referencedFunctions.add(it.irFunction ?: error("No IR for: $it"))
             }
             for (node in callGraph.directEdges.values) {
-                if (!node.symbol.isGlobalInitializer)
+                if (!node.symbol.isTopLevelFieldInitializer)
                     referencedFunctions.add(node.symbol.irFunction ?: error("No IR for: ${node.symbol}"))
                 node.callSites.forEach {
                     assert (!it.isVirtual) { "There should be no virtual calls in the call graph, but was: ${it.actualCallee}" }
@@ -220,10 +231,48 @@ internal val dcePhase = makeKonanModuleOpPhase(
         }
 )
 
+internal val removeRedundantCallsToFileInitializersPhase = makeKonanModuleOpPhase(
+        name = "RemoveRedundantCallsToFileInitializersPhase",
+        description = "Redundant file initializers calls removal",
+        prerequisite = setOf(devirtualizationAnalysisPhase),
+        op = { context, _ ->
+            val moduleDFG = context.moduleDFG!!
+            val externalModulesDFG = ExternalModulesDFG(emptyList(), emptyMap(), emptyMap(), emptyMap())
+
+            val callGraph = CallGraphBuilder(
+                    context, moduleDFG,
+                    externalModulesDFG,
+                    context.devirtualizationAnalysisResult!!,
+                    nonDevirtualizedCallSitesUnfoldFactor = Int.MAX_VALUE
+            ).build()
+
+            val rootSet = DevirtualizationAnalysis.computeRootSet(context, moduleDFG, externalModulesDFG)
+                    .mapNotNull { it.irFunction }
+                    .toSet()
+
+            FileInitializersOptimization.removeRedundantCalls(context, callGraph, rootSet)
+        }
+)
+
+internal val devirtualizationPhase = makeKonanModuleOpPhase(
+        name = "Devirtualization",
+        description = "Devirtualization",
+        prerequisite = setOf(buildDFGPhase, devirtualizationAnalysisPhase),
+        op = { context, irModule ->
+            val devirtualizedCallSites =
+                    context.devirtualizationAnalysisResult!!.devirtualizedCallSites
+                            .asSequence()
+                            .filter { it.key.irCallSite != null }
+                            .associate { it.key.irCallSite!! to it.value }
+            DevirtualizationAnalysis.devirtualize(irModule, context,
+                    ExternalModulesDFG(emptyList(), emptyMap(), emptyMap(), emptyMap()), devirtualizedCallSites)
+        }
+)
+
 internal val escapeAnalysisPhase = makeKonanModuleOpPhase(
         name = "EscapeAnalysis",
         description = "Escape analysis",
-        prerequisite = setOf(buildDFGPhase, devirtualizationPhase),
+        prerequisite = setOf(buildDFGPhase, devirtualizationAnalysisPhase),
         op = { context, _ ->
             val entryPoint = context.ir.symbols.entryPoint?.owner
             val externalModulesDFG = ExternalModulesDFG(emptyList(), emptyMap(), emptyMap(), emptyMap())
@@ -256,7 +305,7 @@ internal val escapeAnalysisPhase = makeKonanModuleOpPhase(
 internal val localEscapeAnalysisPhase = makeKonanModuleOpPhase(
         name = "LocalEscapeAnalysis",
         description = "Local escape analysis",
-        prerequisite = setOf(buildDFGPhase, devirtualizationPhase),
+        prerequisite = setOf(buildDFGPhase, devirtualizationAnalysisPhase),
         op = { context, _ ->
             LocalEscapeAnalysis.computeLifetimes(context, context.moduleDFG!!, context.lifetimes)
         }
@@ -291,6 +340,20 @@ internal val linkBitcodeDependenciesPhase = makeKonanModuleOpPhase(
         description = "Link bitcode dependencies",
         op = { context, _ -> linkBitcodeDependencies(context) }
 )
+
+internal val checkExternalCallsPhase = makeKonanModuleOpPhase(
+        name = "CheckExternalCalls",
+        description = "Check external calls",
+        op = { context, _ -> checkLlvmModuleExternalCalls(context) }
+)
+
+internal val rewriteExternalCallsCheckerGlobals = makeKonanModuleOpPhase(
+        name = "RewriteExternalCallsCheckerGlobals",
+        description = "Rewrite globals for external calls checker after optimizer run",
+        op = { context, _ -> addFunctionsListSymbolForChecker(context) }
+)
+
+
 
 internal val bitcodeOptimizationPhase = makeKonanModuleOpPhase(
         name = "BitcodeOptimization",

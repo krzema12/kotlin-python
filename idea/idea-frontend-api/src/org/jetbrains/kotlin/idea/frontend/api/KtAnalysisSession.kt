@@ -6,10 +6,13 @@
 package org.jetbrains.kotlin.idea.frontend.api
 
 import org.jetbrains.kotlin.idea.frontend.api.components.*
-import org.jetbrains.kotlin.idea.frontend.api.symbols.*
+import org.jetbrains.kotlin.idea.frontend.api.symbols.KtSymbol
+import org.jetbrains.kotlin.idea.frontend.api.symbols.KtSymbolProvider
+import org.jetbrains.kotlin.idea.frontend.api.symbols.KtSymbolProviderMixIn
 import org.jetbrains.kotlin.idea.frontend.api.symbols.pointers.KtSymbolPointer
 import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
-import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.psi.KtElement
+import org.jetbrains.kotlin.psi.KtFile
 
 /**
  * The entry point into all frontend-related work. Has the following contracts:
@@ -23,7 +26,7 @@ import org.jetbrains.kotlin.psi.*
  *
  * To create analysis session consider using [analyse]
  */
-abstract class KtAnalysisSession(final override val token: ValidityToken) : ValidityTokenOwner,
+public abstract class KtAnalysisSession(final override val token: ValidityToken) : ValidityTokenOwner,
     KtSmartCastProviderMixIn,
     KtCallResolverMixIn,
     KtDiagnosticProviderMixIn,
@@ -31,21 +34,28 @@ abstract class KtAnalysisSession(final override val token: ValidityToken) : Vali
     KtCompletionCandidateCheckerMixIn,
     KtSymbolDeclarationOverridesProviderMixIn,
     KtExpressionTypeProviderMixIn,
+    KtPsiTypeProviderMixIn,
+    KtJvmTypeMapperMixIn,
     KtTypeProviderMixIn,
     KtTypeInfoProviderMixIn,
     KtSymbolProviderMixIn,
     KtSymbolContainingDeclarationProviderMixIn,
+    KtSymbolInfoProviderMixIn,
     KtSubtypingComponentMixIn,
     KtExpressionInfoProviderMixIn,
+    KtCompileTimeConstantProviderMixIn,
     KtSymbolsMixIn,
     KtReferenceResolveMixIn,
     KtReferenceShortenerMixIn,
     KtSymbolDeclarationRendererMixIn,
-    KtVisibilityCheckerMixIn {
+    KtVisibilityCheckerMixIn,
+    KtMemberSymbolProviderMixin,
+    KtInheritorsProviderMixIn,
+    KtTypeCreatorMixIn {
 
     override val analysisSession: KtAnalysisSession get() = this
 
-    abstract fun createContextDependentCopy(originalKtFile: KtFile, fakeKtElement: KtElement): KtAnalysisSession
+    public abstract fun createContextDependentCopy(originalKtFile: KtFile, elementToReanalyze: KtElement): KtAnalysisSession
 
     internal val smartCastProvider: KtSmartCastProvider get() = smartCastProviderImpl
     protected abstract val smartCastProviderImpl: KtSmartCastProvider
@@ -80,6 +90,12 @@ abstract class KtAnalysisSession(final override val token: ValidityToken) : Vali
     internal val expressionTypeProvider: KtExpressionTypeProvider get() = expressionTypeProviderImpl
     protected abstract val expressionTypeProviderImpl: KtExpressionTypeProvider
 
+    internal val psiTypeProvider: KtPsiTypeProvider get() = psiTypeProviderImpl
+    protected abstract val psiTypeProviderImpl: KtPsiTypeProvider
+
+    internal val jvmTypeMapper: KtJvmTypeMapper get() = jvmTypeMapperImpl
+    protected abstract val jvmTypeMapperImpl: KtJvmTypeMapper
+
     internal val typeProvider: KtTypeProvider get() = typeProviderImpl
     protected abstract val typeProviderImpl: KtTypeProvider
 
@@ -92,6 +108,23 @@ abstract class KtAnalysisSession(final override val token: ValidityToken) : Vali
     internal val expressionInfoProvider: KtExpressionInfoProvider get() = expressionInfoProviderImpl
     protected abstract val expressionInfoProviderImpl: KtExpressionInfoProvider
 
+    internal val compileTimeConstantProvider: KtCompileTimeConstantProvider get() = compileTimeConstantProviderImpl
+    protected abstract val compileTimeConstantProviderImpl: KtCompileTimeConstantProvider
+
     internal val visibilityChecker: KtVisibilityChecker get() = visibilityCheckerImpl
     protected abstract val visibilityCheckerImpl: KtVisibilityChecker
+
+    internal val overrideInfoProvider: KtOverrideInfoProvider get() = overrideInfoProviderImpl
+    protected abstract val overrideInfoProviderImpl: KtOverrideInfoProvider
+
+    internal val inheritorsProvider: KtInheritorsProvider get() = inheritorsProviderImpl
+    protected abstract val inheritorsProviderImpl: KtInheritorsProvider
+
+    internal val symbolInfoProvider: KtSymbolInfoProvider get() = symbolInfoProviderImpl
+    protected abstract val symbolInfoProviderImpl: KtSymbolInfoProvider
+
+    @PublishedApi
+    internal val typesCreator: KtTypeCreator
+        get() = typesCreatorImpl
+    protected abstract val typesCreatorImpl: KtTypeCreator
 }

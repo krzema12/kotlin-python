@@ -33,6 +33,7 @@
 #include "ObjCInterop.h"
 #include "ObjCExportPrivate.h"
 #include "ObjCMMAPI.h"
+#include "StackTrace.hpp"
 #include "Types.h"
 #include "Mutex.hpp"
 
@@ -89,6 +90,8 @@ id allocWithZoneImp(Class self, SEL _cmd, void* zone) {
   id result = messenger(&s, _cmd, zone);
 
   auto* typeInfo = classData->typeInfo;
+
+  kotlin::CalledFromNativeGuard guard;
   ObjHolder holder;
   auto kotlinObj = AllocInstanceWithAssociatedObject(typeInfo, result, holder.slot());
 
@@ -117,7 +120,7 @@ BOOL _tryRetainImp(id self, SEL _cmd) {
     // TODO: Refactor to be more explicit. Instead of relying on an unhandled exception termination
     // (and effectively setting a global to alter its behavior), just call an appropriate termination
     // function by hand.
-    DisallowSourceInfo();
+    kotlin::DisallowSourceInfo();
     std::terminate();
   }
 }
@@ -126,12 +129,14 @@ void releaseImp(id self, SEL _cmd) {
   getBackRef(self)->releaseRef();
 }
 
-void releaseAsAssociatedObjectImp(id self, SEL _cmd) {
+void releaseAsAssociatedObjectImp(id self, SEL _cmd, ReleaseMode mode) {
   auto* classData = GetKotlinClassData(self);
 
   // This function is called by the GC. It made a decision to reclaim Kotlin object, and runs
   // deallocation hooks at the moment, including deallocation of the "associated object" ([self])
   // using the [super release] call below.
+
+  auto* backRef = getBackRef(self, classData);
 
   // The deallocation involves running [self dealloc] which can contain arbitrary code.
   // In particular, this code can retain and release [self]. Obj-C and Swift runtimes handle this
@@ -141,17 +146,24 @@ void releaseAsAssociatedObjectImp(id self, SEL _cmd) {
   // Generally retaining and releasing Kotlin object that is being deallocated would lead to
   // use-after-dispose and double-dispose problems (with unpredictable consequences) or to an assertion failure.
   // To workaround this, detach the back ref from the Kotlin object:
-  getBackRef(self, classData)->detach();
+  if (ReleaseModeHasDetach(mode)) {
+    backRef->detach();
+  } else {
+    // With Mark&Sweep this object should already have been detached earlier.
+    backRef->assertDetached();
+  }
+
   // So retain/release/etc. on [self] won't affect the Kotlin object, and an attempt to get
   // the reference to it (e.g. when calling Kotlin method on [self]) would crash.
   // The latter is generally ok, because by the time superclass dealloc gets launched, subclass state
   // should already be deinitialized, and Kotlin methods operate on the subclass.
-
-  // [super release]
-  Class clazz = classData->objcClass;
-  struct objc_super s = {self, clazz};
-  auto messenger = reinterpret_cast<void (*) (struct objc_super*, SEL _cmd)>(objc_msgSendSuper2);
-  messenger(&s, @selector(release));
+  if (ReleaseModeHasRelease(mode)) {
+    // [super release]
+    Class clazz = classData->objcClass;
+    struct objc_super s = {self, clazz};
+    auto messenger = reinterpret_cast<void (*) (struct objc_super*, SEL _cmd)>(objc_msgSendSuper2);
+    messenger(&s, @selector(release));
+  }
 }
 
 }
@@ -244,7 +256,7 @@ static void AddMethods(Class clazz, const struct ObjCMethodDescription* methods,
 static kotlin::SpinLock classCreationMutex;
 static int anonymousClassNextId = 0;
 
-static Class allocateClass(const KotlinObjCClassInfo* info) {
+NO_EXTERNAL_CALLS_CHECK static Class allocateClass(const KotlinObjCClassInfo* info) {
   Class superclass = Kotlin_Interop_getObjCClass(info->superclassName);
 
   if (info->exported) {
@@ -349,6 +361,7 @@ konan::AutoreleasePool::AutoreleasePool()
   : handle(objc_autoreleasePoolPush()) {}
 
 konan::AutoreleasePool::~AutoreleasePool() {
+  kotlin::ThreadStateGuard guard(kotlin::ThreadState::kNative);
   objc_autoreleasePoolPop(handle);
 }
 
@@ -357,10 +370,12 @@ void* Kotlin_objc_autoreleasePoolPush() {
 }
 
 void Kotlin_objc_autoreleasePoolPop(void* ptr) {
+  kotlin::ThreadStateGuard guard(kotlin::ThreadState::kNative);
   objc_autoreleasePoolPop(ptr);
 }
 
 id Kotlin_objc_allocWithZone(Class clazz) {
+  kotlin::ThreadStateGuard guard(kotlin::ThreadState::kNative);
   return objc_allocWithZone(clazz);
 }
 
@@ -369,6 +384,7 @@ id Kotlin_objc_retain(id ptr) {
 }
 
 void Kotlin_objc_release(id ptr) {
+  kotlin::ThreadStateGuard guard(kotlin::ThreadState::kNative);
   objc_release(ptr);
 }
 

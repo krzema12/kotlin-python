@@ -32,7 +32,7 @@ fun case_2() {
 class case_4 : ClassLevel3() {
 
     fun <T : Number?>T.case_4_1(): Boolean {
-        contract { <!ERROR_IN_CONTRACT_DESCRIPTION!>returns(false) implies (<!UNRESOLVED_LABEL!>this@case_4<!> !is ClassLevel1)<!> }
+        contract { <!ERROR_IN_CONTRACT_DESCRIPTION!>returns(false) implies (this<!UNRESOLVED_LABEL!>@case_4<!> !is ClassLevel1)<!> }
         return this == null
     }
 
@@ -43,7 +43,7 @@ class case_4 : ClassLevel3() {
 
     fun <T>T.case_4_3_wrap() {
         fun case_4_3_contract() {
-            contract { returns() implies (this@case_4_3_wrap is ClassLevel1) }
+            contract { returns() implies (<!USELESS_IS_CHECK!>this@case_4_3_wrap is ClassLevel1<!>) }
             if (this@case_4_3_wrap !is ClassLevel1) throw Exception()
         }
         case_4_3_contract()
@@ -60,13 +60,13 @@ class case_4 : ClassLevel3() {
 class case_5<T> : ClassLevel5() {
     inner class case_5_1 {
         fun <K : Number?>K.case_5_1_1() {
-            contract { <!ERROR_IN_CONTRACT_DESCRIPTION!>returns() implies (<!UNRESOLVED_LABEL!>this@case_5_1<!> !is ClassLevel1 && <!UNRESOLVED_LABEL!>this@case_5_1<!> != null || <!UNRESOLVED_LABEL!>this@case_5<!> is ClassLevel1 && this@case_5_1_1 is Float)<!> }
-            if (!(this@case_5_1 !is ClassLevel1 && this@case_5_1 != null || this@case_5 is ClassLevel1 && this is Float)) throw Exception()
+            contract { <!ERROR_IN_CONTRACT_DESCRIPTION!>returns() implies (this<!UNRESOLVED_LABEL!>@case_5_1<!> !is ClassLevel1 && this<!UNRESOLVED_LABEL!>@case_5_1<!> != null || this<!UNRESOLVED_LABEL!>@case_5<!> is ClassLevel1 && this@case_5_1_1 is Float)<!> }
+            if (!(this@case_5_1 !is ClassLevel1 && <!SENSELESS_COMPARISON!>this@case_5_1 != null<!> || <!USELESS_IS_CHECK!>this@case_5 is ClassLevel1<!> && this is Float)) throw Exception()
         }
 
         fun case_5_1_2() {
-            contract { <!ERROR_IN_CONTRACT_DESCRIPTION!>returns() implies (<!UNRESOLVED_LABEL!>this@case_5_1<!> !is ClassLevel1 || <!UNRESOLVED_LABEL!>this@case_5<!> is ClassLevel1 || <!UNRESOLVED_LABEL!>this@case_5_1<!> == null)<!> }
-            if (!(this@case_5_1 !is ClassLevel1 || this@case_5 is ClassLevel1 || this@case_5_1 == null)) throw Exception()
+            contract { <!ERROR_IN_CONTRACT_DESCRIPTION!>returns() implies (this<!UNRESOLVED_LABEL!>@case_5_1<!> !is ClassLevel1 || this<!UNRESOLVED_LABEL!>@case_5<!> is ClassLevel1 || this<!UNRESOLVED_LABEL!>@case_5_1<!> == null)<!> }
+            if (!(this@case_5_1 !is ClassLevel1 || <!USELESS_IS_CHECK!>this@case_5 is ClassLevel1<!> || <!SENSELESS_COMPARISON!>this@case_5_1 == null<!>)) throw Exception()
         }
     }
 }

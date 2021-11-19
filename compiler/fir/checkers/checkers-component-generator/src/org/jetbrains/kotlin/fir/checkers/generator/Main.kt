@@ -6,28 +6,37 @@
 package org.jetbrains.kotlin.fir.checkers.generator
 
 import org.jetbrains.kotlin.fir.checkers.generator.diagnostics.DIAGNOSTICS_LIST
-import org.jetbrains.kotlin.fir.checkers.generator.diagnostics.generateDiagnostics
+import org.jetbrains.kotlin.fir.checkers.generator.diagnostics.JVM_DIAGNOSTICS_LIST
+import org.jetbrains.kotlin.fir.checkers.generator.diagnostics.model.generateDiagnostics
 import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.types.FirTypeRef
 import java.io.File
 
 fun main(args: Array<String>) {
-    val generationPath = args.firstOrNull()?.let { File(it) } ?: File("compiler/fir/checkers/gen").absoluteFile
+    val arguments = args.toList()
+    val generationPath = arguments.firstOrNull()?.let { File(it) } ?: File("compiler/fir/checkers/gen").absoluteFile
 
-    val typePackage = "org.jetbrains.kotlin.fir.analysis.checkers.type"
+    val basePackage = "org.jetbrains.kotlin.fir.analysis"
+
+    val typePackage = "$basePackage.checkers.type"
     generateCheckersComponents(generationPath, typePackage, "FirTypeChecker") {
         alias<FirTypeRef>("TypeRefChecker")
     }
 
-    val expressionPackage = "org.jetbrains.kotlin.fir.analysis.checkers.expression"
+    val expressionPackage = "$basePackage.checkers.expression"
     generateCheckersComponents(generationPath, expressionPackage, "FirExpressionChecker") {
         alias<FirStatement>("BasicExpressionChecker")
-        alias<FirQualifiedAccessExpression>("QualifiedAccessChecker")
+        alias<FirQualifiedAccess>("QualifiedAccessChecker")
+        alias<FirQualifiedAccessExpression>("QualifiedAccessExpressionChecker")
+        alias<FirCall>("CallChecker")
         alias<FirFunctionCall>("FunctionCallChecker")
         alias<FirVariableAssignment>("VariableAssignmentChecker")
         alias<FirTryExpression>("TryExpressionChecker")
         alias<FirWhenExpression>("WhenExpressionChecker")
+        alias<FirLoop>("LoopExpressionChecker")
+        alias<FirLoopJump>("LoopJumpChecker")
+        alias<FirBinaryLogicExpression>("LogicExpressionChecker")
         alias<FirReturnExpression>("ReturnExpressionChecker")
         alias<FirBlock>("BlockChecker")
         alias<FirAnnotationCall>("AnnotationCallChecker")
@@ -36,36 +45,53 @@ fun main(args: Array<String>) {
         alias<FirGetClassCall>("GetClassCallChecker")
         alias<FirSafeCallExpression>("SafeCallExpressionChecker")
         alias<FirEqualityOperatorCall>("EqualityOperatorCallChecker")
-        alias<FirAnonymousFunction>("AnonymousFunctionAsExpressionChecker")
         alias<FirStringConcatenationCall>("StringConcatenationCallChecker")
+        alias<FirTypeOperatorCall>("TypeOperatorCallChecker")
+        alias<FirResolvedQualifier>("ResolvedQualifierChecker")
+        alias<FirConstExpression<*>>("ConstExpressionChecker")
+        alias<FirCallableReferenceAccess>("CallableReferenceAccessChecker")
+        alias<FirThisReceiverExpression>("ThisReceiverExpressionChecker")
+        alias<FirWhileLoop>("WhileLoopChecker")
+        alias<FirDoWhileLoop>("DoWhileLoopChecker")
+        alias<FirArrayOfCall>("ArrayOfCallChecker")
+        alias<FirClassReferenceExpression>("ClassReferenceExpressionChecker")
     }
 
-    val declarationPackage = "org.jetbrains.kotlin.fir.analysis.checkers.declaration"
+    val declarationPackage = "$basePackage.checkers.declaration"
     generateCheckersComponents(generationPath, declarationPackage, "FirDeclarationChecker") {
         alias<FirDeclaration>("BasicDeclarationChecker")
-        alias<FirMemberDeclaration>("MemberDeclarationChecker")
-        alias<FirFunction<*>>("FunctionChecker")
+        alias<FirFunction>("FunctionChecker")
         alias<FirSimpleFunction>("SimpleFunctionChecker")
         alias<FirProperty>("PropertyChecker")
-        alias<FirClass<*>>("ClassChecker")
+        alias<FirClass>("ClassChecker")
         alias<FirRegularClass>("RegularClassChecker")
         alias<FirConstructor>("ConstructorChecker")
         alias<FirFile>("FileChecker")
         alias<FirTypeParameter>("FirTypeParameterChecker")
+        alias<FirAnnotatedDeclaration>("FirAnnotatedDeclarationChecker")
+        alias<FirTypeAlias>("TypeAliasChecker")
+        alias<FirAnonymousFunction>("AnonymousFunctionChecker")
+        alias<FirPropertyAccessor>("PropertyAccessorChecker")
+        alias<FirValueParameter>("ValueParameterChecker")
+        alias<FirEnumEntry>("EnumEntryChecker")
+        alias<FirAnonymousObject>("AnonymousObjectChecker")
+        alias<FirAnonymousInitializer>("AnonymousInitializerChecker")
 
         additional(
             fieldName = "controlFlowAnalyserCheckers",
-            classFqn = "org.jetbrains.kotlin.fir.analysis.checkers.cfa.FirControlFlowChecker"
+            classFqn = "$basePackage.checkers.cfa.FirControlFlowChecker"
         )
 
         additional(
             fieldName = "variableAssignmentCfaBasedCheckers",
-            classFqn = "org.jetbrains.kotlin.fir.analysis.cfa.AbstractFirPropertyInitializationChecker"
+            classFqn = "$basePackage.cfa.AbstractFirPropertyInitializationChecker"
         )
     }
 
-    val diagnosticsPackage = "org.jetbrains.kotlin.fir.analysis.diagnostics"
-    generateDiagnostics(generationPath, diagnosticsPackage, DIAGNOSTICS_LIST)
+    val jvmGenerationPath = File(arguments.getOrElse(1) { "compiler/fir/checkers/checkers.jvm/gen" })
+
+    generateDiagnostics(generationPath, "$basePackage.diagnostics", DIAGNOSTICS_LIST)
+    generateDiagnostics(jvmGenerationPath, "$basePackage.diagnostics.jvm", JVM_DIAGNOSTICS_LIST)
 }
 
 /*

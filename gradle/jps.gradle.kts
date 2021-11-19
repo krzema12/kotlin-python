@@ -13,10 +13,6 @@ val ideaSandboxDir: File by extra
 val ideaSdkPath: String
     get() = IntellijRootUtils.getIntellijRootDir(rootProject).absolutePath
 
-val intellijUltimateEnabled: Boolean by rootProject.extra
-val ideaUltimatePluginDir: File by rootProject.extra
-val ideaUltimateSandboxDir: File by rootProject.extra
-
 fun JUnit.configureForKotlin(xmx: String = "1600m") {
     vmParameters = listOf(
         "-ea",
@@ -25,9 +21,9 @@ fun JUnit.configureForKotlin(xmx: String = "1600m") {
         "-XX:+UseCodeCacheFlushing",
         "-XX:ReservedCodeCacheSize=128m",
         "-Djna.nosys=true",
-        if (Platform[201].orHigher()) "-Didea.platform.prefix=Idea" else null,
+        "-Didea.platform.prefix=Idea",
         "-Didea.is.unit.test=true",
-        if (Platform[202].orHigher()) "-Didea.ignore.disabled.plugins=true" else null,
+        "-Didea.ignore.disabled.plugins=true",
         "-Didea.home.path=$ideaSdkPath",
         "-Djps.kotlin.home=${ideaPluginDir.absolutePath}",
         "-Dkotlin.ni=" + if (rootProject.hasProperty("newInferenceTests")) "true" else "false",
@@ -159,8 +155,6 @@ if (kotlinBuildProperties.isInJpsBuildIdeaSync) {
                 settings {
                     ideArtifacts {
                         kotlinCompilerJar()
-                        
-                        kotlinPluginJar()
 
                         kotlinReflectJar()
 
@@ -172,11 +166,7 @@ if (kotlinBuildProperties.isInJpsBuildIdeaSync) {
 
                         kotlinDaemonClientJar()
 
-                        kotlinJpsPluginJar()
-
                         kotlinc()
-
-                        ideaPlugin()
 
                         dist()
                     }
@@ -230,10 +220,6 @@ if (kotlinBuildProperties.isInJpsBuildIdeaSync) {
 
                         idea("[JPS] IDEA (No ProcessCanceledException)", ideaSandboxDir, ideaPluginDir, disableProcessCanceledException = true)
 
-                        if (intellijUltimateEnabled) {
-                            idea("[JPS] IDEA Ultimate", ideaUltimateSandboxDir, ideaPluginDir)
-                        }
-
                         defaults<JUnit> {
                             configureForKotlin()
                         }
@@ -243,14 +229,6 @@ if (kotlinBuildProperties.isInJpsBuildIdeaSync) {
                             moduleName = "kotlin.idea.test"
                             pattern = "org.jetbrains.kotlin.*"
                             configureForKotlin()
-                        }
-
-                        if (intellijUltimateEnabled) {
-                            junit("[JPS] All IDEA Ultimate Plugin Tests") {
-                                moduleName = "kotlin.ultimate.test"
-                                pattern = "org.jetbrains.kotlin.*"
-                                configureForKotlin()
-                            }
                         }
 
                         junit("[JPS] Compiler Tests") {
@@ -337,7 +315,7 @@ fun NamedDomainObjectContainer<TopLevelArtifact>.dist() {
         file("$rootDir/build/build.txt")
 
         // Use output-file-name when fixed https://github.com/JetBrains/gradle-idea-ext-plugin/issues/63
-        archive("kotlin-stdlib-minimal-for-test.jar") {
+        archive("kotlin-stdlib-jvm-minimal-for-test.jar") {
             extractedDirectory(stdlibMinimal.singleFile)
         }
 

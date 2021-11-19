@@ -9,6 +9,7 @@
 package org.jetbrains.kotlin.gradle
 
 import org.gradle.api.Project
+import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.testfixtures.ProjectBuilder
 import org.jetbrains.kotlin.commonizer.CommonizerTarget
 import org.jetbrains.kotlin.commonizer.SharedCommonizerTarget
@@ -28,6 +29,8 @@ class SourceSetCommonizerTargetTest {
     @BeforeTest
     fun setup() {
         project = ProjectBuilder.builder().build()
+        addBuildEventsListenerRegistryMock(project)
+        project.extensions.getByType(ExtraPropertiesExtension::class.java).set("kotlin.mpp.enableCompatibilityMetadataVariant", "false")
         project.plugins.apply("kotlin-multiplatform")
         kotlin = project.extensions.getByName("kotlin") as KotlinMultiplatformExtension
 
@@ -116,15 +119,16 @@ class SourceSetCommonizerTargetTest {
         assertEquals(CommonizerTarget(IOS_ARM64), project.getCommonizerTarget(iosArm64Main))
         assertEquals(CommonizerTarget(IOS_ARM64), project.getCommonizerTarget(iosArm64Test))
         assertEquals(CommonizerTarget(IOS_X64, IOS_ARM64), project.getCommonizerTarget(iosMain))
+
         assertEquals(
-            SharedCommonizerTarget(CommonizerTarget(IOS_X64, IOS_ARM64), CommonizerTarget(MACOS_X64), CommonizerTarget(LINUX_X64)),
+            CommonizerTarget(IOS_X64, IOS_ARM64, MACOS_X64, LINUX_X64),
             project.getCommonizerTarget(nativeMain)
         )
         assertEquals(
-            SharedCommonizerTarget(CommonizerTarget(IOS_X64, IOS_ARM64), CommonizerTarget(MACOS_X64), CommonizerTarget(LINUX_X64)),
+            CommonizerTarget(IOS_X64, IOS_ARM64, MACOS_X64, LINUX_X64),
             project.getCommonizerTarget(commonMain)
         )
-        /* No test hierarchy declared */
+
         assertEquals(
             CommonizerTarget(IOS_ARM64, IOS_X64, LINUX_X64, MACOS_X64),
             project.getCommonizerTarget(commonTest)
@@ -175,6 +179,37 @@ class SourceSetCommonizerTargetTest {
             target.compilations.getByName("main").source(nativeMain)
         }
 
-        assertNull(project.getCommonizerTarget(nativeMain), "Expected no commonizer target, since no real source set hierarchy is given")
+        assertEquals(
+            SharedCommonizerTarget(setOf(linux1.konanTarget, linux2.konanTarget)),
+            project.getCommonizerTarget(nativeMain)
+        )
+    }
+
+    @Test
+    fun `orphan source sets are ignored`() {
+        val linux1 = kotlin.linuxX64("linux1")
+        val linux2 = kotlin.linuxArm64("linux2")
+        val nativeMain = kotlin.sourceSets.create("nativeMain")
+        val linux1Main = kotlin.sourceSets.getByName("linux1Main")
+        val linux2Main = kotlin.sourceSets.getByName("linux2Main")
+        val orphan = kotlin.sourceSets.create("orphan")
+
+        linux1Main.dependsOn(nativeMain)
+        linux2Main.dependsOn(nativeMain)
+        orphan.dependsOn(nativeMain)
+
+        assertEquals(CommonizerTarget(linux1.konanTarget, linux2.konanTarget), project.getCommonizerTarget(nativeMain))
+    }
+
+    @Test
+    fun `orphan source sets only`() {
+        val nativeMain = kotlin.sourceSets.create("nativeMain")
+        val orphan1 = kotlin.sourceSets.create("orphan1")
+        val orphan2 = kotlin.sourceSets.create("orphan2")
+
+        orphan1.dependsOn(nativeMain)
+        orphan2.dependsOn(nativeMain)
+
+        assertEquals(null, project.getCommonizerTarget(nativeMain))
     }
 }

@@ -5,7 +5,6 @@
 
 package org.jetbrains.kotlin.fir
 
-import com.intellij.util.io.delete
 import org.jetbrains.kotlin.cli.common.*
 import org.jetbrains.kotlin.cli.common.arguments.K2JVMCompilerArguments
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
@@ -22,6 +21,8 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 abstract class AbstractFullPipelineModularizedTest : AbstractModularizedTest() {
+
+    private val asyncProfilerControl = AsyncProfilerControl()
 
     data class ModuleStatus(val data: ModuleData, val targetInfo: String) {
         var compilationError: String? = null
@@ -64,9 +65,13 @@ abstract class AbstractFullPipelineModularizedTest : AbstractModularizedTest() {
         okModules.clear()
         errorModules.clear()
         crashedModules.clear()
+
+        asyncProfilerControl.beforePass(pass, reportDateStr)
     }
 
     override fun afterPass(pass: Int) {
+        asyncProfilerControl.afterPass(pass, reportDateStr)
+
         createReport(finalReport = pass == PASSES - 1)
         require(totalModules.isNotEmpty()) { "No modules were analyzed" }
         require(okModules.isNotEmpty()) { "All of $totalModules is failed" }
@@ -122,7 +127,7 @@ abstract class AbstractFullPipelineModularizedTest : AbstractModularizedTest() {
         args.reportPerf = true
         args.jvmTarget = "1.8"
         args.classpath = moduleData.classpath.joinToString(separator = ":") { it.absolutePath }
-        args.javaSourceRoots = moduleData.javaSourceRoots.map { it.absolutePath }.toTypedArray()
+        args.javaSourceRoots = moduleData.javaSourceRoots.map { it.path.absolutePath }.toTypedArray()
         args.allowKotlinPackage = true
         args.freeArgs = moduleData.sources.map { it.absolutePath }
         args.destination = tmp.toAbsolutePath().toFile().toString()
@@ -236,7 +241,7 @@ abstract class AbstractFullPipelineModularizedTest : AbstractModularizedTest() {
         val resultTime = manager.reportCumulativeTime()
         PerformanceCounter.resetAllCounters()
 
-        tmp.delete(recursively = true)
+        tmp.toFile().deleteRecursively()
         if (result == ExitCode.OK) {
             totalPassResult += resultTime
         }

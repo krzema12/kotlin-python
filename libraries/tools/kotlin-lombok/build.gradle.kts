@@ -17,17 +17,18 @@ dependencies {
 
 projectTest(parallel = true)
 
-publish()
+publishGradlePlugin()
 
 sourcesJar()
 javadocJar()
+noDefaultJar()
 runtimeJar(rewriteDefaultJarDepsToShadedCompiler())
 
 tasks {
     withType<KotlinCompile> {
 //        kotlinOptions.jdkHome = rootProject.extra["JDK_18"] as String
-        kotlinOptions.languageVersion = "1.3"
-        kotlinOptions.apiVersion = "1.3"
+        kotlinOptions.languageVersion = "1.4"
+        kotlinOptions.apiVersion = "1.4"
         kotlinOptions.freeCompilerArgs += listOf(
             "-Xskip-prerelease-check", "-Xsuppress-version-warnings"
         )

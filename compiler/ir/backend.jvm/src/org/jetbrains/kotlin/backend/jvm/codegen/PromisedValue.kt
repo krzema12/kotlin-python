@@ -5,10 +5,9 @@
 
 package org.jetbrains.kotlin.backend.jvm.codegen
 
-import org.jetbrains.kotlin.backend.jvm.JvmLoweredDeclarationOrigin
+import org.jetbrains.kotlin.backend.jvm.InlineClassAbi
+import org.jetbrains.kotlin.backend.jvm.inlineClassFieldName
 import org.jetbrains.kotlin.backend.jvm.ir.eraseTypeParameters
-import org.jetbrains.kotlin.backend.jvm.ir.erasedUpperBound
-import org.jetbrains.kotlin.backend.jvm.lower.inlineclasses.InlineClassAbi
 import org.jetbrains.kotlin.codegen.AsmUtil
 import org.jetbrains.kotlin.codegen.StackValue
 import org.jetbrains.kotlin.ir.declarations.IrTypeParameter
@@ -29,20 +28,13 @@ abstract class PromisedValue(val codegen: ExpressionCodegen, val type: Type, val
     open fun materializeAt(target: Type, irTarget: IrType, castForReified: Boolean) {
         val erasedSourceType = irType.eraseTypeParameters()
         val erasedTargetType = irTarget.eraseTypeParameters()
-        val isFromTypeInlineClass = erasedSourceType.classOrNull!!.owner.isInline
-        val isToTypeInlineClass = erasedTargetType.classOrNull!!.owner.isInline
-
-        // Boxing and unboxing kotlin.Result leads to CCE in generated code
-        val doNotCoerceKotlinResultInContinuation =
-            (codegen.irFunction.parentAsClass.origin == JvmLoweredDeclarationOrigin.CONTINUATION_CLASS ||
-                    (codegen.irFunction.parentAsClass.origin == JvmLoweredDeclarationOrigin.SUSPEND_LAMBDA &&
-                            !codegen.irFunction.isInvokeSuspendOfLambda()))
-                    && (irType.isKotlinResult() || irTarget.isKotlinResult())
+        val fromTypeRepresentation = erasedSourceType.getClass()!!.inlineClassRepresentation
+        val toTypeRepresentation = erasedTargetType.getClass()!!.inlineClassRepresentation
 
         // Coerce inline classes
-        if ((isFromTypeInlineClass || isToTypeInlineClass) && !doNotCoerceKotlinResultInContinuation) {
-            val isFromTypeUnboxed = isFromTypeInlineClass && typeMapper.mapType(erasedSourceType.unboxed) == type
-            val isToTypeUnboxed = isToTypeInlineClass && typeMapper.mapType(erasedTargetType.unboxed) == target
+        if (fromTypeRepresentation != null || toTypeRepresentation != null) {
+            val isFromTypeUnboxed = fromTypeRepresentation?.underlyingType?.let(typeMapper::mapType) == type
+            val isToTypeUnboxed = toTypeRepresentation?.underlyingType?.let(typeMapper::mapType) == target
 
             when {
                 isFromTypeUnboxed && !isToTypeUnboxed -> {
@@ -51,7 +43,17 @@ abstract class PromisedValue(val codegen: ExpressionCodegen, val type: Type, val
                 }
 
                 !isFromTypeUnboxed && isToTypeUnboxed -> {
-                    StackValue.unboxInlineClass(type, erasedTargetType, mv, typeMapper)
+                    val irClass = codegen.irFunction.parentAsClass
+                    if (irClass.isInline && irClass.symbol == irType.classifierOrNull && !irType.isNullable()) {
+                        // Use getfield instead of unbox-impl inside inline classes
+                        codegen.mv.getfield(
+                            typeMapper.classInternalName(irClass),
+                            irClass.inlineClassFieldName.asString(),
+                            typeMapper.mapType(irType).descriptor
+                        )
+                    } else {
+                        StackValue.unboxInlineClass(type, erasedTargetType, mv, typeMapper)
+                    }
                     return
                 }
             }
@@ -168,9 +170,6 @@ fun PromisedValue.materializeAt(irTarget: IrType) {
 fun PromisedValue.materializeAtBoxed(irTarget: IrType) {
     materializeAt(typeMapper.boxType(irTarget), irTarget)
 }
-
-val IrType.unboxed: IrType
-    get() = InlineClassAbi.getUnderlyingType(erasedUpperBound)
 
 // A Non-materialized value of Unit type that is only materialized through coercion.
 val ExpressionCodegen.unitValue: PromisedValue

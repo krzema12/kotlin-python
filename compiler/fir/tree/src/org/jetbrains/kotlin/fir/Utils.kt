@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.fir
 
 import org.jetbrains.kotlin.analyzer.ModuleInfo
+import org.jetbrains.kotlin.fir.declarations.FirFile
 import org.jetbrains.kotlin.fir.expressions.FirBlock
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.types.FirDynamicTypeRef
@@ -14,6 +15,7 @@ import org.jetbrains.kotlin.fir.types.FirImplicitTypeRef
 import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.types.builder.*
 import org.jetbrains.kotlin.fir.types.impl.*
+import org.jetbrains.kotlin.name.FqName
 
 fun ModuleInfo.dependenciesWithoutSelf(): Sequence<ModuleInfo> = dependencies().asSequence().filter { it != this }
 
@@ -66,10 +68,27 @@ fun <R : FirTypeRef> R.copyWithNewSourceKind(newKind: FirFakeSourceElementKind):
  * @param stepsToWholeQualifier distance between the original psi and the whole qualifier psi
  */
 fun FirSourceElement.getWholeQualifierSourceIfPossible(stepsToWholeQualifier: Int): FirSourceElement {
-    if (this !is FirRealPsiSourceElement<*>) return this
-
-    val qualifiersChain = generateSequence(psi) { it.parent }
-    val wholeQualifier = qualifiersChain.drop(stepsToWholeQualifier).first()
-
-    return wholeQualifier.toFirPsiSourceElement() as FirRealPsiSourceElement
+    if (stepsToWholeQualifier == 0) return this
+    return when (this) {
+        is FirRealPsiSourceElement -> {
+            val qualifiersChain = generateSequence(psi) { it.parent }
+            val wholeQualifier = qualifiersChain.elementAt(stepsToWholeQualifier)
+            wholeQualifier.toFirPsiSourceElement() as FirRealPsiSourceElement
+        }
+        is FirLightSourceElement -> {
+            val qualifiersChain = generateSequence(lighterASTNode) { treeStructure.getParent(it) }
+            val wholeQualifier = qualifiersChain.elementAt(stepsToWholeQualifier)
+            wholeQualifier.toFirLightSourceElement(
+                treeStructure,
+                startOffset = this.startOffset,
+                endOffset = wholeQualifier.endOffset + (this.endOffset - this.lighterASTNode.endOffset)
+            )
+        }
+        is FirFakeSourceElement -> {
+            this
+        }
+    }
 }
+
+val FirFile.packageFqName: FqName
+    get() = packageDirective.packageFqName

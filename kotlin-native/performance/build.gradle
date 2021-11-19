@@ -31,7 +31,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-build-gradle-plugin:0.0.28")
+        classpath("org.jetbrains.kotlin:kotlin-build-gradle-plugin:0.0.34")
     }
 }
 
@@ -90,6 +90,7 @@ subprojects { proj ->
         }
     }
     proj.repositories {
+        mavenCentral()
         maven {
             url proj.ext["bootstrapKotlinRepo"]
         }
@@ -214,7 +215,7 @@ task registerExternalBenchmarks {
                     "jdkVendor": System.getProperty("java.vendor"),
                     "kotlinVersion": kotlinVersion,
                     "type": "native",
-                    "compilerVersion": konanVersion,
+                    "compilerVersion": kotlinVersion,
                     "flags": optionsList,
                     "benchmarks": "[]"]
             if (compileTime != null) {
@@ -252,6 +253,7 @@ task registerBuild(type: BuildRegister) {
         dist = (new File(dist)).isAbsolute() ? dist : "${project.getProjectDir()}/$dist"
         bundleSize = (new File(dist)).directorySize()
     }
+    buildNumberSuffix = project.findProperty('buildNumberSuffix')
 }
 
 task registerExternalBuild(type: BuildRegister) {

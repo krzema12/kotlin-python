@@ -1,5 +1,5 @@
 FILE: notASupertype.kt
-    public final class A : R|kotlin/Any| {
+    public open class A : R|kotlin/Any| {
         public constructor(): R|A| {
             super<R|kotlin/Any|>()
         }
@@ -14,7 +14,7 @@ FILE: notASupertype.kt
         }
 
         public final fun g(): R|kotlin/Unit| {
-            this@R|/B|.super<R|kotlin/String|>.<Unresolved name: f>#()
+            this@R|/B|.super<<ERROR TYPE REF: Not a super type>>.<Unresolved name: f>#()
             this@R|/B|.super<R|A|>.R|/A.f|()
         }
 

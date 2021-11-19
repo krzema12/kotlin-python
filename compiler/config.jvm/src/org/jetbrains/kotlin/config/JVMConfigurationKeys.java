@@ -99,6 +99,9 @@ public class JVMConfigurationKeys {
     public static final CompilerConfigurationKey<Boolean> USE_PSI_CLASS_FILES_READING =
             CompilerConfigurationKey.create("use a slower (PSI-based) class files reading implementation");
 
+    public static final CompilerConfigurationKey<Boolean> USE_FAST_JAR_FILE_SYSTEM =
+            CompilerConfigurationKey.create("use a faster JAR filesystem implementation");
+
     public static final CompilerConfigurationKey<Boolean> USE_JAVAC =
             CompilerConfigurationKey.create("use javac [experimental]");
 
@@ -152,4 +155,13 @@ public class JVMConfigurationKeys {
 
     public static final CompilerConfigurationKey<Boolean> NO_REFLECT =
             CompilerConfigurationKey.create("Don't automatically include kotlin-reflect.jar into the output if the output is a jar");
+
+    public static final CompilerConfigurationKey<Boolean> SERIALIZE_IR =
+            CompilerConfigurationKey.create("Serialize IR to class metadata");
+
+    public static final CompilerConfigurationKey<Boolean> VALIDATE_IR =
+            CompilerConfigurationKey.create("Validate IR");
+
+    public static final CompilerConfigurationKey<Boolean> VALIDATE_BYTECODE =
+            CompilerConfigurationKey.create("Validate generated JVM bytecode");
 }

@@ -35,26 +35,30 @@ Support for multiplatform programming is one of Kotlin’s key benefits. It redu
 
 ## Editing Kotlin
 
- * [Kotlin IntelliJ IDEA Plugin](https://kotlinlang.org/docs/tutorials/getting-started.html)
+ * [Kotlin IntelliJ IDEA Plugin](https://kotlinlang.org/docs/tutorials/getting-started.html) ([source code](https://github.com/JetBrains/intellij-community/tree/master/plugins/kotlin))
  * [Kotlin Eclipse Plugin](https://kotlinlang.org/docs/tutorials/getting-started-eclipse.html)
  * [Kotlin Sublime Text Package](https://github.com/vkostyukov/kotlin-sublime-package)
 
 ## Build environment requirements
 
-In order to build Kotlin distribution you need to have:
+This repository is using [Gradle toolchains](https://docs.gradle.org/current/userguide/toolchains.html) feature
+to select and auto-provision required JDKs from [AdoptOpenJdk](https://adoptopenjdk.net) project. 
 
-- JDK 1.6, 1.7, 1.8 and 9
-- Setup environment variables as following:
+Unfortunately [AdoptOpenJdk](https://adoptopenjdk.net) project does not provide required JDK 1.6 and 1.7 images,
+so you could either download them manually and provide path to installation via `JDK_16` and `JDK_17` environment variables or
+use following SDK managers:
+- [Asdf-vm](https://asdf-vm.com/)
+- [Jabba](https://github.com/shyiko/jabba)
+- [SDKMAN!](https://sdkman.io/)
 
-        JAVA_HOME="path to JDK 1.8"
-        JDK_16="path to JDK 1.6"
-        JDK_17="path to JDK 1.7"
-        JDK_18="path to JDK 1.8"
-        JDK_9="path to JDK 9"
+Alternatively, it is still possible to only provide required JDKs via environment variables 
+(see [gradle.properties](./gradle.properties#L5) for supported variable names). To ensure Gradle uses only JDKs 
+from environmental variables - disable Gradle toolchain auto-detection by passing `-Porg.gradle.java.installations.auto-detect=false` option
+(or put it into `$GRADLE_USER_HOME/gradle.properties`).
 
-For local development, if you're not working on bytecode generation or the standard library, it's OK to have only JDK 1.8 and JDK 9 installed, and to point `JDK_16` and `JDK_17` environment variables to your JDK 1.8 installation.
-
-You also can use [Gradle properties](https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_configuration_properties) to setup `JDK_*` variables.
+For local development, if you're not working on the standard library, it's OK to avoid installing JDK 1.6 and JDK 1.7.
+Add `kotlin.build.isObsoleteJdkOverrideEnabled=true` to the `local.properties` file, so build will only use JDK 1.8+. Note, that in this
+case, build will have Gradle remote build cache misses for some tasks. 
 
 Note: The JDK 6 for MacOS is not available on Oracle's site. You can install it by
 
@@ -93,13 +97,10 @@ command line parameters on the first run:
 
 - `clean` - clean build results
 - `dist` - assembles the compiler distribution into `dist/kotlinc/` folder
-- `ideaPlugin` - assembles the Kotlin IDEA plugin distribution into `dist/artifacts/ideaPlugin/Kotlin/` folder
 - `install` - build and install all public artifacts into local maven repository
-- `runIde` - build IDEA plugin and run IDEA with it
 - `coreLibsTest` - build and run stdlib, reflect and kotlin-test tests
 - `gradlePluginTest` - build and run gradle plugin tests
 - `compilerTest` - build and run all compiler tests
-- `ideaPluginTest` - build and run all IDEA plugin tests
 
 To reproduce TeamCity build use `-Pteamcity=true` flag. Local builds don't run proguard and have jar compression disabled by default.
 
@@ -138,14 +139,6 @@ In the import dialog, select `use default gradle wrapper`.
 To be able to run tests from IntelliJ easily, check `Delegate IDE build/run actions to Gradle` and choose `Gradle Test Runner` in the Gradle runner settings after importing the project.
 
 At this time, you can use the latest released `1.3.x` version of the Kotlin plugin for working with the code. To make sure you have the latest version installed, use `Tools` -> `Kotlin` -> `Configure Kotlin Plugin Updates`.
-
-### Compiling and running
-
-From this root project there are Run/Debug Configurations for running `IDEA` or the `Generate Compiler Tests` for example; so if you want to try out the latest and greatest IDEA plugin
-
-* `VCS` -> `Git` -> `Pull`
-* Run the `IDEA` run configuration in the project
-* A child IntelliJ IDEA with the Kotlin plugin will then startup
 
 ### Dependency verification
 

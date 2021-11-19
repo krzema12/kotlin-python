@@ -1,4 +1,4 @@
-// !WITH_NEW_INFERENCE
+// FIR_IDENTICAL
 // !DIAGNOSTICS: -UNUSED_EXPRESSION
 
 fun use(a: Any?) = a
@@ -8,9 +8,9 @@ fun test() {
     use({ }<!NOT_NULL_ASSERTION_ON_LAMBDA_EXPRESSION!>!!<!>);
 
     // KT-KT-9070
-    <!TYPE_MISMATCH{OI}!>{ }<!> <!USELESS_ELVIS!>?: 1<!>
+    { } <!USELESS_ELVIS!>?: 1<!>
     use({ 2 } <!USELESS_ELVIS!>?: 1<!>);
 
-    1 <!USELESS_ELVIS!>?: <!TYPE_MISMATCH{OI}!>{ }<!><!>
+    1 <!USELESS_ELVIS!>?: { }<!>
     use(1 <!USELESS_ELVIS!>?: { }<!>)
 }

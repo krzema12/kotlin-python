@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.gradle
 
+import org.jetbrains.kotlin.gradle.native.transformNativeTestProject
 import org.jetbrains.kotlin.gradle.targets.js.dukat.ExternalsOutputFormat
 import org.jetbrains.kotlin.gradle.util.createTempDir
 import org.jetbrains.kotlin.gradle.util.findFileByName
@@ -29,7 +30,7 @@ class ConfigurationCacheIT : AbstractConfigurationCacheIT() {
             group = "com.example"
             version = "1.0"
             publishing.repositories {
-                maven { 
+                maven {
                     url = "${'$'}buildDir/repo"
                 }
             }
@@ -40,6 +41,15 @@ class ConfigurationCacheIT : AbstractConfigurationCacheIT() {
             }
         """.trimIndent())
         testConfigurationCacheOf(":publishMavenPublicationToMavenRepository", checkUpToDateOnRebuild = false)
+    }
+
+    @Test
+    fun testMppWithMavenPublish() = with(transformNativeTestProject("sample-lib", directoryPrefix = "new-mpp-lib-and-app")) {
+        val publishedTargets = listOf("kotlinMultiplatform", "jvm6", "nodeJs")
+        testConfigurationCacheOf(
+            *(publishedTargets.map { ":publish${it.capitalize()}PublicationToMavenRepository" }.toTypedArray()),
+            checkUpToDateOnRebuild = false
+        )
     }
 
     @Test
@@ -62,9 +72,11 @@ class ConfigurationCacheIT : AbstractConfigurationCacheIT() {
     }
 
     @Test
-    fun testInstantExecution() = with(Project("instantExecution")) {
-        testConfigurationCacheOf("assemble", executedTaskNames = asList(":lib-project:compileKotlin"))
-    }
+    fun testInstantExecution() =
+        // Set min Gradle version to 6.8 because of using DependencyResolutionManagement API to add repositories.
+        with(Project("instantExecution", gradleVersionRequirement = GradleVersionRequired.AtLeast("6.8"))) {
+            testConfigurationCacheOf("assemble", executedTaskNames = asList(":lib-project:compileKotlin"))
+        }
 
     // KT-43605
     @Test
@@ -133,6 +145,12 @@ class ConfigurationCacheIT : AbstractConfigurationCacheIT() {
                 )
             )
         }
+
+    // KT-48241
+    @Test
+    fun testConfigurationCacheJsWithTestDependencies() = with(transformProjectWithPluginsDsl("kotlin-js-project-with-test-dependencies")) {
+        testConfigurationCacheOf("assemble", executedTaskNames = listOf(":kotlinNpmInstall"))
+    }
 }
 
 abstract class AbstractConfigurationCacheIT : BaseGradleIT() {

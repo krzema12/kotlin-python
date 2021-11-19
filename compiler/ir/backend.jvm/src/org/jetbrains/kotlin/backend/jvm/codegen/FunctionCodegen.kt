@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.backend.common.lower.BOUND_RECEIVER_PARAMETER
 import org.jetbrains.kotlin.backend.common.lower.BOUND_VALUE_PARAMETER
 import org.jetbrains.kotlin.backend.jvm.JvmBackendContext
 import org.jetbrains.kotlin.backend.jvm.JvmLoweredDeclarationOrigin
-import org.jetbrains.kotlin.backend.jvm.lower.suspendFunctionOriginal
+import org.jetbrains.kotlin.backend.jvm.ir.suspendFunctionOriginal
 import org.jetbrains.kotlin.codegen.AsmUtil
 import org.jetbrains.kotlin.codegen.inline.*
 import org.jetbrains.kotlin.codegen.mangleNameIfNeeded
@@ -25,11 +25,11 @@ import org.jetbrains.kotlin.ir.descriptors.toIrBasedDescriptor
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.load.java.JavaDescriptorVisibilities
+import org.jetbrains.kotlin.name.JvmNames.JVM_SYNTHETIC_ANNOTATION_FQ_NAME
+import org.jetbrains.kotlin.name.JvmNames.STRICTFP_ANNOTATION_FQ_NAME
+import org.jetbrains.kotlin.name.JvmNames.SYNCHRONIZED_ANNOTATION_FQ_NAME
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.resolve.annotations.JVM_THROWS_ANNOTATION_FQ_NAME
-import org.jetbrains.kotlin.resolve.jvm.annotations.JVM_SYNTHETIC_ANNOTATION_FQ_NAME
-import org.jetbrains.kotlin.resolve.jvm.annotations.STRICTFP_ANNOTATION_FQ_NAME
-import org.jetbrains.kotlin.resolve.jvm.annotations.SYNCHRONIZED_ANNOTATION_FQ_NAME
 import org.jetbrains.kotlin.resolve.jvm.jvmSignature.JvmMethodParameterKind
 import org.jetbrains.kotlin.resolve.jvm.jvmSignature.JvmMethodSignature
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
@@ -135,8 +135,6 @@ class FunctionCodegen(private val irFunction: IrFunction, private val classCodeg
             irFunction.origin == JvmLoweredDeclarationOrigin.SYNTHETIC_METHOD_FOR_PROPERTY_OR_TYPEALIAS_ANNOTATIONS ->
                 false
             irFunction is IrConstructor && irFunction.parentAsClass.shouldNotGenerateConstructorParameterAnnotations() ->
-                // Not generating parameter annotations for default stubs fixes KT-7892, though
-                // this certainly looks like a workaround for a javac bug.
                 false
             else ->
                 true
@@ -310,6 +308,8 @@ class FunctionCodegen(private val irFunction: IrFunction, private val classCodeg
     companion object {
         internal val methodOriginsWithoutAnnotations =
             setOf(
+                // Not generating parameter annotations for default stubs fixes KT-7892, though
+                // this certainly looks like a workaround for a javac bug.
                 IrDeclarationOrigin.FUNCTION_FOR_DEFAULT_PARAMETER,
                 JvmLoweredDeclarationOrigin.SYNTHETIC_ACCESSOR,
                 IrDeclarationOrigin.ENUM_CLASS_SPECIAL_MEMBER,
@@ -319,6 +319,7 @@ class FunctionCodegen(private val irFunction: IrFunction, private val classCodeg
                 JvmLoweredDeclarationOrigin.ABSTRACT_BRIDGE_STUB,
                 JvmLoweredDeclarationOrigin.TO_ARRAY,
                 IrDeclarationOrigin.IR_BUILTINS_STUB,
+                IrDeclarationOrigin.PROPERTY_DELEGATE,
             )
     }
 }

@@ -5,14 +5,21 @@
 
 package org.jetbrains.kotlin.idea.frontend.api
 
+import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
 import org.jetbrains.kotlin.idea.frontend.api.types.KtType
 import org.jetbrains.kotlin.types.Variance
 
-sealed class KtTypeArgument
-
-object KtStarProjectionTypeArgument : KtTypeArgument()
-
-abstract class KtTypeArgumentWithVariance : KtTypeArgument() {
-    abstract val type: KtType
-    abstract val variance: Variance
+public sealed class KtTypeArgument : ValidityTokenOwner {
+    public abstract val type: KtType?
 }
+
+public class KtStarProjectionTypeArgument(override val token: ValidityToken) : KtTypeArgument() {
+    override val type: KtType? get() = withValidityAssertion { null }
+}
+
+public class KtTypeArgumentWithVariance(
+    override val type: KtType,
+    public val variance: Variance,
+    override val token: ValidityToken,
+) : KtTypeArgument()
+

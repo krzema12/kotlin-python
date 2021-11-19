@@ -6,6 +6,8 @@
 package org.jetbrains.kotlin.commonizer.tree.deserializer
 
 import org.jetbrains.kotlin.commonizer.cir.CirClassType
+import org.jetbrains.kotlin.commonizer.tree.CirTreeClass
+import org.jetbrains.kotlin.commonizer.util.transitiveClosure
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.Visibilities
@@ -117,6 +119,26 @@ class CirTreeClassDeserializerTest : AbstractCirTreeDeserializerTest() {
 
     }
 
+    fun `test supertypes - supertype being nested`() {
+        val module = createCirTreeFromSourceCode(
+            """
+            class Outer {
+                open inner class Inner
+                inner class X: Outer.Inner()
+            }
+            """.trimIndent()
+        )
+
+        val pkg = module.assertSinglePackage()
+        val xClass = pkg.classes.flatMap { transitiveClosure(it, CirTreeClass::classes) + it }
+            .singleOrNull { it.clazz.name.toStrippedString() == "X" } ?: kotlin.test.fail("Missing class 'X'")
+        val xSuperType = xClass.clazz.supertypes.singleOrNull()
+            ?: kotlin.test.fail("Expected single supertype for 'X'. Found ${xClass.clazz.supertypes}")
+        val xClassSuperType = assertIs<CirClassType>(xSuperType, "Expected xSuperType to be class type")
+        assertEquals("/Outer.Inner", xClassSuperType.classifierId.toString())
+        assertEquals("/Outer", xClassSuperType.outerType?.classifierId.toString())
+    }
+
     fun `test abstract class`() {
         val module = createCirTreeFromSourceCode("abstract class X")
         val clazz = module.assertSingleClass()
@@ -150,12 +172,12 @@ class CirTreeClassDeserializerTest : AbstractCirTreeDeserializerTest() {
         val clazz = module.assertSingleClass()
 
         fun assertContainsProperty(name: String) {
-            clazz.properties.singleOrNull { it.property.name.toStrippedString() == name }
+            clazz.properties.singleOrNull { it.name.toStrippedString() == name }
                 ?: kotlin.test.fail("Missing property '$name'")
         }
 
         fun assertContainsFunction(name: String) {
-            clazz.functions.singleOrNull { it.function.name.toStrippedString() == name }
+            clazz.functions.singleOrNull { it.name.toStrippedString() == name }
                 ?: kotlin.test.fail("Missing function '$name'")
         }
 

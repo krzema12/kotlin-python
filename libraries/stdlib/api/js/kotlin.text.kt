@@ -8,14 +8,6 @@ public val kotlin.CharSequence.indices: kotlin.ranges.IntRange { get; }
 
 public val kotlin.CharSequence.lastIndex: kotlin.Int { get; }
 
-@kotlin.Deprecated(level = DeprecationLevel.HIDDEN, message = "Provided for binary compatibility")
-@kotlin.js.JsName(name = "Regex_sb3q2$")
-public fun Regex_0(pattern: kotlin.String, option: kotlin.text.RegexOption): kotlin.text.Regex
-
-@kotlin.Deprecated(level = DeprecationLevel.HIDDEN, message = "Provided for binary compatibility")
-@kotlin.js.JsName(name = "Regex_61zpoe$")
-public fun Regex_1(pattern: kotlin.String): kotlin.text.Regex
-
 @kotlin.SinceKotlin(version = "1.2")
 @kotlin.Deprecated(message = "Use CharArray.concatToString() instead", replaceWith = kotlin.ReplaceWith(expression = "chars.concatToString()", imports = {}))
 @kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
@@ -149,6 +141,8 @@ public fun kotlin.CharSequence.commonSuffixWith(other: kotlin.CharSequence, igno
 @kotlin.SinceKotlin(version = "1.2")
 public fun kotlin.String.compareTo(other: kotlin.String, ignoreCase: kotlin.Boolean = ...): kotlin.Int
 
+@kotlin.Deprecated(message = "Use String.plus() instead", replaceWith = kotlin.ReplaceWith(expression = "this + str", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
 @kotlin.internal.InlineOnly
 public inline fun kotlin.String.concat(str: kotlin.String): kotlin.String
 
@@ -484,20 +478,24 @@ public inline fun <R : kotlin.Any, C : kotlin.collections.MutableCollection<in R
 
 public inline fun <R, C : kotlin.collections.MutableCollection<in R>> kotlin.CharSequence.mapTo(destination: C, transform: (kotlin.Char) -> R): C
 
+@kotlin.Deprecated(message = "Use Regex.findAll() instead or invoke matches() on String dynamically: this.asDynamic().match(regex)")
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
 @kotlin.internal.InlineOnly
 public inline fun kotlin.String.match(regex: kotlin.String): kotlin.Array<kotlin.String>?
 
 @kotlin.internal.InlineOnly
 public inline infix fun kotlin.CharSequence.matches(regex: kotlin.text.Regex): kotlin.Boolean
 
+@kotlin.Deprecated(message = "Use Regex.matches() instead", replaceWith = kotlin.ReplaceWith(expression = "regex.toRegex().matches(this)", imports = {}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
 public fun kotlin.String.matches(regex: kotlin.String): kotlin.Boolean
 
 @kotlin.Deprecated(message = "Use maxOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", hiddenSince = "1.6", warningSince = "1.4")
 public fun kotlin.CharSequence.max(): kotlin.Char?
 
 @kotlin.Deprecated(message = "Use maxByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", hiddenSince = "1.6", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.CharSequence.maxBy(selector: (kotlin.Char) -> R): kotlin.Char?
 
 @kotlin.SinceKotlin(version = "1.4")
@@ -547,18 +545,18 @@ public inline fun <R> kotlin.CharSequence.maxOfWithOrNull(comparator: kotlin.Com
 public fun kotlin.CharSequence.maxOrNull(): kotlin.Char?
 
 @kotlin.Deprecated(message = "Use maxWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.maxWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", hiddenSince = "1.6", warningSince = "1.4")
 public fun kotlin.CharSequence.maxWith(comparator: kotlin.Comparator<in kotlin.Char>): kotlin.Char?
 
 @kotlin.SinceKotlin(version = "1.4")
 public fun kotlin.CharSequence.maxWithOrNull(comparator: kotlin.Comparator<in kotlin.Char>): kotlin.Char?
 
 @kotlin.Deprecated(message = "Use minOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minOrNull()", imports = {}))
-@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", hiddenSince = "1.6", warningSince = "1.4")
 public fun kotlin.CharSequence.min(): kotlin.Char?
 
 @kotlin.Deprecated(message = "Use minByOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minByOrNull(selector)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", hiddenSince = "1.6", warningSince = "1.4")
 public inline fun <R : kotlin.Comparable<R>> kotlin.CharSequence.minBy(selector: (kotlin.Char) -> R): kotlin.Char?
 
 @kotlin.SinceKotlin(version = "1.4")
@@ -608,7 +606,7 @@ public inline fun <R> kotlin.CharSequence.minOfWithOrNull(comparator: kotlin.Com
 public fun kotlin.CharSequence.minOrNull(): kotlin.Char?
 
 @kotlin.Deprecated(message = "Use minWithOrNull instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minWithOrNull(comparator)", imports = {}))
-@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", warningSince = "1.4")
+@kotlin.DeprecatedSinceKotlin(errorSince = "1.5", hiddenSince = "1.6", warningSince = "1.4")
 public fun kotlin.CharSequence.minWith(comparator: kotlin.Comparator<in kotlin.Char>): kotlin.Char?
 
 @kotlin.SinceKotlin(version = "1.4")
@@ -833,6 +831,11 @@ public inline fun kotlin.CharSequence.split(regex: kotlin.text.Regex, limit: kot
 public fun kotlin.CharSequence.splitToSequence(vararg delimiters: kotlin.String, ignoreCase: kotlin.Boolean = ..., limit: kotlin.Int = ...): kotlin.sequences.Sequence<kotlin.String>
 
 public fun kotlin.CharSequence.splitToSequence(vararg delimiters: kotlin.Char, ignoreCase: kotlin.Boolean = ..., limit: kotlin.Int = ...): kotlin.sequences.Sequence<kotlin.String>
+
+@kotlin.SinceKotlin(version = "1.6")
+@kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
+@kotlin.internal.InlineOnly
+public inline fun kotlin.CharSequence.splitToSequence(regex: kotlin.text.Regex, limit: kotlin.Int = ...): kotlin.sequences.Sequence<kotlin.String>
 
 public fun kotlin.CharSequence.startsWith(char: kotlin.Char, ignoreCase: kotlin.Boolean = ...): kotlin.Boolean
 
@@ -1409,17 +1412,29 @@ public final class Regex {
 
     public final fun findAll(input: kotlin.CharSequence, startIndex: kotlin.Int = ...): kotlin.sequences.Sequence<kotlin.text.MatchResult>
 
+    @kotlin.SinceKotlin(version = "1.5")
+    @kotlin.ExperimentalStdlibApi
+    public final fun matchAt(input: kotlin.CharSequence, index: kotlin.Int): kotlin.text.MatchResult?
+
     public final fun matchEntire(input: kotlin.CharSequence): kotlin.text.MatchResult?
 
     public final infix fun matches(input: kotlin.CharSequence): kotlin.Boolean
 
-    public final inline fun replace(input: kotlin.CharSequence, transform: (kotlin.text.MatchResult) -> kotlin.CharSequence): kotlin.String
+    @kotlin.SinceKotlin(version = "1.5")
+    @kotlin.ExperimentalStdlibApi
+    public final fun matchesAt(input: kotlin.CharSequence, index: kotlin.Int): kotlin.Boolean
+
+    public final fun replace(input: kotlin.CharSequence, transform: (kotlin.text.MatchResult) -> kotlin.CharSequence): kotlin.String
 
     public final fun replace(input: kotlin.CharSequence, replacement: kotlin.String): kotlin.String
 
     public final fun replaceFirst(input: kotlin.CharSequence, replacement: kotlin.String): kotlin.String
 
     public final fun split(input: kotlin.CharSequence, limit: kotlin.Int = ...): kotlin.collections.List<kotlin.String>
+
+    @kotlin.SinceKotlin(version = "1.6")
+    @kotlin.WasExperimental(markerClass = {kotlin.ExperimentalStdlibApi::class})
+    public final fun splitToSequence(input: kotlin.CharSequence, limit: kotlin.Int = ...): kotlin.sequences.Sequence<kotlin.String>
 
     public open override fun toString(): kotlin.String
 
@@ -1620,6 +1635,11 @@ public object Typography {
 
     public const final val leftDoubleQuote: kotlin.Char = \u201C ('“') { get; }
 
+    @kotlin.SinceKotlin(version = "1.6")
+    public const final val leftGuillemet: kotlin.Char = \u00AB ('«') { get; }
+
+    @kotlin.Deprecated(message = "This constant has a typo in the name. Use leftGuillemet instead.", replaceWith = kotlin.ReplaceWith(expression = "Typography.leftGuillemet", imports = {}))
+    @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
     public const final val leftGuillemete: kotlin.Char = \u00AB ('«') { get; }
 
     public const final val leftSingleQuote: kotlin.Char = \u2018 ('‘') { get; }
@@ -1656,6 +1676,11 @@ public object Typography {
 
     public const final val rightDoubleQuote: kotlin.Char = \u201D ('”') { get; }
 
+    @kotlin.SinceKotlin(version = "1.6")
+    public const final val rightGuillemet: kotlin.Char = \u00BB ('»') { get; }
+
+    @kotlin.Deprecated(message = "This constant has a typo in the name. Use rightGuillemet instead.", replaceWith = kotlin.ReplaceWith(expression = "Typography.rightGuillemet", imports = {}))
+    @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
     public const final val rightGuillemete: kotlin.Char = \u00BB ('»') { get; }
 
     public const final val rightSingleQuote: kotlin.Char = \u2019 ('’') { get; }

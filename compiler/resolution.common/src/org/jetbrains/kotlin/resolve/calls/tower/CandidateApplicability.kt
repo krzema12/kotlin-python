@@ -11,10 +11,11 @@ enum class CandidateApplicability {
     INAPPLICABLE_WRONG_RECEIVER, // receiver not matched
     INAPPLICABLE_ARGUMENTS_MAPPING_ERROR, // arguments not mapped to parameters (i.e. different size of arguments and parameters)
     INAPPLICABLE, // arguments have wrong types
+    INAPPLICABLE_MODIFIER, // no expected modifier (eg infix call on non-infix function)
     IMPOSSIBLE_TO_GENERATE, // access to outer class from nested
     RUNTIME_ERROR, // problems with visibility
-    UNSAFE_CALL, // receiver nullability doesn't match
-    MAY_THROW_RUNTIME_ERROR, // unstable smart cast
+    UNSAFE_CALL, // receiver or argument nullability doesn't match
+    UNSTABLE_SMARTCAST, // unstable smart cast
     CONVENTION_ERROR, // missing infix, operator etc
     RESOLVED_LOW_PRIORITY,
     RESOLVED_NEED_PRESERVE_COMPATIBILITY, // call resolved successfully, but using new features that changes resolve

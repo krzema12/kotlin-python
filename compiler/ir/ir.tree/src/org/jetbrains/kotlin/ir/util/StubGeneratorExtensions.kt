@@ -8,21 +8,41 @@ package org.jetbrains.kotlin.ir.util
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.descriptors.PropertyDescriptor
-import org.jetbrains.kotlin.ir.declarations.IrClass
-import org.jetbrains.kotlin.ir.declarations.IrConstructor
-import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
-import org.jetbrains.kotlin.ir.declarations.IrFactory
+import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.declarations.lazy.IrLazyClass
 import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedContainerSource
 import org.jetbrains.kotlin.types.KotlinType
+
+interface DeserializableClass {
+    fun loadIr(): Boolean
+}
 
 open class StubGeneratorExtensions {
     open fun computeExternalDeclarationOrigin(descriptor: DeclarationDescriptor): IrDeclarationOrigin? = null
 
-    open fun generateFacadeClass(irFactory: IrFactory, source: DeserializedContainerSource): IrClass? = null
+    open fun generateFacadeClass(
+        irFactory: IrFactory,
+        deserializedSource: DeserializedContainerSource,
+        stubGenerator: DeclarationStubGenerator,
+    ): IrClass? = null
 
     open fun isPropertyWithPlatformField(descriptor: PropertyDescriptor): Boolean = false
 
     open fun isStaticFunction(descriptor: FunctionDescriptor): Boolean = false
+
+    open fun deserializeLazyClass(
+        irClass: IrLazyClass,
+        stubGenerator: DeclarationStubGenerator,
+        parent: IrDeclarationParent,
+        allowErrorNodes: Boolean,
+    ): Boolean = false
+
+    open fun deserializeFacadeClass(
+        irClass: IrClass,
+        stubGenerator: DeclarationStubGenerator,
+        parent: IrDeclarationParent,
+        allowErrorNodes: Boolean,
+    ): Boolean = false
 
     open val enhancedNullability: EnhancedNullability
         get() = EnhancedNullability
@@ -35,7 +55,12 @@ open class StubGeneratorExtensions {
         companion object Instance : EnhancedNullability()
     }
 
+    open val irDeserializationEnabled: Boolean = false
+
     open val flexibleNullabilityAnnotationConstructor: IrConstructor?
+        get() = null
+
+    open val flexibleMutabilityAnnotationConstructor: IrConstructor?
         get() = null
 
     open val enhancedNullabilityAnnotationConstructor: IrConstructor?
@@ -43,6 +68,8 @@ open class StubGeneratorExtensions {
 
     open val rawTypeAnnotationConstructor: IrConstructor?
         get() = null
+
+    open fun registerDeclarations(symbolTable: SymbolTable) {}
 
     companion object {
         @JvmField

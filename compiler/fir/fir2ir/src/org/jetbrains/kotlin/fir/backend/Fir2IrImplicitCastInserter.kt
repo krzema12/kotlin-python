@@ -6,9 +6,6 @@
 package org.jetbrains.kotlin.fir.backend
 
 import org.jetbrains.kotlin.fir.FirElement
-import org.jetbrains.kotlin.fir.declarations.FirAnonymousFunction
-import org.jetbrains.kotlin.fir.declarations.FirAnonymousObject
-import org.jetbrains.kotlin.fir.declarations.FirCallableMemberDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirTypeAlias
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.expressions.impl.FirStubStatement
@@ -20,21 +17,17 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.typeContext
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.fir.visitors.FirDefaultVisitor
+import org.jetbrains.kotlin.ir.IrBuiltIns
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.IrTypeOperatorCallImpl
-import org.jetbrains.kotlin.ir.types.IrType
-import org.jetbrains.kotlin.ir.types.makeNotNull
-import org.jetbrains.kotlin.ir.types.removeAnnotations
-import org.jetbrains.kotlin.ir.types.withHasQuestionMark
+import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.classId
-import org.jetbrains.kotlin.ir.util.coerceToUnitIfNeeded
 import org.jetbrains.kotlin.ir.util.parentAsClass
 import org.jetbrains.kotlin.types.AbstractTypeChecker
 
 class Fir2IrImplicitCastInserter(
-    private val components: Fir2IrComponents,
-    private val visitor: Fir2IrVisitor
+    private val components: Fir2IrComponents
 ) : Fir2IrComponents by components, FirDefaultVisitor<IrElement, IrElement>() {
 
     private fun FirTypeRef.toIrType(): IrType = with(typeConverter) { toIrType() }
@@ -47,9 +40,11 @@ class Fir2IrImplicitCastInserter(
 
     override fun visitAnnotationCall(annotationCall: FirAnnotationCall, data: IrElement): IrElement = data
 
-    override fun visitAnonymousObject(anonymousObject: FirAnonymousObject, data: IrElement): IrElement = data
+    override fun visitAnonymousObjectExpression(anonymousObjectExpression: FirAnonymousObjectExpression, data: IrElement): IrElement = data
 
-    override fun visitAnonymousFunction(anonymousFunction: FirAnonymousFunction, data: IrElement): IrElement = data
+    override fun visitAnonymousFunctionExpression(anonymousFunctionExpression: FirAnonymousFunctionExpression, data: IrElement): IrElement {
+        return data
+    }
 
     override fun visitBinaryLogicExpression(binaryLogicExpression: FirBinaryLogicExpression, data: IrElement): IrElement = data
 
@@ -65,6 +60,8 @@ class Fir2IrImplicitCastInserter(
     override fun visitThisReceiverExpression(thisReceiverExpression: FirThisReceiverExpression, data: IrElement): IrElement = data
 
     override fun visitQualifiedAccessExpression(qualifiedAccessExpression: FirQualifiedAccessExpression, data: IrElement): IrElement = data
+
+    override fun visitPropertyAccessExpression(propertyAccessExpression: FirPropertyAccessExpression, data: IrElement): IrElement = data
 
     override fun visitResolvedQualifier(resolvedQualifier: FirResolvedQualifier, data: IrElement): IrElement = data
 
@@ -274,7 +271,19 @@ class Fir2IrImplicitCastInserter(
     }
 
     override fun visitExpressionWithSmartcast(expressionWithSmartcast: FirExpressionWithSmartcast, data: IrElement): IrExpression {
-        return implicitCastOrExpression(data as IrExpression, expressionWithSmartcast.typeRef)
+        return if (expressionWithSmartcast.isStable) {
+            implicitCastOrExpression(data as IrExpression, expressionWithSmartcast.typeRef)
+        } else {
+            data as IrExpression
+        }
+    }
+
+    override fun visitExpressionWithSmartcastToNull(
+        expressionWithSmartcastToNull: FirExpressionWithSmartcastToNull,
+        data: IrElement
+    ): IrElement {
+        // We don't want an implicit cast to Nothing?. This expression just encompasses nullability after null check.
+        return data
     }
 
     internal fun implicitCastFromDispatchReceiver(
@@ -284,7 +293,7 @@ class Fir2IrImplicitCastInserter(
     ): IrExpression {
         val referencedDeclaration =
             ((calleeReference as? FirResolvedNamedReference)?.resolvedSymbol as? FirCallableSymbol<*>)?.unwrapCallRepresentative()
-                ?.fir as? FirCallableMemberDeclaration<*>
+                ?.fir
 
         val dispatchReceiverType =
             referencedDeclaration?.dispatchReceiverType as? ConeClassLikeType
@@ -324,5 +333,18 @@ class Fir2IrImplicitCastInserter(
             castType,
             original
         )
+    }
+
+    private fun IrExpression.coerceToUnitIfNeeded(valueType: IrType, irBuiltIns: IrBuiltIns): IrExpression {
+        return if (valueType.isUnit() || valueType.isNothing())
+            this
+        else
+            IrTypeOperatorCallImpl(
+                startOffset, endOffset,
+                irBuiltIns.unitType,
+                IrTypeOperator.IMPLICIT_COERCION_TO_UNIT,
+                irBuiltIns.unitType,
+                this
+            )
     }
 }

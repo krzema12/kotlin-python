@@ -75,7 +75,7 @@ class KotlinGradleIT : BaseGradleIT() {
         wd1.deleteRecursively()
         if (wd1.exists()) {
             val files = buildString {
-                wd1.walk().forEach { appendln("  " + it.relativeTo(wd1).path) }
+                wd1.walk().forEach { appendLine("  " + it.relativeTo(wd1).path) }
             }
             error("Some files in $wd1 were not removed:\n$files")
         }
@@ -923,6 +923,11 @@ class KotlinGradleIT : BaseGradleIT() {
             assertSuccessful()
             assertContains("Kotlin build report is written to")
         }
+
+        build("clean", "assemble", "-Pkotlin.build.report.enable=true") {
+            assertSuccessful()
+            assertContains("Kotlin build report is written to")
+        }
     }
 
     @Test
@@ -1175,7 +1180,7 @@ class KotlinGradleIT : BaseGradleIT() {
     fun testKtKt35942InternalsFromMainInTestViaTransitiveDepsAndroid() = with(
         Project(
             projectName = "kt-35942-android",
-            gradleVersionRequirement = GradleVersionRequired.AtLeast("6.6.1")
+            gradleVersionRequirement = GradleVersionRequired.AtLeast("6.7.1")
         )
     ) {
         build(

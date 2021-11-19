@@ -22,8 +22,10 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.utils.Printer
 import java.io.File
 import java.io.PrintStream
+import java.util.*
 import kotlin.reflect.KAnnotatedElement
 import kotlin.reflect.KProperty1
+import kotlin.reflect.KVisibility
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.withNullability
 
@@ -200,10 +202,13 @@ private fun Printer.generateImpl(
             println()
             val propertyType = property.gradleReturnType
             if (propertyType.endsWith("?")) {
+                generateOptionDeprecation(property)
                 generatePropertyDeclaration(property, modifiers = "override", value = "null")
             } else {
                 val backingField = property.backingField()
-                println("private var $backingField: $propertyType? = null")
+                val visibilityModified = property.gradleBackingFieldVisibility.name.lowercase(Locale.US)
+                println("$visibilityModified var $backingField: $propertyType? = null")
+                generateOptionDeprecation(property)
                 generatePropertyDeclaration(property, modifiers = "override")
                 withIndent {
                     println("get() = $backingField ?: ${property.gradleDefaultValue}")
@@ -247,6 +252,7 @@ private fun Printer.generateDeclaration(
         println("package ${type.parent()}")
         println()
     }
+    println("@Suppress(\"DEPRECATION\")")
     print("$modifiers ${type.shortName()} ")
     afterType?.let { print("$afterType ") }
     println("{")
@@ -313,6 +319,15 @@ private val KProperty1<*, *>.gradleValues: DefaultValues
 
 private val KProperty1<*, *>.gradleDefaultValue: String
         get() = gradleValues.defaultValue
+
+private val KProperty1<*, *>.gradleBackingFieldVisibility: KVisibility
+    get() {
+        val fieldVisibility = findAnnotation<GradleOption>()!!.backingFieldVisibility
+        require(fieldVisibility != KVisibility.PUBLIC) {
+            "Backing field should not have public visibility!"
+        }
+        return fieldVisibility
+    }
 
 private val KProperty1<*, *>.gradleReturnType: String
         get() {

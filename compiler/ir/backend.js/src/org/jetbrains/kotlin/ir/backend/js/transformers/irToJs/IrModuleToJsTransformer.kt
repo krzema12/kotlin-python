@@ -1,12 +1,12 @@
 /*
- * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
 package org.jetbrains.kotlin.ir.backend.js.transformers.irToJs
 
+import org.jetbrains.kotlin.ir.backend.js.CompilationOutputs
 import org.jetbrains.kotlin.ir.backend.js.CompilerResult
-import org.jetbrains.kotlin.ir.backend.js.JsCode
 import org.jetbrains.kotlin.ir.backend.js.JsIrBackendContext
 import org.jetbrains.kotlin.ir.backend.js.eliminateDeadDeclarations
 import org.jetbrains.kotlin.ir.backend.js.export.ExportModelGenerator
@@ -19,9 +19,17 @@ import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.util.isEffectivelyExternal
 import org.jetbrains.kotlin.ir.util.isInterface
+import org.jetbrains.kotlin.js.backend.JsToStringGenerationVisitor
+import org.jetbrains.kotlin.js.backend.NoOpSourceLocationConsumer
 import org.jetbrains.kotlin.js.backend.ast.*
 import org.jetbrains.kotlin.js.config.JSConfigurationKeys
+import org.jetbrains.kotlin.js.config.SourceMapSourceEmbedding
+import org.jetbrains.kotlin.js.sourceMap.SourceFilePathResolver
+import org.jetbrains.kotlin.js.sourceMap.SourceMap3Builder
+import org.jetbrains.kotlin.js.sourceMap.SourceMapBuilderConsumer
+import org.jetbrains.kotlin.js.util.TextOutputImpl
 import org.jetbrains.kotlin.utils.DFS
+import java.io.File
 
 class IrModuleToJsTransformer(
     private val backendContext: JsIrBackendContext,
@@ -31,7 +39,9 @@ class IrModuleToJsTransformer(
     private val fullJs: Boolean = true,
     private val dceJs: Boolean = false,
     private val multiModule: Boolean = false,
-    private val relativeRequirePath: Boolean = false
+    private val relativeRequirePath: Boolean = false,
+    private val moduleToName: Map<IrModuleFragment, String> = emptyMap(),
+    private val removeUnusedAssociatedObjects: Boolean = true,
 ) {
     private val generateRegionComments = backendContext.configuration.getBoolean(JSConfigurationKeys.GENERATE_REGION_COMMENTS)
 
@@ -39,7 +49,6 @@ class IrModuleToJsTransformer(
         val additionalPackages = with(backendContext) {
             externalPackageFragment.values + listOf(
                 bodilessBuiltInsPackageFragment,
-                intrinsics.externalPackageFragment
             ) + packageLevelJsModules
         }
 
@@ -61,7 +70,7 @@ class IrModuleToJsTransformer(
         val jsCode = if (fullJs) generateWrappedModuleBody(modules, exportedModule, namer) else null
 
         val dceJsCode = if (dceJs) {
-            eliminateDeadDeclarations(modules, backendContext)
+            eliminateDeadDeclarations(modules, backendContext, removeUnusedAssociatedObjects)
             // Use a fresh namer for DCE so that we could compare the result with DCE-driven
             // TODO: is this mode relevant for scripting? If yes, refactor so that the external name tables are used here when needed.
             val namer = NameTables(emptyList(), context = backendContext)
@@ -72,7 +81,7 @@ class IrModuleToJsTransformer(
         return CompilerResult(jsCode, dceJsCode, dts)
     }
 
-    private fun generateWrappedModuleBody(modules: Iterable<IrModuleFragment>, exportedModule: ExportedModule, namer: NameTables): JsCode {
+    private fun generateWrappedModuleBody(modules: Iterable<IrModuleFragment>, exportedModule: ExportedModule, namer: NameTables): CompilationOutputs {
         if (multiModule) {
 
             val refInfo = buildCrossModuleReferenceInfo(modules)
@@ -91,7 +100,7 @@ class IrModuleToJsTransformer(
             )
 
             val dependencies = others.mapIndexed { index, module ->
-                val moduleName = sanitizeName(module.safeName)
+                val moduleName = module.externalModuleName()
 
                 val exportedDeclarations = ExportModelGenerator(backendContext).let { module.files.flatMap { file -> it.generateExport(file) } }
 
@@ -104,16 +113,14 @@ class IrModuleToJsTransformer(
                 )
             }.reversed()
 
-            return JsCode(mainModule, dependencies)
+            return CompilationOutputs(mainModule.jsCode, mainModule.sourceMap, dependencies)
         } else {
-            return JsCode(
-                generateWrappedModuleBody2(
-                    modules,
-                    emptyList(),
-                    exportedModule,
-                    namer,
-                    EmptyCrossModuleReferenceInfo
-                )
+            return generateWrappedModuleBody2(
+                modules,
+                emptyList(),
+                exportedModule,
+                namer,
+                EmptyCrossModuleReferenceInfo
             )
         }
     }
@@ -124,7 +131,7 @@ class IrModuleToJsTransformer(
         exportedModule: ExportedModule,
         namer: NameTables,
         refInfo: CrossModuleReferenceInfo
-    ): String {
+    ): CompilationOutputs {
 
         val nameGenerator = refInfo.withReferenceTracking(
             IrNamerImpl(newNameTables = namer, backendContext),
@@ -136,6 +143,7 @@ class IrModuleToJsTransformer(
             globalNameScope = namer.globalNames
         )
         val rootContext = JsGenerationContext(
+            currentFile = null,
             currentFunction = null,
             staticContext = staticContext,
             localNames = LocalNameGenerator(NameScope.EmptyScope)
@@ -187,7 +195,45 @@ class IrModuleToJsTransformer(
             )
         }
 
-        return program.toString()
+        val jsCode = TextOutputImpl()
+
+        val configuration = backendContext.configuration
+        val sourceMapPrefix = configuration.get(JSConfigurationKeys.SOURCE_MAP_PREFIX, "")
+        val sourceMapsEnabled = configuration.getBoolean(JSConfigurationKeys.SOURCE_MAP)
+
+        val sourceMapBuilder = SourceMap3Builder(null, jsCode, sourceMapPrefix)
+        val sourceMapBuilderConsumer =
+            if (sourceMapsEnabled) {
+                val sourceRoots = configuration.get(JSConfigurationKeys.SOURCE_MAP_SOURCE_ROOTS, emptyList<String>()).map(::File)
+                val generateRelativePathsInSourceMap = sourceMapPrefix.isEmpty() && sourceRoots.isEmpty()
+                val outputDir = if (generateRelativePathsInSourceMap) configuration.get(JSConfigurationKeys.OUTPUT_DIR) else null
+
+                val pathResolver = SourceFilePathResolver(sourceRoots, outputDir)
+
+                val sourceMapContentEmbedding =
+                    configuration.get(JSConfigurationKeys.SOURCE_MAP_EMBED_SOURCES, SourceMapSourceEmbedding.INLINING)
+
+                SourceMapBuilderConsumer(
+                    File("."),
+                    sourceMapBuilder,
+                    pathResolver,
+                    sourceMapContentEmbedding == SourceMapSourceEmbedding.ALWAYS,
+                    sourceMapContentEmbedding != SourceMapSourceEmbedding.NEVER
+                )
+            } else {
+                null
+            }
+
+        program.accept(JsToStringGenerationVisitor(jsCode, sourceMapBuilderConsumer ?: NoOpSourceLocationConsumer))
+
+        return CompilationOutputs(
+            jsCode.toString(),
+            if(sourceMapsEnabled) sourceMapBuilder.build() else null
+        )
+    }
+
+    private fun IrModuleFragment.externalModuleName(): String {
+        return moduleToName[this] ?: sanitizeName(safeName)
     }
 
     private fun generateCrossModuleImports(
@@ -206,7 +252,7 @@ class IrModuleToJsTransformer(
             }
 
             val moduleName = declareFreshGlobal(module.safeName)
-            modules += JsImportedModule(moduleName.ident, moduleName, moduleName.makeRef(), relativeRequirePath)
+            modules += JsImportedModule(module.externalModuleName(), moduleName, null, relativeRequirePath)
 
             names.forEach {
                 imports += JsVars(JsVars.JsVar(JsName(it), JsNameRef(it, JsNameRef("\$crossModule\$", moduleName.makeRef()))))

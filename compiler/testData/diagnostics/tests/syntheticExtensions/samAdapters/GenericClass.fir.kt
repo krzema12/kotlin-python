@@ -1,7 +1,7 @@
 // JAVAC_EXPECTED_FILE
 // FILE: KotlinFile.kt
 fun foo(javaClass: JavaClass<String>): String {
-    return javaClass.doSomething("", 1) { s: String -> <!ARGUMENT_TYPE_MISMATCH!>""<!> }
+    return javaClass.doSomething("", 1) <!ARGUMENT_TYPE_MISMATCH!>{ s: String -> "" }<!>
 }
 
 // FILE: JavaClass.java

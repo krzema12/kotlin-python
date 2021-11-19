@@ -10,9 +10,6 @@ import org.jetbrains.kotlin.fir.FirAnnotationContainer
 import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.references.FirReference
 import org.jetbrains.kotlin.fir.FirLabel
-import org.jetbrains.kotlin.fir.declarations.FirImport
-import org.jetbrains.kotlin.fir.declarations.FirResolvedImport
-import org.jetbrains.kotlin.fir.FirSymbolOwner
 import org.jetbrains.kotlin.fir.expressions.FirResolvable
 import org.jetbrains.kotlin.fir.FirTargetElement
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationStatus
@@ -24,13 +21,12 @@ import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirAnnotatedDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirAnonymousInitializer
 import org.jetbrains.kotlin.fir.declarations.FirTypedDeclaration
-import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
-import org.jetbrains.kotlin.fir.declarations.FirTypeParameterRef
-import org.jetbrains.kotlin.fir.declarations.FirTypeParameter
 import org.jetbrains.kotlin.fir.declarations.FirTypeParameterRefsOwner
 import org.jetbrains.kotlin.fir.declarations.FirTypeParametersOwner
 import org.jetbrains.kotlin.fir.declarations.FirMemberDeclaration
-import org.jetbrains.kotlin.fir.declarations.FirCallableMemberDeclaration
+import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
+import org.jetbrains.kotlin.fir.declarations.FirTypeParameterRef
+import org.jetbrains.kotlin.fir.declarations.FirTypeParameter
 import org.jetbrains.kotlin.fir.declarations.FirVariable
 import org.jetbrains.kotlin.fir.declarations.FirValueParameter
 import org.jetbrains.kotlin.fir.declarations.FirProperty
@@ -46,9 +42,15 @@ import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.FirPropertyAccessor
 import org.jetbrains.kotlin.fir.declarations.FirConstructor
 import org.jetbrains.kotlin.fir.declarations.FirFile
+import org.jetbrains.kotlin.fir.FirPackageDirective
 import org.jetbrains.kotlin.fir.declarations.FirAnonymousFunction
+import org.jetbrains.kotlin.fir.expressions.FirAnonymousFunctionExpression
 import org.jetbrains.kotlin.fir.declarations.FirAnonymousObject
+import org.jetbrains.kotlin.fir.expressions.FirAnonymousObjectExpression
 import org.jetbrains.kotlin.fir.diagnostics.FirDiagnosticHolder
+import org.jetbrains.kotlin.fir.declarations.FirImport
+import org.jetbrains.kotlin.fir.declarations.FirResolvedImport
+import org.jetbrains.kotlin.fir.declarations.FirErrorImport
 import org.jetbrains.kotlin.fir.expressions.FirLoop
 import org.jetbrains.kotlin.fir.expressions.FirErrorLoop
 import org.jetbrains.kotlin.fir.expressions.FirDoWhileLoop
@@ -84,6 +86,7 @@ import org.jetbrains.kotlin.fir.expressions.FirErrorExpression
 import org.jetbrains.kotlin.fir.declarations.FirErrorFunction
 import org.jetbrains.kotlin.fir.declarations.FirErrorProperty
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
+import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
 import org.jetbrains.kotlin.fir.expressions.FirImplicitInvokeCall
 import org.jetbrains.kotlin.fir.expressions.FirDelegatedConstructorCall
@@ -91,6 +94,7 @@ import org.jetbrains.kotlin.fir.expressions.FirComponentCall
 import org.jetbrains.kotlin.fir.expressions.FirCallableReferenceAccess
 import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
 import org.jetbrains.kotlin.fir.expressions.FirExpressionWithSmartcast
+import org.jetbrains.kotlin.fir.expressions.FirExpressionWithSmartcastToNull
 import org.jetbrains.kotlin.fir.expressions.FirSafeCallExpression
 import org.jetbrains.kotlin.fir.expressions.FirCheckedSafeCallSubject
 import org.jetbrains.kotlin.fir.expressions.FirGetClassCall
@@ -155,18 +159,6 @@ abstract class FirVisitorVoid : FirVisitor<Unit, Nothing?>() {
         visitElement(label)
     }
 
-    open fun visitImport(import: FirImport) {
-        visitElement(import)
-    }
-
-    open fun visitResolvedImport(resolvedImport: FirResolvedImport) {
-        visitElement(resolvedImport)
-    }
-
-    open fun <E> visitSymbolOwner(symbolOwner: FirSymbolOwner<E>) where E : FirSymbolOwner<E>, E : FirDeclaration {
-        visitElement(symbolOwner)
-    }
-
     open fun visitResolvable(resolvable: FirResolvable) {
         visitElement(resolvable)
     }
@@ -211,18 +203,6 @@ abstract class FirVisitorVoid : FirVisitor<Unit, Nothing?>() {
         visitElement(typedDeclaration)
     }
 
-    open fun <F : FirCallableDeclaration<F>> visitCallableDeclaration(callableDeclaration: FirCallableDeclaration<F>) {
-        visitElement(callableDeclaration)
-    }
-
-    open fun visitTypeParameterRef(typeParameterRef: FirTypeParameterRef) {
-        visitElement(typeParameterRef)
-    }
-
-    open fun visitTypeParameter(typeParameter: FirTypeParameter) {
-        visitElement(typeParameter)
-    }
-
     open fun visitTypeParameterRefsOwner(typeParameterRefsOwner: FirTypeParameterRefsOwner) {
         visitElement(typeParameterRefsOwner)
     }
@@ -235,11 +215,19 @@ abstract class FirVisitorVoid : FirVisitor<Unit, Nothing?>() {
         visitElement(memberDeclaration)
     }
 
-    open fun <F : FirCallableMemberDeclaration<F>> visitCallableMemberDeclaration(callableMemberDeclaration: FirCallableMemberDeclaration<F>) {
-        visitElement(callableMemberDeclaration)
+    open fun visitCallableDeclaration(callableDeclaration: FirCallableDeclaration) {
+        visitElement(callableDeclaration)
     }
 
-    open fun <F : FirVariable<F>> visitVariable(variable: FirVariable<F>) {
+    open fun visitTypeParameterRef(typeParameterRef: FirTypeParameterRef) {
+        visitElement(typeParameterRef)
+    }
+
+    open fun visitTypeParameter(typeParameter: FirTypeParameter) {
+        visitElement(typeParameter)
+    }
+
+    open fun visitVariable(variable: FirVariable) {
         visitElement(variable)
     }
 
@@ -259,11 +247,11 @@ abstract class FirVisitorVoid : FirVisitor<Unit, Nothing?>() {
         visitElement(enumEntry)
     }
 
-    open fun <F : FirClassLikeDeclaration<F>> visitClassLikeDeclaration(classLikeDeclaration: FirClassLikeDeclaration<F>) {
+    open fun visitClassLikeDeclaration(classLikeDeclaration: FirClassLikeDeclaration) {
         visitElement(classLikeDeclaration)
     }
 
-    open fun <F : FirClass<F>> visitClass(klass: FirClass<F>) {
+    open fun visitClass(klass: FirClass) {
         visitElement(klass)
     }
 
@@ -275,7 +263,7 @@ abstract class FirVisitorVoid : FirVisitor<Unit, Nothing?>() {
         visitElement(typeAlias)
     }
 
-    open fun <F : FirFunction<F>> visitFunction(function: FirFunction<F>) {
+    open fun visitFunction(function: FirFunction) {
         visitElement(function)
     }
 
@@ -299,16 +287,40 @@ abstract class FirVisitorVoid : FirVisitor<Unit, Nothing?>() {
         visitElement(file)
     }
 
+    open fun visitPackageDirective(packageDirective: FirPackageDirective) {
+        visitElement(packageDirective)
+    }
+
     open fun visitAnonymousFunction(anonymousFunction: FirAnonymousFunction) {
         visitElement(anonymousFunction)
+    }
+
+    open fun visitAnonymousFunctionExpression(anonymousFunctionExpression: FirAnonymousFunctionExpression) {
+        visitElement(anonymousFunctionExpression)
     }
 
     open fun visitAnonymousObject(anonymousObject: FirAnonymousObject) {
         visitElement(anonymousObject)
     }
 
+    open fun visitAnonymousObjectExpression(anonymousObjectExpression: FirAnonymousObjectExpression) {
+        visitElement(anonymousObjectExpression)
+    }
+
     open fun visitDiagnosticHolder(diagnosticHolder: FirDiagnosticHolder) {
         visitElement(diagnosticHolder)
+    }
+
+    open fun visitImport(import: FirImport) {
+        visitElement(import)
+    }
+
+    open fun visitResolvedImport(resolvedImport: FirResolvedImport) {
+        visitElement(resolvedImport)
+    }
+
+    open fun visitErrorImport(errorImport: FirErrorImport) {
+        visitElement(errorImport)
     }
 
     open fun visitLoop(loop: FirLoop) {
@@ -451,6 +463,10 @@ abstract class FirVisitorVoid : FirVisitor<Unit, Nothing?>() {
         visitElement(qualifiedAccessExpression)
     }
 
+    open fun visitPropertyAccessExpression(propertyAccessExpression: FirPropertyAccessExpression) {
+        visitElement(propertyAccessExpression)
+    }
+
     open fun visitFunctionCall(functionCall: FirFunctionCall) {
         visitElement(functionCall)
     }
@@ -477,6 +493,10 @@ abstract class FirVisitorVoid : FirVisitor<Unit, Nothing?>() {
 
     open fun visitExpressionWithSmartcast(expressionWithSmartcast: FirExpressionWithSmartcast) {
         visitElement(expressionWithSmartcast)
+    }
+
+    open fun visitExpressionWithSmartcastToNull(expressionWithSmartcastToNull: FirExpressionWithSmartcastToNull) {
+        visitElement(expressionWithSmartcastToNull)
     }
 
     open fun visitSafeCallExpression(safeCallExpression: FirSafeCallExpression) {
@@ -655,18 +675,6 @@ abstract class FirVisitorVoid : FirVisitor<Unit, Nothing?>() {
         visitLabel(label)
     }
 
-    final override fun visitImport(import: FirImport, data: Nothing?) {
-        visitImport(import)
-    }
-
-    final override fun visitResolvedImport(resolvedImport: FirResolvedImport, data: Nothing?) {
-        visitResolvedImport(resolvedImport)
-    }
-
-    final override fun <E> visitSymbolOwner(symbolOwner: FirSymbolOwner<E>, data: Nothing?) where E : FirSymbolOwner<E>, E : FirDeclaration {
-        visitSymbolOwner(symbolOwner)
-    }
-
     final override fun visitResolvable(resolvable: FirResolvable, data: Nothing?) {
         visitResolvable(resolvable)
     }
@@ -711,18 +719,6 @@ abstract class FirVisitorVoid : FirVisitor<Unit, Nothing?>() {
         visitTypedDeclaration(typedDeclaration)
     }
 
-    final override fun <F : FirCallableDeclaration<F>> visitCallableDeclaration(callableDeclaration: FirCallableDeclaration<F>, data: Nothing?) {
-        visitCallableDeclaration(callableDeclaration)
-    }
-
-    final override fun visitTypeParameterRef(typeParameterRef: FirTypeParameterRef, data: Nothing?) {
-        visitTypeParameterRef(typeParameterRef)
-    }
-
-    final override fun visitTypeParameter(typeParameter: FirTypeParameter, data: Nothing?) {
-        visitTypeParameter(typeParameter)
-    }
-
     final override fun visitTypeParameterRefsOwner(typeParameterRefsOwner: FirTypeParameterRefsOwner, data: Nothing?) {
         visitTypeParameterRefsOwner(typeParameterRefsOwner)
     }
@@ -735,11 +731,19 @@ abstract class FirVisitorVoid : FirVisitor<Unit, Nothing?>() {
         visitMemberDeclaration(memberDeclaration)
     }
 
-    final override fun <F : FirCallableMemberDeclaration<F>> visitCallableMemberDeclaration(callableMemberDeclaration: FirCallableMemberDeclaration<F>, data: Nothing?) {
-        visitCallableMemberDeclaration(callableMemberDeclaration)
+    final override fun visitCallableDeclaration(callableDeclaration: FirCallableDeclaration, data: Nothing?) {
+        visitCallableDeclaration(callableDeclaration)
     }
 
-    final override fun <F : FirVariable<F>> visitVariable(variable: FirVariable<F>, data: Nothing?) {
+    final override fun visitTypeParameterRef(typeParameterRef: FirTypeParameterRef, data: Nothing?) {
+        visitTypeParameterRef(typeParameterRef)
+    }
+
+    final override fun visitTypeParameter(typeParameter: FirTypeParameter, data: Nothing?) {
+        visitTypeParameter(typeParameter)
+    }
+
+    final override fun visitVariable(variable: FirVariable, data: Nothing?) {
         visitVariable(variable)
     }
 
@@ -759,11 +763,11 @@ abstract class FirVisitorVoid : FirVisitor<Unit, Nothing?>() {
         visitEnumEntry(enumEntry)
     }
 
-    final override fun <F : FirClassLikeDeclaration<F>> visitClassLikeDeclaration(classLikeDeclaration: FirClassLikeDeclaration<F>, data: Nothing?) {
+    final override fun visitClassLikeDeclaration(classLikeDeclaration: FirClassLikeDeclaration, data: Nothing?) {
         visitClassLikeDeclaration(classLikeDeclaration)
     }
 
-    final override fun <F : FirClass<F>> visitClass(klass: FirClass<F>, data: Nothing?) {
+    final override fun visitClass(klass: FirClass, data: Nothing?) {
         visitClass(klass)
     }
 
@@ -775,7 +779,7 @@ abstract class FirVisitorVoid : FirVisitor<Unit, Nothing?>() {
         visitTypeAlias(typeAlias)
     }
 
-    final override fun <F : FirFunction<F>> visitFunction(function: FirFunction<F>, data: Nothing?) {
+    final override fun visitFunction(function: FirFunction, data: Nothing?) {
         visitFunction(function)
     }
 
@@ -799,16 +803,40 @@ abstract class FirVisitorVoid : FirVisitor<Unit, Nothing?>() {
         visitFile(file)
     }
 
+    final override fun visitPackageDirective(packageDirective: FirPackageDirective, data: Nothing?) {
+        visitPackageDirective(packageDirective)
+    }
+
     final override fun visitAnonymousFunction(anonymousFunction: FirAnonymousFunction, data: Nothing?) {
         visitAnonymousFunction(anonymousFunction)
+    }
+
+    final override fun visitAnonymousFunctionExpression(anonymousFunctionExpression: FirAnonymousFunctionExpression, data: Nothing?) {
+        visitAnonymousFunctionExpression(anonymousFunctionExpression)
     }
 
     final override fun visitAnonymousObject(anonymousObject: FirAnonymousObject, data: Nothing?) {
         visitAnonymousObject(anonymousObject)
     }
 
+    final override fun visitAnonymousObjectExpression(anonymousObjectExpression: FirAnonymousObjectExpression, data: Nothing?) {
+        visitAnonymousObjectExpression(anonymousObjectExpression)
+    }
+
     final override fun visitDiagnosticHolder(diagnosticHolder: FirDiagnosticHolder, data: Nothing?) {
         visitDiagnosticHolder(diagnosticHolder)
+    }
+
+    final override fun visitImport(import: FirImport, data: Nothing?) {
+        visitImport(import)
+    }
+
+    final override fun visitResolvedImport(resolvedImport: FirResolvedImport, data: Nothing?) {
+        visitResolvedImport(resolvedImport)
+    }
+
+    final override fun visitErrorImport(errorImport: FirErrorImport, data: Nothing?) {
+        visitErrorImport(errorImport)
     }
 
     final override fun visitLoop(loop: FirLoop, data: Nothing?) {
@@ -951,6 +979,10 @@ abstract class FirVisitorVoid : FirVisitor<Unit, Nothing?>() {
         visitQualifiedAccessExpression(qualifiedAccessExpression)
     }
 
+    final override fun visitPropertyAccessExpression(propertyAccessExpression: FirPropertyAccessExpression, data: Nothing?) {
+        visitPropertyAccessExpression(propertyAccessExpression)
+    }
+
     final override fun visitFunctionCall(functionCall: FirFunctionCall, data: Nothing?) {
         visitFunctionCall(functionCall)
     }
@@ -977,6 +1009,10 @@ abstract class FirVisitorVoid : FirVisitor<Unit, Nothing?>() {
 
     final override fun visitExpressionWithSmartcast(expressionWithSmartcast: FirExpressionWithSmartcast, data: Nothing?) {
         visitExpressionWithSmartcast(expressionWithSmartcast)
+    }
+
+    final override fun visitExpressionWithSmartcastToNull(expressionWithSmartcastToNull: FirExpressionWithSmartcastToNull, data: Nothing?) {
+        visitExpressionWithSmartcastToNull(expressionWithSmartcastToNull)
     }
 
     final override fun visitSafeCallExpression(safeCallExpression: FirSafeCallExpression, data: Nothing?) {

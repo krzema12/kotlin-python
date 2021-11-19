@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // !DIAGNOSTICS: -UNUSED_PARAMETER
 
 class A<T> {
@@ -10,9 +9,9 @@ class A<T> {
 class Out<out F>
 
 fun test(a: A<out CharSequence>, y: Out<CharSequence>) {
-    a + <!TYPE_MISMATCH{NI}, TYPE_MISMATCH_DUE_TO_TYPE_PROJECTIONS{OI}!>y<!>
-    a[1] = <!TYPE_MISMATCH{NI}, TYPE_MISMATCH_DUE_TO_TYPE_PROJECTIONS{OI}!>y<!>
-    a[<!TYPE_MISMATCH{NI}, TYPE_MISMATCH_DUE_TO_TYPE_PROJECTIONS{OI}!>y<!>]
+    a + <!TYPE_MISMATCH!>y<!>
+    a[1] = <!TYPE_MISMATCH!>y<!>
+    a[<!TYPE_MISMATCH!>y<!>]
 
     a + Out<Nothing>()
     a[1] = Out<Nothing>()

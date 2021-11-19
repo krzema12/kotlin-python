@@ -5251,6 +5251,11 @@ public class IrBoxJsES6TestGenerated extends AbstractIrBoxJsES6Test {
             runTest("js/js.translator/testData/box/jsModule/externalClass.kt");
         }
 
+        @TestMetadata("externalClassNameClash.kt")
+        public void testExternalClassNameClash() throws Exception {
+            runTest("js/js.translator/testData/box/jsModule/externalClassNameClash.kt");
+        }
+
         @TestMetadata("externalClassWithDefaults.kt")
         public void testExternalClassWithDefaults() throws Exception {
             runTest("js/js.translator/testData/box/jsModule/externalClassWithDefaults.kt");
@@ -6817,6 +6822,16 @@ public class IrBoxJsES6TestGenerated extends AbstractIrBoxJsES6Test {
             KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("js/js.translator/testData/box/propertyAccess"), Pattern.compile("^([^_](.+))\\.kt$"), null, TargetBackend.JS_IR_ES6, true);
         }
 
+        @TestMetadata("booleanInExternals.kt")
+        public void testBooleanInExternals() throws Exception {
+            runTest("js/js.translator/testData/box/propertyAccess/booleanInExternals.kt");
+        }
+
+        @TestMetadata("booleanInExternalsWithDiagnostic.kt")
+        public void testBooleanInExternalsWithDiagnostic() throws Exception {
+            runTest("js/js.translator/testData/box/propertyAccess/booleanInExternalsWithDiagnostic.kt");
+        }
+
         @TestMetadata("classUsesPackageProperties.kt")
         public void testClassUsesPackageProperties() throws Exception {
             runTest("js/js.translator/testData/box/propertyAccess/classUsesPackageProperties.kt");
@@ -7121,6 +7136,11 @@ public class IrBoxJsES6TestGenerated extends AbstractIrBoxJsES6Test {
             runTest("js/js.translator/testData/box/reflection/kClassOnReifiedTypeInLambda-advanced.kt");
         }
 
+        @TestMetadata("kClassReifiedWithJsCall.kt")
+        public void testKClassReifiedWithJsCall() throws Exception {
+            runTest("js/js.translator/testData/box/reflection/kClassReifiedWithJsCall.kt");
+        }
+
         @TestMetadata("kClassSimpleName.kt")
         public void testKClassSimpleName() throws Exception {
             runTest("js/js.translator/testData/box/reflection/kClassSimpleName.kt");
@@ -7129,6 +7149,21 @@ public class IrBoxJsES6TestGenerated extends AbstractIrBoxJsES6Test {
         @TestMetadata("kClassToAndFromJsClass.kt")
         public void testKClassToAndFromJsClass() throws Exception {
             runTest("js/js.translator/testData/box/reflection/kClassToAndFromJsClass.kt");
+        }
+
+        @TestMetadata("kClassWithJsCall.kt")
+        public void testKClassWithJsCall() throws Exception {
+            runTest("js/js.translator/testData/box/reflection/kClassWithJsCall.kt");
+        }
+
+        @TestMetadata("kJsClassWithJsCall.kt")
+        public void testKJsClassWithJsCall() throws Exception {
+            runTest("js/js.translator/testData/box/reflection/kJsClassWithJsCall.kt");
+        }
+
+        @TestMetadata("kTypeWithJsCall.kt")
+        public void testKTypeWithJsCall() throws Exception {
+            runTest("js/js.translator/testData/box/reflection/kTypeWithJsCall.kt");
         }
 
         @TestMetadata("primitiveKClassOnReifiedType.kt")

@@ -11,10 +11,10 @@ import org.jetbrains.kotlin.ir.expressions.IrStatementOriginImpl
 
 object JsLoweredDeclarationOrigin : IrDeclarationOrigin {
     object JS_INTRINSICS_STUB : IrDeclarationOriginImpl("JS_INTRINSICS_STUB")
-    object JS_CLOSURE_BOX_CLASS : IrStatementOriginImpl("JS_CLOSURE_BOX_CLASS")
     object JS_CLOSURE_BOX_CLASS_DECLARATION : IrDeclarationOriginImpl("JS_CLOSURE_BOX_CLASS_DECLARATION")
     object BRIDGE_WITH_STABLE_NAME : IrDeclarationOriginImpl("BRIDGE_WITH_STABLE_NAME")
     object BRIDGE_WITHOUT_STABLE_NAME : IrDeclarationOriginImpl("BRIDGE_WITHOUT_STABLE_NAME")
     object OBJECT_GET_INSTANCE_FUNCTION : IrDeclarationOriginImpl("OBJECT_GET_INSTANCE_FUNCTION")
     object JS_SHADOWED_EXPORT : IrDeclarationOriginImpl("JS_SHADOWED_EXPORT")
+    object CLASS_REFERENCE : IrStatementOriginImpl("CLASS_REFERENCE")
 }

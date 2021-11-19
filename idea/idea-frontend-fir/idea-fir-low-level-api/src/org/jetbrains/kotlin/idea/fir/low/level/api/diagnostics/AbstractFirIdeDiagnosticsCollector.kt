@@ -5,122 +5,133 @@
 
 package org.jetbrains.kotlin.idea.fir.low.level.api.diagnostics
 
-import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.SessionConfiguration
-import org.jetbrains.kotlin.fir.analysis.CheckersComponent
-import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
+import org.jetbrains.kotlin.fir.analysis.CheckersComponentInternal
+import org.jetbrains.kotlin.fir.analysis.checkers.*
+import org.jetbrains.kotlin.fir.analysis.checkers.declaration.ComposedDeclarationCheckers
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.DeclarationCheckers
+import org.jetbrains.kotlin.fir.analysis.checkers.expression.ComposedExpressionCheckers
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.ExpressionCheckers
 import org.jetbrains.kotlin.fir.analysis.checkers.type.TypeCheckers
 import org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollector
 import org.jetbrains.kotlin.fir.analysis.collectors.components.*
-import org.jetbrains.kotlin.fir.analysis.diagnostics.*
-import org.jetbrains.kotlin.fir.checkers.*
+import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporter
+import org.jetbrains.kotlin.fir.analysis.jvm.checkers.JvmDeclarationCheckers
+import org.jetbrains.kotlin.fir.analysis.jvm.checkers.JvmExpressionCheckers
+import org.jetbrains.kotlin.fir.analysis.jvm.diagnostics.FirJvmDefaultErrorMessages
+import org.jetbrains.kotlin.fir.moduleData
+import org.jetbrains.kotlin.idea.fir.low.level.api.sessions.moduleSourceInfo
+import org.jetbrains.kotlin.platform.SimplePlatform
+import org.jetbrains.kotlin.platform.jvm.JvmPlatform
 
 internal abstract class AbstractFirIdeDiagnosticsCollector(
     session: FirSession,
     useExtendedCheckers: Boolean,
 ) : AbstractDiagnosticCollector(
-    session
-) {
-    init {
-        val declarationCheckers = CheckersFactory.createDeclarationCheckers(useExtendedCheckers)
-        val expressionCheckers = CheckersFactory.createExpressionCheckers(useExtendedCheckers)
-        val typeCheckers = CheckersFactory.createTypeCheckers(useExtendedCheckers)
-
-        @Suppress("LeakingThis")
-        initializeComponents(
-            DeclarationCheckersDiagnosticComponent(this, declarationCheckers),
-            ExpressionCheckersDiagnosticComponent(this, expressionCheckers),
-            TypeCheckersDiagnosticComponent(this, typeCheckers),
-            ErrorNodeDiagnosticCollectorComponent(this),
-            ControlFlowAnalysisDiagnosticComponent(this, declarationCheckers),
-        )
+    session,
+    createComponents = { reporter ->
+        CheckersFactory.createComponents(session, reporter, useExtendedCheckers)
     }
+)
 
-    protected abstract fun onDiagnostic(diagnostic: FirPsiDiagnostic<*>)
 
+private object CheckersFactory {
+    fun createComponents(
+        session: FirSession,
+        reporter: DiagnosticReporter,
+        useExtendedCheckers: Boolean
+    ): List<AbstractDiagnosticCollectorComponent> {
+        val moduleInfo = session.moduleData.moduleSourceInfo
+        val platform = moduleInfo.platform.componentPlatforms.first()
+        installPlatformSpecificErrorMessages(platform)
+        val declarationCheckers = createDeclarationCheckers(useExtendedCheckers, platform)
+        val expressionCheckers = createExpressionCheckers(useExtendedCheckers, platform)
+        val typeCheckers = createTypeCheckers(useExtendedCheckers)
 
-    private inner class Reporter : DiagnosticReporter() {
-        override fun report(diagnostic: FirDiagnostic<*>?, context: CheckerContext) {
-            if (diagnostic == null) return
-            if (context.isDiagnosticSuppressed(diagnostic)) return
-
-            val psiDiagnostic = when (diagnostic) {
-                is FirPsiDiagnostic<*> -> diagnostic
-                is FirLightDiagnostic -> diagnostic.toPsiDiagnostic()
-                else -> error("Unknown diagnostic type ${diagnostic::class.simpleName}")
+        @OptIn(ExperimentalStdlibApi::class)
+        return buildList {
+            if (!useExtendedCheckers) {
+                add(ErrorNodeDiagnosticCollectorComponent(session, reporter))
             }
-
-            onDiagnostic(psiDiagnostic)
+            add(DeclarationCheckersDiagnosticComponent(session, reporter, declarationCheckers))
+            add(ExpressionCheckersDiagnosticComponent(session, reporter, expressionCheckers))
+            typeCheckers?.let { add(TypeCheckersDiagnosticComponent(session, reporter, it)) }
+            add(ControlFlowAnalysisDiagnosticComponent(session, reporter, declarationCheckers))
         }
     }
 
-    override var reporter: DiagnosticReporter = Reporter()
 
-    override fun initializeCollector() {
-        reporter = Reporter()
+    private fun createDeclarationCheckers(useExtendedCheckers: Boolean, platform: SimplePlatform): DeclarationCheckers {
+        return if (useExtendedCheckers) {
+            ExtendedDeclarationCheckers
+        } else {
+            createDeclarationCheckers {
+                add(CommonDeclarationCheckers)
+                when (platform) {
+                    is JvmPlatform -> add(JvmDeclarationCheckers)
+                    else -> {
+                    }
+                }
+            }
+        }
     }
 
-
-    override fun getCollectedDiagnostics(): List<FirDiagnostic<*>> {
-        // Not necessary in IDE
-        return emptyList()
+    private fun createExpressionCheckers(useExtendedCheckers: Boolean, platform: SimplePlatform): ExpressionCheckers {
+        return if (useExtendedCheckers) {
+            ExtendedExpressionCheckers
+        } else {
+            createExpressionCheckers {
+                add(CommonExpressionCheckers)
+                when (platform) {
+                    is JvmPlatform -> add(JvmExpressionCheckers)
+                    else -> {
+                    }
+                }
+            }
+        }
     }
-}
 
-private fun FirLightDiagnostic.toPsiDiagnostic(): FirPsiDiagnostic<*> {
-    val psiSourceElement = element.unwrapToFirPsiSourceElement()
-        ?: error("Diagnostic should be created from PSI in IDE")
-    @Suppress("UNCHECKED_CAST")
-    return when (this) {
-        is FirLightSimpleDiagnostic -> FirPsiSimpleDiagnostic(
-            psiSourceElement,
-            severity,
-            factory as FirDiagnosticFactory0<PsiElement>
-        )
-
-        is FirLightDiagnosticWithParameters1<*> -> FirPsiDiagnosticWithParameters1(
-            psiSourceElement,
-            a,
-            severity,
-            factory as FirDiagnosticFactory1<PsiElement, Any>
-        )
-
-        is FirLightDiagnosticWithParameters2<*, *> -> FirPsiDiagnosticWithParameters2(
-            psiSourceElement,
-            a, b,
-            severity,
-            factory as FirDiagnosticFactory2<PsiElement, Any, Any>
-        )
-
-        is FirLightDiagnosticWithParameters3<*, *, *> -> FirPsiDiagnosticWithParameters3(
-            psiSourceElement,
-            a, b, c,
-            severity,
-            factory as FirDiagnosticFactory3<PsiElement, Any, Any, Any>
-        )
-        else -> error("Unknown diagnostic type ${this::class.simpleName}")
+    private fun installPlatformSpecificErrorMessages(platform: SimplePlatform) {
+        when (platform) {
+            is JvmPlatform -> FirJvmDefaultErrorMessages.installJvmErrorMessages()
+            else -> {
+            }
+        }
     }
-}
 
-private object CheckersFactory {
-    private val extendedDeclarationCheckers = createDeclarationCheckers(ExtendedDeclarationCheckers)
-    private val commonDeclarationCheckers = createDeclarationCheckers(CommonDeclarationCheckers)
+    private fun createTypeCheckers(useExtendedCheckers: Boolean): TypeCheckers? =
+        if (useExtendedCheckers) null else CommonTypeCheckers
 
-    fun createDeclarationCheckers(useExtendedCheckers: Boolean): DeclarationCheckers =
-        if (useExtendedCheckers) extendedDeclarationCheckers else commonDeclarationCheckers
 
-    fun createExpressionCheckers(useExtendedCheckers: Boolean): ExpressionCheckers =
-        if (useExtendedCheckers) ExtendedExpressionCheckers else CommonExpressionCheckers
+    @OptIn(ExperimentalStdlibApi::class)
+    private inline fun createDeclarationCheckers(
+        createDeclarationCheckers: MutableList<DeclarationCheckers>.() -> Unit
+    ): DeclarationCheckers =
+        createDeclarationCheckers(buildList(createDeclarationCheckers))
 
-    fun createTypeCheckers(useExtendedCheckers: Boolean): TypeCheckers = CommonTypeCheckers
 
-    // TODO hack to have all checkers present in DeclarationCheckers.memberDeclarationCheckers and similar
-    // If use ExtendedDeclarationCheckers directly when DeclarationCheckers.memberDeclarationCheckers will not contain basicDeclarationCheckers
-    @OptIn(SessionConfiguration::class)
-    private fun createDeclarationCheckers(declarationCheckers: DeclarationCheckers): DeclarationCheckers =
-        CheckersComponent().apply { register(declarationCheckers) }.declarationCheckers
+    @OptIn(CheckersComponentInternal::class)
+    private fun createDeclarationCheckers(declarationCheckers: List<DeclarationCheckers>): DeclarationCheckers {
+        return when (declarationCheckers.size) {
+            1 -> declarationCheckers.single()
+            else -> ComposedDeclarationCheckers().apply {
+                declarationCheckers.forEach(::register)
+            }
+        }
+    }
 
+    @OptIn(ExperimentalStdlibApi::class)
+    private inline fun createExpressionCheckers(
+        createExpressionCheckers: MutableList<ExpressionCheckers>.() -> Unit
+    ): ExpressionCheckers = createExpressionCheckers(buildList(createExpressionCheckers))
+
+    @OptIn(CheckersComponentInternal::class)
+    private fun createExpressionCheckers(expressionCheckers: List<ExpressionCheckers>): ExpressionCheckers {
+        return when (expressionCheckers.size) {
+            1 -> expressionCheckers.single()
+            else -> ComposedExpressionCheckers().apply {
+                expressionCheckers.forEach(::register)
+            }
+        }
+    }
 }

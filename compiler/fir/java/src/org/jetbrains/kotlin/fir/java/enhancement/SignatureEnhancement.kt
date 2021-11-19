@@ -17,30 +17,42 @@ import org.jetbrains.kotlin.fir.declarations.impl.FirDeclarationStatusImpl
 import org.jetbrains.kotlin.fir.declarations.impl.FirResolvedDeclarationStatusImpl
 import org.jetbrains.kotlin.fir.declarations.synthetic.FirSyntheticProperty
 import org.jetbrains.kotlin.fir.declarations.synthetic.buildSyntheticProperty
+import org.jetbrains.kotlin.fir.declarations.utils.isInner
+import org.jetbrains.kotlin.fir.declarations.utils.isStatic
+import org.jetbrains.kotlin.fir.declarations.utils.modality
+import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.java.JavaTypeParameterStack
 import org.jetbrains.kotlin.fir.java.declarations.*
 import org.jetbrains.kotlin.fir.java.toConeKotlinTypeProbablyFlexible
 import org.jetbrains.kotlin.fir.scopes.jvm.computeJvmDescriptor
 import org.jetbrains.kotlin.fir.symbols.impl.*
-import org.jetbrains.kotlin.fir.types.*
+import org.jetbrains.kotlin.fir.types.FirResolvedTypeRef
+import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.types.jvm.FirJavaTypeRef
 import org.jetbrains.kotlin.load.java.AnnotationQualifierApplicabilityType
 import org.jetbrains.kotlin.load.java.typeEnhancement.*
 import org.jetbrains.kotlin.load.kotlin.SignatureBuildingComponents
 import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.Name
-import org.jetbrains.kotlin.utils.JavaTypeEnhancementState
+import org.jetbrains.kotlin.load.java.JavaTypeEnhancementState
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
 class FirSignatureEnhancement(
     private val owner: FirRegularClass,
     private val session: FirSession,
-    private val overridden: FirSimpleFunction.() -> List<FirCallableMemberDeclaration<*>>
+    private val overridden: FirSimpleFunction.() -> List<FirCallableDeclaration>
 ) {
+    /*
+     * FirSignatureEnhancement may be created with library session which doesn't have single module data,
+     *   so owner is a only place where module data can be obtained. However it's guaranteed that `owner`
+     *   was created for same session as one passed to constructor, so it's safe to use owners module data
+     */
+    private val moduleData = owner.moduleData
+
     private val javaTypeParameterStack: JavaTypeParameterStack =
         if (owner is FirJavaClass) owner.javaTypeParameterStack else JavaTypeParameterStack.EMPTY
 
-    private val jsr305State: JavaTypeEnhancementState = session.javaTypeEnhancementState ?: JavaTypeEnhancementState.DEFAULT
+    private val jsr305State: JavaTypeEnhancementState = session.javaTypeEnhancementState
 
     private val typeQualifierResolver = FirAnnotationTypeQualifierResolver(session, jsr305State)
 
@@ -94,7 +106,7 @@ class FirSignatureEnhancement(
                 val symbol = FirFieldSymbol(original.callableId)
                 buildJavaField {
                     source = firElement.source
-                    declarationSiteSession = session
+                    moduleData = this@FirSignatureEnhancement.moduleData
                     this.symbol = symbol
                     this.name = name
                     returnTypeRef = newReturnTypeRef
@@ -131,12 +143,13 @@ class FirSignatureEnhancement(
                     setterDelegate?.symbol
                 }
                 return buildSyntheticProperty {
-                    declarationSiteSession = session
+                    moduleData = this@FirSignatureEnhancement.moduleData
                     this.name = name
                     symbol = FirAccessorSymbol(accessorSymbol.callableId, accessorSymbol.accessorId)
                     delegateGetter = enhancedGetterSymbol.fir as FirSimpleFunction
                     delegateSetter = enhancedSetterSymbol?.fir as FirSimpleFunction?
                     status = firElement.status
+                    deprecation = getDeprecationsFromAccessors(delegateGetter, delegateSetter, session.languageVersionSettings.apiVersion)
                 }.symbol
             }
             else -> {
@@ -159,7 +172,7 @@ class FirSignatureEnhancement(
     }
     
     private fun enhanceMethod(
-        firMethod: FirFunction<*>,
+        firMethod: FirFunction,
         methodId: CallableId,
         name: Name?
     ): FirFunctionSymbol<*> {
@@ -207,11 +220,11 @@ class FirSignatureEnhancement(
 
             buildValueParameter {
                 source = valueParameter.source
-                declarationSiteSession = session
+                moduleData = this@FirSignatureEnhancement.moduleData
                 origin = FirDeclarationOrigin.Enhancement
                 returnTypeRef = enhancedReturnType
                 this.name = valueParameter.name
-                symbol = FirVariableSymbol(this.name)
+                symbol = FirValueParameterSymbol(this.name)
                 defaultValue = valueParameter.defaultValue
                 isCrossinline = valueParameter.isCrossinline
                 isNoinline = valueParameter.isNoinline
@@ -255,7 +268,7 @@ class FirSignatureEnhancement(
                     }
                 }.apply {
                     source = firMethod.source
-                    declarationSiteSession = session
+                    moduleData = this@FirSignatureEnhancement.moduleData
                     resolvePhase = FirResolvePhase.ANALYZED_DEPENDENCIES
                     origin = FirDeclarationOrigin.Enhancement
                     this.valueParameters += newValueParameters
@@ -265,7 +278,7 @@ class FirSignatureEnhancement(
             is FirJavaMethod -> {
                 FirSimpleFunctionBuilder().apply {
                     source = firMethod.source
-                    declarationSiteSession = session
+                    moduleData = this@FirSignatureEnhancement.moduleData
                     origin = FirDeclarationOrigin.Enhancement
                     returnTypeRef = newReturnTypeRef
                     receiverTypeRef = newReceiverTypeRef
@@ -282,6 +295,7 @@ class FirSignatureEnhancement(
             else -> throw AssertionError("Unknown Java method to enhance: ${firMethod.render()}")
         }.apply {
             annotations += firMethod.annotations
+            deprecation = annotations.getDeprecationInfosFromAnnotations(session.languageVersionSettings.apiVersion, fromJava = true)
         }.build()
 
         return function.symbol
@@ -292,7 +306,7 @@ class FirSignatureEnhancement(
 
     private fun enhanceReceiverType(
         ownerFunction: FirJavaMethod,
-        overriddenMembers: List<FirCallableMemberDeclaration<*>>,
+        overriddenMembers: List<FirCallableDeclaration>,
         memberContext: FirJavaEnhancementContext
     ): FirResolvedTypeRef {
         val signatureParts = ownerFunction.partsForValueParameter(
@@ -307,8 +321,8 @@ class FirSignatureEnhancement(
     }
 
     private fun enhanceValueParameterType(
-        ownerFunction: FirFunction<*>,
-        overriddenMembers: List<FirCallableMemberDeclaration<*>>,
+        ownerFunction: FirFunction,
+        overriddenMembers: List<FirCallableDeclaration>,
         hasReceiver: Boolean,
         memberContext: FirJavaEnhancementContext,
         predefinedEnhancementInfo: PredefinedFunctionEnhancementInfo?,
@@ -334,8 +348,8 @@ class FirSignatureEnhancement(
     }
 
     private fun enhanceReturnType(
-        owner: FirCallableMemberDeclaration<*>,
-        overriddenMembers: List<FirCallableMemberDeclaration<*>>,
+        owner: FirCallableDeclaration,
+        overriddenMembers: List<FirCallableDeclaration>,
         memberContext: FirJavaEnhancementContext,
         predefinedEnhancementInfo: PredefinedFunctionEnhancementInfo?
     ): FirResolvedTypeRef {
@@ -356,37 +370,37 @@ class FirSignatureEnhancement(
     }
 
     private sealed class TypeInSignature {
-        abstract fun getTypeRef(member: FirCallableMemberDeclaration<*>): FirTypeRef
+        abstract fun getTypeRef(member: FirCallableDeclaration): FirTypeRef
 
         object Return : TypeInSignature() {
-            override fun getTypeRef(member: FirCallableMemberDeclaration<*>): FirTypeRef = member.returnTypeRef
+            override fun getTypeRef(member: FirCallableDeclaration): FirTypeRef = member.returnTypeRef
         }
 
         object Receiver : TypeInSignature() {
-            override fun getTypeRef(member: FirCallableMemberDeclaration<*>): FirTypeRef {
+            override fun getTypeRef(member: FirCallableDeclaration): FirTypeRef {
                 if (member is FirJavaMethod) return member.valueParameters[0].returnTypeRef
                 return member.receiverTypeRef!!
             }
         }
 
         class ValueParameter(val hasReceiver: Boolean, val index: Int) : TypeInSignature() {
-            override fun getTypeRef(member: FirCallableMemberDeclaration<*>): FirTypeRef {
+            override fun getTypeRef(member: FirCallableDeclaration): FirTypeRef {
                 if (hasReceiver && member is FirJavaMethod) {
                     return member.valueParameters[index + 1].returnTypeRef
                 }
-                return (member as FirFunction<*>).valueParameters[index].returnTypeRef
+                return (member as FirFunction).valueParameters[index].returnTypeRef
             }
         }
     }
 
-    private fun FirFunction<*>.partsForValueParameter(
+    private fun FirFunction.partsForValueParameter(
         typeQualifierResolver: FirAnnotationTypeQualifierResolver,
-        overriddenMembers: List<FirCallableMemberDeclaration<*>>,
+        overriddenMembers: List<FirCallableDeclaration>,
         // TODO: investigate if it's really can be a null (check properties' with extension overrides in Java)
         parameterContainer: FirAnnotationContainer?,
         methodContext: FirJavaEnhancementContext,
         typeInSignature: TypeInSignature
-    ): EnhancementSignatureParts = (this as FirCallableMemberDeclaration<*>).parts(
+    ): EnhancementSignatureParts = (this as FirCallableDeclaration).parts(
         typeQualifierResolver,
         overriddenMembers,
         parameterContainer, false,
@@ -397,9 +411,9 @@ class FirSignatureEnhancement(
         typeInSignature
     )
 
-    private fun FirCallableMemberDeclaration<*>.parts(
+    private fun FirCallableDeclaration.parts(
         typeQualifierResolver: FirAnnotationTypeQualifierResolver,
-        overriddenMembers: List<FirCallableMemberDeclaration<*>>,
+        overriddenMembers: List<FirCallableDeclaration>,
         typeContainer: FirAnnotationContainer?,
         isCovariant: Boolean,
         containerContext: FirJavaEnhancementContext,

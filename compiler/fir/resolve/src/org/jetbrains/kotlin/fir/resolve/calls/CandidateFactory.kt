@@ -6,16 +6,20 @@
 package org.jetbrains.kotlin.fir.resolve.calls
 
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
+import org.jetbrains.kotlin.fir.declarations.FirRegularClass
 import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
 import org.jetbrains.kotlin.fir.declarations.builder.buildErrorFunction
 import org.jetbrains.kotlin.fir.declarations.builder.buildErrorProperty
+import org.jetbrains.kotlin.fir.declarations.utils.classId
 import org.jetbrains.kotlin.fir.diagnostics.ConeDiagnostic
 import org.jetbrains.kotlin.fir.expressions.*
+import org.jetbrains.kotlin.fir.moduleData
 import org.jetbrains.kotlin.fir.returnExpressions
 import org.jetbrains.kotlin.fir.scopes.FirScope
-import org.jetbrains.kotlin.fir.symbols.AbstractFirBasedSymbol
+import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirErrorFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirErrorPropertySymbol
+import org.jetbrains.kotlin.fir.types.classId
 import org.jetbrains.kotlin.resolve.calls.components.PostponedArgumentsAnalyzerContext
 import org.jetbrains.kotlin.resolve.calls.inference.model.ConstraintStorage
 import org.jetbrains.kotlin.resolve.calls.tasks.ExplicitReceiverKind
@@ -40,7 +44,7 @@ class CandidateFactory private constructor(
 
     fun createCandidate(
         callInfo: CallInfo,
-        symbol: AbstractFirBasedSymbol<*>,
+        symbol: FirBasedSymbol<*>,
         explicitReceiverKind: ExplicitReceiverKind,
         scope: FirScope?,
         dispatchReceiverValue: ReceiverValue? = null,
@@ -54,11 +58,24 @@ class CandidateFactory private constructor(
                 callInfo.withReceiverAsArgument(it)
             } ?: callInfo,
             scope,
+            isFromCompanionObjectTypeScope = when (explicitReceiverKind) {
+                ExplicitReceiverKind.EXTENSION_RECEIVER -> extensionReceiverValue.isCandidateFromCompanionObjectTypeScope()
+                ExplicitReceiverKind.DISPATCH_RECEIVER -> dispatchReceiverValue.isCandidateFromCompanionObjectTypeScope()
+                // The following cases are not applicable for companion objects.
+                ExplicitReceiverKind.NO_EXPLICIT_RECEIVER, ExplicitReceiverKind.BOTH_RECEIVERS -> false
+            }
         )
     }
 
+    private fun ReceiverValue?.isCandidateFromCompanionObjectTypeScope(): Boolean {
+        val expressionReceiverValue = this as? ExpressionReceiverValue ?: return false
+        val resolvedQualifier = (expressionReceiverValue.explicitReceiver as? FirResolvedQualifier) ?: return false
+        val originClassOfCandidate = expressionReceiverValue.type.classId ?: return false
+        return (resolvedQualifier.symbol?.fir as? FirRegularClass)?.companionObject?.classId == originClassOfCandidate
+    }
+
     fun createErrorCandidate(callInfo: CallInfo, diagnostic: ConeDiagnostic): Candidate {
-        val symbol: AbstractFirBasedSymbol<*> = when (callInfo.callKind) {
+        val symbol: FirBasedSymbol<*> = when (callInfo.callKind) {
             is CallKind.VariableAccess -> createErrorPropertySymbol(diagnostic)
             is CallKind.Function,
             is CallKind.DelegatingConstructorCall,
@@ -82,7 +99,7 @@ class CandidateFactory private constructor(
     private fun createErrorFunctionSymbol(diagnostic: ConeDiagnostic): FirErrorFunctionSymbol {
         return FirErrorFunctionSymbol().also {
             buildErrorFunction {
-                declarationSiteSession = context.session
+                moduleData = context.session.moduleData
                 resolvePhase = FirResolvePhase.BODY_RESOLVE
                 origin = FirDeclarationOrigin.Synthetic
                 this.diagnostic = diagnostic
@@ -94,7 +111,7 @@ class CandidateFactory private constructor(
     private fun createErrorPropertySymbol(diagnostic: ConeDiagnostic): FirErrorPropertySymbol {
         return FirErrorPropertySymbol(diagnostic).also {
             buildErrorProperty {
-                declarationSiteSession = context.session
+                moduleData = context.session.moduleData
                 resolvePhase = FirResolvePhase.BODY_RESOLVE
                 origin = FirDeclarationOrigin.Synthetic
                 name = FirErrorPropertySymbol.NAME
@@ -107,12 +124,10 @@ class CandidateFactory private constructor(
 
 fun PostponedArgumentsAnalyzerContext.addSubsystemFromExpression(statement: FirStatement) {
     when (statement) {
-        is FirFunctionCall,
         is FirQualifiedAccessExpression,
         is FirWhenExpression,
         is FirTryExpression,
         is FirCheckNotNullCall,
-        is FirCallableReferenceAccess,
         is FirElvisExpression
         -> (statement as FirResolvable).candidate()?.let { addOtherSystem(it.system.asReadOnlyStorage()) }
 

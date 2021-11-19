@@ -5,18 +5,16 @@
 
 package org.jetbrains.kotlin.konan
 
-/**
- *  https://en.wikipedia.org/wiki/Software_versioning
- *  scheme major.minor[.build[.revision]].
- */
-
 enum class MetaVersion(val metaString: String) {
     DEV("dev"),
+    DEV_GOOGLE("dev-google-pr"),
     EAP("eap"),
     BETA("beta"),
     M1("M1"),
     M2("M2"),
     RC("RC"),
+    RC2("RC2"),
+    PUB("PUB"),
     RELEASE("release");
 
     companion object {

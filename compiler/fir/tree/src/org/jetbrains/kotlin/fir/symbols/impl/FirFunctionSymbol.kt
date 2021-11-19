@@ -5,18 +5,30 @@
 
 package org.jetbrains.kotlin.fir.symbols.impl
 
+import org.jetbrains.kotlin.fir.FirLabel
+import org.jetbrains.kotlin.fir.contracts.FirResolvedContractDescription
 import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.symbols.AccessorSymbol
+import org.jetbrains.kotlin.fir.symbols.ensureResolved
 import org.jetbrains.kotlin.name.CallableId
-import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
-sealed class FirFunctionSymbol<D : FirFunction<D>>(
+sealed class FirFunctionSymbol<D : FirFunction>(
     override val callableId: CallableId
 ) : FirCallableSymbol<D>() {
-    open val parameters: List<ConeKotlinType>
-        get() = emptyList()
+    val valueParameterSymbols: List<FirValueParameterSymbol>
+        get() = fir.valueParameters.map { it.symbol }
+
+    val resolvedContractDescription: FirResolvedContractDescription?
+        get() {
+            ensureResolved(FirResolvePhase.CONTRACTS)
+            return when (this) {
+                is FirNamedFunctionSymbol -> fir.contractDescription
+                is FirPropertyAccessorSymbol -> fir.contractDescription
+                else -> null
+            } as? FirResolvedContractDescription
+        }
 }
 
 // ------------------------ named ------------------------
@@ -36,7 +48,10 @@ class FirIntersectionOverrideFunctionSymbol(
 
 class FirConstructorSymbol(
     callableId: CallableId
-) : FirFunctionSymbol<FirConstructor>(callableId)
+) : FirFunctionSymbol<FirConstructor>(callableId) {
+    val isPrimary: Boolean
+        get() = fir.isPrimary
+}
 
 open class FirAccessorSymbol(
     callableId: CallableId,
@@ -45,14 +60,13 @@ open class FirAccessorSymbol(
 
 // ------------------------ unnamed ------------------------
 
-sealed class FirFunctionWithoutNameSymbol<F : FirFunction<F>>(
+sealed class FirFunctionWithoutNameSymbol<F : FirFunction>(
     stubName: Name
-) : FirFunctionSymbol<F>(CallableId(FqName("special"), stubName)) {
-    override val parameters: List<ConeKotlinType>
-        get() = emptyList()
-}
+) : FirFunctionSymbol<F>(CallableId(FqName("special"), stubName))
 
-class FirAnonymousFunctionSymbol : FirFunctionWithoutNameSymbol<FirAnonymousFunction>(Name.identifier("anonymous"))
+class FirAnonymousFunctionSymbol : FirFunctionWithoutNameSymbol<FirAnonymousFunction>(Name.identifier("anonymous")) {
+    val label: FirLabel? get() = fir.label
+}
 
 class FirPropertyAccessorSymbol : FirFunctionWithoutNameSymbol<FirPropertyAccessor>(Name.identifier("accessor"))
 

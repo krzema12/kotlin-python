@@ -37,10 +37,8 @@ import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.containingClassOrObject
 import org.jetbrains.kotlin.psi.psiUtil.forEachDescendantOfType
+import org.jetbrains.kotlin.resolve.*
 import org.jetbrains.kotlin.resolve.BindingContext.*
-import org.jetbrains.kotlin.resolve.BindingTrace
-import org.jetbrains.kotlin.resolve.DescriptorToSourceUtils
-import org.jetbrains.kotlin.resolve.DescriptorUtils
 import org.jetbrains.kotlin.resolve.bindingContextUtil.getEnclosingDescriptor
 import org.jetbrains.kotlin.resolve.bindingContextUtil.isUsedAsExpression
 import org.jetbrains.kotlin.resolve.bindingContextUtil.isUsedAsResultOfLambda
@@ -56,12 +54,12 @@ import org.jetbrains.kotlin.resolve.calls.util.isSingleUnderscore
 import org.jetbrains.kotlin.resolve.checkers.PlatformDiagnosticSuppressor
 import org.jetbrains.kotlin.resolve.descriptorUtil.isEffectivelyExternal
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
-import org.jetbrains.kotlin.resolve.indexOrMinusOne
 import org.jetbrains.kotlin.resolve.scopes.receivers.ExtensionReceiver
 import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.TypeUtils.*
 import org.jetbrains.kotlin.types.expressions.ExpressionTypingUtils
 import org.jetbrains.kotlin.types.isFlexible
+import org.jetbrains.kotlin.types.typeUtil.isBooleanOrNullableBoolean
 import org.jetbrains.kotlin.util.OperatorNameConventions
 
 class ControlFlowInformationProviderImpl private constructor(
@@ -556,12 +554,7 @@ class ControlFlowInformationProviderImpl private constructor(
     }
 
     private fun reportValReassigned(expression: KtExpression, variableDescriptor: VariableDescriptor, ctxt: VariableInitContext) {
-        val diagnosticFactory = if (languageVersionSettings.supportsFeature(LanguageFeature.RestrictionOfValReassignmentViaBackingField))
-            VAL_REASSIGNMENT_VIA_BACKING_FIELD_ERROR
-        else
-            VAL_REASSIGNMENT_VIA_BACKING_FIELD
-
-        report(diagnosticFactory.on(expression, variableDescriptor), ctxt)
+        report(VAL_REASSIGNMENT_VIA_BACKING_FIELD.on(languageVersionSettings, expression, variableDescriptor), ctxt)
     }
 
     private fun checkAssignmentBeforeDeclaration(ctxt: VariableInitContext, expression: KtExpression) =
@@ -1009,7 +1002,7 @@ class ControlFlowInformationProviderImpl private constructor(
                         trace.report(EXPECT_TYPE_IN_WHEN_WITHOUT_ELSE.on(element, it.typeOfDeclaration))
                     }
                 } else if (subjectExpression != null) {
-                    val subjectType = trace.getType(subjectExpression)
+                    val subjectType = WhenChecker.whenSubjectType(element, trace.bindingContext)
                     if (elseEntry != null) {
                         if (missingCases.isEmpty() && subjectType != null && !subjectType.isFlexible()) {
                             val subjectClass = subjectType.constructor.declarationDescriptor as? ClassDescriptor
@@ -1025,24 +1018,66 @@ class ControlFlowInformationProviderImpl private constructor(
                         continue
                     }
                     if (!usedAsExpression) {
-                        val enumClassDescriptor = WhenChecker.getClassDescriptorOfTypeIfEnum(subjectType)
-                        if (enumClassDescriptor != null) {
-                            val enumMissingCases = WhenChecker.getEnumMissingCases(element, context, enumClassDescriptor)
-                            if (enumMissingCases.isNotEmpty()) {
-                                trace.report(NON_EXHAUSTIVE_WHEN.on(element, enumMissingCases))
-                            }
-                        }
-                        val sealedClassDescriptor = WhenChecker.getClassDescriptorOfTypeIfSealed(subjectType)
-                        if (sealedClassDescriptor != null) {
-                            val sealedMissingCases = WhenChecker.getSealedMissingCases(element, context, sealedClassDescriptor)
-                            if (sealedMissingCases.isNotEmpty()) {
-                                trace.report(NON_EXHAUSTIVE_WHEN_ON_SEALED_CLASS.on(element, sealedMissingCases))
-                            }
+                        if (languageVersionSettings.supportsFeature(LanguageFeature.WarnAboutNonExhaustiveWhenOnAlgebraicTypes)) {
+                            // report warnings on all non-exhaustive when's with algebraic subject
+                            checkExhaustiveWhenStatement(subjectType, element, missingCases)
+                        } else {
+                            // report info if subject is sealed class and warning if it is enum
+                            checkWhenStatement(subjectType, element, context)
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun checkWhenStatement(
+        subjectType: KotlinType?,
+        element: KtWhenExpression,
+        context: BindingContext
+    ) {
+        val enumClassDescriptor = WhenChecker.getClassDescriptorOfTypeIfEnum(subjectType)
+        if (enumClassDescriptor != null) {
+            val enumMissingCases = WhenChecker.getEnumMissingCases(element, context, enumClassDescriptor)
+            if (enumMissingCases.isNotEmpty()) {
+                trace.report(NON_EXHAUSTIVE_WHEN.on(element, enumMissingCases))
+            }
+        }
+        val sealedClassDescriptor = WhenChecker.getClassDescriptorOfTypeIfSealed(subjectType)
+        if (sealedClassDescriptor != null) {
+            val sealedMissingCases = WhenChecker.getSealedMissingCases(element, context, sealedClassDescriptor)
+            if (sealedMissingCases.isNotEmpty()) {
+                trace.report(NON_EXHAUSTIVE_WHEN_ON_SEALED_CLASS.on(element, sealedMissingCases))
+            }
+        }
+    }
+
+    private fun checkExhaustiveWhenStatement(
+        subjectType: KotlinType?,
+        element: KtWhenExpression,
+        missingCases: List<WhenMissingCase>
+    ) {
+        if (missingCases.isEmpty()) return
+        val kind = when {
+            WhenChecker.getClassDescriptorOfTypeIfSealed(subjectType) != null -> AlgebraicTypeKind.Sealed
+            WhenChecker.getClassDescriptorOfTypeIfEnum(subjectType) != null -> AlgebraicTypeKind.Enum
+            subjectType?.isBooleanOrNullableBoolean() == true -> AlgebraicTypeKind.Boolean
+            else -> null
+        }
+
+        if (kind != null) {
+            if (languageVersionSettings.supportsFeature(LanguageFeature.ProhibitNonExhaustiveWhenOnAlgebraicTypes)) {
+                trace.report(NO_ELSE_IN_WHEN.on(element, missingCases))
+            } else {
+                trace.report(NON_EXHAUSTIVE_WHEN_STATEMENT.on(element, kind.displayName, missingCases))
+            }
+        }
+    }
+
+    private enum class AlgebraicTypeKind(val displayName: String) {
+        Sealed("sealed class/interface"),
+        Enum("enum"),
+        Boolean("Boolean")
     }
 
     private fun checkConstructorConsistency() {

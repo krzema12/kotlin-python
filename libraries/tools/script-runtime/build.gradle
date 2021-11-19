@@ -2,7 +2,8 @@ description 'Kotlin Script Runtime'
 
 apply plugin: 'kotlin'
 
-configureJvm6Project(project)
+JvmToolchain.configureJvmToolchain(project, JdkMajorVersion.JDK_1_6)
+
 configurePublishing(project)
 
 dependencies {
@@ -35,10 +36,7 @@ configureJavadocJar()
 compileKotlin {
     kotlinOptions.freeCompilerArgs = [
         "-Xallow-kotlin-package",
-        "-Xnormalize-constructor-calls=enable",
         "-Xsuppress-deprecated-jvm-target-warning",
     ]
     kotlinOptions.moduleName = project.name
 }
-
-configureJvmIrBackend(project)

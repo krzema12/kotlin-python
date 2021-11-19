@@ -5,18 +5,22 @@
 
 package org.jetbrains.kotlin.fir.lazy
 
+import org.jetbrains.kotlin.fir.FirAnnotationContainer
 import org.jetbrains.kotlin.fir.backend.Fir2IrComponents
 import org.jetbrains.kotlin.fir.backend.toIrType
 import org.jetbrains.kotlin.fir.declarations.FirMemberDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirTypeParameter
 import org.jetbrains.kotlin.fir.symbols.Fir2IrBindableSymbol
-import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.declarations.IrDeclaration
+import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
+import org.jetbrains.kotlin.ir.declarations.IrFactory
+import org.jetbrains.kotlin.ir.declarations.IrTypeParameter
 import org.jetbrains.kotlin.ir.declarations.lazy.lazyVar
 import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
 import kotlin.properties.ReadWriteProperty
 
-interface AbstractFir2IrLazyDeclaration<F : FirMemberDeclaration, D : IrDeclaration> :
-    IrDeclaration, IrDeclarationParent, Fir2IrComponents {
+interface AbstractFir2IrLazyDeclaration<F, D : IrDeclaration> :
+    IrDeclaration, IrDeclarationParent, Fir2IrComponents where F : FirMemberDeclaration, F : FirAnnotationContainer {
 
     val fir: F
     override val symbol: Fir2IrBindableSymbol<*, D>

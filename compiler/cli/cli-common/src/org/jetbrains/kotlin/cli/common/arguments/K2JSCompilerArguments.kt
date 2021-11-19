@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants.*
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.config.ApiVersion
+import org.jetbrains.kotlin.config.LanguageFeature
 import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.config.LanguageVersionSettings
 
@@ -127,7 +128,7 @@ class K2JSCompilerArguments : CommonCompilerArguments() {
 
     @Argument(
         value = "-Xir-dce-runtime-diagnostic",
-        valueDescription = "{$DCE_RUNTIME_DIAGNOSTIC_LOG|$DCE_RUNTIME_DIAGNOSTIC_EXCEPTION}",
+        valueDescription = "{$RUNTIME_DIAGNOSTIC_LOG|$RUNTIME_DIAGNOSTIC_EXCEPTION}",
         description = "Enable runtime diagnostics when performing DCE instead of removing declarations"
     )
     var irDceRuntimeDiagnostic: String? by NullableStringFreezableVar(null)
@@ -151,8 +152,30 @@ class K2JSCompilerArguments : CommonCompilerArguments() {
     )
     var irModuleName: String? by NullableStringFreezableVar(null)
 
+    @Argument(value = "-Xir-legacy-property-access", description = "Force property access via JS properties (requires -Xir-export-all)")
+    var irLegacyPropertyAccess: Boolean by FreezableVar(false)
+
+    @Argument(value = "-Xir-base-class-in-metadata", description = "Write base class into metadata")
+    var irBaseClassInMetadata: Boolean by FreezableVar(false)
+
+    @Argument(
+        value = "-Xir-safe-external-boolean",
+        description = "Safe access via Boolean() to Boolean properties in externals to safely cast falsy values."
+    )
+    var irSafeExternalBoolean: Boolean by FreezableVar(false)
+
+    @Argument(
+        value = "-Xir-safe-external-boolean-diagnostic",
+        valueDescription = "{$RUNTIME_DIAGNOSTIC_LOG|$RUNTIME_DIAGNOSTIC_EXCEPTION}",
+        description = "Enable runtime diagnostics when access safely to boolean in external declarations"
+    )
+    var irSafeExternalBooleanDiagnostic: String? by NullableStringFreezableVar(null)
+
     @Argument(value = "-Xir-per-module", description = "Splits generated .js per-module")
     var irPerModule: Boolean by FreezableVar(false)
+
+    @Argument(value = "-Xir-per-module-output-name", description = "Adds a custom output name to the splitted js files")
+    var irPerModuleOutputName: String? by NullableStringFreezableVar(null)
 
     @Argument(
         value = "-Xinclude",
@@ -160,6 +183,16 @@ class K2JSCompilerArguments : CommonCompilerArguments() {
         description = "A path to an intermediate library that should be processed in the same manner as source files."
     )
     var includes: String? by NullableStringFreezableVar(null)
+
+    @Argument(
+        value = "-Xcache-directories",
+        valueDescription = "<path>",
+        description = "A path to cache directories"
+    )
+    var cacheDirectories: String? by NullableStringFreezableVar(null)
+
+    @Argument(value = "-Xir-build-cache", description = "Use compiler to build cache")
+    var irBuildCache: Boolean by FreezableVar(false)
 
     @Argument(
         value = "-Xgenerate-dts",
@@ -181,6 +214,12 @@ class K2JSCompilerArguments : CommonCompilerArguments() {
             description = "Paths to friend modules"
     )
     var friendModules: String? by NullableStringFreezableVar(null)
+
+    @Argument(
+        value = "-Xenable-extension-functions-in-externals",
+        description = "Enable extensions functions members in external interfaces"
+    )
+    var extensionFunctionsInExternals: Boolean by FreezableVar(false)
 
     @Argument(value = "-Xmetadata-only", description = "Generate *.meta.js and *.kjsm files only")
     var metadataOnly: Boolean by FreezableVar(false)
@@ -209,10 +248,18 @@ class K2JSCompilerArguments : CommonCompilerArguments() {
             )
         }
     }
+
+    override fun configureLanguageFeatures(collector: MessageCollector): MutableMap<LanguageFeature, LanguageFeature.State> {
+        return super.configureLanguageFeatures(collector).apply {
+            if (extensionFunctionsInExternals) {
+                this[LanguageFeature.JsEnableExtensionFunctionInExternals] = LanguageFeature.State.ENABLED
+            }
+        }
+    }
 }
 
 fun K2JSCompilerArguments.isPreIrBackendDisabled(): Boolean =
-    irOnly || irProduceJs || irProduceKlibFile
+    irOnly || irProduceJs || irProduceKlibFile || irBuildCache
 
 fun K2JSCompilerArguments.isIrBackendEnabled(): Boolean =
-    irProduceKlibDir || irProduceJs || irProduceKlibFile || wasm
+    irProduceKlibDir || irProduceJs || irProduceKlibFile || wasm || irBuildCache

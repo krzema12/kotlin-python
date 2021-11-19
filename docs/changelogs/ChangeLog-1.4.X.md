@@ -39,7 +39,6 @@
 - [`KT-44523`](https://youtrack.jetbrains.com/issue/KT-44523) IDE notification for trying new JVM backend
 - [`KTIJ-696`](https://youtrack.jetbrains.com/issue/KTIJ-696) Freeze during startup of IDEA with intellij project with Kotlin (211-1.4.10-release-IJ1440)
 
-
 ## 1.4.30
 
 ### Android

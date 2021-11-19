@@ -2,8 +2,8 @@ description = 'Kotlin Test TestNG'
 
 apply plugin: 'kotlin-platform-jvm'
 
-configureJvm6Project(project)
-ext.javaHome = JDK_17
+JvmToolchain.configureJvmToolchain(project, JdkMajorVersion.JDK_1_7)
+JvmToolchain.updateJvmTarget(project, "1.6")
 
 def includeJava9 = BuildPropertiesExtKt.getIncludeJava9(project.kotlinBuildProperties)
 
@@ -47,10 +47,8 @@ compileTestKotlin {
     ]
 }
 
-configureJvmIrBackend(project)
-
 if (includeJava9) {
-    compileJava9Sources(project, 'kotlin.test.testng')
+    LibrariesCommon.configureJava9Compilation(project, 'kotlin.test.testng')
 }
 
 test {

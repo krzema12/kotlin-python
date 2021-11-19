@@ -102,12 +102,15 @@ fun CFGNode<*>.render(): String =
                 is PostponedLambdaEnterNode -> "Postponed enter to lambda"
                 is PostponedLambdaExitNode -> "Postponed exit from lambda"
 
+                is AnonymousFunctionExpressionExitNode -> "Exit anonymous function expression"
+
                 is UnionFunctionCallArgumentsNode -> "Call arguments union"
 
                 is ClassEnterNode -> "Enter class ${owner.name}"
                 is ClassExitNode -> "Exit class ${owner.name}"
                 is LocalClassExitNode -> "Exit local class ${owner.name}"
                 is AnonymousObjectExitNode -> "Exit anonymous object"
+                is AnonymousObjectExpressionExitNode -> "Exit anonymous object expression"
 
                 is ContractDescriptionEnterNode -> "Enter contract description"
 
@@ -120,6 +123,7 @@ fun CFGNode<*>.render(): String =
                 is ElvisExitNode -> "Exit ?:"
 
                 is CallableReferenceNode -> "Callable reference: ${fir.render(CfgRenderMode)}"
+                is GetClassCallNode -> "::class call"
 
                 is AbstractBinaryExitNode -> throw IllegalStateException()
             },
@@ -134,7 +138,7 @@ private val CfgRenderMode = FirRenderer.RenderMode(
     renderAnnotation = false,
 )
 
-private fun FirFunction<*>.name(): String = when (this) {
+private fun FirFunction.name(): String = when (this) {
     is FirSimpleFunction -> name.asString()
     is FirAnonymousFunction -> "anonymousFunction"
     is FirConstructor -> "<init>"

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2019 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -12,11 +12,9 @@ import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
 import org.jetbrains.kotlin.backend.common.ScopeWithIr
 import org.jetbrains.kotlin.backend.common.ir.Symbols
 import org.jetbrains.kotlin.backend.common.ir.isPure
+import org.jetbrains.kotlin.backend.common.lower.at
 import org.jetbrains.kotlin.backend.common.lower.createIrBuilder
-import org.jetbrains.kotlin.config.LanguageFeature
-import org.jetbrains.kotlin.config.LanguageVersionSettings
-import org.jetbrains.kotlin.config.coroutinesIntrinsicsPackageFqName
-import org.jetbrains.kotlin.config.languageVersionSettings
+import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
@@ -53,26 +51,18 @@ fun IrFunction.isTopLevelInPackage(name: String, packageName: String): Boolean {
     return packageName == packageFqName
 }
 
-fun IrFunction.isBuiltInIntercepted(languageVersionSettings: LanguageVersionSettings): Boolean =
-    !languageVersionSettings.supportsFeature(LanguageFeature.ReleaseCoroutines) &&
-            isTopLevelInPackage("intercepted", languageVersionSettings.coroutinesIntrinsicsPackageFqName().asString())
-
-fun IrFunction.isBuiltInSuspendCoroutineUninterceptedOrReturn(languageVersionSettings: LanguageVersionSettings): Boolean =
+fun IrFunction.isBuiltInSuspendCoroutineUninterceptedOrReturn(): Boolean =
     isTopLevelInPackage(
         "suspendCoroutineUninterceptedOrReturn",
-        languageVersionSettings.coroutinesIntrinsicsPackageFqName().asString()
+        StandardNames.COROUTINES_INTRINSICS_PACKAGE_FQ_NAME.asString()
     )
 
 open class DefaultInlineFunctionResolver(open val context: CommonBackendContext) : InlineFunctionResolver {
     override fun getFunctionDeclaration(symbol: IrFunctionSymbol): IrFunction {
         val function = symbol.owner
-        val languageVersionSettings = context.configuration.languageVersionSettings
         // TODO: Remove these hacks when coroutine intrinsics are fixed.
         return when {
-            function.isBuiltInIntercepted(languageVersionSettings) ->
-                error("Continuation.intercepted is not available with release coroutines")
-
-            function.isBuiltInSuspendCoroutineUninterceptedOrReturn(languageVersionSettings) ->
+            function.isBuiltInSuspendCoroutineUninterceptedOrReturn() ->
                 context.ir.symbols.suspendCoroutineUninterceptedOrReturn.owner
 
             symbol == context.ir.symbols.coroutineContextGetter ->
@@ -91,6 +81,8 @@ class FunctionInlining(
     constructor(context: CommonBackendContext) : this(context, DefaultInlineFunctionResolver(context))
 
     private var containerScope: ScopeWithIr? = null
+
+    private var deepInline: Boolean = false
 
     override fun lower(irBody: IrBody, container: IrDeclaration) {
         // TODO container: IrSymbolDeclaration
@@ -154,16 +146,6 @@ class FunctionInlining(
 
         fun inline() = inlineFunction(callSite, callee, true)
 
-        /**
-         * TODO: JVM inliner crashed on attempt inline this function from transform.kt with:
-         *  j.l.IllegalStateException: Couldn't obtain compiled function body for
-         *  public inline fun <reified T : org.jetbrains.kotlin.ir.IrElement> kotlin.collections.MutableList<T>.transform...
-         */
-        private inline fun <reified T : IrElement> MutableList<T>.transform(transformation: (T) -> IrElement) {
-            forEachIndexed { i, item ->
-                set(i, transformation(item) as T)
-            }
-        }
 
         private fun inlineFunction(
             callSite: IrFunctionAccessExpression,
@@ -171,9 +153,22 @@ class FunctionInlining(
             performRecursiveInline: Boolean
         ): IrReturnableBlock {
             val copiedCallee = (copyIrElement.copy(callee) as IrFunction).apply {
+
+                // It's a hack to overtake another hack in PIR. Due to PersistentIrFactory registers every created declaration
+                // there also get temporary declaration like this which leads to some unclear behaviour. Since I am not aware
+                // enough about PIR internals the simplest way seemed to me is to unregister temporary function. Hope it is going
+                // to be removed ASAP along with registering every PIR declaration.
+                factory.unlistFunction(this)
+
                 parent = callee.parent
                 if (performRecursiveInline) {
-                    body?.transformChildrenVoid()
+                    val old = deepInline
+                    try {
+                        deepInline = true
+                        body?.transformChildrenVoid()
+                    } finally {
+                        deepInline = old
+                    }
                     valueParameters.forEachIndexed { index, param ->
                         if (callSite.getValueArgument(index) == null) {
                             // Default values can recursively reference [callee] - transform only needed.
@@ -194,8 +189,10 @@ class FunctionInlining(
             val irBuilder = context.createIrBuilder(irReturnableBlockSymbol, endOffset, endOffset)
 
             val transformer = ParameterSubstitutor()
-            statements.transform { it.transform(transformer, data = null) }
-            statements.addAll(0, evaluationStatements)
+            val newStatements = mutableListOf<IrStatement>()
+
+            newStatements.addAll(evaluationStatements)
+            statements.mapTo(newStatements) { it.transform(transformer, data = null) as IrStatement }
 
             return IrReturnableBlockImpl(
                 startOffset = callSite.startOffset,
@@ -203,7 +200,7 @@ class FunctionInlining(
                 type = callSite.type,
                 symbol = irReturnableBlockSymbol,
                 origin = null,
-                statements = statements,
+                statements = newStatements,
                 inlineFunctionSymbol = callee.symbol
             ).apply {
                 transformChildrenVoid(object : IrElementTransformerVoid() {
@@ -211,7 +208,7 @@ class FunctionInlining(
                         expression.transformChildrenVoid(this)
 
                         if (expression.returnTargetSymbol == copiedCallee.symbol)
-                            return irBuilder.irReturn(expression.value)
+                            return irBuilder.at(expression).irReturn(expression.value)
                         return expression
                     }
                 })
@@ -314,7 +311,7 @@ class FunctionInlining(
                                 function.valueParameters.size
                             )
                         else ->
-                            kotlin.error("Unknown function kind : ${function.render()}")
+                            error("Unknown function kind : ${function.render()}")
                     }
                 }.apply {
                     for (parameter in functionParameters) {
@@ -534,6 +531,13 @@ class FunctionInlining(
                 if (argument.isInlinableLambdaArgument) {
                     substituteMap[argument.parameter] = argument.argumentExpression
                     (argument.argumentExpression as? IrFunctionReference)?.let { evaluationStatements += evaluateArguments(it) }
+
+                    (argument.argumentExpression as? IrFunctionExpression)?.let {
+                        if (deepInline) {
+                            it.function.factory.unlistFunction(it.function)
+                        }
+                    }
+
                     return@forEach
                 }
 
@@ -594,6 +598,9 @@ class FunctionInlining(
 
         fun withLocation(startOffset: Int, endOffset: Int) =
             IrGetValueImpl(startOffset, endOffset, type, symbol, origin)
+
+        override fun copyWithOffsets(newStartOffset: Int, newEndOffset: Int): IrGetValue =
+            withLocation(newStartOffset, newEndOffset)
     }
 }
 

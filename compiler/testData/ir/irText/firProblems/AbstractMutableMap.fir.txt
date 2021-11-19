@@ -22,12 +22,10 @@ FILE fqName:<root> fileName:/AbstractMutableMap.kt
     PROPERTY name:entries visibility:public modality:FINAL [val]
       overridden:
         public abstract entries: @[FlexibleNullability] kotlin.collections.Set<@[FlexibleNullability] kotlin.collections.Map.Entry<@[FlexibleNullability] K of kotlin.collections.AbstractMutableMap?, @[FlexibleNullability] V of kotlin.collections.AbstractMutableMap?>?>? [fake_override,val]
-        public abstract entries: @[FlexibleNullability] kotlin.collections.Set<@[FlexibleNullability] kotlin.collections.Map.Entry<@[FlexibleNullability] K of java.util.AbstractMap?, @[FlexibleNullability] V of java.util.AbstractMap?>?>? [val]
       FUN name:<get-entries> visibility:public modality:FINAL <> ($this:<root>.MyMap<K of <root>.MyMap, V of <root>.MyMap>) returnType:kotlin.collections.MutableSet<kotlin.collections.MutableMap.MutableEntry<K of <root>.MyMap, V of <root>.MyMap>>
         correspondingProperty: PROPERTY name:entries visibility:public modality:FINAL [val]
         overridden:
           public abstract fun <get-entries> (): @[FlexibleNullability] kotlin.collections.Set<@[FlexibleNullability] kotlin.collections.Map.Entry<@[FlexibleNullability] K of kotlin.collections.AbstractMutableMap?, @[FlexibleNullability] V of kotlin.collections.AbstractMutableMap?>?>? [fake_override] declared in kotlin.collections.AbstractMutableMap
-          public abstract fun <get-entries> (): @[FlexibleNullability] kotlin.collections.Set<@[FlexibleNullability] kotlin.collections.Map.Entry<@[FlexibleNullability] K of java.util.AbstractMap?, @[FlexibleNullability] V of java.util.AbstractMap?>?>? declared in java.util.AbstractMap
         $this: VALUE_PARAMETER name:<this> type:<root>.MyMap<K of <root>.MyMap, V of <root>.MyMap>
         BLOCK_BODY
           RETURN type=kotlin.Nothing from='public final fun <get-entries> (): kotlin.collections.MutableSet<kotlin.collections.MutableMap.MutableEntry<K of <root>.MyMap, V of <root>.MyMap>> declared in <root>.MyMap'
@@ -57,12 +55,16 @@ FILE fqName:<root> fileName:/AbstractMutableMap.kt
       VALUE_PARAMETER name:key index:0 type:K of <root>.MyMap
       VALUE_PARAMETER name:value index:1 type:V of <root>.MyMap
     PROPERTY FAKE_OVERRIDE name:keys visibility:public modality:OPEN [fake_override,val]
+      overridden:
+        public open keys: @[FlexibleNullability] kotlin.collections.Set<@[FlexibleNullability] K of kotlin.collections.AbstractMutableMap?>? [fake_override,val]
       FUN FAKE_OVERRIDE name:<get-keys> visibility:public modality:OPEN <> ($this:java.util.AbstractMap<K of java.util.AbstractMap, V of java.util.AbstractMap>) returnType:@[FlexibleNullability] kotlin.collections.Set<@[FlexibleNullability] K of <root>.MyMap?>? [fake_override]
         correspondingProperty: PROPERTY FAKE_OVERRIDE name:keys visibility:public modality:OPEN [fake_override,val]
         overridden:
           public open fun <get-keys> (): @[FlexibleNullability] kotlin.collections.Set<@[FlexibleNullability] K of kotlin.collections.AbstractMutableMap?>? [fake_override] declared in kotlin.collections.AbstractMutableMap
         $this: VALUE_PARAMETER name:<this> type:java.util.AbstractMap<K of java.util.AbstractMap, V of java.util.AbstractMap>
     PROPERTY FAKE_OVERRIDE name:values visibility:public modality:OPEN [fake_override,val]
+      overridden:
+        public open values: @[FlexibleNullability] kotlin.collections.Collection<@[FlexibleNullability] V of kotlin.collections.AbstractMutableMap?>? [fake_override,val]
       FUN FAKE_OVERRIDE name:<get-values> visibility:public modality:OPEN <> ($this:java.util.AbstractMap<K of java.util.AbstractMap, V of java.util.AbstractMap>) returnType:@[FlexibleNullability] kotlin.collections.Collection<@[FlexibleNullability] V of <root>.MyMap?>? [fake_override]
         correspondingProperty: PROPERTY FAKE_OVERRIDE name:values visibility:public modality:OPEN [fake_override,val]
         overridden:
@@ -73,12 +75,12 @@ FILE fqName:<root> fileName:/AbstractMutableMap.kt
         public open fun replaceAll (p0: @[EnhancedNullability] java.util.function.BiFunction<in @[FlexibleNullability] K of kotlin.collections.AbstractMutableMap?, in @[FlexibleNullability] V of kotlin.collections.AbstractMutableMap?, out @[FlexibleNullability] V of kotlin.collections.AbstractMutableMap?>): kotlin.Unit [fake_override] declared in kotlin.collections.AbstractMutableMap
       $this: VALUE_PARAMETER name:<this> type:kotlin.collections.MutableMap<K of kotlin.collections.MutableMap, V of kotlin.collections.MutableMap>
       VALUE_PARAMETER name:p0 index:0 type:@[EnhancedNullability] java.util.function.BiFunction<in @[FlexibleNullability] K of <root>.MyMap?, in @[FlexibleNullability] V of <root>.MyMap?, out @[FlexibleNullability] V of <root>.MyMap?>
-    FUN FAKE_OVERRIDE name:merge visibility:public modality:OPEN <> ($this:kotlin.collections.MutableMap<K of kotlin.collections.MutableMap, V of kotlin.collections.MutableMap>, p0:K of <root>.MyMap, p1:V of <root>.MyMap, p2:@[EnhancedNullability] java.util.function.BiFunction<in @[FlexibleNullability] V of <root>.MyMap?, in @[FlexibleNullability] V of <root>.MyMap?, out @[FlexibleNullability] V of <root>.MyMap?>) returnType:V of <root>.MyMap? [fake_override]
+    FUN FAKE_OVERRIDE name:merge visibility:public modality:OPEN <> ($this:kotlin.collections.MutableMap<K of kotlin.collections.MutableMap, V of kotlin.collections.MutableMap>, p0:K of <root>.MyMap, p1:@[EnhancedNullability] V of <root>.MyMap, p2:@[EnhancedNullability] java.util.function.BiFunction<in @[FlexibleNullability] V of <root>.MyMap?, in @[FlexibleNullability] V of <root>.MyMap?, out @[FlexibleNullability] V of <root>.MyMap?>) returnType:V of <root>.MyMap? [fake_override]
       overridden:
-        public open fun merge (p0: K of kotlin.collections.AbstractMutableMap, p1: V of kotlin.collections.AbstractMutableMap, p2: @[EnhancedNullability] java.util.function.BiFunction<in @[FlexibleNullability] V of kotlin.collections.AbstractMutableMap?, in @[FlexibleNullability] V of kotlin.collections.AbstractMutableMap?, out @[FlexibleNullability] V of kotlin.collections.AbstractMutableMap?>): V of kotlin.collections.AbstractMutableMap? [fake_override] declared in kotlin.collections.AbstractMutableMap
+        public open fun merge (p0: K of kotlin.collections.AbstractMutableMap, p1: @[EnhancedNullability] V of kotlin.collections.AbstractMutableMap, p2: @[EnhancedNullability] java.util.function.BiFunction<in @[FlexibleNullability] V of kotlin.collections.AbstractMutableMap?, in @[FlexibleNullability] V of kotlin.collections.AbstractMutableMap?, out @[FlexibleNullability] V of kotlin.collections.AbstractMutableMap?>): V of kotlin.collections.AbstractMutableMap? [fake_override] declared in kotlin.collections.AbstractMutableMap
       $this: VALUE_PARAMETER name:<this> type:kotlin.collections.MutableMap<K of kotlin.collections.MutableMap, V of kotlin.collections.MutableMap>
       VALUE_PARAMETER name:p0 index:0 type:K of <root>.MyMap
-      VALUE_PARAMETER name:p1 index:1 type:V of <root>.MyMap
+      VALUE_PARAMETER name:p1 index:1 type:@[EnhancedNullability] V of <root>.MyMap
       VALUE_PARAMETER name:p2 index:2 type:@[EnhancedNullability] java.util.function.BiFunction<in @[FlexibleNullability] V of <root>.MyMap?, in @[FlexibleNullability] V of <root>.MyMap?, out @[FlexibleNullability] V of <root>.MyMap?>
     FUN FAKE_OVERRIDE name:computeIfPresent visibility:public modality:OPEN <> ($this:kotlin.collections.MutableMap<K of kotlin.collections.MutableMap, V of kotlin.collections.MutableMap>, p0:K of <root>.MyMap, p1:@[EnhancedNullability] java.util.function.BiFunction<in @[FlexibleNullability] K of <root>.MyMap?, in @[FlexibleNullability] V of <root>.MyMap?, out @[FlexibleNullability] V of <root>.MyMap?>) returnType:V of <root>.MyMap? [fake_override]
       overridden:
@@ -146,6 +148,8 @@ FILE fqName:<root> fileName:/AbstractMutableMap.kt
         public open fun isEmpty (): kotlin.Boolean [fake_override] declared in kotlin.collections.AbstractMutableMap
       $this: VALUE_PARAMETER name:<this> type:java.util.AbstractMap<K of java.util.AbstractMap, V of java.util.AbstractMap>
     PROPERTY FAKE_OVERRIDE name:size visibility:public modality:OPEN [fake_override,val]
+      overridden:
+        public open size: kotlin.Int [fake_override,val]
       FUN FAKE_OVERRIDE name:<get-size> visibility:public modality:OPEN <> ($this:java.util.AbstractMap<K of java.util.AbstractMap, V of java.util.AbstractMap>) returnType:kotlin.Int [fake_override]
         correspondingProperty: PROPERTY FAKE_OVERRIDE name:size visibility:public modality:OPEN [fake_override,val]
         overridden:

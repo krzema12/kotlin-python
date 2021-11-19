@@ -5,6 +5,18 @@ plugins {
     id("jps-compatible")
 }
 
+tasks
+    .matching { it.name == "compileKotlin" && it is KotlinCompile }
+    .configureEach {
+        (this as KotlinCompile).configureTaskToolchain(JdkMajorVersion.JDK_1_6)
+    }
+
+tasks
+    .matching { it.name == "compileJava" && it is JavaCompile }
+    .configureEach {
+        (this as JavaCompile).configureTaskToolchain(JdkMajorVersion.JDK_1_6)
+    }
+
 dependencies {
     compileOnly(project(":core:util.runtime"))
     compileOnly(project(":core:descriptors"))
@@ -23,22 +35,10 @@ sourceSets {
     "test" { projectDefault() }
 }
 
-val compileJava by tasks.getting(JavaCompile::class) {
-    sourceCompatibility = "1.6"
-    targetCompatibility = "1.6"
-}
-
-val compileKotlin by tasks.getting(KotlinCompile::class) {
-    kotlinOptions {
-        jvmTarget = "1.6"
-        jdkHome = rootProject.extra["JDK_16"] as String
-        freeCompilerArgs += "-Xsuppress-deprecated-jvm-target-warning"
-    }
-}
-
 val generateTests by generator("org.jetbrains.kotlin.generators.tests.GenerateRuntimeDescriptorTestsKt")
 
 projectTest(parallel = true) {
+    dependsOn(":dist")
     workingDir = rootDir
 }
 

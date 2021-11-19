@@ -5,8 +5,10 @@
 
 package org.jetbrains.kotlin.fir.declarations.impl
 
-import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.FirImplementationDetail
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.FirSourceElement
+import org.jetbrains.kotlin.fir.declarations.DeprecationsPerUseSite
 import org.jetbrains.kotlin.fir.declarations.FirConstructor
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationAttributes
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
@@ -29,19 +31,21 @@ import org.jetbrains.kotlin.fir.visitors.*
  * DO NOT MODIFY IT MANUALLY
  */
 
-internal class FirPrimaryConstructor(
+class FirPrimaryConstructor @FirImplementationDetail constructor(
     override val source: FirSourceElement?,
-    override val declarationSiteSession: FirSession,
+    override val moduleData: FirModuleData,
+    @Volatile
     override var resolvePhase: FirResolvePhase,
     override val origin: FirDeclarationOrigin,
     override val attributes: FirDeclarationAttributes,
     override var returnTypeRef: FirTypeRef,
-    override var receiverTypeRef: FirTypeRef?,
     override val typeParameters: MutableList<FirTypeParameterRef>,
-    override val valueParameters: MutableList<FirValueParameter>,
     override var status: FirDeclarationStatus,
+    override var receiverTypeRef: FirTypeRef?,
+    override var deprecation: DeprecationsPerUseSite?,
     override val containerSource: DeserializedContainerSource?,
     override val dispatchReceiverType: ConeKotlinType?,
+    override val valueParameters: MutableList<FirValueParameter>,
     override val annotations: MutableList<FirAnnotationCall>,
     override val symbol: FirConstructorSymbol,
     override var delegatedConstructor: FirDelegatedConstructorCall?,
@@ -56,11 +60,11 @@ internal class FirPrimaryConstructor(
 
     override fun <R, D> acceptChildren(visitor: FirVisitor<R, D>, data: D) {
         returnTypeRef.accept(visitor, data)
-        receiverTypeRef?.accept(visitor, data)
         typeParameters.forEach { it.accept(visitor, data) }
+        status.accept(visitor, data)
+        receiverTypeRef?.accept(visitor, data)
         controlFlowGraphReference?.accept(visitor, data)
         valueParameters.forEach { it.accept(visitor, data) }
-        status.accept(visitor, data)
         annotations.forEach { it.accept(visitor, data) }
         delegatedConstructor?.accept(visitor, data)
         body?.accept(visitor, data)
@@ -68,11 +72,11 @@ internal class FirPrimaryConstructor(
 
     override fun <D> transformChildren(transformer: FirTransformer<D>, data: D): FirPrimaryConstructor {
         transformReturnTypeRef(transformer, data)
-        transformReceiverTypeRef(transformer, data)
         transformTypeParameters(transformer, data)
+        transformStatus(transformer, data)
+        transformReceiverTypeRef(transformer, data)
         controlFlowGraphReference = controlFlowGraphReference?.transform(transformer, data)
         transformValueParameters(transformer, data)
-        transformStatus(transformer, data)
         transformAnnotations(transformer, data)
         transformDelegatedConstructor(transformer, data)
         transformBody(transformer, data)
@@ -84,23 +88,23 @@ internal class FirPrimaryConstructor(
         return this
     }
 
-    override fun <D> transformReceiverTypeRef(transformer: FirTransformer<D>, data: D): FirPrimaryConstructor {
-        receiverTypeRef = receiverTypeRef?.transform(transformer, data)
-        return this
-    }
-
     override fun <D> transformTypeParameters(transformer: FirTransformer<D>, data: D): FirPrimaryConstructor {
         typeParameters.transformInplace(transformer, data)
         return this
     }
 
-    override fun <D> transformValueParameters(transformer: FirTransformer<D>, data: D): FirPrimaryConstructor {
-        valueParameters.transformInplace(transformer, data)
+    override fun <D> transformStatus(transformer: FirTransformer<D>, data: D): FirPrimaryConstructor {
+        status = status.transform(transformer, data)
         return this
     }
 
-    override fun <D> transformStatus(transformer: FirTransformer<D>, data: D): FirPrimaryConstructor {
-        status = status.transform(transformer, data)
+    override fun <D> transformReceiverTypeRef(transformer: FirTransformer<D>, data: D): FirPrimaryConstructor {
+        receiverTypeRef = receiverTypeRef?.transform(transformer, data)
+        return this
+    }
+
+    override fun <D> transformValueParameters(transformer: FirTransformer<D>, data: D): FirPrimaryConstructor {
+        valueParameters.transformInplace(transformer, data)
         return this
     }
 
@@ -129,6 +133,10 @@ internal class FirPrimaryConstructor(
 
     override fun replaceReceiverTypeRef(newReceiverTypeRef: FirTypeRef?) {
         receiverTypeRef = newReceiverTypeRef
+    }
+
+    override fun replaceDeprecation(newDeprecation: DeprecationsPerUseSite?) {
+        deprecation = newDeprecation
     }
 
     override fun replaceControlFlowGraphReference(newControlFlowGraphReference: FirControlFlowGraphReference?) {

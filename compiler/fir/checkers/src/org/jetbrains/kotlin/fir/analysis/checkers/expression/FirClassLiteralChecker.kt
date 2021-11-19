@@ -11,20 +11,31 @@ import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors
 import org.jetbrains.kotlin.fir.analysis.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.analysis.getChild
+import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
 import org.jetbrains.kotlin.fir.declarations.FirTypeParameter
 import org.jetbrains.kotlin.fir.declarations.FirTypeParameterRefsOwner
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.references.FirResolvedNamedReference
 import org.jetbrains.kotlin.fir.resolve.inference.inferenceComponents
 import org.jetbrains.kotlin.fir.scopes.impl.toConeType
+import org.jetbrains.kotlin.fir.symbols.SymbolInternals
+import org.jetbrains.kotlin.fir.symbols.ensureResolved
 import org.jetbrains.kotlin.fir.symbols.impl.FirTypeParameterSymbol
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.lexer.KtTokens.QUEST
+import org.jetbrains.kotlin.resolve.checkers.OptInNames
 
 object FirClassLiteralChecker : FirGetClassCallChecker() {
     override fun check(expression: FirGetClassCall, context: CheckerContext, reporter: DiagnosticReporter) {
         val source = expression.source ?: return
         if (source.kind is FirFakeSourceElementKind) return
+        val argument = expression.argument
+        if (argument is FirResolvedQualifier) {
+            val classId = argument.classId
+            if (classId == OptInNames.REQUIRES_OPT_IN_CLASS_ID || classId == OptInNames.OPT_IN_CLASS_ID) {
+                reporter.reportOn(argument.source, FirErrors.EXPERIMENTAL_CAN_ONLY_BE_USED_AS_ANNOTATION, context)
+            }
+        }
 
         // Note that raw FIR drops marked nullability "?" in, e.g., `A?::class`, `A<T?>::class`, or `A<T?>?::class`.
         // That is, AST structures for those expressions have token type QUEST, whereas FIR element doesn't have any information about it.
@@ -36,7 +47,6 @@ object FirClassLiteralChecker : FirGetClassCallChecker() {
         //
         // Only the 2nd example is valid, and we want to check if token type QUEST doesn't exist at the same level as COLONCOLON.
         val markedNullable = source.getChild(QUEST, depth = 1) != null
-        val argument = expression.argument
         val isNullable = markedNullable ||
                 (argument as? FirResolvedQualifier)?.isNullableLHSForCallableReference == true ||
                 argument.typeRef.coneType.isMarkedNullable ||
@@ -56,7 +66,7 @@ object FirClassLiteralChecker : FirGetClassCallChecker() {
         }
 
         argument.safeAsTypeParameterSymbol?.let {
-            if (!it.fir.isReified) {
+            if (!it.isReified) {
                 // E.g., fun <T: Any> foo(): Any = T::class
                 reporter.reportOn(source, FirErrors.TYPE_PARAMETER_AS_REIFIED, it, context)
             }
@@ -65,7 +75,10 @@ object FirClassLiteralChecker : FirGetClassCallChecker() {
         if (argument !is FirResolvedQualifier) return
         // TODO: differentiate RESERVED_SYNTAX_IN_CALLABLE_REFERENCE_LHS
         if (argument.typeArguments.isNotEmpty() && !argument.typeRef.coneType.isAllowedInClassLiteral(context)) {
-            val typeParameters = (argument.symbol?.fir as? FirTypeParameterRefsOwner)?.typeParameters
+            val symbol = argument.symbol
+            symbol?.ensureResolved(FirResolvePhase.TYPES)
+            @OptIn(SymbolInternals::class)
+            val typeParameters = (symbol?.fir as? FirTypeParameterRefsOwner)?.typeParameters
             // Among type parameter references, only count actual type parameter while discarding [FirOuterClassTypeParameterRef]
             val expectedTypeArgumentSize = typeParameters?.filterIsInstance<FirTypeParameter>()?.size ?: 0
             if (expectedTypeArgumentSize != argument.typeArguments.size) {
@@ -78,7 +91,7 @@ object FirClassLiteralChecker : FirGetClassCallChecker() {
 
     private fun ConeKotlinType.isNullableTypeParameter(context: ConeInferenceContext): Boolean {
         if (this !is ConeTypeParameterType) return false
-        val typeParameter = lookupTag.typeParameterSymbol.fir
+        val typeParameter = lookupTag.typeParameterSymbol
         with(context) {
             return !typeParameter.isReified &&
                     // E.g., fun <T> f2(t: T): Any = t::class
@@ -113,7 +126,7 @@ object FirClassLiteralChecker : FirGetClassCallChecker() {
                 } else
                     typeArguments.isEmpty()
             }
-            is ConeTypeParameterType -> this.lookupTag.typeParameterSymbol.fir.isReified
+            is ConeTypeParameterType -> this.lookupTag.typeParameterSymbol.isReified
             else -> false
         }
 }

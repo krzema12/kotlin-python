@@ -1,8 +1,8 @@
-// TODO: muted for Python because it was muted for JS. Once Python doesn't piggy-back on JS, investigate if it can be re-enabled for Python.
-// IGNORE_BACKEND: PYTHON
+// !LANGUAGE: -ForbidUsingExtensionPropertyTypeParameterInDelegate
 // DONT_TARGET_EXACT_BACKEND: WASM
 // WASM_MUTE_REASON: PROPERTY_REFERENCES
 // IGNORE_BACKEND: NATIVE
+// SKIP_MANGLE_VERIFICATION
 //For KT-6020
 
 // MODULE: lib

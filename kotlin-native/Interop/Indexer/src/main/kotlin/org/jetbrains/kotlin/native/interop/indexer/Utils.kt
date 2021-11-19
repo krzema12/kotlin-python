@@ -26,15 +26,55 @@ import java.nio.file.Paths
 import java.security.DigestInputStream
 import java.security.MessageDigest
 
-internal val CValue<CXType>.kind: CXTypeKind get() = this.useContents { kind }
+val CValue<CXType>.kind: CXTypeKind get() = this.useContents { kind }
 
-internal val CValue<CXCursor>.kind: CXCursorKind get() = this.useContents { kind }
+val CValue<CXCursor>.kind: CXCursorKind get() = this.useContents { kind }
 
 internal val CValue<CXCursor>.type: CValue<CXType> get() = clang_getCursorType(this)
-internal val CValue<CXCursor>.spelling: String get() = clang_getCursorSpelling(this).convertAndDispose()
+val CValue<CXCursor>.spelling: String get() = clang_getCursorSpelling(this).convertAndDispose()
 internal val CValue<CXType>.name: String get() = clang_getTypeSpelling(this).convertAndDispose()
 internal val CXTypeKind.spelling: String get() = clang_getTypeKindSpelling(this).convertAndDispose()
 internal val CXCursorKind.spelling: String get() = clang_getCursorKindSpelling(this).convertAndDispose()
+
+internal val CValue<CXCursor>.isCxxPublic: Boolean get() {
+    val access = clang_getCXXAccessSpecifier(this)
+    return access != CX_CXXAccessSpecifier.CX_CXXProtected && access != CX_CXXAccessSpecifier.CX_CXXPrivate
+}
+
+
+/**
+ * TODO Accessibility needs better support
+ * Currently we provide binding (access) to static vars (= internal linkage)
+ * (i.e. following C policy, as the C header would be included into kotlin impl file
+ * Consistent approach to C++ would be:
+ *  - Kotlin class inherits from C++ allowing overriding and protected access
+ *  - namespace mapped to package
+ *  - anon namespace members mapped to "internal" allowing access from the current translation unit
+ *  To make this working we have to derive a complete C++ "proxy" class for each original one and declare C wrappers as friends
+ *  BTW Such derived C++ proxy class is the only way to allow Kotlin to override the private virtual C++ methods (which is OK in C++)
+ *  Without that C++ style callbacks via overriding would be limited or not supported
+ */
+internal fun CValue<CXCursor>.isRecursivelyCxxPublic(): Boolean {
+    when {
+        clang_isDeclaration(kind) == 0 ->
+            return true  // got the topmost declaration already
+        !isCxxPublic ->
+            return false
+        kind == CXCursorKind.CXCursor_Namespace && getCursorSpelling(this).isEmpty() ->
+            return false
+
+        /*
+         * TODO FIXME In the current design we allow binding to static vars, but this won't work for anon namespaces and private members
+         * Need better (consistent( decision wrt accessibility.
+         */
+     //   clang_getCursorLinkage(this) == CXLinkageKind.CXLinkage_Internal ->
+            // return false;  // check disabled for a while
+
+        else ->
+            return clang_getCursorSemanticParent(this).isRecursivelyCxxPublic()
+    }
+}
+
 
 internal fun CValue<CXString>.convertAndDispose(): String {
     try {
@@ -154,7 +194,7 @@ internal fun CXTranslationUnit.ensureNoCompileErrors(): CXTranslationUnit {
 
 internal typealias CursorVisitor = (cursor: CValue<CXCursor>, parent: CValue<CXCursor>) -> CXChildVisitResult
 
-internal fun visitChildren(parent: CValue<CXCursor>, visitor: CursorVisitor) {
+fun visitChildren(parent: CValue<CXCursor>, visitor: CursorVisitor) {
     val visitorStableRef = StableRef.create(visitor)
     try {
         val clientData = visitorStableRef.asCPointer()
@@ -201,6 +241,8 @@ fun StructDef.fieldsHaveDefaultAlignment(): Boolean {
                 offset = it.offset / 8 + it.typeSize
             }
             is BitField -> return false
+            is AnonymousInnerRecord,
+            is IncompleteField -> {}
         }
     }
 
@@ -295,7 +337,11 @@ internal fun Compilation.withPrecompiledHeader(translationUnit: CXTranslationUni
     val precompiledHeader = Files.createTempFile(null, ".pch").toFile().apply { this.deleteOnExit() }
     clang_saveTranslationUnit(translationUnit, precompiledHeader.absolutePath, 0)
 
-    return CompilationWithPCH(this.compilerArgs, precompiledHeader.absolutePath, this.language)
+    return CompilationWithPCH(
+        this.compilerArgs,
+        precompiledHeader.absolutePath,
+        this.language
+    )
 }
 
 internal fun NativeLibrary.includesDeclaration(cursor: CValue<CXCursor>): Boolean {

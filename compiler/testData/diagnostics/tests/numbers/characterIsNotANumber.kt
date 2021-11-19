@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 fun foo(n: Number) = n
 
 fun test() {
@@ -8,5 +7,5 @@ fun test() {
     foo(<!TYPE_MISMATCH!>c<!>)
 
     val d: Char? = 'd'
-    foo(<!TYPE_MISMATCH{NI}!><!TYPE_MISMATCH{OI}!>d<!>!!<!>)
+    foo(<!TYPE_MISMATCH!>d!!<!>)
 }

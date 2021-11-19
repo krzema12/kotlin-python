@@ -23,10 +23,17 @@ class CommonizedGroup<T : Any>(
         return elements[index] as T?
     }
 
-    operator fun set(index: Int, value: T) {
+    operator fun set(index: Int, value: T?) {
         val oldValue = this[index]
-        check(oldValue == null) { "$oldValue can not be overwritten with $value at index $index" }
+        check(oldValue == null || value == null) {
+            "$oldValue can not be overwritten with $value at index $index"
+        }
 
         elements[index] = value
     }
+
+    internal fun setAllowingOverride(index: Int, value: T?) {
+        elements[index] = value
+    }
 }
+

@@ -142,6 +142,15 @@ class K2NativeCompilerArguments : CommonCompilerArguments() {
     )
     var exportedLibraries: Array<String>? = null
 
+    @Argument(
+            value = "-Xexternal-dependencies",
+            valueDescription = "<path>",
+            description = "Path to the file containing external dependencies.\n" +
+                    "External dependencies are required for verbose output in case of IR linker errors,\n" +
+                    "but they do not affect compilation at all."
+    )
+    var externalDependencies: String? = null
+
     @Argument(value="-Xfake-override-validator", description = "Enable IR fake override validator")
     var fakeOverrideValidator: Boolean = false
 
@@ -166,11 +175,11 @@ class K2NativeCompilerArguments : CommonCompilerArguments() {
     var lightDebugDeprecated: Boolean = false
 
     @Argument(
-            value = "-Xg-generate-inline-function-body-marker",
+            value = "-Xg-generate-debug-trampoline",
             valueDescription = "{disable|enable}",
-            description = """generates marker of inlined function body on call site to make debugger breakpoint resolution more accurate"""
+            description = """generates trampolines to make debugger breakpoint resolution more accurate (inlines, when, etc.)"""
     )
-    var generateInlinedFunctionMarkerString: String? = null
+    var generateDebugTrampolineString: String? = null
 
 
     @Argument(
@@ -194,6 +203,9 @@ class K2NativeCompilerArguments : CommonCompilerArguments() {
 
     @Argument(value = "-Xprint-bitcode", deprecatedName = "--print_bitcode", description = "Print llvm bitcode")
     var printBitCode: Boolean = false
+
+    @Argument(value = "-Xcheck-state-at-external-calls", description = "Check all calls of possibly long external functions are done in Native state")
+    var checkExternalCalls: Boolean = false
 
     @Argument(value = "-Xprint-descriptors", deprecatedName = "--print_descriptors", description = "Print descriptor tree")
     var printDescriptors: Boolean = false
@@ -305,8 +317,42 @@ class K2NativeCompilerArguments : CommonCompilerArguments() {
     @Argument(value="-Xdestroy-runtime-mode", valueDescription = "<mode>", description = "When to destroy runtime. 'legacy' and 'on-shutdown' are currently supported. NOTE: 'legacy' mode is deprecated and will be removed.")
     var destroyRuntimeMode: String? = "on-shutdown"
 
-    override fun configureAnalysisFlags(collector: MessageCollector): MutableMap<AnalysisFlag<*>, Any> =
-            super.configureAnalysisFlags(collector).also {
+    @Argument(value="-Xgc", valueDescription = "<gc>", description = "GC to use, 'noop' and 'stms' are currently supported. Works only with -memory-model experimental")
+    var gc: String? = null
+
+    @Argument(value="-Xgc-aggressive", description = "Make GC agressive. Works only with -memory-model experimental")
+    var gcAggressive: Boolean = false
+
+    @Argument(value = "-Xir-property-lazy-initialization", valueDescription = "{disable|enable}", description = "Initialize top level properties lazily per file")
+    var propertyLazyInitialization: String? = null
+
+    // TODO: Remove when legacy MM is gone.
+    @Argument(
+            value = "-Xworker-exception-handling",
+            valueDescription = "<mode>",
+            description = "Unhandled exception processing in Worker.executeAfter. Possible values: 'legacy', 'use-hook'. The default value is 'legacy', for -memory-model experimental the default value is 'use-hook'"
+    )
+    var workerExceptionHandling: String? = null
+
+    @Argument(
+            value = "-Xllvm-variant",
+            valueDescription = "{dev|user}",
+            description = "Choose LLVM distribution which will be used during compilation."
+    )
+    var llvmVariant: String? = null
+
+    @Argument(
+            value = "-Xbinary",
+            valueDescription = "<option=value>",
+            description = "Specify binary option"
+    )
+    var binaryOptions: Array<String>? = null
+
+    @Argument(value = "-Xruntime-logs", valueDescription = "<tag1=level1,tag2=level2,...>", description = "Enable logging for runtime with tags.")
+    var runtimeLogs: String? = null
+
+    override fun configureAnalysisFlags(collector: MessageCollector, languageVersion: LanguageVersion): MutableMap<AnalysisFlag<*>, Any> =
+            super.configureAnalysisFlags(collector, languageVersion).also {
                 val useExperimental = it[AnalysisFlags.useExperimental] as List<*>
                 it[AnalysisFlags.useExperimental] = useExperimental + listOf("kotlin.ExperimentalUnsignedTypes")
                 if (printIr)

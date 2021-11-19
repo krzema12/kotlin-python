@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -24,7 +24,6 @@ import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.classifierOrNull
 import org.jetbrains.kotlin.ir.types.isNullable
 import org.jetbrains.kotlin.name.Name
-import org.jetbrains.kotlin.types.checker.KotlinTypeChecker
 
 /**
  * A platform-, frontend-independent logic for generating synthetic members of data class: equals, hashCode, toString, componentN, and copy.
@@ -35,7 +34,7 @@ import org.jetbrains.kotlin.types.checker.KotlinTypeChecker
 @OptIn(ObsoleteDescriptorBasedAPI::class)
 abstract class DataClassMembersGenerator(
     val context: IrGeneratorContext,
-    val symbolTable: SymbolTable,
+    val symbolTable: ReferenceSymbolTable,
     val irClass: IrClass,
     val origin: IrDeclarationOrigin
 ) {
@@ -44,7 +43,7 @@ abstract class DataClassMembersGenerator(
 
     inline fun <T : IrDeclaration> T.buildWithScope(builder: (T) -> Unit): T =
         also { irDeclaration ->
-            symbolTable.withScope(irDeclaration) {
+            symbolTable.withReferenceScope(irDeclaration) {
                 builder(irDeclaration)
             }
         }
@@ -139,19 +138,6 @@ abstract class DataClassMembersGenerator(
             +irReturnTrue()
         }
 
-        private val intClass = context.builtIns.int
-        private val intType = context.builtIns.intType
-
-        private val intTimesSymbol: IrSimpleFunctionSymbol =
-            intClass.unsubstitutedMemberScope.findFirstFunction("times") {
-                KotlinTypeChecker.DEFAULT.equalTypes(it.valueParameters[0].type, intType)
-            }.let { symbolTable.referenceSimpleFunction(it) }
-
-        private val intPlusSymbol: IrSimpleFunctionSymbol =
-            intClass.unsubstitutedMemberScope.findFirstFunction("plus") {
-                KotlinTypeChecker.DEFAULT.equalTypes(it.valueParameters[0].type, intType)
-            }.let { symbolTable.referenceSimpleFunction(it) }
-
         fun generateHashCodeMethodBody(properties: List<IrProperty>) {
             if (properties.isEmpty()) {
                 +irReturn(irInt(0))
@@ -176,8 +162,8 @@ abstract class DataClassMembersGenerator(
             +irResultVar
 
             for (property in properties.drop(1)) {
-                val shiftedResult = irCallOp(intTimesSymbol, irIntType, irGet(irResultVar), irInt(31))
-                val irRhs = irCallOp(intPlusSymbol, irIntType, shiftedResult, getHashCodeOfProperty(property))
+                val shiftedResult = shiftResultOfHashCode(irResultVar)
+                val irRhs = irCallOp(context.irBuiltIns.intPlusSymbol, irIntType, shiftedResult, getHashCodeOfProperty(property))
                 +irSet(irResultVar.symbol, irRhs)
             }
 
@@ -191,36 +177,16 @@ abstract class DataClassMembersGenerator(
                         context.irBuiltIns.intType,
                         irGetProperty(irThis(), property),
                         irInt(0),
-                        getHashCodeOf(property, irGetProperty(irThis(), property))
+                        getHashCodeOf(this, property, irGetProperty(irThis(), property))
                     )
                 else ->
-                    getHashCodeOf(property, irGetProperty(irThis(), property))
-            }
-        }
-
-        private fun getHashCodeOf(property: IrProperty, irValue: IrExpression): IrExpression {
-            val hashCodeFunctionInfo = getHashCodeFunctionInfo(property.backingField!!.type)
-            val hashCodeFunctionSymbol = hashCodeFunctionInfo.symbol
-
-            val hasDispatchReceiver = hashCodeFunctionSymbol.descriptor.dispatchReceiverParameter != null
-            return irCall(
-                hashCodeFunctionSymbol,
-                context.irBuiltIns.intType,
-                valueArgumentsCount = if (hasDispatchReceiver) 0 else 1,
-                typeArgumentsCount = 0
-            ).apply {
-                if (hasDispatchReceiver) {
-                    dispatchReceiver = irValue
-                } else {
-                    putValueArgument(0, irValue)
-                }
-                hashCodeFunctionInfo.commitSubstituted(this)
+                    getHashCodeOf(this, property, irGetProperty(irThis(), property))
             }
         }
 
         fun generateToStringMethodBody(properties: List<IrProperty>) {
             val irConcat = irConcat()
-            irConcat.addArgument(irString(irClass.name.asString() + "("))
+            irConcat.addArgument(irString(irClass.classNameForToString() + "("))
             var first = true
             for (property in properties) {
                 if (!first) irConcat.addArgument(irString(", "))
@@ -246,6 +212,32 @@ abstract class DataClassMembersGenerator(
         }
     }
 
+    protected open fun IrBuilderWithScope.shiftResultOfHashCode(irResultVar: IrVariable): IrExpression =
+        irCallOp(context.irBuiltIns.intTimesSymbol, context.irBuiltIns.intType, irGet(irResultVar), irInt(31))
+
+    protected open fun getHashCodeOf(builder: IrBuilderWithScope, property: IrProperty, irValue: IrExpression) =
+        builder.getHashCodeOf(property.backingField!!.type, irValue)
+
+    protected fun IrBuilderWithScope.getHashCodeOf(type: IrType, irValue: IrExpression): IrExpression {
+        val hashCodeFunctionInfo = getHashCodeFunctionInfo(type)
+        val hashCodeFunctionSymbol = hashCodeFunctionInfo.symbol
+        val hasDispatchReceiver = hashCodeFunctionSymbol.descriptor.dispatchReceiverParameter != null
+        return irCall(
+            hashCodeFunctionSymbol,
+            context.irBuiltIns.intType,
+            valueArgumentsCount = if (hasDispatchReceiver) 0 else 1,
+            typeArgumentsCount = 0
+        ).apply {
+            if (hasDispatchReceiver) {
+                dispatchReceiver = irValue
+            } else {
+                putValueArgument(0, irValue)
+            }
+            hashCodeFunctionInfo.commitSubstituted(this)
+        }
+    }
+
+
     fun getIrProperty(property: PropertyDescriptor): IrProperty =
         irPropertiesByDescriptor[property]
             ?: throw AssertionError("Class: ${irClass.descriptor}: unexpected property descriptor: $property")
@@ -254,7 +246,7 @@ abstract class DataClassMembersGenerator(
         getIrProperty(property).backingField!!
 
     val IrClassifierSymbol?.isArrayOrPrimitiveArray: Boolean
-        get() = this == context.irBuiltIns.arrayClass || this in context.irBuiltIns.primitiveArrays
+        get() = this == context.irBuiltIns.arrayClass || this in context.irBuiltIns.primitiveArraysToPrimitiveTypes
 
     abstract fun declareSimpleFunction(startOffset: Int, endOffset: Int, functionDescriptor: FunctionDescriptor): IrFunction
 
@@ -376,4 +368,6 @@ abstract class DataClassMembersGenerator(
             generateToStringMethodBody(properties)
         }
     }
+
+    open fun IrClass.classNameForToString(): String = irClass.name.asString()
 }

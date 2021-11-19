@@ -84,6 +84,8 @@ sealed class CirClassOrTypeAliasType : CirSimpleType() {
         if (arguments.isNotEmpty()) arguments.joinTo(builder, prefix = "<", postfix = ">")
         super.appendDescriptionTo(builder)
     }
+
+    abstract fun withArguments(arguments: List<CirTypeProjection>): CirClassOrTypeAliasType
 }
 
 abstract class CirClassType : CirClassOrTypeAliasType(), CirHasVisibility {
@@ -96,6 +98,16 @@ abstract class CirClassType : CirClassOrTypeAliasType(), CirHasVisibility {
             builder.append('.')
         }
         super.appendDescriptionTo(builder, shortNameOnly = outerType != null)
+    }
+
+    override fun withArguments(arguments: List<CirTypeProjection>): CirClassOrTypeAliasType {
+        return createInterned(
+            classId = classifierId,
+            outerType = outerType,
+            visibility = visibility,
+            arguments = arguments,
+            isMarkedNullable = isMarkedNullable
+        )
     }
 
     companion object {
@@ -114,6 +126,22 @@ abstract class CirClassType : CirClassOrTypeAliasType(), CirHasVisibility {
                 isMarkedNullable = isMarkedNullable
             )
         )
+
+        fun CirClassType.copyInterned(
+            classifierId: CirEntityId = this.classifierId,
+            outerType: CirClassType? = this.outerType,
+            visibility: Visibility = this.visibility,
+            arguments: List<CirTypeProjection> = this.arguments,
+            isMarkedNullable: Boolean = this.isMarkedNullable
+        ): CirClassType {
+            return createInterned(
+                classId = classifierId,
+                outerType = outerType,
+                visibility = visibility,
+                arguments = arguments,
+                isMarkedNullable = isMarkedNullable
+            )
+        }
 
         private val interner = Interner<CirClassTypeInternedImpl>()
     }
@@ -134,6 +162,15 @@ abstract class CirTypeAliasType : CirClassOrTypeAliasType() {
         underlyingType.appendDescriptionTo(builder)
     }
 
+    override fun withArguments(arguments: List<CirTypeProjection>): CirClassOrTypeAliasType {
+        return createInterned(
+            typeAliasId = classifierId,
+            underlyingType = underlyingType,
+            arguments = arguments,
+            isMarkedNullable = isMarkedNullable
+        )
+    }
+
     companion object {
         fun createInterned(
             typeAliasId: CirEntityId,
@@ -148,6 +185,20 @@ abstract class CirTypeAliasType : CirClassOrTypeAliasType() {
                 isMarkedNullable = isMarkedNullable
             )
         )
+
+        fun CirTypeAliasType.copyInterned(
+            classifierId: CirEntityId = this.classifierId,
+            underlyingType: CirClassOrTypeAliasType = this.underlyingType,
+            arguments: List<CirTypeProjection> = this.arguments,
+            isMarkedNullable: Boolean = this.isMarkedNullable
+        ): CirTypeAliasType {
+            return createInterned(
+                typeAliasId = classifierId,
+                underlyingType = underlyingType,
+                arguments = arguments,
+                isMarkedNullable = isMarkedNullable
+            )
+        }
 
         private val interner = Interner<CirTypeAliasTypeInternedImpl>()
     }

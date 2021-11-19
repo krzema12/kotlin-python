@@ -83,9 +83,6 @@ abstract class KotlinCompileCommon @Inject constructor(
     override fun getSourceRoots(): SourceRoots =
         SourceRoots.KotlinOnly.create(getSource(), sourceFilesExtensions.get())
 
-    override fun findKotlinCompilerClasspath(project: Project): List<File> =
-        findKotlinMetadataCompilerClasspath(project)
-
     override fun setupCompilerArgs(args: K2MetadataCompilerArguments, defaultsOnly: Boolean, ignoreClasspathResolutionErrors: Boolean) {
         args.apply { fillDefaultValues() }
         super.setupCompilerArgs(args, defaultsOnly = defaultsOnly, ignoreClasspathResolutionErrors = ignoreClasspathResolutionErrors)
@@ -112,25 +109,22 @@ abstract class KotlinCompileCommon @Inject constructor(
     }
 
     @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:IgnoreEmptyDirectories
     @get:InputFiles
     internal val refinesMetadataPaths: ConfigurableFileCollection = objects.fileCollection()
 
     @get:Internal
     internal val expectActualLinker = objects.property(Boolean::class.java)
 
-    @get:Internal
-    override val kotlinJavaToolchainProvider: Provider<KotlinJavaToolchainProvider>
-        get() = super.kotlinJavaToolchainProvider
-
     override fun callCompilerAsync(args: K2MetadataCompilerArguments, sourceRoots: SourceRoots, changedFiles: ChangedFiles) {
         val messageCollector = GradlePrintingMessageCollector(logger, args.allWarningsAsErrors)
         val outputItemCollector = OutputItemsCollectorImpl()
         val compilerRunner = compilerRunner.get()
         val environment = GradleCompilerEnvironment(
-            computedCompilerClasspath, messageCollector, outputItemCollector,
+            defaultCompilerClasspath, messageCollector, outputItemCollector,
             reportingSettings = reportingSettings,
             outputFiles = allOutputFiles()
         )
-        compilerRunner.runMetadataCompilerAsync(sourceRoots.kotlinSourceFiles, args, environment)
+        compilerRunner.runMetadataCompilerAsync(sourceRoots.kotlinSourceFiles.files.toList(), args, environment)
     }
 }

@@ -19,6 +19,7 @@ inline bool isForeignRefAccessible(ObjHeader* object, ForeignRefContext context)
     // If runtime has not been initialized on this thread, then the object is either unowned or shared.
     // In the former case initialized runtime is required to throw exceptions
     // in the latter case -- to provide proper execution context for caller.
+    // TODO: this probably can't be called in uninitialized state in the new MM.
     Kotlin_initRuntimeIfNeeded();
 
     return IsForeignRefAccessible(object, context);
@@ -84,6 +85,7 @@ void KRefSharedHolder::init(ObjHeader* obj) {
 
 template <ErrorPolicy errorPolicy>
 ObjHeader* KRefSharedHolder::ref() const {
+  kotlin::AssertThreadState(kotlin::ThreadState::kRunnable);
   if (!ensureRefAccessible<errorPolicy>(obj_, context_)) {
     return nullptr;
   }
@@ -123,8 +125,13 @@ template <ErrorPolicy errorPolicy>
 void BackRefFromAssociatedObject::addRef() {
   static_assert(errorPolicy != ErrorPolicy::kDefaultValue, "Cannot use default return value here");
 
+  // Can be called both from Native state (if ObjC or Swift code adds RC)
+  // and from Runnable state (Kotlin_ObjCExport_refToObjC).
+
   if (atomicAdd(&refCount, 1) == 1) {
     if (obj_ == nullptr) return; // E.g. after [detach].
+
+    kotlin::CalledFromNativeGuard guard(/* reentrant */ true);
 
     // There are no references to the associated object itself, so Kotlin object is being passed from Kotlin,
     // and it is owned therefore.
@@ -142,22 +149,34 @@ template void BackRefFromAssociatedObject::addRef<ErrorPolicy::kTerminate>();
 template <ErrorPolicy errorPolicy>
 bool BackRefFromAssociatedObject::tryAddRef() {
   static_assert(errorPolicy != ErrorPolicy::kDefaultValue, "Cannot use default return value here");
+  kotlin::CalledFromNativeGuard guard;
 
   if (obj_ == nullptr) return false; // E.g. after [detach].
 
-  // Suboptimal but simple:
-  ensureRefAccessible<errorPolicy>(obj_, context_);
+  if (CurrentMemoryModel == MemoryModel::kExperimental) {
+      ObjHolder holder;
+      ObjHeader* obj = TryRef(obj_, holder.slot());
+      // Failed to lock weak reference.
+      if (obj == nullptr) return false;
+      RuntimeAssert(obj == obj_, "Mismatched locked weak. obj=%p obj_=%p", obj, obj_);
+      // TODO: This is a very weird way to ask for "unsafe" addRef.
+      addRef<ErrorPolicy::kIgnore>();
+      return true;
+  } else {
+      // Suboptimal but simple:
+      ensureRefAccessible<errorPolicy>(obj_, context_);
 
-  ObjHeader* obj = obj_;
+      ObjHeader* obj = obj_;
 
-  if (!TryAddHeapRef(obj)) return false;
-  RuntimeAssert(isForeignRefAccessible(obj_, context_), "Cannot be inaccessible because of the check above");
-  // TODO: This is a very weird way to ask for "unsafe" addRef.
-  addRef<ErrorPolicy::kIgnore>();
-  ReleaseHeapRefNoCollect(obj); // Balance TryAddHeapRef.
-  // TODO: consider optimizing for non-shared objects.
+      if (!TryAddHeapRef(obj)) return false;
+      RuntimeAssert(isForeignRefAccessible(obj_, context_), "Cannot be inaccessible because of the check above");
+      // TODO: This is a very weird way to ask for "unsafe" addRef.
+      addRef<ErrorPolicy::kIgnore>();
+      ReleaseHeapRefNoCollect(obj); // Balance TryAddHeapRef.
+      // TODO: consider optimizing for non-shared objects.
 
-  return true;
+      return true;
+  }
 }
 
 template bool BackRefFromAssociatedObject::tryAddRef<ErrorPolicy::kThrow>();
@@ -167,6 +186,8 @@ void BackRefFromAssociatedObject::releaseRef() {
   ForeignRefContext context = context_;
   if (atomicAdd(&refCount, -1) == 0) {
     if (obj_ == nullptr) return; // E.g. after [detach].
+
+    kotlin::CalledFromNativeGuard guard;
 
     // Note: by this moment "subsequent" addRef may have already happened and patched context_.
     // So use the value loaded before refCount update:
@@ -182,8 +203,13 @@ void BackRefFromAssociatedObject::detach() {
   obj_ = nullptr; // Handled in addRef/tryAddRef/releaseRef/ref.
 }
 
+ALWAYS_INLINE void BackRefFromAssociatedObject::assertDetached() {
+    RuntimeAssert(obj_ == nullptr, "Expecting this=%p to be detached, but found obj_=%p", this, obj_);
+}
+
 template <ErrorPolicy errorPolicy>
 ObjHeader* BackRefFromAssociatedObject::ref() const {
+  kotlin::AssertThreadState(kotlin::ThreadState::kRunnable);
   RuntimeAssert(obj_ != nullptr, "no valid Kotlin object found");
 
   if (!ensureRefAccessible<errorPolicy>(obj_, context_)) {

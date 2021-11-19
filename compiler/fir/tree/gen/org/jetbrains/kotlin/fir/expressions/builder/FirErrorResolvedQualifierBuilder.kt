@@ -37,6 +37,7 @@ class FirErrorResolvedQualifierBuilder : FirAbstractResolvedQualifierBuilder, Fi
     override var classId: ClassId? = null
     override var symbol: FirClassLikeSymbol<*>? = null
     override var isNullableLHSForCallableReference: Boolean = false
+    override val nonFatalDiagnostics: MutableList<ConeDiagnostic> = mutableListOf()
     override val typeArguments: MutableList<FirTypeProjection> = mutableListOf()
     lateinit var diagnostic: ConeDiagnostic
 
@@ -49,6 +50,7 @@ class FirErrorResolvedQualifierBuilder : FirAbstractResolvedQualifierBuilder, Fi
             classId,
             symbol,
             isNullableLHSForCallableReference,
+            nonFatalDiagnostics,
             typeArguments,
             diagnostic,
         )
@@ -57,6 +59,13 @@ class FirErrorResolvedQualifierBuilder : FirAbstractResolvedQualifierBuilder, Fi
 
     @Deprecated("Modification of 'typeRef' has no impact for FirErrorResolvedQualifierBuilder", level = DeprecationLevel.HIDDEN)
     override var typeRef: FirTypeRef
+        get() = throw IllegalStateException()
+        set(_) {
+            throw IllegalStateException()
+        }
+
+    @Deprecated("Modification of 'resolvedToCompanionObject' has no impact for FirErrorResolvedQualifierBuilder", level = DeprecationLevel.HIDDEN)
+    override var resolvedToCompanionObject: Boolean
         get() = throw IllegalStateException()
         set(_) {
             throw IllegalStateException()

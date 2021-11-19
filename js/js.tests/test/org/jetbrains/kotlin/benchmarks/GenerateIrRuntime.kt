@@ -14,6 +14,7 @@ import com.intellij.psi.PsiManager
 import org.jetbrains.kotlin.analyzer.AnalysisResult
 import org.jetbrains.kotlin.backend.common.phaser.PhaseConfig
 import org.jetbrains.kotlin.backend.common.phaser.invokeToplevel
+import org.jetbrains.kotlin.backend.common.serialization.CompatibilityMode
 import org.jetbrains.kotlin.backend.common.serialization.KlibIrVersion
 import org.jetbrains.kotlin.backend.common.serialization.metadata.KlibMetadataVersion
 import org.jetbrains.kotlin.backend.common.serialization.signature.IdSignatureDescriptor
@@ -31,6 +32,8 @@ import org.jetbrains.kotlin.incremental.EmptyICReporter
 import org.jetbrains.kotlin.incremental.IncrementalJsCompilerRunner
 import org.jetbrains.kotlin.incremental.multiproject.EmptyModulesApiHistory
 import org.jetbrains.kotlin.incremental.withJsIC
+import org.jetbrains.kotlin.ir.IrBuiltIns
+import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.backend.js.*
 import org.jetbrains.kotlin.ir.backend.js.lower.serialization.ir.JsIrLinker
 import org.jetbrains.kotlin.ir.backend.js.lower.serialization.ir.JsIrModuleSerializer
@@ -38,8 +41,7 @@ import org.jetbrains.kotlin.ir.backend.js.lower.serialization.ir.JsManglerDesc
 import org.jetbrains.kotlin.ir.backend.js.transformers.irToJs.IrModuleToJsTransformer
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFactory
-import org.jetbrains.kotlin.ir.descriptors.IrBuiltIns
-import org.jetbrains.kotlin.ir.descriptors.IrFunctionFactory
+import org.jetbrains.kotlin.ir.descriptors.IrBuiltInsOverDescriptors
 import org.jetbrains.kotlin.ir.util.ExternalDependenciesGenerator
 import org.jetbrains.kotlin.ir.util.IrMessageLogger
 import org.jetbrains.kotlin.ir.util.SymbolTable
@@ -47,13 +49,9 @@ import org.jetbrains.kotlin.ir.util.patchDeclarationParents
 import org.jetbrains.kotlin.js.analyze.TopDownAnalyzerFacadeForJS
 import org.jetbrains.kotlin.js.config.ErrorTolerancePolicy
 import org.jetbrains.kotlin.js.config.JSConfigurationKeys
-import org.jetbrains.kotlin.library.KotlinAbiVersion
-import org.jetbrains.kotlin.library.KotlinLibrary
-import org.jetbrains.kotlin.library.KotlinLibraryVersioning
-import org.jetbrains.kotlin.library.SerializedIrModule
+import org.jetbrains.kotlin.library.*
 import org.jetbrains.kotlin.library.impl.BuiltInsPlatform
 import org.jetbrains.kotlin.library.impl.KotlinLibraryOnlyIrWriter
-import org.jetbrains.kotlin.library.impl.createKotlinLibrary
 import org.jetbrains.kotlin.progress.ProgressIndicatorAndCompilationCanceledStatus
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi2ir.Psi2IrConfiguration
@@ -76,7 +74,7 @@ import org.jetbrains.kotlin.konan.file.File as KonanFile
 @OptIn(ExperimentalPathApi::class)
 @Ignore
 class GenerateIrRuntime {
-    fun loadKlib(klibPath: String, isPacked: Boolean) = createKotlinLibrary(KonanFile("$klibPath${if (isPacked) ".klib" else ""}"))
+    fun loadKlib(klibPath: String, isPacked: Boolean) = resolveSingleFileKlib(KonanFile("$klibPath${if (isPacked) ".klib" else ""}"))
 
     private fun buildConfiguration(environment: KotlinCoreEnvironment): CompilerConfiguration {
         val runtimeConfiguration = environment.configuration.copy()
@@ -90,13 +88,18 @@ class GenerateIrRuntime {
                 LanguageFeature.MultiPlatformProjects to LanguageFeature.State.ENABLED
             ),
             analysisFlags = mapOf(
-                AnalysisFlags.useExperimental to listOf("kotlin.contracts.ExperimentalContracts", "kotlin.Experimental", "kotlin.ExperimentalMultiplatform"),
+                AnalysisFlags.useExperimental to listOf(
+                    "kotlin.contracts.ExperimentalContracts",
+                    "kotlin.Experimental",
+                    "kotlin.ExperimentalMultiplatform"
+                ),
                 AnalysisFlags.allowResultReturnType to true
             )
         )
 
         return runtimeConfiguration
     }
+
     private val CompilerConfiguration.metadataVersion
         get() = get(CommonConfigurationKeys.METADATA_VERSION) as? KlibMetadataVersion ?: KlibMetadataVersion.INSTANCE
 
@@ -171,7 +174,7 @@ class GenerateIrRuntime {
 
             val (module, symbolTable, irBuiltIns, linker) = doDeserializeModule(modulePath)
 
-            val jsProgram = doBackEnd(module, symbolTable, irBuiltIns, linker)
+            doBackEnd(module, symbolTable, irBuiltIns, linker)
         }
     }
 
@@ -375,7 +378,16 @@ class GenerateIrRuntime {
         println("Fastest re-compilation takes ${MeasureUnits.MILLISECONDS.convert(minResult.time)} (${minResult.file})")
     }
 
-    private fun runBenchWithWarmup(name: String, W: Int, N: Int, measurer: MeasureUnits, wmpDone: () -> Unit = {}, bnhDone: (Long) -> Unit = {}, pre: () -> Unit = {}, bench: () -> Unit) {
+    private fun runBenchWithWarmup(
+        name: String,
+        W: Int,
+        N: Int,
+        measurer: MeasureUnits,
+        wmpDone: () -> Unit = {},
+        bnhDone: (Long) -> Unit = {},
+        pre: () -> Unit = {},
+        bench: () -> Unit
+    ) {
 
         println("Run $name benchmark")
 
@@ -456,16 +468,11 @@ class GenerateIrRuntime {
         val symbolTable = SymbolTable(IdSignatureDescriptor(JsManglerDesc), PersistentIrFactory())
         val psi2IrContext = psi2Ir.createGeneratorContext(analysisResult.moduleDescriptor, analysisResult.bindingContext, symbolTable)
 
-        val irBuiltIns = psi2IrContext.irBuiltIns
-        val functionFactory = IrFunctionFactory(irBuiltIns, psi2IrContext.symbolTable)
-        irBuiltIns.functionFactory = functionFactory
-
         val irLinker = JsIrLinker(
             psi2IrContext.moduleDescriptor,
             IrMessageLogger.None,
             psi2IrContext.irBuiltIns,
             psi2IrContext.symbolTable,
-            functionFactory,
             null
         )
 
@@ -476,7 +483,12 @@ class GenerateIrRuntime {
     }
 
     @OptIn(ExperimentalPathApi::class)
-    private fun doSerializeModule(moduleFragment: IrModuleFragment, bindingContext: BindingContext, files: List<KtFile>, perFile: Boolean = false): String {
+    private fun doSerializeModule(
+        moduleFragment: IrModuleFragment,
+        bindingContext: BindingContext,
+        files: List<KtFile>,
+        perFile: Boolean = false
+    ): String {
         val tmpKlibDir = createTempDirectory().also { it.toFile().deleteOnExit() }.toString()
         serializeModuleIntoKlib(
             moduleName,
@@ -491,7 +503,9 @@ class GenerateIrRuntime {
             mutableMapOf(),
             emptyList(),
             true,
-            perFile
+            perFile,
+            abiVersion = KotlinAbiVersion.CURRENT,
+            jsOutputName = null
         )
 
         return tmpKlibDir
@@ -501,11 +515,22 @@ class GenerateIrRuntime {
         return getModuleDescriptorByLibrary(moduleRef, emptyMap())
     }
 
-    private data class DeserializedModuleInfo(val module: IrModuleFragment, val symbolTable: SymbolTable, val irBuiltIns: IrBuiltIns, val linker: JsIrLinker)
+    private data class DeserializedModuleInfo(
+        val module: IrModuleFragment,
+        val symbolTable: SymbolTable,
+        val irBuiltIns: IrBuiltIns,
+        val linker: JsIrLinker
+    )
 
 
     private fun doSerializeIrModule(module: IrModuleFragment): SerializedIrModule {
-        val serializedIr = JsIrModuleSerializer(IrMessageLogger.None, module.irBuiltins, mutableMapOf(), true).serializedIrModule(module)
+        val serializedIr = JsIrModuleSerializer(
+            IrMessageLogger.None,
+            module.irBuiltins,
+            mutableMapOf(),
+            CompatibilityMode.CURRENT,
+            true
+        ).serializedIrModule(module)
         return serializedIr
     }
 
@@ -513,17 +538,15 @@ class GenerateIrRuntime {
         writer.writeIr(serializedIrModule)
     }
 
+    @OptIn(ObsoleteDescriptorBasedAPI::class)
     private fun doDeserializeIrModule(moduleDescriptor: ModuleDescriptorImpl): DeserializedModuleInfo {
         val mangler = JsManglerDesc
         val signaturer = IdSignatureDescriptor(mangler)
         val symbolTable = SymbolTable(signaturer, PersistentIrFactory())
         val typeTranslator = TypeTranslatorImpl(symbolTable, languageVersionSettings, moduleDescriptor)
+        val irBuiltIns = IrBuiltInsOverDescriptors(moduleDescriptor.builtIns, typeTranslator, symbolTable)
 
-        val irBuiltIns = IrBuiltIns(moduleDescriptor.builtIns, typeTranslator, symbolTable)
-        val functionFactory = IrFunctionFactory(irBuiltIns, symbolTable)
-        irBuiltIns.functionFactory = functionFactory
-
-        val jsLinker = JsIrLinker(moduleDescriptor, IrMessageLogger.None, irBuiltIns, symbolTable, functionFactory, null)
+        val jsLinker = JsIrLinker(moduleDescriptor, IrMessageLogger.None, irBuiltIns, symbolTable, null)
 
         val moduleFragment = jsLinker.deserializeFullModule(moduleDescriptor, moduleDescriptor.kotlinLibrary)
         jsLinker.init(null, emptyList())
@@ -538,6 +561,7 @@ class GenerateIrRuntime {
         return DeserializedModuleInfo(moduleFragment, symbolTable, irBuiltIns, jsLinker)
     }
 
+    @OptIn(ObsoleteDescriptorBasedAPI::class)
     private fun doDeserializeModule(modulePath: String): DeserializedModuleInfo {
         val moduleRef = loadKlib(modulePath, false)
         val moduleDescriptor = doDeserializeModuleMetadata(moduleRef)
@@ -545,12 +569,9 @@ class GenerateIrRuntime {
         val signaturer = IdSignatureDescriptor(mangler)
         val symbolTable = SymbolTable(signaturer, PersistentIrFactory())
         val typeTranslator = TypeTranslatorImpl(symbolTable, languageVersionSettings, moduleDescriptor)
-        val irBuiltIns = IrBuiltIns(moduleDescriptor.builtIns, typeTranslator, symbolTable)
+        val irBuiltIns = IrBuiltInsOverDescriptors(moduleDescriptor.builtIns, typeTranslator, symbolTable)
 
-        val functionFactory = IrFunctionFactory(irBuiltIns, symbolTable)
-        irBuiltIns.functionFactory = functionFactory
-
-        val jsLinker = JsIrLinker(moduleDescriptor, IrMessageLogger.None, irBuiltIns, symbolTable, functionFactory, null)
+        val jsLinker = JsIrLinker(moduleDescriptor, IrMessageLogger.None, irBuiltIns, symbolTable, null)
 
         val moduleFragment = jsLinker.deserializeFullModule(moduleDescriptor, moduleDescriptor.kotlinLibrary)
         // Create stubs

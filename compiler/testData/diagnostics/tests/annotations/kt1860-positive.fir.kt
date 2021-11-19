@@ -1,4 +1,4 @@
-// !WITH_NEW_INFERENCE
+// COMPARE_WITH_LIGHT_TREE
 @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.EXPRESSION)
 @Retention(AnnotationRetention.SOURCE)
 annotation class test

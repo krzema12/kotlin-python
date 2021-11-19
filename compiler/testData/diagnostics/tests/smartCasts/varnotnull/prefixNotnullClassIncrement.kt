@@ -1,7 +1,6 @@
-// !WITH_NEW_INFERENCE
 class MyClass
 
-operator fun MyClass.inc(): MyClass { <!UNREACHABLE_CODE{OI}!>return<!> null!! }
+operator fun MyClass.inc(): MyClass { return null!! }
 
 public fun box() {
     var i : MyClass?

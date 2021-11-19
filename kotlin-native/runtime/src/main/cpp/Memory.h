@@ -243,10 +243,13 @@ void LeaveFrame(ObjHeader** start, int parameters, int count) RUNTIME_NOTHROW;
 // checks if subgraph referenced by given root is disjoint from the rest of
 // object graph, i.e. no external references exists.
 bool ClearSubgraphReferences(ObjHeader* root, bool checked) RUNTIME_NOTHROW;
-// Creates stable pointer out of the object.
+// Creates a stable pointer out of the object.
 void* CreateStablePointer(ObjHeader* obj) RUNTIME_NOTHROW;
-// Disposes stable pointer to the object.
+// Disposes a stable pointer to the object.
 void DisposeStablePointer(void* pointer) RUNTIME_NOTHROW;
+// Disposes a stable pointer to the object.
+// Accepts a MemoryState, thus can be called from deinitiliazation methods, when TLS is already deallocated.
+void DisposeStablePointerFor(MemoryState* memoryState, void* pointer) RUNTIME_NOTHROW;
 // Translate stable pointer to object reference.
 OBJ_GETTER(DerefStablePointer, void*) RUNTIME_NOTHROW;
 // Move stable pointer ownership.
@@ -284,7 +287,7 @@ void Kotlin_native_internal_GC_setCollectCyclesThreshold(ObjHeader*, int64_t val
 int64_t Kotlin_native_internal_GC_getCollectCyclesThreshold(ObjHeader*);
 void Kotlin_native_internal_GC_setThresholdAllocations(ObjHeader*, int64_t value);
 int64_t Kotlin_native_internal_GC_getThresholdAllocations(ObjHeader*);
-void Kotlin_native_internal_GC_setTuneThreshold(ObjHeader*, int32_t value);
+void Kotlin_native_internal_GC_setTuneThreshold(ObjHeader*, bool value);
 bool Kotlin_native_internal_GC_getTuneThreshold(ObjHeader*);
 OBJ_GETTER(Kotlin_native_internal_GC_detectCycles, ObjHeader*);
 OBJ_GETTER(Kotlin_native_internal_GC_findCycle, ObjHeader*, ObjHeader* root);
@@ -295,10 +298,12 @@ bool Kotlin_Any_isShareable(ObjHeader* thiz);
 void Kotlin_Any_share(ObjHeader* thiz);
 void PerformFullGC(MemoryState* memory) RUNTIME_NOTHROW;
 
+// Only for legacy
 bool TryAddHeapRef(const ObjHeader* object);
-
-void ReleaseHeapRef(const ObjHeader* object) RUNTIME_NOTHROW;
 void ReleaseHeapRefNoCollect(const ObjHeader* object) RUNTIME_NOTHROW;
+
+// Only for experimental
+OBJ_GETTER(TryRef, ObjHeader* object) RUNTIME_NOTHROW;
 
 ForeignRefContext InitLocalForeignRef(ObjHeader* object);
 
@@ -383,10 +388,11 @@ public:
 namespace kotlin {
 namespace mm {
 
-// Returns the MemoryState for the current thread. The runtime must be initialized.
+// Returns the MemoryState for the current thread.
+// If the memory subsystem isn't initialized for the current thread, returns nullptr.
 // Try not to use it very often, as (1) thread local access can be slow on some platforms,
 // (2) TLS gets deallocated before our thread destruction hooks run.
-MemoryState* GetMemoryState();
+MemoryState* GetMemoryState() noexcept;
 
 } // namespace mm
 
@@ -394,51 +400,97 @@ enum class ThreadState {
     kRunnable, kNative
 };
 
+ThreadState GetThreadState(MemoryState* thread) noexcept;
+
+inline ThreadState GetThreadState() noexcept {
+    return GetThreadState(mm::GetMemoryState());
+}
+
 // Switches the state of the given thread to `newState` and returns the previous thread state.
-ALWAYS_INLINE ThreadState SwitchThreadState(MemoryState* thread, ThreadState newState) noexcept;
+ALWAYS_INLINE ThreadState SwitchThreadState(MemoryState* thread, ThreadState newState, bool reentrant = false) noexcept;
 
 // Asserts that the given thread is in the given state.
 ALWAYS_INLINE void AssertThreadState(MemoryState* thread, ThreadState expected) noexcept;
+ALWAYS_INLINE void AssertThreadState(MemoryState* thread, std::initializer_list<ThreadState> expected) noexcept;
 
 // Asserts that the current thread is in the the given state.
 ALWAYS_INLINE inline void AssertThreadState(ThreadState expected) noexcept {
-    AssertThreadState(mm::GetMemoryState(), expected);
+    // Avoid redundant TLS access in GetMemoryState if runtime asserts are disabled.
+    if (compiler::runtimeAssertsMode() != compiler::RuntimeAssertsMode::kIgnore) {
+        AssertThreadState(mm::GetMemoryState(), expected);
+    }
+}
+
+ALWAYS_INLINE inline void AssertThreadState(std::initializer_list<ThreadState> expected) noexcept {
+    // Avoid redundant TLS access in GetMemoryState if runtime asserts are disabled.
+    if (compiler::runtimeAssertsMode() != compiler::RuntimeAssertsMode::kIgnore) {
+        AssertThreadState(mm::GetMemoryState(), expected);
+    }
 }
 
 // Scopely sets the given thread state for the given thread.
-class ThreadStateGuard final : private Pinned {
+class ThreadStateGuard final : private MoveOnly {
 public:
+    // Do not set any state. Useful to create a variable to move another guard into.
+    ThreadStateGuard() : thread_(nullptr), oldState_(ThreadState::kNative), reentrant_(false) {}
+
     // Set the state for the given thread.
-    ThreadStateGuard(MemoryState* thread, ThreadState state) noexcept : thread_(thread) {
-        oldState_ = SwitchThreadState(thread_, state);
+    ThreadStateGuard(MemoryState* thread, ThreadState state, bool reentrant = false) noexcept : thread_(thread), reentrant_(reentrant) {
+        oldState_ = SwitchThreadState(thread_, state, reentrant_);
     }
 
     // Sets the state for the current thread.
-    explicit ThreadStateGuard(ThreadState state) noexcept
-        : ThreadStateGuard(mm::GetMemoryState(), state) {};
+    explicit ThreadStateGuard(ThreadState state, bool reentrant = false) noexcept
+        : ThreadStateGuard(mm::GetMemoryState(), state, reentrant) {};
+
+    ThreadStateGuard(ThreadStateGuard&& other) noexcept
+        : thread_(other.thread_), oldState_(other.oldState_), reentrant_(other.reentrant_) {
+        other.thread_ = nullptr;
+    }
 
     ~ThreadStateGuard() noexcept {
-        SwitchThreadState(thread_, oldState_);
+        if (thread_ != nullptr) {
+            SwitchThreadState(thread_, oldState_, reentrant_);
+        }
+    }
+
+    ThreadStateGuard& operator=(ThreadStateGuard&& other) noexcept {
+        thread_ = other.thread_;
+        oldState_ = other.oldState_;
+        reentrant_ = other.reentrant_;
+        other.thread_ = nullptr;
+        return *this;
+    }
+
+private:
+    MemoryState* thread_;
+    ThreadState oldState_;
+    bool reentrant_;
+};
+
+// Scopely sets the kRunnable thread state for the current thread,
+// and initializes runtime if needed for new MM.
+// No-op for old GC.
+class CalledFromNativeGuard final : private Pinned {
+public:
+    ALWAYS_INLINE CalledFromNativeGuard(bool reentrant = false) noexcept;
+
+    ~CalledFromNativeGuard() noexcept {
+        SwitchThreadState(thread_, oldState_, reentrant_);
     }
 private:
     MemoryState* thread_;
     ThreadState oldState_;
+    bool reentrant_;
 };
 
-// Calls the given function in the `Runnable` thread state.
-template <typename R, typename... Args>
-ALWAYS_INLINE inline R CallKotlin(R(*kotlinFunction)(Args...), Args... args) {
-    ThreadStateGuard guard(ThreadState::kRunnable);
-    return kotlinFunction(std::forward<Args>(args)...);
+template <ThreadState state, typename R, typename... Args>
+ALWAYS_INLINE inline R CallWithThreadState(R(*function)(Args...), Args... args) {
+    ThreadStateGuard guard(state);
+    return function(std::forward<Args>(args)...);
 }
 
-// Calls the given function in the `Runnable` thread state. The function must be marked as RUNTIME_NORETURN.
-// If the function returns, behaviour is undefined.
-template <typename... Args>
-ALWAYS_INLINE RUNTIME_NORETURN inline void CallKotlinNoReturn(void(*noreturnKotlinFunction)(Args...), Args... args) {
-    CallKotlin(noreturnKotlinFunction, std::forward<Args>(args)...);
-    RuntimeFail("The function must not return");
-}
+extern const bool kSupportsMultipleMutators;
 
 } // namespace kotlin
 

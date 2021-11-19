@@ -53,6 +53,15 @@ private class EnumSyntheticFunctionsBuilder(val context: Context) {
     private val genericValuesSymbol = context.ir.symbols.valuesForEnum
 }
 
+internal class NativeEnumWhenLowering constructor(context: Context) : EnumWhenLowering(context) {
+    override fun mapConstEnumEntry(entry: IrEnumEntry): Int {
+        val parent = entry.parentAsClass
+        val loweredEnum = (context as Context).specialDeclarationsFactory.getLoweredEnumOrNull(parent)
+                ?: return super.mapConstEnumEntry(entry)
+        return loweredEnum.entriesMap[entry.name]!!.ordinal
+    }
+}
+
 internal class EnumUsageLowering(val context: Context)
     : IrElementTransformer<IrBuilderWithScope?>, FileLoweringPass {
 
@@ -101,23 +110,15 @@ internal class EnumUsageLowering(val context: Context)
 
     private fun IrBuilderWithScope.loadEnumEntry(enumClass: IrClass, name: Name): IrExpression {
         val loweredEnum = this@EnumUsageLowering.context.specialDeclarationsFactory.getLoweredEnum(enumClass)
-        val ordinal = loweredEnum.entriesMap.getValue(name)
+        val getterId = loweredEnum.entriesMap.getValue(name).getterId
         return irCall(loweredEnum.itemGetterSymbol, enumClass.defaultType).apply {
             dispatchReceiver = irCall(loweredEnum.valuesGetter)
-            putValueArgument(0, irInt(ordinal))
+            putValueArgument(0, irInt(getterId))
         }
     }
 }
 
 internal class EnumClassLowering(val context: Context) : FileLoweringPass {
-
-    fun run(irFile: IrFile) {
-        // EnumWhenLowering should be performed before EnumUsageLowering because
-        // the latter performs lowering of IrGetEnumValue
-        EnumWhenLowering(context).lower(irFile)
-        lower(irFile)
-        EnumUsageLowering(context).lower(irFile)
-    }
 
     override fun lower(irFile: IrFile) {
         irFile.transformChildrenVoid(object : IrElementTransformerVoid() {

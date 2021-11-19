@@ -186,8 +186,7 @@ public actual open class LinkedHashMap<K, V> : HashMap<K, V>, MutableMap<K, V> {
      *
      * @throws IllegalArgumentException if the initial capacity or load factor are negative
      */
-    @Suppress("ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS")
-    actual constructor(initialCapacity: Int, loadFactor: Float = 0.0f) : super(initialCapacity, loadFactor) {
+    actual constructor(initialCapacity: Int, loadFactor: Float) : super(initialCapacity, loadFactor) {
         map = HashMap<K, ChainEntry<K, V>>()
     }
 
@@ -234,7 +233,7 @@ public actual open class LinkedHashMap<K, V> : HashMap<K, V>, MutableMap<K, V> {
     }
 
 
-    override fun createEntrySet(): MutableSet<MutableMap.MutableEntry<K, V>> = EntrySet()
+    internal override fun createEntrySet(): MutableSet<MutableMap.MutableEntry<K, V>> = EntrySet()
 
     actual override operator fun get(key: K): V? = map.get(key)?.value
 

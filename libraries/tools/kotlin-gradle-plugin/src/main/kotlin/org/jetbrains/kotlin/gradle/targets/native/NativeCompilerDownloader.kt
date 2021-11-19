@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.gradle.logging.kotlinInfo
 import org.jetbrains.kotlin.gradle.targets.native.internal.NativeDistributionType
 import org.jetbrains.kotlin.gradle.targets.native.internal.NativeDistributionTypeProvider
 import org.jetbrains.kotlin.konan.CompilerVersion
+import org.jetbrains.kotlin.konan.CompilerVersionImpl
 import org.jetbrains.kotlin.konan.MetaVersion
 import org.jetbrains.kotlin.konan.target.HostManager
 import org.jetbrains.kotlin.konan.util.DependencyDirectories
@@ -45,7 +46,20 @@ class NativeCompilerDownloader(
         get() = NativeDistributionTypeProvider(project).getDistributionType(compilerVersion)
 
     private val simpleOsName: String
-        get() = HostManager.simpleOsName()
+        get() {
+            fun CompilerVersion.isAtLeast(compilerVersion: CompilerVersion): Boolean {
+                if (this.major != compilerVersion.major) return this.major > compilerVersion.major
+                if (this.minor != compilerVersion.minor) return this.minor > compilerVersion.minor
+                if (this.maintenance != compilerVersion.maintenance) return this.maintenance > compilerVersion.maintenance
+                if (this.meta.ordinal != compilerVersion.meta.ordinal) return this.meta.ordinal > compilerVersion.meta.ordinal
+                return this.build >= compilerVersion.build
+            }
+            return if (compilerVersion.isAtLeast(CompilerVersionImpl(major = 1, minor = 5, maintenance = 30, build = 1466))) {
+                HostManager.platformName()
+            } else {
+                HostManager.simpleOsName()
+            }
+        }
 
     private val dependencyName: String
         get() {
@@ -97,18 +111,10 @@ class NativeCompilerDownloader(
     }
 
     private fun downloadAndExtract() {
-        // For release branch we have numeration like 1.5.20-256 and compilerVersion.toString() returns 1.5.20 and meta is RELEASE
-        // TODO: fix that in 1.5.30 release, but for now this workaround could be ok
-        val compilerVersionWorkaround =
-            if (compilerVersion.build != -1 && compilerVersion.meta == MetaVersion.RELEASE)
-                "$compilerVersion-${compilerVersion.build}"
-            else
-                "$compilerVersion"
-
         val repoUrl = buildString {
             append("$BASE_DOWNLOAD_URL/")
             append(if (compilerVersion.meta == MetaVersion.DEV) "dev/" else "releases/")
-            append("$compilerVersionWorkaround/")
+            append("$compilerVersion/")
             append(simpleOsName)
         }
         val dependencyUrl = "$repoUrl/$dependencyFileName"
@@ -161,7 +167,9 @@ class NativeCompilerDownloader(
     }
 
     fun downloadIfNeeded() {
-        if (KotlinNativeCompilerRunner(project).classpath.isEmpty()) {
+
+        val classpath = KotlinNativeCompilerRunner(project).classpath
+        if (classpath.isEmpty() || classpath.any { !it.exists() }) {
             downloadAndExtract()
         }
     }

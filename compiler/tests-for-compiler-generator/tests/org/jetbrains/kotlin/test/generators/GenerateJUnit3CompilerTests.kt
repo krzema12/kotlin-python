@@ -21,7 +21,6 @@ import org.jetbrains.kotlin.codegen.flags.AbstractWriteFlagsTest
 import org.jetbrains.kotlin.codegen.ir.*
 import org.jetbrains.kotlin.fir.AbstractFirLoadCompiledKotlin
 import org.jetbrains.kotlin.fir.AbstractLazyBodyIsNotTouchedTilContractsPhaseTest
-import org.jetbrains.kotlin.fir.builder.AbstractPartialRawFirBuilderTestCase
 import org.jetbrains.kotlin.fir.builder.AbstractRawFirBuilderLazyBodiesTestCase
 import org.jetbrains.kotlin.fir.builder.AbstractRawFirBuilderSourceElementMappingTestCase
 import org.jetbrains.kotlin.fir.builder.AbstractRawFirBuilderTestCase
@@ -33,9 +32,7 @@ import org.jetbrains.kotlin.generators.impl.generateTestGroupSuite
 import org.jetbrains.kotlin.generators.util.TestGeneratorUtil.KT_OR_KTS_WITHOUT_DOTS_IN_NAME
 import org.jetbrains.kotlin.generators.util.TestGeneratorUtil.KT_WITHOUT_DOTS_IN_NAME
 import org.jetbrains.kotlin.integration.AbstractAntTaskTest
-import org.jetbrains.kotlin.ir.AbstractIrCfgTestCase
-import org.jetbrains.kotlin.ir.AbstractIrJsTextTestCase
-import org.jetbrains.kotlin.ir.AbstractIrSourceRangesTestCase
+import org.jetbrains.kotlin.ir.*
 import org.jetbrains.kotlin.jvm.compiler.*
 import org.jetbrains.kotlin.jvm.compiler.ir.AbstractIrCompileJavaAgainstKotlinTest
 import org.jetbrains.kotlin.jvm.compiler.ir.AbstractIrCompileKotlinAgainstJavaTest
@@ -46,14 +43,10 @@ import org.jetbrains.kotlin.lexer.kotlin.AbstractKotlinLexerTest
 import org.jetbrains.kotlin.modules.xml.AbstractModuleXmlParserTest
 import org.jetbrains.kotlin.multiplatform.AbstractMultiPlatformIntegrationTest
 import org.jetbrains.kotlin.parsing.AbstractParsingTest
-import org.jetbrains.kotlin.renderer.AbstractDescriptorRendererTest
-import org.jetbrains.kotlin.renderer.AbstractFunctionDescriptorInExpressionRendererTest
 import org.jetbrains.kotlin.repl.AbstractReplInterpreterTest
 import org.jetbrains.kotlin.resolve.AbstractResolveTest
-import org.jetbrains.kotlin.resolve.annotation.AbstractAnnotationParameterTest
 import org.jetbrains.kotlin.resolve.calls.AbstractResolvedCallsTest
 import org.jetbrains.kotlin.resolve.calls.AbstractResolvedConstructorDelegationCallsTests
-import org.jetbrains.kotlin.resolve.constants.evaluate.AbstractCompileTimeConstantEvaluatorTest
 import org.jetbrains.kotlin.resolve.constraintSystem.AbstractConstraintSystemTest
 import org.jetbrains.kotlin.serialization.AbstractLocalClassProtoTest
 import org.jetbrains.kotlin.test.TargetBackend
@@ -99,7 +92,13 @@ fun generateJUnit3CompilerTests(args: Array<String>) {
                     "codegen/box",
                     targetBackend = TargetBackend.JVM,
                     skipIgnored = true,
-                    excludeDirs = listOf("ranges/stepped", "compileKotlinAgainstKotlin")
+                    excludeDirs = listOf(
+                        "ranges/stepped",
+                        "compileKotlinAgainstKotlin",
+                        "testsWithJava9",
+                        "testsWithJava15",
+                        "testsWithJava17"
+                    )
                 )
             }
 
@@ -109,22 +108,6 @@ fun generateJUnit3CompilerTests(args: Array<String>) {
 
             testClass<AbstractAsmLikeInstructionListingTest> {
                 model("codegen/asmLike", targetBackend = TargetBackend.JVM)
-            }
-
-            testClass<AbstractJdk15BlackBoxCodegenTest> {
-                model("codegen/java15/box")
-            }
-
-            testClass<AbstractJdk15IrBlackBoxCodegenTest> {
-                model("codegen/java15/box", targetBackend = TargetBackend.JVM_IR)
-            }
-
-            testClass<AbstractJdk9BlackBoxCodegenTest> {
-                model("codegen/java9/box")
-            }
-
-            testClass<AbstractJdk9IrBlackBoxCodegenTest> {
-                model("codegen/java9/box", targetBackend = TargetBackend.JVM_IR)
             }
 
             testClass<AbstractScriptCodegenTest> {
@@ -137,6 +120,14 @@ fun generateJUnit3CompilerTests(args: Array<String>) {
 
             testClass<AbstractIrJsTextTestCase> {
                 model("ir/irJsText", pattern = "^(.+)\\.kt(s)?\$")
+            }
+
+            testClass<AbstractKlibJsTextTestCase> {
+                model("ir/irJsText", pattern = "^(.+)\\.kt\$", targetBackend = TargetBackend.JS_IR)
+            }
+
+            testClass<AbstractKlibTextTestCase> {
+                model("ir/irText", pattern = "^(.+)\\.kt\$", targetBackend = TargetBackend.JS_IR)
             }
 
             testClass<AbstractIrCfgTestCase> {
@@ -254,22 +245,6 @@ fun generateJUnit3CompilerTests(args: Array<String>) {
                 )
             }
 
-            testClass<AbstractCompileKotlinAgainstKotlinJdk15Test> {
-                model("compileKotlinAgainstKotlinJdk15")
-            }
-
-            testClass<AbstractIrCompileKotlinAgainstKotlinJdk15Test> {
-                model("compileKotlinAgainstKotlinJdk15", targetBackend = TargetBackend.JVM_IR)
-            }
-
-            testClass<AbstractDescriptorRendererTest> {
-                model("renderer")
-            }
-
-            testClass<AbstractFunctionDescriptorInExpressionRendererTest> {
-                model("renderFunctionDescriptorInExpression")
-            }
-
             testClass<AbstractModuleXmlParserTest> {
                 model("modules.xml", extension = "xml")
             }
@@ -308,16 +283,6 @@ fun generateJUnit3CompilerTests(args: Array<String>) {
                 model("cfgWithStdLib", testMethod = "doTestWithStdLib")
                 model("cfg-variables")
                 model("cfgVariablesWithStdLib", testMethod = "doTestWithStdLib")
-            }
-
-            testClass<AbstractAnnotationParameterTest> {
-                model("resolveAnnotations/parameters")
-            }
-
-            testClass<AbstractCompileTimeConstantEvaluatorTest> {
-                model("evaluate/constant", testMethod = "doConstantTest")
-                model("evaluate/isPure", testMethod = "doIsPureTest")
-                model("evaluate/usesVariableAsConstant", testMethod = "doUsesVariableAsConstantTest")
             }
 
             testClass<AbstractCompilerLightClassTest> {
@@ -462,12 +427,6 @@ fun generateJUnit3CompilerTests(args: Array<String>) {
 
             testClass<AbstractRawFirBuilderSourceElementMappingTestCase> {
                 model("sourceElementMapping", testMethod = "doRawFirTest")
-            }
-        }
-
-        testGroup("compiler/fir/raw-fir/psi2fir/tests-gen", "compiler/fir/raw-fir/psi2fir/testData") {
-            testClass<AbstractPartialRawFirBuilderTestCase> {
-                model("partialRawBuilder", testMethod = "doRawFirTest")
             }
         }
 

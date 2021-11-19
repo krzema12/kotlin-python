@@ -5,9 +5,7 @@
 package org.jetbrains.kotlin.scripting.compiler.plugin.impl
 
 import org.jetbrains.kotlin.analyzer.AnalysisResult
-import org.jetbrains.kotlin.backend.common.phaser.PhaseConfig
 import org.jetbrains.kotlin.backend.jvm.JvmIrCodegenFactory
-import org.jetbrains.kotlin.backend.jvm.jvmPhases
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
@@ -196,16 +194,15 @@ private fun doCompile(
     val generationState =
         generate(analysisResult, sourceFiles, context.environment.configuration)
 
-    val compiledScript =
-        makeCompiledScript(
-            generationState,
-            script,
-            sourceFiles.first(),
-            sourceDependencies,
-            getScriptConfiguration
-        )
-
-    return ResultWithDiagnostics.Success(compiledScript, messageCollector.diagnostics)
+    return makeCompiledScript(
+        generationState,
+        script,
+        sourceFiles.first(),
+        sourceDependencies,
+        getScriptConfiguration
+    ).onSuccess { compiledScript ->
+        ResultWithDiagnostics.Success(compiledScript, messageCollector.diagnostics)
+    }
 }
 
 private fun analyze(sourceFiles: Collection<KtFile>, environment: KotlinCoreEnvironment): AnalysisResult {
@@ -238,7 +235,8 @@ private fun generate(
 ).codegenFactory(
     if (kotlinCompilerConfiguration.getBoolean(JVMConfigurationKeys.IR))
         JvmIrCodegenFactory(
-            kotlinCompilerConfiguration.get(CLIConfigurationKeys.PHASE_CONFIG) ?: PhaseConfig(jvmPhases)
+            kotlinCompilerConfiguration,
+            kotlinCompilerConfiguration.get(CLIConfigurationKeys.PHASE_CONFIG),
         ) else DefaultCodegenFactory
 ).build().also {
     KotlinCodegenFacade.compileCorrectFiles(it)

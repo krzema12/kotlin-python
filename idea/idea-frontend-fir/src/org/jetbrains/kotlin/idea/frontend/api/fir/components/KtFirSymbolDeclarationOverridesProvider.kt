@@ -5,21 +5,26 @@
 
 package org.jetbrains.kotlin.idea.frontend.api.fir.components
 
-import org.jetbrains.kotlin.fir.FirSymbolOwner
+import org.jetbrains.kotlin.fir.analysis.checkers.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.utils.superConeTypes
 import org.jetbrains.kotlin.fir.resolve.ScopeSession
 import org.jetbrains.kotlin.fir.scopes.*
-import org.jetbrains.kotlin.fir.symbols.AbstractFirBasedSymbol
+import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
+import org.jetbrains.kotlin.fir.symbols.ensureResolved
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirIntersectionOverrideFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirIntersectionOverridePropertySymbol
-import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
+import org.jetbrains.kotlin.idea.fir.low.level.api.lazy.resolve.ResolveType
 import org.jetbrains.kotlin.idea.frontend.api.components.KtSymbolDeclarationOverridesProvider
 import org.jetbrains.kotlin.idea.frontend.api.fir.KtFirAnalysisSession
 import org.jetbrains.kotlin.idea.frontend.api.fir.symbols.KtFirNamedClassOrObjectSymbol
 import org.jetbrains.kotlin.idea.frontend.api.fir.symbols.KtFirSymbol
-import org.jetbrains.kotlin.idea.frontend.api.symbols.*
-import org.jetbrains.kotlin.idea.frontend.api.symbols.markers.KtSymbolWithKind
+import org.jetbrains.kotlin.idea.frontend.api.symbols.KtCallableSymbol
+import org.jetbrains.kotlin.idea.frontend.api.symbols.KtClassOrObjectSymbol
+import org.jetbrains.kotlin.idea.frontend.api.symbols.KtSymbol
+import org.jetbrains.kotlin.idea.frontend.api.symbols.KtSymbolOrigin
+import org.jetbrains.kotlin.idea.frontend.api.tokens.ValidityToken
 
 internal class KtFirSymbolDeclarationOverridesProvider(
     override val analysisSession: KtFirAnalysisSession,
@@ -56,7 +61,7 @@ internal class KtFirSymbolDeclarationOverridesProvider(
 
     private fun FirTypeScope.processAllOverriddenDeclarations(
         declaration: FirDeclaration,
-        processor: (FirCallableDeclaration<*>) -> Unit
+        processor: (FirCallableDeclaration) -> Unit
     ) = when (declaration) {
         is FirSimpleFunction -> processOverriddenFunctions(declaration.symbol) { symbol ->
             processor.invoke(symbol.fir)
@@ -71,7 +76,7 @@ internal class KtFirSymbolDeclarationOverridesProvider(
 
     private fun FirTypeScope.processDirectOverriddenDeclarations(
         declaration: FirDeclaration,
-        processor: (FirCallableDeclaration<*>) -> Unit
+        processor: (FirCallableDeclaration) -> Unit
     ) = when (declaration) {
         is FirSimpleFunction -> processDirectOverriddenFunctionsWithBaseScope(declaration.symbol) { symbol, _ ->
             processor.invoke(symbol.fir)
@@ -90,7 +95,7 @@ internal class KtFirSymbolDeclarationOverridesProvider(
     ) {
         require(callableSymbol is KtFirSymbol<*>)
         val containingDeclaration = with(analysisSession) {
-            (callableSymbol as? KtSymbolWithKind)?.getContainingSymbol() as? KtClassOrObjectSymbol
+            (callableSymbol as? KtCallableSymbol)?.originalContainingClassForOverride
         } ?: return
         check(containingDeclaration is KtFirNamedClassOrObjectSymbol)
 
@@ -105,7 +110,7 @@ internal class KtFirSymbolDeclarationOverridesProvider(
         containingDeclaration.firRef.withFir(FirResolvePhase.IMPLICIT_TYPES_BODY_RESOLVE) { firContainer ->
             callableSymbol.firRef.withFirUnsafe { firCallableDeclaration ->
                 val firTypeScope = firContainer.unsubstitutedScope(
-                    firContainer.declarationSiteSession,
+                    firContainer.moduleData.session,
                     ScopeSession(),
                     withForcedTypeCalculator = false
                 )
@@ -129,16 +134,50 @@ internal class KtFirSymbolDeclarationOverridesProvider(
         }
     }
 
+    override fun isSubClassOf(subClass: KtClassOrObjectSymbol, superClass: KtClassOrObjectSymbol): Boolean {
+        return isSubClassOf(subClass, superClass, checkDeep = true)
+    }
+
+    override fun isDirectSubClassOf(subClass: KtClassOrObjectSymbol, superClass: KtClassOrObjectSymbol): Boolean {
+        return isSubClassOf(subClass, superClass, checkDeep = false)
+    }
+
+    private fun isSubClassOf(subClass: KtClassOrObjectSymbol, superClass: KtClassOrObjectSymbol, checkDeep: Boolean): Boolean {
+        require(subClass is KtFirSymbol<*>)
+        require(superClass is KtFirSymbol<*>)
+
+        if (subClass == superClass) return false
+        return subClass.firRef.withFirByType(ResolveType.ClassSuperTypes) { subClassFir ->
+            check(subClassFir is FirRegularClass)
+            superClass.firRef.withFir { superClassFir ->
+                check(superClassFir is FirRegularClass)
+                isSubClassOf(subClassFir, superClassFir, checkDeep)
+            }
+        }
+    }
+
+    private fun isSubClassOf(subClass: FirRegularClass, superClass: FirRegularClass, checkDeep: Boolean): Boolean {
+        if (subClass.superConeTypes.any { it.toRegularClassSymbol(rootModuleSession) == superClass.symbol }) return true
+        if (!checkDeep) return false
+        subClass.superConeTypes.forEach { superType ->
+            val superOfSub = superType.toRegularClassSymbol(rootModuleSession) ?: return@forEach
+            superOfSub.ensureResolved(FirResolvePhase.SUPER_TYPES)
+            if (isSubClassOf(superOfSub.fir, superClass, checkDeep = true)) return true
+        }
+        return false
+    }
+
     override fun getIntersectionOverriddenSymbols(symbol: KtCallableSymbol): Collection<KtCallableSymbol> {
         require(symbol is KtFirSymbol<*>)
         if (symbol.origin != KtSymbolOrigin.INTERSECTION_OVERRIDE) return emptyList()
         return symbol.firRef.withFir { fir ->
-            val firSymbol = (fir as? FirSymbolOwner<*>)?.symbol ?: return@withFir emptyList()
-            firSymbol.getIntersectionOverriddenSymbols().map { analysisSession.firSymbolBuilder.callableBuilder.buildCallableSymbol(it.fir) }
+            val firSymbol = fir.symbol
+            firSymbol.getIntersectionOverriddenSymbols()
+                .map { analysisSession.firSymbolBuilder.callableBuilder.buildCallableSymbol(it.fir) }
         }
     }
 
-    private fun AbstractFirBasedSymbol<*>.getIntersectionOverriddenSymbols(): Collection<FirCallableSymbol<*>> {
+    private fun FirBasedSymbol<*>.getIntersectionOverriddenSymbols(): Collection<FirCallableSymbol<*>> {
         require(this is FirCallableSymbol<*>) {
             "Required FirCallableSymbol but ${this::class} found"
         }

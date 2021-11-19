@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 //KT-1897 When call cannot be resolved to any function, save information about types of arguments
 
 package a
@@ -25,5 +24,5 @@ fun test() {
 
     foo("", 1) <!TOO_MANY_ARGUMENTS!>{}<!>
 
-    foo("", 1) <!TOO_MANY_ARGUMENTS!>{}<!> <!TOO_MANY_ARGUMENTS!>{}<!>
+    foo("", 1) <!TOO_MANY_ARGUMENTS!>{}<!> <!MANY_LAMBDA_EXPRESSION_ARGUMENTS!>{}<!>
 }

@@ -1,3 +1,4 @@
+// FIR_IDENTICAL
 // !USE_EXPERIMENTAL: kotlin.RequiresOptIn
 // FILE: api.kt
 
@@ -5,10 +6,12 @@ package api
 
 @RequiresOptIn(level = RequiresOptIn.Level.WARNING)
 @Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.BINARY)
 annotation class ExperimentalAPI1
 
 @RequiresOptIn(level = RequiresOptIn.Level.WARNING)
 @Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.BINARY)
 annotation class ExperimentalAPI2
 
 @ExperimentalAPI1

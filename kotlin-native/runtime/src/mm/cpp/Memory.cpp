@@ -9,15 +9,18 @@
 #include "Exceptions.h"
 #include "ExtraObjectData.hpp"
 #include "Freezing.hpp"
+#include "GC.hpp"
 #include "GlobalsRegistry.hpp"
 #include "InitializationScheme.hpp"
 #include "KAssert.h"
 #include "Natives.h"
-#include "Porting.h"
 #include "ObjectOps.hpp"
+#include "Porting.h"
+#include "Runtime.h"
 #include "StableRefRegistry.hpp"
 #include "ThreadData.hpp"
 #include "ThreadRegistry.hpp"
+#include "ThreadState.hpp"
 #include "Utils.hpp"
 
 using namespace kotlin;
@@ -79,7 +82,8 @@ void ObjHeader::destroyMetaObject(ObjHeader* object) {
 }
 
 ALWAYS_INLINE bool isPermanentOrFrozen(const ObjHeader* obj) {
-    return mm::IsFrozen(obj);
+    // TODO: Freeze TF_IMMUTABLE objects upon creation.
+    return mm::IsFrozen(obj) || ((obj->type_info()->flags_ & TF_IMMUTABLE) != 0);
 }
 
 ALWAYS_INLINE bool isShareable(const ObjHeader* obj) {
@@ -92,12 +96,20 @@ extern "C" MemoryState* InitMemory(bool firstRuntime) {
 }
 
 extern "C" void DeinitMemory(MemoryState* state, bool destroyRuntime) {
+    // We need the native state to avoid a deadlock on unregistering the thread.
+    // The deadlock is possible if we are in the runnable state and the GC already locked
+    // the thread registery and waits for threads to suspend or go to the native state.
+    AssertThreadState(state, ThreadState::kNative);
     auto* node = mm::FromMemoryState(state);
     if (destroyRuntime) {
+        ThreadStateGuard guard(state, ThreadState::kRunnable);
         node->Get()->gc().PerformFullGC();
         // TODO: Also make sure that finalizers are run.
     }
     mm::ThreadRegistry::Instance().Unregister(node);
+    if (destroyRuntime) {
+        mm::ThreadRegistry::ClearCurrentThreadData();
+    }
 }
 
 extern "C" void RestoreMemory(MemoryState*) {
@@ -135,6 +147,7 @@ extern "C" ALWAYS_INLINE OBJ_GETTER(InitSingleton, ObjHeader** location, const T
 
 extern "C" RUNTIME_NOTHROW void InitAndRegisterGlobal(ObjHeader** location, const ObjHeader* initialValue) {
     auto* threadData = mm::ThreadRegistry::Instance().CurrentThreadData();
+    AssertThreadState(threadData, ThreadState::kRunnable);
     mm::GlobalsRegistry::Instance().RegisterStorageForGlobal(threadData, location);
     // Null `initialValue` means that the appropriate value was already set by static initialization.
     if (initialValue != nullptr) {
@@ -211,11 +224,13 @@ extern "C" OBJ_GETTER(ReadHeapRefNoLock, ObjHeader* object, int32_t index) {
 
 extern "C" RUNTIME_NOTHROW void EnterFrame(ObjHeader** start, int parameters, int count) {
     auto* threadData = mm::ThreadRegistry::Instance().CurrentThreadData();
+    AssertThreadState(threadData, ThreadState::kRunnable);
     threadData->shadowStack().EnterFrame(start, parameters, count);
 }
 
 extern "C" RUNTIME_NOTHROW void LeaveFrame(ObjHeader** start, int parameters, int count) {
     auto* threadData = mm::ThreadRegistry::Instance().CurrentThreadData();
+    AssertThreadState(threadData, ThreadState::kRunnable);
     threadData->shadowStack().LeaveFrame(start, parameters, count);
 }
 
@@ -260,6 +275,25 @@ extern "C" void Kotlin_native_internal_GC_collectCyclic(ObjHeader*) {
     ThrowIllegalArgumentException();
 }
 
+// TODO: Maybe a pair of suspend/resume or start/stop may be useful in the future?
+//       The other pair is likely to be removed.
+
+extern "C" void Kotlin_native_internal_GC_suspend(ObjHeader*) {
+    // Nothing to do
+}
+
+extern "C" void Kotlin_native_internal_GC_resume(ObjHeader*) {
+    // Nothing to do
+}
+
+extern "C" void Kotlin_native_internal_GC_stop(ObjHeader*) {
+    // Nothing to do
+}
+
+extern "C" void Kotlin_native_internal_GC_start(ObjHeader*) {
+    // Nothing to do
+}
+
 extern "C" void Kotlin_native_internal_GC_setThreshold(ObjHeader*, int32_t value) {
     if (value < 0) {
         ThrowIllegalArgumentException();
@@ -302,6 +336,14 @@ extern "C" int64_t Kotlin_native_internal_GC_getThresholdAllocations(ObjHeader*)
     return static_cast<int64_t>(maxValue);
 }
 
+extern "C" void Kotlin_native_internal_GC_setTuneThreshold(ObjHeader*, KBoolean value) {
+    mm::GlobalData::Instance().gc().SetAutoTune(value);
+}
+
+extern "C" KBoolean Kotlin_native_internal_GC_getTuneThreshold(ObjHeader*) {
+    return mm::GlobalData::Instance().gc().GetAutoTune();
+}
+
 extern "C" OBJ_GETTER(Kotlin_native_internal_GC_detectCycles, ObjHeader*) {
     // TODO: Remove when legacy MM is gone.
     RETURN_OBJ(nullptr);
@@ -337,6 +379,24 @@ extern "C" RUNTIME_NOTHROW void PerformFullGC(MemoryState* memory) {
     memory->GetThreadData()->gc().PerformFullGC();
 }
 
+extern "C" bool TryAddHeapRef(const ObjHeader* object) {
+    RuntimeFail("Only for legacy MM");
+}
+
+extern "C" RUNTIME_NOTHROW void ReleaseHeapRefNoCollect(const ObjHeader* object) {
+    RuntimeFail("Only for legacy MM");
+}
+
+extern "C" RUNTIME_NOTHROW OBJ_GETTER(TryRef, ObjHeader* object) {
+    // TODO: With CMS this needs:
+    //       * during marking phase if `object` is unmarked: barrier (might be automatic because of the stack write)
+    //         and return `object`;
+    //       * during marking phase if `object` is marked: return `object`;
+    //       * during sweeping phase if `object` is unmarked: return nullptr;
+    //       * during sweeping phase if `object` is marked: return `object`;
+    RETURN_OBJ(object);
+}
+
 extern "C" RUNTIME_NOTHROW bool ClearSubgraphReferences(ObjHeader* root, bool checked) {
     // TODO: Remove when legacy MM is gone.
     return true;
@@ -351,12 +411,15 @@ extern "C" RUNTIME_NOTHROW void* CreateStablePointer(ObjHeader* object) {
 }
 
 extern "C" RUNTIME_NOTHROW void DisposeStablePointer(void* pointer) {
+    DisposeStablePointerFor(kotlin::mm::GetMemoryState(), pointer);
+}
+
+extern "C" RUNTIME_NOTHROW void DisposeStablePointerFor(MemoryState* memoryState, void* pointer) {
     if (!pointer)
         return;
 
-    auto* threadData = mm::ThreadRegistry::Instance().CurrentThreadData();
     auto* node = static_cast<mm::StableRefRegistry::Node*>(pointer);
-    mm::StableRefRegistry::Instance().UnregisterStableRef(threadData, node);
+    mm::StableRefRegistry::Instance().UnregisterStableRef(memoryState->GetThreadData(), node);
 }
 
 extern "C" RUNTIME_NOTHROW OBJ_GETTER(DerefStablePointer, void* pointer) {
@@ -410,13 +473,23 @@ extern "C" void EnsureNeverFrozen(ObjHeader* obj) {
     }
 }
 
+extern "C" ForeignRefContext InitLocalForeignRef(ObjHeader* object) {
+    AssertThreadState(ThreadState::kRunnable);
+    // TODO: Remove when legacy MM is gone.
+    // Nothing to do.
+    return nullptr;
+}
+
 extern "C" ForeignRefContext InitForeignRef(ObjHeader* object) {
+    AssertThreadState(ThreadState::kRunnable);
     auto* threadData = mm::ThreadRegistry::Instance().CurrentThreadData();
     auto* node = mm::StableRefRegistry::Instance().RegisterStableRef(threadData, object);
     return ToForeignRefManager(node);
 }
 
 extern "C" void DeinitForeignRef(ObjHeader* object, ForeignRefContext context) {
+    AssertThreadState(ThreadState::kRunnable);
+    RuntimeAssert(context != nullptr, "DeinitForeignRef must not be called for InitLocalForeignRef");
     auto* threadData = mm::ThreadRegistry::Instance().CurrentThreadData();
     auto* node = FromForeignRefManager(context);
     RuntimeAssert(object == **node, "Must correspond to the same object");
@@ -440,16 +513,19 @@ extern "C" void CheckGlobalsAccessible() {
 
 extern "C" RUNTIME_NOTHROW void Kotlin_mm_safePointFunctionEpilogue() {
     auto* threadData = mm::ThreadRegistry::Instance().CurrentThreadData();
+    AssertThreadState(threadData, ThreadState::kRunnable);
     threadData->gc().SafePointFunctionEpilogue();
 }
 
 extern "C" RUNTIME_NOTHROW void Kotlin_mm_safePointWhileLoopBody() {
     auto* threadData = mm::ThreadRegistry::Instance().CurrentThreadData();
+    AssertThreadState(threadData, ThreadState::kRunnable);
     threadData->gc().SafePointLoopBody();
 }
 
 extern "C" RUNTIME_NOTHROW void Kotlin_mm_safePointExceptionUnwind() {
     auto* threadData = mm::ThreadRegistry::Instance().CurrentThreadData();
+    AssertThreadState(threadData, ThreadState::kRunnable);
     threadData->gc().SafePointExceptionUnwind();
 }
 
@@ -461,6 +537,14 @@ extern "C" ALWAYS_INLINE RUNTIME_NOTHROW void Kotlin_mm_switchThreadStateRunnabl
     SwitchThreadState(mm::ThreadRegistry::Instance().CurrentThreadData(), ThreadState::kRunnable);
 }
 
-MemoryState* kotlin::mm::GetMemoryState() {
+MemoryState* kotlin::mm::GetMemoryState() noexcept {
     return ToMemoryState(ThreadRegistry::Instance().CurrentThreadDataNode());
 }
+
+ALWAYS_INLINE kotlin::CalledFromNativeGuard::CalledFromNativeGuard(bool reentrant) noexcept : reentrant_(reentrant) {
+    Kotlin_initRuntimeIfNeeded();
+    thread_ = mm::GetMemoryState();
+    oldState_ = SwitchThreadState(thread_, ThreadState::kRunnable, reentrant_);
+}
+
+const bool kotlin::kSupportsMultipleMutators = kotlin::gc::kSupportsMultipleMutators;

@@ -14,21 +14,24 @@ import org.jetbrains.kotlin.fir.resolve.transformers.ReturnTypeCalculator
 import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.BodyResolveContext
 import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.FirDesignatedBodyResolveTransformerForReturnTypeCalculator
 import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.ImplicitBodyResolveComputationSession
+import org.jetbrains.kotlin.fir.symbols.ensureResolved
+import org.jetbrains.kotlin.fir.types.FirImplicitTypeRef
+import org.jetbrains.kotlin.fir.types.FirResolvedTypeRef
+import org.jetbrains.kotlin.idea.fir.low.level.api.api.FirDeclarationDesignation
 import org.jetbrains.kotlin.idea.fir.low.level.api.lazy.resolve.FirLazyBodiesCalculator
 
-fun FirIdeDesignatedBodyResolveTransformerForReturnTypeCalculator(
+fun FirIdeDesignatedImpliciteTypesBodyResolveTransformerForReturnTypeCalculator(
     designation: Iterator<FirElement>,
     session: FirSession,
     scopeSession: ScopeSession,
     implicitBodyResolveComputationSession: ImplicitBodyResolveComputationSession,
     returnTypeCalculator: ReturnTypeCalculator,
     outerBodyResolveContext: BodyResolveContext?,
-): FirIdeDesignatedBodyResolveTransformerForReturnTypeCalculatorImpl {
+): FirDesignatedBodyResolveTransformerForReturnTypeCalculator {
 
     val designationList = mutableListOf<FirElement>()
-    for (element in designation) {
-        designationList.add(element)
-    }
+    designation.forEachRemaining(designationList::add)
+    require(designationList.isNotEmpty()) { "Designation should not be empty" }
 
     return FirIdeDesignatedBodyResolveTransformerForReturnTypeCalculatorImpl(
         designationList,
@@ -40,7 +43,7 @@ fun FirIdeDesignatedBodyResolveTransformerForReturnTypeCalculator(
     )
 }
 
-class FirIdeDesignatedBodyResolveTransformerForReturnTypeCalculatorImpl(
+private class FirIdeDesignatedBodyResolveTransformerForReturnTypeCalculatorImpl(
     private val designation: List<FirElement>,
     session: FirSession,
     scopeSession: ScopeSession,
@@ -55,23 +58,36 @@ class FirIdeDesignatedBodyResolveTransformerForReturnTypeCalculatorImpl(
     returnTypeCalculator,
     outerBodyResolveContext
 ) {
-    private val declarationDesignation = designation.filterIsInstance<FirDeclaration>()
+    private val targetDeclaration = designation.last()
+
+    private inline fun <D : FirCallableDeclaration> D.processCallable(body: (FirDeclarationDesignation) -> Unit) {
+        if (this !== targetDeclaration) return
+        if (resolvePhase < FirResolvePhase.TYPES && returnTypeRef is FirResolvedTypeRef) return
+        ensureResolved(FirResolvePhase.TYPES)
+        if (returnTypeRef is FirImplicitTypeRef) {
+            val declarationList = designation.filterIsInstance<FirDeclaration>()
+            check(declarationList.isNotEmpty()) { "Invalid empty declaration designation" }
+            body(FirDeclarationDesignation(declarationList.dropLast(1), this))
+        }
+    }
 
     override fun transformSimpleFunction(
         simpleFunction: FirSimpleFunction,
         data: ResolutionMode
     ): FirSimpleFunction {
-        FirLazyBodiesCalculator.calculateLazyBodiesForFunction(simpleFunction, declarationDesignation)
+        simpleFunction.processCallable {
+            FirLazyBodiesCalculator.calculateLazyBodiesForFunction(it)
+        }
         return super.transformSimpleFunction(simpleFunction, data)
     }
 
-    override fun transformConstructor(constructor: FirConstructor, data: ResolutionMode): FirDeclaration {
-        FirLazyBodiesCalculator.calculateLazyBodyForSecondaryConstructor(constructor, declarationDesignation)
-        return super.transformConstructor(constructor, data)
-    }
-
-    override fun transformProperty(property: FirProperty, data: ResolutionMode): FirProperty {
-        FirLazyBodiesCalculator.calculateLazyBodyForProperty(property, declarationDesignation)
+    override fun transformProperty(
+        property: FirProperty,
+        data: ResolutionMode
+    ): FirProperty {
+        property.processCallable {
+            FirLazyBodiesCalculator.calculateLazyBodyForProperty(it)
+        }
         return super.transformProperty(property, data)
     }
 }

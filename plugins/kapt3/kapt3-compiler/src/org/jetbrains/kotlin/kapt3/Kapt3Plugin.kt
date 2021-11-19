@@ -42,6 +42,7 @@ import org.jetbrains.kotlin.kapt.cli.KaptCliOption.*
 import org.jetbrains.kotlin.kapt3.base.Kapt
 import org.jetbrains.kotlin.kapt3.base.util.KaptLogger
 import org.jetbrains.kotlin.kapt3.util.MessageCollectorBackedKaptLogger
+import org.jetbrains.kotlin.kapt3.util.doOpenInternalPackagesIfRequired
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingTrace
 import org.jetbrains.kotlin.platform.TargetPlatform
@@ -62,6 +63,7 @@ class Kapt3CommandLineProcessor : CommandLineProcessor {
     override val pluginOptions: Collection<AbstractCliOption> = values().asList()
 
     override fun processOption(option: AbstractCliOption, value: String, configuration: CompilerConfiguration) {
+        doOpenInternalPackagesIfRequired()
         if (option !is KaptCliOption) {
             throw CliOptionProcessingException("Unknown option: ${option.optionName}")
         }
@@ -119,6 +121,7 @@ class Kapt3CommandLineProcessor : CommandLineProcessor {
             STRIP_METADATA_OPTION -> setFlag(KaptFlag.STRIP_METADATA, value)
             KEEP_KDOC_COMMENTS_IN_STUBS -> setFlag(KaptFlag.KEEP_KDOC_COMMENTS_IN_STUBS, value)
             SHOW_PROCESSOR_TIMINGS -> setFlag(KaptFlag.SHOW_PROCESSOR_TIMINGS, value)
+            DUMP_PROCESSOR_TIMINGS -> processorsPerfReportFile = File(value)
             INCLUDE_COMPILE_CLASSPATH -> setFlag(KaptFlag.INCLUDE_COMPILE_CLASSPATH, value)
 
             DETECT_MEMORY_LEAKS_OPTION -> setSelector(enumValues<DetectMemoryLeaksMode>(), value) { detectMemoryLeaks = it }
@@ -157,6 +160,7 @@ class Kapt3CommandLineProcessor : CommandLineProcessor {
 
 class Kapt3ComponentRegistrar : ComponentRegistrar {
     override fun registerProjectComponents(project: MockProject, configuration: CompilerConfiguration) {
+        doOpenInternalPackagesIfRequired()
         val contentRoots = configuration[CLIConfigurationKeys.CONTENT_ROOTS] ?: emptyList()
 
         val optionsBuilder = (configuration[KAPT_OPTIONS] ?: KaptOptions.Builder()).apply {

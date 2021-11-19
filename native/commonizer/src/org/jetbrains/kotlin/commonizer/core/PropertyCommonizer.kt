@@ -10,33 +10,33 @@ import org.jetbrains.kotlin.commonizer.cir.CirProperty
 import org.jetbrains.kotlin.commonizer.cir.CirPropertyGetter
 import org.jetbrains.kotlin.commonizer.core.PropertyCommonizer.ConstCommonizationState.*
 import org.jetbrains.kotlin.commonizer.mergedtree.CirKnownClassifiers
+import org.jetbrains.kotlin.descriptors.Modality
 
 class PropertyCommonizer(classifiers: CirKnownClassifiers) : AbstractFunctionOrPropertyCommonizer<CirProperty>(classifiers) {
-    private val setter = PropertySetterCommonizer()
+    private val setter = PropertySetterCommonizer.asNullableCommonizer()
     private var isExternal = true
     private lateinit var constCommonizationState: ConstCommonizationState
 
-    override fun commonizationResult(): CirProperty {
-        val setter = setter.result
+    override fun commonizationResult(): CirProperty? {
+        val modality = modality.result
+
+        val setter = setter.result?.takeIf { setter ->
+            setter !== PropertySetterCommonizer.privateFallbackSetter || modality == Modality.FINAL
+        }
 
         val constCommonizationState = constCommonizationState
         val constCompileTimeInitializer = (constCommonizationState as? ConstSameValue)?.compileTimeInitializer
 
-        if (constCommonizationState is ConstMultipleValues) {
-            // fix all commonized properties to make then non-const
-            constCommonizationState.properties.forEach { it.isConst = false }
-        }
-
-        return CirProperty.create(
+        return CirProperty(
             annotations = emptyList(),
             name = name,
             typeParameters = typeParameters.result,
             visibility = visibility.result,
-            modality = modality.result,
+            modality = modality,
             containingClass = null, // does not matter
             isExternal = isExternal,
             extensionReceiver = extensionReceiver.result,
-            returnType = returnType.result,
+            returnType = returnType.result ?: return null,
             kind = kind,
             isVar = setter != null,
             isLateInit = false,
@@ -73,23 +73,20 @@ class PropertyCommonizer(classifiers: CirKnownClassifiers) : AbstractFunctionOrP
             when (constCommonizationState) {
                 NonConst -> {
                     // previous property was not constant
-                    return false
+                    this.constCommonizationState = NonConst
                 }
                 is Const -> {
-                    // previous property was constant
-                    constCommonizationState.properties += next
-
                     if (constCommonizationState is ConstSameValue) {
                         if (constCommonizationState.compileTimeInitializer != next.compileTimeInitializer) {
                             // const properties have different constants
-                            this.constCommonizationState = ConstMultipleValues(constCommonizationState)
+                            this.constCommonizationState = ConstMultipleValues()
                         }
                     }
                 }
             }
         } else if (constCommonizationState != NonConst) {
             // previous property was constant but this one is not
-            return false
+            this.constCommonizationState = NonConst
         }
 
         val result = super.doCommonizeWith(next)
@@ -105,9 +102,7 @@ class PropertyCommonizer(classifiers: CirKnownClassifiers) : AbstractFunctionOrP
     private sealed class ConstCommonizationState {
         object NonConst : ConstCommonizationState()
 
-        abstract class Const : ConstCommonizationState() {
-            val properties: MutableList<CirProperty> = mutableListOf()
-        }
+        abstract class Const : ConstCommonizationState()
 
         class ConstSameValue(val compileTimeInitializer: CirConstantValue) : Const() {
             init {
@@ -115,10 +110,6 @@ class PropertyCommonizer(classifiers: CirKnownClassifiers) : AbstractFunctionOrP
             }
         }
 
-        class ConstMultipleValues(previous: ConstSameValue) : Const() {
-            init {
-                properties += previous.properties
-            }
-        }
+        class ConstMultipleValues : Const()
     }
 }

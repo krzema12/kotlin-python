@@ -32,6 +32,7 @@
 #import "Runtime.h"
 #import "ObjCExport.h"
 #import "ObjCExportCollections.h"
+#import "ObjCExportPrivate.h"
 
 extern "C" {
 
@@ -92,7 +93,9 @@ static inline KInt objCIndexToKotlinOrThrow(NSUInteger index) {
   RETURN_RESULT_OF(invokeAndAssociate, Kotlin_NSArrayAsKList_create, objc_retain(self));
 }
 
--(void)releaseAsAssociatedObject {
+-(void)releaseAsAssociatedObject:(ReleaseMode)mode {
+  if (!ReleaseModeHasRelease(mode))
+    return;
   objc_release(self);
 }
 @end;
@@ -105,7 +108,9 @@ static inline KInt objCIndexToKotlinOrThrow(NSUInteger index) {
   RETURN_RESULT_OF(invokeAndAssociate, Kotlin_NSMutableArrayAsKMutableList_create, objc_retain(self));
 }
 
--(void)releaseAsAssociatedObject {
+-(void)releaseAsAssociatedObject:(ReleaseMode)mode {
+  if (!ReleaseModeHasRelease(mode))
+    return;
   objc_release(self);
 }
 @end;
@@ -119,7 +124,9 @@ static inline KInt objCIndexToKotlinOrThrow(NSUInteger index) {
   RETURN_RESULT_OF(invokeAndAssociate, Kotlin_NSSetAsKSet_create, objc_retain(self));
 }
 
--(void)releaseAsAssociatedObject {
+-(void)releaseAsAssociatedObject:(ReleaseMode)mode {
+  if (!ReleaseModeHasRelease(mode))
+    return;
   objc_release(self);
 }
 
@@ -133,7 +140,9 @@ static inline KInt objCIndexToKotlinOrThrow(NSUInteger index) {
   RETURN_RESULT_OF(invokeAndAssociate, Kotlin_NSDictionaryAsKMap_create, objc_retain(self));
 }
 
--(void)releaseAsAssociatedObject {
+-(void)releaseAsAssociatedObject:(ReleaseMode)mode {
+  if (!ReleaseModeHasRelease(mode))
+    return;
   objc_release(self);
 }
 
@@ -147,7 +156,7 @@ static inline KInt objCIndexToKotlinOrThrow(NSUInteger index) {
 }
 
 -(void)dealloc {
-  iteratorHolder.dispose();
+  iteratorHolder.disposeFromNative();
   [super dealloc];
 }
 
@@ -158,6 +167,7 @@ static inline KInt objCIndexToKotlinOrThrow(NSUInteger index) {
 }
 
 - (id)nextObject {
+  kotlin::CalledFromNativeGuard guard;
   KRef iterator = iteratorHolder.ref<ErrorPolicy::kTerminate>();
   if (Kotlin_Iterator_hasNext(iterator)) {
     ObjHolder holder;
@@ -176,7 +186,7 @@ static inline KInt objCIndexToKotlinOrThrow(NSUInteger index) {
 }
 
 -(void)dealloc {
-  listHolder.dispose();
+  listHolder.disposeFromNative();
   [super dealloc];
 }
 
@@ -191,12 +201,14 @@ static inline KInt objCIndexToKotlinOrThrow(NSUInteger index) {
 }
 
 -(id)objectAtIndex:(NSUInteger)index {
+  kotlin::CalledFromNativeGuard guard;
   ObjHolder kotlinValueHolder;
   KRef kotlinValue = Kotlin_List_get(listHolder.ref<ErrorPolicy::kTerminate>(), index, kotlinValueHolder.slot());
   return refToObjCOrNSNull(kotlinValue);
 }
 
 -(NSUInteger)count {
+  kotlin::CalledFromNativeGuard guard;
   return Kotlin_Collection_getSize(listHolder.ref<ErrorPolicy::kTerminate>());
 }
 
@@ -210,7 +222,7 @@ static inline KInt objCIndexToKotlinOrThrow(NSUInteger index) {
 }
 
 -(void)dealloc {
-  listHolder.dispose();
+  listHolder.disposeFromNative();
   [super dealloc];
 }
 
@@ -225,35 +237,42 @@ static inline KInt objCIndexToKotlinOrThrow(NSUInteger index) {
 }
 
 -(id)objectAtIndex:(NSUInteger)index {
+  kotlin::CalledFromNativeGuard guard;
   ObjHolder kotlinValueHolder;
   KRef kotlinValue = Kotlin_List_get(listHolder.ref<ErrorPolicy::kTerminate>(), index, kotlinValueHolder.slot());
   return refToObjCOrNSNull(kotlinValue);
 }
 
 -(NSUInteger)count {
+  kotlin::CalledFromNativeGuard guard;
   return Kotlin_Collection_getSize(listHolder.ref<ErrorPolicy::kTerminate>());
 }
 
 - (void)insertObject:(id)anObject atIndex:(NSUInteger)index {
+  kotlin::CalledFromNativeGuard guard;
   ObjHolder holder;
   KRef kotlinObject = refFromObjCOrNSNull(anObject, holder.slot());
   Kotlin_MutableList_addObjectAtIndex(listHolder.ref<ErrorPolicy::kTerminate>(), objCIndexToKotlinOrThrow(index), kotlinObject);
 }
 
 - (void)removeObjectAtIndex:(NSUInteger)index {
+  kotlin::CalledFromNativeGuard guard;
   Kotlin_MutableList_removeObjectAtIndex(listHolder.ref<ErrorPolicy::kTerminate>(), objCIndexToKotlinOrThrow(index));
 }
 
 - (void)addObject:(id)anObject {
+  kotlin::CalledFromNativeGuard guard;
   ObjHolder holder;
   Kotlin_MutableCollection_addObject(listHolder.ref<ErrorPolicy::kTerminate>(), refFromObjCOrNSNull(anObject, holder.slot()));
 }
 
 - (void)removeLastObject {
+  kotlin::CalledFromNativeGuard guard;
   Kotlin_MutableList_removeLastObject(listHolder.ref<ErrorPolicy::kTerminate>());
 }
 
 - (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject {
+  kotlin::CalledFromNativeGuard guard;
   ObjHolder holder;
   KRef kotlinObject = refFromObjCOrNSNull(anObject, holder.slot());
   Kotlin_MutableList_setObject(listHolder.ref<ErrorPolicy::kTerminate>(), objCIndexToKotlinOrThrow(index), kotlinObject);
@@ -283,7 +302,7 @@ static inline id KSet_getElement(KRef set, id object) {
 }
 
 -(void)dealloc {
-  setHolder.dispose();
+  setHolder.disposeFromNative();
   [super dealloc];
 }
 
@@ -298,20 +317,24 @@ static inline id KSet_getElement(KRef set, id object) {
 }
 
 -(NSUInteger) count {
+  kotlin::CalledFromNativeGuard guard;
   return Kotlin_Collection_getSize(setHolder.ref<ErrorPolicy::kTerminate>());
 }
 
 - (id)member:(id)object {
+  kotlin::CalledFromNativeGuard guard;
   return KSet_getElement(setHolder.ref<ErrorPolicy::kTerminate>(), object);
 }
 
 // Not mandatory, just an optimization:
 - (BOOL)containsObject:(id)anObject {
+  kotlin::CalledFromNativeGuard guard;
   ObjHolder holder;
   return Kotlin_Set_contains(setHolder.ref<ErrorPolicy::kTerminate>(), refFromObjCOrNSNull(anObject, holder.slot()));
 }
 
 - (NSEnumerator*)objectEnumerator {
+  kotlin::CalledFromNativeGuard guard;
   ObjHolder holder;
   return [KIteratorAsNSEnumerator createWithKIterator:Kotlin_Set_iterator(setHolder.ref<ErrorPolicy::kTerminate>(), holder.slot())];
 }
@@ -327,6 +350,7 @@ static inline id KSet_getElement(KRef set, id object) {
 -(instancetype)init {
   if (self = [super init]) {
     Kotlin_initRuntimeIfNeeded();
+    kotlin::ThreadStateGuard guard(kotlin::ThreadState::kRunnable);
     ObjHolder holder;
     KRef set = Kotlin_MutableSet_createWithCapacity(8, holder.slot());
     self->setHolder.init(set);
@@ -338,6 +362,7 @@ static inline id KSet_getElement(KRef set, id object) {
 - (instancetype)initWithCapacity:(NSUInteger)numItems {
   if (self = [super init]) {
     Kotlin_initRuntimeIfNeeded();
+    kotlin::ThreadStateGuard guard(kotlin::ThreadState::kRunnable);
     ObjHolder holder;
     KRef set = Kotlin_MutableSet_createWithCapacity(objCCapacityToKotlin(numItems), holder.slot());
     self->setHolder.init(set);
@@ -365,7 +390,7 @@ static inline id KSet_getElement(KRef set, id object) {
   // Note: since setHolder initialization is not performed directly with alloc,
   // it is possible that it wasn't initialized properly.
   // Fortunately setHolder.dispose() handles the zero-initialized case too.
-  setHolder.dispose();
+  setHolder.disposeFromNative();
   [super dealloc];
 }
 
@@ -382,30 +407,36 @@ static inline id KSet_getElement(KRef set, id object) {
 }
 
 -(NSUInteger) count {
+  kotlin::CalledFromNativeGuard guard;
   return Kotlin_Collection_getSize(setHolder.ref<ErrorPolicy::kTerminate>());
 }
 
 - (id)member:(id)object {
+  kotlin::CalledFromNativeGuard guard;
   return KSet_getElement(setHolder.ref<ErrorPolicy::kTerminate>(), object);
 }
 
 // Not mandatory, just an optimization:
 - (BOOL)containsObject:(id)anObject {
+  kotlin::CalledFromNativeGuard guard;
   ObjHolder holder;
   return Kotlin_Set_contains(setHolder.ref<ErrorPolicy::kTerminate>(), refFromObjCOrNSNull(anObject, holder.slot()));
 }
 
 - (NSEnumerator*)objectEnumerator {
+  kotlin::CalledFromNativeGuard guard;
   ObjHolder holder;
   return [KIteratorAsNSEnumerator createWithKIterator:Kotlin_Set_iterator(setHolder.ref<ErrorPolicy::kTerminate>(), holder.slot())];
 }
 
 - (void)addObject:(id)object {
+  kotlin::CalledFromNativeGuard guard;
   ObjHolder holder;
   Kotlin_MutableCollection_addObject(setHolder.ref<ErrorPolicy::kTerminate>(), refFromObjCOrNSNull(object, holder.slot()));
 }
 
 - (void)removeObject:(id)object {
+  kotlin::CalledFromNativeGuard guard;
   ObjHolder holder;
   Kotlin_MutableCollection_removeObject(setHolder.ref<ErrorPolicy::kTerminate>(), refFromObjCOrNSNull(object, holder.slot()));
 }
@@ -433,7 +464,7 @@ static inline id KMap_get(KRef map, id aKey) {
 }
 
 -(void)dealloc {
-  mapHolder.dispose();
+  mapHolder.disposeFromNative();
   [super dealloc];
 }
 
@@ -451,14 +482,17 @@ static inline id KMap_get(KRef map, id aKey) {
 // But that doesn't make any sense, since this class can't be arbitrary initialized.
 
 -(NSUInteger) count {
+  kotlin::CalledFromNativeGuard guard;
   return Kotlin_Map_getSize(mapHolder.ref<ErrorPolicy::kTerminate>());
 }
 
 - (id)objectForKey:(id)aKey {
+  kotlin::CalledFromNativeGuard guard;
   return KMap_get(mapHolder.ref<ErrorPolicy::kTerminate>(), aKey);
 }
 
 - (NSEnumerator *)keyEnumerator {
+  kotlin::CalledFromNativeGuard guard;
   ObjHolder holder;
   return [KIteratorAsNSEnumerator createWithKIterator:Kotlin_Map_keyIterator(mapHolder.ref<ErrorPolicy::kTerminate>(), holder.slot())];
 }
@@ -476,13 +510,14 @@ static inline id KMap_get(KRef map, id aKey) {
   // Note: since mapHolder initialization is not performed directly with alloc,
   // it is possible that it wasn't initialized properly.
   // Fortunately mapHolder.dispose() handles the zero-initialized case too.
-  mapHolder.dispose();
+  mapHolder.disposeFromNative();
   [super dealloc];
 }
 
 -(instancetype)init {
   if (self = [super init]) {
     Kotlin_initRuntimeIfNeeded();
+    kotlin::ThreadStateGuard guard(kotlin::ThreadState::kRunnable);
     ObjHolder holder;
     KRef map = Kotlin_MutableMap_createWithCapacity(8, holder.slot());
     self->mapHolder.init(map);
@@ -499,6 +534,7 @@ static inline id KMap_get(KRef map, id aKey) {
 - (instancetype)initWithCapacity:(NSUInteger)numItems {
   if (self = [super init]) {
     Kotlin_initRuntimeIfNeeded();
+    kotlin::ThreadStateGuard guard(kotlin::ThreadState::kRunnable);
     ObjHolder holder;
     KRef map = Kotlin_MutableMap_createWithCapacity(objCCapacityToKotlin(numItems), holder.slot());
     self->mapHolder.init(map);
@@ -519,31 +555,38 @@ static inline id KMap_get(KRef map, id aKey) {
 }
 
 -(NSUInteger) count {
+  kotlin::CalledFromNativeGuard guard;
   return Kotlin_Map_getSize(mapHolder.ref<ErrorPolicy::kTerminate>());
 }
 
 - (id)objectForKey:(id)aKey {
+  kotlin::CalledFromNativeGuard guard;
   return KMap_get(mapHolder.ref<ErrorPolicy::kTerminate>(), aKey);
 }
 
 - (NSEnumerator *)keyEnumerator {
+  kotlin::CalledFromNativeGuard guard;
   ObjHolder holder;
   return [KIteratorAsNSEnumerator createWithKIterator:Kotlin_Map_keyIterator(mapHolder.ref<ErrorPolicy::kTerminate>(), holder.slot())];
 }
 
 - (void)setObject:(id)anObject forKey:(id<NSCopying>)aKey {
-  ObjHolder keyHolder, valueHolder;
-
   id keyCopy = [aKey copyWithZone:nullptr]; // Correspond to the expected NSMutableDictionary behaviour.
-  KRef kotlinKey = refFromObjCOrNSNull(keyCopy, keyHolder.slot());
+  {
+    kotlin::CalledFromNativeGuard guard;
+    ObjHolder keyHolder, valueHolder;
+
+    KRef kotlinKey = refFromObjCOrNSNull(keyCopy, keyHolder.slot());
+
+    KRef kotlinValue = refFromObjCOrNSNull(anObject, valueHolder.slot());
+
+    Kotlin_MutableMap_set(mapHolder.ref<ErrorPolicy::kTerminate>(), kotlinKey, kotlinValue);
+  }
   objc_release(keyCopy);
-
-  KRef kotlinValue = refFromObjCOrNSNull(anObject, valueHolder.slot());
-
-  Kotlin_MutableMap_set(mapHolder.ref<ErrorPolicy::kTerminate>(), kotlinKey, kotlinValue);
 }
 
 - (void)removeObjectForKey:(id)aKey {
+  kotlin::CalledFromNativeGuard guard;
   ObjHolder holder;
   KRef kotlinKey = refFromObjCOrNSNull(aKey, holder.slot());
 
@@ -556,7 +599,9 @@ static inline id KMap_get(KRef map, id aKey) {
 @end;
 
 @implementation NSEnumerator (NSEnumeratorAsAssociatedObject)
--(void)releaseAsAssociatedObject {
+-(void)releaseAsAssociatedObject:(ReleaseMode)mode {
+  if (!ReleaseModeHasRelease(mode))
+    return;
   objc_release(self);
 }
 @end;

@@ -39,7 +39,6 @@ object JvmPlatformConfigurator : PlatformConfiguratorBase(
         SuspendInFunInterfaceChecker(),
         BadInheritedJavaSignaturesChecker,
         JvmMultifileClassStateChecker,
-        SynchronizedOnInlineMethodChecker,
         DefaultCheckerInTailrec,
         FunctionDelegateMemberNameClashChecker,
         ClassInheritsJavaSealedClassChecker
@@ -57,7 +56,7 @@ object JvmPlatformConfigurator : PlatformConfiguratorBase(
         RuntimeAssertionsOnExtensionReceiverCallChecker,
         ApiVersionIsAtLeastArgumentsChecker,
         InconsistentOperatorFromJavaCallChecker,
-        PolymorphicSignatureCallChecker
+        PolymorphicSignatureCallChecker,
     ),
 
     additionalTypeCheckers = listOf(
@@ -73,9 +72,9 @@ object JvmPlatformConfigurator : PlatformConfiguratorBase(
     ),
 
     additionalAnnotationCheckers = listOf(
-        RepeatableAnnotationChecker,
         FileClassAnnotationsChecker,
-        ExplicitMetadataChecker
+        ExplicitMetadataChecker,
+        SynchronizedAnnotationOnLambdaChecker,
     ),
 
     additionalClashResolvers = listOf(
@@ -94,11 +93,8 @@ object JvmPlatformConfigurator : PlatformConfiguratorBase(
 
     declarationReturnTypeSanitizer = JvmDeclarationReturnTypeSanitizer
 ) {
-    override fun configureModuleComponents(container: StorageComponentContainer, languageVersionSettings: LanguageVersionSettings) {
-        container.useImplIf<WarningAwareUpperBoundChecker>(
-            !languageVersionSettings.supportsFeature(LanguageFeature.TypeEnhancementImprovementsInStrictMode)
-        )
-
+    override fun configureModuleComponents(container: StorageComponentContainer) {
+        container.useImpl<WarningAwareUpperBoundChecker>()
         container.useImpl<JavaNullabilityChecker>()
         container.useImpl<JvmStaticChecker>()
         container.useImpl<JvmReflectionAPICallChecker>()
@@ -115,6 +111,7 @@ object JvmPlatformConfigurator : PlatformConfiguratorBase(
         container.useImpl<JvmSamConversionOracle>()
         container.useImpl<JvmAdditionalClassPartsProvider>()
         container.useImpl<JvmRecordApplicabilityChecker>()
+        container.useImpl<JvmPlatformAnnotationFeaturesSupport>()
 
         container.useInstance(FunctionWithBigAritySupport.LanguageVersionDependent)
         container.useInstance(GenericArrayClassLiteralSupport.Enabled)
@@ -124,5 +121,6 @@ object JvmPlatformConfigurator : PlatformConfiguratorBase(
     override fun configureModuleDependentCheckers(container: StorageComponentContainer) {
         super.configureModuleDependentCheckers(container)
         container.useImpl<ExpectedActualDeclarationChecker>()
+        container.useImpl<RepeatableAnnotationChecker>()
     }
 }

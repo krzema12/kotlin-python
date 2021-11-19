@@ -6,7 +6,6 @@
 package org.jetbrains.kotlin.commonizer.utils
 
 import kotlinx.metadata.ClassName
-import kotlinx.metadata.KmAnnotation
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.commonizer.cir.CirEntityId
 import org.jetbrains.kotlin.commonizer.cir.CirName
@@ -44,6 +43,12 @@ private val KOTLIN_NATIVE_SYNTHETIC_PACKAGES: List<CirPackageName> = ForwardDecl
         CirPackageName.create(packageFqName)
     }
 
+internal val CNAMES_STRUCTS_PACKAGE = CirPackageName.create("cnames.structs")
+
+internal val OBJCNAMES_CLASSES_PACKAGE = CirPackageName.create("objcnames.classes")
+
+internal val OBJCNAMES_PROTOCOLS_PACKAGE = CirPackageName.create("objcnames.protocols")
+
 private val CINTEROP_PACKAGE: CirPackageName = CirPackageName.create("kotlinx.cinterop")
 
 private val OBJC_INTEROP_CALLABLE_ANNOTATIONS: List<CirName> = listOf(
@@ -52,9 +57,8 @@ private val OBJC_INTEROP_CALLABLE_ANNOTATIONS: List<CirName> = listOf(
     CirName.create("ObjCFactory")
 )
 
-private val OBJC_INTEROP_CALLABLE_ANNOTATION_FULL_NAMES: List<ClassName> = OBJC_INTEROP_CALLABLE_ANNOTATIONS.map { name ->
-    CirEntityId.create(CINTEROP_PACKAGE, name).toString()
-}
+internal val COMMONIZER_OBJC_INTEROP_CALLABLE_ANNOTATION_ID =
+    CirEntityId.create(CirPackageName.create("kotlin.commonizer"), CirName.create("ObjCCallable"))
 
 internal val DEFAULT_CONSTRUCTOR_NAME: CirName = CirName.create("<init>")
 internal val DEFAULT_SETTER_VALUE_NAME: CirName = CirName.create("value")
@@ -69,7 +73,7 @@ internal val CirPackageName.isUnderKotlinNativeSyntheticPackages: Boolean
     get() = KOTLIN_NATIVE_SYNTHETIC_PACKAGES.any(::startsWith)
 
 internal val CirEntityId.isObjCInteropCallableAnnotation: Boolean
-    get() = packageName == CINTEROP_PACKAGE && relativeNameSegments.singleOrNull() in OBJC_INTEROP_CALLABLE_ANNOTATIONS
+    get() = this == COMMONIZER_OBJC_INTEROP_CALLABLE_ANNOTATION_ID ||
+            packageName == CINTEROP_PACKAGE && relativeNameSegments.singleOrNull() in OBJC_INTEROP_CALLABLE_ANNOTATIONS
 
-internal val KmAnnotation.isObjCInteropCallableAnnotation: Boolean
-    get() = className in OBJC_INTEROP_CALLABLE_ANNOTATION_FULL_NAMES
+

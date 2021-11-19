@@ -11,18 +11,21 @@ import org.jetbrains.kotlin.test.TestInfrastructureInternals
 import org.jetbrains.kotlin.test.backend.BlackBoxCodegenSuppressor
 import org.jetbrains.kotlin.test.backend.classic.ClassicBackendInput
 import org.jetbrains.kotlin.test.backend.classic.ClassicJvmBackendFacade
+import org.jetbrains.kotlin.test.backend.handlers.IrInlineBodiesHandler
 import org.jetbrains.kotlin.test.backend.ir.IrBackendInput
 import org.jetbrains.kotlin.test.backend.ir.JvmIrBackendFacade
 import org.jetbrains.kotlin.test.bind
 import org.jetbrains.kotlin.test.builders.TestConfigurationBuilder
+import org.jetbrains.kotlin.test.builders.configureIrHandlersStep
 import org.jetbrains.kotlin.test.directives.CodegenTestDirectives.IGNORE_BACKEND_MULTI_MODULE
+import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirectives.SERIALIZE_IR
 import org.jetbrains.kotlin.test.frontend.classic.ClassicFrontend2ClassicBackendConverter
 import org.jetbrains.kotlin.test.frontend.classic.ClassicFrontend2IrConverter
 import org.jetbrains.kotlin.test.frontend.classic.ClassicFrontendFacade
 import org.jetbrains.kotlin.test.frontend.classic.ClassicFrontendOutputArtifact
 import org.jetbrains.kotlin.test.model.*
 import org.jetbrains.kotlin.test.runners.AbstractKotlinCompilerWithTargetBackendTest
-import org.jetbrains.kotlin.test.services.ModuleTransformerForTwoFilesBoxTests
+import org.jetbrains.kotlin.test.services.SplittingModuleTransformerForBoxTests
 
 
 @OptIn(TestInfrastructureInternals::class)
@@ -40,9 +43,9 @@ abstract class AbstractCompileKotlinAgainstInlineKotlinTestBase<I : ResultingArt
             backendFacade
         )
         useInlineHandlers()
-        commonHandlersForBoxTest()
+        configureCommonHandlersForBoxTest()
         useModuleStructureTransformers(
-            ModuleTransformerForTwoFilesBoxTests()
+            SplittingModuleTransformerForBoxTests()
         )
         useAfterAnalysisCheckers(::BlackBoxCodegenSuppressor.bind(IGNORE_BACKEND_MULTI_MODULE))
     }
@@ -64,4 +67,19 @@ open class AbstractIrCompileKotlinAgainstInlineKotlinTest :
 
     override val backendFacade: Constructor<BackendFacade<IrBackendInput, BinaryArtifacts.Jvm>>
         get() = ::JvmIrBackendFacade
+}
+
+open class AbstractIrSerializeCompileKotlinAgainstInlineKotlinTest : AbstractIrCompileKotlinAgainstInlineKotlinTest() {
+    override fun configure(builder: TestConfigurationBuilder) {
+        super.configure(builder)
+        builder.apply {
+            defaultDirectives {
+                +SERIALIZE_IR
+            }
+
+            configureIrHandlersStep {
+                useHandlers(::IrInlineBodiesHandler)
+            }
+        }
+    }
 }

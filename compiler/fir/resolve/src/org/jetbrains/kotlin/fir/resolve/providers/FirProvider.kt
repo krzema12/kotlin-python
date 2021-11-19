@@ -24,7 +24,7 @@ abstract class FirProvider : FirSessionComponent {
 
     open val isPhasedFirAllowed: Boolean get() = false
 
-    abstract fun getFirClassifierByFqName(classId: ClassId): FirClassLikeDeclaration<*>?
+    abstract fun getFirClassifierByFqName(classId: ClassId): FirClassLikeDeclaration?
 
     abstract fun getFirClassifierContainerFile(fqName: ClassId): FirFile
 

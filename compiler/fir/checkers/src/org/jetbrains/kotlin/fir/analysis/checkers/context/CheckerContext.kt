@@ -6,14 +6,18 @@
 package org.jetbrains.kotlin.fir.analysis.checkers.context
 
 import org.jetbrains.kotlin.diagnostics.Severity
+import org.jetbrains.kotlin.fir.FirElement
+import org.jetbrains.kotlin.fir.FirAnnotationContainer
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirDiagnostic
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.expressions.FirGetClassCall
-import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccess
+import org.jetbrains.kotlin.fir.expressions.FirStatement
 import org.jetbrains.kotlin.fir.resolve.ImplicitReceiverStack
 import org.jetbrains.kotlin.fir.resolve.SessionHolder
+import org.jetbrains.kotlin.fir.resolve.calls.ImplicitReceiverValue
 import org.jetbrains.kotlin.fir.resolve.transformers.ReturnTypeCalculator
+import org.jetbrains.kotlin.name.Name
 
 abstract class CheckerContext {
     // Services
@@ -23,8 +27,9 @@ abstract class CheckerContext {
     // Context
     abstract val implicitReceiverStack: ImplicitReceiverStack
     abstract val containingDeclarations: List<FirDeclaration>
-    abstract val qualifiedAccesses: List<FirQualifiedAccess>
+    abstract val qualifiedAccessOrAnnotationCalls: List<FirStatement>
     abstract val getClassCalls: List<FirGetClassCall>
+    abstract val annotationContainers: List<FirAnnotationContainer>
 
     // Suppress
     abstract val suppressedDiagnostics: Set<String>
@@ -40,9 +45,36 @@ abstract class CheckerContext {
         allInfosSuppressed: Boolean,
         allWarningsSuppressed: Boolean,
         allErrorsSuppressed: Boolean
-    ): PersistentCheckerContext
+    ): CheckerContext
 
-    fun isDiagnosticSuppressed(diagnostic: FirDiagnostic<*>): Boolean {
+    abstract fun addImplicitReceiver(name: Name?, value: ImplicitReceiverValue<*>): CheckerContext
+
+    abstract fun addDeclaration(declaration: FirDeclaration): CheckerContext
+
+    abstract fun dropDeclaration()
+
+    fun <T> withDeclaration(declaration: FirDeclaration, f: (CheckerContext) -> T): T {
+        val newContext = addDeclaration(declaration)
+        try {
+            return f(newContext)
+        } finally {
+            newContext.dropDeclaration()
+        }
+    }
+
+    abstract fun addQualifiedAccessOrAnnotationCall(qualifiedAccessOrAnnotationCall: FirStatement): CheckerContext
+
+    abstract fun dropQualifiedAccessOrAnnotationCall()
+
+    abstract fun addGetClassCall(getClassCall: FirGetClassCall): CheckerContext
+
+    abstract fun dropGetClassCall()
+
+    abstract fun addAnnotationContainer(annotationContainer: FirAnnotationContainer): CheckerContext
+
+    abstract fun dropAnnotationContainer()
+
+    fun isDiagnosticSuppressed(diagnostic: FirDiagnostic): Boolean {
         val factory = diagnostic.factory
         val name = factory.name
         val suppressedByAll = when (factory.severity) {
@@ -62,7 +94,7 @@ abstract class CheckerContext {
  *   the closest setter, while we want to keep searching for a getter.
  */
 
-inline fun <reified T : FirDeclaration> CheckerContext.findClosest(check: (T) -> Boolean = { true }): T? {
+inline fun <reified T : FirElement> CheckerContext.findClosest(check: (T) -> Boolean = { true }): T? {
     for (it in containingDeclarations.asReversed()) {
         return (it as? T)?.takeIf(check) ?: continue
     }

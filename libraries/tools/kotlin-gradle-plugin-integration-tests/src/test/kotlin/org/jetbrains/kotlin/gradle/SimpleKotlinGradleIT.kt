@@ -5,8 +5,8 @@ import org.gradle.api.logging.configuration.WarningMode
 import org.gradle.util.GradleVersion
 import org.jetbrains.kotlin.gradle.testbase.*
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Tag
 
+@SimpleGradlePluginTests
 @DisplayName("KGP simple tests")
 class SimpleKotlinGradleIT : KGPBaseTest() {
 
@@ -20,7 +20,7 @@ class SimpleKotlinGradleIT : KGPBaseTest() {
         ) {
             build("compileDeployKotlin", "build") {
                 assertOutputContains("Finished executing kotlin compiler using daemon strategy")
-                assertFileExists("build/reports/tests/test/classes/demo.TestSource.html")
+                assertFileInProjectExists("build/reports/tests/test/classes/demo.TestSource.html")
                 assertTasksExecuted(":compileKotlin", ":compileTestKotlin", ":compileDeployKotlin")
             }
 
@@ -67,7 +67,7 @@ class SimpleKotlinGradleIT : KGPBaseTest() {
     fun testLanguageVersion(gradleVersion: GradleVersion) {
         project("languageVersion", gradleVersion) {
             buildAndFail("build") {
-                assertOutputContains("'break' and 'continue' are not allowed in 'when' statements")
+                assertOutputContains("Suspend function type is not allowed as supertypes")
             }
         }
     }
@@ -87,7 +87,7 @@ class SimpleKotlinGradleIT : KGPBaseTest() {
     fun testModuleName(gradleVersion: GradleVersion) {
         project("moduleName", gradleVersion) {
             build("build") {
-                assertFileExists("build/classes/kotlin/main/META-INF/FLAG.kotlin_module")
+                assertFileInProjectExists("build/classes/kotlin/main/META-INF/FLAG.kotlin_module")
                 assertFileNotExists("build/classes/kotlin/main/META-INF/moduleName.kotlin_module")
                 assertOutputDoesNotContain("Argument -module-name is passed multiple times")
             }
@@ -100,7 +100,7 @@ class SimpleKotlinGradleIT : KGPBaseTest() {
         project("customJdk", gradleVersion) {
             buildAndFail("build") {
                 assertOutputContains("Unresolved reference: stream")
-                assertOutputDoesNotContain("AutoCloseable")
+                assertOutputDoesNotContain("Unresolved reference: AutoCloseable")
             }
         }
     }
@@ -205,6 +205,31 @@ class SimpleKotlinGradleIT : KGPBaseTest() {
             }
 
             build("assemble")
+        }
+    }
+
+    @GradleTest
+    @DisplayName("useExperimentalAnnotation should produce deprecation warning")
+    fun testUseExperimentalAnnotationShouldProduceWarning(gradleVersion: GradleVersion) {
+        project("optInAnnotation", gradleVersion, buildOptions = defaultBuildOptions.copy(logLevel = LogLevel.DEBUG)) {
+            build("assemble") {
+                assertOutputContains("-opt-in=kotlin.RequiresOptIn")
+                assertOutputContains("-opt-in=FooAnnotation")
+                assertOutputContains("is deprecated and will be removed in next major releases")
+            }
+        }
+    }
+
+    @GradleTest
+    @DisplayName("Should be compatible with project isolation")
+    @GradleTestVersions(minVersion = "7.1.1", maxVersion = "7.1.1")
+    fun testProjectIsolation(gradleVersion: GradleVersion) {
+        project(
+            projectName = "instantExecution",
+            gradleVersion = gradleVersion,
+            buildOptions = defaultBuildOptions.copy(configurationCache = true, projectIsolation = true),
+        ) {
+            build(":main-project:compileKotlin")
         }
     }
 }

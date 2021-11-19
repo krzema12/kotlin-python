@@ -1,5 +1,4 @@
 // !DIAGNOSTICS: -UNUSED_PARAMETER
-// !WITH_NEW_INFERENCE
 
 // FILE: annotation.kt
 
@@ -34,7 +33,7 @@ fun takeUShort(@ImplicitIntegerCoercion u: UShort) {}
 fun takeUInt(@ImplicitIntegerCoercion u: UInt) {}
 fun takeULong(@ImplicitIntegerCoercion u: ULong) {}
 
-fun takeUBytes(@ImplicitIntegerCoercion vararg u: UByte) {}
+fun takeUBytes(@ImplicitIntegerCoercion vararg u: <!EXPERIMENTAL_API_USAGE!>UByte<!>) {}
 
 fun takeLong(@ImplicitIntegerCoercion l: Long) {}
 

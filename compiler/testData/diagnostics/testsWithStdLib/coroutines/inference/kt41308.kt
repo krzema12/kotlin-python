@@ -1,5 +1,5 @@
 // FIR_IDENTICAL
-// ISSUE: KT-41308
+// ISSUE: KT-41308, KT-47830
 
 fun main() {
     sequence {

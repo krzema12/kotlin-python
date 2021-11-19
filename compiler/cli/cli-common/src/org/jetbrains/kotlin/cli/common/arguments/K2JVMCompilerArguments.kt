@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.cli.common.arguments
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.config.*
+import kotlin.reflect.KVisibility
 
 class K2JVMCompilerArguments : CommonCompilerArguments() {
     companion object {
@@ -30,6 +31,11 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
     @Argument(value = "-include-runtime", description = "Include Kotlin runtime into the resulting JAR")
     var includeRuntime: Boolean by FreezableVar(false)
 
+    @DeprecatedOption(
+        message = "This option is not working well with Gradle caching and will be removed in the future.",
+        removeAfter = "1.7",
+        level = DeprecationLevel.WARNING
+    )
     @GradleOption(DefaultValues.StringNullDefault::class)
     @Argument(
         value = "-jdk-home",
@@ -42,7 +48,7 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
     @Argument(value = "-no-jdk", description = "Don't automatically include the Java runtime into the classpath")
     var noJdk: Boolean by FreezableVar(false)
 
-    @DeprecatedOption(removeAfter = "1.5", level = DeprecationLevel.ERROR)
+    @DeprecatedOption(removeAfter = "1.6", level = DeprecationLevel.ERROR)
     @GradleOption(DefaultValues.BooleanTrueDefault::class)
     @Argument(value = "-no-stdlib", description = "Don't automatically include the Kotlin/JVM stdlib and Kotlin reflection into the classpath")
     var noStdlib: Boolean by FreezableVar(false)
@@ -70,11 +76,14 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
     @Argument(value = "-module-name", valueDescription = "<name>", description = "Name of the generated .kotlin_module file")
     var moduleName: String? by NullableStringFreezableVar(null)
 
-    @GradleOption(DefaultValues.JvmTargetVersions::class)
+    @GradleOption(
+        value = DefaultValues.JvmTargetVersions::class,
+        backingFieldVisibility = KVisibility.INTERNAL
+    )
     @Argument(
         value = "-jvm-target",
         valueDescription = "<version>",
-        description = "Target version of the generated JVM bytecode (1.6 (DEPRECATED), 1.8, 9, 10, 11, 12, 13, 14, 15 or 16), default is 1.8"
+        description = "Target version of the generated JVM bytecode (1.6 (DEPRECATED), 1.8, 9, 10, 11, 12, 13, 14, 15, 16 or 17), default is 1.8"
     )
     var jvmTarget: String? by NullableStringFreezableVar(JvmTarget.DEFAULT.description)
 
@@ -84,7 +93,7 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
 
     // Advanced options
 
-    @DeprecatedOption(removeAfter = "1.5", level = DeprecationLevel.WARNING)
+    @DeprecatedOption(removeAfter = "1.6", level = DeprecationLevel.HIDDEN)
     @GradleOption(DefaultValues.BooleanFalseDefault::class)
     @Argument(
         value = "-Xuse-ir",
@@ -206,6 +215,12 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
     var useOldClassFilesReading: Boolean by FreezableVar(false)
 
     @Argument(
+        value = "-Xuse-fast-jar-file-system",
+        description = "Use fast implementation on Jar FS. This may speed up compilation time, but currently it's an experimental mode"
+    )
+    var useFastJarFileSystem: Boolean by FreezableVar(false)
+
+    @Argument(
         value = "-Xdump-declarations-to",
         valueDescription = "<path>",
         description = "Path to JSON file to dump Java to Kotlin declaration mappings"
@@ -274,6 +289,17 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
     var jsr305: Array<String>? by FreezableVar(null)
 
     @Argument(
+        value = "-Xnullability-annotations",
+        valueDescription = "@<fq.name>:{ignore/strict/warn}",
+        description = "Specify behavior for specific Java nullability annotations (provided with fully qualified package name)\n" +
+                "Modes:\n" +
+                "  * ignore\n" +
+                "  * strict\n" +
+                "  * warn (report a warning)"
+    )
+    var nullabilityAnnotations: Array<String>? by FreezableVar(null)
+
+    @Argument(
         value = "-Xsupport-compatqual-checker-framework-annotations",
         valueDescription = "enable|disable",
         description = "Specify behavior for Checker Framework compatqual annotations (NullableDecl/NonNullDecl).\n" +
@@ -299,30 +325,38 @@ class K2JVMCompilerArguments : CommonCompilerArguments() {
         value = "-Xjvm-default",
         valueDescription = "{all|all-compatibility|disable|enable|compatibility}",
         description = """Emit JVM default methods for interface declarations with bodies.
--Xjvm-default=all-compatibility  Generate both a default method in the interface, and a compatibility accessor
-                                 in the DefaultImpls class.
-                                 In case of inheritance from a Kotlin interface compiled in the old scheme
-                                 (DefaultImpls, no default methods), the compatibility accessor in DefaultImpls
-                                 will delegate to the DefaultImpls method of the superinterface. Otherwise the
-                                 compatibility accessor will invoke the default method on the interface, with
-                                 standard JVM runtime resolution semantics.
-                                 Note that if interface delegation is used, all interface methods are delegated.
-                                 The only exception are methods annotated with the deprecated @JvmDefault annotation.
--Xjvm-default=all                Generate default methods for all interface declarations with bodies.
-                                 Do not generate DefaultImpls classes at all.
+-Xjvm-default=all                Generate JVM default methods for all interface declarations with bodies in module.
+                                 Do not generate DefaultImpls stubs for such declarations (that is default behaviour of compiler in 'disable' mode).
+                                 If interface inherits such methods from interface compiled in 'disable' scheme 
+                                 then implicit DefaultImpls stubs would be generated as there are no default method for it. 
                                  BREAKS BINARY COMPATIBILITY if some client code relies on the presence of
                                  DefaultImpls classes. Also prohibits the produced binaries to be read by Kotlin
                                  compilers earlier than 1.4.
                                  Note that if interface delegation is used, all interface methods are delegated.
                                  The only exception are methods annotated with the deprecated @JvmDefault annotation.
--Xjvm-default=disable            Do not generate JVM default methods and prohibit @JvmDefault annotation usage.
--Xjvm-default=enable             Allow usages of @JvmDefault; only generate the default method
+-Xjvm-default=all-compatibility  In addition to `all` mode generate compatibility stubs in the DefaultImpls classes. 
+                                 Compatibility stubs could be useful for library and runtime authors
+                                 to keep backward binary compatibility for existing client compiled against previous library versions.
+                                 New 'all' and 'all-compatibility' modes are changing library ABI surface that will be used by client after their recompilation.
+                                 In that sense client might be incompatible with previous library versions that REQUIRE PROPER LIBRARY VERSIONING.
+                                 In case of inheritance from a Kotlin interface compiled in the old scheme
+                                 (DefaultImpls, no default methods), the implicit stubs in DefaultImpls
+                                 will delegate to the DefaultImpls method of the superinterface. 
+                                 Otherwise the compatibility stubs in DefaultImpls would invoke the default method on the interface via special accessor in it,
+                                 with standard JVM runtime resolution semantics. 
+                                 Perform additional compatibility checks for classes in case of implicit specialized override 
+                                 presence in 'disable' scheme (See KT-39603 for more details) 
+-Xjvm-default=disable            Default behaviour. Do not generate JVM default methods and prohibit @JvmDefault annotation usage.
+-Xjvm-default=enable             Deprecated. Allow usages of @JvmDefault; only generate the default method
                                  for annotated method in the interface
                                  (annotating an existing method can break binary compatibility)
--Xjvm-default=compatibility      Allow usages of @JvmDefault; generate a compatibility accessor
+-Xjvm-default=compatibility      Deprecated. Allow usages of @JvmDefault; generate a compatibility accessor
                                  in the 'DefaultImpls' class in addition to the default interface method"""
     )
     var jvmDefault: String by FreezableVar(JvmDefaultMode.DEFAULT.description)
+
+    @Argument(value = "-Xjvm-default-allow-non-default-inheritance", description = "Allow inheritance from 'all*' modes for 'disable' one")
+    var jvmDefaultAllowDisableAgainstAll: Boolean by FreezableVar(false)
 
     @Argument(
         value = "-Xdefault-script-extension",
@@ -432,9 +466,9 @@ default: `indy-with-constants` for JVM target 9 or greater, `inline` otherwise""
     @Argument(
         value = "-Xprofile",
         valueDescription = "<profilerPath:command:outputDir>",
-        description = "Debug option: Run compiler with async profiler, save snapshots to outputDir, command is passed to async-profiler on start\n" +
-                "You'll have to provide async-profiler.jar on classpath to use this\n" +
-                "profilerPath is a path to libasyncProfiler.so\n" +
+        description = "Debug option: Run compiler with async profiler and save snapshots to `outputDir`; `command` is passed to async-profiler on start.\n" +
+                "`profilerPath` is a path to libasyncProfiler.so; async-profiler.jar should be on the compiler classpath.\n" +
+                "If it's not on the classpath, the compiler will attempt to load async-profiler.jar from the containing directory of profilerPath.\n" +
                 "Example: -Xprofile=<PATH_TO_ASYNC_PROFILER>/async-profiler/build/libasyncProfiler.so:event=cpu,interval=1ms,threads,start,framebuf=50000000:<SNAPSHOT_DIR_PATH>"
     )
     var profileCompilerCommand: String? by NullableStringFreezableVar(null)
@@ -479,14 +513,35 @@ default: `indy-with-constants` for JVM target 9 or greater, `inline` otherwise""
     )
     var typeEnhancementImprovementsInStrictMode: Boolean by FreezableVar(false)
 
-    override fun configureAnalysisFlags(collector: MessageCollector): MutableMap<AnalysisFlag<*>, Any> {
-        val result = super.configureAnalysisFlags(collector)
+    @Argument(
+        value = "-Xserialize-ir",
+        description = "Save IR to metadata (EXPERIMENTAL)"
+    )
+    var serializeIr: Boolean by FreezableVar(false)
+
+    @Argument(
+        value = "-Xvalidate-ir",
+        description = "Validate IR before and after lowering"
+    )
+    var validateIr: Boolean by FreezableVar(false)
+
+    @Argument(
+        value = "-Xvalidate-bytecode",
+        description = "Validate generated JVM bytecode before and after optimizations"
+    )
+    var validateBytecode: Boolean by FreezableVar(false)
+
+    @Argument(
+        value = "-Xenhance-type-parameter-types-to-def-not-null",
+        description = "Enhance not null annotated type parameter's types to definitely not null types (@NotNull T => T & Any)"
+    )
+    var enhanceTypeParameterTypesToDefNotNull: Boolean by FreezableVar(false)
+
+    override fun configureAnalysisFlags(collector: MessageCollector, languageVersion: LanguageVersion): MutableMap<AnalysisFlag<*>, Any> {
+        val result = super.configureAnalysisFlags(collector, languageVersion)
         result[JvmAnalysisFlags.strictMetadataVersionSemantics] = strictMetadataVersionSemantics
-        result[JvmAnalysisFlags.javaTypeEnhancementState] = JavaTypeEnhancementStateParser(collector).parse(
-            jsr305,
-            supportCompatqualCheckerFrameworkAnnotations,
-            jspecifyAnnotations
-        )
+        result[JvmAnalysisFlags.javaTypeEnhancementState] = JavaTypeEnhancementStateParser(collector, languageVersion.toKotlinVersion())
+            .parse(jsr305, supportCompatqualCheckerFrameworkAnnotations, jspecifyAnnotations, nullabilityAnnotations)
         result[AnalysisFlags.ignoreDataFlowInAssert] = JVMAssertionsMode.fromString(assertionsMode) != JVMAssertionsMode.LEGACY
         JvmDefaultMode.fromStringOrNull(jvmDefault)?.let {
             result[JvmAnalysisFlags.jvmDefaultMode] = it
@@ -502,6 +557,7 @@ default: `indy-with-constants` for JVM target 9 or greater, `inline` otherwise""
         result[AnalysisFlags.allowUnstableDependencies] = allowUnstableDependencies || useFir
         result[JvmAnalysisFlags.disableUltraLightClasses] = disableUltraLightClasses
         result[JvmAnalysisFlags.useIR] = !useOldBackend
+        result[JvmAnalysisFlags.jvmDefaultAllowNonDefaultInheritance] = jvmDefaultAllowDisableAgainstAll
         return result
     }
 
@@ -513,6 +569,10 @@ default: `indy-with-constants` for JVM target 9 or greater, `inline` otherwise""
         if (typeEnhancementImprovementsInStrictMode) {
             result[LanguageFeature.TypeEnhancementImprovementsInStrictMode] = LanguageFeature.State.ENABLED
         }
+        if (enhanceTypeParameterTypesToDefNotNull) {
+            result[LanguageFeature.ProhibitUsingNullableTypeParameterAgainstNotNullAnnotated] = LanguageFeature.State.ENABLED
+        }
+
         return result
     }
 
@@ -526,6 +586,28 @@ default: `indy-with-constants` for JVM target 9 or greater, `inline` otherwise""
                 CompilerMessageSeverity.STRONG_WARNING,
                 "IR backend does not support language or API version lower than 1.3. " +
                         "This can lead to unexpected behavior or compilation failures"
+            )
+        }
+    }
+
+    override fun defaultLanguageVersion(collector: MessageCollector): LanguageVersion =
+        if (useOldBackend) {
+            if (!suppressVersionWarnings) {
+                collector.report(
+                    CompilerMessageSeverity.STRONG_WARNING,
+                    "Language version is automatically inferred to ${LanguageVersion.KOTLIN_1_5.versionString} when using " +
+                            "the old JVM backend. Consider specifying -language-version explicitly, or remove -Xuse-old-backend"
+                )
+            }
+            LanguageVersion.KOTLIN_1_5
+        } else super.defaultLanguageVersion(collector)
+
+    override fun checkPlatformSpecificSettings(languageVersionSettings: LanguageVersionSettings, collector: MessageCollector) {
+        if (useOldBackend && languageVersionSettings.languageVersion >= LanguageVersion.KOTLIN_1_6) {
+            collector.report(
+                CompilerMessageSeverity.ERROR,
+                "Old JVM backend does not support language version 1.6 or above. " +
+                        "Please use language version 1.5 or below, or remove -Xuse-old-backend"
             )
         }
     }

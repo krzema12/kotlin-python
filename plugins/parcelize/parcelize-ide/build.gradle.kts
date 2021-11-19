@@ -18,11 +18,6 @@ dependencies {
 
     compile(intellijDep())
     compile(intellijPluginDep("gradle"))
-
-    Platform[191].orLower {
-        compileOnly(intellijDep()) { includeJars("java-api", "java-impl") }
-    }
-
     compileOnly(intellijPluginDep("java")) { includeJars("java-api", "java-impl") }
 
     testCompile(projectTests(":idea"))
@@ -56,5 +51,3 @@ projectTest(parallel = true) {
     workingDir = rootDir
     useAndroidJar()
 }
-
-apply(from = "$rootDir/gradle/kotlinPluginPublication.gradle.kts")

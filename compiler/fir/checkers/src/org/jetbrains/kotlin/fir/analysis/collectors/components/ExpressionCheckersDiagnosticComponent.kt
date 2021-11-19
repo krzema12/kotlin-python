@@ -5,32 +5,27 @@
 
 package org.jetbrains.kotlin.fir.analysis.collectors.components
 
+import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.CheckersComponentInternal
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.ExpressionCheckers
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirExpressionChecker
 import org.jetbrains.kotlin.fir.analysis.checkersComponent
-import org.jetbrains.kotlin.fir.analysis.collectors.AbstractDiagnosticCollector
 import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporter
-import org.jetbrains.kotlin.fir.declarations.FirAnonymousFunction
 import org.jetbrains.kotlin.fir.expressions.*
 
 @OptIn(CheckersComponentInternal::class)
 class ExpressionCheckersDiagnosticComponent(
-    collector: AbstractDiagnosticCollector,
-    private val checkers: ExpressionCheckers = collector.session.checkersComponent.expressionCheckers,
-) : AbstractDiagnosticCollectorComponent(collector) {
-
-    override fun visitAnonymousFunction(anonymousFunction: FirAnonymousFunction, data: CheckerContext) {
-        checkers.allAnonymousFunctionAsExpressionCheckers.check(anonymousFunction, data, reporter)
-    }
-
+    session: FirSession,
+    reporter: DiagnosticReporter,
+    private val checkers: ExpressionCheckers = session.checkersComponent.expressionCheckers,
+) : AbstractDiagnosticCollectorComponent(session, reporter) {
     override fun visitTypeOperatorCall(typeOperatorCall: FirTypeOperatorCall, data: CheckerContext) {
-        checkers.allBasicExpressionCheckers.check(typeOperatorCall, data, reporter)
+        checkers.allTypeOperatorCallCheckers.check(typeOperatorCall, data, reporter)
     }
 
     override fun <T> visitConstExpression(constExpression: FirConstExpression<T>, data: CheckerContext) {
-        checkers.allBasicExpressionCheckers.check(constExpression, data, reporter)
+        checkers.allConstExpressionCheckers.check(constExpression, data, reporter)
     }
 
     override fun visitAnnotationCall(annotationCall: FirAnnotationCall, data: CheckerContext) {
@@ -38,35 +33,55 @@ class ExpressionCheckersDiagnosticComponent(
     }
 
     override fun visitQualifiedAccessExpression(qualifiedAccessExpression: FirQualifiedAccessExpression, data: CheckerContext) {
-        checkers.allQualifiedAccessCheckers.check(qualifiedAccessExpression, data, reporter)
+        checkers.allQualifiedAccessExpressionCheckers.check(qualifiedAccessExpression, data, reporter)
+    }
+
+    override fun visitPropertyAccessExpression(propertyAccessExpression: FirPropertyAccessExpression, data: CheckerContext) {
+        checkers.allQualifiedAccessExpressionCheckers.check(propertyAccessExpression, data, reporter)
     }
 
     override fun visitFunctionCall(functionCall: FirFunctionCall, data: CheckerContext) {
         checkers.allFunctionCallCheckers.check(functionCall, data, reporter)
     }
 
+    override fun visitImplicitInvokeCall(implicitInvokeCall: FirImplicitInvokeCall, data: CheckerContext) {
+        checkers.allFunctionCallCheckers.check(implicitInvokeCall, data, reporter)
+    }
+
     override fun visitCallableReferenceAccess(callableReferenceAccess: FirCallableReferenceAccess, data: CheckerContext) {
-        checkers.allQualifiedAccessCheckers.check(callableReferenceAccess, data, reporter)
+        checkers.allCallableReferenceAccessCheckers.check(callableReferenceAccess, data, reporter)
     }
 
     override fun visitThisReceiverExpression(thisReceiverExpression: FirThisReceiverExpression, data: CheckerContext) {
-        checkers.allBasicExpressionCheckers.check(thisReceiverExpression, data, reporter)
+        checkers.allThisReceiverExpressionCheckers.check(thisReceiverExpression, data, reporter)
     }
 
     override fun visitResolvedQualifier(resolvedQualifier: FirResolvedQualifier, data: CheckerContext) {
-        checkers.allBasicExpressionCheckers.check(resolvedQualifier, data, reporter)
+        checkers.allResolvedQualifierCheckers.check(resolvedQualifier, data, reporter)
     }
 
     override fun visitWhenExpression(whenExpression: FirWhenExpression, data: CheckerContext) {
         checkers.allWhenExpressionCheckers.check(whenExpression, data, reporter)
     }
 
+    override fun visitWhileLoop(whileLoop: FirWhileLoop, data: CheckerContext) {
+        checkers.allWhileLoopCheckers.check(whileLoop, data, reporter)
+    }
+
+    override fun visitDoWhileLoop(doWhileLoop: FirDoWhileLoop, data: CheckerContext) {
+        checkers.allDoWhileLoopCheckers.check(doWhileLoop, data, reporter)
+    }
+
+    override fun visitErrorLoop(errorLoop: FirErrorLoop, data: CheckerContext) {
+        checkers.allLoopExpressionCheckers.check(errorLoop, data, reporter)
+    }
+
     override fun visitBinaryLogicExpression(binaryLogicExpression: FirBinaryLogicExpression, data: CheckerContext) {
-        checkers.allBasicExpressionCheckers.check(binaryLogicExpression, data, reporter)
+        checkers.allLogicExpressionCheckers.check(binaryLogicExpression, data, reporter)
     }
 
     override fun visitArrayOfCall(arrayOfCall: FirArrayOfCall, data: CheckerContext) {
-        checkers.allBasicExpressionCheckers.check(arrayOfCall, data, reporter)
+        checkers.allArrayOfCallCheckers.check(arrayOfCall, data, reporter)
     }
 
     override fun visitStringConcatenationCall(stringConcatenationCall: FirStringConcatenationCall, data: CheckerContext) {
@@ -90,7 +105,7 @@ class ExpressionCheckersDiagnosticComponent(
     }
 
     override fun visitClassReferenceExpression(classReferenceExpression: FirClassReferenceExpression, data: CheckerContext) {
-        checkers.allBasicExpressionCheckers.check(classReferenceExpression, data, reporter)
+        checkers.allClassReferenceExpressionCheckers.check(classReferenceExpression, data, reporter)
     }
 
     override fun visitGetClassCall(getClassCall: FirGetClassCall, data: CheckerContext) {
@@ -109,8 +124,20 @@ class ExpressionCheckersDiagnosticComponent(
         checkers.allReturnExpressionCheckers.check(returnExpression, data, reporter)
     }
 
+    override fun visitBreakExpression(breakExpression: FirBreakExpression, data: CheckerContext) {
+        checkers.allLoopJumpCheckers.check(breakExpression, data, reporter)
+    }
+
+    override fun visitContinueExpression(continueExpression: FirContinueExpression, data: CheckerContext) {
+        checkers.allLoopJumpCheckers.check(continueExpression, data, reporter)
+    }
+
     override fun visitBlock(block: FirBlock, data: CheckerContext) {
         checkers.allBlockCheckers.check(block, data, reporter)
+    }
+
+    override fun visitDelegatedConstructorCall(delegatedConstructorCall: FirDelegatedConstructorCall, data: CheckerContext) {
+        checkers.allCallCheckers.check(delegatedConstructorCall, data, reporter)
     }
 
     private fun <E : FirStatement> Collection<FirExpressionChecker<E>>.check(

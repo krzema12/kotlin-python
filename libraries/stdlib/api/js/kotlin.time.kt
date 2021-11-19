@@ -1,106 +1,127 @@
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.days() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.days(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Double.days' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.days", imports = {"kotlin.time.Duration.Companion.days"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Double.days: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.days() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.days(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Int.days' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.days", imports = {"kotlin.time.Duration.Companion.days"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Int.days: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.days() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.days(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Long.days' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.days", imports = {"kotlin.time.Duration.Companion.days"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Long.days: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.hours() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.hours(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Double.hours' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.hours", imports = {"kotlin.time.Duration.Companion.hours"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Double.hours: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.hours() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.hours(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Int.hours' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.hours", imports = {"kotlin.time.Duration.Companion.hours"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Int.hours: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.hours() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.hours(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Long.hours' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.hours", imports = {"kotlin.time.Duration.Companion.hours"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Long.hours: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.microseconds() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.microseconds(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Double.microseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.microseconds", imports = {"kotlin.time.Duration.Companion.microseconds"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Double.microseconds: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.microseconds() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.microseconds(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Int.microseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.microseconds", imports = {"kotlin.time.Duration.Companion.microseconds"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Int.microseconds: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.microseconds() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.microseconds(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Long.microseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.microseconds", imports = {"kotlin.time.Duration.Companion.microseconds"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Long.microseconds: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.milliseconds() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.milliseconds(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Double.milliseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.milliseconds", imports = {"kotlin.time.Duration.Companion.milliseconds"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Double.milliseconds: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.milliseconds() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.milliseconds(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Int.milliseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.milliseconds", imports = {"kotlin.time.Duration.Companion.milliseconds"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Int.milliseconds: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.milliseconds() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.milliseconds(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Long.milliseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.milliseconds", imports = {"kotlin.time.Duration.Companion.milliseconds"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Long.milliseconds: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.minutes() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.minutes(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Double.minutes' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minutes", imports = {"kotlin.time.Duration.Companion.minutes"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Double.minutes: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.minutes() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.minutes(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Int.minutes' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minutes", imports = {"kotlin.time.Duration.Companion.minutes"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Int.minutes: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.minutes() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.minutes(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Long.minutes' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.minutes", imports = {"kotlin.time.Duration.Companion.minutes"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Long.minutes: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.nanoseconds() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.nanoseconds(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Double.nanoseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.nanoseconds", imports = {"kotlin.time.Duration.Companion.nanoseconds"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Double.nanoseconds: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.nanoseconds() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.nanoseconds(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Int.nanoseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.nanoseconds", imports = {"kotlin.time.Duration.Companion.nanoseconds"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Int.nanoseconds: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.nanoseconds() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.nanoseconds(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Long.nanoseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.nanoseconds", imports = {"kotlin.time.Duration.Companion.nanoseconds"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Long.nanoseconds: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.seconds() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.seconds(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Double.seconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.seconds", imports = {"kotlin.time.Duration.Companion.seconds"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Double.seconds: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.seconds() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.seconds(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Int.seconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.seconds", imports = {"kotlin.time.Duration.Companion.seconds"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Int.seconds: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
 @kotlin.time.ExperimentalTime
-@kotlin.Deprecated(message = "Use Duration.seconds() function instead.", replaceWith = kotlin.ReplaceWith(expression = "Duration.seconds(this)", imports = {"kotlin.time.Duration"}))
+@kotlin.Deprecated(message = "Use 'Long.seconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "this.seconds", imports = {"kotlin.time.Duration.Companion.seconds"}))
+@kotlin.DeprecatedSinceKotlin(warningSince = "1.5")
 public val kotlin.Long.seconds: kotlin.time.Duration { get; }
 
 @kotlin.SinceKotlin(version = "1.3")
@@ -131,26 +152,26 @@ public inline fun <T> kotlin.time.TimeSource.measureTimedValue(block: () -> T): 
 @kotlin.Deprecated(level = DeprecationLevel.ERROR, message = "Subtracting one TimeMark from another is not a well defined operation because these time marks could have been obtained from the different time sources.")
 public inline operator fun kotlin.time.TimeMark.minus(other: kotlin.time.TimeMark): kotlin.time.Duration
 
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.time.ExperimentalTime
+@kotlin.SinceKotlin(version = "1.6")
+@kotlin.WasExperimental(markerClass = {kotlin.time.ExperimentalTime::class})
 @kotlin.internal.InlineOnly
 public inline operator fun kotlin.Double.times(duration: kotlin.time.Duration): kotlin.time.Duration
 
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.time.ExperimentalTime
+@kotlin.SinceKotlin(version = "1.6")
+@kotlin.WasExperimental(markerClass = {kotlin.time.ExperimentalTime::class})
 @kotlin.internal.InlineOnly
 public inline operator fun kotlin.Int.times(duration: kotlin.time.Duration): kotlin.time.Duration
 
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.time.ExperimentalTime
+@kotlin.SinceKotlin(version = "1.6")
+@kotlin.WasExperimental(markerClass = {kotlin.time.ExperimentalTime::class})
 public fun kotlin.Double.toDuration(unit: kotlin.time.DurationUnit): kotlin.time.Duration
 
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.time.ExperimentalTime
+@kotlin.SinceKotlin(version = "1.6")
+@kotlin.WasExperimental(markerClass = {kotlin.time.ExperimentalTime::class})
 public fun kotlin.Int.toDuration(unit: kotlin.time.DurationUnit): kotlin.time.Duration
 
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.time.ExperimentalTime
+@kotlin.SinceKotlin(version = "1.6")
+@kotlin.WasExperimental(markerClass = {kotlin.time.ExperimentalTime::class})
 public fun kotlin.Long.toDuration(unit: kotlin.time.DurationUnit): kotlin.time.Duration
 
 @kotlin.SinceKotlin(version = "1.3")
@@ -177,52 +198,52 @@ public abstract class AbstractLongTimeSource : kotlin.time.TimeSource {
     protected abstract fun read(): kotlin.Long
 }
 
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.time.ExperimentalTime
+@kotlin.SinceKotlin(version = "1.6")
+@kotlin.WasExperimental(markerClass = {kotlin.time.ExperimentalTime::class})
 @kotlin.jvm.JvmInline
 public final inline class Duration : kotlin.Comparable<kotlin.time.Duration> {
     public final val absoluteValue: kotlin.time.Duration { get; }
 
+    @kotlin.time.ExperimentalTime
     @kotlin.Deprecated(message = "Use inWholeDays property instead or convert toDouble(DAYS) if a double value is required.", replaceWith = kotlin.ReplaceWith(expression = "toDouble(DurationUnit.DAYS)", imports = {}))
     public final val inDays: kotlin.Double { get; }
 
+    @kotlin.time.ExperimentalTime
     @kotlin.Deprecated(message = "Use inWholeHours property instead or convert toDouble(HOURS) if a double value is required.", replaceWith = kotlin.ReplaceWith(expression = "toDouble(DurationUnit.HOURS)", imports = {}))
     public final val inHours: kotlin.Double { get; }
 
+    @kotlin.time.ExperimentalTime
     @kotlin.Deprecated(message = "Use inWholeMicroseconds property instead or convert toDouble(MICROSECONDS) if a double value is required.", replaceWith = kotlin.ReplaceWith(expression = "toDouble(DurationUnit.MICROSECONDS)", imports = {}))
     public final val inMicroseconds: kotlin.Double { get; }
 
+    @kotlin.time.ExperimentalTime
     @kotlin.Deprecated(message = "Use inWholeMilliseconds property instead or convert toDouble(MILLISECONDS) if a double value is required.", replaceWith = kotlin.ReplaceWith(expression = "toDouble(DurationUnit.MILLISECONDS)", imports = {}))
     public final val inMilliseconds: kotlin.Double { get; }
 
+    @kotlin.time.ExperimentalTime
     @kotlin.Deprecated(message = "Use inWholeMinutes property instead or convert toDouble(MINUTES) if a double value is required.", replaceWith = kotlin.ReplaceWith(expression = "toDouble(DurationUnit.MINUTES)", imports = {}))
     public final val inMinutes: kotlin.Double { get; }
 
+    @kotlin.time.ExperimentalTime
     @kotlin.Deprecated(message = "Use inWholeNanoseconds property instead or convert toDouble(NANOSECONDS) if a double value is required.", replaceWith = kotlin.ReplaceWith(expression = "toDouble(DurationUnit.NANOSECONDS)", imports = {}))
     public final val inNanoseconds: kotlin.Double { get; }
 
+    @kotlin.time.ExperimentalTime
     @kotlin.Deprecated(message = "Use inWholeSeconds property instead or convert toDouble(SECONDS) if a double value is required.", replaceWith = kotlin.ReplaceWith(expression = "toDouble(DurationUnit.SECONDS)", imports = {}))
     public final val inSeconds: kotlin.Double { get; }
 
-    @kotlin.SinceKotlin(version = "1.5")
     public final val inWholeDays: kotlin.Long { get; }
 
-    @kotlin.SinceKotlin(version = "1.5")
     public final val inWholeHours: kotlin.Long { get; }
 
-    @kotlin.SinceKotlin(version = "1.5")
     public final val inWholeMicroseconds: kotlin.Long { get; }
 
-    @kotlin.SinceKotlin(version = "1.5")
     public final val inWholeMilliseconds: kotlin.Long { get; }
 
-    @kotlin.SinceKotlin(version = "1.5")
     public final val inWholeMinutes: kotlin.Long { get; }
 
-    @kotlin.SinceKotlin(version = "1.5")
     public final val inWholeNanoseconds: kotlin.Long { get; }
 
-    @kotlin.SinceKotlin(version = "1.5")
     public final val inWholeSeconds: kotlin.Long { get; }
 
     public open override operator fun compareTo(other: kotlin.time.Duration): kotlin.Int
@@ -253,11 +274,11 @@ public final inline class Duration : kotlin.Comparable<kotlin.time.Duration> {
 
     public final operator fun times(scale: kotlin.Int): kotlin.time.Duration
 
-    public final inline fun <T> toComponents(action: (days: kotlin.Int, hours: kotlin.Int, minutes: kotlin.Int, seconds: kotlin.Int, nanoseconds: kotlin.Int) -> T): T
+    public final inline fun <T> toComponents(action: (days: kotlin.Long, hours: kotlin.Int, minutes: kotlin.Int, seconds: kotlin.Int, nanoseconds: kotlin.Int) -> T): T
 
-    public final inline fun <T> toComponents(action: (hours: kotlin.Int, minutes: kotlin.Int, seconds: kotlin.Int, nanoseconds: kotlin.Int) -> T): T
+    public final inline fun <T> toComponents(action: (hours: kotlin.Long, minutes: kotlin.Int, seconds: kotlin.Int, nanoseconds: kotlin.Int) -> T): T
 
-    public final inline fun <T> toComponents(action: (minutes: kotlin.Int, seconds: kotlin.Int, nanoseconds: kotlin.Int) -> T): T
+    public final inline fun <T> toComponents(action: (minutes: kotlin.Long, seconds: kotlin.Int, nanoseconds: kotlin.Int) -> T): T
 
     public final inline fun <T> toComponents(action: (seconds: kotlin.Long, nanoseconds: kotlin.Int) -> T): T
 
@@ -269,9 +290,11 @@ public final inline class Duration : kotlin.Comparable<kotlin.time.Duration> {
 
     public final fun toLong(unit: kotlin.time.DurationUnit): kotlin.Long
 
+    @kotlin.time.ExperimentalTime
     @kotlin.Deprecated(message = "Use inWholeMilliseconds property instead.", replaceWith = kotlin.ReplaceWith(expression = "this.inWholeMilliseconds", imports = {}))
     public final fun toLongMilliseconds(): kotlin.Long
 
+    @kotlin.time.ExperimentalTime
     @kotlin.Deprecated(message = "Use inWholeNanoseconds property instead.", replaceWith = kotlin.ReplaceWith(expression = "this.inWholeNanoseconds", imports = {}))
     public final fun toLongNanoseconds(): kotlin.Long
 
@@ -286,75 +309,210 @@ public final inline class Duration : kotlin.Comparable<kotlin.time.Duration> {
 
         public final val ZERO: kotlin.time.Duration { get; }
 
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Double.days: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Int.days: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Long.days: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Double.hours: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Int.hours: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Long.hours: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Double.microseconds: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Int.microseconds: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Long.microseconds: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Double.milliseconds: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Int.milliseconds: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Long.milliseconds: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Double.minutes: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Int.minutes: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Long.minutes: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Double.nanoseconds: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Int.nanoseconds: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Long.nanoseconds: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Double.seconds: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Int.seconds: kotlin.time.Duration { get; }
+
+        @kotlin.internal.InlineOnly
+        public final val kotlin.Long.seconds: kotlin.time.Duration { get; }
+
+        @kotlin.time.ExperimentalTime
         public final fun convert(value: kotlin.Double, sourceUnit: kotlin.time.DurationUnit, targetUnit: kotlin.time.DurationUnit): kotlin.Double
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Double.days' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.days", imports = {"kotlin.time.Duration.Companion.days"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun days(value: kotlin.Double): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Int.days' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.days", imports = {"kotlin.time.Duration.Companion.days"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun days(value: kotlin.Int): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Long.days' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.days", imports = {"kotlin.time.Duration.Companion.days"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun days(value: kotlin.Long): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Double.hours' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.hours", imports = {"kotlin.time.Duration.Companion.hours"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun hours(value: kotlin.Double): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Int.hours' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.hours", imports = {"kotlin.time.Duration.Companion.hours"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun hours(value: kotlin.Int): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Long.hours' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.hours", imports = {"kotlin.time.Duration.Companion.hours"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun hours(value: kotlin.Long): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Double.microseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.microseconds", imports = {"kotlin.time.Duration.Companion.microseconds"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun microseconds(value: kotlin.Double): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Int.microseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.microseconds", imports = {"kotlin.time.Duration.Companion.microseconds"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun microseconds(value: kotlin.Int): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Long.microseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.microseconds", imports = {"kotlin.time.Duration.Companion.microseconds"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun microseconds(value: kotlin.Long): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Double.milliseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.milliseconds", imports = {"kotlin.time.Duration.Companion.milliseconds"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun milliseconds(value: kotlin.Double): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Int.milliseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.milliseconds", imports = {"kotlin.time.Duration.Companion.milliseconds"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun milliseconds(value: kotlin.Int): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Long.milliseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.milliseconds", imports = {"kotlin.time.Duration.Companion.milliseconds"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun milliseconds(value: kotlin.Long): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Double.minutes' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.minutes", imports = {"kotlin.time.Duration.Companion.minutes"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun minutes(value: kotlin.Double): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Int.minutes' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.minutes", imports = {"kotlin.time.Duration.Companion.minutes"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun minutes(value: kotlin.Int): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Long.minutes' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.minutes", imports = {"kotlin.time.Duration.Companion.minutes"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun minutes(value: kotlin.Long): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Double.nanoseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.nanoseconds", imports = {"kotlin.time.Duration.Companion.nanoseconds"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun nanoseconds(value: kotlin.Double): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Int.nanoseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.nanoseconds", imports = {"kotlin.time.Duration.Companion.nanoseconds"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun nanoseconds(value: kotlin.Int): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Long.nanoseconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.nanoseconds", imports = {"kotlin.time.Duration.Companion.nanoseconds"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun nanoseconds(value: kotlin.Long): kotlin.time.Duration
 
+        public final fun parse(value: kotlin.String): kotlin.time.Duration
+
+        public final fun parseIsoString(value: kotlin.String): kotlin.time.Duration
+
+        public final fun parseIsoStringOrNull(value: kotlin.String): kotlin.time.Duration?
+
+        public final fun parseOrNull(value: kotlin.String): kotlin.time.Duration?
+
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Double.seconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.seconds", imports = {"kotlin.time.Duration.Companion.seconds"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun seconds(value: kotlin.Double): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Int.seconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.seconds", imports = {"kotlin.time.Duration.Companion.seconds"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun seconds(value: kotlin.Int): kotlin.time.Duration
 
         @kotlin.SinceKotlin(version = "1.5")
+        @kotlin.time.ExperimentalTime
+        @kotlin.Deprecated(message = "Use 'Long.seconds' extension property from Duration.Companion instead.", replaceWith = kotlin.ReplaceWith(expression = "value.seconds", imports = {"kotlin.time.Duration.Companion.seconds"}))
+        @kotlin.DeprecatedSinceKotlin(warningSince = "1.6")
         public final fun seconds(value: kotlin.Long): kotlin.time.Duration
     }
 }
 
-@kotlin.SinceKotlin(version = "1.3")
-@kotlin.time.ExperimentalTime
+@kotlin.SinceKotlin(version = "1.6")
+@kotlin.WasExperimental(markerClass = {kotlin.time.ExperimentalTime::class})
 public final enum class DurationUnit : kotlin.Enum<kotlin.time.DurationUnit> {
     enum entry NANOSECONDS
 

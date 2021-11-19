@@ -1,4 +1,4 @@
-// !WITH_NEW_INFERENCE
+// FIR_IDENTICAL
 // FILE: foo.kt
 package foo
 
@@ -15,5 +15,5 @@ import foo.*
 import bar.*
 
 fun <T> test(l: List<T>) {
-    <!CANNOT_COMPLETE_RESOLVE{OI}, OVERLOAD_RESOLUTION_AMBIGUITY{NI}!>f<!>(l)
+    <!OVERLOAD_RESOLUTION_AMBIGUITY!>f<!>(l)
 }

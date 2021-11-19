@@ -52,7 +52,7 @@ private fun createRootPublication(project: Project, publishing: PublishingExtens
 private fun MavenPublication.addKotlinToolingMetadataArtifactIfNeeded(project: Project) {
     val buildKotlinToolingMetadataTask = project.buildKotlinToolingMetadataTask ?: return
 
-    artifact(buildKotlinToolingMetadataTask.flatMap { it.outputFile }) { artifact ->
+    artifact(buildKotlinToolingMetadataTask.map { it.outputFile }) { artifact ->
         artifact.classifier = "kotlin-tooling-metadata"
         artifact.builtBy(buildKotlinToolingMetadataTask)
     }
@@ -76,7 +76,7 @@ private fun createTargetPublications(project: Project, publishing: PublishingExt
 private fun AbstractKotlinTarget.createMavenPublications(publications: PublicationContainer) {
     components
         .map { gradleComponent -> gradleComponent to kotlinComponents.single { it.name == gradleComponent.name } }
-        .filter { (_, kotlinComponent) -> kotlinComponent.publishable }
+        .filter { (_, kotlinComponent) -> kotlinComponent.publishableOnCurrentHost }
         .forEach { (gradleComponent, kotlinComponent) ->
             val componentPublication = publications.create(kotlinComponent.name, MavenPublication::class.java).apply {
                 // do this in whenEvaluated since older Gradle versions seem to check the files in the variant eagerly:

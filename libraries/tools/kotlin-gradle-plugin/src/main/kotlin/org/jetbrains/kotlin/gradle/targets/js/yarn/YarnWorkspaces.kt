@@ -9,7 +9,6 @@ import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.internal.service.ServiceRegistry
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
-import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 import org.jetbrains.kotlin.gradle.targets.js.npm.NpmApi
 import org.jetbrains.kotlin.gradle.targets.js.npm.NpmProject
 import org.jetbrains.kotlin.gradle.targets.js.npm.PackageJson
@@ -17,8 +16,6 @@ import org.jetbrains.kotlin.gradle.targets.js.npm.resolved.KotlinCompilationNpmR
 import java.io.File
 
 class YarnWorkspaces : YarnBasics() {
-    override fun resolveProject(resolvedNpmProject: KotlinCompilationNpmResolution) = Unit
-
     override fun preparedFiles(nodeJs: NodeJsRootExtension): Collection<File> {
         return listOf(
             nodeJs
@@ -34,10 +31,12 @@ class YarnWorkspaces : YarnBasics() {
         rootProjectVersion: String,
         logger: Logger,
         subProjects: Collection<KotlinCompilationNpmResolution>,
-        resolutions: Map<String, String>
+        resolutions: Map<String, String>,
+        forceFullResolve: Boolean
     ) {
-//        check(rootProject == rootProject.rootProject)
-        rootProject?.let { setup(it) }
+        if (forceFullResolve) {
+            rootProject?.let { setup(it) }
+        }
         return prepareRootPackageJson(
             nodeJs,
             rootProjectName,
@@ -72,9 +71,9 @@ class YarnWorkspaces : YarnBasics() {
         services: ServiceRegistry,
         logger: Logger,
         nodeJs: NodeJsRootExtension,
-        yarnHome: File,
+        command: String,
+        isStandalone: Boolean,
         npmProjects: Collection<KotlinCompilationNpmResolution>,
-        skipExecution: Boolean,
         cliArgs: List<String>
     ) {
         val nodeJsWorldDir = nodeJs.rootPackageDir
@@ -83,12 +82,12 @@ class YarnWorkspaces : YarnBasics() {
             services,
             logger,
             nodeJs,
-            yarnHome,
+            command,
+            isStandalone,
             nodeJsWorldDir,
             NpmApi.resolveOperationDescription("yarn"),
             cliArgs
         )
-        nodeJs.rootNodeModulesStateFile.writeText(System.currentTimeMillis().toString())
 
         yarnLockReadTransitiveDependencies(nodeJsWorldDir, npmProjects.flatMap { it.externalNpmDependencies })
     }

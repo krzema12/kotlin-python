@@ -50,4 +50,10 @@ interface CommonBackendContext : BackendContext, LoggingContext {
     fun isSideEffectFree(call: IrCall): Boolean {
         return false
     }
+
+    val preferJavaLikeCounterLoop: Boolean
+        get() = false
+
+    val optimizeNullChecksUsingKotlinNullability: Boolean
+        get() = true
 }

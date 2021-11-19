@@ -8,16 +8,13 @@ import llvm.*
 import org.jetbrains.kotlin.backend.common.serialization.KlibIrVersion
 import org.jetbrains.kotlin.backend.common.serialization.metadata.KlibMetadataVersion
 import org.jetbrains.kotlin.backend.konan.llvm.*
-import org.jetbrains.kotlin.backend.konan.llvm.Llvm
 import org.jetbrains.kotlin.backend.konan.llvm.objc.linkObjC
 import org.jetbrains.kotlin.konan.CURRENT
-import org.jetbrains.kotlin.library.KotlinAbiVersion
 import org.jetbrains.kotlin.konan.CompilerVersion
 import org.jetbrains.kotlin.konan.file.isBitcode
-import org.jetbrains.kotlin.library.*
-import org.jetbrains.kotlin.konan.target.CompilerOutputKind
-import org.jetbrains.kotlin.konan.target.Family
 import org.jetbrains.kotlin.konan.library.impl.buildLibrary
+import org.jetbrains.kotlin.konan.target.CompilerOutputKind
+import org.jetbrains.kotlin.library.*
 
 /**
  * Supposed to be true for a single LLVM module within final binary.
@@ -48,8 +45,12 @@ val CompilerOutputKind.isCache: Boolean
 
 internal fun produceCStubs(context: Context) {
     val llvmModule = context.llvmModule!!
-    context.cStubsManager.compile(context.config.clang, context.messageCollector, context.inVerbosePhase)?.let {
-        parseAndLinkBitcodeFile(llvmModule, it.absolutePath)
+    context.cStubsManager.compile(
+            context.config.clang,
+            context.messageCollector,
+            context.inVerbosePhase
+    ).forEach {
+        parseAndLinkBitcodeFile(context, llvmModule, it.absolutePath)
     }
 }
 
@@ -75,7 +76,7 @@ private fun linkAllDependencies(context: Context, generatedBitcodeFiles: List<St
 
     val llvmModule = context.llvmModule!!
     bitcodeFiles.forEach {
-        parseAndLinkBitcodeFile(llvmModule, it)
+        parseAndLinkBitcodeFile(context, llvmModule, it)
     }
 }
 
@@ -178,12 +179,13 @@ internal fun produceOutput(context: Context) {
             context.bitcodeFileName = output
             LLVMWriteBitcodeToFile(context.llvmModule!!, output)
         }
+        null -> {}
     }
 }
 
-private fun parseAndLinkBitcodeFile(llvmModule: LLVMModuleRef, path: String) {
+private fun parseAndLinkBitcodeFile(context: Context, llvmModule: LLVMModuleRef, path: String) {
     val parsedModule = parseBitcodeFile(path)
-    val failed = LLVMLinkModules2(llvmModule, parsedModule)
+    val failed = llvmLinkModules2(context, llvmModule, parsedModule)
     if (failed != 0) {
         throw Error("failed to link $path") // TODO: retrieve error message from LLVM.
     }

@@ -38,6 +38,9 @@ class VirtualFileKotlinClass private constructor(
     override val location: String
         get() = file.path
 
+    override val containingLibrary: String?
+        get() = file.path.split("!/").firstOrNull()
+
     override fun getFileContents(): ByteArray {
         try {
             return file.contentsToByteArray()
@@ -61,7 +64,7 @@ class VirtualFileKotlinClass private constructor(
                 try {
                     val byteContent = fileContent ?: file.contentsToByteArray(false)
                     if (byteContent.isNotEmpty()) {
-                        val kotlinJvmBinaryClass = FileBasedKotlinClass.create(byteContent) { name, classVersion, header, innerClasses ->
+                        val kotlinJvmBinaryClass = create(byteContent) { name, classVersion, header, innerClasses ->
                             VirtualFileKotlinClass(file, name, classVersion, header, innerClasses)
                         }
 
@@ -79,8 +82,9 @@ class VirtualFileKotlinClass private constructor(
         }
 
         private fun logFileReadingErrorMessage(e: Throwable, file: VirtualFile): Throwable {
-            LOG.warn(renderFileReadingErrorMessage(file), e)
-            return e
+            val errorMessage = renderFileReadingErrorMessage(file)
+            LOG.warn(errorMessage, e)
+            return IllegalStateException(errorMessage, e)
         }
 
         private fun renderFileReadingErrorMessage(file: VirtualFile): String =

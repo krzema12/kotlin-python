@@ -25,14 +25,7 @@ struct InitNode;
 extern "C" {
 #endif
 
-// Must match DestroyRuntimeMode in DestroyRuntimeMode.kt
-enum DestroyRuntimeMode {
-    DESTROY_RUNTIME_LEGACY = 0,
-    DESTROY_RUNTIME_ON_SHUTDOWN = 1,
-};
-
-DestroyRuntimeMode Kotlin_getDestroyRuntimeMode();
-
+// For experimental MM, if runtime gets initialized, it will be in the native state after this.
 RUNTIME_NOTHROW void Kotlin_initRuntimeIfNeeded();
 void Kotlin_deinitRuntimeIfNeeded();
 
@@ -44,6 +37,9 @@ void Kotlin_shutdownRuntime();
 
 // Appends given node to an initializer list.
 void AppendToInitializersTail(struct InitNode*);
+
+void CallInitGlobalPossiblyLock(int volatile* state, void (*init)());
+void CallInitThreadLocal(int volatile* globalState, int* localState, void (*init)());
 
 bool Kotlin_memoryLeakCheckerEnabled();
 

@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // !CHECK_TYPE
 // !DIAGNOSTICS: -UNUSED_VARIABLE, -UNUSED_PARAMETER
 
@@ -18,7 +17,7 @@ fun test1() {
     bar("", 1, ::fooTakeString).checkType { _<Pair<String, Int>>() }
     bar("", "", ::fooReturnInt).checkType { <!INAPPLICABLE_CANDIDATE!>_<!><Pair<String, Any>>() }
 
-    val x: String = <!INITIALIZER_TYPE_MISMATCH!>bar("", "", ::fooReturnInt)<!>
+    val x: String = <!INITIALIZER_TYPE_MISMATCH, TYPE_MISMATCH!>bar("", "", ::fooReturnInt)<!>
 
     baz(Int::toString, ::foo).checkType { _<Pair<Int, String>>() }
 }

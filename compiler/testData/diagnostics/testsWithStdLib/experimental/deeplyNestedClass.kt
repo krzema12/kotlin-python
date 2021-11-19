@@ -5,6 +5,7 @@ package api
 
 @RequiresOptIn(level = RequiresOptIn.Level.WARNING)
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.BINARY)
 annotation class ExperimentalAPI
 
 @ExperimentalAPI
@@ -51,7 +52,7 @@ package usage3
 import api.*
 
 fun use1() {
-    <!EXPERIMENTAL_API_USAGE!>C<!>.<!EXPERIMENTAL_API_USAGE!>D<!>.<!EXPERIMENTAL_API_USAGE!>E<!>.<!EXPERIMENTAL_API_USAGE!>F<!>()
+    <!EXPERIMENTAL_API_USAGE!>C<!>.D.E.F()
 }
 
-fun use2(f: <!EXPERIMENTAL_API_USAGE!>C<!>.<!EXPERIMENTAL_API_USAGE!>D<!>.<!EXPERIMENTAL_API_USAGE!>E<!>.<!EXPERIMENTAL_API_USAGE!>F<!>) = f.<!EXPERIMENTAL_API_USAGE!>hashCode<!>()
+fun use2(f: <!EXPERIMENTAL_API_USAGE!>C<!>.D.E.F) = f.hashCode()

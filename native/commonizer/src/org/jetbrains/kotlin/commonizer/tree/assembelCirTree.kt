@@ -11,7 +11,8 @@ import org.jetbrains.kotlin.commonizer.mergedtree.*
 
 internal fun CirRootNode.assembleCirTree(): CirTreeRoot {
     return CirTreeRoot(
-        modules = modules.values.mapNotNull { it.assembleCirTree() }
+        modules = modules.values.mapNotNull { it.assembleCirTree() },
+        dependencies = dependencies
     )
 }
 
@@ -28,8 +29,8 @@ internal fun CirPackageNode.assembleCirTree(): CirTreePackage? {
 
     return CirTreePackage(
         pkg = commonizedPackage,
-        properties = properties.mapNotNull { (key, property) -> property.assembleCirTree(key) },
-        functions = functions.mapNotNull { (key, function) -> function.assembleCirTree(key) },
+        properties = properties.mapNotNull { (_, property) -> property.commonDeclaration() },
+        functions = functions.mapNotNull { (_, function) -> function.commonDeclaration() },
         typeAliases = commonizedTypeAliases.filterIsInstance<CirTreeTypeAlias>(),
         classes = classes.mapNotNull { (_, clazz) -> clazz.assembleCirTree() } + commonizedTypeAliases.filterIsInstance<CirTreeClass>()
     )
@@ -39,9 +40,9 @@ internal fun CirClassNode.assembleCirTree(): CirTreeClass? {
     return CirTreeClass(
         id = id,
         clazz = commonDeclaration() ?: return null,
-        properties = properties.mapNotNull { (key, property) -> property.assembleCirTree(key) },
-        functions = functions.mapNotNull { (key, function) -> function.assembleCirTree(key) },
-        constructors = constructors.mapNotNull { (key, constructor) -> constructor.assembleCirTree(key) },
+        properties = properties.mapNotNull { (_, property) -> property.commonDeclaration() },
+        functions = functions.mapNotNull { (_, function) -> function.commonDeclaration() },
+        constructors = constructors.mapNotNull { (_, constructor) -> constructor.commonDeclaration() },
         classes = classes.mapNotNull { (_, clazz) -> clazz.assembleCirTree() }
     )
 }
@@ -52,26 +53,5 @@ internal fun CirTypeAliasNode.assembleCirTree(): CirTreeClassifier? {
         is CirClass -> CirTreeClass(id, commonDeclaration)
         else -> null
     }
-}
-
-internal fun CirPropertyNode.assembleCirTree(approximationKey: PropertyApproximationKey): CirTreeProperty? {
-    return CirTreeProperty(
-        approximationKey = approximationKey,
-        property = commonDeclaration() ?: return null,
-    )
-}
-
-internal fun CirFunctionNode.assembleCirTree(approximationKey: FunctionApproximationKey): CirTreeFunction? {
-    return CirTreeFunction(
-        approximationKey = approximationKey,
-        function = commonDeclaration() ?: return null,
-    )
-}
-
-internal fun CirClassConstructorNode.assembleCirTree(approximationKey: ConstructorApproximationKey): CirTreeClassConstructor? {
-    return CirTreeClassConstructor(
-        approximationKey = approximationKey,
-        constructor = commonDeclaration() ?: return null
-    )
 }
 

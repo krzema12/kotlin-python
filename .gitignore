@@ -12,6 +12,7 @@
 /android-studio/sdk
 out/
 /tmp
+/intellij
 workspace.xml
 *.versionsBackup
 /idea/testData/debugger/tinyApp/classes*
@@ -60,7 +61,7 @@ build/
 .idea/artifacts/kotlin_stdlib_wasm_*
 .idea/jarRepositories.xml
 .idea/csv-plugin.xml
-kotlin-ultimate/
+.idea/libraries-with-intellij-classes.xml
 node_modules/
 .rpt2_cache/
 libraries/tools/kotlin-test-js-runner/lib/
@@ -71,3 +72,4 @@ outTmp/
 __pycache__/
 /test.output
 /kotlin-native/dist
+kotlin-ide/

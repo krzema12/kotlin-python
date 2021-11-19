@@ -4,7 +4,7 @@ apply plugin: 'kotlin-platform-common'
 
 configurePublishing(project)
 
-jvmTarget = "1.6"
+JvmToolchain.updateJvmTarget(project, "1.6")
 
 def commonSrcDir = "../src"
 def commonTestSrcDir = "../test"
@@ -43,9 +43,7 @@ compileKotlinCommon {
                 "-Xopt-in=kotlin.RequiresOptIn",
                 "-Xopt-in=kotlin.ExperimentalMultiplatform",
                 "-Xopt-in=kotlin.contracts.ExperimentalContracts",
-                "-Xinline-classes",
                 "-Xallow-kotlin-package",
-                "-Xallow-result-return-type"
         ]
     }
 }

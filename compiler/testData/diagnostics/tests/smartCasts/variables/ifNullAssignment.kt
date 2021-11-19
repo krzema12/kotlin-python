@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // See KT-13468, KT-13765
 
 fun basic(): String {
@@ -69,5 +68,5 @@ fun gau(flag: Boolean, arg: String?) {
         }
     }
 
-    <!DEBUG_INFO_SMARTCAST{NI}!>x<!><!UNSAFE_CALL{OI}!>.<!>hashCode()
+    <!DEBUG_INFO_SMARTCAST!>x<!>.hashCode()
 }

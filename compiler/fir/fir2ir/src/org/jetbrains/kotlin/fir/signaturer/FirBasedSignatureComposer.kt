@@ -9,6 +9,9 @@ import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.*
 import org.jetbrains.kotlin.fir.backend.Fir2IrSignatureComposer
 import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.utils.classId
+import org.jetbrains.kotlin.fir.declarations.utils.isExpect
+import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.symbols.ConeClassLikeLookupTag
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 import org.jetbrains.kotlin.ir.util.IdSignature
@@ -37,17 +40,17 @@ class FirBasedSignatureComposer(private val mangler: FirMangler) : Fir2IrSignatu
         }
 
         override fun visitConstructor(constructor: FirConstructor, data: Any?) {
-            hashId = mangler.run { constructor.signatureMangle }
+            hashId = mangler.run { constructor.signatureMangle(compatibleMode = false) }
             setExpected(constructor.isExpect)
         }
 
         override fun visitSimpleFunction(simpleFunction: FirSimpleFunction, data: Any?) {
-            hashId = mangler.run { simpleFunction.signatureMangle }
+            hashId = mangler.run { simpleFunction.signatureMangle(compatibleMode = false) }
             setExpected(simpleFunction.isExpect)
         }
 
         override fun visitProperty(property: FirProperty, data: Any?) {
-            hashId = mangler.run { property.signatureMangle }
+            hashId = mangler.run { property.signatureMangle(compatibleMode = false) }
             setExpected(property.isExpect)
         }
 
@@ -59,7 +62,7 @@ class FirBasedSignatureComposer(private val mangler: FirMangler) : Fir2IrSignatu
     override fun composeSignature(declaration: FirDeclaration, containingClass: ConeClassLikeLookupTag?): IdSignature? {
         if (declaration is FirAnonymousObject || declaration is FirAnonymousFunction) return null
         if (declaration is FirRegularClass && declaration.classId.isLocal) return null
-        if (declaration is FirCallableMemberDeclaration<*>) {
+        if (declaration is FirCallableDeclaration) {
             if (declaration.visibility == Visibilities.Local) return null
             if (declaration.dispatchReceiverClassOrNull()?.classId?.isLocal == true || containingClass?.classId?.isLocal == true) return null
         }
@@ -73,18 +76,18 @@ class FirBasedSignatureComposer(private val mangler: FirMangler) : Fir2IrSignatu
             is FirRegularClass -> {
                 // TODO: private classes are probably not acceptable here too
                 val classId = declaration.classId
-                IdSignature.PublicSignature(
+                IdSignature.CommonSignature(
                     classId.packageFqName.asString(), classId.relativeClassName.asString(), builder.hashId, builder.mask
                 )
             }
             is FirTypeAlias -> {
                 if (declaration.visibility == Visibilities.Private) return null
                 val classId = declaration.symbol.classId
-                IdSignature.PublicSignature(
+                IdSignature.CommonSignature(
                     classId.packageFqName.asString(), classId.relativeClassName.asString(), builder.hashId, builder.mask
                 )
             }
-            is FirCallableMemberDeclaration<*> -> {
+            is FirCallableDeclaration -> {
                 if (declaration.visibility == Visibilities.Private) return null
                 val containingClassId = containingClass?.classId
 
@@ -92,7 +95,7 @@ class FirBasedSignatureComposer(private val mangler: FirMangler) : Fir2IrSignatu
                 val packageName = classId?.packageFqName ?: declaration.symbol.callableId.packageName
                 val callableName = declaration.symbol.callableId.callableName
 
-                IdSignature.PublicSignature(
+                IdSignature.CommonSignature(
                     packageName.asString(),
                     classId?.relativeClassName?.child(callableName)?.asString() ?: callableName.asString(),
                     builder.hashId, builder.mask
@@ -107,12 +110,12 @@ class FirBasedSignatureComposer(private val mangler: FirMangler) : Fir2IrSignatu
         isSetter: Boolean,
         containingClass: ConeClassLikeLookupTag?
     ): IdSignature? {
-        val propertySignature = composeSignature(property, containingClass) as? IdSignature.PublicSignature ?: return null
+        val propertySignature = composeSignature(property, containingClass) as? IdSignature.CommonSignature ?: return null
         val accessorFqName = if (isSetter) {
             propertySignature.declarationFqName + ".<set-${property.name.asString()}>"
         } else {
             propertySignature.declarationFqName + ".<get-${property.name.asString()}>"
         }
-        return IdSignature.PublicSignature(propertySignature.packageFqName, accessorFqName, propertySignature.id, propertySignature.mask)
+        return IdSignature.CommonSignature(propertySignature.packageFqName, accessorFqName, propertySignature.id, propertySignature.mask)
     }
 }

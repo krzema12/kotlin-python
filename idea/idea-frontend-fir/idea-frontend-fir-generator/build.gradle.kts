@@ -5,10 +5,11 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":compiler:resolution.common"))
     implementation(project(":compiler:fir:tree"))
     implementation(project(":compiler:fir:tree:tree-generator"))
     implementation(project(":compiler:fir:checkers:checkers-component-generator"))
-    implementation(project(":idea:idea-frontend-api"))
+    implementation(project(":idea-frontend-api"))
 
     implementation(project(":kotlin-reflect"))
     implementation(project(":kotlin-reflect-api"))

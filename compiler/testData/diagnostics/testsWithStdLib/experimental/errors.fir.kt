@@ -4,6 +4,7 @@
 package api
 
 @RequiresOptIn
+@Retention(AnnotationRetention.BINARY)
 annotation class E
 
 open class Base {
@@ -22,5 +23,5 @@ class Derived : Base() {
 }
 
 fun test(b: Base) {
-    b.foo()
+    b.<!EXPERIMENTAL_API_USAGE_ERROR!>foo<!>()
 }

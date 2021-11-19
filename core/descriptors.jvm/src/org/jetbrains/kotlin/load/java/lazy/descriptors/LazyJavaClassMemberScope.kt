@@ -17,7 +17,7 @@
 package org.jetbrains.kotlin.load.java.lazy.descriptors
 
 import org.jetbrains.kotlin.builtins.KotlinBuiltIns
-import org.jetbrains.kotlin.builtins.isContinuation
+import org.jetbrains.kotlin.builtins.StandardNames.CONTINUATION_INTERFACE_FQ_NAME
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.annotations.Annotations
 import org.jetbrains.kotlin.descriptors.impl.ClassConstructorDescriptorImpl
@@ -54,10 +54,9 @@ import org.jetbrains.kotlin.storage.NotNullLazyValue
 import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.TypeUtils
 import org.jetbrains.kotlin.types.checker.KotlinTypeChecker
-import org.jetbrains.kotlin.types.refinement.TypeRefinement
+import org.jetbrains.kotlin.types.TypeRefinement
 import org.jetbrains.kotlin.utils.SmartSet
 import org.jetbrains.kotlin.utils.addIfNotNull
-import org.jetbrains.kotlin.utils.addToStdlib.firstNotNullResult
 import org.jetbrains.kotlin.utils.ifEmpty
 import java.util.*
 
@@ -229,10 +228,8 @@ class LazyJavaClassMemberScope(
 
     private fun SimpleFunctionDescriptor.createSuspendView(): SimpleFunctionDescriptor? {
         val continuationParameter = valueParameters.lastOrNull()?.takeIf {
-            isContinuation(
-                it.type.constructor.declarationDescriptor?.fqNameUnsafe?.takeIf(FqNameUnsafe::isSafe)?.toSafe(),
-                c.components.settings.isReleaseCoroutines
-            )
+            it.type.constructor.declarationDescriptor?.fqNameUnsafe?.takeIf(FqNameUnsafe::isSafe)
+                ?.toSafe() == CONTINUATION_INTERFACE_FQ_NAME
         } ?: return null
 
         val functionDescriptor = newCopyBuilder()
@@ -288,7 +285,7 @@ class LazyJavaClassMemberScope(
         getterName: String,
         functions: (Name) -> Collection<SimpleFunctionDescriptor>
     ): SimpleFunctionDescriptor? {
-        return functions(Name.identifier(getterName)).firstNotNullResult factory@{ descriptor ->
+        return functions(Name.identifier(getterName)).firstNotNullOfOrNull factory@{ descriptor ->
             if (descriptor.valueParameters.size != 0) return@factory null
 
             descriptor.takeIf { KotlinTypeChecker.DEFAULT.isSubtypeOf(descriptor.returnType ?: return@takeIf false, type) }
@@ -298,7 +295,7 @@ class LazyJavaClassMemberScope(
     private fun PropertyDescriptor.findSetterOverride(
         functions: (Name) -> Collection<SimpleFunctionDescriptor>
     ): SimpleFunctionDescriptor? {
-        return functions(Name.identifier(JvmAbi.setterName(name.asString()))).firstNotNullResult factory@{ descriptor ->
+        return functions(Name.identifier(JvmAbi.setterName(name.asString()))).firstNotNullOfOrNull factory@{ descriptor ->
             if (descriptor.valueParameters.size != 1) return@factory null
 
             if (!KotlinBuiltIns.isUnit(descriptor.returnType ?: return@factory null)) return@factory null
@@ -448,7 +445,7 @@ class LazyJavaClassMemberScope(
     ): SimpleFunctionDescriptor? {
         if (!descriptor.isSuspend) return null
 
-        return functions(descriptor.name).firstNotNullResult { overrideCandidate ->
+        return functions(descriptor.name).firstNotNullOfOrNull { overrideCandidate ->
             overrideCandidate.createSuspendView()?.takeIf { suspendView -> suspendView.doesOverride(descriptor) }
         }
     }
@@ -484,6 +481,7 @@ class LazyJavaClassMemberScope(
                 )
                 setSignatureChange()
                 setPreserveSourceElement()
+                putUserData(JavaMethodDescriptor.HAS_ERASED_VALUE_PARAMETERS, true)
             }.build()
         }
     }
@@ -700,7 +698,11 @@ class LazyJavaClassMemberScope(
             classDescriptor.declaredTypeParameters +
                     constructor.typeParameters.map { p -> c.typeParameterResolver.resolveTypeParameter(p)!! }
 
-        constructorDescriptor.initialize(valueParameters.descriptors, constructor.visibility.toDescriptorVisibility(), constructorTypeParameters)
+        constructorDescriptor.initialize(
+            valueParameters.descriptors,
+            constructor.visibility.toDescriptorVisibility(),
+            constructorTypeParameters
+        )
         constructorDescriptor.setHasStableParameterNames(false)
         constructorDescriptor.setHasSynthesizedParameterNames(valueParameters.hasSynthesizedNames)
 

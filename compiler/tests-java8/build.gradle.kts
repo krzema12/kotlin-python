@@ -14,7 +14,7 @@ dependencies {
     testRuntimeOnly(toolsJar())
     testRuntime(intellijDep())
     testRuntimeOnly(intellijPluginDep("java"))
-    if (System.getProperty("idea.active") != null) testRuntimeOnly(files("${rootProject.projectDir}/dist/kotlinc/lib/kotlin-reflect.jar"))
+    if (isIdeaActive) testRuntimeOnly(files("${rootProject.projectDir}/dist/kotlinc/lib/kotlin-reflect.jar"))
 }
 
 sourceSets {
@@ -23,7 +23,6 @@ sourceSets {
 }
 
 projectTest(parallel = true) {
-    executable = "${rootProject.extra["JDK_18"]!!}/bin/java"
     dependsOn(":dist")
     workingDir = rootDir
     systemProperty("kotlin.test.script.classpath", testSourceSet.output.classesDirs.joinToString(File.pathSeparator))

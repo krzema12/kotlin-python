@@ -7,7 +7,8 @@ package kotlin.native.internal
 
 import kotlin.internal.getProgressionLastElement
 import kotlin.reflect.KClass
-import kotlin.native.concurrent.AtomicReference
+import kotlin.native.concurrent.FreezableAtomicReference
+import kotlin.native.concurrent.freeze
 
 @ExportForCppRuntime
 fun ThrowNullPointerException(): Nothing {
@@ -106,6 +107,12 @@ internal fun ThrowIncorrectDereferenceException() {
 }
 
 @ExportForCppRuntime
+@OptIn(ExperimentalStdlibApi::class)
+internal fun ThrowFileFailedToInitializeException() {
+    throw FileFailedToInitializeException("There was an error during file initialization")
+}
+
+@ExportForCppRuntime
 internal fun PrintThrowable(throwable: Throwable) {
     println(throwable)
 }
@@ -116,20 +123,23 @@ internal fun ReportUnhandledException(throwable: Throwable) {
     throwable.printStackTrace()
 }
 
-@SymbolName("TerminateWithUnhandledException")
-internal external fun TerminateWithUnhandledException(throwable: Throwable)
-
 // Using object to make sure that `hook` is initialized when it's needed instead of
 // in a normal global initialization flow. This is important if some global happens
 // to throw an exception during it's initialization before this hook would've been initialized.
 internal object UnhandledExceptionHookHolder {
-    internal val hook: AtomicReference<ReportUnhandledExceptionHook?> = AtomicReference(null)
+    internal val hook: FreezableAtomicReference<ReportUnhandledExceptionHook?> =
+        if (Platform.memoryModel == MemoryModel.EXPERIMENTAL) {
+            FreezableAtomicReference<ReportUnhandledExceptionHook?>(null)
+        } else {
+            FreezableAtomicReference<ReportUnhandledExceptionHook?>(null).freeze()
+        }
 }
 
+// TODO: Can be removed only when native-mt coroutines stop using it.
 @PublishedApi
 @ExportForCppRuntime
 internal fun OnUnhandledException(throwable: Throwable) {
-    val handler = UnhandledExceptionHookHolder.hook.swap(null)
+    val handler = UnhandledExceptionHookHolder.hook.value
     if (handler == null) {
         ReportUnhandledException(throwable);
         return
@@ -139,6 +149,12 @@ internal fun OnUnhandledException(throwable: Throwable) {
     } catch (t: Throwable) {
         ReportUnhandledException(t)
     }
+}
+
+@ExportForCppRuntime("Kotlin_runUnhandledExceptionHook")
+internal fun runUnhandledExceptionHook(throwable: Throwable) {
+    val handler = UnhandledExceptionHookHolder.hook.value ?: throw throwable
+    handler(throwable)
 }
 
 @ExportForCppRuntime

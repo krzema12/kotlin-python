@@ -16,7 +16,6 @@ import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrProperty
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrTypeParameterSymbol
-import org.jetbrains.kotlin.ir.symbols.isPublicApi
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.classifierOrFail
 import org.jetbrains.kotlin.ir.types.makeNullable
@@ -34,16 +33,8 @@ import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.isNullable
 import org.jetbrains.kotlin.types.typeUtil.makeNullable
 
-/**
- * TODO: there is [IrType::getInlinedClass] in [org.jetbrains.kotlin.ir.util] which isn't compatible with
- * Native's implementation. Please take a look while commonization.
- */
 fun IrType.getInlinedClassNative(): IrClass? = IrTypeInlineClassesSupport.getInlinedClass(this)
 
-/**
- * TODO: there is [IrType::isInlined] in [org.jetbrains.kotlin.ir.util] which isn't compatible with
- * Native's implementation. Please take a look while commonization.
- */
 fun IrType.isInlinedNative(): Boolean = IrTypeInlineClassesSupport.isInlined(this)
 fun IrClass.isInlined(): Boolean = IrTypeInlineClassesSupport.isInlined(this)
 fun IrClass.isNativePrimitiveType() = IrTypeInlineClassesSupport.isTopLevelClass(this) &&
@@ -300,7 +291,7 @@ private object IrTypeInlineClassesSupport : InlineClassesSupport<IrClass, IrType
 
     override fun getNativePointedSuperclass(clazz: IrClass): IrClass? {
         var superClass: IrClass? = clazz
-        while (superClass != null && (!superClass.symbol.isPublicApi || InteropIdSignatures.nativePointed != superClass.symbol.signature))
+        while (superClass != null && InteropIdSignatures.nativePointed != superClass.symbol.signature)
             superClass = superClass.getSuperClassNotAny()
         return superClass
     }

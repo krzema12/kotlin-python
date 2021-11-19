@@ -75,12 +75,12 @@ class Generator(
                 }
 
                 for ((kClass, alias) in configuration.aliases) {
-                    print("$CHECKERS_COMPONENT_INTERNAL_ANNOTATION internal val ${alias.allFieldName}: ${alias.setType} get() = ${alias.fieldName}")
+                    print("$CHECKERS_COMPONENT_INTERNAL_ANNOTATION internal val ${alias.allFieldName}: ${alias.setType} by lazy { ${alias.fieldName}")
                     for (parent in configuration.parentsMap.getValue(kClass)) {
                         val parentAlias = configuration.aliases.getValue(parent)
                         print(" + ${parentAlias.fieldName}")
                     }
-                    println()
+                    println(" }")
                 }
             }
             println("}")
@@ -94,7 +94,7 @@ class Generator(
             printPackageAndCopyright()
             printImports()
             printGeneratedMessage()
-            println("internal class $composedComponentName : $checkersComponentName() {")
+            println("class $composedComponentName : $checkersComponentName() {")
             withIndent {
                 // public overrides
                 for (alias in configuration.aliases.values) {
@@ -122,7 +122,7 @@ class Generator(
 
                 // register function
                 println(CHECKERS_COMPONENT_INTERNAL_ANNOTATION)
-                println("internal fun register(checkers: $checkersComponentName) {")
+                println("fun register(checkers: $checkersComponentName) {")
                 withIndent {
                     for (alias in configuration.aliases.values) {
                         println("_${alias.fieldName} += checkers.${alias.fieldName}")

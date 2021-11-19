@@ -27,8 +27,6 @@ plugins {
 native {
     val obj = if (HostManager.hostIsMingw) "obj" else "o"
     val llvmDir = project.findProperty("llvmDir")
-    val host = rootProject.project(":kotlin-native").extra["hostName"]
-    val hostLibffiDir = rootProject.project(":kotlin-native").extra["${host}LibffiDir"]
     val cxxflags = mutableListOf(
         "--std=c++17",
         "-I${llvmDir}/include",
@@ -36,7 +34,7 @@ native {
     )
     when (org.jetbrains.kotlin.konan.target.HostManager.host.family) {
         LINUX -> {
-            cxxflags.addAll(listOf("-DKONAN_LINUX=1", "-D_GLIBCXX_USE_CXX11_ABI=0"))
+            cxxflags.addAll(listOf("-DKONAN_LINUX=1"))
         }
         MINGW -> {
             cxxflags += "-DKONAN_WINDOWS=1"
@@ -45,12 +43,9 @@ native {
             cxxflags += "-DKONAN_MACOS=1"
         }
     }
-    if (!HostManager.hostIsMingw) {
-        cxxflags += "-fPIC"
-    }
     suffixes {
         (".cpp" to ".$obj") {
-            tool(*platformManager.hostPlatform.clang.clangCXX("").toTypedArray())
+            tool(*platformManager.hostPlatform.clangForJni.clangCXX("").toTypedArray())
             flags(*cxxflags.toTypedArray(), "-c", "-o", ruleOut(), ruleInFirst())
         }
 
@@ -63,7 +58,7 @@ native {
     val objSet = sourceSets["main"]!!.transform(".cpp" to ".$obj")
 
     target(lib("coverageMapping"), objSet) {
-        tool(*platformManager.hostPlatform.clang.llvmAr("").toTypedArray())
+        tool(*platformManager.hostPlatform.clangForJni.llvmAr("").toTypedArray())
         flags("-qv", ruleOut(), *ruleInAll())
     }
 }

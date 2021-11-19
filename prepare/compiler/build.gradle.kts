@@ -1,5 +1,6 @@
 @file:Suppress("HasPlatformType")
 
+import org.gradle.internal.jvm.Jvm
 import java.util.regex.Pattern.quote
 
 description = "Kotlin Compiler"
@@ -10,7 +11,6 @@ plugins {
     java
 }
 
-val JDK_18: String by rootProject.extra
 
 val fatJarContents by configurations.creating {
     isCanBeResolved = true
@@ -183,7 +183,7 @@ dependencies {
         sources(project(":kotlin-stdlib-js", configuration = "distSources"))
         sources(project(":kotlin-reflect", configuration = "sources"))
 
-        distStdlibMinimalForTests(project(":kotlin-stdlib:jvm-minimal-for-test"))
+        distStdlibMinimalForTests(project(":kotlin-stdlib-jvm-minimal-for-test"))
 
         distJSContents(project(":kotlin-stdlib-js", configuration = "distJs"))
         distJSContents(project(":kotlin-test:kotlin-test-js", configuration = "distJs"))
@@ -208,11 +208,7 @@ dependencies {
     fatJarContents(intellijCoreDep()) { includeJars("intellij-core") }
     fatJarContents(intellijDep()) { includeJars("jna-platform") }
 
-    if (Platform.P202()) {
-        fatJarContents(intellijDep()) { includeJars("intellij-deps-fastutil-8.3.1-1") }
-    } else if (Platform.P203.orHigher()) {
-        fatJarContents(intellijDep()) { includeJars("intellij-deps-fastutil-8.3.1-3") }
-    }
+    fatJarContents(intellijDep()) { includeJars("intellij-deps-fastutil-8.4.1-4") }
 
     fatJarContents(intellijDep()) { includeJars("lz4-java", rootProject = rootProject) }
 
@@ -266,7 +262,7 @@ val packCompiler by task<Jar> {
 val proguard by task<CacheableProguardTask> {
     dependsOn(packCompiler)
 
-    jdkHome = File(JDK_18)
+    javaLauncher.set(project.getToolchainLauncherFor(JdkMajorVersion.JDK_1_8))
 
     configuration("$projectDir/compiler.pro")
 
@@ -292,9 +288,23 @@ val proguard by task<CacheableProguardTask> {
     libraryjars(mapOf("filter" to "!META-INF/versions/**"), proguardLibraries)
     libraryjars(
         files(
-            firstFromJavaHomeThatExists("jre/lib/rt.jar", "../Classes/classes.jar", jdkHome = jdkHome!!),
-            firstFromJavaHomeThatExists("jre/lib/jsse.jar", "../Classes/jsse.jar", jdkHome = jdkHome!!),
-            toolsJarFile(jdkHome = jdkHome!!)
+            javaLauncher.map {
+                firstFromJavaHomeThatExists(
+                    "jre/lib/rt.jar",
+                    "../Classes/classes.jar",
+                    jdkHome = it.metadata.installationPath.asFile
+                )
+            },
+            javaLauncher.map {
+                firstFromJavaHomeThatExists(
+                    "jre/lib/jsse.jar",
+                    "../Classes/jsse.jar",
+                    jdkHome = it.metadata.installationPath.asFile
+                )
+            },
+            javaLauncher.map {
+                Jvm.forHome(it.metadata.installationPath.asFile).toolsJar
+            }
         )
     )
 

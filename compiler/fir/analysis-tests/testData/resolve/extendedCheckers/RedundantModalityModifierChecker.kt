@@ -10,7 +10,7 @@ interface Interface {
     // Redundant
     <!REDUNDANT_MODALITY_MODIFIER!>abstract<!> fun foo()
     // error
-    <!PRIVATE_FUNCTION_WITH_NO_BODY!>private<!> final fun bar()
+    <!PRIVATE_FUNCTION_WITH_NO_BODY!>private<!> <!WRONG_MODIFIER_CONTAINING_DECLARATION!>final<!> fun bar()
 
     <!REDUNDANT_MODALITY_MODIFIER!>open<!> fun goo() {}
     <!REDUNDANT_MODALITY_MODIFIER!>abstract<!> fun tar()
@@ -25,7 +25,7 @@ interface B {
 interface Foo
 
 expect abstract class AbstractClass : Foo {
-    abstract override fun foo()
+    abstract <!NOTHING_TO_OVERRIDE!>override<!> fun foo()
 
     abstract fun bar()
 
@@ -63,7 +63,7 @@ interface Derived : Interface {
     // Redundant
     override <!REDUNDANT_MODALITY_MODIFIER!>open<!> fun foo() {}
     // error
-    final class Nested
+    <!WRONG_MODIFIER_CONTAINING_DECLARATION!>final<!> class Nested
 }
 // Derived abstract class
 abstract class AbstractDerived1(override final val gav: Int) : Interface {
@@ -82,4 +82,4 @@ abstract interface AbstractInterface
 // Redundant final object
 <!REDUNDANT_MODALITY_MODIFIER!>final<!> object FinalObject
 // Open interface
-open interface OpenInterface
+<!REDUNDANT_MODIFIER_FOR_TARGET!>open<!> interface OpenInterface

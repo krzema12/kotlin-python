@@ -1,7 +1,7 @@
 // !JVM_TARGET: 1.8
 // FILE: 1.kt
 interface A {
-    @JvmDefault
+    @<!DEPRECATION!>JvmDefault<!>
     fun test() {
     }
 }
@@ -12,7 +12,7 @@ interface B : A {
 }
 
 interface C : B {
-    @JvmDefault
+    @<!DEPRECATION!>JvmDefault<!>
     override fun test() {
         super.test()
     }
@@ -41,7 +41,7 @@ class ManySupers: Foo2(), B {
     fun foo() {
         super<Foo2>.test()
         super<<!QUALIFIED_SUPERTYPE_EXTENDED_BY_OTHER_SUPERTYPE!>B<!>>.test()
-        super.<!UNRESOLVED_REFERENCE!>test<!>()
+        <!AMBIGUOUS_SUPER!>super<!>.test()
     }
 }
 
@@ -49,7 +49,7 @@ class ManySupers2: Foo2(), C {
     fun foo() {
         super<Foo2>.test()
         super<C>.test()
-        super.<!UNRESOLVED_REFERENCE!>test<!>()
+        <!AMBIGUOUS_SUPER!>super<!>.test()
     }
 }
 
@@ -57,6 +57,6 @@ class ManySupers2: Foo2(), C {
     fun foo() {
         super<Bar2>.test()
         super<C>.test()
-        super.<!UNRESOLVED_REFERENCE!>test<!>()
+        <!AMBIGUOUS_SUPER!>super<!>.test()
     }
 }

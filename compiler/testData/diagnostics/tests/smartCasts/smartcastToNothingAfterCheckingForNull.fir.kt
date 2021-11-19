@@ -19,7 +19,7 @@ fun g(x: B<Int>) {
     val y = x.content
     if (y == null) {
         f(y)
-        g(y)
+        <!NONE_APPLICABLE!>g<!>(y)
     }
 
     if (y is Nothing?) {

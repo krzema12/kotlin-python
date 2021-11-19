@@ -17,7 +17,7 @@ class TypeParameterCommonizer(classifiers: CirKnownClassifiers) : AbstractStanda
     private lateinit var variance: Variance
     private val upperBounds = TypeParameterUpperBoundsCommonizer(classifiers)
 
-    override fun commonizationResult() = CirTypeParameter.create(
+    override fun commonizationResult() = CirTypeParameter(
         annotations = emptyList(),
         name = name,
         isReified = isReified,
@@ -39,5 +39,5 @@ class TypeParameterCommonizer(classifiers: CirKnownClassifiers) : AbstractStanda
 }
 
 private class TypeParameterUpperBoundsCommonizer(classifiers: CirKnownClassifiers) : AbstractListCommonizer<CirType, CirType>(
-    singleElementCommonizerFactory = { TypeCommonizer(classifiers) }
+    singleElementCommonizerFactory = { TypeCommonizer(classifiers).asCommonizer() }
 )

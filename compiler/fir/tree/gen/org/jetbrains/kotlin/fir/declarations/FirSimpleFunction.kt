@@ -6,8 +6,7 @@
 package org.jetbrains.kotlin.fir.declarations
 
 import org.jetbrains.kotlin.fir.FirElement
-import org.jetbrains.kotlin.fir.FirPureAbstractElement
-import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.contracts.FirContractDescription
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
@@ -25,20 +24,21 @@ import org.jetbrains.kotlin.fir.visitors.*
  * DO NOT MODIFY IT MANUALLY
  */
 
-abstract class FirSimpleFunction : FirPureAbstractElement(), FirFunction<FirSimpleFunction>, FirCallableMemberDeclaration<FirSimpleFunction>, FirContractDescriptionOwner, FirTypeParametersOwner {
+abstract class FirSimpleFunction : FirFunction(), FirContractDescriptionOwner, FirTypeParametersOwner {
     abstract override val source: FirSourceElement?
-    abstract override val declarationSiteSession: FirSession
+    abstract override val moduleData: FirModuleData
     abstract override val resolvePhase: FirResolvePhase
     abstract override val origin: FirDeclarationOrigin
     abstract override val attributes: FirDeclarationAttributes
     abstract override val returnTypeRef: FirTypeRef
+    abstract override val status: FirDeclarationStatus
     abstract override val receiverTypeRef: FirTypeRef?
+    abstract override val deprecation: DeprecationsPerUseSite?
+    abstract override val containerSource: DeserializedContainerSource?
+    abstract override val dispatchReceiverType: ConeKotlinType?
     abstract override val controlFlowGraphReference: FirControlFlowGraphReference?
     abstract override val valueParameters: List<FirValueParameter>
     abstract override val body: FirBlock?
-    abstract override val status: FirDeclarationStatus
-    abstract override val containerSource: DeserializedContainerSource?
-    abstract override val dispatchReceiverType: ConeKotlinType?
     abstract override val contractDescription: FirContractDescription
     abstract val name: Name
     abstract override val symbol: FirNamedFunctionSymbol
@@ -57,6 +57,8 @@ abstract class FirSimpleFunction : FirPureAbstractElement(), FirFunction<FirSimp
 
     abstract override fun replaceReceiverTypeRef(newReceiverTypeRef: FirTypeRef?)
 
+    abstract override fun replaceDeprecation(newDeprecation: DeprecationsPerUseSite?)
+
     abstract override fun replaceControlFlowGraphReference(newControlFlowGraphReference: FirControlFlowGraphReference?)
 
     abstract override fun replaceValueParameters(newValueParameters: List<FirValueParameter>)
@@ -67,13 +69,13 @@ abstract class FirSimpleFunction : FirPureAbstractElement(), FirFunction<FirSimp
 
     abstract override fun <D> transformReturnTypeRef(transformer: FirTransformer<D>, data: D): FirSimpleFunction
 
+    abstract override fun <D> transformStatus(transformer: FirTransformer<D>, data: D): FirSimpleFunction
+
     abstract override fun <D> transformReceiverTypeRef(transformer: FirTransformer<D>, data: D): FirSimpleFunction
 
     abstract override fun <D> transformValueParameters(transformer: FirTransformer<D>, data: D): FirSimpleFunction
 
     abstract override fun <D> transformBody(transformer: FirTransformer<D>, data: D): FirSimpleFunction
-
-    abstract override fun <D> transformStatus(transformer: FirTransformer<D>, data: D): FirSimpleFunction
 
     abstract override fun <D> transformContractDescription(transformer: FirTransformer<D>, data: D): FirSimpleFunction
 

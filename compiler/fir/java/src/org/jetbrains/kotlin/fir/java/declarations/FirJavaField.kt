@@ -8,14 +8,14 @@ package org.jetbrains.kotlin.fir.java.declarations
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.Visibility
 import org.jetbrains.kotlin.fir.FirImplementationDetail
-import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.FirModuleData
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.builder.FirBuilderDsl
 import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.declarations.builder.FirFieldBuilder
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
 import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.fir.symbols.impl.FirDelegateFieldSymbol
+import org.jetbrains.kotlin.fir.languageVersionSettings
 import org.jetbrains.kotlin.fir.symbols.impl.FirFieldSymbol
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.fir.types.FirTypeRef
@@ -33,15 +33,16 @@ import kotlin.properties.Delegates
 @OptIn(FirImplementationDetail::class)
 class FirJavaField @FirImplementationDetail constructor(
     override val source: FirSourceElement?,
-    override val declarationSiteSession: FirSession,
+    override val moduleData: FirModuleData,
     override val symbol: FirFieldSymbol,
     override val name: Name,
+    @Volatile
     override var resolvePhase: FirResolvePhase,
     override var returnTypeRef: FirTypeRef,
     override var status: FirDeclarationStatus,
     override val isVar: Boolean,
     annotationBuilder: () -> List<FirAnnotationCall>,
-    override val typeParameters: MutableList<FirTypeParameter>,
+    override val typeParameters: MutableList<FirTypeParameterRef>,
     override var initializer: FirExpression?,
     override val dispatchReceiverType: ConeKotlinType?,
     override val attributes: FirDeclarationAttributes,
@@ -60,6 +61,9 @@ class FirJavaField @FirImplementationDetail constructor(
 
     override val annotations: List<FirAnnotationCall> by lazy { annotationBuilder() }
 
+    override val deprecation: DeprecationsPerUseSite by lazy {
+        annotations.getDeprecationInfosFromAnnotations(moduleData.session.languageVersionSettings.apiVersion, fromJava = true)
+    }
 
     override fun <D> transformReturnTypeRef(transformer: FirTransformer<D>, data: D): FirField {
         returnTypeRef = returnTypeRef.transformSingle(transformer, data)
@@ -127,9 +131,6 @@ class FirJavaField @FirImplementationDetail constructor(
     override val delegate: FirExpression?
         get() = null
 
-    override val delegateFieldSymbol: FirDelegateFieldSymbol<FirField>?
-        get() = null
-
     override var containerSource: DeserializedContainerSource? = null
 
     override fun <D> transformInitializer(transformer: FirTransformer<D>, data: D): FirField {
@@ -137,6 +138,8 @@ class FirJavaField @FirImplementationDetail constructor(
     }
 
     override fun replaceReceiverTypeRef(newReceiverTypeRef: FirTypeRef?) {}
+
+    override fun replaceDeprecation(newDeprecation: DeprecationsPerUseSite?) {}
 
     override fun <D> transformDelegate(transformer: FirTransformer<D>, data: D): FirField {
         return this
@@ -156,8 +159,8 @@ internal class FirJavaFieldBuilder : FirFieldBuilder() {
     override fun build(): FirJavaField {
         return FirJavaField(
             source,
-            declarationSiteSession,
-            symbol as FirFieldSymbol,
+            moduleData,
+            symbol,
             name,
             resolvePhase,
             returnTypeRef,

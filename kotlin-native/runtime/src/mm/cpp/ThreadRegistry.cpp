@@ -6,7 +6,9 @@
 #include "ThreadRegistry.hpp"
 
 #include "GlobalData.hpp"
+#include "Porting.h"
 #include "ThreadData.hpp"
+#include "ThreadState.hpp"
 
 using namespace kotlin;
 
@@ -16,28 +18,35 @@ mm::ThreadRegistry& mm::ThreadRegistry::Instance() noexcept {
 }
 
 mm::ThreadRegistry::Node* mm::ThreadRegistry::RegisterCurrentThread() noexcept {
-    auto* threadDataNode = list_.Emplace(pthread_self());
+    auto* threadDataNode = list_.Emplace(konan::currentThreadId());
+    AssertThreadState(threadDataNode->Get(), ThreadState::kNative);
     Node*& currentDataNode = currentThreadDataNode_;
-    RuntimeAssert(currentDataNode == nullptr, "This thread already had some data assigned to it.");
+    RuntimeAssert(!IsCurrentThreadRegistered(), "This thread already had some data assigned to it.");
     currentDataNode = threadDataNode;
     return threadDataNode;
 }
 
 void mm::ThreadRegistry::Unregister(Node* threadDataNode) noexcept {
+    AssertThreadState(threadDataNode->Get(), ThreadState::kNative);
     list_.Erase(threadDataNode);
     // Do not touch `currentThreadData_` as TLS may already have been deallocated.
 }
 
-mm::ThreadRegistry::Iterable mm::ThreadRegistry::Iter() noexcept {
-    return list_.Iter();
+mm::ThreadRegistry::Iterable mm::ThreadRegistry::LockForIter() noexcept {
+    return list_.LockForIter();
+}
+
+std::unique_lock<mm::ThreadRegistry::Mutex> mm::ThreadRegistry::Lock() noexcept {
+    return list_.Lock();
 }
 
 ALWAYS_INLINE mm::ThreadData* mm::ThreadRegistry::CurrentThreadData() const noexcept {
-    return CurrentThreadDataNode()->Get();
+    auto* threadDataNode = CurrentThreadDataNode();
+    return threadDataNode ? threadDataNode->Get() : nullptr;
 }
 
 mm::ThreadRegistry::ThreadRegistry() = default;
 mm::ThreadRegistry::~ThreadRegistry() = default;
 
 // static
-thread_local mm::ThreadRegistry::Node* mm::ThreadRegistry::currentThreadDataNode_ = nullptr;
+THREAD_LOCAL_VARIABLE mm::ThreadRegistry::Node* mm::ThreadRegistry::currentThreadDataNode_ = nullptr;

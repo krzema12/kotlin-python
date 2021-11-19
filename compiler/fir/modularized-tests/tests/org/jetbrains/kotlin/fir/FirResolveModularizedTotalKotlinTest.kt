@@ -12,13 +12,12 @@ import com.intellij.psi.search.ProjectScope
 import com.sun.jna.Library
 import com.sun.jna.Native
 import com.sun.management.HotSpotDiagnosticMXBean
+import org.jetbrains.kotlin.ObsoleteTestInfrastructure
 import org.jetbrains.kotlin.asJava.finder.JavaElementFinder
-import org.jetbrains.kotlin.cli.common.profiling.AsyncProfilerHelper
 import org.jetbrains.kotlin.cli.common.toBooleanLenient
-import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
-import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
-import org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM
+import org.jetbrains.kotlin.cli.jvm.compiler.*
 import org.jetbrains.kotlin.fir.analysis.FirCheckersResolveProcessor
+import org.jetbrains.kotlin.fir.builder.PsiHandlingMode
 import org.jetbrains.kotlin.fir.builder.RawFirBuilder
 import org.jetbrains.kotlin.fir.declarations.FirFile
 import org.jetbrains.kotlin.fir.dump.MultiModuleHtmlFirDump
@@ -50,11 +49,6 @@ private val APPEND_ERROR_REPORTS = System.getProperty("fir.bench.report.errors.a
 private val RUN_CHECKERS = System.getProperty("fir.bench.run.checkers", "false").toBooleanLenient()!!
 private val USE_LIGHT_TREE = System.getProperty("fir.bench.use.light.tree", "false").toBooleanLenient()!!
 private val DUMP_MEMORY = System.getProperty("fir.bench.dump.memory", "false").toBooleanLenient()!!
-
-private val ASYNC_PROFILER_LIB = System.getProperty("fir.bench.use.async.profiler.lib")
-private val ASYNC_PROFILER_START_CMD = System.getProperty("fir.bench.use.async.profiler.cmd.start")
-private val ASYNC_PROFILER_STOP_CMD = System.getProperty("fir.bench.use.async.profiler.cmd.stop")
-private val PROFILER_SNAPSHOT_DIR = System.getProperty("fir.bench.snapshot.dir") ?: "tmp/snapshots"
 
 private val REPORT_PASS_EVENTS = System.getProperty("fir.bench.report.pass.events", "false").toBooleanLenient()!!
 
@@ -120,35 +114,9 @@ class FirResolveModularizedTotalKotlinTest : AbstractModularizedTest() {
 
     private var passEventReporter: PassEventReporter? = null
 
-    private val asyncProfiler = if (ASYNC_PROFILER_LIB != null) {
-        try {
-            AsyncProfilerHelper.getInstance(ASYNC_PROFILER_LIB)
-        } catch (e: ExceptionInInitializerError) {
-            if (e.cause is ClassNotFoundException) {
-                throw IllegalStateException("Async-profiler initialization error, make sure async-profiler.jar is on classpath", e.cause)
-            }
-            throw e
-        }
-    } else {
-        null
-    }
+    private val asyncProfilerControl = AsyncProfilerControl()
 
-    private fun executeAsyncProfilerCommand(command: String?, pass: Int) {
-        if (asyncProfiler != null) {
-            require(command != null)
-            fun String.replaceParams(): String =
-                this.replace("\$REPORT_DATE", reportDateStr)
-                    .replace("\$PASS", pass.toString())
-
-            val snapshotDir = File(PROFILER_SNAPSHOT_DIR.replaceParams()).also { it.mkdirs() }
-            val expandedCommand = command
-                .replace("\$SNAPSHOT_DIR", snapshotDir.toString())
-                .replaceParams()
-            val result = asyncProfiler.execute(expandedCommand)
-            println("PROFILER: $result")
-        }
-    }
-
+    @OptIn(ObsoleteTestInfrastructure::class)
     private fun runAnalysis(moduleData: ModuleData, environment: KotlinCoreEnvironment) {
         val project = environment.project
         val ktFiles = environment.getSourceFiles()
@@ -157,11 +125,11 @@ class FirResolveModularizedTotalKotlinTest : AbstractModularizedTest() {
             .uniteWith(TopDownAnalyzerFacadeForJVM.AllJavaSourcesInProjectScope(project))
         val librariesScope = ProjectScope.getLibrariesScope(project)
         val session = createSessionForTests(
-            environment,
-            scope,
-            librariesScope,
+            environment.toAbstractProjectEnvironment(),
+            scope.toAbstractProjectFileSearchScope(),
+            librariesScope.toAbstractProjectFileSearchScope(),
             moduleData.qualifiedName,
-            moduleData.friendDirs.map { it.canonicalPath }
+            moduleData.friendDirs.map { it.toPath() }
         )
         val scopeSession = ScopeSession()
         val processors = createAllCompilerResolveProcessors(session, scopeSession).let {
@@ -188,7 +156,7 @@ class FirResolveModularizedTotalKotlinTest : AbstractModularizedTest() {
             }
             bench.buildFiles(lightTree2Fir, allSourceFiles)
         } else {
-            val builder = RawFirBuilder(session, firProvider.kotlinScopeProvider)
+            val builder = RawFirBuilder(session, firProvider.kotlinScopeProvider, PsiHandlingMode.COMPILER)
             bench.buildFiles(builder, ktFiles)
         }
 
@@ -250,10 +218,13 @@ class FirResolveModularizedTotalKotlinTest : AbstractModularizedTest() {
         if (DUMP_FIR) dump = MultiModuleHtmlFirDump(File(FIR_HTML_DUMP_PATH))
         System.gc()
         passEventReporter?.reportPassStart(pass)
-        executeAsyncProfilerCommand(ASYNC_PROFILER_START_CMD, pass)
+        asyncProfilerControl.beforePass(pass, reportDateStr)
     }
 
     override fun afterPass(pass: Int) {
+
+        asyncProfilerControl.afterPass(pass, reportDateStr)
+
         val statistics = bench.getTotalStatistics()
         statistics.report(System.out, "Pass $pass")
 
@@ -268,8 +239,6 @@ class FirResolveModularizedTotalKotlinTest : AbstractModularizedTest() {
         if (FAIL_FAST) {
             bench.throwFailure()
         }
-
-        executeAsyncProfilerCommand(ASYNC_PROFILER_STOP_CMD, pass)
 
         passEventReporter?.reportPassEnd(pass)
     }

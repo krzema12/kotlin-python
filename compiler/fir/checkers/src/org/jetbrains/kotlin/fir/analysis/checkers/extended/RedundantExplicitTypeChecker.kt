@@ -8,24 +8,21 @@ package org.jetbrains.kotlin.fir.analysis.checkers.extended
 import org.jetbrains.kotlin.KtNodeTypes
 import org.jetbrains.kotlin.fir.FirFakeSourceElementKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
-import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirMemberDeclarationChecker
+import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirPropertyChecker
 import org.jetbrains.kotlin.fir.analysis.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors
 import org.jetbrains.kotlin.fir.analysis.diagnostics.reportOn
-import org.jetbrains.kotlin.fir.declarations.FirMemberDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirProperty
-import org.jetbrains.kotlin.fir.declarations.FirTypeAlias
 import org.jetbrains.kotlin.fir.expressions.*
-import org.jetbrains.kotlin.fir.references.FirNamedReference
-import org.jetbrains.kotlin.name.StandardClassIds
+import org.jetbrains.kotlin.fir.symbols.impl.FirTypeAliasSymbol
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.types.ConstantValueKind
 
-object RedundantExplicitTypeChecker : FirMemberDeclarationChecker() {
-    override fun check(declaration: FirMemberDeclaration, context: CheckerContext, reporter: DiagnosticReporter) {
-        if (declaration !is FirProperty) return
+object RedundantExplicitTypeChecker : FirPropertyChecker() {
+    override fun check(declaration: FirProperty, context: CheckerContext, reporter: DiagnosticReporter) {
         if (!declaration.isLocal) return
 
         val initializer = declaration.initializer ?: return
@@ -35,7 +32,7 @@ object RedundantExplicitTypeChecker : FirMemberDeclarationChecker() {
 
         val type = declaration.returnTypeRef.coneType
 
-        if (typeReference is FirTypeAlias) return
+        if (type.toSymbol(context.session) is FirTypeAliasSymbol) return
         if (typeReference.annotations.isNotEmpty()) return
 
         when (initializer) {
@@ -66,9 +63,6 @@ object RedundantExplicitTypeChecker : FirMemberDeclarationChecker() {
                     }
                     else -> return
                 }
-            }
-            is FirNamedReference -> {
-                if (!type.hasSameNameWithoutModifiers(initializer.name)) return
             }
             is FirFunctionCall -> {
                 if (!type.hasSameNameWithoutModifiers(initializer.calleeReference.name)) return

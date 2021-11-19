@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // JAVAC_EXPECTED_FILE
 // See also KT-10735
 fun test() {
@@ -76,5 +75,5 @@ fun test6() {
     finally {
         a = null
     }
-    <!DEBUG_INFO_CONSTANT{OI}!>a<!><!UNSAFE_CALL!>.<!>hashCode() // a is null here
+    a<!UNSAFE_CALL!>.<!>hashCode() // a is null here
 }

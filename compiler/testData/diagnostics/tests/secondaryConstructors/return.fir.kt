@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 class A {
     init {
         <!RETURN_NOT_ALLOWED!>return<!>
@@ -10,7 +9,7 @@ class A {
             return 1
         }
         return
-        return foo()
+        return <!TYPE_MISMATCH!>foo()<!>
     }
 
     fun foo(): Int = 1

@@ -22,6 +22,7 @@ import org.jetbrains.kotlin.backend.common.ir.ir2string
 import org.jetbrains.kotlin.backend.common.lower.createIrBuilder
 import org.jetbrains.kotlin.backend.common.lower.irBlock
 import org.jetbrains.kotlin.backend.konan.KonanBackendContext
+import org.jetbrains.kotlin.backend.konan.ir.KonanNameConventions
 import org.jetbrains.kotlin.builtins.PrimitiveType
 import org.jetbrains.kotlin.builtins.UnsignedType
 import org.jetbrains.kotlin.ir.IrElement
@@ -33,8 +34,13 @@ import org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
-import org.jetbrains.kotlin.ir.types.*
-import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.classifierOrFail
+import org.jetbrains.kotlin.ir.types.isArray
+import org.jetbrains.kotlin.ir.util.constructors
+import org.jetbrains.kotlin.ir.util.fqNameForIrSerialization
+import org.jetbrains.kotlin.ir.util.functions
+import org.jetbrains.kotlin.ir.util.getPropertyGetter
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 import org.jetbrains.kotlin.util.OperatorNameConventions
@@ -127,7 +133,7 @@ internal class VarargInjectionLowering constructor(val context: KonanBackendCont
                         log { "element:$i> ${ir2string(element)}" }
                         val dst = vars[element]!!
                         if (element !is IrSpreadElement) {
-                            +irCall(arrayHandle.setMethodSymbol.owner).apply {
+                            +irCall(arrayHandle.setMethodSymbol).apply {
                                 dispatchReceiver = irGet(arrayTmpVariable)
                                 putValueArgument(0, if (hasSpreadElement) irGet(indexTmpVariable) else irConstInt(i))
                                 putValueArgument(1, irGet(dst))
@@ -205,9 +211,12 @@ internal class VarargInjectionLowering constructor(val context: KonanBackendCont
     }
 
     abstract inner class ArrayHandle(val arraySymbol: IrClassSymbol) {
-        val setMethodSymbol = arraySymbol.functions.single { it.descriptor.name == OperatorNameConventions.SET }
+        val setMethodSymbol = with(arraySymbol.owner.functions) {
+            // For unsigned types use set method.
+            singleOrNull { it.name == KonanNameConventions.setWithoutBoundCheck } ?: single { it.name == OperatorNameConventions.SET }
+        }
         val sizeGetterSymbol = arraySymbol.getPropertyGetter("size")!!
-        val copyIntoSymbol = symbols.copyInto[arraySymbol.descriptor]!!
+        val copyIntoSymbol = symbols.copyInto[arraySymbol]!!
         protected val singleParameterConstructor =
             arraySymbol.owner.constructors.find { it.valueParameters.size == 1 }!!
 
@@ -224,7 +233,7 @@ internal class VarargInjectionLowering constructor(val context: KonanBackendCont
     }
 
     inner class PrimitiveArrayHandle(primitiveType: PrimitiveType)
-        : ArrayHandle(symbols.primitiveArrays[primitiveType]!!) {
+        : ArrayHandle(symbols.irBuiltIns.primitiveTypesToPrimitiveArrays[primitiveType]!!) {
 
         override fun createArray(builder: IrBuilderWithScope, elementType: IrType, size: IrExpression): IrExpression {
             return builder.irCall(singleParameterConstructor).apply {
@@ -249,7 +258,7 @@ internal class VarargInjectionLowering constructor(val context: KonanBackendCont
     private val primitiveArrayHandles = PrimitiveType.values().associate { it to PrimitiveArrayHandle(it) }
 
     private val unsignedArrayHandles = UnsignedType.values().mapNotNull { unsignedType ->
-        symbols.unsignedArrays[unsignedType]?.let {
+        symbols.unsignedTypesToUnsignedArrays[unsignedType]?.let {
             val primitiveType = when (unsignedType) {
                 UnsignedType.UBYTE -> PrimitiveType.BYTE
                 UnsignedType.USHORT -> PrimitiveType.SHORT
@@ -259,6 +268,7 @@ internal class VarargInjectionLowering constructor(val context: KonanBackendCont
             UnsignedArrayHandle(it, primitiveArrayHandles[primitiveType]!!)
         }
     }
+
 
     val arrayToHandle =
         (primitiveArrayHandles.values + unsignedArrayHandles + ReferenceArrayHandle()).associateBy { it.arraySymbol }

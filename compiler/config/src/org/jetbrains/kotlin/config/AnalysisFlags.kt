@@ -19,9 +19,6 @@ object AnalysisFlags {
     val expectActualLinker by AnalysisFlag.Delegates.Boolean
 
     @JvmStatic
-    val experimental by AnalysisFlag.Delegates.ListOfStrings
-
-    @JvmStatic
     val useExperimental by AnalysisFlag.Delegates.ListOfStrings
 
     @JvmStatic
@@ -53,4 +50,10 @@ object AnalysisFlags {
 
     @JvmStatic
     val extendedCompilerChecks by AnalysisFlag.Delegates.Boolean
+
+    @JvmStatic
+    val allowKotlinPackage by AnalysisFlag.Delegates.Boolean
+
+    @JvmStatic
+    val builtInsFromSources by AnalysisFlag.Delegates.Boolean
 }

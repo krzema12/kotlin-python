@@ -45,15 +45,15 @@ annotation class fieldOrPropAnn
 @Target(AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.VALUE_PARAMETER)
 annotation class getSetAndParamAnn
 
-public class B(@param:fieldOrPropAnn @fieldOrPropAnn val x: Int,
+public class B(<!WRONG_ANNOTATION_TARGET_WITH_USE_SITE_TARGET!>@param:fieldOrPropAnn<!> @fieldOrPropAnn val x: Int,
                @property:fieldOrPropAnn @fieldOrPropAnn val y: Int) {
     @fieldOrPropAnn @field:fieldOrPropAnn
     val z: Int = 42
 
-    @getSetAndParamAnn
+    <!WRONG_ANNOTATION_TARGET!>@getSetAndParamAnn<!>
     @setparam:getSetAndParamAnn
     var w: Int
         @getSetAndParamAnn @get:getSetAndParamAnn get() = 0
         // See KT-15470: fake INAPPLICABLE_TARGET_ON_PROPERTY
-        @getSetAndParamAnn @set:getSetAndParamAnn set(arg) {}
+        @getSetAndParamAnn <!INAPPLICABLE_TARGET_ON_PROPERTY!>@set:getSetAndParamAnn<!> set(arg) {}
 }

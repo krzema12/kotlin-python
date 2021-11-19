@@ -28,6 +28,7 @@ pill {
 }
 
 dependencies {
+    compileOnly(gradleKotlinDsl())
     api(project(":kotlin-gradle-plugin-api"))
     api(project(":kotlin-gradle-plugin-model"))
     compileOnly(project(":compiler"))
@@ -85,6 +86,8 @@ dependencies {
         because("Functional tests are using APIs from Android. Latest Version is used to avoid NoClassDefFoundError")
     }
 
+    functionalTestImplementation(gradleKotlinDsl())
+
     testImplementation(intellijDep()) { includeJars("junit", "serviceMessages", rootProject = rootProject) }
 
     testCompileOnly(project(":compiler"))
@@ -97,12 +100,15 @@ dependencies {
     testCompileOnly(project(":kotlin-reflect-api"))
     testCompileOnly(project(":kotlin-annotation-processing"))
     testCompileOnly(project(":kotlin-annotation-processing-gradle"))
+
+    compileOnly("com.gradle:gradle-enterprise-gradle-plugin:3.6.3")
 }
 
 if (kotlinBuildProperties.isInJpsBuildIdeaSync) {
     configurations.compile.get().exclude("com.android.tools.external.com-intellij", "intellij-core")
 }
 
+noDefaultJar()
 runtimeJar(rewriteDefaultJarDepsToShadedCompiler()).configure {
     dependsOn(jarContents)
 
@@ -144,7 +150,6 @@ tasks {
 }
 
 projectTest {
-    executable = "${rootProject.extra["JDK_18"]!!}/bin/java"
     dependsOn(tasks.named("validatePlugins"))
 
     workingDir = rootDir

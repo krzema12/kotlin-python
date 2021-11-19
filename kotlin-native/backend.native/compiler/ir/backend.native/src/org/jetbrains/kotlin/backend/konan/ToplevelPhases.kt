@@ -5,12 +5,16 @@ import org.jetbrains.kotlin.backend.common.IrValidator
 import org.jetbrains.kotlin.backend.common.IrValidatorConfig
 import org.jetbrains.kotlin.backend.common.lower.createIrBuilder
 import org.jetbrains.kotlin.backend.common.phaser.*
+import org.jetbrains.kotlin.backend.common.serialization.CompatibilityMode
 import org.jetbrains.kotlin.backend.common.serialization.metadata.KlibMetadataMonolithicSerializer
+import org.jetbrains.kotlin.backend.konan.MemoryModel
 import org.jetbrains.kotlin.backend.konan.llvm.*
 import org.jetbrains.kotlin.backend.konan.lower.ExpectToActualDefaultValueCopier
+import org.jetbrains.kotlin.backend.konan.lower.SamSuperTypesChecker
 import org.jetbrains.kotlin.backend.konan.objcexport.ObjCExport
-import org.jetbrains.kotlin.backend.konan.serialization.*
-import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
+import org.jetbrains.kotlin.backend.konan.serialization.KonanIdSignaturer
+import org.jetbrains.kotlin.backend.konan.serialization.KonanIrModuleSerializer
+import org.jetbrains.kotlin.backend.konan.serialization.KonanManglerDesc
 import org.jetbrains.kotlin.config.CommonConfigurationKeys
 import org.jetbrains.kotlin.config.languageVersionSettings
 import org.jetbrains.kotlin.ir.IrElement
@@ -146,6 +150,33 @@ internal val copyDefaultValuesToActualPhase = konanUnitPhase(
         description = "Copy default values from expect to actual declarations"
 )
 
+/*
+ * Sometimes psi2ir produces IR with non-trivial variance in super types of SAM conversions (this is a language design issue).
+ * Earlier this was solved with just erasing all such variances but this might lead to some other hard to debug problems,
+ * so after handling the majority of corner cases correctly in psi2ir it is safe to assume that such cases don't get here and
+ * even if they do, then it's better to throw an error right away than to dig out weird crashes down the pipeline or even at runtime.
+ * We explicitly check this, also fixing older klibs built with previous compiler versions by applying the same trick as before.
+ */
+internal val checkSamSuperTypesPhase = konanUnitPhase(
+        op = {
+            // Handling types in current module not recursively:
+            // psi2ir can produce SAM conversions with variances in type arguments of type arguments.
+            // See https://youtrack.jetbrains.com/issue/KT-49384.
+            // So don't go deeper than top-level arguments to avoid the compiler emitting false-positive errors.
+            // Lowerings can handle this.
+            // Also such variances are allowed in the language for manual implementations of interfaces.
+            irModule!!.files
+                    .forEach { SamSuperTypesChecker(this, it, mode = SamSuperTypesChecker.Mode.THROW, recurse = false).run() }
+            // TODO: This is temporary for handling klibs produced with earlier compiler versions.
+            // Handling types in dependencies recursively, just to be extra safe: don't change something that works.
+            irModules.values
+                    .flatMap { it.files }
+                    .forEach { SamSuperTypesChecker(this, it, mode = SamSuperTypesChecker.Mode.ERASE, recurse = true).run() }
+        },
+        name = "CheckSamSuperTypes",
+        description = "Check SAM conversions super types"
+)
+
 internal val serializerPhase = konanUnitPhase(
         op = {
             val expectActualLinker = config.configuration.get(CommonConfigurationKeys.EXPECT_ACTUAL_LINKER) ?: false
@@ -153,7 +184,7 @@ internal val serializerPhase = konanUnitPhase(
 
             serializedIr = irModule?.let { ir ->
                 KonanIrModuleSerializer(
-                    messageLogger, ir.irBuiltins, expectDescriptorToSymbol, skipExpects = !expectActualLinker
+                    messageLogger, ir.irBuiltins, expectDescriptorToSymbol, skipExpects = !expectActualLinker, compatibilityMode = CompatibilityMode.CURRENT
                 ).serializedIrModule(ir)
             }
 
@@ -191,6 +222,7 @@ internal val allLoweringsPhase = NamedCompilerPhase(
                 arrayConstructorPhase then
                 lateinitPhase then
                 sharedVariablesPhase then
+                inventNamesForLocalClasses then
                 extractLocalClassesFromInlineBodies then
                 inlinePhase then
                 provisionalFunctionExpressionPhase then
@@ -217,18 +249,21 @@ internal val allLoweringsPhase = NamedCompilerPhase(
                             delegationPhase,
                             functionReferencePhase,
                             singleAbstractMethodPhase,
+                            enumWhenPhase,
                             builtinOperatorPhase,
                             finallyBlocksPhase,
                             enumClassPhase,
+                            enumUsagePhase,
                             interopPhase,
                             varargPhase,
                             compileTimeEvaluatePhase,
                             kotlinNothingValueExceptionPhase,
                             coroutinesPhase,
                             typeOperatorPhase,
+                            expressionBodyTransformPhase,
+                            fileInitializersPhase,
                             bridgesPhase,
                             autoboxPhase,
-                            returnsInsertionPhase,
                         )
                 ),
         actions = setOf(defaultDumper, ::moduleValidationCallback)
@@ -366,16 +401,19 @@ internal val bitcodePhase = NamedCompilerPhase(
         name = "Bitcode",
         description = "LLVM Bitcode generation",
         lower = contextLLVMSetupPhase then
+                propertyAccessorInlinePhase then // Have to run after link dependencies phase, because fields
+                                                 // from dependencies can be changed during lowerings.
+                returnsInsertionPhase then
                 buildDFGPhase then
+                devirtualizationAnalysisPhase then
+                dcePhase then
+                removeRedundantCallsToFileInitializersPhase then
                 devirtualizationPhase then
                 redundantCoercionsCleaningPhase then
-                dcePhase then
                 createLLVMDeclarationsPhase then
                 ghaPhase then
                 RTTIPhase then
                 generateDebugInfoHeaderPhase then
-                propertyAccessorInlinePhase then // Have to run after link dependencies phase, because fields
-                                                 // from dependencies can be changed during lowerings.
                 escapeAnalysisPhase then
                 localEscapeAnalysisPhase then
                 codegenPhase then
@@ -387,6 +425,7 @@ private val backendCodegen = namedUnitPhase(
         name = "Backend codegen",
         description = "Backend code generation",
         lower = takeFromContext<Context, Unit, IrModuleFragment> { it.irModule!! } then
+                functionsWithoutBoundCheck then
                 allLoweringsPhase then // Lower current module first.
                 dependenciesLowerPhase then // Then lower all libraries in topological order.
                                             // With that we guarantee that inline functions are unlowered while being inlined.
@@ -397,7 +436,9 @@ private val backendCodegen = namedUnitPhase(
                 verifyBitcodePhase then
                 printBitcodePhase then
                 linkBitcodeDependenciesPhase then
+                checkExternalCallsPhase then
                 bitcodeOptimizationPhase then
+                rewriteExternalCallsCheckerGlobals then
                 unitSink()
 )
 
@@ -411,6 +452,7 @@ val toplevelPhase: CompilerPhase<*, Unit, Unit> = namedUnitPhase(
                 psiToIrPhase then
                 destroySymbolTablePhase then
                 copyDefaultValuesToActualPhase then
+                checkSamSuperTypesPhase then
                 serializerPhase then
                 specialBackendChecksPhase then
                 namedUnitPhase(
@@ -446,23 +488,31 @@ internal fun PhaseConfig.konanPhasesConfig(config: KonanConfig) {
         disableIf(backendCodegen, config.produce == CompilerOutputKind.LIBRARY)
         disableUnless(bitcodeOptimizationPhase, config.produce.involvesLinkStage)
         disableUnless(linkBitcodeDependenciesPhase, config.produce.involvesLinkStage)
+        disableUnless(checkExternalCallsPhase, config.produce.involvesLinkStage && getBoolean(KonanConfigKeys.CHECK_EXTERNAL_CALLS))
+        disableUnless(rewriteExternalCallsCheckerGlobals, config.produce.involvesLinkStage && getBoolean(KonanConfigKeys.CHECK_EXTERNAL_CALLS))
         disableUnless(objectFilesPhase, config.produce.involvesLinkStage)
         disableUnless(linkerPhase, config.produce.involvesLinkStage)
         disableIf(testProcessorPhase, getNotNull(KonanConfigKeys.GENERATE_TEST_RUNNER) == TestRunnerKind.NONE)
         disableUnless(buildDFGPhase, getBoolean(KonanConfigKeys.OPTIMIZATION))
+        disableUnless(devirtualizationAnalysisPhase, getBoolean(KonanConfigKeys.OPTIMIZATION))
         disableUnless(devirtualizationPhase, getBoolean(KonanConfigKeys.OPTIMIZATION))
         disableUnless(escapeAnalysisPhase, getBoolean(KonanConfigKeys.OPTIMIZATION))
         // Inline accessors only in optimized builds due to separate compilation and possibility to get broken
         // debug information.
         disableUnless(propertyAccessorInlinePhase, getBoolean(KonanConfigKeys.OPTIMIZATION))
         disableUnless(dcePhase, getBoolean(KonanConfigKeys.OPTIMIZATION))
+        disableUnless(removeRedundantCallsToFileInitializersPhase, getBoolean(KonanConfigKeys.OPTIMIZATION))
         disableUnless(ghaPhase, getBoolean(KonanConfigKeys.OPTIMIZATION))
         disableUnless(verifyBitcodePhase, config.needCompilerVerification || getBoolean(KonanConfigKeys.VERIFY_BITCODE))
+
+        disableUnless(fileInitializersPhase, getBoolean(KonanConfigKeys.PROPERTY_LAZY_INITIALIZATION))
+        disableUnless(removeRedundantCallsToFileInitializersPhase, getBoolean(KonanConfigKeys.PROPERTY_LAZY_INITIALIZATION))
 
         val isDescriptorsOnlyLibrary = config.metadataKlib == true
         disableIf(psiToIrPhase, isDescriptorsOnlyLibrary)
         disableIf(destroySymbolTablePhase, isDescriptorsOnlyLibrary)
         disableIf(copyDefaultValuesToActualPhase, isDescriptorsOnlyLibrary)
         disableIf(specialBackendChecksPhase, isDescriptorsOnlyLibrary)
+        disableIf(checkSamSuperTypesPhase, isDescriptorsOnlyLibrary)
     }
 }

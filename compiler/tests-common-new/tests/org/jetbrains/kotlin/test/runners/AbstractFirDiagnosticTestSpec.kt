@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.test.runners
 
+import org.jetbrains.kotlin.test.bind
 import org.jetbrains.kotlin.test.builders.TestConfigurationBuilder
 import org.jetbrains.kotlin.test.directives.AdditionalFilesDirectives.SPEC_HELPERS
 import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirectives.WITH_STDLIB
@@ -17,19 +18,23 @@ abstract class AbstractFirDiagnosticTestSpec : AbstractFirDiagnosticTest() {
     override fun configure(builder: TestConfigurationBuilder) {
         super.configure(builder)
         with(builder) {
-            defaultDirectives {
-                +SPEC_HELPERS
-                +WITH_STDLIB
-            }
-
-            useAdditionalSourceProviders(::SpecHelpersSourceFilesProvider)
-
-            useAfterAnalysisCheckers(
-                ::FirIdenticalChecker,
-                ::FirFailingTestSuppressor,
-            )
-
-            useMetaTestConfigurators(::FirOldFrontendMetaConfigurator)
+            baseFirSpecDiagnosticTestConfiguration()
         }
     }
+}
+
+fun TestConfigurationBuilder.baseFirSpecDiagnosticTestConfiguration(baseDir: String = ".") {
+    defaultDirectives {
+        +SPEC_HELPERS
+        +WITH_STDLIB
+    }
+
+    useAdditionalSourceProviders(::SpecHelpersSourceFilesProvider.bind(baseDir))
+
+    useAfterAnalysisCheckers(
+        ::FirIdenticalChecker,
+        ::FirFailingTestSuppressor,
+    )
+
+    useMetaTestConfigurators(::FirOldFrontendMetaConfigurator)
 }

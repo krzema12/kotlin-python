@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // !DIAGNOSTICS: -CONFLICTING_JVM_DECLARATIONS
 package f
 
@@ -8,4 +7,3 @@ fun <R> h(f: (String) -> R) = 2
 fun test() = <!OVERLOAD_RESOLUTION_AMBIGUITY!>h<!>{ i -> getAnswer() }
 
 fun getAnswer() = 42
-

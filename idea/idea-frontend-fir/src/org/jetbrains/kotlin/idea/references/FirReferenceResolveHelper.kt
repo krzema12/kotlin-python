@@ -6,27 +6,32 @@
 package org.jetbrains.kotlin.idea.references
 
 import com.intellij.psi.tree.TokenSet
-import org.jetbrains.kotlin.fir.FirFakeSourceElementKind
-import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.ROOT_PREFIX_FOR_IDE_RESOLUTION_MODE
+import org.jetbrains.kotlin.fir.*
 import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.builder.buildImport
 import org.jetbrains.kotlin.fir.declarations.synthetic.FirSyntheticProperty
+import org.jetbrains.kotlin.fir.declarations.utils.classId
+import org.jetbrains.kotlin.fir.declarations.utils.isCompanion
+import org.jetbrains.kotlin.fir.declarations.utils.isLocal
+import org.jetbrains.kotlin.fir.declarations.utils.isStatic
 import org.jetbrains.kotlin.fir.expressions.*
-import org.jetbrains.kotlin.fir.psi
 import org.jetbrains.kotlin.fir.references.*
+import org.jetbrains.kotlin.fir.resolve.ScopeSession
 import org.jetbrains.kotlin.fir.resolve.calls.FirSyntheticPropertySymbol
 import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeAmbiguityError
 import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeInapplicableCandidateError
 import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeOperatorAmbiguityError
 import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeUnmatchedTypeArgumentsError
-import org.jetbrains.kotlin.fir.resolve.symbolProvider
 import org.jetbrains.kotlin.fir.resolve.toSymbol
-import org.jetbrains.kotlin.fir.symbols.AbstractFirBasedSymbol
+import org.jetbrains.kotlin.fir.resolve.transformers.FirImportResolveTransformer
+import org.jetbrains.kotlin.fir.scopes.impl.FirExplicitSimpleImportingScope
+import org.jetbrains.kotlin.fir.scopes.processClassifiersByName
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.ConeClassLikeLookupTagImpl
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.idea.fir.getCandidateSymbols
 import org.jetbrains.kotlin.idea.fir.isImplicitFunctionCall
+import org.jetbrains.kotlin.idea.fir.low.level.api.api.FirModuleResolveState
 import org.jetbrains.kotlin.idea.fir.low.level.api.api.getOrBuildFir
 import org.jetbrains.kotlin.idea.fir.low.level.api.api.getOrBuildFirSafe
 import org.jetbrains.kotlin.idea.frontend.api.fir.KtFirAnalysisSession
@@ -39,19 +44,19 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.collectDescendantsOfType
-import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
 import org.jetbrains.kotlin.psi.psiUtil.getQualifiedExpressionForSelector
-import org.jetbrains.kotlin.utils.addToStdlib.firstNotNullResult
+import org.jetbrains.kotlin.psi.psiUtil.unwrapNullability
+import org.jetbrains.kotlin.utils.addIfNotNull
 
 internal object FirReferenceResolveHelper {
     fun FirResolvedTypeRef.toTargetSymbol(session: FirSession, symbolBuilder: KtSymbolByFirBuilder): KtSymbol? {
 
         val type = getDeclaredType() as? ConeLookupTagBasedType
-        val resolvedSymbol = type?.lookupTag?.toSymbol(session) as? AbstractFirBasedSymbol<*>
+        val resolvedSymbol = type?.lookupTag?.toSymbol(session) as? FirBasedSymbol<*>
 
         val symbol = resolvedSymbol ?: run {
             val diagnostic = (this as? FirErrorTypeRef)?.diagnostic
-            (diagnostic as? ConeUnmatchedTypeArgumentsError)?.type
+            (diagnostic as? ConeUnmatchedTypeArgumentsError)?.symbol
         }
 
         return symbol?.fir?.buildSymbol(symbolBuilder)
@@ -64,12 +69,12 @@ internal object FirReferenceResolveHelper {
     private fun ClassId.toTargetPsi(
         session: FirSession,
         symbolBuilder: KtSymbolByFirBuilder,
-        calleeReference: FirReference? = null
+        calleeReference: FirReference? = null,
     ): KtSymbol? {
         val classLikeDeclaration = ConeClassLikeLookupTagImpl(this).toSymbol(session)?.fir
         if (classLikeDeclaration is FirRegularClass) {
             if (calleeReference is FirResolvedNamedReference) {
-                val callee = calleeReference.resolvedSymbol.fir as? FirCallableMemberDeclaration
+                val callee = calleeReference.resolvedSymbol.fir as? FirCallableDeclaration
                 // TODO: check callee owner directly?
                 if (callee !is FirConstructor && callee?.isStatic != true) {
                     classLikeDeclaration.companionObject?.let { return it.buildSymbol(symbolBuilder) }
@@ -94,9 +99,9 @@ internal object FirReferenceResolveHelper {
                             syntheticProperty.setter!!.delegate
                         }
                     }
-                    else -> symbol.fir as? FirDeclaration
+                    else -> symbol.fir
                 }
-                listOfNotNull(fir?.buildSymbol(symbolBuilder))
+                listOfNotNull(fir.buildSymbol(symbolBuilder))
             }
             is FirResolvedCallableReference -> {
                 listOfNotNull(resolvedSymbol.fir.buildSymbol(symbolBuilder))
@@ -108,7 +113,7 @@ internal object FirReferenceResolveHelper {
                 listOfNotNull((superTypeRef as? FirResolvedTypeRef)?.toTargetSymbol(session, symbolBuilder))
             }
             is FirErrorNamedReference -> {
-                getCandidateSymbols().mapNotNull { it.fir.buildSymbol(symbolBuilder) }
+                getCandidateSymbols().map { it.fir.buildSymbol(symbolBuilder) }
             }
             else -> emptyList()
         }
@@ -119,11 +124,18 @@ internal object FirReferenceResolveHelper {
         symbolBuilder: KtSymbolByFirBuilder,
         forQualifiedType: Boolean
     ): KtFirPackageSymbol? {
+        return symbolBuilder.createPackageSymbolIfOneExists(getQualifierSelected(expression, forQualifiedType))
+    }
+
+    private fun getQualifierSelected(
+        expression: KtSimpleNameExpression,
+        forQualifiedType: Boolean
+    ): FqName {
         val qualified = when {
             forQualifiedType -> expression.parent?.takeIf { it is KtUserType && it.referenceExpression === expression }
             else -> expression.getQualifiedExpressionForSelector()
         }
-        val fqName = when (qualified) {
+        return when (qualified) {
             null -> FqName(expression.getReferencedName())
             else -> {
                 qualified
@@ -133,7 +145,6 @@ internal object FirReferenceResolveHelper {
                     .let(::FqName)
             }
         }
-        return symbolBuilder.createPackageSymbolIfOneExists(fqName)
     }
 
     private fun KtSimpleNameExpression.isPartOfQualifiedExpression(): Boolean {
@@ -167,10 +178,11 @@ internal object FirReferenceResolveHelper {
         return when (fir) {
             is FirResolvedTypeRef -> getSymbolsForResolvedTypeRef(fir, expression, session, symbolBuilder)
             is FirResolvedQualifier ->
-                getSymbolsForResolvedQualifier(fir, expression, session, symbolBuilder, analysisSession)
+                getSymbolsForResolvedQualifier(fir, expression, session, symbolBuilder)
             is FirAnnotationCall -> getSymbolsForAnnotationCall(fir, session, symbolBuilder)
             is FirResolvedImport -> getSymbolsByResolvedImport(expression, symbolBuilder, fir, session)
-            is FirFile -> getSymbolsByFirFile(expression, symbolBuilder, fir)
+            is FirPackageDirective -> getSymbolsForPackageDirective(expression, symbolBuilder)
+            is FirFile -> getSymbolsByFirFile(symbolBuilder, fir)
             is FirArrayOfCall -> {
                 // We can't yet find PsiElement for arrayOf, intArrayOf, etc.
                 emptyList()
@@ -178,18 +190,37 @@ internal object FirReferenceResolveHelper {
             is FirReturnExpression -> getSymbolsByReturnExpression(expression, fir, symbolBuilder)
             is FirErrorNamedReference -> getSymbolsByErrorNamedReference(fir, symbolBuilder)
             is FirVariableAssignment -> getSymbolsByVariableAssignment(fir, session, symbolBuilder)
-            is FirResolvedNamedReference -> getSymbolByResolvedNameReference(fir, session, symbolBuilder)
+            is FirResolvedNamedReference -> getSymbolByResolvedNameReference(fir, expression, analysisSession, session, symbolBuilder)
             is FirResolvable -> getSymbolsByResolvable(fir, expression, session, symbolBuilder)
             is FirNamedArgumentExpression -> getSymbolsByNameArgumentExpression(expression, analysisSession, symbolBuilder)
             else -> handleUnknownFirElement(expression, analysisSession, session, symbolBuilder)
         }
     }
 
+    private fun getSymbolsForPackageDirective(
+        expression: KtSimpleNameExpression,
+        symbolBuilder: KtSymbolByFirBuilder
+    ): List<KtFirPackageSymbol> {
+        return listOfNotNull(getPackageSymbolFor(expression, symbolBuilder, forQualifiedType = false))
+    }
+
+
     private fun getSymbolByResolvedNameReference(
         fir: FirResolvedNamedReference,
+        expression: KtSimpleNameExpression,
+        analysisSession: KtFirAnalysisSession,
         session: FirSession,
         symbolBuilder: KtSymbolByFirBuilder
-    ): Collection<KtSymbol> = fir.toTargetSymbol(session, symbolBuilder)
+    ): Collection<KtSymbol> {
+        val parentAsCall = expression.parent as? KtCallExpression
+        if (parentAsCall != null) {
+            val firResolvable = parentAsCall.getOrBuildFirSafe<FirResolvable>(analysisSession.firResolveState)
+            if (firResolvable != null) {
+                return getSymbolsByResolvable(firResolvable, expression, session, symbolBuilder)
+            }
+        }
+        return fir.toTargetSymbol(session, symbolBuilder)
+    }
 
     private fun KtSimpleNameExpression.isSyntheticOperatorReference() = when (this) {
         is KtOperationReferenceExpression -> operationSignTokenType in syntheticTokenTypes
@@ -219,7 +250,7 @@ internal object FirReferenceResolveHelper {
     }
 
     private fun FirCall.findCorrespondingParameter(ktValueArgument: KtValueArgument): FirValueParameter? =
-        argumentMapping?.entries?.firstNotNullResult { (firArgument, firParameter) ->
+        argumentMapping?.entries?.firstNotNullOfOrNull { (firArgument, firParameter) ->
             if (firArgument.psi == ktValueArgument) firParameter
             else null
         }
@@ -281,7 +312,7 @@ internal object FirReferenceResolveHelper {
         fir: FirErrorNamedReference,
         symbolBuilder: KtSymbolByFirBuilder
     ): List<KtSymbol> =
-        getFirSymbolsByErrorNamedReference(fir).mapNotNull { it.fir.buildSymbol(symbolBuilder) }
+        getFirSymbolsByErrorNamedReference(fir).map { it.fir.buildSymbol(symbolBuilder) }
 
 
     fun getFirSymbolsByErrorNamedReference(
@@ -305,43 +336,36 @@ internal object FirReferenceResolveHelper {
     }
 
     private fun getSymbolsByFirFile(
-        expression: KtSimpleNameExpression,
         symbolBuilder: KtSymbolByFirBuilder,
         fir: FirFile
     ): List<KtSymbol> {
-        if (expression.getNonStrictParentOfType<KtPackageDirective>() != null) {
-            // Special: package reference in the middle of package directive
-            return listOfNotNull(getPackageSymbolFor(expression, symbolBuilder, forQualifiedType = false))
-        }
         return listOf(symbolBuilder.buildSymbol(fir))
     }
 
+    @OptIn(ExperimentalStdlibApi::class)
     private fun getSymbolsByResolvedImport(
         expression: KtSimpleNameExpression,
-        symbolBuilder: KtSymbolByFirBuilder,
+        builder: KtSymbolByFirBuilder,
         fir: FirResolvedImport,
         session: FirSession
     ): List<KtSymbol> {
-        if (expression.isPartOfQualifiedExpression()) {
-            return listOfNotNull(getPackageSymbolFor(expression, symbolBuilder, forQualifiedType = false))
+        val fullFqName = fir.importedFqName
+        val selectedFqName = getQualifierSelected(expression, forQualifiedType = false)
+        val rawImportForSelectedFqName = buildImport {
+            importedFqName = selectedFqName
+            isAllUnder = false
         }
-
-        val classId = fir.resolvedClassId
-        if (classId != null) {
-            return listOfNotNull(classId.toTargetPsi(session, symbolBuilder))
-        }
-        val name = fir.importedName ?: return emptyList()
-        val symbolProvider = session.symbolProvider
-
-        @OptIn(ExperimentalStdlibApi::class)
+        val resolvedImport = FirImportResolveTransformer(session).transformImport(rawImportForSelectedFqName, null) as FirResolvedImport
+        val scope = FirExplicitSimpleImportingScope(listOf(resolvedImport), session, ScopeSession())
+        val selectedName = resolvedImport.importedName ?: return emptyList()
         return buildList {
-            symbolProvider.getTopLevelCallableSymbols(fir.packageFqName, name)
-                .mapTo(this) { it.fir.buildSymbol(symbolBuilder) }
-            symbolProvider
-                .getClassLikeSymbolByFqName(ClassId(fir.packageFqName, name))
-                ?.fir
-                ?.buildSymbol(symbolBuilder)
-                ?.let(::add)
+            if (selectedFqName == fullFqName) {
+                // callables cannot be used as receiver expressions in imports
+                scope.processFunctionsByName(selectedName) { add(it.fir.buildSymbol(builder)) }
+                scope.processPropertiesByName(selectedName) { add(it.fir.buildSymbol(builder)) }
+            }
+            scope.processClassifiersByName(selectedName) { addIfNotNull(it.fir.buildSymbol(builder)) }
+            builder.createPackageSymbolIfOneExists(selectedFqName)?.let(::add)
         }
     }
 
@@ -349,58 +373,142 @@ internal object FirReferenceResolveHelper {
         fir: FirResolvedTypeRef,
         expression: KtSimpleNameExpression,
         session: FirSession,
-        symbolBuilder: KtSymbolByFirBuilder
+        symbolBuilder: KtSymbolByFirBuilder,
     ): Collection<KtSymbol> {
-        if (expression.isPartOfUserTypeRefQualifier()) {
-            val typeQualifier = findPossibleTypeQualifier(expression, fir)?.toTargetPsi(session, symbolBuilder)
-            val typeOrPackageQualifier =
-                typeQualifier ?: getPackageSymbolFor(expression, symbolBuilder, forQualifiedType = true)
 
-            return listOfNotNull(typeOrPackageQualifier)
-        }
-        return listOfNotNull(fir.toTargetSymbol(session, symbolBuilder))
+        val isPossiblyPackage = fir is FirErrorTypeRef && expression.isPartOfUserTypeRefQualifier()
+
+        val resultSymbol =
+            if (isPossiblyPackage) getPackageSymbolFor(expression, symbolBuilder, forQualifiedType = true)
+            else fir.toTargetSymbol(session, symbolBuilder)
+
+        return listOfNotNull(resultSymbol)
     }
 
     private fun getSymbolsForResolvedQualifier(
         fir: FirResolvedQualifier,
         expression: KtSimpleNameExpression,
         session: FirSession,
-        symbolBuilder: KtSymbolByFirBuilder,
-        analysisSession: KtFirAnalysisSession
+        symbolBuilder: KtSymbolByFirBuilder
     ): Collection<KtSymbol> {
-        // TODO refactor that block
-        val classId = fir.classId ?: return emptyList()
-
-        var parent = expression.parent as? KtDotQualifiedExpression
-        // Distinguish A.foo() from A(.Companion).foo()
-        // Make expression.parent as? KtDotQualifiedExpression local function
-        while (parent != null) {
-            val selectorExpression = parent.selectorExpression ?: break
-            if (selectorExpression === expression) {
-                parent = parent.parent as? KtDotQualifiedExpression
-                continue
-            }
-            val receiverClassId = if (parent.receiverExpression == expression) {
-                /*
-                 * <caret>A.Named.i -> class A
-                 */
-                val name = fir.relativeClassFqName?.pathSegments()?.firstOrNull()
-                name?.let { ClassId(fir.packageFqName, it) }
-            } else null
-            val parentFir = selectorExpression.getOrBuildFir(analysisSession.firResolveState)
-            when {
-                parentFir is FirQualifiedAccess -> {
-                    return listOfNotNull(
-                        (receiverClassId ?: classId).toTargetPsi(session, symbolBuilder, parentFir.calleeReference)
-                    )
-                }
-                receiverClassId != null -> {
-                    return listOfNotNull(receiverClassId.toTargetPsi(session, symbolBuilder))
-                }
-                else -> parent = parent.parent as? KtDotQualifiedExpression
-            }
+        val referencedSymbol = if (fir.resolvedToCompanionObject) {
+            (fir.symbol?.fir as? FirRegularClass)?.companionObject?.symbol
+        } else {
+            fir.symbol
         }
-        return listOfNotNull(classId.toTargetPsi(session, symbolBuilder))
+        if (referencedSymbol == null) {
+            // If referencedSymbol is null, it means the reference goes to a package.
+            val parent = expression.parent as? KtDotQualifiedExpression ?: return emptyList()
+            val fqNameSegments =
+                when (expression) {
+                    parent.selectorExpression -> parent.fqNameSegments() ?: return emptyList()
+                    parent.receiverExpression -> listOf(expression.getReferencedName())
+                    else -> return emptyList()
+                }
+            return listOfNotNull(symbolBuilder.createPackageSymbolIfOneExists(FqName.fromSegments(fqNameSegments)))
+        }
+        val referencedClass = referencedSymbol.fir
+        val referencedSymbolsByFir = listOfNotNull(symbolBuilder.buildSymbol(referencedClass))
+        val firSourcePsi = fir.source.psi ?: referencedSymbolsByFir
+        // The source of an `FirResolvedQualifier` is either a KtNamedReferenceExpression or a KtDotQualifiedExpression. In the former case,
+        // it implies the qualifier is an atomic reference and therefore, it should be identical with the `expression`. In the latter case,
+        // we need to manually break up the qualified access and resolve individual parts of it because in FIR, the entire qualified access
+        // is one element.
+        if (firSourcePsi === expression) return referencedSymbolsByFir
+        require(firSourcePsi is KtDotQualifiedExpression)
+
+        if (referencedClass.isLocal) {
+            // TODO: handle local classes after KT-47135 is fixed
+            return referencedSymbolsByFir
+        } else {
+            var qualifiedAccess: KtDotQualifiedExpression = firSourcePsi
+            val referencedClassId =
+                if ((referencedClass as? FirRegularClass)?.isCompanion == true &&
+                    (qualifiedAccess.selectorExpression as? KtNameReferenceExpression)?.getReferencedName() != referencedClass.classId.shortClassName.asString()
+                ) {
+                    // Remove the last companion name part if the qualified access does not contain it.
+                    // This is needed because the companion name part is optional.
+                    referencedClass.classId.outerClassId ?: return referencedSymbolsByFir
+                } else {
+                    referencedClass.classId
+                }
+            val qualifiedAccessSegments = qualifiedAccess.fqNameSegments() ?: return referencedSymbolsByFir
+            assert(referencedClassId.asSingleFqName().pathSegments().takeLast(qualifiedAccessSegments.size)
+                       .map { it.identifierOrNullIfSpecial } == qualifiedAccessSegments) {
+                "Referenced classId $referencedClassId should end with qualifiedAccess expression ${qualifiedAccess.text} "
+            }
+
+            // In the code below, we always maintain the contract that `classId` and `qualifiedAccess` should stay "in-sync", i.e. they
+            // refer to the same class and classId should be null if `qualifiedAccess` references to a package.
+            var classId: ClassId? = referencedClassId
+
+            // Handle nested classes.
+            while (classId != null) {
+                if (expression === qualifiedAccess.selectorExpression) {
+                    return listOfNotNull(classId.toTargetPsi(session, symbolBuilder))
+                }
+                val outerClassId = classId.outerClassId
+                val receiverExpression = qualifiedAccess.receiverExpression
+                if (receiverExpression !is KtDotQualifiedExpression) {
+                    // If the receiver is not a KtDotQualifiedExpression, it means we are hitting the end of nested receivers. In other
+                    // words, this receiver expression should be pointing at an unqualified name of a class, whose class ID is
+                    // `outerClassId`.
+                    if (receiverExpression == expression) {
+                        // If there is still an outer class, then return symbol of that class
+                        outerClassId?.let { return listOfNotNull(it.toTargetPsi(session, symbolBuilder)) }
+                        // Otherwise, it should be a package, so we return that
+                        return listOfNotNull(symbolBuilder.createPackageSymbolIfOneExists(classId.packageFqName))
+                    } else {
+                        // This is unexpected. The code probably contains some weird structures. In this case, we just fail the resolution
+                        // with zero results.
+                        return emptyList()
+                    }
+                }
+                qualifiedAccess = receiverExpression
+                classId = outerClassId
+            }
+
+            // Handle package names
+            var packageFqName = referencedClassId.packageFqName
+
+            while (!packageFqName.isRoot) {
+                if (expression === qualifiedAccess.selectorExpression) {
+                    return listOfNotNull(symbolBuilder.createPackageSymbolIfOneExists(packageFqName))
+                }
+                val parentPackageFqName = packageFqName.parent()
+                val receiverExpression = qualifiedAccess.receiverExpression
+                if (receiverExpression !is KtDotQualifiedExpression) {
+                    // If the receiver is not a KtDotQualifiedExpression, it means we are hitting the end of nested receivers. In other
+                    // words, this receiver expression should be pointing at a top-level package now.
+                    if (receiverExpression == expression) {
+                        return listOfNotNull(symbolBuilder.createPackageSymbolIfOneExists(parentPackageFqName))
+                    } else {
+                        // This is unexpected. The code probably contains some weird structures. In this case, we just fail the resolution
+                        // with zero results.
+                        return emptyList()
+                    }
+                }
+                qualifiedAccess = receiverExpression
+                packageFqName = parentPackageFqName
+            }
+            return referencedSymbolsByFir
+        }
+    }
+
+    /**
+     * Returns the segments of a qualified access PSI. For example, given `foo.bar.OuterClass.InnerClass`, this returns `["foo", "bar",
+     * "OuterClass", "InnerClass"]`.
+     */
+    private fun KtDotQualifiedExpression.fqNameSegments(): List<String>? {
+        val result: MutableList<String> = mutableListOf()
+        var current: KtExpression = this
+        while (current is KtDotQualifiedExpression) {
+            result += (current.selectorExpression as? KtNameReferenceExpression)?.getReferencedName() ?: return null
+            current = current.receiverExpression
+        }
+        result += (current as? KtNameReferenceExpression)?.getReferencedName() ?: return null
+        result.reverse()
+        return result
     }
 
     private fun getSymbolsForAnnotationCall(
@@ -420,7 +528,7 @@ internal object FirReferenceResolveHelper {
         // FIXME make it work with generics in functional types (like () -> AA.BB<CC, AA.DD>)
         val wholeType = when (val psi = wholeTypeFir.psi) {
             is KtUserType -> psi
-            is KtTypeReference -> psi.typeElement?.unwrapNullable() as? KtUserType
+            is KtTypeReference -> psi.typeElement?.unwrapNullability() as? KtUserType
             else -> null
         } ?: return null
 
@@ -445,10 +553,6 @@ internal object FirReferenceResolveHelper {
         val qualifierIndex = generateSequence(wholeType) { it.qualifier }.indexOf(nestedType)
         require(qualifierIndex != -1) { "Whole type $wholeType should contain $nestedType, but it didn't" }
         return qualifierIndex
-    }
-
-    private tailrec fun KtTypeElement.unwrapNullable(): KtTypeElement? {
-        return if (this is KtNullableType) innerType?.unwrapNullable() else this
     }
 
     private val syntheticTokenTypes = TokenSet.create(KtTokens.ELVIS, KtTokens.EXCLEXCL)

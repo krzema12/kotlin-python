@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2019 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
@@ -25,6 +25,7 @@ import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
 import com.intellij.psi.util.PsiUtilCore
 import com.intellij.util.IncorrectOperationException
+import com.intellij.util.containers.ConcurrentFactoryMap
 import org.jetbrains.annotations.NonNls
 import org.jetbrains.kotlin.analyzer.KotlinModificationTrackerService
 import org.jetbrains.kotlin.asJava.ImpreciseResolveResult
@@ -53,7 +54,6 @@ import org.jetbrains.kotlin.psi.psiUtil.hasExpectModifier
 import org.jetbrains.kotlin.psi.psiUtil.parentsWithSelf
 import org.jetbrains.kotlin.psi.stubs.KotlinClassOrObjectStub
 import org.jetbrains.kotlin.resolve.DescriptorUtils
-import java.util.*
 import javax.swing.Icon
 
 private class KtLightClassModifierList(containingClass: KtLightClassForSourceDeclaration, computeModifiers: () -> Set<String>) :
@@ -170,11 +170,12 @@ abstract class KtLightClassForSourceDeclaration(
         val aClass = other as KtLightClassForSourceDeclaration
 
         if (classOrObject != aClass.classOrObject) return false
+        if (jvmDefaultMode != aClass.jvmDefaultMode) return false
 
         return true
     }
 
-    override fun hashCode(): Int = classOrObject.hashCode()
+    override fun hashCode(): Int = classOrObject.hashCode() * 31 + jvmDefaultMode.hashCode()
 
     override fun getContainingClass(): PsiClass? {
         if (classOrObject.parent === classOrObject.containingFile) return null
@@ -339,12 +340,13 @@ abstract class KtLightClassForSourceDeclaration(
 
         fun create(classOrObject: KtClassOrObject, jvmDefaultMode: JvmDefaultMode): KtLightClassForSourceDeclaration? =
             CachedValuesManager.getCachedValue(classOrObject) {
-                CachedValueProvider.Result
-                    .create(
-                        createNoCache(classOrObject, jvmDefaultMode, KtUltraLightSupport.forceUsingOldLightClasses),
-                        KotlinModificationTrackerService.getInstance(classOrObject.project).outOfBlockModificationTracker
-                    )
-            }
+                CachedValueProvider.Result.create(
+                    ConcurrentFactoryMap.createMap { defaultMode: JvmDefaultMode ->
+                        createNoCache(classOrObject, defaultMode, KtUltraLightSupport.forceUsingOldLightClasses)
+                    },
+                    KotlinModificationTrackerService.getInstance(classOrObject.project).outOfBlockModificationTracker,
+                )
+            }[jvmDefaultMode]
 
         fun createNoCache(
             classOrObject: KtClassOrObject,
@@ -570,6 +572,7 @@ fun KtClassOrObject.shouldNotBeVisibleAsLightClass(): Boolean {
     if (isLocal) {
         if (containingFile.virtualFile == null) return true
         if (hasParseErrorsAround(this) || PsiUtilCore.hasErrorElementChild(this)) return true
+        if (classDeclaredInUnexpectedPosition(this)) return true
     }
 
     if (isEnumEntryWithoutBody(this)) {
@@ -577,6 +580,23 @@ fun KtClassOrObject.shouldNotBeVisibleAsLightClass(): Boolean {
     }
 
     return false
+}
+
+/**
+ * If class is declared in some strange context (for example, in expression like `10 < class A`),
+ * we don't want to try to build a light class for it.
+ *
+ * The expression itself is incorrect and won't compile, but the parser is able the parse the class nonetheless.
+ *
+ * This does not concern objects, since object literals are expressions and can be used almost anywhere.
+ */
+private fun classDeclaredInUnexpectedPosition(classOrObject: KtClassOrObject): Boolean {
+    if (classOrObject is KtObjectDeclaration) return false
+
+    val classParent = classOrObject.parent
+
+    return classParent !is KtBlockExpression &&
+            classParent !is KtDeclarationContainer
 }
 
 private fun isEnumEntryWithoutBody(classOrObject: KtClassOrObject): Boolean {

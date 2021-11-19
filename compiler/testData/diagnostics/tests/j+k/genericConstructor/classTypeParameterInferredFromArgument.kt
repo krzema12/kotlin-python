@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // !CHECK_TYPE
 // FILE: A.java
 
@@ -9,7 +8,7 @@ public class A<E> {
 // FILE: main.kt
 
 fun test(x: List<Int>, y: List<String>) {
-    A("", x) checkType { <!UNRESOLVED_REFERENCE_WRONG_RECEIVER{NI}!>_<!><A<Any?>>() }
+    A("", x) checkType { <!UNRESOLVED_REFERENCE_WRONG_RECEIVER!>_<!><A<Any?>>() }
     A("", y) checkType { _<A<String?>>() }
 
     A<CharSequence, String>("", <!TYPE_MISMATCH, TYPE_MISMATCH!>x<!>)

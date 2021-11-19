@@ -9,10 +9,13 @@ import org.jetbrains.kotlin.builtins.functions.FunctionClassKind
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
 import org.jetbrains.kotlin.fir.expressions.FirConstExpression
 import org.jetbrains.kotlin.fir.expressions.FirExpression
+import org.jetbrains.kotlin.fir.expressions.FirExpressionWithSmartcast
 import org.jetbrains.kotlin.fir.render
-import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.fir.types.impl.FirImplicitBuiltinTypeRef
 import org.jetbrains.kotlin.name.ClassId
+import org.jetbrains.kotlin.name.StandardClassIds
+import org.jetbrains.kotlin.types.AbstractNullabilityChecker
+import org.jetbrains.kotlin.types.TypeCheckerState
 import org.jetbrains.kotlin.types.ConstantValueKind
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
@@ -37,6 +40,7 @@ val FirTypeRef.isNothing: Boolean get() = isBuiltinType(StandardClassIds.Nothing
 val FirTypeRef.isNullableNothing: Boolean get() = isBuiltinType(StandardClassIds.Nothing, true)
 val FirTypeRef.isUnit: Boolean get() = isBuiltinType(StandardClassIds.Unit, false)
 val FirTypeRef.isBoolean: Boolean get() = isBuiltinType(StandardClassIds.Boolean, false)
+val FirTypeRef.isInt: Boolean get() = isBuiltinType(StandardClassIds.Int, false)
 val FirTypeRef.isEnum: Boolean get() = isBuiltinType(StandardClassIds.Enum, false)
 val FirTypeRef.isArrayType: Boolean
     get() =
@@ -48,6 +52,14 @@ val FirExpression.isNullLiteral: Boolean
             this.kind == ConstantValueKind.Null &&
             this.value == null &&
             this.source != null
+
+@OptIn(ExperimentalContracts::class)
+fun FirExpression.isStableSmartcast(): Boolean {
+    contract {
+        returns(true) implies (this@isStableSmartcast is FirExpressionWithSmartcast)
+    }
+    return this is FirExpressionWithSmartcast && this.isStable
+}
 
 private val FirTypeRef.classLikeTypeOrNull: ConeClassLikeType?
     get() = when (this) {
@@ -70,13 +82,13 @@ val FirFunctionTypeRef.parametersCount: Int
     else
         valueParameters.size
 
-const val EXTENSION_FUNCTION_ANNOTATION = "kotlin/ExtensionFunctionType"
+val EXTENSION_FUNCTION_ANNOTATION = ClassId.fromString("kotlin/ExtensionFunctionType")
 
 val FirAnnotationCall.isExtensionFunctionAnnotationCall: Boolean
     get() = (this as? FirAnnotationCall)?.let { annotationCall ->
         (annotationCall.annotationTypeRef as? FirResolvedTypeRef)?.let { typeRef ->
             (typeRef.type as? ConeClassLikeType)?.let {
-                it.lookupTag.classId.asString() == EXTENSION_FUNCTION_ANNOTATION
+                it.lookupTag.classId == EXTENSION_FUNCTION_ANNOTATION
             }
         }
     } == true
@@ -113,11 +125,13 @@ fun List<FirAnnotationCall>.computeTypeAttributes(
             CompilerConeAttributes.ExtensionFunctionType.ANNOTATION_CLASS_ID -> attributes += CompilerConeAttributes.ExtensionFunctionType
             CompilerConeAttributes.UnsafeVariance.ANNOTATION_CLASS_ID -> attributes += CompilerConeAttributes.UnsafeVariance
             else -> {
-                if (classId.startsWith(StandardClassIds.BASE_KOTLIN_PACKAGE.shortName())) {
-                    // The check ^ is intended to leave only annotations which may be important for BE
+                val annotationAttributes = mutableListOf<ConeAttribute<*>>()
+                additionalProcessor.invoke(annotationAttributes, classId)
+                if (annotationAttributes.isEmpty()) {
                     customAnnotations += annotation
+                } else {
+                    attributes += annotationAttributes
                 }
-                additionalProcessor.invoke(attributes, classId)
             }
         }
     }
@@ -137,15 +151,37 @@ fun FirTypeProjection.toConeTypeProjection(): ConeTypeProjection =
         else -> error("!")
     }
 
-fun makesSenseToBeDefinitelyNotNull(type: ConeKotlinType): Boolean =
-    type.canHaveUndefinedNullability() // TODO: also check nullability
+fun TypeCheckerState.makesSenseToBeDefinitelyNotNull(
+    type: ConeKotlinType,
+    useCorrectedNullabilityForFlexibleTypeParameters: Boolean
+): Boolean {
+    if (!type.canHaveUndefinedNullability()) return false
+
+    // Replacing `useCorrectedNullabilityForFlexibleTypeParameters` with true for all call-sites seems to be correct
+    // But it seems that it should be a new feature: KT-28785 would be automatically fixed then
+    // (see the tests org.jetbrains.kotlin.spec.checkers.DiagnosticsTestSpecGenerated.NotLinked.Dfa.Pos.test12/13)
+    // So it should be a language feature, but it's hard correctly identify language version settings for all call sites
+    // Thus, we have non-trivial value at org.jetbrains.kotlin.load.java.typeEnhancement.JavaTypeEnhancement.notNullTypeParameter
+    // that run under related language-feature only
+    if (useCorrectedNullabilityForFlexibleTypeParameters && type is ConeTypeParameterType) {
+        // Effectively checks if the type is flexible or has nullable bound
+        return with(typeSystemContext) {
+            type.isNullableType()
+        }
+    }
+
+    // Actually, this code should work for type parameters as well, but it breaks some cases
+    // See KT-40114
+
+    return !AbstractNullabilityChecker.isSubtypeOfAny(this, type)
+}
 
 fun ConeKotlinType.canHaveUndefinedNullability(): Boolean {
     return when (this) {
         is ConeTypeVariableType,
-        is ConeCapturedType
+        is ConeCapturedType,
+        is ConeTypeParameterType
         -> true
-        is ConeTypeParameterType -> type.isMarkedNullable || !hasNotNullUpperBound()
         else -> false
     }
 }

@@ -20,6 +20,7 @@ import kotlin.text.StringsKt;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.kotlin.backend.common.CodegenUtil;
+import org.jetbrains.kotlin.backend.common.SamType;
 import org.jetbrains.kotlin.builtins.KotlinBuiltIns;
 import org.jetbrains.kotlin.codegen.binding.CalculatedClosure;
 import org.jetbrains.kotlin.codegen.binding.CodegenBinding;
@@ -88,11 +89,9 @@ import org.jetbrains.kotlin.synthetic.SyntheticJavaPropertyDescriptor;
 import org.jetbrains.kotlin.types.*;
 import org.jetbrains.kotlin.types.checker.ClassicTypeSystemContextImpl;
 import org.jetbrains.kotlin.types.expressions.DoubleColonLHS;
-import org.jetbrains.kotlin.types.model.KotlinTypeMarker;
 import org.jetbrains.kotlin.types.model.TypeParameterMarker;
 import org.jetbrains.kotlin.types.typesApproximation.CapturedTypeApproximationKt;
 import org.jetbrains.kotlin.util.OperatorNameConventions;
-import org.jetbrains.kotlin.backend.common.SamType;
 import org.jetbrains.org.objectweb.asm.Label;
 import org.jetbrains.org.objectweb.asm.MethodVisitor;
 import org.jetbrains.org.objectweb.asm.Opcodes;
@@ -107,6 +106,7 @@ import java.util.stream.Collectors;
 import static org.jetbrains.kotlin.builtins.KotlinBuiltIns.isInt;
 import static org.jetbrains.kotlin.codegen.AsmUtil.boxType;
 import static org.jetbrains.kotlin.codegen.AsmUtil.*;
+import static org.jetbrains.kotlin.codegen.BaseExpressionCodegenKt.putReifiedOperationMarkerIfTypeIsReifiedParameter;
 import static org.jetbrains.kotlin.codegen.CodegenUtilKt.*;
 import static org.jetbrains.kotlin.codegen.DescriptorAsmUtil.boxType;
 import static org.jetbrains.kotlin.codegen.DescriptorAsmUtil.*;
@@ -1261,9 +1261,9 @@ public class ExpressionCodegen extends KtVisitor<StackValue, StackValue> impleme
             if (closure.isSuspendLambda()) {
                 // When inlining crossinline lambda, the ACONST_NULL is never popped.
                 // Thus, do not generate it. Otherwise, it leads to VerifyError on run-time.
-                boolean isCrossinlineLambda = (callGenerator instanceof InlineCodegen<?>) &&
-                                              Objects.requireNonNull(((InlineCodegen) callGenerator).getActiveLambda(),
-                                                                     "no active lambda found").isCrossInline;
+                boolean isCrossinlineLambda = (callGenerator instanceof PsiInlineCodegen) &&
+                                              Objects.requireNonNull(((PsiInlineCodegen) callGenerator).getActiveLambda(),
+                                                                     "no active lambda found").isCrossInline();
                 if (!isCrossinlineLambda) {
                     v.aconst(null);
                 }
@@ -1287,11 +1287,11 @@ public class ExpressionCodegen extends KtVisitor<StackValue, StackValue> impleme
 
     @NotNull
     private static CallableDescriptor unwrapOriginalReceiverOwnerForSuspendLambda(@NotNull MethodContext context) {
-        FunctionDescriptor originalForDoResume =
-                context.getFunctionDescriptor().getUserData(CoroutineCodegenUtilKt.INITIAL_SUSPEND_DESCRIPTOR_FOR_DO_RESUME);
+        FunctionDescriptor originalForInvokeSuspend =
+                context.getFunctionDescriptor().getUserData(CoroutineCodegenUtilKt.INITIAL_SUSPEND_DESCRIPTOR_FOR_INVOKE_SUSPEND);
 
-        if (originalForDoResume != null) {
-            return originalForDoResume;
+        if (originalForInvokeSuspend != null) {
+            return originalForInvokeSuspend;
         }
 
         if (context.getFunctionDescriptor().isSuspend()) {
@@ -2024,10 +2024,12 @@ public class ExpressionCodegen extends KtVisitor<StackValue, StackValue> impleme
                     // Do not unbox parameters of suspend lambda, they are unboxed in `invoke` method
                     !CoroutineCodegenUtilKt.isInvokeSuspendOfLambda(context.getFunctionDescriptor())
                 ) {
-                    KotlinType underlyingType = InlineClassesUtilsKt.underlyingRepresentation(
-                            (ClassDescriptor) inlineClassType.getConstructor().getDeclarationDescriptor()).getType();
-                    return StackValue.underlyingValueOfInlineClass(
-                            typeMapper.mapType(underlyingType), underlyingType, localOrCaptured);
+                    ClassDescriptor inlineClass = (ClassDescriptor) inlineClassType.getConstructor().getDeclarationDescriptor();
+                    InlineClassRepresentation<SimpleType> representation =
+                            inlineClass != null ? inlineClass.getInlineClassRepresentation() : null;
+                    assert representation != null : "Not an inline class: " + inlineClassType;
+                    KotlinType underlyingType = representation.getUnderlyingType();
+                    return StackValue.underlyingValueOfInlineClass(typeMapper.mapType(underlyingType), underlyingType, localOrCaptured);
                 }
             }
             return localOrCaptured;
@@ -2614,26 +2616,6 @@ public class ExpressionCodegen extends KtVisitor<StackValue, StackValue> impleme
                 ? coroutineInstanceValueForSuspensionPoint
                 : getContinuationParameterFromEnclosingSuspendFunction(resolvedCall);
 
-        if (coroutineInstanceValue != null && needsExperimentalCoroutinesWrapper(resolvedCall.getCandidateDescriptor())) {
-            StackValue releaseContinuation = coroutineInstanceValue;
-            coroutineInstanceValue = new StackValue(CoroutineCodegenUtilKt.EXPERIMENTAL_CONTINUATION_ASM_TYPE) {
-                @Override
-                public void putSelector(
-                        @NotNull Type type, @Nullable KotlinType kotlinType, @NotNull InstructionAdapter v
-                ) {
-                    releaseContinuation.put(CoroutineCodegenUtilKt.RELEASE_CONTINUATION_ASM_TYPE, v);
-                    invokeCoroutineMigrationMethod(
-                            v,
-                            "toExperimentalContinuation",
-                            Type.getMethodDescriptor(
-                                    CoroutineCodegenUtilKt.EXPERIMENTAL_CONTINUATION_ASM_TYPE,
-                                    CoroutineCodegenUtilKt.RELEASE_CONTINUATION_ASM_TYPE
-                            )
-                    );
-                }
-            };
-        }
-
         tempVariables.put(continuationExpression, coroutineInstanceValue);
     }
 
@@ -2771,14 +2753,15 @@ public class ExpressionCodegen extends KtVisitor<StackValue, StackValue> impleme
         }
 
         SuspensionPointKind suspensionPointKind =
-                CoroutineCodegenUtilKt.isSuspensionPoint(resolvedCall, this, state.getLanguageVersionSettings());
+                CoroutineCodegenUtilKt.isSuspensionPoint(resolvedCall, this);
         boolean maybeSuspensionPoint = suspensionPointKind != SuspensionPointKind.NEVER && !insideCallableReference();
         boolean isConstructor = resolvedCall.getResultingDescriptor() instanceof ConstructorDescriptor;
         if (!(callableMethod instanceof IntrinsicWithSpecialReceiver)) {
             putReceiverAndInlineMarkerIfNeeded(callableMethod, resolvedCall, receiver, maybeSuspensionPoint, isConstructor);
         }
 
-        callGenerator.processAndPutHiddenParameters(false);
+        callGenerator.processHiddenParameters();
+        callGenerator.putHiddenParamsIntoLocals();
 
         List<ResolvedValueArgument> valueArguments = resolvedCall.getValueArgumentsByIndex();
         assert valueArguments != null : "Failed to arrange value arguments by index: " + resolvedCall.getResultingDescriptor();
@@ -2829,7 +2812,7 @@ public class ExpressionCodegen extends KtVisitor<StackValue, StackValue> impleme
             KotlinType unboxedInlineClass = CoroutineCodegenUtilKt.originalReturnTypeOfSuspendFunctionReturningUnboxedInlineClass(
                     (FunctionDescriptor) resolvedCall.getResultingDescriptor(), typeMapper);
             if (unboxedInlineClass != null) {
-                CoroutineCodegenUtilKt.generateCoroutineSuspendedCheck(v, state.getLanguageVersionSettings());
+                CoroutineCodegenUtilKt.generateCoroutineSuspendedCheck(v);
             }
         }
 
@@ -2944,16 +2927,15 @@ public class ExpressionCodegen extends KtVisitor<StackValue, StackValue> impleme
         FunctionDescriptor original =
                 CoroutineCodegenUtilKt.getOriginalSuspendFunctionView(
                         unwrapInitialSignatureDescriptor(DescriptorUtils.unwrapFakeOverride((FunctionDescriptor) descriptor.getOriginal())),
-                        bindingContext, state
+                        bindingContext
                 );
 
-        PsiSourceCompilerForInline sourceCompiler = new PsiSourceCompilerForInline(this, callElement);
         FunctionDescriptor functionDescriptor =
                 InlineUtil.isArrayConstructorWithLambda(original)
                 ? FictitiousArrayConstructor.create((ConstructorDescriptor) original) : original.getOriginal();
+        PsiSourceCompilerForInline sourceCompiler = new PsiSourceCompilerForInline(this, callElement, functionDescriptor);
 
-        sourceCompiler.initializeInlineFunctionContext(functionDescriptor);
-        JvmMethodSignature signature = typeMapper.mapSignatureWithGeneric(functionDescriptor, sourceCompiler.getContextKind());
+        JvmMethodSignature signature = typeMapper.mapSignatureWithGeneric(functionDescriptor, sourceCompiler.getContext().getContextKind());
         if (signature.getAsmMethod().getName().contains("-") &&
             !state.getConfiguration().getBoolean(JVMConfigurationKeys.USE_OLD_INLINE_CLASSES_MANGLING_SCHEME)
         ) {
@@ -2961,17 +2943,17 @@ public class ExpressionCodegen extends KtVisitor<StackValue, StackValue> impleme
                     InlineClassesCodegenUtilKt.classFileContainsMethod(functionDescriptor, state, signature.getAsmMethod());
             if (classFileContainsMethod != null && !classFileContainsMethod) {
                 typeMapper.setUseOldManglingRulesForFunctionAcceptingInlineClass(true);
-                signature = typeMapper.mapSignatureWithGeneric(functionDescriptor, sourceCompiler.getContextKind());
+                signature = typeMapper.mapSignatureWithGeneric(functionDescriptor, sourceCompiler.getContext().getContextKind());
                 typeMapper.setUseOldManglingRulesForFunctionAcceptingInlineClass(false);
             }
         }
-        Type methodOwner = typeMapper.mapImplementationOwner(functionDescriptor);
         if (isDefaultCompilation) {
-            return new InlineCodegenForDefaultBody(functionDescriptor, this, state, methodOwner, signature, sourceCompiler);
-        }
-        else {
-            return new PsiInlineCodegen(this, state, functionDescriptor, methodOwner, signature, typeParameterMappings, sourceCompiler,
-                                        typeMapper.mapOwner(descriptor));
+            return new InlineCodegenForDefaultBody(functionDescriptor, this, state, signature, sourceCompiler);
+        } else {
+            return new PsiInlineCodegen(
+                    this, state, functionDescriptor, signature, typeParameterMappings, sourceCompiler,
+                    typeMapper.mapImplementationOwner(functionDescriptor), typeMapper.mapOwner(descriptor), callElement
+            );
         }
     }
 
@@ -3555,7 +3537,7 @@ public class ExpressionCodegen extends KtVisitor<StackValue, StackValue> impleme
                 if (TypeUtils.isTypeParameter(type)) {
                     assert TypeUtils.isReifiedTypeParameter(type) :
                             "Non-reified type parameter under ::class should be rejected by type checker: " + type;
-                    putReifiedOperationMarkerIfTypeIsReifiedParameter(type, ReifiedTypeInliner.OperationKind.JAVA_CLASS);
+                    putReifiedOperationMarkerIfTypeIsReifiedParameter(this, type, ReifiedTypeInliner.OperationKind.JAVA_CLASS);
                 }
 
                 putJavaLangClassInstance(v, typeMapper.mapType(type), type, typeMapper);
@@ -4928,10 +4910,7 @@ public class ExpressionCodegen extends KtVisitor<StackValue, StackValue> impleme
     public void newArrayInstruction(@NotNull KotlinType arrayType) {
         if (KotlinBuiltIns.isArray(arrayType)) {
             KotlinType elementJetType = arrayType.getArguments().get(0).getType();
-            putReifiedOperationMarkerIfTypeIsReifiedParameter(
-                    elementJetType,
-                    ReifiedTypeInliner.OperationKind.NEW_ARRAY
-            );
+            putReifiedOperationMarkerIfTypeIsReifiedParameter(this, elementJetType, ReifiedTypeInliner.OperationKind.NEW_ARRAY);
             v.newarray(boxType(typeMapper.mapTypeAsDeclaration(elementJetType)));
         }
         else {
@@ -5235,7 +5214,7 @@ The "returned" value of try expression with no finally is either the last expres
 
             boolean safeAs = opToken == KtTokens.AS_SAFE;
             if (TypeUtils.isReifiedTypeParameter(rightKotlinType)) {
-                putReifiedOperationMarkerIfTypeIsReifiedParameter(rightKotlinType,
+                putReifiedOperationMarkerIfTypeIsReifiedParameter(this, rightKotlinType,
                                                                   safeAs ? ReifiedTypeInliner.OperationKind.SAFE_AS
                                                                          : ReifiedTypeInliner.OperationKind.AS);
                 v.checkcast(boxedRightType);
@@ -5243,7 +5222,7 @@ The "returned" value of try expression with no finally is either the last expres
             }
 
             CodegenUtilKt.generateAsCast(
-                    v, rightKotlinType, boxedRightType, safeAs, state.getLanguageVersionSettings(), state.getUnifiedNullChecks()
+                    v, rightKotlinType, boxedRightType, safeAs, state.getUnifiedNullChecks()
             );
 
             return Unit.INSTANCE;
@@ -5292,12 +5271,12 @@ The "returned" value of try expression with no finally is either the last expres
 
             Type type = boxType(typeMapper.mapTypeAsDeclaration(rhsKotlinType));
             if (TypeUtils.isReifiedTypeParameter(rhsKotlinType)) {
-                putReifiedOperationMarkerIfTypeIsReifiedParameter(rhsKotlinType, ReifiedTypeInliner.OperationKind.IS);
+                putReifiedOperationMarkerIfTypeIsReifiedParameter(this, rhsKotlinType, ReifiedTypeInliner.OperationKind.IS);
                 v.instanceOf(type);
                 return null;
             }
 
-            CodegenUtilKt.generateIsCheck(v, rhsKotlinType, type, state.getLanguageVersionSettings().supportsFeature(LanguageFeature.ReleaseCoroutines));
+            CodegenUtilKt.generateIsCheck(v, rhsKotlinType, type);
             return null;
         });
     }
@@ -5543,12 +5522,5 @@ The "returned" value of try expression with no finally is either the last expres
         if (typeParameterDescriptor.getContainingDeclaration() != context.getContextDescriptor()) {
             parentCodegen.getReifiedTypeParametersUsages().addUsedReifiedParameter(typeParameterDescriptor.getName().asString());
         }
-    }
-
-    @Override
-    public void putReifiedOperationMarkerIfTypeIsReifiedParameter(
-            @NotNull KotlinTypeMarker type, @NotNull ReifiedTypeInliner.OperationKind operationKind
-    ) {
-        BaseExpressionCodegen.DefaultImpls.putReifiedOperationMarkerIfTypeIsReifiedParameter(this, type, operationKind);
     }
 }

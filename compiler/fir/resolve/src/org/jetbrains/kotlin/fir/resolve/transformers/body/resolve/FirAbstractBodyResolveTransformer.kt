@@ -43,14 +43,6 @@ abstract class FirAbstractBodyResolveTransformer(phase: FirResolvePhase) : FirAb
 
     final override val session: FirSession get() = components.session
 
-    protected open fun needReplacePhase(firDeclaration: FirDeclaration) = true
-
-    fun replaceDeclarationResolvePhaseIfNeeded(firDeclaration: FirDeclaration, newResolvePhase: FirResolvePhase) {
-        if (needReplacePhase(firDeclaration) && newResolvePhase > firDeclaration.resolvePhase) {
-            firDeclaration.replaceResolvePhase(newResolvePhase)
-        }
-    }
-
     @OptIn(PrivateForInline::class)
     internal inline fun <T> withFullBodyResolve(crossinline l: () -> T): T {
         val shouldSwitchMode = implicitTypeOnly
@@ -84,11 +76,7 @@ abstract class FirAbstractBodyResolveTransformer(phase: FirResolvePhase) : FirAb
     protected inline val file: FirFile get() = components.file
 
     val ResolutionMode.expectedType: FirTypeRef?
-        get() = when (this) {
-            is ResolutionMode.WithExpectedType -> expectedTypeRef
-            is ResolutionMode.ContextIndependent -> noExpectedType
-            else -> null
-        }
+        get() = expectedType(components)
 
     class BodyResolveTransformerComponents(
         override val session: FirSession,

@@ -3,12 +3,17 @@ package org.jetbrains.kotlin.gradle
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.logging.configuration.WarningMode
 import org.gradle.util.GradleVersion
+import org.jetbrains.kotlin.gradle.internal.ensureParentDirsCreated
+import org.jetbrains.kotlin.gradle.tooling.BuildKotlinToolingMetadataTask
 import org.jetbrains.kotlin.gradle.util.*
 import org.jetbrains.kotlin.test.util.KtTestUtil
 import org.junit.Assume
 import org.junit.Test
 import java.io.File
+import java.util.zip.ZipFile
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 open class KotlinAndroid36GradleIT : KotlinAndroid34GradleIT() {
@@ -132,14 +137,13 @@ open class KotlinAndroid36GradleIT : KotlinAndroid34GradleIT() {
             }
         }
 
-        // By default, no Android variant should be published in 1.3.20:
         val groupDir = "lib/build/repo/com/example/"
         build("publish") {
             assertSuccessful()
             assertFileExists(groupDir + "lib-jvmlib")
             assertFileExists(groupDir + "lib-jslib")
-            assertNoSuchFile(groupDir + "lib-androidlib")
-            assertNoSuchFile(groupDir + "lib-androidlib-debug")
+            assertFileExists(groupDir + "lib-androidlib")
+            assertFileExists(groupDir + "lib-androidlib-debug")
             projectDir.resolve(groupDir).deleteRecursively()
         }
 
@@ -294,13 +298,6 @@ open class KotlinAndroid36GradleIT : KotlinAndroid34GradleIT() {
         testResolveAllConfigurations("lib") {
             assertSuccessful()
 
-            // commonMain:
-            assertContains(">> :lib:debugCompileClasspath --> kotlin-stdlib-common-$kotlinVersion.jar")
-            assertContains(">> :lib:releaseCompileClasspath --> kotlin-stdlib-common-$kotlinVersion.jar")
-            assertContains(">> :lib:debugAndroidTestCompileClasspath --> kotlin-stdlib-common-$kotlinVersion.jar")
-            assertContains(">> :lib:debugUnitTestCompileClasspath --> kotlin-stdlib-common-$kotlinVersion.jar")
-            assertContains(">> :lib:releaseUnitTestCompileClasspath --> kotlin-stdlib-common-$kotlinVersion.jar")
-
             // androidLibDebug:
             assertContains(">> :lib:debugCompileClasspath --> kotlin-reflect-$kotlinVersion.jar")
             assertNotContains(">> :lib:releaseCompileClasspath --> kotlin-reflect-$kotlinVersion.jar")
@@ -435,6 +432,31 @@ open class KotlinAndroid36GradleIT : KotlinAndroid34GradleIT() {
             assertSuccessful()
         }
     }
+
+    @Test
+    fun `test KotlinToolingMetadataArtifact is bundled into apk`(): Unit = with(Project("kotlinToolingMetadataAndroid")) {
+        build("assembleDebug") {
+            assertSuccessful()
+            assertTasksNotExecuted(":${BuildKotlinToolingMetadataTask.defaultTaskName}")
+
+            val debugApk = project.projectDir.resolve("build/outputs/apk/debug/project-debug.apk")
+            assertTrue(debugApk.exists(), "Missing debug apk ${debugApk.path}")
+            ZipFile(debugApk).use { zip ->
+                assertNull(zip.getEntry("kotlin-tooling-metadata.json"), "Expected metadata *not* being packaged into debug apk")
+            }
+        }
+
+        build("assembleRelease") {
+            assertSuccessful()
+            assertTasksExecuted(":${BuildKotlinToolingMetadataTask.defaultTaskName}")
+            val releaseApk = project.projectDir.resolve("build/outputs/apk/release/project-release-unsigned.apk")
+
+            assertTrue(releaseApk.exists(), "Missing release apk ${releaseApk.path}")
+            ZipFile(releaseApk).use { zip ->
+                assertNotNull(zip.getEntry("kotlin-tooling-metadata.json"), "Expected metadata being packaged into release apk")
+            }
+        }
+    }
 }
 
 open class KotlinAndroid70GradleIT : KotlinAndroid36GradleIT() {
@@ -442,12 +464,44 @@ open class KotlinAndroid70GradleIT : KotlinAndroid36GradleIT() {
         get() = AGPVersion.v7_0_0
 
     override val defaultGradleVersion: GradleVersionRequired
-        get() = GradleVersionRequired.AtLeast("6.8")
+        get() = GradleVersionRequired.AtLeast("7.0")
 
     override fun defaultBuildOptions(): BuildOptions {
-        val javaHome = File(System.getProperty("jdk11Home")!!)
+        val javaHome = File(System.getProperty("jdk11Home") ?: error("jdk11Home not specified"))
         Assume.assumeTrue("JDK 11 should be available", javaHome.isDirectory)
         return super.defaultBuildOptions().copy(javaHome = javaHome, warningMode = WarningMode.Summary)
+    }
+
+    /**
+     * Regression test for KT-49066. It is not really AGP 7.0 specific, but it is not added to the base class to avoid
+     * running it multiple times.
+     */
+    @Test
+    fun testCustomModuleName() {
+        val project = Project("AndroidIncrementalMultiModule")
+        val options = defaultBuildOptions().copy(incremental = true, kotlinDaemonDebugPort = null)
+
+        project.setupWorkingDir().also {
+            project.gradleBuildScript("libAndroid").appendText("""
+
+                android.kotlinOptions {
+                    moduleName = "custom_path"
+                }
+            """.trimIndent())
+        }
+
+        project.build("assembleDebug", options = options) {
+            assertSuccessful()
+            assertFileExists("libAndroid/build/tmp/kotlin-classes/debug/META-INF/custom_path.kotlin_module")
+        }
+
+        val libAndroidUtilKt = project.projectDir.getFileByName("libAndroidUtil.kt")
+        libAndroidUtilKt.modify { it.replace("fun libAndroidUtil(): String", "fun libAndroidUtil(): CharSequence") }
+        project.build("assembleDebug", options = options) {
+            assertSuccessful()
+            val affectedSources = project.projectDir.getFilesByNames("libAndroidUtil.kt", "useLibAndroidUtil.kt")
+            assertCompiledKotlinSources(project.relativize(affectedSources))
+        }
     }
 }
 
@@ -567,7 +621,7 @@ open class KotlinAndroid34GradleIT : KotlinAndroid3GradleIT() {
                 "kotlin-stdlib:\$kotlin_version",
                 "kotlin-stdlib"
             ) + "\n" +
-                """
+                    """
                 apply plugin: 'maven-publish'
 
                 android {
@@ -797,6 +851,7 @@ fun getSomething() = 10
 
         project.build("assembleDebug", options = options) {
             assertSuccessful()
+            output
         }
 
         val androidModuleKt = project.projectDir.getFileByName("AndroidModule.kt")
@@ -809,13 +864,22 @@ fun getSomething() = 10
 
         project.build(":app:assembleDebug", options = options) {
             assertSuccessful()
-            assertCompiledKotlinSources(project.relativize(androidModuleKt))
             assertTasksExecuted(
                 ":app:kaptGenerateStubsDebugKotlin",
                 ":app:kaptDebugKotlin",
                 ":app:compileDebugKotlin",
                 ":app:compileDebugJavaWithJavac"
             )
+
+            // Output is combined with previous build, but we are only interested in the compilation
+            // from second build to avoid false positive test failure
+            val filteredOutput = output
+                .lineSequence()
+                .filter { it.contains("[KOTLIN] compile iteration:") }
+                .drop(1)
+                .joinToString(separator = "/n")
+            val actualSources = getCompiledKotlinSources(filteredOutput).projectRelativePaths(project)
+            assertSameFiles(project.relativize(androidModuleKt), actualSources, "Compiled Kotlin files differ:\n  ")
         }
     }
 
@@ -952,6 +1016,87 @@ fun getSomething() = 10
         build(":Lib:assembleDebug", "-Pkotlin.setJvmTargetFromAndroidCompileOptions=true") {
             assertSuccessful()
             assertContainsRegex(kotlinJvmTarget16Regex)
+        }
+    }
+
+    @Test
+    fun shouldAllowToApplyPluginWhenAndroidPluginIsMissing() {
+        with(Project("simpleProject", minLogLevel = LogLevel.WARN)) {
+            setupWorkingDir()
+
+            gradleBuildScript().modify {
+                it.lines().joinToString(
+                    separator = "\n",
+                    transform = jvmToAndroidModifier()
+                )
+            }
+            gradleSettingsScript().modify {
+                it.lines().joinToString(
+                    separator = "\n",
+                    transform = jvmToAndroidModifier(true)
+                )
+            }
+
+            build("tasks") {
+                assertFailed()
+                assertContains("'kotlin-android' plugin requires one of the Android Gradle plugins.")
+            }
+        }
+    }
+
+    @Test
+    fun testLintDependencyResolutionKt49483() = with(Project("AndroidProject")) {
+        setupWorkingDir()
+
+        gradleBuildScript().modify {
+            """
+                plugins {
+                    id("com.android.lint")
+                }
+                
+            """.trimIndent() + it
+        }
+
+        gradleBuildScript("Lib").appendText("\n" + """
+            android { 
+                lintOptions.checkDependencies = true
+            }
+            dependencies {
+                implementation(project(":java-lib"))
+            }
+        """.trimIndent())
+
+        gradleSettingsScript().appendText(
+            "\n" + """
+            include("java-lib")
+        """.trimIndent()
+        )
+
+        with(projectDir.resolve("java-lib/build.gradle.kts")) {
+            ensureParentDirsCreated()
+            writeText(
+                """
+                plugins {
+                    id("java-library")
+                    id("com.android.lint")
+                }
+            """.trimIndent()
+            )
+        }
+
+        build(":Lib:lintFlavor1Debug") {
+            assertSuccessful()
+            assertNotContains("as an external dependency and not analyze it.")
+        }
+    }
+
+    private fun jvmToAndroidModifier(
+        appendKotlinVersion: Boolean = false
+    ): (String) -> CharSequence = { line ->
+        if (line.contains("id \"org.jetbrains.kotlin.jvm\"")) {
+            "    id \"org.jetbrains.kotlin.android\"" + if (appendKotlinVersion) " version \"${'$'}kotlin_version\"" else ""
+        } else {
+            line
         }
     }
 }

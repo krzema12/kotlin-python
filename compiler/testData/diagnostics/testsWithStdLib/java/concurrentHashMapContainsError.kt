@@ -1,5 +1,4 @@
 // !LANGUAGE: +ProhibitConcurrentHashMapContains
-// !WITH_NEW_INFERENCE
 // FULL_JDK
 
 class A : java.util.concurrent.ConcurrentHashMap<String, Int>() {
@@ -29,8 +28,8 @@ fun main() {
 
     "" in (hm as Map<String, Int>)
     "" !in (hm as Map<String, Int>)
-    1 <!TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS{OI}, TYPE_INFERENCE_ONLY_INPUT_TYPES{NI}!>in<!> (hm as Map<String, Int>)
-    1 <!TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS{OI}, TYPE_INFERENCE_ONLY_INPUT_TYPES{NI}!>!in<!> (hm as Map<String, Int>)
+    1 <!TYPE_INFERENCE_ONLY_INPUT_TYPES_ERROR!>in<!> (hm as Map<String, Int>)
+    1 <!TYPE_INFERENCE_ONLY_INPUT_TYPES_ERROR!>!in<!> (hm as Map<String, Int>)
 
     val a = A()
     "" <!CONCURRENT_HASH_MAP_CONTAINS_OPERATOR_ERROR!>in<!> a
@@ -45,8 +44,8 @@ fun main() {
 
     "" in (a as Map<String, Int>)
     "" !in (a as Map<String, Int>)
-    1 <!TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS{OI}, TYPE_INFERENCE_ONLY_INPUT_TYPES{NI}!>in<!> (a as Map<String, Int>)
-    1 <!TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS{OI}, TYPE_INFERENCE_ONLY_INPUT_TYPES{NI}!>!in<!> (a as Map<String, Int>)
+    1 <!TYPE_INFERENCE_ONLY_INPUT_TYPES_ERROR!>in<!> (a as Map<String, Int>)
+    1 <!TYPE_INFERENCE_ONLY_INPUT_TYPES_ERROR!>!in<!> (a as Map<String, Int>)
 
     val b = B()
     "" <!CONCURRENT_HASH_MAP_CONTAINS_OPERATOR_ERROR!>in<!> b
@@ -59,8 +58,8 @@ fun main() {
 
     "" in (b as Map<String, Int>)
     "" !in (b as Map<String, Int>)
-    1 <!TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS{OI}, TYPE_INFERENCE_ONLY_INPUT_TYPES{NI}!>in<!> (b as Map<String, Int>)
-    1 <!TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS{OI}, TYPE_INFERENCE_ONLY_INPUT_TYPES{NI}!>!in<!> (b as Map<String, Int>)
+    1 <!TYPE_INFERENCE_ONLY_INPUT_TYPES_ERROR!>in<!> (b as Map<String, Int>)
+    1 <!TYPE_INFERENCE_ONLY_INPUT_TYPES_ERROR!>!in<!> (b as Map<String, Int>)
 
     // Actually, we could've allow calls here because the owner explicitly declared as operator, but semantics is still weird
     val c = C()
@@ -74,6 +73,6 @@ fun main() {
 
     "" in (c as Map<String, Int>)
     "" !in (c as Map<String, Int>)
-    1 <!TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS{OI}, TYPE_INFERENCE_ONLY_INPUT_TYPES{NI}!>in<!> (c as Map<String, Int>)
-    1 <!TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS{OI}, TYPE_INFERENCE_ONLY_INPUT_TYPES{NI}!>!in<!> (c as Map<String, Int>)
+    1 <!TYPE_INFERENCE_ONLY_INPUT_TYPES_ERROR!>in<!> (c as Map<String, Int>)
+    1 <!TYPE_INFERENCE_ONLY_INPUT_TYPES_ERROR!>!in<!> (c as Map<String, Int>)
 }

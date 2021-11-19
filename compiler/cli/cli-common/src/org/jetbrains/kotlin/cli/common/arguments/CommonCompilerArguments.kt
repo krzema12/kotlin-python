@@ -1,23 +1,13 @@
 /*
- * Copyright 2010-2017 JetBrains s.r.o.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
 package org.jetbrains.kotlin.cli.common.arguments
 
 import com.intellij.util.xmlb.annotations.Transient
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
+import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity.WARNING
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.config.*
 import java.util.*
@@ -50,7 +40,7 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
     @get:Transient
     var autoAdvanceApiVersion: Boolean by FreezableVar(true)
 
-    @GradleOption(DefaultValues.LanguageVersions::class)
+    @GradleOption(DefaultValues.ApiVersions::class)
     @Argument(
         value = "-api-version",
         valueDescription = "<version>",
@@ -81,6 +71,15 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
 
     @Argument(value = "-P", valueDescription = PLUGIN_OPTION_FORMAT, description = "Pass an option to a plugin")
     var pluginOptions: Array<String>? by FreezableVar(null)
+
+    @Argument(
+        value = "-opt-in",
+        // Uncomment after deletion of optInDeprecated
+        // deprecatedName = "-Xopt-in",
+        valueDescription = "<fq.name>",
+        description = "Enable usages of API that requires opt-in with an opt-in requirement marker with the given fully qualified name"
+    )
+    var optIn: Array<String>? by FreezableVar(null)
 
     // Advanced options
 
@@ -158,25 +157,19 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
     var readDeserializedContracts: Boolean by FreezableVar(false)
 
     @Argument(
-        value = "-Xexperimental",
-        valueDescription = "<fq.name>",
-        description = "Enable and propagate usages of experimental API for marker annotation with the given fully qualified name"
-    )
-    var experimental: Array<String>? by FreezableVar(null)
-
-    @Argument(
         value = "-Xuse-experimental",
         valueDescription = "<fq.name>",
         description = "Enable, but don't propagate usages of experimental API for marker annotation with the given fully qualified name"
     )
     var useExperimental: Array<String>? by FreezableVar(null)
 
+    // NB: we have to keep this flag for some time due to bootstrapping problems
     @Argument(
         value = "-Xopt-in",
         valueDescription = "<fq.name>",
         description = "Enable usages of API that requires opt-in with an opt-in requirement marker with the given fully qualified name"
     )
-    var optIn: Array<String>? by FreezableVar(null)
+    var optInDeprecated: Array<String>? by FreezableVar(null)
 
     @Argument(
         value = "-Xproper-ieee754-comparisons",
@@ -365,17 +358,50 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
     )
     var extendedCompilerChecks: Boolean by FreezableVar(false)
 
-    open fun configureAnalysisFlags(collector: MessageCollector): MutableMap<AnalysisFlag<*>, Any> {
+    @Argument(
+        value = "-Xbuiltins-from-sources",
+        description = "Compile builtIns from sources"
+    )
+    var builtInsFromSources: Boolean by FreezableVar(false)
+
+    @Argument(
+        value = "-Xunrestricted-builder-inference",
+        description = "Eliminate builder inference restrictions like allowance of returning type variables of a builder inference call"
+    )
+    var unrestrictedBuilderInference: Boolean by FreezableVar(false)
+
+    @Argument(
+        value = "-Xenable-builder-inference",
+        description = "Use the builder inference by default, for all calls with lambdas which can't be resolved without it.\n" +
+                "The corresponding calls' declarations may not be marked with @BuilderInference."
+    )
+    var enableBuilderInference: Boolean by FreezableVar(false)
+
+    @Argument(
+        value = "-Xself-upper-bound-inference",
+        description = "Support inferring type arguments based on only self upper bounds of the corresponding type parameters"
+    )
+    var selfUpperBoundInference: Boolean by FreezableVar(false)
+
+    open fun configureAnalysisFlags(collector: MessageCollector, languageVersion: LanguageVersion): MutableMap<AnalysisFlag<*>, Any> {
         return HashMap<AnalysisFlag<*>, Any>().apply {
             put(AnalysisFlags.skipMetadataVersionCheck, skipMetadataVersionCheck)
             put(AnalysisFlags.skipPrereleaseCheck, skipPrereleaseCheck || skipMetadataVersionCheck)
             put(AnalysisFlags.multiPlatformDoNotCheckActual, noCheckActual)
-            val experimentalFqNames = experimental?.toList().orEmpty()
-            if (experimentalFqNames.isNotEmpty()) {
-                put(AnalysisFlags.experimental, experimentalFqNames)
-                collector.report(CompilerMessageSeverity.WARNING, "'-Xexperimental' is deprecated and will be removed in a future release")
+            val useExperimentalFqNames = useExperimental?.toList().orEmpty()
+            if (useExperimentalFqNames.isNotEmpty()) {
+                collector.report(
+                    WARNING, "'-Xuse-experimental' is deprecated and will be removed in a future release, please use -opt-in instead"
+                )
             }
-            put(AnalysisFlags.useExperimental, useExperimental?.toList().orEmpty() + optIn?.toList().orEmpty())
+            val optInDeprecatedFqNames = optInDeprecated?.toList().orEmpty()
+            if (optInDeprecatedFqNames.isNotEmpty()) {
+                // TODO: uncomment this after -opt-in bootstrapping and Gradle script fixing
+//                collector.report(
+//                    WARNING, "'-Xopt-in' is deprecated and will be removed in a future release, please use -opt-in instead"
+//                )
+            }
+            put(AnalysisFlags.useExperimental, useExperimentalFqNames + optInDeprecatedFqNames + optIn?.toList().orEmpty())
             put(AnalysisFlags.expectActualLinker, expectActualLinker)
             put(AnalysisFlags.explicitApiVersion, apiVersion != null)
             put(AnalysisFlags.allowResultReturnType, allowResultReturnType)
@@ -384,6 +410,8 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
                 "Unknown value for parameter -Xexplicit-api: '$explicitApi'. Value should be one of ${ExplicitApiMode.availableValues()}"
             )
             put(AnalysisFlags.extendedCompilerChecks, extendedCompilerChecks)
+            put(AnalysisFlags.allowKotlinPackage, allowKotlinPackage)
+            put(AnalysisFlags.builtInsFromSources, builtInsFromSources)
         }
     }
 
@@ -391,6 +419,18 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
         HashMap<LanguageFeature, LanguageFeature.State>().apply {
             if (multiPlatform) {
                 put(LanguageFeature.MultiPlatformProjects, LanguageFeature.State.ENABLED)
+            }
+
+            if (unrestrictedBuilderInference) {
+                put(LanguageFeature.UnrestrictedBuilderInference, LanguageFeature.State.ENABLED)
+            }
+
+            if (enableBuilderInference) {
+                put(LanguageFeature.UseBuilderInferenceWithoutAnnotation, LanguageFeature.State.ENABLED)
+            }
+
+            if (selfUpperBoundInference) {
+                put(LanguageFeature.TypeInferenceOnCallsWithSelfTypes, LanguageFeature.State.ENABLED)
             }
 
             if (newInference) {
@@ -502,20 +542,20 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
     }
 
     fun toLanguageVersionSettings(collector: MessageCollector): LanguageVersionSettings {
-
         // If only "-api-version" is specified, language version is assumed to be the latest stable
-        val languageVersion = parseVersion(collector, languageVersion, "language") ?: LanguageVersion.LATEST_STABLE
+        val languageVersion = parseVersion(collector, languageVersion, "language")
+            ?: defaultLanguageVersion(collector)
 
         // If only "-language-version" is specified, API version is assumed to be equal to the language version
         // (API version cannot be greater than the language version)
-        val apiVersion = parseVersion(collector, apiVersion, "API") ?: languageVersion
+        val apiVersion = ApiVersion.createByLanguageVersion(parseVersion(collector, apiVersion, "API") ?: languageVersion)
 
         checkApiVersionIsNotGreaterThenLanguageVersion(languageVersion, apiVersion, collector)
 
         val languageVersionSettings = LanguageVersionSettingsImpl(
             languageVersion,
-            ApiVersion.createByLanguageVersion(apiVersion),
-            configureAnalysisFlags(collector),
+            apiVersion,
+            configureAnalysisFlags(collector, languageVersion),
             configureLanguageFeatures(collector)
         )
 
@@ -527,15 +567,17 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
             checkIrSupport(languageVersionSettings, collector)
         }
 
+        checkPlatformSpecificSettings(languageVersionSettings, collector)
+
         return languageVersionSettings
     }
 
     private fun checkApiVersionIsNotGreaterThenLanguageVersion(
         languageVersion: LanguageVersion,
-        apiVersion: LanguageVersion,
+        apiVersion: ApiVersion,
         collector: MessageCollector
     ) {
-        if (apiVersion > languageVersion) {
+        if (apiVersion > ApiVersion.createByLanguageVersion(languageVersion)) {
             collector.report(
                 CompilerMessageSeverity.ERROR,
                 "-api-version (${apiVersion.versionString}) cannot be greater than -language-version (${languageVersion.versionString})"
@@ -553,14 +595,14 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
         }
     }
 
-    private fun checkOutdatedVersions(language: LanguageVersion, api: LanguageVersion, collector: MessageCollector) {
-        val (version, versionKind) = findOutdatedVersion(language, api) ?: return
+    private fun checkOutdatedVersions(language: LanguageVersion, api: ApiVersion, collector: MessageCollector) {
+        val (version, supportedVersion, versionKind) = findOutdatedVersion(language, api) ?: return
         when {
             version.isUnsupported -> {
                 collector.report(
                     CompilerMessageSeverity.ERROR,
                     "${versionKind.text} version ${version.versionString} is no longer supported; " +
-                            "please, use version ${LanguageVersion.OLDEST_DEPRECATED.versionString} or greater."
+                            "please, use version ${supportedVersion!!.versionString} or greater."
                 )
             }
             version.isDeprecated -> {
@@ -573,12 +615,12 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
         }
     }
 
-    private fun findOutdatedVersion(language: LanguageVersion, api: LanguageVersion): Pair<LanguageVersion, VersionKind>? {
+    private fun findOutdatedVersion(language: LanguageVersion, api: ApiVersion): Triple<LanguageOrApiVersion, LanguageOrApiVersion?, VersionKind>? {
         return when {
-            language.isUnsupported -> language to VersionKind.LANGUAGE
-            api.isUnsupported -> api to VersionKind.API
-            language.isDeprecated -> language to VersionKind.LANGUAGE
-            api.isDeprecated -> api to VersionKind.API
+            language.isUnsupported -> Triple(language, LanguageVersion.FIRST_SUPPORTED, VersionKind.LANGUAGE)
+            api.isUnsupported -> Triple(api, ApiVersion.FIRST_SUPPORTED, VersionKind.API)
+            language.isDeprecated -> Triple(language, null, VersionKind.LANGUAGE)
+            api.isDeprecated -> Triple(api, null, VersionKind.API)
             else -> null
         }
     }
@@ -597,6 +639,12 @@ abstract class CommonCompilerArguments : CommonToolArguments() {
 
     protected open fun checkIrSupport(languageVersionSettings: LanguageVersionSettings, collector: MessageCollector) {
         // backend-specific
+    }
+
+    protected open fun defaultLanguageVersion(collector: MessageCollector): LanguageVersion =
+        LanguageVersion.LATEST_STABLE
+
+    protected open fun checkPlatformSpecificSettings(languageVersionSettings: LanguageVersionSettings, collector: MessageCollector) {
     }
 
     private enum class VersionKind(val text: String) {

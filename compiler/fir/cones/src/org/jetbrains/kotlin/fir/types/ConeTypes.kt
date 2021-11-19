@@ -15,16 +15,6 @@ import org.jetbrains.kotlin.utils.addToStdlib.foldMap
 
 enum class ProjectionKind {
     STAR, IN, OUT, INVARIANT;
-
-    operator fun plus(other: ProjectionKind): ProjectionKind {
-        return when {
-            this == other -> this
-            this == STAR || other == STAR -> STAR
-            this == INVARIANT -> other
-            other == INVARIANT -> this
-            else -> STAR
-        }
-    }
 }
 
 sealed class ConeTypeProjection : TypeArgumentMarker {
@@ -52,6 +42,11 @@ data class ConeKotlinTypeProjectionIn(override val type: ConeKotlinType) : ConeK
 data class ConeKotlinTypeProjectionOut(override val type: ConeKotlinType) : ConeKotlinTypeProjection() {
     override val kind: ProjectionKind
         get() = ProjectionKind.OUT
+}
+
+data class ConeKotlinTypeConflictingProjection(override val type: ConeKotlinType) : ConeKotlinTypeProjection() {
+    override val kind: ProjectionKind
+        get() = ProjectionKind.INVARIANT
 }
 
 val ConeTypeProjection.type: ConeKotlinType?
@@ -92,7 +87,7 @@ typealias ConeKotlinErrorType = ConeClassErrorType
 
 class ConeClassLikeErrorLookupTag(override val classId: ClassId) : ConeClassLikeLookupTag()
 
-class ConeClassErrorType(val diagnostic: ConeDiagnostic) : ConeClassLikeType() {
+class ConeClassErrorType(val diagnostic: ConeDiagnostic, val isUninferredParameter: Boolean = false) : ConeClassLikeType() {
     override val lookupTag: ConeClassLikeLookupTag
         get() = ConeClassLikeErrorLookupTag(ClassId.fromString("<error>"))
 
@@ -217,11 +212,10 @@ data class ConeCapturedType(
 
 data class ConeTypeVariableType(
     override val nullability: ConeNullability,
-    override val lookupTag: ConeClassifierLookupTag
+    override val lookupTag: ConeClassifierLookupTag,
+    override val attributes: ConeAttributes = ConeAttributes.Empty,
 ) : ConeLookupTagBasedType() {
     override val typeArguments: Array<out ConeTypeProjection> get() = emptyArray()
-
-    override val attributes: ConeAttributes get() = ConeAttributes.Empty
 }
 
 data class ConeDefinitelyNotNullType(val original: ConeKotlinType) : ConeSimpleKotlinType(), DefinitelyNotNullTypeMarker {
@@ -232,7 +226,7 @@ data class ConeDefinitelyNotNullType(val original: ConeKotlinType) : ConeSimpleK
         get() = ConeNullability.NOT_NULL
 
     override val attributes: ConeAttributes
-        get() = ConeAttributes.Empty
+        get() = original.attributes
 
     companion object
 }
@@ -284,7 +278,7 @@ fun ConeIntersectionType.withAlternative(alternativeType: ConeKotlinType): ConeI
 }
 
 fun ConeIntersectionType.mapTypes(func: (ConeKotlinType) -> ConeKotlinType): ConeIntersectionType {
-    return ConeIntersectionType(intersectedTypes.map(func))
+    return ConeIntersectionType(intersectedTypes.map(func), alternativeType?.let(func))
 }
 
 class ConeStubType(val variable: ConeTypeVariable, override val nullability: ConeNullability) : StubTypeMarker, ConeSimpleKotlinType() {

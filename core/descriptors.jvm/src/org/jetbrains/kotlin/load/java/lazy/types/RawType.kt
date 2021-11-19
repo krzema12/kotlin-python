@@ -29,7 +29,7 @@ import org.jetbrains.kotlin.resolve.scopes.MemberScope
 import org.jetbrains.kotlin.types.*
 import org.jetbrains.kotlin.types.checker.KotlinTypeChecker
 import org.jetbrains.kotlin.types.checker.KotlinTypeRefiner
-import org.jetbrains.kotlin.types.refinement.TypeRefinement
+import org.jetbrains.kotlin.types.TypeRefinement
 import org.jetbrains.kotlin.types.typeUtil.builtIns
 
 class RawTypeImpl private constructor(lowerBound: SimpleType, upperBound: SimpleType, disableAssertion: Boolean) :
@@ -51,7 +51,7 @@ class RawTypeImpl private constructor(lowerBound: SimpleType, upperBound: Simple
         get() {
             val classDescriptor = constructor.declarationDescriptor as? ClassDescriptor
                 ?: error("Incorrect classifier: ${constructor.declarationDescriptor}")
-            return classDescriptor.getMemberScope(RawSubstitution)
+            return classDescriptor.getMemberScope(RawSubstitution())
         }
 
     override fun replaceAnnotations(newAnnotations: Annotations) =
@@ -101,15 +101,15 @@ class RawTypeImpl private constructor(lowerBound: SimpleType, upperBound: Simple
     }
 }
 
-internal object RawSubstitution : TypeSubstitution() {
-    override fun get(key: KotlinType) = TypeProjectionImpl(eraseType(key))
+internal class RawSubstitution(typeParameterUpperBoundEraser: TypeParameterUpperBoundEraser? = null) : TypeSubstitution() {
+    private val typeParameterUpperBoundEraser = typeParameterUpperBoundEraser ?: TypeParameterUpperBoundEraser(this)
 
-    private val lowerTypeAttr = TypeUsage.COMMON.toAttributes().withFlexibility(JavaTypeFlexibility.FLEXIBLE_LOWER_BOUND)
-    private val upperTypeAttr = TypeUsage.COMMON.toAttributes().withFlexibility(JavaTypeFlexibility.FLEXIBLE_UPPER_BOUND)
+    override fun get(key: KotlinType) = TypeProjectionImpl(eraseType(key))
 
     private fun eraseType(type: KotlinType, attr: JavaTypeAttributes = JavaTypeAttributes(TypeUsage.COMMON)): KotlinType {
         return when (val declaration = type.constructor.declarationDescriptor) {
-            is TypeParameterDescriptor -> eraseType(declaration.getErasedUpperBound(isRaw = true, attr), attr)
+            is TypeParameterDescriptor ->
+                eraseType(typeParameterUpperBoundEraser.getErasedUpperBound(declaration, isRaw = true, attr), attr)
             is ClassDescriptor -> {
                 val declarationForUpper =
                     type.upperIfFlexible().constructor.declarationDescriptor
@@ -150,7 +150,7 @@ internal object RawSubstitution : TypeSubstitution() {
 
         if (type.isError) return ErrorUtils.createErrorType("Raw error type: ${type.constructor}") to false
 
-        val memberScope = declaration.getMemberScope(RawSubstitution)
+        val memberScope = declaration.getMemberScope(this)
         return KotlinTypeFactory.simpleTypeWithNonTrivialMemberScope(
             type.annotations, declaration.typeConstructor,
             declaration.typeConstructor.parameters.map { parameter ->
@@ -170,7 +170,7 @@ internal object RawSubstitution : TypeSubstitution() {
     fun computeProjection(
         parameter: TypeParameterDescriptor,
         attr: JavaTypeAttributes,
-        erasedUpperBound: KotlinType = parameter.getErasedUpperBound(isRaw = true, attr)
+        erasedUpperBound: KotlinType = typeParameterUpperBoundEraser.getErasedUpperBound(parameter, isRaw = true, attr)
     ) = when (attr.flexibility) {
         // Raw(List<T>) => (List<Any?>..List<*>)
         // Raw(Enum<T>) => (Enum<Enum<*>>..Enum<out Enum<*>>)
@@ -196,4 +196,9 @@ internal object RawSubstitution : TypeSubstitution() {
     }
 
     override fun isEmpty() = false
+
+    companion object {
+        private val lowerTypeAttr = TypeUsage.COMMON.toAttributes().withFlexibility(JavaTypeFlexibility.FLEXIBLE_LOWER_BOUND)
+        private val upperTypeAttr = TypeUsage.COMMON.toAttributes().withFlexibility(JavaTypeFlexibility.FLEXIBLE_UPPER_BOUND)
+    }
 }

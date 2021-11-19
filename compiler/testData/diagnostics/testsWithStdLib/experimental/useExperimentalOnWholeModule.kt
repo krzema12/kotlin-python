@@ -1,4 +1,5 @@
 // FIR_IDENTICAL
+// FIR_IDE_IGNORE
 // !USE_EXPERIMENTAL: kotlin.RequiresOptIn api.ExperimentalAPI
 // MODULE: api
 // FILE: api.kt
@@ -6,6 +7,7 @@
 package api
 
 @RequiresOptIn(level = RequiresOptIn.Level.ERROR)
+@Retention(AnnotationRetention.BINARY)
 annotation class ExperimentalAPI
 
 @ExperimentalAPI

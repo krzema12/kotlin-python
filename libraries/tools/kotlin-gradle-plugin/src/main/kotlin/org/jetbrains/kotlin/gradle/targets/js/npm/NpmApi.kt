@@ -18,8 +18,6 @@ import java.io.File
 interface NpmApi {
     fun setup(project: Project)
 
-    fun resolveProject(resolvedNpmProject: KotlinCompilationNpmResolution)
-
     fun preparedFiles(nodeJs: NodeJsRootExtension): Collection<File>
 
     fun prepareRootProject(
@@ -29,16 +27,17 @@ interface NpmApi {
         rootProjectVersion: String,
         logger: Logger,
         subProjects: Collection<KotlinCompilationNpmResolution>,
-        resolutions: Map<String, String>
+        resolutions: Map<String, String>,
+        forceFullResolve: Boolean
     )
 
     fun resolveRootProject(
         services: ServiceRegistry,
         logger: Logger,
         nodeJs: NodeJsRootExtension,
-        yarnHome: File,
+        command: String,
+        isStandalone: Boolean,
         npmProjects: Collection<KotlinCompilationNpmResolution>,
-        skipExecution: Boolean,
         cliArgs: List<String>
     )
 

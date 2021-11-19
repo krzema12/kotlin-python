@@ -81,8 +81,11 @@ class LazyJavaClassDescriptor(
 
     private val modality =
         if (jClass.isAnnotationType || jClass.isEnum) Modality.FINAL
-        // TODO: replace false with jClass.isSealed when it will be properly supported in platform
-        else Modality.convertFromFlags(sealed = false, jClass.isSealed || jClass.isAbstract || jClass.isInterface, !jClass.isFinal)
+        else Modality.convertFromFlags(
+            sealed = jClass.isSealed,
+            abstract = jClass.isSealed || jClass.isAbstract || jClass.isInterface,
+            open = !jClass.isFinal
+        )
 
     private val visibility = jClass.visibility
     private val isInner = jClass.outerClass != null && !jClass.isStatic
@@ -194,6 +197,8 @@ class LazyJavaClassDescriptor(
     } else {
         emptyList()
     }
+
+    override fun getInlineClassRepresentation(): InlineClassRepresentation<SimpleType>? = null
 
     override fun toString() = "Lazy Java class ${this.fqNameUnsafe}"
 

@@ -17,7 +17,7 @@ import org.jetbrains.kotlin.name.Name
 class FirLibrarySessionProvider(
     override val symbolProvider: FirSymbolProvider
 ) : FirProvider() {
-    override fun getFirClassifierByFqName(classId: ClassId): FirClassLikeDeclaration<*>? =
+    override fun getFirClassifierByFqName(classId: ClassId): FirClassLikeDeclaration? =
         symbolProvider.getClassLikeSymbolByFqName(classId)?.fir
 
     override fun getFirClassifierContainerFile(fqName: ClassId): FirFile = shouldNotBeCalled()

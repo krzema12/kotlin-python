@@ -12,20 +12,21 @@ import org.jetbrains.kotlin.descriptors.Visibility
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.*
+import org.jetbrains.kotlin.fir.declarations.utils.*
 import org.jetbrains.kotlin.fir.expressions.FirAnnotationCall
 import org.jetbrains.kotlin.fir.expressions.FirBlock
 import org.jetbrains.kotlin.fir.resolve.defaultType
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
-import org.jetbrains.kotlin.idea.asJava.applyIf
 import org.jetbrains.kotlin.idea.frontend.api.components.KtDeclarationRendererOptions
 import org.jetbrains.kotlin.idea.frontend.api.components.RendererModifier
 import org.jetbrains.kotlin.idea.frontend.api.fir.types.PublicTypeApproximator
-import org.jetbrains.kotlin.idea.util.ifTrue
 import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.renderer.render
 import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
+import org.jetbrains.kotlin.utils.addToStdlib.applyIf
+import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 
 internal class FirIdeRenderer private constructor(
     private var containingDeclaration: FirDeclaration?,
@@ -50,7 +51,12 @@ internal class FirIdeRenderer private constructor(
         val approximatedIfNeeded = approximate.ifTrue {
             PublicTypeApproximator.approximateTypeToPublicDenotable(firRef.coneType, session)
         } ?: firRef.coneType
-        return renderType(approximatedIfNeeded, firRef.annotations)
+        val annotations = if (RendererModifier.ANNOTATIONS in options.modifiers) {
+            firRef.annotations
+        } else {
+            null
+        }
+        return renderType(approximatedIfNeeded, annotations)
     }
 
     private fun StringBuilder.renderName(declaration: FirDeclaration) {
@@ -109,7 +115,7 @@ internal class FirIdeRenderer private constructor(
             return if (classKind == ClassKind.INTERFACE) Modality.ABSTRACT else Modality.FINAL
         }
         val containingFirClass = containingDeclaration as? FirRegularClass ?: return Modality.FINAL
-        if (this !is FirCallableMemberDeclaration<*>) return Modality.FINAL
+        if (this !is FirCallableDeclaration) return Modality.FINAL
         if (isOverride) {
             if (containingFirClass.modality != Modality.FINAL) return Modality.OPEN
         }
@@ -120,7 +126,7 @@ internal class FirIdeRenderer private constructor(
     }
 
     private fun StringBuilder.renderModalityForCallable(
-        callable: FirCallableMemberDeclaration<*>,
+        callable: FirCallableDeclaration,
         containingDeclaration: FirDeclaration?
     ) {
         val modality = callable.modality ?: return
@@ -131,9 +137,9 @@ internal class FirIdeRenderer private constructor(
         }
     }
 
-    private fun StringBuilder.renderOverride(callableMember: FirCallableMemberDeclaration<*>) {
+    private fun StringBuilder.renderOverride(callableMember: FirCallableDeclaration) {
         if (RendererModifier.OVERRIDE !in options.modifiers) return
-        renderModifier(callableMember.isOverride, "override")
+        renderModifier(callableMember.isOverride || options.forceRenderingOverrideModifier, "override")
     }
 
     private fun StringBuilder.renderModifier(value: Boolean, modifier: String) {
@@ -159,7 +165,7 @@ internal class FirIdeRenderer private constructor(
         renderSuspendModifier(firMember)
         renderModifier(firMember.isInline, "inline")
         renderModifier(isInfix, "infix")
-        renderModifier(isOperator, "operator")
+        renderModifier(RendererModifier.OPERATOR in options.modifiers && isOperator, "operator")
     }
 
     private fun StringBuilder.renderSuspendModifier(functionDescriptor: FirMemberDeclaration) {
@@ -178,15 +184,17 @@ internal class FirIdeRenderer private constructor(
     override fun visitProperty(property: FirProperty, data: StringBuilder) = with(data) {
         appendLine()
         appendTabs()
-        renderAnnotations(property)
-        renderVisibility(property.visibility)
-        renderModifier(RendererModifier.CONST in options.modifiers && property.isConst, "const")
-        renderMemberModifiers(property)
-        renderModalityForCallable(property, containingDeclaration)
-        renderOverride(property)
-        renderModifier(RendererModifier.LATEINIT in options.modifiers && property.isLateInit, "lateinit")
-        renderValVarPrefix(property)
-        renderTypeParameters(property.typeParameters, true)
+        if (options.renderDeclarationHeader) {
+            renderAnnotations(property)
+            renderVisibility(property.visibility)
+            renderModifier(RendererModifier.CONST in options.modifiers && property.isConst, "const")
+            renderMemberModifiers(property)
+            renderModalityForCallable(property, containingDeclaration)
+            renderOverride(property)
+            renderModifier(RendererModifier.LATEINIT in options.modifiers && property.isLateInit, "lateinit")
+            renderValVarPrefix(property)
+            renderTypeParameters(property.typeParameters, true)
+        }
         renderReceiver(property)
 
         renderName(property)
@@ -221,11 +229,13 @@ internal class FirIdeRenderer private constructor(
         with(data) {
             appendLine()
             appendTabs()
-            renderAnnotations(propertyAccessor)
-            renderVisibility(propertyAccessor.visibility)
-            renderModalityForCallable(propertyAccessor, containingDeclaration)
-            renderMemberModifiers(propertyAccessor)
-            renderAdditionalModifiers(propertyAccessor)
+            if (options.renderDeclarationHeader) {
+                renderAnnotations(propertyAccessor)
+                renderVisibility(propertyAccessor.visibility)
+                renderModalityForCallable(propertyAccessor, containingDeclaration)
+                renderMemberModifiers(propertyAccessor)
+                renderAdditionalModifiers(propertyAccessor)
+            }
             append(if (propertyAccessor.isGetter) "get" else "set")
             if (propertyAccessor.isSetter) {
                 append("(value: ")
@@ -248,15 +258,17 @@ internal class FirIdeRenderer private constructor(
         with(data) {
             appendLine()
             appendTabs()
-            renderAnnotations(simpleFunction)
-            renderVisibility(simpleFunction.visibility)
+            if (options.renderDeclarationHeader) {
+                renderAnnotations(simpleFunction)
+                renderVisibility(simpleFunction.visibility)
 
-            renderModalityForCallable(simpleFunction, containingDeclaration)
-            renderMemberModifiers(simpleFunction)
-            renderOverride(simpleFunction)
-            renderAdditionalModifiers(simpleFunction)
-            append("fun ")
-            renderTypeParameters(simpleFunction.typeParameters, true)
+                renderModalityForCallable(simpleFunction, containingDeclaration)
+                renderMemberModifiers(simpleFunction)
+                renderOverride(simpleFunction)
+                renderAdditionalModifiers(simpleFunction)
+                append("fun ")
+                renderTypeParameters(simpleFunction.typeParameters, true)
+            }
             renderReceiver(simpleFunction)
             renderName(simpleFunction)
             renderValueParameters(simpleFunction.valueParameters)
@@ -282,7 +294,9 @@ internal class FirIdeRenderer private constructor(
             appendLine()
             appendTabs()
 
-            renderAnnotations(anonymousObject)
+            if (options.renderDeclarationHeader) {
+                renderAnnotations(anonymousObject)
+            }
             append(getClassifierKindPrefix(anonymousObject))
             renderSuperTypes(anonymousObject)
         }
@@ -301,10 +315,12 @@ internal class FirIdeRenderer private constructor(
             appendLine()
             appendTabs()
             val containingClass = containingDeclaration
-            check(containingClass is FirDeclaration && (containingClass is FirClass<*> || containingClass is FirEnumEntry)) {
+            check(containingClass is FirDeclaration && (containingClass is FirClass || containingClass is FirEnumEntry)) {
                 "Invalid renderer containing declaration for constructor"
             }
-            renderAnnotations(constructor)
+            if (options.renderDeclarationHeader) {
+                renderAnnotations(constructor)
+            }
             append("constructor")
             renderValueParameters(constructor.valueParameters)
         }
@@ -325,25 +341,27 @@ internal class FirIdeRenderer private constructor(
             appendLine()
             appendTabs()
 
-            renderAnnotations(regularClass)
-            if (regularClass.classKind != ClassKind.ENUM_ENTRY) {
-                renderVisibility(regularClass.visibility)
-            }
-
-            val haveNotModality = regularClass.classKind == ClassKind.INTERFACE && regularClass.modality == Modality.ABSTRACT ||
-                    regularClass.classKind.isSingleton && regularClass.modality == Modality.FINAL
-            if (!haveNotModality) {
-                regularClass.modality?.let {
-                    renderModality(it, regularClass.implicitModalityWithoutExtensions(containingDeclaration))
+            if (options.renderDeclarationHeader) {
+                renderAnnotations(regularClass)
+                if (regularClass.classKind != ClassKind.ENUM_ENTRY) {
+                    renderVisibility(regularClass.visibility)
                 }
+
+                val haveNotModality = regularClass.classKind == ClassKind.INTERFACE && regularClass.modality == Modality.ABSTRACT ||
+                        regularClass.classKind.isSingleton && regularClass.modality == Modality.FINAL
+                if (!haveNotModality) {
+                    regularClass.modality?.let {
+                        renderModality(it, regularClass.implicitModalityWithoutExtensions(containingDeclaration))
+                    }
+                }
+                renderMemberModifiers(regularClass)
+                renderModifier(RendererModifier.INNER in options.modifiers && regularClass.isInner, "inner")
+                renderModifier(RendererModifier.DATA in options.modifiers && regularClass.isData, "data")
+                renderModifier(RendererModifier.INLINE in options.modifiers && regularClass.isInline, "inline")
+                //TODO renderModifier(data, RendererModifier.VALUE in modifiers && regularClass.isValue, "value")
+                renderModifier(RendererModifier.FUN in options.modifiers && regularClass.isFun, "fun")
+                append(getClassifierKindPrefix(regularClass))
             }
-            renderMemberModifiers(regularClass)
-            renderModifier(RendererModifier.INNER in options.modifiers && regularClass.isInner, "inner")
-            renderModifier(RendererModifier.DATA in options.modifiers && regularClass.isData, "data")
-            renderModifier(RendererModifier.INLINE in options.modifiers && regularClass.isInline, "inline")
-            //TODO renderModifier(data, RendererModifier.VALUE in modifiers && regularClass.isValue, "value")
-            renderModifier(RendererModifier.FUN in options.modifiers && regularClass.isFun, "fun")
-            append(getClassifierKindPrefix(regularClass))
 
             if (!regularClass.isCompanion) {
                 tabRightBySpace()
@@ -459,10 +477,12 @@ internal class FirIdeRenderer private constructor(
     }
 
     override fun visitTypeAlias(typeAlias: FirTypeAlias, data: StringBuilder) = with(data) {
-        renderAnnotations(typeAlias)
-        renderVisibility(typeAlias.visibility)
-        renderMemberModifiers(typeAlias)
-        append("typealias").append(" ")
+        if (options.renderDeclarationHeader) {
+            renderAnnotations(typeAlias)
+            renderVisibility(typeAlias.visibility)
+            renderMemberModifiers(typeAlias)
+            append("typealias").append(" ")
+        }
         renderName(typeAlias)
         renderTypeParameters(typeAlias.typeParameters, false)
         append(" = ").append(renderType(typeAlias.expandedTypeRef))
@@ -558,10 +578,12 @@ internal class FirIdeRenderer private constructor(
         }
     }
 
-    private fun StringBuilder.renderReceiver(firCallableDeclaration: FirCallableDeclaration<*>) {
+    private fun StringBuilder.renderReceiver(firCallableDeclaration: FirCallableDeclaration) {
         val receiverType = firCallableDeclaration.receiverTypeRef
         if (receiverType != null) {
-            renderAnnotations(firCallableDeclaration)
+            if (options.renderDeclarationHeader) {
+                renderAnnotations(firCallableDeclaration)
+            }
 
             val needBrackets =
                 typeIdeRenderer.shouldRenderAsPrettyFunctionType(receiverType.coneType) && receiverType.isMarkedNullable == true
@@ -601,33 +623,42 @@ internal class FirIdeRenderer private constructor(
     }
 
     private fun StringBuilder.renderValueParameter(valueParameter: FirValueParameter) {
-        renderAnnotations(valueParameter)
+        if (options.renderDeclarationHeader) {
+            renderAnnotations(valueParameter)
+        }
         renderModifier(valueParameter.isCrossinline, "crossinline")
         renderModifier(valueParameter.isNoinline, "noinline")
         renderVariable(valueParameter)
 
-        val withDefaultValue = valueParameter.defaultValue != null //TODO check if default value is inherited
-        if (withDefaultValue) {
-            append(" = ...")
+        if (options.renderDefaultParameterValue) {
+            val withDefaultValue = valueParameter.defaultValue != null //TODO check if default value is inherited
+            if (withDefaultValue) {
+                append(" = ...")
+            }
         }
     }
 
-    private fun StringBuilder.renderValVarPrefix(variable: FirVariable<*>, isInPrimaryConstructor: Boolean = false) {
+    private fun StringBuilder.renderValVarPrefix(variable: FirVariable, isInPrimaryConstructor: Boolean = false) {
         if (!isInPrimaryConstructor || variable !is FirValueParameter) {
             append(if (variable.isVar) "var" else "val").append(" ")
         }
     }
 
-    private fun StringBuilder.renderVariable(variable: FirVariable<*>) {
+    private fun StringBuilder.renderVariable(variable: FirVariable) {
         val typeToRender = variable.returnTypeRef
         val isVarArg = (variable as? FirValueParameter)?.isVararg ?: false
         renderModifier(isVarArg, "vararg")
         renderName(variable)
         append(": ")
-        append(renderType(typeToRender))
+        val parameterType = typeToRender.coneType
+        if (isVarArg) {
+            append(renderType(parameterType.arrayElementType() ?: parameterType, typeToRender.annotations))
+        } else {
+            append(renderType(typeToRender))
+        }
     }
 
-    private fun StringBuilder.renderSuperTypes(klass: FirClass<*>) {
+    private fun StringBuilder.renderSuperTypes(klass: FirClass) {
 
         if (klass.defaultType().isNothing) return
 

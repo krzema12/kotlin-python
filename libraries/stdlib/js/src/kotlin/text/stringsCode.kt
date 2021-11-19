@@ -46,26 +46,47 @@ public actual fun String.endsWith(suffix: String, ignoreCase: Boolean = false): 
         return regionMatches(length - suffix.length, suffix, 0, suffix.length, ignoreCase)
 }
 
-
+@Deprecated("Use Regex.matches() instead", ReplaceWith("regex.toRegex().matches(this)"))
+@DeprecatedSinceKotlin(warningSince = "1.6")
 public fun String.matches(regex: String): Boolean {
+    @Suppress("DEPRECATION")
     val result = this.match(regex)
     return result != null && result.size != 0
 }
 
-public actual fun CharSequence.isBlank(): Boolean = length == 0 || (if (this is String) this else this.toString()).matches("^[\\s\\xA0]+$")
+/**
+ * Returns `true` if this string is empty or consists solely of whitespace characters.
+ *
+ * @sample samples.text.Strings.stringIsBlank
+ */
+public actual fun CharSequence.isBlank(): Boolean = length == 0 || indices.all { this[it].isWhitespace() }
 
+/**
+ * Returns `true` if this string is equal to [other], optionally ignoring character case.
+ *
+ * Two strings are considered to be equal if they have the same length and the same character at the same index.
+ * If [ignoreCase] is true, the result of `Char.uppercaseChar().lowercaseChar()` on each character is compared.
+ *
+ * @param ignoreCase `true` to ignore character case when comparing strings. By default `false`.
+ */
 @Suppress("ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS")
-public actual fun String?.equals(other: String?, ignoreCase: Boolean = false): Boolean =
-    when {
-        this == null -> other == null
-        !ignoreCase -> this == other
-        other == null -> false
-        else -> {
-            val thisLower = this.lowercase()
-            val otherLower = other.lowercase()
-            thisLower == otherLower || (thisLower.uppercase() == otherLower.uppercase())
+public actual fun String?.equals(other: String?, ignoreCase: Boolean = false): Boolean {
+    if (this == null) return other == null
+    if (other == null) return false
+    if (!ignoreCase) return this == other
+
+    if (this.length != other.length) return false
+
+    for (index in 0 until this.length) {
+        val thisChar = this[index]
+        val otherChar = other[index]
+        if (!thisChar.equals(otherChar, ignoreCase)) {
+            return false
         }
     }
+
+    return true
+}
 
 
 @Suppress("ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS")
@@ -139,7 +160,7 @@ public actual fun CharSequence.repeat(n: Int): String {
  */
 @Suppress("ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS")
 public actual fun String.replace(oldValue: String, newValue: String, ignoreCase: Boolean = false): String =
-    nativeReplace(RegExp(Regex.escape(oldValue), if (ignoreCase) "gui" else "gu"), Regex.escapeReplacement(newValue))
+    nativeReplace(RegExp(Regex.escape(oldValue), if (ignoreCase) "gui" else "gu"), Regex.nativeEscapeReplacement(newValue))
 
 /**
  * Returns a new string with all occurrences of [oldChar] replaced with [newChar].
@@ -152,7 +173,7 @@ public actual fun String.replace(oldChar: Char, newChar: Char, ignoreCase: Boole
 
 @Suppress("ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS")
 public actual fun String.replaceFirst(oldValue: String, newValue: String, ignoreCase: Boolean = false): String =
-    nativeReplace(RegExp(Regex.escape(oldValue), if (ignoreCase) "ui" else "u"), Regex.escapeReplacement(newValue))
+    nativeReplace(RegExp(Regex.escape(oldValue), if (ignoreCase) "ui" else "u"), Regex.nativeEscapeReplacement(newValue))
 
 @Suppress("ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS")
 public actual fun String.replaceFirst(oldChar: Char, newChar: Char, ignoreCase: Boolean = false): String =

@@ -16,11 +16,12 @@ import org.jetbrains.kotlin.fir.scopes.FirScope
 import org.jetbrains.kotlin.fir.symbols.ConeTypeParameterLookupTag
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassifierSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirTypeParameterSymbol
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.fir.types.impl.ConeTypeParameterTypeImpl
 import org.jetbrains.kotlin.name.Name
 
-class FirNestedClassifierScope(val klass: FirClass<*>, val useSiteSession: FirSession) : FirScope(), FirContainingNamesAwareScope {
+class FirNestedClassifierScope(val klass: FirClass, val useSiteSession: FirSession) : FirScope(), FirContainingNamesAwareScope {
     private val classIndex: Map<Name, FirRegularClassSymbol> = run {
         val result = mutableMapOf<Name, FirRegularClassSymbol>()
         for (declaration in klass.declarations) {
@@ -49,4 +50,6 @@ class FirNestedClassifierScope(val klass: FirClass<*>, val useSiteSession: FirSe
     override fun getCallableNames(): Set<Name> = emptySet()
 }
 
-fun FirTypeParameterRef.toConeType(): ConeKotlinType = ConeTypeParameterTypeImpl(ConeTypeParameterLookupTag(symbol), isNullable = false)
+fun FirTypeParameterRef.toConeType(): ConeKotlinType = symbol.toConeType()
+
+fun FirTypeParameterSymbol.toConeType(): ConeKotlinType = ConeTypeParameterTypeImpl(ConeTypeParameterLookupTag(this), isNullable = false)

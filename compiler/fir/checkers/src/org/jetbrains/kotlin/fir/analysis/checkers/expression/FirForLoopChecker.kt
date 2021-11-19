@@ -5,10 +5,10 @@
 
 package org.jetbrains.kotlin.fir.analysis.checkers.expression
 
-import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.fir.FirFakeSourceElementKind
 import org.jetbrains.kotlin.fir.FirSourceElement
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
+import org.jetbrains.kotlin.fir.analysis.checkers.valOrVarKeyword
 import org.jetbrains.kotlin.fir.analysis.diagnostics.*
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors.HAS_NEXT_FUNCTION_AMBIGUITY
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors.HAS_NEXT_FUNCTION_NONE_APPLICABLE
@@ -21,7 +21,7 @@ import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors.NEXT_MISSING
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors.NEXT_NONE_APPLICABLE
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors.OPERATOR_MODIFIER_REQUIRED
 import org.jetbrains.kotlin.fir.declarations.FirProperty
-import org.jetbrains.kotlin.fir.declarations.isOperator
+import org.jetbrains.kotlin.fir.declarations.utils.isOperator
 import org.jetbrains.kotlin.fir.expressions.FirBlock
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
 import org.jetbrains.kotlin.fir.expressions.FirWhileLoop
@@ -31,14 +31,14 @@ import org.jetbrains.kotlin.fir.resolve.calls.UnsafeCall
 import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeAmbiguityError
 import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeInapplicableCandidateError
 import org.jetbrains.kotlin.fir.resolve.diagnostics.ConeUnresolvedNameError
-import org.jetbrains.kotlin.fir.symbols.AbstractFirBasedSymbol
+import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirNamedFunctionSymbol
-import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.resolve.calls.tower.isSuccess
 
 object FirForLoopChecker : FirBlockChecker() {
     override fun check(expression: FirBlock, context: CheckerContext, reporter: DiagnosticReporter) {
         if (expression.source?.kind != FirFakeSourceElementKind.DesugaredForLoop) return
+
         val statements = expression.statements
         val iteratorDeclaration = statements[0] as? FirProperty ?: return
         val whileLoop = statements[1] as? FirWhileLoop ?: return
@@ -57,6 +57,7 @@ object FirForLoopChecker : FirBlockChecker() {
         ) {
             return
         }
+
         val hasNextCall = whileLoop.condition as FirFunctionCall
         checkSpecialFunctionCall(
             hasNextCall,
@@ -67,9 +68,10 @@ object FirForLoopChecker : FirBlockChecker() {
             HAS_NEXT_MISSING,
             noneApplicableFactory = HAS_NEXT_FUNCTION_NONE_APPLICABLE
         )
-        val elementDeclaration = whileLoop.block.statements.firstOrNull() as? FirProperty ?: return
-        if (elementDeclaration.initializer?.source?.kind != FirFakeSourceElementKind.DesugaredForLoop) return
-        val nextCall = elementDeclaration.initializer as FirFunctionCall
+
+        val loopParameter = whileLoop.block.statements.firstOrNull() as? FirProperty ?: return
+        if (loopParameter.initializer?.source?.kind != FirFakeSourceElementKind.DesugaredForLoop) return
+        val nextCall = loopParameter.initializer as FirFunctionCall
         checkSpecialFunctionCall(
             nextCall,
             reporter,
@@ -79,6 +81,11 @@ object FirForLoopChecker : FirBlockChecker() {
             NEXT_MISSING,
             noneApplicableFactory = NEXT_NONE_APPLICABLE
         )
+
+        val loopParameterSource = loopParameter.source
+        loopParameterSource.valOrVarKeyword?.let {
+            reporter.reportOn(loopParameterSource, FirErrors.VAL_OR_VAR_ON_LOOP_PARAMETER, it, context)
+        }
     }
 
     private fun checkSpecialFunctionCall(
@@ -86,10 +93,10 @@ object FirForLoopChecker : FirBlockChecker() {
         reporter: DiagnosticReporter,
         reportSource: FirSourceElement?,
         context: CheckerContext,
-        ambiguityFactory: FirDiagnosticFactory1<PsiElement, Collection<AbstractFirBasedSymbol<*>>>,
-        missingFactory: FirDiagnosticFactory0<KtExpression>,
-        noneApplicableFactory: FirDiagnosticFactory1<KtExpression, Collection<AbstractFirBasedSymbol<*>>>? = null,
-        unsafeCallFactory: FirDiagnosticFactory0<KtExpression>? = null,
+        ambiguityFactory: FirDiagnosticFactory1<Collection<FirBasedSymbol<*>>>,
+        missingFactory: FirDiagnosticFactory0,
+        noneApplicableFactory: FirDiagnosticFactory1<Collection<FirBasedSymbol<*>>>? = null,
+        unsafeCallFactory: FirDiagnosticFactory0? = null,
     ): Boolean {
         when (val calleeReference = call.calleeReference) {
             is FirErrorNamedReference -> {
@@ -126,9 +133,8 @@ object FirForLoopChecker : FirBlockChecker() {
             is FirResolvedNamedReference -> {
                 val symbol = calleeReference.resolvedSymbol
                 if (symbol is FirNamedFunctionSymbol) {
-                    val function = symbol.fir
-                    if (!function.isOperator) {
-                        reporter.reportOn(reportSource, OPERATOR_MODIFIER_REQUIRED, symbol, function.name.asString(), context)
+                    if (!symbol.isOperator) {
+                        reporter.reportOn(reportSource, OPERATOR_MODIFIER_REQUIRED, symbol, symbol.name.asString(), context)
                         // Don't return true as we want to report other errors
                     }
                 }

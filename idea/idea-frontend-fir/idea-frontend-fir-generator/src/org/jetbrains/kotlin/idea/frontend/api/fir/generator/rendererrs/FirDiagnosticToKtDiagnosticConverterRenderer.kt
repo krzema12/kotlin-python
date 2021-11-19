@@ -6,7 +6,10 @@
 package org.jetbrains.kotlin.idea.frontend.api.fir.generator.rendererrs
 
 import org.jetbrains.kotlin.fir.checkers.generator.inBracketsWithIndent
-import org.jetbrains.kotlin.idea.frontend.api.fir.generator.*
+import org.jetbrains.kotlin.idea.frontend.api.fir.generator.ConversionContext
+import org.jetbrains.kotlin.idea.frontend.api.fir.generator.HLDiagnostic
+import org.jetbrains.kotlin.idea.frontend.api.fir.generator.HLDiagnosticList
+import org.jetbrains.kotlin.idea.frontend.api.fir.generator.HLDiagnosticParameter
 import org.jetbrains.kotlin.util.SmartPrinter
 import org.jetbrains.kotlin.util.withIndent
 
@@ -25,7 +28,11 @@ object FirDiagnosticToKtDiagnosticConverterRenderer : AbstractDiagnosticsDataCla
     }
 
     private fun SmartPrinter.printConverter(diagnostic: HLDiagnostic) {
-        println("add(FirErrors.${diagnostic.original.name}) { firDiagnostic ->")
+        print("add(${diagnostic.original.containingObjectName}.${diagnostic.original.name}")
+        if (diagnostic.severity != null) {
+            print(".${diagnostic.severity.name.lowercase()}Factory")
+        }
+        println(") { firDiagnostic ->")
         withIndent {
             println("${diagnostic.implClassName}(")
             withIndent {
@@ -38,7 +45,7 @@ object FirDiagnosticToKtDiagnosticConverterRenderer : AbstractDiagnosticsDataCla
 
     private fun SmartPrinter.printDiagnosticParameters(diagnostic: HLDiagnostic) {
         printCustomParameters(diagnostic)
-        println("firDiagnostic as FirPsiDiagnostic<*>,")
+        println("firDiagnostic as FirPsiDiagnostic,")
         println("token,")
     }
 
@@ -63,5 +70,6 @@ object FirDiagnosticToKtDiagnosticConverterRenderer : AbstractDiagnosticsDataCla
     override val defaultImports = listOf(
         "org.jetbrains.kotlin.fir.analysis.diagnostics.FirPsiDiagnostic",
         "org.jetbrains.kotlin.fir.analysis.diagnostics.FirErrors",
+        "org.jetbrains.kotlin.fir.analysis.diagnostics.jvm.FirJvmErrors",
     )
 }

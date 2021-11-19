@@ -9,11 +9,11 @@ package org.jetbrains.kotlin.commonizer
  * @return Set of module names that is available across all children targets
  */
 internal fun CommonizerParameters.commonModuleNames(target: CommonizerTarget): Set<String> {
-    val supportedTargets = target.withAllAncestors().mapNotNull(targetProviders::getOrNull)
+    val supportedTargets = target.withAllLeaves().mapNotNull(targetProviders::getOrNull)
     if (supportedTargets.isEmpty()) return emptySet() // Nothing to do
 
     val allModuleNames: List<Set<String>> = supportedTargets.toList().map { targetProvider ->
-        targetProvider.modulesProvider.loadModuleInfos().mapTo(HashSet()) { it.name }
+        targetProvider.modulesProvider.moduleInfos.mapTo(HashSet()) { it.name }
     }
 
     return allModuleNames.reduce { a, b -> a intersect b } // there are modules that are present in every target
@@ -23,8 +23,8 @@ internal fun CommonizerParameters.commonModuleNames(target: CommonizerTarget): S
  * @return Set of module names that this [targetProvider] shares with *at least* one other target
  */
 internal fun CommonizerParameters.commonModuleNames(targetProvider: TargetProvider): Set<String> {
-    return outputTarget.withAllAncestors()
-        .filter { target -> target isAncestorOf targetProvider.target }
+    return outputTargets
+        .filter { target -> (target.allLeaves() intersect targetProvider.target.allLeaves()).isNotEmpty() }
         .map { target -> commonModuleNames(target) }
         .fold(emptySet()) { acc, names -> acc + names }
 }

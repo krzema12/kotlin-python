@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.fir.contracts.description.ConeCallsEffectDeclaration
 import org.jetbrains.kotlin.fir.contracts.effects
 import org.jetbrains.kotlin.fir.declarations.FirAnonymousFunction
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
-import org.jetbrains.kotlin.fir.declarations.isInline
+import org.jetbrains.kotlin.fir.declarations.utils.isInline
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.resolve.calls.FirNamedReferenceWithCandidate
 import org.jetbrains.kotlin.fir.visitors.FirTransformer
@@ -22,11 +22,19 @@ object InvocationKindTransformer : FirTransformer<Any?>() {
             return element
         }
 
+        override fun transformAnonymousFunctionExpression(
+            anonymousFunctionExpression: FirAnonymousFunctionExpression,
+            data: Pair<Map<FirExpression, EventOccurrencesRange>, EventOccurrencesRange?>
+        ): FirStatement {
+            val kind = data.second ?: data.first[anonymousFunctionExpression]
+            return anonymousFunctionExpression.transformAnonymousFunction(this, emptyMap<FirExpression, EventOccurrencesRange>() to kind)
+        }
+
         override fun transformAnonymousFunction(
             anonymousFunction: FirAnonymousFunction,
             data: Pair<Map<FirExpression, EventOccurrencesRange>, EventOccurrencesRange?>
         ): FirStatement {
-            val kind = data.second ?: data.first[anonymousFunction]
+            val kind = data.second
             if (kind != null) {
                 anonymousFunction.replaceInvocationKind(kind)
             }

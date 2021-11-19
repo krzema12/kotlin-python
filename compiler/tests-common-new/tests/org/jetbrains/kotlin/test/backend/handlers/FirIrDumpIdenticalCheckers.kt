@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.test.backend.handlers
 
+import org.jetbrains.kotlin.test.WrappedException
 import org.jetbrains.kotlin.test.directives.FirDiagnosticsDirectives
 import org.jetbrains.kotlin.test.directives.FirDiagnosticsDirectives.FIR_IDENTICAL
 import org.jetbrains.kotlin.test.directives.model.DirectivesContainer
@@ -16,7 +17,7 @@ import org.jetbrains.kotlin.test.utils.withExtension
 import java.io.File
 
 class FirIrDumpIdenticalChecker(testServices: TestServices) : AfterAnalysisChecker(testServices) {
-    override val directives: List<DirectivesContainer>
+    override val directiveContainers: List<DirectivesContainer>
         get() = listOf(FirDiagnosticsDirectives)
 
     private val simpleDumpChecker = object : FirIdenticalCheckerHelper(testServices) {
@@ -39,7 +40,7 @@ class FirIrDumpIdenticalChecker(testServices: TestServices) : AfterAnalysisCheck
         }
     }
 
-    override fun check(failedAssertions: List<Throwable>) {
+    override fun check(failedAssertions: List<WrappedException>) {
         if (failedAssertions.isNotEmpty()) return
         val testDataFile = testServices.moduleStructure.originalTestDataFiles.first()
         if (FIR_IDENTICAL in testServices.moduleStructure.allDirectives) {

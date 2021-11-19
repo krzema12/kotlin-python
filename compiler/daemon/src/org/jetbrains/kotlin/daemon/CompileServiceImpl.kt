@@ -21,9 +21,7 @@ import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.impl.ZipHandler
 import com.intellij.openapi.vfs.impl.jar.CoreJarFileSystem
 import org.jetbrains.kotlin.build.DEFAULT_KOTLIN_SOURCE_FILES_EXTENSIONS
-import org.jetbrains.kotlin.build.report.BuildReporter
 import org.jetbrains.kotlin.build.report.RemoteBuildReporter
-import org.jetbrains.kotlin.build.report.RemoteReporter
 import org.jetbrains.kotlin.cli.common.CLICompiler
 import org.jetbrains.kotlin.cli.common.CompilerSystemProperties
 import org.jetbrains.kotlin.cli.common.ExitCode
@@ -37,10 +35,16 @@ import org.jetbrains.kotlin.cli.common.repl.ReplEvalResult
 import org.jetbrains.kotlin.cli.js.K2JSCompiler
 import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
+import org.jetbrains.kotlin.cli.jvm.compiler.jarfs.FastJarFileSystem
+import org.jetbrains.kotlin.cli.jvm.compiler.jarfs.FastJarHandler
 import org.jetbrains.kotlin.cli.metadata.K2MetadataCompiler
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
 import org.jetbrains.kotlin.config.Services
 import org.jetbrains.kotlin.daemon.common.*
-import org.jetbrains.kotlin.daemon.report.*
+import org.jetbrains.kotlin.daemon.report.CompileServicesFacadeMessageCollector
+import org.jetbrains.kotlin.daemon.report.DaemonMessageReporter
+import org.jetbrains.kotlin.daemon.report.DaemonMessageReporterPrintStreamAdapter
+import org.jetbrains.kotlin.daemon.report.getBuildReporter
 import org.jetbrains.kotlin.incremental.*
 import org.jetbrains.kotlin.incremental.components.ExpectActualTracker
 import org.jetbrains.kotlin.incremental.components.LookupTracker
@@ -323,7 +327,17 @@ abstract class CompileServiceImplBase(
             }
             CompilerMode.NON_INCREMENTAL_COMPILER -> {
                 doCompile(sessionId, daemonReporter, tracer = null) { _, _ ->
-                    compiler.exec(messageCollector, Services.EMPTY, k2PlatformArgs)
+                    val exitCode = compiler.exec(messageCollector, Services.EMPTY, k2PlatformArgs)
+
+                    val perfString = compiler.defaultPerformanceManager.renderCompilerPerformance()
+                    compilationResults?.also {
+                        (it as CompilationResults).add(
+                            CompilationResultCategory.BUILD_REPORT_LINES.code,
+                            arrayListOf(perfString)
+                        )
+                    }
+
+                    exitCode
                 }
             }
             CompilerMode.INCREMENTAL_COMPILER -> {
@@ -601,7 +615,8 @@ abstract class CompileServiceImplBase(
             outputFiles = incrementalCompilationOptions.outputFiles,
             usePreciseJavaTracking = incrementalCompilationOptions.usePreciseJavaTracking,
             modulesApiHistory = modulesApiHistory,
-            kotlinSourceFilesExtensions = allKotlinExtensions
+            kotlinSourceFilesExtensions = allKotlinExtensions,
+            classpathChanges = incrementalCompilationOptions.classpathChanges
         )
         return try {
             compiler.compile(allKotlinFiles, k2jvmArgs, compilerMessageCollector, changedFiles, projectRoot)
@@ -646,6 +661,14 @@ class CompileServiceImpl(
 
     override fun getDaemonInfo(): CompileService.CallResult<String> = ifAlive(minAliveness = Aliveness.Dying) {
         CompileService.CallResult.Good("Kotlin daemon on port $port")
+    }
+
+    override fun getKotlinVersion(): CompileService.CallResult<String> = ifAlive {
+        try {
+            CompileService.CallResult.Good(KotlinCompilerVersion.VERSION)
+        } catch (e: Exception) {
+            CompileService.CallResult.Error("Unknown Kotlin version")
+        }
     }
 
     override fun getDaemonOptions(): CompileService.CallResult<DaemonOptions> = ifAlive {

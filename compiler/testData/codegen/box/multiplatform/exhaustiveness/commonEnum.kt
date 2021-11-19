@@ -1,4 +1,3 @@
-// IGNORE_BACKEND_FIR: JVM_IR
 // TARGET_BACKEND: JVM
 // !LANGUAGE: +MultiPlatformProjects
 // ISSUE: KT-20306
@@ -16,7 +15,7 @@ fun testCommon(base: Base) {
     }
 }
 
-// MODULE: m1-jvm(m1-common)
+// MODULE: m1-jvm()()(m1-common)
 // FILE: main.kt
 
 fun testPlatform(base: Base) {

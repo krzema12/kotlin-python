@@ -32,16 +32,14 @@ plugins {
 native {
     val isWindows = PlatformInfo.isWindows()
     val obj = if (isWindows) "obj" else "o"
+    val lib = if (isWindows) "lib" else "a"
     val host = rootProject.project(":kotlin-native").extra["hostName"]
     val hostLibffiDir = rootProject.project(":kotlin-native").extra["${host}LibffiDir"]
     val cflags = mutableListOf("-I$hostLibffiDir/include",
-                               *platformManager.hostPlatform.clang.hostCompilerArgsForJni)
-    if (!HostManager.hostIsMingw) {
-        cflags += "-fPIC"
-    }
+                               *platformManager.hostPlatform.clangForJni.hostCompilerArgsForJni)
     suffixes {
         (".c" to ".$obj") {
-            tool(*platformManager.hostPlatform.clang.clangC("").toTypedArray())
+            tool(*platformManager.hostPlatform.clangForJni.clangC("").toTypedArray())
             flags( *cflags.toTypedArray(), "-c", "-o", ruleOut(), ruleInFirst())
         }
     }
@@ -53,11 +51,11 @@ native {
     val objSet = sourceSets["callbacks"]!!.transform(".c" to ".$obj")
 
     target(solib("callbacks"), objSet) {
-        tool(*platformManager.hostPlatform.clang.clangCXX("").toTypedArray())
+        tool(*platformManager.hostPlatform.clangForJni.clangCXX("").toTypedArray())
         flags("-shared",
               "-o",ruleOut(), *ruleInAll(),
               "-L${project(":kotlin-native:libclangext").buildDir}",
-              "$hostLibffiDir/lib/libffi.a",
+              "$hostLibffiDir/lib/libffi.$lib",
               "-lclangext")
     }
     tasks.named(solib("callbacks")).configure {
@@ -75,11 +73,11 @@ sourceSets.main.get().java.srcDir("src/jvm/kotlin")
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {
-        freeCompilerArgs = listOf("-Xuse-experimental=kotlin.ExperimentalUnsignedTypes",
-                                  "-Xuse-experimental=kotlin.Experimental",
-                                  "-Xopt-in=kotlin.RequiresOptIn",
-                                  "-Xinline-classes",
-                                  "-Xskip-prerelease-check")
+        freeCompilerArgs = listOf(
+            "-Xopt-in=kotlin.ExperimentalUnsignedTypes",
+            "-Xopt-in=kotlin.RequiresOptIn",
+            "-Xskip-prerelease-check"
+        )
         allWarningsAsErrors = true
     }
 }

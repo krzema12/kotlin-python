@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.codegen.binding.CodegenBinding
 import org.jetbrains.kotlin.codegen.context.CodegenContext
 import org.jetbrains.kotlin.codegen.context.RootContext
 import org.jetbrains.kotlin.codegen.extensions.ClassBuilderInterceptorExtension
+import org.jetbrains.kotlin.codegen.extensions.ClassFileFactoryFinalizerExtension
 import org.jetbrains.kotlin.codegen.inline.GlobalInlineContext
 import org.jetbrains.kotlin.codegen.inline.InlineCache
 import org.jetbrains.kotlin.codegen.intrinsics.IntrinsicMethods
@@ -37,7 +38,6 @@ import org.jetbrains.kotlin.psi.KtCodeFragment
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtScript
 import org.jetbrains.kotlin.resolve.*
-import org.jetbrains.kotlin.resolve.deprecation.CoroutineCompatibilitySupport
 import org.jetbrains.kotlin.resolve.deprecation.DeprecationResolver
 import org.jetbrains.kotlin.resolve.diagnostics.Diagnostics
 import org.jetbrains.kotlin.resolve.diagnostics.PrecomputedSuppressCache
@@ -147,17 +147,18 @@ class GenerationState private constructor(
         }
     }
 
+    val languageVersionSettings = configuration.languageVersionSettings
+
     val inlineCache: InlineCache = InlineCache()
 
     val incrementalCacheForThisTarget: IncrementalCache?
     val packagesWithObsoleteParts: Set<FqName>
     val obsoleteMultifileClasses: List<FqName>
     val deserializationConfiguration: DeserializationConfiguration =
-        CompilerDeserializationConfiguration(configuration.languageVersionSettings)
+        CompilerDeserializationConfiguration(languageVersionSettings)
 
     val deprecationProvider = DeprecationResolver(
-        LockBasedStorageManager.NO_LOCKS, configuration.languageVersionSettings, CoroutineCompatibilitySupport.ENABLED,
-        JavaDeprecationSettings
+        LockBasedStorageManager.NO_LOCKS, languageVersionSettings, JavaDeprecationSettings
     )
 
     init {
@@ -196,8 +197,6 @@ class GenerationState private constructor(
         duplicateSignatureFactory?.reportDiagnostics()
         extraJvmDiagnosticsTrace.bindingContext.diagnostics
     }
-
-    val languageVersionSettings = configuration.languageVersionSettings
 
     val useOldManglingSchemeForFunctionsWithInlineClassesInSignatures =
         configuration.getBoolean(JVMConfigurationKeys.USE_OLD_INLINE_CLASSES_MANGLING_SCHEME) ||
@@ -261,11 +260,15 @@ class GenerationState private constructor(
     val useKotlinNothingValueException =
         languageVersionSettings.apiVersion >= ApiVersion.KOTLIN_1_4 &&
                 !configuration.getBoolean(JVMConfigurationKeys.NO_KOTLIN_NOTHING_VALUE_EXCEPTION)
+
+    // In 1.6, `typeOf` became stable and started to rely on a few internal stdlib functions which were missing before 1.6.
+    val stableTypeOf = languageVersionSettings.apiVersion >= ApiVersion.KOTLIN_1_6
+
     val samWrapperClasses: SamWrapperClasses = SamWrapperClasses(this)
     val globalInlineContext: GlobalInlineContext = GlobalInlineContext(diagnostics)
     val mappingsClassesForWhenByEnum: MappingsClassesForWhenByEnum = MappingsClassesForWhenByEnum(this)
     val jvmRuntimeTypes: JvmRuntimeTypes = JvmRuntimeTypes(
-        module, configuration.languageVersionSettings, generateOptimizedCallableReferenceSuperClasses
+        module, languageVersionSettings, generateOptimizedCallableReferenceSuperClasses
     )
     val factory: ClassFileFactory
     private var duplicateSignatureFactory: BuilderFactoryForDuplicateSignatureDiagnostics? = null
@@ -296,6 +299,8 @@ class GenerationState private constructor(
                 !configuration.getBoolean(JVMConfigurationKeys.NO_UNIFIED_NULL_CHECKS)
     val functionsWithInlineClassReturnTypesMangled: Boolean =
         languageVersionSettings.supportsFeature(LanguageFeature.MangleClassMembersReturningInlineClasses)
+    val shouldValidateIr = configuration.getBoolean(JVMConfigurationKeys.VALIDATE_IR)
+    val shouldValidateBytecode = configuration.getBoolean(JVMConfigurationKeys.VALIDATE_BYTECODE)
 
     val rootContext: CodegenContext<*> = RootContext(this)
 
@@ -366,7 +371,8 @@ class GenerationState private constructor(
                 extension.interceptClassBuilderFactory(classBuilderFactory, originalFrontendBindingContext, diagnostics)
             }
 
-        this.factory = ClassFileFactory(this, interceptedBuilderFactory)
+        val finalizers = ClassFileFactoryFinalizerExtension.getInstances(project)
+        this.factory = ClassFileFactory(this, interceptedBuilderFactory, finalizers)
     }
 
     fun beforeCompile() {
@@ -402,8 +408,9 @@ class GenerationState private constructor(
             this[KOTLIN_1_2] = oldMetadataVersion
             this[KOTLIN_1_3] = oldMetadataVersion
             this[KOTLIN_1_4] = JvmMetadataVersion(1, 4, 3)
-            this[KOTLIN_1_5] = JvmMetadataVersion.INSTANCE
-            this[KOTLIN_1_6] = JvmMetadataVersion(1, 6, 0)
+            this[KOTLIN_1_5] = JvmMetadataVersion(1, 5, 1)
+            this[KOTLIN_1_6] = JvmMetadataVersion.INSTANCE
+            this[KOTLIN_1_7] = JvmMetadataVersion(1, 7, 0)
 
             check(size == LanguageVersion.values().size) {
                 "Please add mappings from the missing LanguageVersion instances to the corresponding JvmMetadataVersion " +

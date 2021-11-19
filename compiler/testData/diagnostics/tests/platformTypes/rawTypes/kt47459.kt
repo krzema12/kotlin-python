@@ -1,3 +1,4 @@
+// FIR_IDENTICAL
 // FILE: MapObjectManager.java
 abstract class MapObjectManager<C extends MapObjectManager.Collection> {
     public class Collection {

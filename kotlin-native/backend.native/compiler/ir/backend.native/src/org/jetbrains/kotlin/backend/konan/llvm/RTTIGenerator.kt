@@ -7,17 +7,17 @@ package org.jetbrains.kotlin.backend.konan.llvm
 
 import llvm.*
 import org.jetbrains.kotlin.backend.konan.*
-import org.jetbrains.kotlin.backend.konan.Context
 import org.jetbrains.kotlin.backend.konan.descriptors.*
-import org.jetbrains.kotlin.backend.konan.ir.*
-import org.jetbrains.kotlin.backend.konan.isExternalObjCClassMethod
+import org.jetbrains.kotlin.backend.konan.ir.getSuperClassNotAny
+import org.jetbrains.kotlin.backend.konan.ir.isAny
+import org.jetbrains.kotlin.backend.konan.lower.FunctionReferenceLowering.Companion.isLoweredFunctionReference
 import org.jetbrains.kotlin.builtins.PrimitiveType
-import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.symbols.isPublicApi
+import org.jetbrains.kotlin.ir.declarations.IrClass
+import org.jetbrains.kotlin.ir.declarations.IrField
+import org.jetbrains.kotlin.ir.declarations.IrFunction
+import org.jetbrains.kotlin.ir.declarations.IrProperty
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
-import org.jetbrains.kotlin.ir.util.isAnnotationClass
-import org.jetbrains.kotlin.ir.util.isInterface
 import org.jetbrains.kotlin.name.FqName
 
 internal class RTTIGenerator(override val context: Context) : ContextUtils {
@@ -29,8 +29,8 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
             context.irBuiltIns.byteClass, context.irBuiltIns.shortClass, context.irBuiltIns.intClass,
             context.irBuiltIns.longClass,
             context.irBuiltIns.floatClass,context.irBuiltIns.doubleClass) +
-            context.ir.symbols.primitiveArrays.values +
-            context.ir.symbols.unsignedArrays.values
+            context.ir.symbols.primitiveTypesToPrimitiveArrays.values +
+            context.ir.symbols.unsignedTypesToUnsignedArrays.values
 
     // TODO: extend logic here by taking into account final acyclic classes.
     private fun checkAcyclicFieldType(type: IrType): Boolean = acyclicCache.getOrPut(type) {
@@ -53,7 +53,7 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
 
     private fun flagsFromClass(irClass: IrClass): Int {
         var result = 0
-        if (irClass.isFrozen)
+        if (irClass.isFrozen && context.config.freezing.freezeImplicit)
            result = result or TF_IMMUTABLE
         // TODO: maybe perform deeper analysis to find surely acyclic types.
         if (!irClass.isInterface && !irClass.isAbstract() && !irClass.isAnnotationClass) {
@@ -82,9 +82,6 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
         return result
     }
 
-    inner class MethodTableRecord(val nameSignature: LocalHash, methodEntryPoint: ConstPointer?) :
-            Struct(runtime.methodTableRecordType, nameSignature, methodEntryPoint)
-
     inner class InterfaceTableRecord(id: Int32, vtableSize: Int32, vtable: ConstPointer?) :
             Struct(runtime.interfaceTableRecordType, id, vtableSize, vtable)
 
@@ -97,8 +94,6 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
             objOffsetsCount: Int,
             interfaces: ConstValue,
             interfacesCount: Int,
-            methods: ConstValue,
-            methodsCount: Int,
             interfaceTableSize: Int,
             interfaceTable: ConstValue,
             packageName: String?,
@@ -129,9 +124,6 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
 
                     interfaces,
                     Int32(interfacesCount),
-
-                    methods,
-                    Int32(methodsCount),
 
                     Int32(interfaceTableSize),
                     interfaceTable,
@@ -195,28 +187,16 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
             vector128Type to 10
     )
 
-    private fun getElementType(irClass: IrClass): LLVMTypeRef? =
-            if (irClass.symbol.isPublicApi) arrayClasses[irClass.symbol.signature as IdSignature.PublicSignature] else null
+    private fun getElementType(irClass: IrClass): LLVMTypeRef? {
+        val signature = irClass.symbol.signature as? IdSignature.CommonSignature?
+        return signature?.let { arrayClasses[it] }
+    }
 
     private fun getInstanceSize(classType: LLVMTypeRef?, irClass: IrClass) : Int {
         val elementType = getElementType(irClass)
         // Check if it is an array.
         if (elementType != null) return -LLVMABISizeOfType(llvmTargetData, elementType).toInt()
         return LLVMStoreSizeOfType(llvmTargetData, classType).toInt()
-    }
-
-    private fun getClassId(irClass: IrClass): Int {
-        if (irClass.isKotlinObjCClass()) return 0
-        val hierarchyInfo = if (context.ghaEnabled()) {
-            context.getLayoutBuilder(irClass).hierarchyInfo
-        } else {
-            ClassGlobalHierarchyInfo.DUMMY
-        }
-        return if (irClass.isInterface) {
-            hierarchyInfo.interfaceId
-        } else {
-            hierarchyInfo.classIdLo
-        }
     }
 
     fun generate(irClass: IrClass) {
@@ -254,16 +234,7 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
             objOffsets.size
         }
 
-        val methods = if (irClass.isAbstract()) {
-            emptyList()
-        } else {
-            methodTableRecords(irClass)
-        }
-        val methodsPtr = staticData.placeGlobalConstArray("kmethods:$className",
-                runtime.methodTableRecordType, methods)
-
-        val needInterfaceTable = context.ghaEnabled() && !irClass.isInterface
-                && !irClass.isAbstract() && !irClass.isObjCClass()
+        val needInterfaceTable = !irClass.isInterface && !irClass.isAbstract() && !irClass.isObjCClass()
         val (interfaceTable, interfaceTableSize) = if (needInterfaceTable) {
             interfaceTableRecords(irClass)
         } else {
@@ -281,12 +252,11 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
                 superType,
                 objOffsetsPtr, objOffsetsCount,
                 interfacesPtr, interfaces.size,
-                methodsPtr, methods.size,
                 interfaceTableSize, interfaceTablePtr,
                 reflectionInfo.packageName,
                 reflectionInfo.relativeName,
-                flagsFromClass(irClass),
-                getClassId(irClass),
+                flagsFromClass(irClass) or reflectionInfo.reflectionFlags,
+                context.getLayoutBuilder(irClass).classId,
                 llvmDeclarations.writableTypeInfoGlobal?.pointer,
                 associatedObjects = genAssociatedObjects(irClass)
         )
@@ -326,25 +296,6 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
         return ConstArray(int8TypePtr, vtableEntries)
     }
 
-    fun methodTableRecords(irClass: IrClass): List<MethodTableRecord> {
-        val functionNames = mutableMapOf<Long, OverriddenFunctionInfo>()
-        return context.getLayoutBuilder(irClass).methodTableEntries.map {
-            val functionName = it.overriddenFunction.computeFunctionName()
-            val nameSignature = functionName.localHash
-            val previous = functionNames.putIfAbsent(nameSignature.value, it)
-            if (previous != null)
-                throw AssertionError("Duplicate method table entry: functionName = '$functionName', hash = '${nameSignature.value}', entry1 = $previous, entry2 = $it")
-
-            // TODO: compile-time resolution limits binary compatibility.
-            val implementation = it.implementation
-            val methodEntryPoint =
-                if (implementation == null || context.referencedFunctions?.contains(implementation) == false)
-                    null
-                else implementation.entryPointAddress
-            MethodTableRecord(nameSignature, methodEntryPoint)
-        }.sortedBy { it.nameSignature.value }
-    }
-
     fun interfaceTableRecords(irClass: IrClass): Pair<List<InterfaceTableRecord>, Int> {
         // The details are in ClassLayoutBuilder.
         val interfaces = irClass.implementedInterfaces
@@ -356,7 +307,7 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
 
     private fun interfaceTableSkeleton(interfaces: List<IrClass>): Pair<Array<out ClassLayoutBuilder?>, Int> {
         val interfaceLayouts = interfaces.map { context.getLayoutBuilder(it) }
-        val interfaceColors = interfaceLayouts.map { it.hierarchyInfo.interfaceColor }
+        val interfaceIds = interfaceLayouts.map { it.classId }
 
         // Find the optimal size. It must be a power of 2.
         var size = 1
@@ -367,8 +318,8 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
                 used[i] = false
             // Check for collisions.
             var ok = true
-            for (color in interfaceColors) {
-                val index = color % size
+            for (id in interfaceIds) {
+                val index = id and (size - 1) // This is not an optimization but rather for not to bother with negative numbers.
                 if (used[index]) {
                     ok = false
                     break
@@ -378,17 +329,25 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
             if (ok) break
             size *= 2
         }
-        val conservative = size > maxSize
+        val useFastITable = size <= maxSize
 
-        val interfaceTableSkeleton = if (conservative) {
+        val interfaceTableSkeleton = if (useFastITable) {
+            arrayOfNulls<ClassLayoutBuilder?>(size).also {
+                for (interfaceLayout in interfaceLayouts)
+                    it[interfaceLayout.classId and (size - 1)] = interfaceLayout
+            }
+        } else {
             size = interfaceLayouts.size
-            interfaceLayouts.sortedBy { it.hierarchyInfo.interfaceId }.toTypedArray()
-        } else arrayOfNulls<ClassLayoutBuilder?>(size).also {
-            for (interfaceLayout in interfaceLayouts)
-                it[interfaceLayout.hierarchyInfo.interfaceId % size] = interfaceLayout
+            val sortedInterfaceLayouts = interfaceLayouts.sortedBy { it.classId }.toTypedArray()
+            for (i in 1 until sortedInterfaceLayouts.size)
+                require(sortedInterfaceLayouts[i - 1].classId != sortedInterfaceLayouts[i].classId) {
+                    "Different interfaces ${sortedInterfaceLayouts[i - 1].irClass.render()} and ${sortedInterfaceLayouts[i].irClass.render()}" +
+                            " have same class id: ${sortedInterfaceLayouts[i].classId}"
+                }
+            sortedInterfaceLayouts
         }
 
-        val interfaceTableSize = if (conservative) -size else (size - 1)
+        val interfaceTableSize = if (useFastITable) (size - 1) else -size
         return Pair(interfaceTableSkeleton, interfaceTableSize)
     }
 
@@ -396,22 +355,19 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
             irClass: IrClass,
             interfaceTableSkeleton: Array<out ClassLayoutBuilder?>
     ): List<InterfaceTableRecord> {
-        val methodTableEntries = context.getLayoutBuilder(irClass).methodTableEntries
+        val layoutBuilder = context.getLayoutBuilder(irClass)
         val className = irClass.fqNameForIrSerialization
 
         return interfaceTableSkeleton.map { iface ->
-            val interfaceId = iface?.hierarchyInfo?.interfaceId ?: 0
+            val interfaceId = iface?.classId ?: 0
             InterfaceTableRecord(
                     Int32(interfaceId),
-                    Int32(iface?.interfaceTableEntries?.size ?: 0),
+                    Int32(iface?.interfaceVTableEntries?.size ?: 0),
                     if (iface == null)
                         NullPointer(kInt8Ptr)
                     else {
-                        val vtableEntries = iface.interfaceTableEntries.map { ifaceFunction ->
-                            val impl = OverriddenFunctionInfo(
-                                    methodTableEntries.first { ifaceFunction in it.function.allOverriddenFunctions }.function,
-                                    ifaceFunction
-                            ).implementation
+                        val vtableEntries = iface.interfaceVTableEntries.map { ifaceFunction ->
+                            val impl = layoutBuilder.overridingOf(ifaceFunction)
                             if (impl == null || context.referencedFunctions?.contains(impl) == false)
                                 NullPointer(int8Type)
                             else impl.entryPointAddress
@@ -542,17 +498,6 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
         val objOffsetsPtr = staticData.placeGlobalConstArray("", int32Type, objOffsets)
         val objOffsetsCount = objOffsets.size
 
-        val methods = (methodTableRecords(superClass) + methodImpls.map { (method, impl) ->
-            assert(method.parent == irClass)
-            MethodTableRecord(method.computeFunctionName().localHash, impl.bitcast(int8TypePtr))
-        }).sortedBy { it.nameSignature.value }.also {
-            assert(it.distinctBy { it.nameSignature.value } == it)
-        }
-
-        val methodsPtr = staticData.placeGlobalConstArray("", runtime.methodTableRecordType, methods)
-
-        val reflectionInfo = ReflectionInfo(null, null)
-
         val writableTypeInfoType = runtime.writableTypeInfoType
         val writableTypeInfo = if (writableTypeInfoType == null) {
             null
@@ -568,21 +513,20 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
         val typeHierarchyInfo = if (!context.ghaEnabled())
             ClassGlobalHierarchyInfo.DUMMY
         else
-            ClassGlobalHierarchyInfo(-1, -1, 0, 0)
+            ClassGlobalHierarchyInfo(-1, -1, 0)
 
         // TODO: interfaces (e.g. FunctionN and Function) should have different colors.
-        val (interfaceTableSkeleton, interfaceTableSize) =
-                if (context.ghaEnabled()) interfaceTableSkeleton(interfaces) else Pair(emptyArray(), -1)
+        val (interfaceTableSkeleton, interfaceTableSize) = interfaceTableSkeleton(interfaces)
 
         val interfaceTable = interfaceTableSkeleton.map { layoutBuilder ->
             if (layoutBuilder == null) {
                 InterfaceTableRecord(Int32(0), Int32(0), null)
             } else {
-                val vtableEntries = layoutBuilder.interfaceTableEntries.map { methodImpls[it]!!.bitcast(int8TypePtr) }
+                val vtableEntries = layoutBuilder.interfaceVTableEntries.map { methodImpls[it]!!.bitcast(int8TypePtr) }
                 val interfaceVTable = staticData.placeGlobalArray("", kInt8Ptr, vtableEntries)
                 InterfaceTableRecord(
-                        Int32(layoutBuilder.hierarchyInfo.interfaceId),
-                        Int32(layoutBuilder.interfaceTableEntries.size),
+                        Int32(layoutBuilder.classId),
+                        Int32(layoutBuilder.interfaceVTableEntries.size),
                         interfaceVTable.pointer.getElementPtr(0)
                 )
             }
@@ -596,10 +540,9 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
                 superType = superClass.typeInfoPtr,
                 objOffsets = objOffsetsPtr, objOffsetsCount = objOffsetsCount,
                 interfaces = interfacesPtr, interfacesCount = interfaces.size,
-                methods = methodsPtr, methodsCount = methods.size,
                 interfaceTableSize = interfaceTableSize, interfaceTable = interfaceTablePtr,
-                packageName = reflectionInfo.packageName,
-                relativeName = reflectionInfo.relativeName,
+                packageName = ReflectionInfo.EMPTY.packageName,
+                relativeName = ReflectionInfo.EMPTY.relativeName,
                 flags = flagsFromClass(irClass) or (if (immutable) TF_IMMUTABLE else 0),
                 classId = typeHierarchyInfo.classIdLo,
                 writableTypeInfo = writableTypeInfo,
@@ -614,20 +557,45 @@ internal class RTTIGenerator(override val context: Context) : ContextUtils {
 
     private val OverriddenFunctionInfo.implementation get() = getImplementation(context)
 
-    data class ReflectionInfo(val packageName: String?, val relativeName: String?)
-
-    private fun getReflectionInfo(irClass: IrClass): ReflectionInfo = when {
-        irClass.isAnonymousObject -> ReflectionInfo(packageName = null, relativeName = null)
-
-        irClass.isLocal -> ReflectionInfo(packageName = null, relativeName = irClass.name.asString())
-
-        else -> ReflectionInfo(
-                packageName = irClass.findPackage().fqNameForIrSerialization.asString(),
-                relativeName = generateSequence(irClass) { it.parent as? IrClass }
-                        .toList().reversed()
-                        .joinToString(".") { it.name.asString() }
-        )
+    data class ReflectionInfo(val packageName: String?, val relativeName: String?, val reflectionFlags: Int) {
+        companion object {
+            val EMPTY = ReflectionInfo(null, null, 0)
+        }
     }
+
+    private fun getReflectionInfo(irClass: IrClass): ReflectionInfo {
+        val packageName: String = irClass.findPackage().fqName.asString() // Compute and store package name in TypeInfo anyways.
+        val relativeName: String?
+        val flags: Int
+
+        when {
+            irClass.isAnonymousObject -> {
+                relativeName = context.getLocalClassName(irClass)
+                flags = 0 // Forbid to use package and relative names in KClass.[simpleName|qualifiedName].
+            }
+            irClass.isLocal -> {
+                relativeName = context.getLocalClassName(irClass)
+                flags = TF_REFLECTION_SHOW_REL_NAME // Only allow relative name to be used in KClass.simpleName.
+            }
+            isLoweredFunctionReference(irClass) -> {
+                // TODO: might return null so use fallback here, to be fixed in KT-47194
+                relativeName = context.getLocalClassName(irClass) ?: generateDefaultRelativeName(irClass)
+                flags = 0 // Forbid to use package and relative names in KClass.[simpleName|qualifiedName].
+            }
+            else -> {
+                relativeName = generateDefaultRelativeName(irClass)
+                flags = TF_REFLECTION_SHOW_PKG_NAME or TF_REFLECTION_SHOW_REL_NAME // Allow both package and relative names to be used in
+                // KClass.[simpleName|qualifiedName].
+            }
+        }
+
+        return ReflectionInfo(packageName, relativeName, flags)
+    }
+
+    private fun generateDefaultRelativeName(irClass: IrClass) =
+            generateSequence(irClass) { it.parent as? IrClass }
+                    .toList().reversed()
+                    .joinToString(".") { it.name.asString() }
 
     fun dispose() {
         debugRuntimeOrNull?.let { LLVMDisposeModule(it) }
@@ -643,4 +611,5 @@ private const val TF_LEAK_DETECTOR_CANDIDATE = 16
 private const val TF_SUSPEND_FUNCTION = 32
 private const val TF_HAS_FINALIZER = 64
 private const val TF_HAS_FREEZE_HOOK = 128
-
+private const val TF_REFLECTION_SHOW_PKG_NAME = 256
+private const val TF_REFLECTION_SHOW_REL_NAME = 512

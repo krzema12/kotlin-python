@@ -44,6 +44,9 @@ internal actual inline fun String.nativeLastIndexOf(str: String, fromIndex: Int)
 /**
  * Returns `true` if this string is equal to [other], optionally ignoring character case.
  *
+ * Two strings are considered to be equal if they have the same length and the same character at the same index.
+ * If [ignoreCase] is true, the result of `Char.uppercaseChar().lowercaseChar()` on each character is compared.
+ *
  * @param ignoreCase `true` to ignore character case when comparing strings. By default `false`.
  */
 @Suppress("ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS")
@@ -387,7 +390,7 @@ public inline fun String.Companion.format(locale: Locale?, format: String, varar
  * Zero by default means no limit is set.
  */
 public fun CharSequence.split(regex: Pattern, limit: Int = 0): List<String> {
-    require(limit >= 0, { "Limit must be non-negative, but was $limit." })
+    requireNonNegativeLimit(limit)
     return regex.split(this, if (limit == 0) -1 else limit).asList()
 }
 
@@ -540,6 +543,8 @@ public inline fun String.codePointCount(beginIndex: Int, endIndex: Int): Int =
 
 /**
  * Compares two strings lexicographically, optionally ignoring case differences.
+ *
+ * If [ignoreCase] is true, the result of `Char.uppercaseChar().lowercaseChar()` on each character is compared.
  */
 @Suppress("ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS")
 public actual fun String.compareTo(other: String, ignoreCase: Boolean = false): Int {

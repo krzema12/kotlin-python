@@ -13,7 +13,6 @@ import org.jetbrains.kotlin.backend.konan.descriptors.synthesizedName
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.Modality
-import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
 import org.jetbrains.kotlin.ir.builders.irBlockBody
 import org.jetbrains.kotlin.ir.builders.irCall
@@ -32,12 +31,16 @@ import org.jetbrains.kotlin.ir.symbols.impl.IrFieldSymbolImpl
 import org.jetbrains.kotlin.ir.symbols.impl.IrSimpleFunctionSymbolImpl
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.typeWith
-import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.ir.util.constructors
+import org.jetbrains.kotlin.ir.util.defaultType
+import org.jetbrains.kotlin.ir.util.functions
+import org.jetbrains.kotlin.ir.util.module
 import org.jetbrains.kotlin.name.Name
-import org.jetbrains.kotlin.resolve.descriptorUtil.module
 
 
 internal object DECLARATION_ORIGIN_ENUM : IrDeclarationOriginImpl("ENUM")
+
+internal data class LoweredEnumEntryDescription(val ordinal: Int, val getterId: Int)
 
 /**
  * Common interface for both [InternalLoweredEnum] and [ExternalLoweredEnum]
@@ -46,7 +49,7 @@ internal object DECLARATION_ORIGIN_ENUM : IrDeclarationOriginImpl("ENUM")
 internal interface LoweredEnumAccess {
     val valuesGetter: IrSimpleFunction
     val itemGetterSymbol: IrSimpleFunctionSymbol
-    val entriesMap: Map<Name, Int>
+    val entriesMap: Map<Name, LoweredEnumEntryDescription>
     fun getValuesField(startOffset: Int, endOffset: Int): IrExpression
 }
 
@@ -59,7 +62,7 @@ internal data class InternalLoweredEnum(
         val valuesGetterWrapper: IrSimpleFunction,
         override val valuesGetter: IrSimpleFunction,
         override val itemGetterSymbol: IrSimpleFunctionSymbol,
-        override val entriesMap: Map<Name, Int>
+        override val entriesMap: Map<Name, LoweredEnumEntryDescription>
 ) : LoweredEnumAccess {
     private fun internalObjectGetter(startOffset: Int, endOffset: Int) =
             IrGetObjectValueImpl(startOffset, endOffset,
@@ -82,7 +85,7 @@ internal data class InternalLoweredEnum(
 internal data class ExternalLoweredEnum(
         override val valuesGetter: IrSimpleFunction,
         override val itemGetterSymbol: IrSimpleFunctionSymbol,
-        override val entriesMap: Map<Name, Int>
+        override val entriesMap: Map<Name, LoweredEnumEntryDescription>
 ) : LoweredEnumAccess {
     override fun getValuesField(startOffset: Int, endOffset: Int): IrExpression =
             IrCallImpl(startOffset, endOffset, valuesGetter.returnType, valuesGetter.symbol, valuesGetter.typeParameters.size, valuesGetter.valueParameters.size)
@@ -91,13 +94,16 @@ internal data class ExternalLoweredEnum(
 internal class EnumSpecialDeclarationsFactory(val context: Context) {
     private val symbols = context.ir.symbols
 
-    private fun enumEntriesMap(enumClass: IrClass): Map<Name, Int> =
-            enumClass.declarations
-                    .filterIsInstance<IrEnumEntry>()
-                    .sortedBy { it.name }
-                    .withIndex()
-                    .associate { it.value.name to it.index }
-                    .toMap()
+    private fun enumEntriesMap(enumClass: IrClass): Map<Name, LoweredEnumEntryDescription> {
+        data class NameWithOrdinal(val name: Name, val ordinal: Int)
+        return enumClass.declarations.asSequence()
+                .filterIsInstance<IrEnumEntry>()
+                .mapIndexed { index, it -> NameWithOrdinal(it.name, index) }
+                .sortedBy { it.name }
+                .withIndex()
+                .associate { it.value.name to LoweredEnumEntryDescription(it.value.ordinal, it.index) }
+                .toMap()
+    }
 
     private fun findItemGetterSymbol(): IrSimpleFunctionSymbol =
             symbols.array.functions.single { it.descriptor.name == Name.identifier("get") }
@@ -198,7 +204,7 @@ internal class EnumSpecialDeclarationsFactory(val context: Context) {
         )
 
         implObject.superTypes += context.irBuiltIns.anyType
-        implObject.addFakeOverrides(context.irBuiltIns)
+        implObject.addFakeOverrides(context.typeSystem)
 
         val itemGetterSymbol = findItemGetterSymbol()
         val enumEntriesMap = enumEntriesMap(enumClass)

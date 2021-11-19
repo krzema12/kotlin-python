@@ -230,6 +230,12 @@ public class JvmOldAgainstIrBoxTestGenerated extends AbstractJvmOldAgainstIrBoxT
     }
 
     @Test
+    @TestMetadata("jvmFieldInConstructor2.kt")
+    public void testJvmFieldInConstructor2() throws Exception {
+        runTest("compiler/testData/codegen/box/compileKotlinAgainstKotlin/jvmFieldInConstructor2.kt");
+    }
+
+    @Test
     @TestMetadata("jvmFieldInInterfaceCompanion.kt")
     public void testJvmFieldInInterfaceCompanion() throws Exception {
         runTest("compiler/testData/codegen/box/compileKotlinAgainstKotlin/jvmFieldInInterfaceCompanion.kt");
@@ -519,6 +525,12 @@ public class JvmOldAgainstIrBoxTestGenerated extends AbstractJvmOldAgainstIrBoxT
         }
 
         @Test
+        @TestMetadata("extensionPropertyWithSameName.kt")
+        public void testExtensionPropertyWithSameName() throws Exception {
+            runTest("compiler/testData/codegen/box/compileKotlinAgainstKotlin/inlineClasses/extensionPropertyWithSameName.kt");
+        }
+
+        @Test
         @TestMetadata("funInterface.kt")
         public void testFunInterface() throws Exception {
             runTest("compiler/testData/codegen/box/compileKotlinAgainstKotlin/inlineClasses/funInterface.kt");
@@ -609,6 +621,12 @@ public class JvmOldAgainstIrBoxTestGenerated extends AbstractJvmOldAgainstIrBoxT
             @TestMetadata("defaultWithInlineClassAndReceivers.kt")
             public void testDefaultWithInlineClassAndReceivers() throws Exception {
                 runTest("compiler/testData/codegen/box/compileKotlinAgainstKotlin/inlineClasses/oldMangling/defaultWithInlineClassAndReceivers.kt");
+            }
+
+            @Test
+            @TestMetadata("extensionPropertyWithSameName.kt")
+            public void testExtensionPropertyWithSameName() throws Exception {
+                runTest("compiler/testData/codegen/box/compileKotlinAgainstKotlin/inlineClasses/oldMangling/extensionPropertyWithSameName.kt");
             }
 
             @Test

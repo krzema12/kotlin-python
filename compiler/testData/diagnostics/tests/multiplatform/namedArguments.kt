@@ -1,4 +1,3 @@
-// !WITH_NEW_INFERENCE
 // !LANGUAGE: +MultiPlatformProjects
 // MODULE: m1-common
 // FILE: common.kt
@@ -12,13 +11,13 @@ expect class Foo(zzz: Int) {
 expect fun f2(xxx: Int)
 
 fun testCommon() {
-    Foo(<!NAMED_ARGUMENTS_NOT_ALLOWED{OI}!>zzz<!> = 0)
-    val f = Foo(<!NAMED_ARGUMENTS_NOT_ALLOWED{OI}!>aaa<!> = true)
-    f.f1(<!NAMED_ARGUMENTS_NOT_ALLOWED{OI}!>xxx<!> = "")
+    Foo(zzz = 0)
+    val f = Foo(aaa = true)
+    f.f1(xxx = "")
     f2(xxx = 42)
 }
 
-// MODULE: m2-jvm(m1-common)
+// MODULE: m2-jvm()()(m1-common)
 // FILE: jvm.kt
 
 actual class Foo actual constructor(val aaa: Boolean) {

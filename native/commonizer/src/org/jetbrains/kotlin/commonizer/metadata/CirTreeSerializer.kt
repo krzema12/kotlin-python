@@ -143,6 +143,7 @@ private class CirTreeSerializationVisitor(
         classContext: CirTreeSerializationContext
     ): KmClass? {
         val cirClass = classContext.get<CirClass>(node) ?: return null
+
         val classTypeParametersCount = cirClass.typeParameters.size
         val fullClassName = classContext.currentPath.toString()
 

@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.ir.backend.js.utils
 
 import org.jetbrains.kotlin.backend.common.ir.isMethodOfAny
+import org.jetbrains.kotlin.backend.common.ir.isTopLevel
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.backend.js.JsIrBackendContext
@@ -17,6 +18,7 @@ import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.IrCallImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl
 import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.getClass
 import org.jetbrains.kotlin.ir.types.isNullableAny
 import org.jetbrains.kotlin.ir.util.isEffectivelyExternal
 import org.jetbrains.kotlin.ir.util.isTopLevelDeclaration
@@ -112,3 +114,15 @@ fun IrBody.prependFunctionCall(
         }
     }
 }
+
+fun IrDeclaration.isImportedFromModuleOnly(): Boolean {
+    return isTopLevel && isEffectivelyExternal() && (getJsModule() != null && !isJsNonModule() || (parent as? IrAnnotationContainer)?.getJsModule() != null)
+}
+
+fun invokeFunForLambda(call: IrCall) =
+    call.extensionReceiver!!
+        .type
+        .getClass()!!
+        .declarations
+        .filterIsInstance<IrSimpleFunction>()
+        .single { it.name.asString() == "invoke" }

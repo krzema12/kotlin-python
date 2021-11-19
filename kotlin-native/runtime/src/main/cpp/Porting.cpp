@@ -33,6 +33,7 @@
 #include <chrono>
 
 #include "Common.h"
+#include "CompilerConstants.hpp"
 #include "Porting.h"
 #include "KAssert.h"
 
@@ -59,7 +60,7 @@ void consoleInit() {
 #endif
 }
 
-void consoleWriteUtf8(const void* utf8, uint32_t sizeBytes) {
+void consoleWriteUtf8(const char* utf8, uint32_t sizeBytes) {
 #ifdef KONAN_ANDROID
   // TODO: use sizeBytes!
   __android_log_print(ANDROID_LOG_INFO, "Konan_main", "%s", utf8);
@@ -68,7 +69,7 @@ void consoleWriteUtf8(const void* utf8, uint32_t sizeBytes) {
 #endif
 }
 
-void consoleErrorUtf8(const void* utf8, uint32_t sizeBytes) {
+NO_EXTERNAL_CALLS_CHECK void consoleErrorUtf8(const char* utf8, uint32_t sizeBytes) {
 #ifdef KONAN_ANDROID
   // TODO: use sizeBytes!
   __android_log_print(ANDROID_LOG_ERROR, "Konan_main", "%s", utf8);
@@ -105,13 +106,13 @@ int32_t consoleReadUtf8(void* utf8, uint32_t maxSizeBytes) {
     if (::ReadConsoleW(stdInHandle, buffer, bufferLength, &bufferRead, NULL)) {
       length = ::WideCharToMultiByte(CP_UTF8, 0, buffer, bufferRead, (char*) utf8,
                                      maxSizeBytes - 1, NULL, NULL);
-      if (!length && KonanNeedDebugInfo) {
+      if (!length && kotlin::compiler::shouldContainDebugInfo()) {
         char msg[512];
         auto errCode = getLastErrorMessage(msg, sizeof(msg));
         consoleErrorf("UTF-16 to UTF-8 conversion error %d: %s", errCode, msg);
       }
       ((char*) utf8)[length] = 0;
-    } else if (KonanNeedDebugInfo) {
+    } else if (kotlin::compiler::shouldContainDebugInfo()) {
       char msg[512];
       auto errCode = getLastErrorMessage(msg, sizeof(msg));
       consoleErrorf("Console read failure: %d %s", errCode, msg);
@@ -148,7 +149,7 @@ extern "C" int rpl_vsnprintf(char *, size_t, const char *, va_list);
 #define vsnprintf_impl ::vsnprintf
 #endif
 
-void consolePrintf(const char* format, ...) {
+NO_EXTERNAL_CALLS_CHECK void consolePrintf(const char* format, ...) {
   char buffer[1024];
   va_list args;
   va_start(args, format);
@@ -160,7 +161,7 @@ void consolePrintf(const char* format, ...) {
 }
 
 // TODO: Avoid code duplication.
-void consoleErrorf(const char* format, ...) {
+NO_EXTERNAL_CALLS_CHECK void consoleErrorf(const char* format, ...) {
   char buffer[1024];
   va_list args;
   va_start(args, format);
@@ -192,13 +193,17 @@ struct DestructorRecord {
 
 static void onThreadExitCallback(void* value) {
   DestructorRecord* record = reinterpret_cast<DestructorRecord*>(value);
+  pthread_setspecific(terminationKey, nullptr);
   while (record != nullptr) {
     record->destructor(record->destructorParameter);
     auto next = record->next;
     free(record);
     record = next;
   }
-  pthread_setspecific(terminationKey, nullptr);
+}
+
+NO_EXTERNAL_CALLS_CHECK bool isOnThreadExitNotSetOrAlreadyStarted() {
+    return terminationKey != 0 && pthread_getspecific(terminationKey) == nullptr;
 }
 
 #if KONAN_LINUX
@@ -235,6 +240,39 @@ void onThreadExit(void (*destructor)(void*), void* destructorParameter) {
   destructorRecord->next =
       reinterpret_cast<DestructorRecord*>(pthread_getspecific(terminationKey));
   pthread_setspecific(terminationKey, destructorRecord);
+#endif  // !KONAN_NO_THREADS
+}
+
+#if KONAN_LINUX
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/syscall.h>
+#endif
+
+NO_EXTERNAL_CALLS_CHECK int currentThreadId() {
+#if KONAN_NO_THREADS
+#if KONAN_WASM || KONAN_ZEPHYR
+    // No way to do that.
+    return 0;
+#else
+#error "How to find currentThreadId()?"
+#endif
+#else  // !KONAN_NO_THREADS
+#if defined(KONAN_OSX) or defined(KONAN_IOS) or defined(KONAN_TVOS) or defined(KONAN_WATCHOS)
+    uint64_t tid;
+    pthread_t self = pthread_self();
+    RuntimeCheck(!pthread_threadid_np(self, &tid), "Error getting thread id");
+    RuntimeCheck((*(reinterpret_cast<int32_t*>(&tid) + 1)) == 0, "Thread id is not a uint32");
+    return tid;
+#elif KONAN_ANDROID
+    return gettid();
+#elif KONAN_LINUX
+    return syscall(__NR_gettid);
+#elif KONAN_WINDOWS
+  return GetCurrentThreadId();
+#else
+#error "How to find currentThreadId()?"
+#endif
 #endif  // !KONAN_NO_THREADS
 }
 
@@ -474,7 +512,7 @@ extern "C" {
     int _ZNSt3__112__next_primeEj(unsigned long n) {
         return _ZNSt3__212__next_primeEj(n);
     }
-    void __assert_fail(const char * assertion, const char * file, unsigned int line, const char * function) {
+    void __assert_fail(const char* assertion, const char* file, int line, const char* function) {
         char buf[1024];
         konan::snprintf(buf, sizeof(buf), "%s:%d in %s: runtime assert: %s\n", file, line, function, assertion);
         Konan_abort(buf);

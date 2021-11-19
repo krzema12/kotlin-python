@@ -5,68 +5,39 @@
 
 package org.jetbrains.kotlin.idea.fir.low.level.api.file.builder
 
-import com.google.common.collect.MapMaker
+import org.jetbrains.kotlin.fir.declarations.FirFile
 import org.jetbrains.kotlin.idea.fir.low.level.api.annotations.PrivateForInline
-import org.jetbrains.kotlin.idea.fir.low.level.api.api.DeclarationLockType
 import org.jetbrains.kotlin.idea.fir.low.level.api.util.lockWithPCECheck
-import java.util.concurrent.ConcurrentMap
-import java.util.concurrent.locks.ReadWriteLock
-import java.util.concurrent.locks.ReentrantReadWriteLock
+import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
+/**
+ * Keyed locks provider.
+ * !!! We temporary remove its correct implementation to fix deadlocks problem. Do not use this until this comment is present
+ */
 internal class LockProvider<KEY> {
-    private val locks: ConcurrentMap<KEY, ReadWriteLock> = MapMaker().weakKeys().makeMap()
+    val globalLock = ReentrantLock()
 
     @OptIn(PrivateForInline::class)
-    private val deadLockGuard = DeadLockGuard()
-
-    @Suppress("NOTHING_TO_INLINE")
-    private inline fun getLockFor(key: KEY) = locks.getOrPut(key) { ReentrantReadWriteLock() }
+    inline fun <R> withWriteLock(@Suppress("UNUSED_PARAMETER") key: KEY, action: () -> R): R =
+        globalLock.withLock(action)
 
     @OptIn(PrivateForInline::class)
-    inline fun <R> withReadLock(key: KEY, action: () -> R): R {
-        val readLock = getLockFor(key).readLock()
-        return deadLockGuard.guardReadLock { readLock.withLock { action() } }
-    }
-
-    @OptIn(PrivateForInline::class)
-    inline fun <R> withWriteLock(key: KEY, action: () -> R): R {
-        val writeLock = getLockFor(key).writeLock()
-        return deadLockGuard.guardWriteLock { writeLock.withLock { action() } }
-    }
-
-    @OptIn(PrivateForInline::class)
-    inline fun <R> withWriteLockPCECheck(key: KEY, lockingIntervalMs: Long, action: () -> R): R {
-        val writeLock = getLockFor(key).writeLock()
-        return deadLockGuard.guardWriteLock { writeLock.lockWithPCECheck(lockingIntervalMs, action) }
-    }
-
-    inline fun <R> withLock(declaration: KEY, declarationLockType: DeclarationLockType, action: () -> R): R = when (declarationLockType) {
-        DeclarationLockType.READ_LOCK -> withReadLock(declaration, action)
-        DeclarationLockType.WRITE_LOCK -> withWriteLock(declaration, action)
-    }
+    inline fun <R> withWriteLockPCECheck(@Suppress("UNUSED_PARAMETER") key: KEY, lockingIntervalMs: Long, action: () -> R): R =
+        globalLock.lockWithPCECheck(lockingIntervalMs, action) //We temporary disable multi-locks to fix deadlocks problem
 }
 
-@PrivateForInline
-internal class DeadLockGuard {
-    private val readLocksCount = ThreadLocal.withInitial { 0 }
-
-    inline fun <R> guardReadLock(action: () -> R): R {
-        readLocksCount.set(readLocksCount.get() + 1)
-        return try {
-            action()
-        } finally {
-            readLocksCount.set(readLocksCount.get() - 1)
-        }
-    }
-
-    inline fun <R> guardWriteLock(action: () -> R): R {
-
-        if (readLocksCount.get() > 0) {
-            throw ReadWriteDeadLockException()
-        }
-        return action()
+/**
+ * Runs [resolve] function (which is considered to do some resolve on [firFile]) under a lock for [firFile]
+ */
+internal inline fun <R> LockProvider<FirFile>.runCustomResolveUnderLock(
+    firFile: FirFile,
+    checkPCE: Boolean,
+    body: () -> R
+): R {
+    return if (checkPCE) {
+        withWriteLockPCECheck(key = firFile, lockingIntervalMs = 50L, action = body)
+    } else {
+        withWriteLock(key = firFile, action = body)
     }
 }
-
-class ReadWriteDeadLockException : IllegalStateException("Acquiring write lock when read lock hold")

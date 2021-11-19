@@ -42,6 +42,8 @@ internal inline fun <reified T : Any?> ObjectFactory.property() = property(T::cl
 
 internal inline fun <reified T : Any?> ObjectFactory.property(initialValue: T) = property<T>().value(initialValue)
 
+internal inline fun <reified T : Any?> ObjectFactory.property(initialValue: Provider<T>) = property<T>().value(initialValue)
+
 internal inline fun <reified T : Any?> ObjectFactory.propertyWithConvention(
     conventionValue: Provider<T>
 ) = property<T>().convention(conventionValue)
@@ -50,11 +52,18 @@ internal inline fun <reified T : Any?> ObjectFactory.propertyWithConvention(
     conventionValue: T
 ) = property<T>().convention(conventionValue)
 
+internal inline fun <reified T : Any?> ObjectFactory.providerWithLazyConvention(
+    noinline lazyConventionValue: () -> T
+) = property(lazyConventionValue).map { it.invoke() }
+
 internal inline fun <reified T : Any> ObjectFactory.newInstance() = newInstance(T::class.java)
+
+internal inline fun <reified T : Any> ObjectFactory.newInstance(vararg parameters: Any) =
+    newInstance(T::class.java, *parameters)
 
 internal inline fun <reified T : Any> ObjectFactory.propertyWithNewInstance(
     vararg parameters: Any
-) = propertyWithConvention(newInstance(T::class.java, parameters))
+) = propertyWithConvention(newInstance(T::class.java, *parameters))
 
 internal inline fun <reified T : Any> ObjectFactory.propertyWithNewInstance() =
     propertyWithConvention(newInstance<T>())
