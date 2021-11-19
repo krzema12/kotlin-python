@@ -16,6 +16,9 @@ jobs:
           fetch-depth: 0 # Fetch the whole git history, to be able to calculate some stats based on it.
       - name: Install Kotlin for scripting
         run: sudo snap install --classic kotlin
+      - name: Disable old Java for Kotlin
+        run: echo "kotlin.build.isObsoleteJdkOverrideEnabled=true" > local.properties
+
       - name: Clean
         run: JDK_9="$JAVA_HOME" ./gradlew clean
       - name: Run ast tests
