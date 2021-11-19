@@ -76,8 +76,11 @@ fun List<TestResult>.writeSummaryTsvToFile(targetFile: Path) = targetFile.toFile
                     if (failureGeneralReason == FailureGeneralReason.PythonExecution) testResult.status.message.extractDuration() else null,
                 )
             } else Triple(null, null, null)
+
+        fun String.makeEasyPastableToGradle() = replace(" > ", ".")
+
         out.println(listOf(
-            testResult.name,
+            testResult.name.makeEasyPastableToGradle(),
             statusAsString,
 //            testResult.timeSeconds,
             failureGeneralReason ?: "",
