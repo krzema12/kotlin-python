@@ -10,10 +10,114 @@ def fold(self, initial, operation):
     
     return accumulator
 
+def contains(self, element):
+    return indexOf(self, element) >= 0
+
+def indexOf(self, element):
+    inductionVariable = 0
+    last = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    if inductionVariable <= last:
+        while True:
+            index = inductionVariable
+            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            if element == self[index]:
+                return index
+            
+            if inductionVariable <= last:
+                break
+            
+        
+    
+    return -1
+
 def _get_indices_(self):
     return IntRange(0, _get_lastIndex_(self))
 
-def indexOf(self, element):
+def _get_lastIndex_(self):
+    return (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+
+def contains_0(self, element):
+    return indexOf_0(self, element) >= 0
+
+def indexOf_0(self, element):
+    inductionVariable = 0
+    last = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    if inductionVariable <= last:
+        while True:
+            index = inductionVariable
+            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            if element == self[index]:
+                return index
+            
+            if inductionVariable <= last:
+                break
+            
+        
+    
+    return -1
+
+def _get_indices__0(self):
+    return IntRange(0, _get_lastIndex__0(self))
+
+def _get_lastIndex__0(self):
+    return (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+
+def contains_1(self, element):
+    return indexOf_1(self, element) >= 0
+
+def indexOf_1(self, element):
+    inductionVariable = 0
+    last = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    if inductionVariable <= last:
+        while True:
+            index = inductionVariable
+            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            if element == self[index]:
+                return index
+            
+            if inductionVariable <= last:
+                break
+            
+        
+    
+    return -1
+
+def _get_indices__1(self):
+    return IntRange(0, _get_lastIndex__1(self))
+
+def _get_lastIndex__1(self):
+    return (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+
+def contains_2(self, element):
+    return indexOf_2(self, element) >= 0
+
+def indexOf_2(self, element):
+    inductionVariable = 0
+    last = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    if inductionVariable <= last:
+        while True:
+            index = inductionVariable
+            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            if element == self[index]:
+                return index
+            
+            if inductionVariable <= last:
+                break
+            
+        
+    
+    return -1
+
+def _get_indices__2(self):
+    return IntRange(0, _get_lastIndex__2(self))
+
+def _get_lastIndex__2(self):
+    return (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+
+def _get_indices__3(self):
+    return IntRange(0, _get_lastIndex__3(self))
+
+def indexOf_3(self, element):
     if element == None:
         inductionVariable = 0
         last = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
@@ -79,7 +183,7 @@ def lastIndexOf(self, element):
     
     return -1
 
-def _get_lastIndex_(self):
+def _get_lastIndex__3(self):
     return (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
 
 def joinToString(self, separator, prefix, postfix, limit, truncated, transform):
@@ -156,109 +260,23 @@ def joinTo_default(self, buffer, separator, prefix, postfix, limit, truncated, t
     
     return joinTo(self, buffer, kotlin_CharSequence(separator), kotlin_CharSequence(prefix), kotlin_CharSequence(postfix), limit, kotlin_CharSequence(truncated), transform)
 
-def contains(self, element):
-    return indexOf_0(self, element) >= 0
-
-def indexOf_0(self, element):
-    inductionVariable = 0
-    last = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-    if inductionVariable <= last:
-        while True:
-            index = inductionVariable
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-            if element == self[index]:
-                return index
-            
-            if inductionVariable <= last:
-                break
-            
+def all(self, predicate):
+    if isInterface(self, Collection):
+        tmp = kotlin_collections_Collection_T_(self).isEmpty_0_k_()
+    elif True:
+        tmp = False
+    
+    if tmp:
+        return True
+    
+    tmp0_iterator = self.iterator_0_k_()
+    while tmp0_iterator.hasNext_0_k_():
+        element = tmp0_iterator.next_0_k_()
+        if not predicate(element):
+            return False
         
     
-    return -1
-
-def _get_indices__0(self):
-    return IntRange(0, _get_lastIndex__0(self))
-
-def _get_lastIndex__0(self):
-    return (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-
-def contains_0(self, element):
-    return indexOf_1(self, element) >= 0
-
-def indexOf_1(self, element):
-    inductionVariable = 0
-    last = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-    if inductionVariable <= last:
-        while True:
-            index = inductionVariable
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-            if element == self[index]:
-                return index
-            
-            if inductionVariable <= last:
-                break
-            
-        
-    
-    return -1
-
-def _get_indices__1(self):
-    return IntRange(0, _get_lastIndex__1(self))
-
-def _get_lastIndex__1(self):
-    return (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-
-def contains_1(self, element):
-    return indexOf_2(self, element) >= 0
-
-def indexOf_2(self, element):
-    inductionVariable = 0
-    last = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-    if inductionVariable <= last:
-        while True:
-            index = inductionVariable
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-            if element == self[index]:
-                return index
-            
-            if inductionVariable <= last:
-                break
-            
-        
-    
-    return -1
-
-def _get_indices__2(self):
-    return IntRange(0, _get_lastIndex__2(self))
-
-def _get_lastIndex__2(self):
-    return (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-
-def contains_2(self, element):
-    return indexOf_3(self, element) >= 0
-
-def indexOf_3(self, element):
-    inductionVariable = 0
-    last = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-    if inductionVariable <= last:
-        while True:
-            index = inductionVariable
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-            if element == self[index]:
-                return index
-            
-            if inductionVariable <= last:
-                break
-            
-        
-    
-    return -1
-
-def _get_indices__3(self):
-    return IntRange(0, _get_lastIndex__3(self))
-
-def _get_lastIndex__3(self):
-    return (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    return True
 
 def indexOfFirst(self, predicate):
     index = 0
@@ -300,24 +318,6 @@ def any(self, predicate):
         
     
     return False
-
-def all(self, predicate):
-    if isInterface(self, Collection):
-        tmp = kotlin_collections_Collection_T_(self).isEmpty_0_k_()
-    elif True:
-        tmp = False
-    
-    if tmp:
-        return True
-    
-    tmp0_iterator = self.iterator_0_k_()
-    while tmp0_iterator.hasNext_0_k_():
-        element = tmp0_iterator.next_0_k_()
-        if not predicate(element):
-            return False
-        
-    
-    return True
 
 def joinToString_0(self, separator, prefix, postfix, limit, truncated, transform):
     return joinTo_0(self, StringBuilder_init__Create__1(), separator, prefix, postfix, limit, truncated, transform).toString()
@@ -416,14 +416,14 @@ def mapTo(self, destination, transform):
     
     return destination
 
-def downTo(self, to):
-    return Companion_getInstance_11().fromClosedRange_fcwjfj_k_(self, to, -1)
-
 def until(self, to):
     if to <= IntCompanionObject_getInstance().MIN_VALUE:
         return Companion_getInstance_14().EMPTY
     
     return numberRangeToNumber(self, (to - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+
+def downTo(self, to):
+    return Companion_getInstance_11().fromClosedRange_fcwjfj_k_(self, to, -1)
 
 def reversed(self):
     return Companion_getInstance_11().fromClosedRange_fcwjfj_k_(self.last, self.first, (-self.step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
@@ -2750,7 +2750,7 @@ def Result__exceptionOrNull_impl(this):
 def Result__toString_impl(this):
     tmp0_subject = _Result___get_value__impl_(this)
     if isinstance(tmp0_subject, Failure):
-        tmp = toString_0(_Result___get_value__impl_(this))
+        tmp = toString_0(kotlin_Failure(_Result___get_value__impl_(this)))
     elif True:
         tmp = (str('Success(') + str(_Result___get_value__impl_(this))) + str(')')
     
@@ -3243,7 +3243,7 @@ def _UByteArray___get_storage__impl_(this):
     return this.storage
 
 def _UByteArray___init__impl__0(size):
-    tmp = _UByteArray___init__impl_(visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_int8Array_visibility_public_modality_FINAL_____arg0_kotlin_Any___returnType_kotlin_Any_)
+    tmp = _UByteArray___init__impl_(int8Array(size))
     return tmp
 
 def UByteArray__get_impl(this, index):
@@ -3705,7 +3705,7 @@ def _UIntArray___get_storage__impl_(this):
     return this.storage
 
 def _UIntArray___init__impl__0(size):
-    tmp = _UIntArray___init__impl_(visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_int32Array_visibility_public_modality_FINAL_____arg0_kotlin_Any___returnType_kotlin_Any_)
+    tmp = _UIntArray___init__impl_(int32Array(size))
     return tmp
 
 def UIntArray__get_impl(this, index):
@@ -5340,7 +5340,7 @@ def _UShortArray___get_storage__impl_(this):
     return this.storage
 
 def _UShortArray___init__impl__0(size):
-    tmp = _UShortArray___init__impl_(visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OPERATOR_name_int16Array_visibility_public_modality_FINAL_____arg0_kotlin_Any___returnType_kotlin_Any_)
+    tmp = _UShortArray___init__impl_(int16Array(size))
     return tmp
 
 def UShortArray__get_impl(this, index):
@@ -6127,14 +6127,14 @@ def DeprecationLevel_HIDDEN_getInstance():
     DeprecationLevel_initEntries()
     return DeprecationLevel_HIDDEN_instance
 
-class ByteIterator(Iterator_3):
+class IntIterator(Iterator_3):
     def __init__(self):
         pass
     
     def next_0_k_(self):
-        return self.nextByte_0_k_()
+        return self.nextInt_0_k_()
     
-    def nextByte_0_k_(self):
+    def nextInt_0_k_(self):
         pass
     
     def hasNext_0_k_(self):
@@ -6150,14 +6150,14 @@ class ByteIterator(Iterator_3):
         pass
     
 
-class IntIterator(Iterator_3):
+class ByteIterator(Iterator_3):
     def __init__(self):
         pass
     
     def next_0_k_(self):
-        return self.nextInt_0_k_()
+        return self.nextByte_0_k_()
     
-    def nextInt_0_k_(self):
+    def nextByte_0_k_(self):
         pass
     
     def hasNext_0_k_(self):
@@ -6219,29 +6219,6 @@ class FloatIterator(Iterator_3):
         pass
     
 
-class LongIterator(Iterator_3):
-    def __init__(self):
-        pass
-    
-    def next_0_k_(self):
-        return self.nextLong_0_k_()
-    
-    def nextLong_0_k_(self):
-        pass
-    
-    def hasNext_0_k_(self):
-        pass
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-
 class CharIterator(Iterator_3):
     def __init__(self):
         pass
@@ -6265,14 +6242,14 @@ class CharIterator(Iterator_3):
         pass
     
 
-class BooleanIterator(Iterator_3):
+class LongIterator(Iterator_3):
     def __init__(self):
         pass
     
     def next_0_k_(self):
-        return self.nextBoolean_0_k_()
+        return self.nextLong_0_k_()
     
-    def nextBoolean_0_k_(self):
+    def nextLong_0_k_(self):
         pass
     
     def hasNext_0_k_(self):
@@ -6296,6 +6273,29 @@ class ShortIterator(Iterator_3):
         return self.nextShort_0_k_()
     
     def nextShort_0_k_(self):
+        pass
+    
+    def hasNext_0_k_(self):
+        pass
+    
+    def equals(self, other):
+        pass
+    
+    def hashCode(self):
+        pass
+    
+    def toString(self):
+        pass
+    
+
+class BooleanIterator(Iterator_3):
+    def __init__(self):
+        pass
+    
+    def next_0_k_(self):
+        return self.nextBoolean_0_k_()
+    
+    def nextBoolean_0_k_(self):
         pass
     
     def hasNext_0_k_(self):
@@ -6381,61 +6381,6 @@ def _set_next__2(_this, _set___):
 def _get_next__2(_this):
     return _this.next
 
-class LongProgressionIterator(LongIterator):
-    def __init__(self, first, last, step):
-        LongIterator.__init__(self)
-        self.step = step
-        self.finalElement = last
-        self.hasNext = (first.compareTo_wiekkq_k_(last) <= 0) if (self.step.compareTo_wiekkq_k_(0) > 0) else (first.compareTo_wiekkq_k_(last) >= 0)
-        self.next = (first) if (self.hasNext) else (self.finalElement)
-    
-    def _get_step__0_k_(self):
-        return self.step
-    
-    def hasNext_0_k_(self):
-        return self.hasNext
-    
-    def nextLong_0_k_(self):
-        value = self.next
-        if value == self.finalElement:
-            if not self.hasNext:
-                raise NoSuchElementException_init__Create_()
-            
-            self.hasNext = False
-        else:
-            tmp0_this = self
-            tmp0_this.next = (tmp0_this.next + self.step).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
-        
-        return value
-    
-    def next_0_k_(self):
-        pass
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-
-def _get_finalElement__3(_this):
-    return _this.finalElement
-
-def _set_hasNext__3(_this, _set___):
-    _this.hasNext = _set___
-
-def _get_hasNext__3(_this):
-    return _this.hasNext
-
-def _set_next__3(_this, _set___):
-    _this.next = _set___
-
-def _get_next__3(_this):
-    return _this.next
-
 class CharProgressionIterator(CharIterator):
     def __init__(self, first, last, step):
         CharIterator.__init__(self)
@@ -6469,6 +6414,61 @@ class CharProgressionIterator(CharIterator):
             tmp0_this.next = (tmp0_this.next + self.step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
         
         return numberToChar(value)
+    
+    def next_0_k_(self):
+        pass
+    
+    def equals(self, other):
+        pass
+    
+    def hashCode(self):
+        pass
+    
+    def toString(self):
+        pass
+    
+
+def _get_finalElement__3(_this):
+    return _this.finalElement
+
+def _set_hasNext__3(_this, _set___):
+    _this.hasNext = _set___
+
+def _get_hasNext__3(_this):
+    return _this.hasNext
+
+def _set_next__3(_this, _set___):
+    _this.next = _set___
+
+def _get_next__3(_this):
+    return _this.next
+
+class LongProgressionIterator(LongIterator):
+    def __init__(self, first, last, step):
+        LongIterator.__init__(self)
+        self.step = step
+        self.finalElement = last
+        self.hasNext = (first.compareTo_wiekkq_k_(last) <= 0) if (self.step.compareTo_wiekkq_k_(0) > 0) else (first.compareTo_wiekkq_k_(last) >= 0)
+        self.next = (first) if (self.hasNext) else (self.finalElement)
+    
+    def _get_step__0_k_(self):
+        return self.step
+    
+    def hasNext_0_k_(self):
+        return self.hasNext
+    
+    def nextLong_0_k_(self):
+        value = self.next
+        if value == self.finalElement:
+            if not self.hasNext:
+                raise NoSuchElementException_init__Create_()
+            
+            self.hasNext = False
+        else:
+            tmp0_this = self
+            tmp0_this.next = (tmp0_this.next + self.step).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        
+        return value
     
     def next_0_k_(self):
         pass
@@ -6556,8 +6556,8 @@ class Companion_13(Any):
         global Companion_instance
         Companion_instance = self
     
-    def fromClosedRange_k3cbgi_k_(self, rangeStart, rangeEnd, step):
-        return LongProgression(rangeStart, rangeEnd, step)
+    def fromClosedRange_gtcn47_k_(self, rangeStart, rangeEnd, step):
+        return CharProgression(rangeStart, rangeEnd, step)
     
     def equals(self, other):
         pass
@@ -6576,78 +6576,9 @@ def Companion_getInstance_12():
     
     return Companion_instance
 
-class LongProgression(Iterable):
-    def __init__(self, start, endInclusive, step):
-        Companion_getInstance_12()
-        if step == 0:
-            raise IllegalArgumentException_init__Create__0('Step must be non-zero.')
-        
-        Companion_getInstance_19()
-        if step == -9223372036854775808:
-            raise IllegalArgumentException_init__Create__0('Step must be greater than Long.MIN_VALUE to avoid overflow on negation.')
-        
-        self.first = start
-        self.last = getProgressionLastElement_2(start, endInclusive, step)
-        self.step = step
-    
-    def _get_first__0_k_(self):
-        return self.first
-    
-    def _get_last__0_k_(self):
-        return self.last
-    
-    def _get_step__0_k_(self):
-        return self.step
-    
-    def iterator_0_k_(self):
-        return LongProgressionIterator(self.first, self.last, self.step)
-    
-    def isEmpty_0_k_(self):
-        return (self.first.compareTo_wiekkq_k_(self.last) > 0) if (self.step.compareTo_wiekkq_k_(0) > 0) else (self.first.compareTo_wiekkq_k_(self.last) < 0)
-    
-    def equals(self, other):
-        if isinstance(other, LongProgression):
-            tmp = (True) if ((kotlin_ranges_LongProgression(other).isEmpty_0_k_()) if (self.isEmpty_0_k_()) else (False)) else ((self.step == kotlin_ranges_LongProgression(other).step) if ((self.last == kotlin_ranges_LongProgression(other).last) if (self.first == kotlin_ranges_LongProgression(other).first) else (False)) else (False))
-        elif True:
-            tmp = False
-        
-        return tmp
-    
-    def hashCode(self):
-        return (-1) if (self.isEmpty_0_k_()) else (((31 * ((31 * (self.first ^ ((self.first & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)) + (self.last ^ ((self.last & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)) + (self.step ^ ((self.step & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
-    
-    def toString(self):
-        return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step.compareTo_wiekkq_k_(0) > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str((-self.step).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)))
-    
-
-class Companion_14(Any):
-    def __init__(self):
-        global Companion_instance
-        Companion_instance = self
-    
-    def fromClosedRange_gtcn47_k_(self, rangeStart, rangeEnd, step):
-        return CharProgression(rangeStart, rangeEnd, step)
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-
-Companion_instance = None
-def Companion_getInstance_13():
-    if Companion_instance == None:
-        Companion_14()
-    
-    return Companion_instance
-
 class CharProgression(Iterable):
     def __init__(self, start, endInclusive, step):
-        Companion_getInstance_13()
+        Companion_getInstance_12()
         if step == 0:
             raise IllegalArgumentException_init__Create__0('Step must be non-zero.')
         
@@ -6696,6 +6627,75 @@ class CharProgression(Iterable):
     
     def toString(self):
         return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str((-self.step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)))
+    
+
+class Companion_14(Any):
+    def __init__(self):
+        global Companion_instance
+        Companion_instance = self
+    
+    def fromClosedRange_k3cbgi_k_(self, rangeStart, rangeEnd, step):
+        return LongProgression(rangeStart, rangeEnd, step)
+    
+    def equals(self, other):
+        pass
+    
+    def hashCode(self):
+        pass
+    
+    def toString(self):
+        pass
+    
+
+Companion_instance = None
+def Companion_getInstance_13():
+    if Companion_instance == None:
+        Companion_14()
+    
+    return Companion_instance
+
+class LongProgression(Iterable):
+    def __init__(self, start, endInclusive, step):
+        Companion_getInstance_13()
+        if step == 0:
+            raise IllegalArgumentException_init__Create__0('Step must be non-zero.')
+        
+        Companion_getInstance_19()
+        if step == -9223372036854775808:
+            raise IllegalArgumentException_init__Create__0('Step must be greater than Long.MIN_VALUE to avoid overflow on negation.')
+        
+        self.first = start
+        self.last = getProgressionLastElement_2(start, endInclusive, step)
+        self.step = step
+    
+    def _get_first__0_k_(self):
+        return self.first
+    
+    def _get_last__0_k_(self):
+        return self.last
+    
+    def _get_step__0_k_(self):
+        return self.step
+    
+    def iterator_0_k_(self):
+        return LongProgressionIterator(self.first, self.last, self.step)
+    
+    def isEmpty_0_k_(self):
+        return (self.first.compareTo_wiekkq_k_(self.last) > 0) if (self.step.compareTo_wiekkq_k_(0) > 0) else (self.first.compareTo_wiekkq_k_(self.last) < 0)
+    
+    def equals(self, other):
+        if isinstance(other, LongProgression):
+            tmp = (True) if ((kotlin_ranges_LongProgression(other).isEmpty_0_k_()) if (self.isEmpty_0_k_()) else (False)) else ((self.step == kotlin_ranges_LongProgression(other).step) if ((self.last == kotlin_ranges_LongProgression(other).last) if (self.first == kotlin_ranges_LongProgression(other).first) else (False)) else (False))
+        elif True:
+            tmp = False
+        
+        return tmp
+    
+    def hashCode(self):
+        return (-1) if (self.isEmpty_0_k_()) else (((31 * ((31 * (self.first ^ ((self.first & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)) + (self.last ^ ((self.last & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)) + (self.step ^ ((self.step & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    
+    def toString(self):
+        return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step.compareTo_wiekkq_k_(0) > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str((-self.step).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)))
     
 
 class ClosedRange(Any):
@@ -6801,7 +6801,7 @@ class Companion_16(Any):
     def __init__(self):
         global Companion_instance
         Companion_instance = self
-        self.EMPTY = LongRange(1, 0)
+        self.EMPTY = CharRange(Char_0(1), Char_0(0))
     
     def _get_EMPTY__0_k_(self):
         return self.EMPTY
@@ -6823,82 +6823,9 @@ def Companion_getInstance_15():
     
     return Companion_instance
 
-class LongRange(LongProgression, ClosedRange):
-    def __init__(self, start, endInclusive):
-        Companion_getInstance_15()
-        LongProgression.__init__(self, start, endInclusive, 1)
-    
-    def _get_start__0_k_(self):
-        return self._get_first__0_k_()
-    
-    def _get_endInclusive__0_k_(self):
-        return self._get_last__0_k_()
-    
-    def contains_wiekkq_k_(self, value):
-        return (value.compareTo_wiekkq_k_(self._get_last__0_k_()) <= 0) if (self._get_first__0_k_().compareTo_wiekkq_k_(value) <= 0) else (False)
-    
-    def contains_2c5_k_(self, value):
-        return self.contains_wiekkq_k_((kotlin_Long(value)) if (isinstance(value, Long)) else (THROW_CCE()))
-    
-    def isEmpty_0_k_(self):
-        return self._get_first__0_k_().compareTo_wiekkq_k_(self._get_last__0_k_()) > 0
-    
-    def equals(self, other):
-        if isinstance(other, LongRange):
-            tmp = (True) if ((kotlin_ranges_LongRange(other).isEmpty_0_k_()) if (self.isEmpty_0_k_()) else (False)) else ((self._get_last__0_k_() == kotlin_ranges_LongRange(other)._get_last__0_k_()) if (self._get_first__0_k_() == kotlin_ranges_LongRange(other)._get_first__0_k_()) else (False))
-        elif True:
-            tmp = False
-        
-        return tmp
-    
-    def hashCode(self):
-        return (-1) if (self.isEmpty_0_k_()) else (((31 * (self._get_first__0_k_() ^ ((self._get_first__0_k_() & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)) + (self._get_last__0_k_() ^ ((self._get_last__0_k_() & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
-    
-    def toString(self):
-        return (str(self._get_first__0_k_()) + str('..')) + str(self._get_last__0_k_())
-    
-    def _get_first__0_k_(self):
-        pass
-    
-    def _get_last__0_k_(self):
-        pass
-    
-    def _get_step__0_k_(self):
-        pass
-    
-    def iterator_0_k_(self):
-        pass
-    
-
-class Companion_17(Any):
-    def __init__(self):
-        global Companion_instance
-        Companion_instance = self
-        self.EMPTY = CharRange(Char_0(1), Char_0(0))
-    
-    def _get_EMPTY__0_k_(self):
-        return self.EMPTY
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-
-Companion_instance = None
-def Companion_getInstance_16():
-    if Companion_instance == None:
-        Companion_17()
-    
-    return Companion_instance
-
 class CharRange(CharProgression, ClosedRange):
     def __init__(self, start, endInclusive):
-        Companion_getInstance_16()
+        Companion_getInstance_15()
         CharProgression.__init__(self, start, endInclusive, 1)
     
     def _get_start__0_k_(self):
@@ -6934,6 +6861,79 @@ class CharRange(CharProgression, ClosedRange):
             tmp = (tmp + tmp1__get_code__0.toInt_0_k_()).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
         
         return tmp
+    
+    def toString(self):
+        return (str(self._get_first__0_k_()) + str('..')) + str(self._get_last__0_k_())
+    
+    def _get_first__0_k_(self):
+        pass
+    
+    def _get_last__0_k_(self):
+        pass
+    
+    def _get_step__0_k_(self):
+        pass
+    
+    def iterator_0_k_(self):
+        pass
+    
+
+class Companion_17(Any):
+    def __init__(self):
+        global Companion_instance
+        Companion_instance = self
+        self.EMPTY = LongRange(1, 0)
+    
+    def _get_EMPTY__0_k_(self):
+        return self.EMPTY
+    
+    def equals(self, other):
+        pass
+    
+    def hashCode(self):
+        pass
+    
+    def toString(self):
+        pass
+    
+
+Companion_instance = None
+def Companion_getInstance_16():
+    if Companion_instance == None:
+        Companion_17()
+    
+    return Companion_instance
+
+class LongRange(LongProgression, ClosedRange):
+    def __init__(self, start, endInclusive):
+        Companion_getInstance_16()
+        LongProgression.__init__(self, start, endInclusive, 1)
+    
+    def _get_start__0_k_(self):
+        return self._get_first__0_k_()
+    
+    def _get_endInclusive__0_k_(self):
+        return self._get_last__0_k_()
+    
+    def contains_wiekkq_k_(self, value):
+        return (value.compareTo_wiekkq_k_(self._get_last__0_k_()) <= 0) if (self._get_first__0_k_().compareTo_wiekkq_k_(value) <= 0) else (False)
+    
+    def contains_2c5_k_(self, value):
+        return self.contains_wiekkq_k_((kotlin_Long(value)) if (isinstance(value, Long)) else (THROW_CCE()))
+    
+    def isEmpty_0_k_(self):
+        return self._get_first__0_k_().compareTo_wiekkq_k_(self._get_last__0_k_()) > 0
+    
+    def equals(self, other):
+        if isinstance(other, LongRange):
+            tmp = (True) if ((kotlin_ranges_LongRange(other).isEmpty_0_k_()) if (self.isEmpty_0_k_()) else (False)) else ((self._get_last__0_k_() == kotlin_ranges_LongRange(other)._get_last__0_k_()) if (self._get_first__0_k_() == kotlin_ranges_LongRange(other)._get_first__0_k_()) else (False))
+        elif True:
+            tmp = False
+        
+        return tmp
+    
+    def hashCode(self):
+        return (-1) if (self.isEmpty_0_k_()) else (((31 * (self._get_first__0_k_() ^ ((self._get_first__0_k_() & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)) + (self._get_last__0_k_() ^ ((self._get_last__0_k_() & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
     
     def toString(self):
         return (str(self._get_first__0_k_()) + str('..')) + str(self._get_last__0_k_())
@@ -8047,6 +8047,7 @@ class AbstractMutableList(AbstractMutableCollection, MutableList):
         return True
     
     def addAll_xggsjz_k_(self, index, elements):
+        Companion_getInstance().checkPositionIndex_rvwcgf_k_(index, self._get_size__0_k_())
         self.checkIsMutable_sv8swh_k_()
         _index = index
         changed = False
@@ -8209,22 +8210,12 @@ def ArrayList_init__Init__0(initialCapacity, _this):
 def ArrayList_init__Create__0(initialCapacity):
     return ArrayList_init__Init__0(initialCapacity, ArrayList.__new__(ArrayList))
 
-def ArrayList_init__Init__1(initialCapacity, _mask0, _marker, _this):
-    if not (_mask0 & 1 == 0):
-        initialCapacity = 0
-    
-    ArrayList_init__Init__0(initialCapacity, _this)
-    return _this
-
-def ArrayList_init__Create__1(initialCapacity, _mask0, _marker):
-    return ArrayList_init__Init__1(initialCapacity, _mask0, _marker, ArrayList.__new__(ArrayList))
-
-def ArrayList_init__Init__2(elements, _this):
+def ArrayList_init__Init__1(elements, _this):
     ArrayList.__init__(_this, copyToArray_0(elements))
     return _this
 
-def ArrayList_init__Create__2(elements):
-    return ArrayList_init__Init__2(elements, ArrayList.__new__(ArrayList))
+def ArrayList_init__Create__1(elements):
+    return ArrayList_init__Init__1(elements, ArrayList.__new__(ArrayList))
 
 def rangeCheck(_this, index):
     Companion_getInstance().checkElementIndex_rvwcgf_k_(index, _this._get_size__0_k_())
@@ -8391,7 +8382,7 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
         Unit_getInstance()
     
     def indexOf_2bq_k_(self, element):
-        return indexOf(self.array, element)
+        return indexOf_3(self.array, element)
     
     def lastIndexOf_2bq_k_(self, element):
         return lastIndexOf(self.array, element)
@@ -10023,6 +10014,27 @@ class StringBuilder(Appendable, CharSequence):
         pass
     
 
+def uppercaseChar(self):
+    tmp0_asDynamic_0 = self.toString()
+    tmp1_unsafeCast_0 = tmp0_asDynamic_0.toUpperCase()
+    uppercase = kotlin_Any_(tmp1_unsafeCast_0)
+    return (self) if (len(uppercase) > 1) else (charSequenceGet(uppercase, 0))
+
+def lowercaseChar(self):
+    tmp0_asDynamic_0 = self.toString()
+    tmp1_unsafeCast_0 = tmp0_asDynamic_0.toLowerCase()
+    return charSequenceGet(kotlin_Any_(tmp1_unsafeCast_0), 0)
+
+def uppercase(self):
+    tmp0_asDynamic_0 = self.toString()
+    tmp1_unsafeCast_0 = tmp0_asDynamic_0.toUpperCase()
+    return kotlin_Any_(tmp1_unsafeCast_0)
+
+def lowercase(self):
+    tmp0_asDynamic_0 = self.toString()
+    tmp1_unsafeCast_0 = tmp0_asDynamic_0.toLowerCase()
+    return kotlin_Any_(tmp1_unsafeCast_0)
+
 def isLowSurrogate(self):
     Companion_getInstance_17()
     containsLower = Char_0(56320)
@@ -10072,33 +10084,34 @@ def compareTo(self, other, ignoreCase):
         if min == 0:
             return (n1 - n2).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
         
-        start = 0
-        while True:
-            tmp0_minOf_0 = (start + 16).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-            end = JsMath.min(*(tmp0_minOf_0, min))
-            tmp1_substring_0 = start
-            s1 = kotlin_String(self.substring(tmp1_substring_0, end))
-            tmp2_substring_0 = start
-            s2 = kotlin_String(other.substring(tmp2_substring_0, end))
-            if not (s1 == s2):
-                tmp3_uppercase_0 = s1
-                s1 = kotlin_String(tmp3_uppercase_0.toUpperCase())
-                tmp4_uppercase_0 = s2
-                s2 = kotlin_String(tmp4_uppercase_0.toUpperCase())
-                if not (s1 == s2):
-                    tmp5_lowercase_0 = s1
-                    s1 = kotlin_String(tmp5_lowercase_0.toLowerCase())
-                    tmp6_lowercase_0 = s2
-                    s2 = kotlin_String(tmp6_lowercase_0.toLowerCase())
-                    if not (s1 == s2):
-                        return compareTo_0(s1, s2)
+        inductionVariable = 0
+        if inductionVariable < min:
+            while True:
+                index = inductionVariable
+                inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                thisChar = charSequenceGet(self, index)
+                otherChar = charSequenceGet(other, index)
+                if not (thisChar == otherChar):
+                    thisChar = uppercaseChar(thisChar)
+                    otherChar = uppercaseChar(otherChar)
+                    if not (thisChar == otherChar):
+                        tmp0_lowercaseChar_0 = thisChar
+                        tmp0_asDynamic_0_2 = tmp0_lowercaseChar_0.toString()
+                        tmp1_unsafeCast_0_1 = tmp0_asDynamic_0_2.toLowerCase()
+                        thisChar = charSequenceGet(kotlin_Any_(tmp1_unsafeCast_0_1), 0)
+                        tmp1_lowercaseChar_0 = otherChar
+                        tmp0_asDynamic_0_2 = tmp1_lowercaseChar_0.toString()
+                        tmp1_unsafeCast_0_1 = tmp0_asDynamic_0_2.toLowerCase()
+                        otherChar = charSequenceGet(kotlin_Any_(tmp1_unsafeCast_0_1), 0)
+                        if not (thisChar == otherChar):
+                            return thisChar.compareTo_wi8o78_k_(otherChar)
+                        
                     
                 
+                if inductionVariable < min:
+                    break
+                
             
-            if end == min:
-                break
-            
-            start = end
         
         return (n1 - n2).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
     else:
@@ -10110,12 +10123,6 @@ def compareTo_default(self, other, ignoreCase, _mask0, _handler):
         ignoreCase = False
     
     return compareTo(self, other, ignoreCase)
-
-def uppercase(self):
-    return kotlin_String(self.toUpperCase())
-
-def lowercase(self):
-    return kotlin_String(self.toLowerCase())
 
 def concatToString(self):
     result = ''
@@ -10368,6 +10375,35 @@ class Collection(Iterable):
         pass
     
 
+class Set(Collection):
+    def _get_size__0_k_(self):
+        pass
+    
+    def isEmpty_0_k_(self):
+        pass
+    
+    def contains_2bq_k_(self, element):
+        pass
+    
+    def iterator_0_k_(self):
+        pass
+    
+    def containsAll_dxd4eo_k_(self, elements):
+        pass
+    
+    def equals(self, other):
+        pass
+    
+    def hashCode(self):
+        pass
+    
+    def toString(self):
+        pass
+    
+    def __init__(self):
+        pass
+    
+
 class List(Collection):
     def _get_size__0_k_(self):
         pass
@@ -10415,68 +10451,49 @@ class List(Collection):
         pass
     
 
-class MutableList(List, MutableCollection):
-    def add_2bq_k_(self, element):
+class Entry(Any):
+    def _get_key__0_k_(self):
         pass
     
-    def remove_2bq_k_(self, element):
+    def _get_value__0_k_(self):
         pass
     
-    def addAll_dxd4eo_k_(self, elements):
+    def equals(self, other):
         pass
     
-    def addAll_xggsjz_k_(self, index, elements):
+    def hashCode(self):
         pass
     
-    def removeAll_dxd4eo_k_(self, elements):
+    def toString(self):
         pass
     
-    def retainAll_dxd4eo_k_(self, elements):
+    def __init__(self):
         pass
     
-    def clear_sv8swh_k_(self):
-        pass
-    
-    def set_ddb1qf_k_(self, index, element):
-        pass
-    
-    def add_vz2mgm_k_(self, index, element):
-        pass
-    
-    def removeAt_ha5a7z_k_(self, index):
-        pass
-    
-    def listIterator_0_k_(self):
-        pass
-    
-    def listIterator_ha5a7z_k_(self, index):
-        pass
-    
-    def subList_27zxwg_k_(self, fromIndex, toIndex):
-        pass
-    
+
+class Map_0(Any):
     def _get_size__0_k_(self):
         pass
     
     def isEmpty_0_k_(self):
         pass
     
-    def contains_2bq_k_(self, element):
+    def containsKey_2bw_k_(self, key):
         pass
     
-    def iterator_0_k_(self):
+    def containsValue_2c7_k_(self, value):
         pass
     
-    def containsAll_dxd4eo_k_(self, elements):
+    def get_2bw_k_(self, key):
         pass
     
-    def get_ha5a7z_k_(self, index):
+    def _get_keys__0_k_(self):
         pass
     
-    def indexOf_2bq_k_(self, element):
+    def _get_values__0_k_(self):
         pass
     
-    def lastIndexOf_2bq_k_(self, element):
+    def _get_entries__0_k_(self):
         pass
     
     def equals(self, other):
@@ -10559,93 +10576,6 @@ class MutableIterable(Iterable):
         pass
     
 
-class Set(Collection):
-    def _get_size__0_k_(self):
-        pass
-    
-    def isEmpty_0_k_(self):
-        pass
-    
-    def contains_2bq_k_(self, element):
-        pass
-    
-    def iterator_0_k_(self):
-        pass
-    
-    def containsAll_dxd4eo_k_(self, elements):
-        pass
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-    def __init__(self):
-        pass
-    
-
-class Entry(Any):
-    def _get_key__0_k_(self):
-        pass
-    
-    def _get_value__0_k_(self):
-        pass
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-    def __init__(self):
-        pass
-    
-
-class Map_0(Any):
-    def _get_size__0_k_(self):
-        pass
-    
-    def isEmpty_0_k_(self):
-        pass
-    
-    def containsKey_2bw_k_(self, key):
-        pass
-    
-    def containsValue_2c7_k_(self, value):
-        pass
-    
-    def get_2bw_k_(self, key):
-        pass
-    
-    def _get_keys__0_k_(self):
-        pass
-    
-    def _get_values__0_k_(self):
-        pass
-    
-    def _get_entries__0_k_(self):
-        pass
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-    def __init__(self):
-        pass
-    
-
 class MutableSet(Set, MutableCollection):
     def iterator_0_k_(self):
         pass
@@ -10678,6 +10608,83 @@ class MutableSet(Set, MutableCollection):
         pass
     
     def containsAll_dxd4eo_k_(self, elements):
+        pass
+    
+    def equals(self, other):
+        pass
+    
+    def hashCode(self):
+        pass
+    
+    def toString(self):
+        pass
+    
+    def __init__(self):
+        pass
+    
+
+class MutableList(List, MutableCollection):
+    def add_2bq_k_(self, element):
+        pass
+    
+    def remove_2bq_k_(self, element):
+        pass
+    
+    def addAll_dxd4eo_k_(self, elements):
+        pass
+    
+    def addAll_xggsjz_k_(self, index, elements):
+        pass
+    
+    def removeAll_dxd4eo_k_(self, elements):
+        pass
+    
+    def retainAll_dxd4eo_k_(self, elements):
+        pass
+    
+    def clear_sv8swh_k_(self):
+        pass
+    
+    def set_ddb1qf_k_(self, index, element):
+        pass
+    
+    def add_vz2mgm_k_(self, index, element):
+        pass
+    
+    def removeAt_ha5a7z_k_(self, index):
+        pass
+    
+    def listIterator_0_k_(self):
+        pass
+    
+    def listIterator_ha5a7z_k_(self, index):
+        pass
+    
+    def subList_27zxwg_k_(self, fromIndex, toIndex):
+        pass
+    
+    def _get_size__0_k_(self):
+        pass
+    
+    def isEmpty_0_k_(self):
+        pass
+    
+    def contains_2bq_k_(self, element):
+        pass
+    
+    def iterator_0_k_(self):
+        pass
+    
+    def containsAll_dxd4eo_k_(self, elements):
+        pass
+    
+    def get_ha5a7z_k_(self, index):
+        pass
+    
+    def indexOf_2bq_k_(self, element):
+        pass
+    
+    def lastIndexOf_2bq_k_(self, element):
         pass
     
     def equals(self, other):
@@ -10835,27 +10842,6 @@ def plus(self, other):
     tmp1_elvis_lhs = (None) if (tmp0_safe_receiver == None) else (toString_0(tmp0_safe_receiver))
     return tmp + (('null') if (tmp1_elvis_lhs == None) else (tmp1_elvis_lhs))
 
-def booleanArrayOf(*elements):
-    return elements
-
-def charArrayOf(*elements):
-    return elements
-
-def shortArrayOf(*elements):
-    return elements
-
-def intArrayOf(*elements):
-    return elements
-
-def floatArrayOf(*elements):
-    return elements
-
-def longArrayOf(*elements):
-    return elements
-
-def doubleArrayOf(*elements):
-    return elements
-
 class DefaultConstructorMarker(Any):
     def __init__(self):
         global DefaultConstructorMarker_instance
@@ -10972,19 +10958,19 @@ def longArray(size):
     tmp1_unsafeCast_0 = tmp0_withType_0
     return kotlin_Any_(tmp1_unsafeCast_0)
 
-def booleanArrayOf_0(arr):
+def booleanArrayOf(arr):
     tmp0_withType_0 = arr.slice()
     Unexpected_operator_EQ(tmp0_withType_0._type_, 'BooleanArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
     return kotlin_Any_(tmp1_unsafeCast_0)
 
-def charArrayOf_0(arr):
+def charArrayOf(arr):
     tmp0_withType_0 = arr.slice()
     Unexpected_operator_EQ(tmp0_withType_0._type_, 'CharArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
     return kotlin_Any_(tmp1_unsafeCast_0)
 
-def longArrayOf_0(arr):
+def longArrayOf(arr):
     tmp0_withType_0 = arr.slice()
     Unexpected_operator_EQ(tmp0_withType_0._type_, 'LongArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
@@ -11385,6 +11371,17 @@ def lowIndex_init_():
     bufFloat64.__setitem__(0, -1.0)
     return (1) if (not (bufInt32[0] == 0)) else (0)
 
+def booleanInExternalLog(name, obj):
+    if not (jsTypeOf(obj) == 'boolean'):
+        tmp0_asDynamic_0 = console
+        tmp0_asDynamic_0.error((str('Boolean expected for \'') + str(name)) + str('\', but actual:'), obj)
+    
+
+def booleanInExternalException(name, obj):
+    if not (jsTypeOf(obj) == 'boolean'):
+        raise Error(((str('Boolean expected for \'') + str(name)) + str('\', but actual: ')) + str(obj))
+    
+
 class DoNotIntrinsify(Annotation):
     def __init__(self):
         pass
@@ -11718,6 +11715,212 @@ def THROW_ISE():
 def THROW_IAE(msg):
     raise IllegalArgumentException_init__Create__0(msg)
 
+def jsEqeq(a, b):
+    pass
+
+class JsIntrinsic(Annotation):
+    def __init__(self):
+        pass
+    
+    def equals(self, other):
+        pass
+    
+    def hashCode(self):
+        pass
+    
+    def toString(self):
+        pass
+    
+
+def jsNotEq(a, b):
+    pass
+
+def jsEqeqeq(a, b):
+    pass
+
+def jsNotEqeq(a, b):
+    pass
+
+def jsGt(a, b):
+    pass
+
+def jsGtEq(a, b):
+    pass
+
+def jsLt(a, b):
+    pass
+
+def jsLtEq(a, b):
+    pass
+
+def jsNot(a):
+    pass
+
+def jsUnaryPlus(a):
+    pass
+
+def jsUnaryMinus(a):
+    pass
+
+def jsPrefixInc(a):
+    pass
+
+def jsPostfixInc(a):
+    pass
+
+def jsPrefixDec(a):
+    pass
+
+def jsPostfixDec(a):
+    pass
+
+def jsDelete(e):
+    pass
+
+def jsPlus(a, b):
+    pass
+
+def jsMinus(a, b):
+    pass
+
+def jsMult(a, b):
+    pass
+
+def jsDiv(a, b):
+    pass
+
+def jsMod(a, b):
+    pass
+
+def jsPlusAssign(a, b):
+    pass
+
+def jsMinusAssign(a, b):
+    pass
+
+def jsMultAssign(a, b):
+    pass
+
+def jsDivAssign(a, b):
+    pass
+
+def jsModAssign(a, b):
+    pass
+
+def jsAnd(a, b):
+    pass
+
+def jsOr(a, b):
+    pass
+
+def jsInIntrinsic(lhs, rhs):
+    pass
+
+def jsBitAnd(a, b):
+    pass
+
+def jsBitOr(a, b):
+    pass
+
+def jsBitXor(a, b):
+    pass
+
+def jsBitNot(a):
+    pass
+
+def jsBitShiftR(a, b):
+    pass
+
+def jsBitShiftRU(a, b):
+    pass
+
+def jsBitShiftL(a, b):
+    pass
+
+def jsInstanceOfIntrinsic(a, b):
+    pass
+
+def objectCreate():
+    pass
+
+def jsNewTarget(a):
+    pass
+
+def emptyObject(a):
+    pass
+
+def openInitializerBox(a, b):
+    pass
+
+def DefaultType():
+    pass
+
+def jsClassIntrinsic():
+    pass
+
+def unreachable():
+    pass
+
+def jsArrayLength(a):
+    pass
+
+def jsArrayGet(a, b):
+    pass
+
+def jsArraySet(a, b, c):
+    pass
+
+def arrayLiteral(a):
+    pass
+
+def int8Array(a):
+    pass
+
+def int16Array(a):
+    pass
+
+def int32Array(a):
+    pass
+
+def float32Array(a):
+    pass
+
+def float64Array(a):
+    pass
+
+def int8ArrayOf(a):
+    pass
+
+def int16ArrayOf(a):
+    pass
+
+def int32ArrayOf(a):
+    pass
+
+def float32ArrayOf(a):
+    pass
+
+def float64ArrayOf(a):
+    pass
+
+def slice(a):
+    pass
+
+def jsBind(receiver, target):
+    pass
+
+def sharedBoxCreate(v):
+    pass
+
+def sharedBoxRead(box):
+    pass
+
+def sharedBoxWrite(box, nv):
+    pass
+
+def jsUndefined():
+    pass
+
 def emptyArray():
     return kotlin_Array_T_(js('[]'))
 
@@ -11743,6 +11946,18 @@ def enumValueOfIntrinsic(name):
 
 def enumValuesIntrinsic():
     raise IllegalStateException_init__Create__0('Should be replaced by compiler')
+
+def safePropertyGet(self, getterName, propName):
+    getter = self[getterName]
+    return (getter.call(self)) if (getter != None) else (self[propName])
+
+def safePropertySet(self, setterName, propName, value):
+    setter = self[setterName]
+    if setter != None:
+        setter.call(self, value)
+    else:
+        Unexpected_operator_EQ(self[propName], value)
+    
 
 class Companion_20(Any):
     def __init__(self):
@@ -12541,6 +12756,27 @@ def isSuspendFunction(obj, arity):
         tmp0_unsafeCast_0 = obj._arity
         return kotlin_Any_(tmp0_unsafeCast_0) is arity
     
+    if (jsIn('$metadata$', kotlin_Any(obj.constructor))) if (jsTypeOf(obj) == 'object') else (False):
+        tmp1_unsafeCast_0 = obj.constructor
+        tmp0_safe_receiver = _metadata_
+        tmp1_safe_receiver = (None) if (tmp0_safe_receiver == None) else (suspendArity)
+        if tmp1_safe_receiver == None:
+            tmp = None
+        else:
+            result_2 = False
+            tmp0_iterator_3 = arrayIterator(tmp1_safe_receiver)
+            while tmp0_iterator_3.hasNext_0_k_():
+                item_4 = tmp0_iterator_3.next_0_k_()
+                if arity == item_4:
+                    result_2 = True
+                    break
+                
+            
+            return result_2
+        
+        tmp2_elvis_lhs = tmp
+        return (False) if (tmp2_elvis_lhs == None) else (tmp2_elvis_lhs)
+    
     return False
 
 def isNumber(a):
@@ -12798,6 +13034,15 @@ def CompletedContinuation_getInstance():
     
     return CompletedContinuation_instance
 
+def invokeSuspendSuperType(self, completion):
+    raise NotImplementedError('It is intrinsic method')
+
+def invokeSuspendSuperTypeWithReceiver(self, receiver, completion):
+    raise NotImplementedError('It is intrinsic method')
+
+def invokeSuspendSuperTypeWithReceiverAndParam(self, receiver, param, completion):
+    raise NotImplementedError('It is intrinsic method')
+
 def Exception_init__Init_(_this):
     extendThrowable(_this, None, None)
     Exception.__init__(_this)
@@ -12981,6 +13226,46 @@ class IllegalArgumentException(RuntimeException):
         captureStack(self, _init_)
     
 
+def NoSuchElementException_init__Init_(_this):
+    RuntimeException_init__Init_(_this)
+    NoSuchElementException.__init__(_this)
+    return _this
+
+def NoSuchElementException_init__Create_():
+    tmp = NoSuchElementException_init__Init_(NoSuchElementException.__new__(NoSuchElementException))
+    captureStack(tmp, NoSuchElementException_init__Create_)
+    return tmp
+
+def NoSuchElementException_init__Init__0(message, _this):
+    RuntimeException_init__Init__0(message, _this)
+    NoSuchElementException.__init__(_this)
+    return _this
+
+def NoSuchElementException_init__Create__0(message):
+    tmp = NoSuchElementException_init__Init__0(message, NoSuchElementException.__new__(NoSuchElementException))
+    captureStack(tmp, NoSuchElementException_init__Create_)
+    return tmp
+
+class NoSuchElementException(RuntimeException):
+    def _get_message__0_k_(self):
+        pass
+    
+    def _get_cause__0_k_(self):
+        pass
+    
+    def toString(self):
+        pass
+    
+    def equals(self, other):
+        pass
+    
+    def hashCode(self):
+        pass
+    
+    def __init__(self):
+        captureStack(self, _init_)
+    
+
 def RuntimeException_init__Init_(_this):
     Exception_init__Init_(_this)
     RuntimeException.__init__(_this)
@@ -13022,46 +13307,6 @@ def RuntimeException_init__Create__2(cause):
     return tmp
 
 class RuntimeException(Exception):
-    def _get_message__0_k_(self):
-        pass
-    
-    def _get_cause__0_k_(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def __init__(self):
-        captureStack(self, _init_)
-    
-
-def NoSuchElementException_init__Init_(_this):
-    RuntimeException_init__Init_(_this)
-    NoSuchElementException.__init__(_this)
-    return _this
-
-def NoSuchElementException_init__Create_():
-    tmp = NoSuchElementException_init__Init_(NoSuchElementException.__new__(NoSuchElementException))
-    captureStack(tmp, NoSuchElementException_init__Create_)
-    return tmp
-
-def NoSuchElementException_init__Init__0(message, _this):
-    RuntimeException_init__Init__0(message, _this)
-    NoSuchElementException.__init__(_this)
-    return _this
-
-def NoSuchElementException_init__Create__0(message):
-    tmp = NoSuchElementException_init__Init__0(message, NoSuchElementException.__new__(NoSuchElementException))
-    captureStack(tmp, NoSuchElementException_init__Create_)
-    return tmp
-
-class NoSuchElementException(RuntimeException):
     def _get_message__0_k_(self):
         pass
     

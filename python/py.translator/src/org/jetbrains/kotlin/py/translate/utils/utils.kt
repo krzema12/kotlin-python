@@ -11,13 +11,14 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement
 import com.intellij.util.SmartList
 import org.jetbrains.kotlin.backend.common.COROUTINE_SUSPENDED_NAME
 import org.jetbrains.kotlin.builtins.KotlinBuiltIns
+import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.config.LanguageFeature
-import org.jetbrains.kotlin.config.coroutinesIntrinsicsPackageFqName
 import org.jetbrains.kotlin.config.languageVersionSettings
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.incremental.components.NoLookupLocation
 import org.jetbrains.kotlin.js.backend.ast.*
 import org.jetbrains.kotlin.js.backend.ast.metadata.*
+import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.py.translate.callTranslator.CallTranslator
 import org.jetbrains.kotlin.py.translate.context.Namer
 import org.jetbrains.kotlin.py.translate.context.TranslationContext
@@ -26,7 +27,6 @@ import org.jetbrains.kotlin.py.translate.intrinsic.functions.basic.FunctionIntri
 import org.jetbrains.kotlin.py.translate.intrinsic.functions.factories.createKType
 import org.jetbrains.kotlin.py.translate.reference.ReferenceTranslator
 import org.jetbrains.kotlin.py.translate.utils.TranslationUtils.simpleReturnFunction
-import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.DescriptorUtils
 import org.jetbrains.kotlin.resolve.calls.components.isActualParameterWithCorrespondingExpectedDefault
@@ -185,7 +185,7 @@ fun JsFunction.fillCoroutineMetadata(
     descriptor: FunctionDescriptor,
     hasController: Boolean
 ) {
-    val suspendPropertyDescriptor = context.currentModule.getPackage(context.languageVersionSettings.coroutinesIntrinsicsPackageFqName())
+    val suspendPropertyDescriptor = context.currentModule.getPackage(StandardNames.COROUTINES_INTRINSICS_PACKAGE_FQ_NAME)
         .memberScope
         .getContributedVariables(COROUTINE_SUSPENDED_NAME, NoLookupLocation.FROM_BACKEND).first()
 

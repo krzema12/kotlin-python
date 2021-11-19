@@ -263,6 +263,16 @@ include ":benchmarks",
         ":kotlin-serialization-unshaded",
         ":wasm:wasm.ir"
 
+include ":compiler:backend.py",
+        ":compiler:cli-py",
+        ":python:ast",
+        ":python:ast:generator",
+        ":python:box.tests",
+        ":python:py.translator"
+
+project(':compiler:cli-py').projectDir = "$rootDir/compiler/cli/cli-py" as File
+project(':compiler:backend.py').projectDir = "$rootDir/compiler/ir/backend.py" as File
+
 
 include ":compiler:fir",
         ":compiler:fir:cones",

@@ -15,13 +15,11 @@ import org.jetbrains.kotlin.descriptors.SourceElement;
 import org.jetbrains.kotlin.js.backend.ast.*;
 import org.jetbrains.kotlin.js.backend.ast.metadata.MetadataProperties;
 import org.jetbrains.kotlin.js.backend.ast.metadata.SideEffectKind;
-import org.jetbrains.kotlin.py.translate.context.Namer;
-import org.jetbrains.kotlin.py.translate.context.TranslationContext;
-import org.jetbrains.kotlin.py.translate.reference.ReferenceTranslator;
 import org.jetbrains.kotlin.name.ClassId;
 import org.jetbrains.kotlin.py.translate.context.Namer;
 import org.jetbrains.kotlin.py.translate.context.TranslationContext;
-import org.jetbrains.kotlin.resolve.source.KotlinSourceElementKt;
+import org.jetbrains.kotlin.py.translate.reference.ReferenceTranslator;
+import org.jetbrains.kotlin.resolve.source.PsiSourceElementKt;
 import org.jetbrains.kotlin.util.OperatorNameConventions;
 
 import java.util.Collections;
@@ -477,7 +475,7 @@ public final class JsAstUtils {
     public static JsStatement defineSimpleProperty(@NotNull JsName name, @NotNull JsExpression value, @Nullable SourceElement source) {
         JsExpression assignment = assignment(new JsNameRef(name, new JsThisRef()), value);
         if (source != null) {
-            assignment.setSource(KotlinSourceElementKt.getPsi(source));
+            assignment.setSource(PsiSourceElementKt.getPsi(source));
         }
         return assignment.makeStmt();
     }

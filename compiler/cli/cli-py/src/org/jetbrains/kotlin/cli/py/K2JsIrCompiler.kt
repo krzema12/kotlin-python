@@ -8,17 +8,14 @@ package org.jetbrains.kotlin.cli.py
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.util.text.StringUtil
-import org.jetbrains.kotlin.backend.common.phaser.PhaseConfig
 import org.jetbrains.kotlin.backend.common.serialization.metadata.KlibMetadataVersion
-import org.jetbrains.kotlin.backend.wasm.compileWasm
-import org.jetbrains.kotlin.backend.wasm.wasmPhases
 import org.jetbrains.kotlin.cli.common.*
 import org.jetbrains.kotlin.cli.common.ExitCode.COMPILATION_ERROR
 import org.jetbrains.kotlin.cli.common.ExitCode.OK
 import org.jetbrains.kotlin.cli.common.arguments.K2JSCompilerArguments
 import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants
-import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants.DCE_RUNTIME_DIAGNOSTIC_EXCEPTION
-import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants.DCE_RUNTIME_DIAGNOSTIC_LOG
+import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants.RUNTIME_DIAGNOSTIC_EXCEPTION
+import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants.RUNTIME_DIAGNOSTIC_LOG
 import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoot
 import org.jetbrains.kotlin.cli.common.extensions.ScriptEvaluationExtension
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
@@ -39,23 +36,24 @@ import org.jetbrains.kotlin.incremental.js.IncrementalDataProvider
 import org.jetbrains.kotlin.incremental.js.IncrementalNextRoundChecker
 import org.jetbrains.kotlin.incremental.js.IncrementalResultsConsumer
 import org.jetbrains.kotlin.ir.backend.js.MainModule
+import org.jetbrains.kotlin.ir.backend.js.ModulesStructure
 import org.jetbrains.kotlin.ir.backend.js.generateKLib
-import org.jetbrains.kotlin.ir.backend.js.jsResolveLibraries
+import org.jetbrains.kotlin.ir.backend.js.ic.checkCaches
+import org.jetbrains.kotlin.ir.backend.js.prepareAnalyzedSourceModule
 import org.jetbrains.kotlin.ir.backend.py.compile
 import org.jetbrains.kotlin.ir.backend.py.jsPhases
 import org.jetbrains.kotlin.ir.declarations.impl.IrFactoryImpl
 import org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFactory
+import org.jetbrains.kotlin.js.analyzer.JsAnalysisResult
 import org.jetbrains.kotlin.js.config.*
 import org.jetbrains.kotlin.library.KLIB_FILE_EXTENSION
 import org.jetbrains.kotlin.metadata.deserialization.BinaryVersion
-import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.CompilerEnvironment
 import org.jetbrains.kotlin.serialization.js.ModuleKind
 import org.jetbrains.kotlin.util.Logger
 import org.jetbrains.kotlin.utils.KotlinPaths
 import org.jetbrains.kotlin.utils.PathUtil
-import org.jetbrains.kotlin.utils.fileUtils.withReplacedExtensionOrNull
 import org.jetbrains.kotlin.utils.join
 import java.io.File
 import java.io.IOException
@@ -68,8 +66,8 @@ enum class ProduceKind {
 
 class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
 
-    override val performanceManager: CommonCompilerPerformanceManager =
-        object : CommonCompilerPerformanceManager("Kotlin to JS (IR) Compiler") {}
+    override val defaultPerformanceManager: CommonCompilerPerformanceManager =
+        object : CommonCompilerPerformanceManager("Kotlin to Python (IR) Compiler") {}
 
     override fun createArguments(): K2JSCompilerArguments {
         return K2JSCompilerArguments()
@@ -97,7 +95,7 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
             configuration.put(CommonConfigurationKeys.MODULE_NAME, "repl.kts")
 
             val environment = KotlinCoreEnvironment.getOrCreateApplicationEnvironmentForProduction(rootDisposable, configuration)
-            val projectEnv = KotlinCoreEnvironment.ProjectEnvironment(rootDisposable, environment)
+            val projectEnv = KotlinCoreEnvironment.ProjectEnvironment(rootDisposable, environment, configuration)
             projectEnv.registerExtensionsFromPlugins(configuration)
 
             val scriptingEvaluators = ScriptEvaluationExtension.getInstances(projectEnv.project)
@@ -142,7 +140,7 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
 
         configurationJs.put(CLIConfigurationKeys.ALLOW_KOTLIN_PACKAGE, arguments.allowKotlinPackage)
 
-        if (!checkKotlinPackageUsage(environmentForJS, sourcesFiles)) return ExitCode.COMPILATION_ERROR
+        if (!checkKotlinPackageUsage(environmentForJS.configuration, sourcesFiles)) return ExitCode.COMPILATION_ERROR
 
         val outputFilePath = arguments.outputFile
         if (outputFilePath == null) {
@@ -184,15 +182,30 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
         // TODO: Handle non-empty main call arguments
         val mainCallArguments = if (K2JsArgumentConstants.NO_CALL == arguments.main) null else emptyList<String>()
 
-        val resolvedLibraries = jsResolveLibraries(
-            libraries,
-            configuration[JSConfigurationKeys.REPOSITORIES] ?: emptyList(),
-            messageCollectorLogger(configuration[CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY] ?: error("Could not find message collector"))
-        )
+        val icCaches = configureLibraries(arguments.cacheDirectories)
 
-        val friendAbsolutePaths = friendLibraries.map { File(it).absolutePath }
-        val friendDependencies = resolvedLibraries.getFullList().filter {
-            it.libraryFile.absolutePath in friendAbsolutePaths
+        // Run analysis if main module is sources
+        lateinit var sourceModule: ModulesStructure
+        if (arguments.includes == null) {
+            do {
+                sourceModule = prepareAnalyzedSourceModule(
+                    projectJs,
+                    environmentForJS.getSourceFiles(),
+                    configurationJs,
+                    libraries,
+                    friendLibraries,
+                    AnalyzerWithCompilerReport(config.configuration),
+                    icUseGlobalSignatures = icCaches.isNotEmpty(),
+                    icUseStdlibCache = icCaches.isNotEmpty(),
+                    icCache = if (icCaches.isNotEmpty()) checkCaches(libraries, icCaches, skipLib = arguments.includes).data else emptyMap()
+                )
+                val result = sourceModule.jsFrontEndResult.jsAnalysisResult
+                if (result is JsAnalysisResult.RetryWithAdditionalRoots) {
+                    environmentForJS.addKotlinSourceRoots(result.additionalKotlinRoots)
+                }
+            } while (result is JsAnalysisResult.RetryWithAdditionalRoots)
+            if (!sourceModule.jsFrontEndResult.jsAnalysisResult.shouldGenerateCode)
+                return OK
         }
 
         if (arguments.irProduceKlibDir || arguments.irProduceKlibFile) {
@@ -201,15 +214,11 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
             }
 
             generateKLib(
-                project = config.project,
-                files = sourcesFiles,
-                analyzer = AnalyzerWithCompilerReport(config.configuration),
-                configuration = config.configuration,
-                allDependencies = resolvedLibraries,
-                friendDependencies = friendDependencies,
+                sourceModule,
                 irFactory = PersistentIrFactory(), // TODO IrFactoryImpl?
                 outputKlibPath = outputFile.path,
-                nopack = arguments.irProduceKlibDir
+                nopack = arguments.irProduceKlibDir,
+                jsOutputName = arguments.irPerModuleOutputName,
             )
         }
 
@@ -218,58 +227,36 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
 
             val includes = arguments.includes
 
-            val mainModule = if (includes != null) {
+            val module = if (includes != null) {
                 if (sourcesFiles.isNotEmpty()) {
                     messageCollector.report(ERROR, "Source files are not supported when -Xinclude is present")
                 }
-                val allLibraries = resolvedLibraries.getFullList()
-                val mainLib = allLibraries.find { it.libraryFile.absolutePath == File(includes).absolutePath }!!
-                MainModule.Klib(mainLib)
-            } else {
-                MainModule.SourceFiles(sourcesFiles)
-            }
-
-            if (arguments.wasm) {
-                val res = compileWasm(
+                val includesPath = File(includes).canonicalPath
+                val mainLibPath = libraries.find { File(it).canonicalPath == includesPath }
+                    ?: error("No library with name $includes ($includesPath) found")
+                val kLib = MainModule.Klib(mainLibPath)
+                ModulesStructure(
                     projectJs,
-                    mainModule,
-                    AnalyzerWithCompilerReport(config.configuration),
-                    config.configuration,
-                    PhaseConfig(wasmPhases),
-                    IrFactoryImpl,
-                    allDependencies = resolvedLibraries,
-                    friendDependencies = friendDependencies,
-                    exportedDeclarations = setOf(FqName("main"))
+                    kLib,
+                    configurationJs,
+                    libraries,
+                    friendLibraries,
+                    icUseGlobalSignatures = icCaches.isNotEmpty(),
+                    icUseStdlibCache = icCaches.isNotEmpty(),
+                    icCache = if (icCaches.isNotEmpty()) checkCaches(libraries, icCaches, skipLib = includes).data else emptyMap()
                 )
-                val outputWasmFile = outputFile.withReplacedExtensionOrNull(outputFile.extension, "wasm")!!
-                outputWasmFile.writeBytes(res.wasm)
-                val outputWatFile = outputFile.withReplacedExtensionOrNull(outputFile.extension, "wat")!!
-                outputWatFile.writeText(res.wat)
-
-                val runner = """
-                    const wasmBinary = read(String.raw`${outputWasmFile.absoluteFile}`, 'binary');
-                    const wasmModule = new WebAssembly.Module(wasmBinary);
-                    const wasmInstance = new WebAssembly.Instance(wasmModule, { runtime, js_code });
-                    wasmInstance.exports.main();
-                """.trimIndent()
-
-                outputFile.writeText(res.js + "\n" + runner)
-                return OK
+            } else {
+                sourceModule
             }
 
             val compiledModule = compile(
-                projectJs,
-                mainModule,
-                AnalyzerWithCompilerReport(config.configuration),
-                config.configuration,
+                module,
                 phaseConfig,
                 if (arguments.irDceDriven) PersistentIrFactory() else IrFactoryImpl,
-                allDependencies = resolvedLibraries,
-                friendDependencies = friendDependencies,
                 mainArguments = mainCallArguments,
                 generateFullJs = !arguments.irDce,
                 generateDceJs = arguments.irDce,
-                dceRuntimeDiagnostic = DceRuntimeDiagnostic.resolve(
+                dceRuntimeDiagnostic = RuntimeDiagnostic.resolve(
                     arguments.irDceRuntimeDiagnostic,
                     messageCollector
                 ),
@@ -282,9 +269,6 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
 
             val jsCode = if (arguments.irDce && !arguments.irDceDriven) compiledModule.dcePyCode!! else compiledModule.pyCode!!
             outputFile.writeText(jsCode.mainModule)
-            jsCode.dependencies.forEach { (name, content) ->
-                outputFile.resolveSibling("$name.js").writeText(content)
-            }
         }
 
         return OK
@@ -433,12 +417,12 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
     }
 }
 
-fun DceRuntimeDiagnostic.Companion.resolve(
+fun RuntimeDiagnostic.Companion.resolve(
     value: String?,
     messageCollector: MessageCollector
-): DceRuntimeDiagnostic? = when (value?.lowercase()) {
-    DCE_RUNTIME_DIAGNOSTIC_LOG -> DceRuntimeDiagnostic.LOG
-    DCE_RUNTIME_DIAGNOSTIC_EXCEPTION -> DceRuntimeDiagnostic.EXCEPTION
+): RuntimeDiagnostic? = when (value?.lowercase()) {
+    RUNTIME_DIAGNOSTIC_LOG -> RuntimeDiagnostic.LOG
+    RUNTIME_DIAGNOSTIC_EXCEPTION -> RuntimeDiagnostic.EXCEPTION
     null -> null
     else -> {
         messageCollector.report(STRONG_WARNING, "Unknown DCE runtime diagnostic '$value'")

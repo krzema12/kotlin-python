@@ -13,8 +13,8 @@ import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.config.Services
 import org.jetbrains.kotlin.js.dce.*
-import org.jetbrains.kotlin.js.inline.util.RelativePathCalculator
 import org.jetbrains.kotlin.js.parser.sourcemaps.*
+import org.jetbrains.kotlin.py.inline.util.RelativePathCalculator
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter

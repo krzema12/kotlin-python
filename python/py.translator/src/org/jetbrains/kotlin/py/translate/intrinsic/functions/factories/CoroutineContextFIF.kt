@@ -11,18 +11,18 @@ import org.jetbrains.kotlin.js.backend.ast.JsExpression
 import org.jetbrains.kotlin.js.backend.ast.JsNameRef
 import org.jetbrains.kotlin.js.backend.ast.metadata.isInline
 import org.jetbrains.kotlin.js.descriptorUtils.isCoroutineLambda
+import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.py.translate.callTranslator.CallInfo
 import org.jetbrains.kotlin.py.translate.context.TranslationContext
 import org.jetbrains.kotlin.py.translate.intrinsic.functions.basic.FunctionIntrinsic
 import org.jetbrains.kotlin.py.translate.utils.JsAstUtils
 import org.jetbrains.kotlin.py.translate.utils.TranslationUtils
-import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.resolve.DescriptorUtils
 import org.jetbrains.kotlin.resolve.calls.checkers.isBuiltInCoroutineContext
 
 object CoroutineContextFIF : FunctionIntrinsicFactory {
     override fun getIntrinsic(descriptor: FunctionDescriptor, context: TranslationContext): FunctionIntrinsic? {
-        if (!descriptor.isBuiltInCoroutineContext(context.languageVersionSettings)) return null
+        if (!descriptor.isBuiltInCoroutineContext()) return null
         return Intrinsic
     }
 

@@ -48,16 +48,16 @@ this['out-ir'] = function (_) {
   DeprecationLevel.prototype.constructor = DeprecationLevel;
   IntProgressionIterator.prototype = Object.create(IntIterator.prototype);
   IntProgressionIterator.prototype.constructor = IntProgressionIterator;
-  LongProgressionIterator.prototype = Object.create(LongIterator.prototype);
-  LongProgressionIterator.prototype.constructor = LongProgressionIterator;
   CharProgressionIterator.prototype = Object.create(CharIterator.prototype);
   CharProgressionIterator.prototype.constructor = CharProgressionIterator;
+  LongProgressionIterator.prototype = Object.create(LongIterator.prototype);
+  LongProgressionIterator.prototype.constructor = LongProgressionIterator;
   IntRange.prototype = Object.create(IntProgression.prototype);
   IntRange.prototype.constructor = IntRange;
-  LongRange.prototype = Object.create(LongProgression.prototype);
-  LongRange.prototype.constructor = LongRange;
   CharRange.prototype = Object.create(CharProgression.prototype);
   CharRange.prototype.constructor = CharRange;
+  LongRange.prototype = Object.create(LongProgression.prototype);
+  LongRange.prototype.constructor = LongRange;
   AnnotationTarget.prototype = Object.create(Enum.prototype);
   AnnotationTarget.prototype.constructor = AnnotationTarget;
   AnnotationRetention.prototype = Object.create(Enum.prototype);
@@ -132,10 +132,98 @@ this['out-ir'] = function (_) {
     }
     return accumulator;
   }
+  function contains(_this_, element) {
+    return indexOf(_this_, element) >= 0;
+  }
+  function indexOf(_this_, element) {
+    var inductionVariable = 0;
+    var last = _this_.length - 1 | 0;
+    if (inductionVariable <= last)
+      do {
+        var index = inductionVariable;
+        inductionVariable = inductionVariable + 1 | 0;
+        if (element === _this_[index]) {
+          return index;
+        }}
+       while (inductionVariable <= last);
+    return -1;
+  }
   function _get_indices_(_this_) {
     return new IntRange(0, _get_lastIndex_(_this_));
   }
-  function indexOf(_this_, element) {
+  function _get_lastIndex_(_this_) {
+    return _this_.length - 1 | 0;
+  }
+  function contains_0(_this_, element) {
+    return indexOf_0(_this_, element) >= 0;
+  }
+  function indexOf_0(_this_, element) {
+    var inductionVariable = 0;
+    var last = _this_.length - 1 | 0;
+    if (inductionVariable <= last)
+      do {
+        var index = inductionVariable;
+        inductionVariable = inductionVariable + 1 | 0;
+        if (element === _this_[index]) {
+          return index;
+        }}
+       while (inductionVariable <= last);
+    return -1;
+  }
+  function _get_indices__0(_this_) {
+    return new IntRange(0, _get_lastIndex__0(_this_));
+  }
+  function _get_lastIndex__0(_this_) {
+    return _this_.length - 1 | 0;
+  }
+  function contains_1(_this_, element) {
+    return indexOf_1(_this_, element) >= 0;
+  }
+  function indexOf_1(_this_, element) {
+    var inductionVariable = 0;
+    var last = _this_.length - 1 | 0;
+    if (inductionVariable <= last)
+      do {
+        var index = inductionVariable;
+        inductionVariable = inductionVariable + 1 | 0;
+        if (element === _this_[index]) {
+          return index;
+        }}
+       while (inductionVariable <= last);
+    return -1;
+  }
+  function _get_indices__1(_this_) {
+    return new IntRange(0, _get_lastIndex__1(_this_));
+  }
+  function _get_lastIndex__1(_this_) {
+    return _this_.length - 1 | 0;
+  }
+  function contains_2(_this_, element) {
+    return indexOf_2(_this_, element) >= 0;
+  }
+  function indexOf_2(_this_, element) {
+    var inductionVariable = 0;
+    var last = _this_.length - 1 | 0;
+    if (inductionVariable <= last)
+      do {
+        var index = inductionVariable;
+        inductionVariable = inductionVariable + 1 | 0;
+        if (element.equals(_this_[index])) {
+          return index;
+        }}
+       while (inductionVariable <= last);
+    return -1;
+  }
+  function _get_indices__2(_this_) {
+    return new IntRange(0, _get_lastIndex__2(_this_));
+  }
+  function _get_lastIndex__2(_this_) {
+    return _this_.length - 1 | 0;
+  }
+  function _get_indices__3(_this_) {
+    return new IntRange(0, _get_lastIndex__3(_this_));
+  }
+  function indexOf_3(_this_, element) {
     if (element == null) {
       var inductionVariable = 0;
       var last = _this_.length - 1 | 0;
@@ -185,7 +273,7 @@ this['out-ir'] = function (_) {
     }
     return -1;
   }
-  function _get_lastIndex_(_this_) {
+  function _get_lastIndex__3(_this_) {
     return _this_.length - 1 | 0;
   }
   function joinToString(_this_, separator, prefix, postfix, limit, truncated, transform) {
@@ -249,93 +337,26 @@ this['out-ir'] = function (_) {
       transform = null;
     return joinTo(_this_, buffer, separator, prefix, postfix, limit, truncated, transform);
   }
-  function contains(_this_, element) {
-    return indexOf_0(_this_, element) >= 0;
-  }
-  function indexOf_0(_this_, element) {
-    var inductionVariable = 0;
-    var last = _this_.length - 1 | 0;
-    if (inductionVariable <= last)
-      do {
-        var index = inductionVariable;
-        inductionVariable = inductionVariable + 1 | 0;
-        if (element === _this_[index]) {
-          return index;
-        }}
-       while (inductionVariable <= last);
-    return -1;
-  }
-  function _get_indices__0(_this_) {
-    return new IntRange(0, _get_lastIndex__0(_this_));
-  }
-  function _get_lastIndex__0(_this_) {
-    return _this_.length - 1 | 0;
-  }
-  function contains_0(_this_, element) {
-    return indexOf_1(_this_, element) >= 0;
-  }
-  function indexOf_1(_this_, element) {
-    var inductionVariable = 0;
-    var last = _this_.length - 1 | 0;
-    if (inductionVariable <= last)
-      do {
-        var index = inductionVariable;
-        inductionVariable = inductionVariable + 1 | 0;
-        if (element === _this_[index]) {
-          return index;
-        }}
-       while (inductionVariable <= last);
-    return -1;
-  }
-  function _get_indices__1(_this_) {
-    return new IntRange(0, _get_lastIndex__1(_this_));
-  }
-  function _get_lastIndex__1(_this_) {
-    return _this_.length - 1 | 0;
-  }
-  function contains_1(_this_, element) {
-    return indexOf_2(_this_, element) >= 0;
-  }
-  function indexOf_2(_this_, element) {
-    var inductionVariable = 0;
-    var last = _this_.length - 1 | 0;
-    if (inductionVariable <= last)
-      do {
-        var index = inductionVariable;
-        inductionVariable = inductionVariable + 1 | 0;
-        if (element === _this_[index]) {
-          return index;
-        }}
-       while (inductionVariable <= last);
-    return -1;
-  }
-  function _get_indices__2(_this_) {
-    return new IntRange(0, _get_lastIndex__2(_this_));
-  }
-  function _get_lastIndex__2(_this_) {
-    return _this_.length - 1 | 0;
-  }
-  function contains_2(_this_, element) {
-    return indexOf_3(_this_, element) >= 0;
-  }
-  function indexOf_3(_this_, element) {
-    var inductionVariable = 0;
-    var last = _this_.length - 1 | 0;
-    if (inductionVariable <= last)
-      do {
-        var index = inductionVariable;
-        inductionVariable = inductionVariable + 1 | 0;
-        if (element.equals(_this_[index])) {
-          return index;
-        }}
-       while (inductionVariable <= last);
-    return -1;
-  }
-  function _get_indices__3(_this_) {
-    return new IntRange(0, _get_lastIndex__3(_this_));
-  }
-  function _get_lastIndex__3(_this_) {
-    return _this_.length - 1 | 0;
+  function all(_this_, predicate) {
+    var tmp;
+    if (isInterface(_this_, Collection)) {
+      tmp = _this_.isEmpty_0_k$();
+    } else {
+      {
+        tmp = false;
+      }
+    }
+    if (tmp)
+      return true;
+    else {
+    }
+    var tmp0_iterator = _this_.iterator_0_k$();
+    while (tmp0_iterator.hasNext_0_k$()) {
+      var element = tmp0_iterator.next_0_k$();
+      if (!predicate(element))
+        return false;
+    }
+    return true;
   }
   function indexOfFirst(_this_, predicate) {
     var index = 0;
@@ -378,27 +399,6 @@ this['out-ir'] = function (_) {
         return true;
     }
     return false;
-  }
-  function all(_this_, predicate) {
-    var tmp;
-    if (isInterface(_this_, Collection)) {
-      tmp = _this_.isEmpty_0_k$();
-    } else {
-      {
-        tmp = false;
-      }
-    }
-    if (tmp)
-      return true;
-    else {
-    }
-    var tmp0_iterator = _this_.iterator_0_k$();
-    while (tmp0_iterator.hasNext_0_k$()) {
-      var element = tmp0_iterator.next_0_k$();
-      if (!predicate(element))
-        return false;
-    }
-    return true;
   }
   function joinToString_0(_this_, separator, prefix, postfix, limit, truncated, transform) {
     return joinTo_0(_this_, StringBuilder_init_$Create$_1(), separator, prefix, postfix, limit, truncated, transform).toString();
@@ -466,14 +466,19 @@ this['out-ir'] = function (_) {
     }
   }
   function map(_this_, transform) {
-    var tmp0_mapTo_0 = ArrayList_init_$Create$_0(collectionSizeOrDefault(_this_, 10));
-    var tmp0_iterator_1 = _this_.iterator_0_k$();
-    while (tmp0_iterator_1.hasNext_0_k$()) {
-      var item_2 = tmp0_iterator_1.next_0_k$();
-      tmp0_mapTo_0.add_2bq_k$(transform(item_2));
-      Unit_getInstance();
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_mapTo_0 = ArrayList_init_$Create$_0(collectionSizeOrDefault(_this_, 10));
+      var tmp0_iterator_1 = _this_.iterator_0_k$();
+      while (tmp0_iterator_1.hasNext_0_k$()) {
+        var item_2 = tmp0_iterator_1.next_0_k$();
+        tmp0_mapTo_0.add_2bq_k$(transform(item_2));
+        Unit_getInstance();
+      }
+      tmp$ret$0 = tmp0_mapTo_0;
+      break $l$block;
     }
-    return tmp0_mapTo_0;
+    return tmp$ret$0;
   }
   function mapTo(_this_, destination, transform) {
     var tmp0_iterator = _this_.iterator_0_k$();
@@ -484,19 +489,115 @@ this['out-ir'] = function (_) {
     }
     return destination;
   }
-  function downTo(_this_, to) {
-    return Companion_getInstance_11().fromClosedRange_fcwjfj_k$(_this_, to, -1);
-  }
   function until(_this_, to) {
     if (to <= IntCompanionObject_getInstance()._MIN_VALUE_5)
       return Companion_getInstance_14()._EMPTY_1;
     return numberRangeToNumber(_this_, to - 1 | 0);
+  }
+  function downTo(_this_, to) {
+    return Companion_getInstance_11().fromClosedRange_fcwjfj_k$(_this_, to, -1);
   }
   function reversed(_this_) {
     return Companion_getInstance_11().fromClosedRange_fcwjfj_k$(_this_._last_1, _this_._first_1, -_this_._step_6 | 0);
   }
   function getOrElse(_this_, index, defaultValue) {
     return (index >= 0 ? index <= _get_lastIndex__5(_this_) : false) ? charSequenceGet(_this_, index) : defaultValue(index);
+  }
+  function contentEquals(_this_, other) {
+    var tmp1_safe_receiver = _this_;
+    var tmp;
+    var tmp_0 = tmp1_safe_receiver;
+    if ((tmp_0 == null ? null : new UByteArray(tmp_0)) == null) {
+      tmp = null;
+    } else {
+      {
+        tmp = _UByteArray___get_storage__impl_(tmp1_safe_receiver);
+      }
+    }
+    var tmp_1 = tmp;
+    var tmp0_safe_receiver = other;
+    var tmp_2;
+    var tmp_3 = tmp0_safe_receiver;
+    if ((tmp_3 == null ? null : new UByteArray(tmp_3)) == null) {
+      tmp_2 = null;
+    } else {
+      {
+        tmp_2 = _UByteArray___get_storage__impl_(tmp0_safe_receiver);
+      }
+    }
+    return contentEquals_3(tmp_1, tmp_2);
+  }
+  function contentEquals_0(_this_, other) {
+    var tmp1_safe_receiver = _this_;
+    var tmp;
+    var tmp_0 = tmp1_safe_receiver;
+    if ((tmp_0 == null ? null : new UIntArray(tmp_0)) == null) {
+      tmp = null;
+    } else {
+      {
+        tmp = _UIntArray___get_storage__impl_(tmp1_safe_receiver);
+      }
+    }
+    var tmp_1 = tmp;
+    var tmp0_safe_receiver = other;
+    var tmp_2;
+    var tmp_3 = tmp0_safe_receiver;
+    if ((tmp_3 == null ? null : new UIntArray(tmp_3)) == null) {
+      tmp_2 = null;
+    } else {
+      {
+        tmp_2 = _UIntArray___get_storage__impl_(tmp0_safe_receiver);
+      }
+    }
+    return contentEquals_4(tmp_1, tmp_2);
+  }
+  function contentEquals_1(_this_, other) {
+    var tmp1_safe_receiver = _this_;
+    var tmp;
+    var tmp_0 = tmp1_safe_receiver;
+    if ((tmp_0 == null ? null : new ULongArray(tmp_0)) == null) {
+      tmp = null;
+    } else {
+      {
+        tmp = _ULongArray___get_storage__impl_(tmp1_safe_receiver);
+      }
+    }
+    var tmp_1 = tmp;
+    var tmp0_safe_receiver = other;
+    var tmp_2;
+    var tmp_3 = tmp0_safe_receiver;
+    if ((tmp_3 == null ? null : new ULongArray(tmp_3)) == null) {
+      tmp_2 = null;
+    } else {
+      {
+        tmp_2 = _ULongArray___get_storage__impl_(tmp0_safe_receiver);
+      }
+    }
+    return contentEquals_5(tmp_1, tmp_2);
+  }
+  function contentEquals_2(_this_, other) {
+    var tmp1_safe_receiver = _this_;
+    var tmp;
+    var tmp_0 = tmp1_safe_receiver;
+    if ((tmp_0 == null ? null : new UShortArray(tmp_0)) == null) {
+      tmp = null;
+    } else {
+      {
+        tmp = _UShortArray___get_storage__impl_(tmp1_safe_receiver);
+      }
+    }
+    var tmp_1 = tmp;
+    var tmp0_safe_receiver = other;
+    var tmp_2;
+    var tmp_3 = tmp0_safe_receiver;
+    if ((tmp_3 == null ? null : new UShortArray(tmp_3)) == null) {
+      tmp_2 = null;
+    } else {
+      {
+        tmp_2 = _UShortArray___get_storage__impl_(tmp0_safe_receiver);
+      }
+    }
+    return contentEquals_6(tmp_1, tmp_2);
   }
   function KotlinNothingValueException_init_$Init$($this) {
     RuntimeException_init_$Init$($this);
@@ -551,15 +652,25 @@ this['out-ir'] = function (_) {
   }
   function Char(code) {
     var tmp;
-    Companion_getInstance_17();
-    var tmp0__get_code__0 = new Char_0(0);
-    if (code < tmp0__get_code__0.toInt_0_k$()) {
+    var tmp$ret$0;
+    $l$block: {
+      Companion_getInstance_17();
+      var tmp0__get_code__0 = new Char_0(0);
+      tmp$ret$0 = tmp0__get_code__0.toInt_0_k$();
+      break $l$block;
+    }
+    if (code < tmp$ret$0) {
       tmp = true;
     } else {
       {
-        Companion_getInstance_17();
-        var tmp1__get_code__0 = new Char_0(65535);
-        tmp = code > tmp1__get_code__0.toInt_0_k$();
+        var tmp$ret$1;
+        $l$block_0: {
+          Companion_getInstance_17();
+          var tmp1__get_code__0 = new Char_0(65535);
+          tmp$ret$1 = tmp1__get_code__0.toInt_0_k$();
+          break $l$block_0;
+        }
+        tmp = code > tmp$ret$1;
       }
     }
     if (tmp) {
@@ -623,6 +734,22 @@ this['out-ir'] = function (_) {
   Experimental.prototype._get_level__0_k$ = function () {
     return this._level;
   };
+  Experimental.prototype.equals = function (other) {
+    if (!(other instanceof Experimental))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof Experimental ? other : THROW_CCE();
+    if (!this._level.equals(tmp0_other_with_cast._level))
+      return false;
+    return true;
+  };
+  Experimental.prototype.hashCode = function () {
+    return imul(getStringHashCode('level'), 127) ^ this._level.hashCode();
+  };
+  Experimental.prototype.toString = function () {
+    return '' + '@kotlin.Experimental(level=' + this._level + ')';
+  };
   Experimental.$metadata$ = {
     simpleName: 'Experimental',
     kind: 'class',
@@ -634,6 +761,22 @@ this['out-ir'] = function (_) {
   WasExperimental.prototype._get_markerClass__0_k$ = function () {
     return this._markerClass;
   };
+  WasExperimental.prototype.equals = function (other) {
+    if (!(other instanceof WasExperimental))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof WasExperimental ? other : THROW_CCE();
+    if (!contentEquals_7(this._markerClass, tmp0_other_with_cast._markerClass))
+      return false;
+    return true;
+  };
+  WasExperimental.prototype.hashCode = function () {
+    return imul(getStringHashCode('markerClass'), 127) ^ hashCode(this._markerClass);
+  };
+  WasExperimental.prototype.toString = function () {
+    return '' + '@kotlin.WasExperimental(markerClass=' + toString_0(this._markerClass) + ')';
+  };
   WasExperimental.$metadata$ = {
     simpleName: 'WasExperimental',
     kind: 'class',
@@ -641,6 +784,20 @@ this['out-ir'] = function (_) {
   };
   function ExperimentalStdlibApi() {
   }
+  ExperimentalStdlibApi.prototype.equals = function (other) {
+    if (!(other instanceof ExperimentalStdlibApi))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof ExperimentalStdlibApi ? other : THROW_CCE();
+    return true;
+  };
+  ExperimentalStdlibApi.prototype.hashCode = function () {
+    return 0;
+  };
+  ExperimentalStdlibApi.prototype.toString = function () {
+    return '@kotlin.ExperimentalStdlibApi()';
+  };
   ExperimentalStdlibApi.$metadata$ = {
     simpleName: 'ExperimentalStdlibApi',
     kind: 'class',
@@ -648,6 +805,20 @@ this['out-ir'] = function (_) {
   };
   function OptionalExpectation() {
   }
+  OptionalExpectation.prototype.equals = function (other) {
+    if (!(other instanceof OptionalExpectation))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof OptionalExpectation ? other : THROW_CCE();
+    return true;
+  };
+  OptionalExpectation.prototype.hashCode = function () {
+    return 0;
+  };
+  OptionalExpectation.prototype.toString = function () {
+    return '@kotlin.OptionalExpectation()';
+  };
   OptionalExpectation.$metadata$ = {
     simpleName: 'OptionalExpectation',
     kind: 'class',
@@ -655,6 +826,20 @@ this['out-ir'] = function (_) {
   };
   function ExperimentalMultiplatform() {
   }
+  ExperimentalMultiplatform.prototype.equals = function (other) {
+    if (!(other instanceof ExperimentalMultiplatform))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof ExperimentalMultiplatform ? other : THROW_CCE();
+    return true;
+  };
+  ExperimentalMultiplatform.prototype.hashCode = function () {
+    return 0;
+  };
+  ExperimentalMultiplatform.prototype.toString = function () {
+    return '@kotlin.ExperimentalMultiplatform()';
+  };
   ExperimentalMultiplatform.$metadata$ = {
     simpleName: 'ExperimentalMultiplatform',
     kind: 'class',
@@ -721,6 +906,26 @@ this['out-ir'] = function (_) {
   RequiresOptIn.prototype._get_level__0_k$ = function () {
     return this._level_0;
   };
+  RequiresOptIn.prototype.equals = function (other) {
+    if (!(other instanceof RequiresOptIn))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof RequiresOptIn ? other : THROW_CCE();
+    if (!(this._message === tmp0_other_with_cast._message))
+      return false;
+    if (!this._level_0.equals(tmp0_other_with_cast._level_0))
+      return false;
+    return true;
+  };
+  RequiresOptIn.prototype.hashCode = function () {
+    var result = imul(getStringHashCode('message'), 127) ^ getStringHashCode(this._message);
+    result = result + (imul(getStringHashCode('level'), 127) ^ this._level_0.hashCode()) | 0;
+    return result;
+  };
+  RequiresOptIn.prototype.toString = function () {
+    return '' + '@kotlin.RequiresOptIn(message=' + this._message + ', level=' + this._level_0 + ')';
+  };
   RequiresOptIn.$metadata$ = {
     simpleName: 'RequiresOptIn',
     kind: 'class',
@@ -731,6 +936,22 @@ this['out-ir'] = function (_) {
   }
   OptIn.prototype._get_markerClass__0_k$ = function () {
     return this._markerClass_0;
+  };
+  OptIn.prototype.equals = function (other) {
+    if (!(other instanceof OptIn))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof OptIn ? other : THROW_CCE();
+    if (!contentEquals_7(this._markerClass_0, tmp0_other_with_cast._markerClass_0))
+      return false;
+    return true;
+  };
+  OptIn.prototype.hashCode = function () {
+    return imul(getStringHashCode('markerClass'), 127) ^ hashCode(this._markerClass_0);
+  };
+  OptIn.prototype.toString = function () {
+    return '' + '@kotlin.OptIn(markerClass=' + toString_0(this._markerClass_0) + ')';
   };
   OptIn.$metadata$ = {
     simpleName: 'OptIn',
@@ -754,7 +975,7 @@ this['out-ir'] = function (_) {
   }
   AbstractCollection.prototype.contains_2bq_k$ = function (element) {
     var tmp$ret$0;
-    l$ret$1: do {
+    $l$block_2: {
       var tmp;
       if (isInterface(this, Collection)) {
         tmp = this.isEmpty_0_k$();
@@ -765,26 +986,31 @@ this['out-ir'] = function (_) {
       }
       if (tmp) {
         tmp$ret$0 = false;
-        break l$ret$1;
+        break $l$block_2;
       } else {
       }
       var tmp0_iterator_1 = this.iterator_0_k$();
       while (tmp0_iterator_1.hasNext_0_k$()) {
         var element_2 = tmp0_iterator_1.next_0_k$();
-        if (equals(element_2, element)) {
+        var tmp$ret$1;
+        $l$block_0: {
+          tmp$ret$1 = equals(element_2, element);
+          break $l$block_0;
+        }
+        if (tmp$ret$1) {
           tmp$ret$0 = true;
-          break l$ret$1;
+          break $l$block_2;
         } else {
         }
       }
       tmp$ret$0 = false;
+      break $l$block_2;
     }
-     while (false);
     return tmp$ret$0;
   };
   AbstractCollection.prototype.containsAll_dxd4eo_k$ = function (elements) {
     var tmp$ret$0;
-    l$ret$1: do {
+    $l$block_2: {
       var tmp;
       if (isInterface(elements, Collection)) {
         tmp = elements.isEmpty_0_k$();
@@ -795,21 +1021,26 @@ this['out-ir'] = function (_) {
       }
       if (tmp) {
         tmp$ret$0 = true;
-        break l$ret$1;
+        break $l$block_2;
       } else {
       }
       var tmp0_iterator_1 = elements.iterator_0_k$();
       while (tmp0_iterator_1.hasNext_0_k$()) {
         var element_2 = tmp0_iterator_1.next_0_k$();
-        if (!this.contains_2bq_k$(element_2)) {
+        var tmp$ret$1;
+        $l$block_0: {
+          tmp$ret$1 = this.contains_2bq_k$(element_2);
+          break $l$block_0;
+        }
+        if (!tmp$ret$1) {
           tmp$ret$0 = false;
-          break l$ret$1;
+          break $l$block_2;
         } else {
         }
       }
       tmp$ret$0 = true;
+      break $l$block_2;
     }
-     while (false);
     return tmp$ret$0;
   };
   AbstractCollection.prototype.isEmpty_0_k$ = function () {
@@ -987,42 +1218,52 @@ this['out-ir'] = function (_) {
     return new IteratorImpl(this);
   };
   AbstractList.prototype.indexOf_2bq_k$ = function (element) {
-    var tmp$ret$0;
-    l$ret$1: do {
+    var tmp$ret$1;
+    $l$block_1: {
       var index_1 = 0;
       var tmp0_iterator_2 = this.iterator_0_k$();
       while (tmp0_iterator_2.hasNext_0_k$()) {
         var item_3 = tmp0_iterator_2.next_0_k$();
-        if (equals(item_3, element)) {
-          tmp$ret$0 = index_1;
-          break l$ret$1;
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = equals(item_3, element);
+          break $l$block;
+        }
+        if (tmp$ret$0) {
+          tmp$ret$1 = index_1;
+          break $l$block_1;
         } else {
         }
         var tmp1_4 = index_1;
         index_1 = tmp1_4 + 1 | 0;
         Unit_getInstance();
       }
-      tmp$ret$0 = -1;
+      tmp$ret$1 = -1;
+      break $l$block_1;
     }
-     while (false);
-    return tmp$ret$0;
+    return tmp$ret$1;
   };
   AbstractList.prototype.lastIndexOf_2bq_k$ = function (element) {
-    var tmp$ret$0;
-    l$ret$1: do {
+    var tmp$ret$1;
+    $l$block_1: {
       var iterator_1 = this.listIterator_ha5a7z_k$(this._get_size__0_k$());
       while (iterator_1.hasPrevious_0_k$()) {
-        var tmp0__anonymous__2 = iterator_1.previous_0_k$();
-        if (equals(tmp0__anonymous__2, element)) {
-          tmp$ret$0 = iterator_1.nextIndex_0_k$();
-          break l$ret$1;
+        var tmp$ret$0;
+        $l$block: {
+          var tmp0__anonymous__2 = iterator_1.previous_0_k$();
+          tmp$ret$0 = equals(tmp0__anonymous__2, element);
+          break $l$block;
+        }
+        if (tmp$ret$0) {
+          tmp$ret$1 = iterator_1.nextIndex_0_k$();
+          break $l$block_1;
         } else {
         }
       }
-      tmp$ret$0 = -1;
+      tmp$ret$1 = -1;
+      break $l$block_1;
     }
-     while (false);
-    return tmp$ret$0;
+    return tmp$ret$1;
   };
   AbstractList.prototype.listIterator_0_k$ = function () {
     return new ListIteratorImpl(this, 0);
@@ -1271,12 +1512,19 @@ this['out-ir'] = function (_) {
   }
   function filterInPlace_0(_this_, predicate, predicateResultToRemove) {
     var result = false;
-    var tmp0_with_0 = _this_.iterator_0_k$();
-    while (tmp0_with_0.hasNext_0_k$())
-      if (predicate(tmp0_with_0.next_0_k$()) === predicateResultToRemove) {
-        tmp0_with_0.remove_sv8swh_k$();
-        result = true;
-      }return result;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_with_0 = _this_.iterator_0_k$();
+      {
+      }
+      while (tmp0_with_0.hasNext_0_k$())
+        if (predicate(tmp0_with_0.next_0_k$()) === predicateResultToRemove) {
+          tmp0_with_0.remove_sv8swh_k$();
+          result = true;
+        }tmp$ret$0 = Unit_getInstance();
+      break $l$block;
+    }
+    return result;
   }
   function Sequence() {
   }
@@ -1341,6 +1589,20 @@ this['out-ir'] = function (_) {
   };
   function ExperimentalContracts() {
   }
+  ExperimentalContracts.prototype.equals = function (other) {
+    if (!(other instanceof ExperimentalContracts))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof ExperimentalContracts ? other : THROW_CCE();
+    return true;
+  };
+  ExperimentalContracts.prototype.hashCode = function () {
+    return 0;
+  };
+  ExperimentalContracts.prototype.toString = function () {
+    return '@kotlin.contracts.ExperimentalContracts()';
+  };
   ExperimentalContracts.$metadata$ = {
     simpleName: 'ExperimentalContracts',
     kind: 'class',
@@ -1415,12 +1677,22 @@ this['out-ir'] = function (_) {
     return new _no_name_provided__0(context, resumeWith);
   }
   function resumeWithException(_this_, exception) {
-    var tmp0_failure_0 = Companion_getInstance_2();
-    return _this_.resumeWith_bnunh2_k$(_Result___init__impl_(createFailure(exception)));
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_failure_0 = Companion_getInstance_2();
+      tmp$ret$0 = _Result___init__impl_(createFailure(exception));
+      break $l$block;
+    }
+    return _this_.resumeWith_bnunh2_k$(tmp$ret$0);
   }
   function resume(_this_, value) {
-    var tmp0_success_0 = Companion_getInstance_2();
-    return _this_.resumeWith_bnunh2_k$(_Result___init__impl_(value));
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_success_0 = Companion_getInstance_2();
+      tmp$ret$0 = _Result___init__impl_(value);
+      break $l$block;
+    }
+    return _this_.resumeWith_bnunh2_k$(tmp$ret$0);
   }
   function _get_coroutineContext_() {
     throw new NotImplementedError('Implemented as intrinsic');
@@ -1627,18 +1899,23 @@ this['out-ir'] = function (_) {
     return Companion_instance_0;
   }
   function readResolve_1($this) {
-    var tmp0_fold_0 = $this._elements;
-    var tmp1_fold_0 = EmptyCoroutineContext_getInstance();
-    var accumulator_1 = tmp1_fold_0;
-    var indexedObject = tmp0_fold_0;
-    var inductionVariable = 0;
-    var last = indexedObject.length;
-    while (inductionVariable < last) {
-      var element_3 = indexedObject[inductionVariable];
-      inductionVariable = inductionVariable + 1 | 0;
-      accumulator_1 = accumulator_1.plus_d7pszg_k$(element_3);
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_fold_0 = $this._elements;
+      var tmp1_fold_0 = EmptyCoroutineContext_getInstance();
+      var accumulator_1 = tmp1_fold_0;
+      var indexedObject = tmp0_fold_0;
+      var inductionVariable = 0;
+      var last = indexedObject.length;
+      while (inductionVariable < last) {
+        var element_3 = indexedObject[inductionVariable];
+        inductionVariable = inductionVariable + 1 | 0;
+        accumulator_1 = accumulator_1.plus_d7pszg_k$(element_3);
+      }
+      tmp$ret$0 = accumulator_1;
+      break $l$block;
     }
-    return accumulator_1;
+    return tmp$ret$0;
   }
   function _get_left_($this) {
     return $this._left;
@@ -1684,14 +1961,32 @@ this['out-ir'] = function (_) {
   }
   function writeReplace($this) {
     var n = size($this);
-    var elements = fillArrayVal(Array(n), null);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = fillArrayVal(Array(n), null);
+      break $l$block;
+    }
+    var elements = tmp$ret$0;
     var index = {_v: 0};
     $this.fold_cq605b_k$(Unit_getInstance(), _no_name_provided_$factory_2(elements, index));
-    var tmp0_check_0 = index._v === n;
-    if (!tmp0_check_0) {
-      var message_2 = 'Check failed.';
-      throw IllegalStateException_init_$Create$_0(toString_0(message_2));
-    }return new Serialized(isArray(elements) ? elements : THROW_CCE());
+    {
+      var tmp0_check_0 = index._v === n;
+      {
+      }
+      {
+        {
+        }
+        if (!tmp0_check_0) {
+          var tmp$ret$1;
+          $l$block_0: {
+            tmp$ret$1 = 'Check failed.';
+            break $l$block_0;
+          }
+          var message_2 = tmp$ret$1;
+          throw IllegalStateException_init_$Create$_0(toString_0(message_2));
+        }}
+    }
+    return new Serialized(isArray(elements) ? elements : THROW_CCE());
   }
   function Serialized(elements) {
     Companion_getInstance_0();
@@ -1709,7 +2004,12 @@ this['out-ir'] = function (_) {
   }
   _no_name_provided__2.prototype.invoke_mz4o2y_k$ = function (acc, element) {
     var tmp;
-    if (charSequenceLength(acc) === 0) {
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = charSequenceLength(acc) === 0;
+      break $l$block;
+    }
+    if (tmp$ret$0) {
       tmp = toString_0(element);
     } else {
       {
@@ -1755,7 +2055,12 @@ this['out-ir'] = function (_) {
       if (tmp0_safe_receiver == null)
         null;
       else {
-        return tmp0_safe_receiver;
+        var tmp$ret$0;
+        {
+          {
+          }
+          return tmp0_safe_receiver;
+        }
       }
       Unit_getInstance();
       var next = cur._left;
@@ -1776,7 +2081,12 @@ this['out-ir'] = function (_) {
     if (tmp0_safe_receiver == null)
       null;
     else {
-      return this._left;
+      var tmp$ret$0;
+      {
+        {
+        }
+        return this._left;
+      }
     }
     Unit_getInstance();
     var newLeft = this._left.minusKey_djuxjq_k$(key);
@@ -1938,6 +2248,20 @@ this['out-ir'] = function (_) {
   }
   function ExperimentalTypeInference() {
   }
+  ExperimentalTypeInference.prototype.equals = function (other) {
+    if (!(other instanceof ExperimentalTypeInference))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof ExperimentalTypeInference ? other : THROW_CCE();
+    return true;
+  };
+  ExperimentalTypeInference.prototype.hashCode = function () {
+    return 0;
+  };
+  ExperimentalTypeInference.prototype.toString = function () {
+    return '@kotlin.experimental.ExperimentalTypeInference()';
+  };
   ExperimentalTypeInference.$metadata$ = {
     simpleName: 'ExperimentalTypeInference',
     kind: 'class',
@@ -1979,6 +2303,35 @@ this['out-ir'] = function (_) {
   };
   RequireKotlin.prototype._get_errorCode__0_k$ = function () {
     return this._errorCode;
+  };
+  RequireKotlin.prototype.equals = function (other) {
+    if (!(other instanceof RequireKotlin))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof RequireKotlin ? other : THROW_CCE();
+    if (!(this._version === tmp0_other_with_cast._version))
+      return false;
+    if (!(this._message_0 === tmp0_other_with_cast._message_0))
+      return false;
+    if (!this._level_1.equals(tmp0_other_with_cast._level_1))
+      return false;
+    if (!this._versionKind.equals(tmp0_other_with_cast._versionKind))
+      return false;
+    if (!(this._errorCode === tmp0_other_with_cast._errorCode))
+      return false;
+    return true;
+  };
+  RequireKotlin.prototype.hashCode = function () {
+    var result = imul(getStringHashCode('version'), 127) ^ getStringHashCode(this._version);
+    result = result + (imul(getStringHashCode('message'), 127) ^ getStringHashCode(this._message_0)) | 0;
+    result = result + (imul(getStringHashCode('level'), 127) ^ this._level_1.hashCode()) | 0;
+    result = result + (imul(getStringHashCode('versionKind'), 127) ^ this._versionKind.hashCode()) | 0;
+    result = result + (imul(getStringHashCode('errorCode'), 127) ^ this._errorCode) | 0;
+    return result;
+  };
+  RequireKotlin.prototype.toString = function () {
+    return '' + '@kotlin.internal.RequireKotlin(version=' + this._version + ', message=' + this._message_0 + ', level=' + this._level_1 + ', versionKind=' + this._versionKind + ', errorCode=' + this._errorCode + ')';
   };
   RequireKotlin.$metadata$ = {
     simpleName: 'RequireKotlin',
@@ -2023,6 +2376,20 @@ this['out-ir'] = function (_) {
   };
   function InlineOnly() {
   }
+  InlineOnly.prototype.equals = function (other) {
+    if (!(other instanceof InlineOnly))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof InlineOnly ? other : THROW_CCE();
+    return true;
+  };
+  InlineOnly.prototype.hashCode = function () {
+    return 0;
+  };
+  InlineOnly.prototype.toString = function () {
+    return '@kotlin.internal.InlineOnly()';
+  };
   InlineOnly.$metadata$ = {
     simpleName: 'InlineOnly',
     kind: 'class',
@@ -2030,6 +2397,20 @@ this['out-ir'] = function (_) {
   };
   function NoInfer() {
   }
+  NoInfer.prototype.equals = function (other) {
+    if (!(other instanceof NoInfer))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof NoInfer ? other : THROW_CCE();
+    return true;
+  };
+  NoInfer.prototype.hashCode = function () {
+    return 0;
+  };
+  NoInfer.prototype.toString = function () {
+    return '@kotlin.internal.NoInfer()';
+  };
   NoInfer.$metadata$ = {
     simpleName: 'NoInfer',
     kind: 'class',
@@ -2037,6 +2418,20 @@ this['out-ir'] = function (_) {
   };
   function DynamicExtension() {
   }
+  DynamicExtension.prototype.equals = function (other) {
+    if (!(other instanceof DynamicExtension))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof DynamicExtension ? other : THROW_CCE();
+    return true;
+  };
+  DynamicExtension.prototype.hashCode = function () {
+    return 0;
+  };
+  DynamicExtension.prototype.toString = function () {
+    return '@kotlin.internal.DynamicExtension()';
+  };
   DynamicExtension.$metadata$ = {
     simpleName: 'DynamicExtension',
     kind: 'class',
@@ -2044,6 +2439,20 @@ this['out-ir'] = function (_) {
   };
   function ContractsDsl() {
   }
+  ContractsDsl.prototype.equals = function (other) {
+    if (!(other instanceof ContractsDsl))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof ContractsDsl ? other : THROW_CCE();
+    return true;
+  };
+  ContractsDsl.prototype.hashCode = function () {
+    return 0;
+  };
+  ContractsDsl.prototype.toString = function () {
+    return '@kotlin.internal.ContractsDsl()';
+  };
   ContractsDsl.$metadata$ = {
     simpleName: 'ContractsDsl',
     kind: 'class',
@@ -2051,6 +2460,20 @@ this['out-ir'] = function (_) {
   };
   function OnlyInputTypes() {
   }
+  OnlyInputTypes.prototype.equals = function (other) {
+    if (!(other instanceof OnlyInputTypes))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof OnlyInputTypes ? other : THROW_CCE();
+    return true;
+  };
+  OnlyInputTypes.prototype.hashCode = function () {
+    return 0;
+  };
+  OnlyInputTypes.prototype.toString = function () {
+    return '@kotlin.internal.OnlyInputTypes()';
+  };
   OnlyInputTypes.$metadata$ = {
     simpleName: 'OnlyInputTypes',
     kind: 'class',
@@ -2058,6 +2481,20 @@ this['out-ir'] = function (_) {
   };
   function HidesMembers() {
   }
+  HidesMembers.prototype.equals = function (other) {
+    if (!(other instanceof HidesMembers))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof HidesMembers ? other : THROW_CCE();
+    return true;
+  };
+  HidesMembers.prototype.hashCode = function () {
+    return 0;
+  };
+  HidesMembers.prototype.toString = function () {
+    return '@kotlin.internal.HidesMembers()';
+  };
   HidesMembers.$metadata$ = {
     simpleName: 'HidesMembers',
     kind: 'class',
@@ -2123,11 +2560,20 @@ this['out-ir'] = function (_) {
     Companion_getInstance_1();
     this._variance = variance;
     this._type = type;
-    var tmp0_require_0 = this._variance == null === (this._type == null);
-    if (!tmp0_require_0) {
-      var message_2 = this._variance == null ? 'Star projection must have no type specified.' : '' + 'The projection variance ' + this._variance + ' requires type to be specified.';
-      throw IllegalArgumentException_init_$Create$_0(toString_0(message_2));
-    }}
+    {
+      var tmp0_require_0 = this._variance == null === (this._type == null);
+      {
+      }
+      if (!tmp0_require_0) {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = this._variance == null ? 'Star projection must have no type specified.' : '' + 'The projection variance ' + this._variance + ' requires type to be specified.';
+          break $l$block;
+        }
+        var message_2 = tmp$ret$0;
+        throw IllegalArgumentException_init_$Create$_0(toString_0(message_2));
+      }}
+  }
   KTypeProjection.prototype._get_variance__0_k$ = function () {
     return this._variance;
   };
@@ -2274,17 +2720,35 @@ this['out-ir'] = function (_) {
   function init_properties_DeepRecursive_kt() {
     if (!properties_initialized_DeepRecursive_kt) {
       properties_initialized_DeepRecursive_kt = true;
-      var tmp0_success_0 = Companion_getInstance_2();
-      var tmp1_success_0 = _get_COROUTINE_SUSPENDED_();
-      UNDEFINED_RESULT = _Result___init__impl_(tmp1_success_0);
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_success_0 = Companion_getInstance_2();
+        var tmp1_success_0 = _get_COROUTINE_SUSPENDED_();
+        tmp$ret$0 = _Result___init__impl_(tmp1_success_0);
+        break $l$block;
+      }
+      UNDEFINED_RESULT = tmp$ret$0;
       new Result(Unit_getInstance());
     }}
   function check(value) {
-    if (!value) {
-      var message_2 = 'Check failed.';
-      throw IllegalStateException_init_$Create$_0(toString_0(message_2));
-    }}
+    {
+    }
+    {
+      {
+      }
+      if (!value) {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = 'Check failed.';
+          break $l$block;
+        }
+        var message_2 = tmp$ret$0;
+        throw IllegalStateException_init_$Create$_0(toString_0(message_2));
+      }}
+  }
   function check_0(value, lazyMessage) {
+    {
+    }
     if (!value) {
       var message = lazyMessage();
       throw IllegalStateException_init_$Create$_0(toString_0(message));
@@ -2293,6 +2757,8 @@ this['out-ir'] = function (_) {
     throw IllegalStateException_init_$Create$_0(toString_0(message));
   }
   function require_0(value, lazyMessage) {
+    {
+    }
     if (!value) {
       var message = lazyMessage();
       throw IllegalArgumentException_init_$Create$_0(toString_0(message));
@@ -2440,6 +2906,8 @@ this['out-ir'] = function (_) {
     }
   }
   function run(block) {
+    {
+    }
     return block();
   }
   function TODO() {
@@ -2466,13 +2934,19 @@ this['out-ir'] = function (_) {
     interfaces: []
   };
   function let_0(_this_, block) {
+    {
+    }
     return block(_this_);
   }
   function apply(_this_, block) {
+    {
+    }
     block(_this_);
     return _this_;
   }
   function repeat(times, action) {
+    {
+    }
     var inductionVariable = 0;
     if (inductionVariable < times)
       do {
@@ -2483,13 +2957,19 @@ this['out-ir'] = function (_) {
        while (inductionVariable < times);
   }
   function with_0(receiver, block) {
+    {
+    }
     return block(receiver);
   }
   function also(_this_, block) {
+    {
+    }
     block(_this_);
     return _this_;
   }
   function run_0(_this_, block) {
+    {
+    }
     return block(_this_);
   }
   function _UByte___init__impl_(data) {
@@ -2529,154 +3009,604 @@ this['out-ir'] = function (_) {
     return Companion_instance_3;
   }
   function UByte__compareTo_impl(this_0, other) {
-    var tmp = _UByte___get_data__impl_(this_0) & 255;
-    return compareTo_0(tmp, _UByte___get_data__impl_(other) & 255);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UByte___get_data__impl_(this_0) & 255;
+      break $l$block;
+    }
+    var tmp = tmp$ret$0;
+    var tmp$ret$1;
+    $l$block_0: {
+      tmp$ret$1 = _UByte___get_data__impl_(other) & 255;
+      break $l$block_0;
+    }
+    return compareTo_0(tmp, tmp$ret$1);
   }
   function UByte__compareTo_impl_0(this_0, other) {
     var tmp = this_0._data;
     return UByte__compareTo_impl(tmp, other instanceof UByte ? other._data : THROW_CCE());
   }
   function UByte__compareTo_impl_1(this_0, other) {
-    var tmp = _UByte___get_data__impl_(this_0) & 255;
-    return compareTo_0(tmp, _UShort___get_data__impl_(other) & 65535);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UByte___get_data__impl_(this_0) & 255;
+      break $l$block;
+    }
+    var tmp = tmp$ret$0;
+    var tmp$ret$1;
+    $l$block_0: {
+      tmp$ret$1 = _UShort___get_data__impl_(other) & 65535;
+      break $l$block_0;
+    }
+    return compareTo_0(tmp, tmp$ret$1);
   }
   function UByte__compareTo_impl_2(this_0, other) {
-    var tmp0_compareTo_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    return uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(other));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_compareTo_0 = tmp$ret$0;
+      tmp$ret$1 = uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(other));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UByte__compareTo_impl_3(this_0, other) {
-    var tmp0_compareTo_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
-    return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
+        break $l$block;
+      }
+      var tmp0_compareTo_0 = tmp$ret$0;
+      tmp$ret$1 = ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UByte__plus_impl(this_0, other) {
-    var tmp0_plus_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    var tmp1_plus_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0) | 0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_plus_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block_0;
+      }
+      var tmp1_plus_0 = tmp$ret$1;
+      tmp$ret$2 = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0) | 0);
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UByte__plus_impl_0(this_0, other) {
-    var tmp0_plus_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    var tmp1_plus_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0) | 0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_plus_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block_0;
+      }
+      var tmp1_plus_0 = tmp$ret$1;
+      tmp$ret$2 = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0) | 0);
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UByte__plus_impl_1(this_0, other) {
-    var tmp0_plus_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    return _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(other) | 0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_plus_0 = tmp$ret$0;
+      tmp$ret$1 = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(other) | 0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UByte__plus_impl_2(this_0, other) {
-    var tmp0_plus_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus_wiekkq_k$(_ULong___get_data__impl_(other)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
+        break $l$block;
+      }
+      var tmp0_plus_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus_wiekkq_k$(_ULong___get_data__impl_(other)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UByte__minus_impl(this_0, other) {
-    var tmp0_minus_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    var tmp1_minus_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return _UInt___init__impl_(_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0) | 0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_minus_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block_0;
+      }
+      var tmp1_minus_0 = tmp$ret$1;
+      tmp$ret$2 = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0) | 0);
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UByte__minus_impl_0(this_0, other) {
-    var tmp0_minus_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    var tmp1_minus_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return _UInt___init__impl_(_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0) | 0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_minus_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block_0;
+      }
+      var tmp1_minus_0 = tmp$ret$1;
+      tmp$ret$2 = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0) | 0);
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UByte__minus_impl_1(this_0, other) {
-    var tmp0_minus_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    return _UInt___init__impl_(_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(other) | 0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_minus_0 = tmp$ret$0;
+      tmp$ret$1 = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(other) | 0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UByte__minus_impl_2(this_0, other) {
-    var tmp0_minus_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_minus_0).minus_wiekkq_k$(_ULong___get_data__impl_(other)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
+        break $l$block;
+      }
+      var tmp0_minus_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_minus_0).minus_wiekkq_k$(_ULong___get_data__impl_(other)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UByte__times_impl(this_0, other) {
-    var tmp0_times_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    var tmp1_times_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)));
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_times_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block_0;
+      }
+      var tmp1_times_0 = tmp$ret$1;
+      tmp$ret$2 = _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)));
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UByte__times_impl_0(this_0, other) {
-    var tmp0_times_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    var tmp1_times_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)));
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_times_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block_0;
+      }
+      var tmp1_times_0 = tmp$ret$1;
+      tmp$ret$2 = _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)));
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UByte__times_impl_1(this_0, other) {
-    var tmp0_times_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(other)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_times_0 = tmp$ret$0;
+      tmp$ret$1 = _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(other)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UByte__times_impl_2(this_0, other) {
-    var tmp0_times_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_times_0).times_wiekkq_k$(_ULong___get_data__impl_(other)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
+        break $l$block;
+      }
+      var tmp0_times_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_times_0).times_wiekkq_k$(_ULong___get_data__impl_(other)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UByte__div_impl(this_0, other) {
-    var tmp0_div_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    var tmp1_div_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return uintDivide(tmp0_div_0, tmp1_div_0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_div_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block_0;
+      }
+      var tmp1_div_0 = tmp$ret$1;
+      tmp$ret$2 = uintDivide(tmp0_div_0, tmp1_div_0);
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UByte__div_impl_0(this_0, other) {
-    var tmp0_div_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    var tmp1_div_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return uintDivide(tmp0_div_0, tmp1_div_0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_div_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block_0;
+      }
+      var tmp1_div_0 = tmp$ret$1;
+      tmp$ret$2 = uintDivide(tmp0_div_0, tmp1_div_0);
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UByte__div_impl_1(this_0, other) {
-    var tmp0_div_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    return uintDivide(tmp0_div_0, other);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_div_0 = tmp$ret$0;
+      tmp$ret$1 = uintDivide(tmp0_div_0, other);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UByte__div_impl_2(this_0, other) {
-    var tmp0_div_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
-    return ulongDivide(tmp0_div_0, other);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
+        break $l$block;
+      }
+      var tmp0_div_0 = tmp$ret$0;
+      tmp$ret$1 = ulongDivide(tmp0_div_0, other);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UByte__rem_impl(this_0, other) {
-    var tmp0_rem_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    var tmp1_rem_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return uintRemainder(tmp0_rem_0, tmp1_rem_0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_rem_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block_0;
+      }
+      var tmp1_rem_0 = tmp$ret$1;
+      tmp$ret$2 = uintRemainder(tmp0_rem_0, tmp1_rem_0);
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UByte__rem_impl_0(this_0, other) {
-    var tmp0_rem_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    var tmp1_rem_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return uintRemainder(tmp0_rem_0, tmp1_rem_0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_rem_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block_0;
+      }
+      var tmp1_rem_0 = tmp$ret$1;
+      tmp$ret$2 = uintRemainder(tmp0_rem_0, tmp1_rem_0);
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UByte__rem_impl_1(this_0, other) {
-    var tmp0_rem_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    return uintRemainder(tmp0_rem_0, other);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_rem_0 = tmp$ret$0;
+      tmp$ret$1 = uintRemainder(tmp0_rem_0, other);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UByte__rem_impl_2(this_0, other) {
-    var tmp0_rem_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
-    return ulongRemainder(tmp0_rem_0, other);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
+        break $l$block;
+      }
+      var tmp0_rem_0 = tmp$ret$0;
+      tmp$ret$1 = ulongRemainder(tmp0_rem_0, other);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UByte__floorDiv_impl(this_0, other) {
-    var tmp0_floorDiv_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    var tmp1_floorDiv_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return uintDivide(tmp0_floorDiv_0, tmp1_floorDiv_0);
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_floorDiv_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block_0;
+      }
+      var tmp1_floorDiv_0 = tmp$ret$1;
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = uintDivide(tmp0_floorDiv_0, tmp1_floorDiv_0);
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2;
+      break $l$block_2;
+    }
+    return tmp$ret$3;
   }
   function UByte__floorDiv_impl_0(this_0, other) {
-    var tmp0_floorDiv_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    var tmp1_floorDiv_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return uintDivide(tmp0_floorDiv_0, tmp1_floorDiv_0);
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_floorDiv_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block_0;
+      }
+      var tmp1_floorDiv_0 = tmp$ret$1;
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = uintDivide(tmp0_floorDiv_0, tmp1_floorDiv_0);
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2;
+      break $l$block_2;
+    }
+    return tmp$ret$3;
   }
   function UByte__floorDiv_impl_1(this_0, other) {
-    var tmp0_floorDiv_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    return uintDivide(tmp0_floorDiv_0, other);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_floorDiv_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = uintDivide(tmp0_floorDiv_0, other);
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UByte__floorDiv_impl_2(this_0, other) {
-    var tmp0_floorDiv_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
-    return ulongDivide(tmp0_floorDiv_0, other);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
+        break $l$block;
+      }
+      var tmp0_floorDiv_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = ulongDivide(tmp0_floorDiv_0, other);
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UByte__mod_impl(this_0, other) {
-    var tmp0_mod_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    var tmp1_mod_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    var tmp3_toUByte_0 = uintRemainder(tmp0_mod_0, tmp1_mod_0);
-    var tmp2_toUByte_0 = _UInt___get_data__impl_(tmp3_toUByte_0);
-    return _UByte___init__impl_(toByte(tmp2_toUByte_0));
+    var tmp$ret$5;
+    $l$block_4: {
+      var tmp$ret$3;
+      $l$block_2: {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+          break $l$block;
+        }
+        var tmp0_mod_0 = tmp$ret$0;
+        var tmp$ret$1;
+        $l$block_0: {
+          tmp$ret$1 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+          break $l$block_0;
+        }
+        var tmp1_mod_0 = tmp$ret$1;
+        var tmp$ret$2;
+        $l$block_1: {
+          tmp$ret$2 = uintRemainder(tmp0_mod_0, tmp1_mod_0);
+          break $l$block_1;
+        }
+        tmp$ret$3 = tmp$ret$2;
+        break $l$block_2;
+      }
+      var tmp3_toUByte_0 = tmp$ret$3;
+      var tmp$ret$4;
+      $l$block_3: {
+        var tmp2_toUByte_0 = _UInt___get_data__impl_(tmp3_toUByte_0);
+        tmp$ret$4 = _UByte___init__impl_(toByte(tmp2_toUByte_0));
+        break $l$block_3;
+      }
+      tmp$ret$5 = tmp$ret$4;
+      break $l$block_4;
+    }
+    return tmp$ret$5;
   }
   function UByte__mod_impl_0(this_0, other) {
-    var tmp0_mod_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    var tmp1_mod_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    var tmp3_toUShort_0 = uintRemainder(tmp0_mod_0, tmp1_mod_0);
-    var tmp2_toUShort_0 = _UInt___get_data__impl_(tmp3_toUShort_0);
-    return _UShort___init__impl_(toShort(tmp2_toUShort_0));
+    var tmp$ret$5;
+    $l$block_4: {
+      var tmp$ret$3;
+      $l$block_2: {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+          break $l$block;
+        }
+        var tmp0_mod_0 = tmp$ret$0;
+        var tmp$ret$1;
+        $l$block_0: {
+          tmp$ret$1 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+          break $l$block_0;
+        }
+        var tmp1_mod_0 = tmp$ret$1;
+        var tmp$ret$2;
+        $l$block_1: {
+          tmp$ret$2 = uintRemainder(tmp0_mod_0, tmp1_mod_0);
+          break $l$block_1;
+        }
+        tmp$ret$3 = tmp$ret$2;
+        break $l$block_2;
+      }
+      var tmp3_toUShort_0 = tmp$ret$3;
+      var tmp$ret$4;
+      $l$block_3: {
+        var tmp2_toUShort_0 = _UInt___get_data__impl_(tmp3_toUShort_0);
+        tmp$ret$4 = _UShort___init__impl_(toShort(tmp2_toUShort_0));
+        break $l$block_3;
+      }
+      tmp$ret$5 = tmp$ret$4;
+      break $l$block_4;
+    }
+    return tmp$ret$5;
   }
   function UByte__mod_impl_1(this_0, other) {
-    var tmp0_mod_0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    return uintRemainder(tmp0_mod_0, other);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+        break $l$block;
+      }
+      var tmp0_mod_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = uintRemainder(tmp0_mod_0, other);
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UByte__mod_impl_2(this_0, other) {
-    var tmp0_mod_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
-    return ulongRemainder(tmp0_mod_0, other);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
+        break $l$block;
+      }
+      var tmp0_mod_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = ulongRemainder(tmp0_mod_0, other);
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UByte__inc_impl(this_0) {
     return _UByte___init__impl_(numberToByte(_UByte___get_data__impl_(this_0) + 1));
@@ -2685,34 +3615,69 @@ this['out-ir'] = function (_) {
     return _UByte___init__impl_(numberToByte(_UByte___get_data__impl_(this_0) - 1));
   }
   function UByte__rangeTo_impl(this_0, other) {
-    var tmp = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
-    return new UIntRange(tmp, _UInt___init__impl_(_UByte___get_data__impl_(other) & 255));
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
+      break $l$block;
+    }
+    var tmp = tmp$ret$0;
+    var tmp$ret$1;
+    $l$block_0: {
+      tmp$ret$1 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+      break $l$block_0;
+    }
+    return new UIntRange(tmp, tmp$ret$1);
   }
   function UByte__and_impl(this_0, other) {
-    var tmp0_and_0 = _UByte___get_data__impl_(this_0);
-    var tmp1_and_0 = _UByte___get_data__impl_(other);
-    return _UByte___init__impl_(toByte(tmp0_and_0 & tmp1_and_0));
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_and_0 = _UByte___get_data__impl_(this_0);
+      var tmp1_and_0 = _UByte___get_data__impl_(other);
+      tmp$ret$0 = toByte(tmp0_and_0 & tmp1_and_0);
+      break $l$block;
+    }
+    return _UByte___init__impl_(tmp$ret$0);
   }
   function UByte__or_impl(this_0, other) {
-    var tmp0_or_0 = _UByte___get_data__impl_(this_0);
-    var tmp1_or_0 = _UByte___get_data__impl_(other);
-    return _UByte___init__impl_(toByte(tmp0_or_0 | tmp1_or_0));
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_or_0 = _UByte___get_data__impl_(this_0);
+      var tmp1_or_0 = _UByte___get_data__impl_(other);
+      tmp$ret$0 = toByte(tmp0_or_0 | tmp1_or_0);
+      break $l$block;
+    }
+    return _UByte___init__impl_(tmp$ret$0);
   }
   function UByte__xor_impl(this_0, other) {
-    var tmp0_xor_0 = _UByte___get_data__impl_(this_0);
-    var tmp1_xor_0 = _UByte___get_data__impl_(other);
-    return _UByte___init__impl_(toByte(tmp0_xor_0 ^ tmp1_xor_0));
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_xor_0 = _UByte___get_data__impl_(this_0);
+      var tmp1_xor_0 = _UByte___get_data__impl_(other);
+      tmp$ret$0 = toByte(tmp0_xor_0 ^ tmp1_xor_0);
+      break $l$block;
+    }
+    return _UByte___init__impl_(tmp$ret$0);
   }
   function UByte__inv_impl(this_0) {
-    var tmp0_inv_0 = _UByte___get_data__impl_(this_0);
-    return _UByte___init__impl_(toByte(~tmp0_inv_0));
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_inv_0 = _UByte___get_data__impl_(this_0);
+      tmp$ret$0 = toByte(~tmp0_inv_0);
+      break $l$block;
+    }
+    return _UByte___init__impl_(tmp$ret$0);
   }
   function UByte__toByte_impl(this_0) {
     return _UByte___get_data__impl_(this_0);
   }
   function UByte__toShort_impl(this_0) {
-    var tmp0_and_0 = _UByte___get_data__impl_(this_0);
-    return toShort(tmp0_and_0 & 255);
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_and_0 = _UByte___get_data__impl_(this_0);
+      tmp$ret$0 = toShort(tmp0_and_0 & 255);
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function UByte__toInt_impl(this_0) {
     return _UByte___get_data__impl_(this_0) & 255;
@@ -2724,8 +3689,13 @@ this['out-ir'] = function (_) {
     return this_0;
   }
   function UByte__toUShort_impl(this_0) {
-    var tmp0_and_0 = _UByte___get_data__impl_(this_0);
-    return _UShort___init__impl_(toShort(tmp0_and_0 & 255));
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_and_0 = _UByte___get_data__impl_(this_0);
+      tmp$ret$0 = toShort(tmp0_and_0 & 255);
+      break $l$block;
+    }
+    return _UShort___init__impl_(tmp$ret$0);
   }
   function UByte__toUInt_impl(this_0) {
     return _UInt___init__impl_(_UByte___get_data__impl_(this_0) & 255);
@@ -2734,13 +3704,28 @@ this['out-ir'] = function (_) {
     return _ULong___init__impl_(toLong(_UByte___get_data__impl_(this_0)).and_wiekkq_k$(new Long(255, 0)));
   }
   function UByte__toFloat_impl(this_0) {
-    return _UByte___get_data__impl_(this_0) & 255;
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UByte___get_data__impl_(this_0) & 255;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function UByte__toDouble_impl(this_0) {
-    return _UByte___get_data__impl_(this_0) & 255;
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UByte___get_data__impl_(this_0) & 255;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function UByte__toString_impl(this_0) {
-    return (_UByte___get_data__impl_(this_0) & 255).toString();
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UByte___get_data__impl_(this_0) & 255;
+      break $l$block;
+    }
+    return tmp$ret$0.toString();
   }
   function UByte__hashCode_impl(this_0) {
     return this_0;
@@ -2811,12 +3796,22 @@ this['out-ir'] = function (_) {
     return tmp;
   }
   function UByteArray__get_impl(this_0, index) {
-    var tmp0_toUByte_0 = _UByteArray___get_storage__impl_(this_0)[index];
-    return _UByte___init__impl_(tmp0_toUByte_0);
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_toUByte_0 = _UByteArray___get_storage__impl_(this_0)[index];
+      tmp$ret$0 = _UByte___init__impl_(tmp0_toUByte_0);
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function UByteArray__set_impl(this_0, index, value) {
     var tmp = _UByteArray___get_storage__impl_(this_0);
-    tmp[index] = _UByte___get_data__impl_(value);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UByte___get_data__impl_(value);
+      break $l$block;
+    }
+    tmp[index] = tmp$ret$0;
   }
   function _UByteArray___get_size__impl_(this_0) {
     return _UByteArray___get_storage__impl_(this_0).length;
@@ -2835,11 +3830,16 @@ this['out-ir'] = function (_) {
   Iterator.prototype.nextUByte_sh428i_k$ = function () {
     var tmp;
     if (this._index_0 < this._array.length) {
-      var tmp0_this = this;
-      var tmp1 = tmp0_this._index_0;
-      tmp0_this._index_0 = tmp1 + 1 | 0;
-      var tmp0_toUByte_0 = this._array[tmp1];
-      tmp = _UByte___init__impl_(tmp0_toUByte_0);
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_this = this;
+        var tmp1 = tmp0_this._index_0;
+        tmp0_this._index_0 = tmp1 + 1 | 0;
+        var tmp0_toUByte_0 = this._array[tmp1];
+        tmp$ret$0 = _UByte___init__impl_(tmp0_toUByte_0);
+        break $l$block;
+      }
+      tmp = tmp$ret$0;
     } else {
       throw NoSuchElementException_init_$Create$_0(this._index_0.toString());
     }
@@ -2857,7 +3857,12 @@ this['out-ir'] = function (_) {
     else {
     }
     var tmp_0 = _UByteArray___get_storage__impl_(this_0);
-    return contains(tmp_0, _UByte___get_data__impl_(element));
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UByte___get_data__impl_(element);
+      break $l$block;
+    }
+    return contains(tmp_0, tmp$ret$0);
   }
   function UByteArray__contains_impl_0(this_0, element) {
     if (!(element instanceof UByte))
@@ -2869,7 +3874,7 @@ this['out-ir'] = function (_) {
   }
   function UByteArray__containsAll_impl(this_0, elements) {
     var tmp$ret$0;
-    l$ret$1: do {
+    $l$block_3: {
       var tmp0_all_0 = isInterface(elements, Collection) ? elements : THROW_CCE();
       var tmp;
       if (isInterface(tmp0_all_0, Collection)) {
@@ -2881,31 +3886,41 @@ this['out-ir'] = function (_) {
       }
       if (tmp) {
         tmp$ret$0 = true;
-        break l$ret$1;
+        break $l$block_3;
       } else {
       }
       var tmp0_iterator_1 = tmp0_all_0.iterator_0_k$();
       while (tmp0_iterator_1.hasNext_0_k$()) {
         var element_2 = tmp0_iterator_1.next_0_k$();
-        var tmp_0;
-        if (element_2 instanceof UByte) {
-          var tmp_1 = _UByteArray___get_storage__impl_(this_0);
-          var tmp0_toByte_0_4 = element_2._data;
-          tmp_0 = contains(tmp_1, _UByte___get_data__impl_(tmp0_toByte_0_4));
-        } else {
-          {
-            tmp_0 = false;
+        var tmp$ret$2;
+        $l$block_1: {
+          var tmp_0;
+          if (element_2 instanceof UByte) {
+            var tmp_1 = _UByteArray___get_storage__impl_(this_0);
+            var tmp$ret$1;
+            $l$block_0: {
+              var tmp0_toByte_0_4 = element_2._data;
+              tmp$ret$1 = _UByte___get_data__impl_(tmp0_toByte_0_4);
+              break $l$block_0;
+            }
+            tmp_0 = contains(tmp_1, tmp$ret$1);
+          } else {
+            {
+              tmp_0 = false;
+            }
           }
+          tmp$ret$2 = tmp_0;
+          break $l$block_1;
         }
-        if (!tmp_0) {
+        if (!tmp$ret$2) {
           tmp$ret$0 = false;
-          break l$ret$1;
+          break $l$block_3;
         } else {
         }
       }
       tmp$ret$0 = true;
+      break $l$block_3;
     }
-     while (false);
     return tmp$ret$0;
   }
   function UByteArray__containsAll_impl_0(this_0, elements) {
@@ -3005,12 +4020,32 @@ this['out-ir'] = function (_) {
     return Companion_instance_4;
   }
   function UInt__compareTo_impl(this_0, other) {
-    var tmp0_compareTo_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return uintCompare(_UInt___get_data__impl_(this_0), _UInt___get_data__impl_(tmp0_compareTo_0));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block;
+      }
+      var tmp0_compareTo_0 = tmp$ret$0;
+      tmp$ret$1 = uintCompare(_UInt___get_data__impl_(this_0), _UInt___get_data__impl_(tmp0_compareTo_0));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__compareTo_impl_0(this_0, other) {
-    var tmp0_compareTo_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return uintCompare(_UInt___get_data__impl_(this_0), _UInt___get_data__impl_(tmp0_compareTo_0));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block;
+      }
+      var tmp0_compareTo_0 = tmp$ret$0;
+      tmp$ret$1 = uintCompare(_UInt___get_data__impl_(this_0), _UInt___get_data__impl_(tmp0_compareTo_0));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__compareTo_impl_1(this_0, other) {
     return uintCompare(_UInt___get_data__impl_(this_0), _UInt___get_data__impl_(other));
@@ -3020,117 +4055,397 @@ this['out-ir'] = function (_) {
     return UInt__compareTo_impl_1(tmp, other instanceof UInt ? other._data_0 : THROW_CCE());
   }
   function UInt__compareTo_impl_3(this_0, other) {
-    var tmp0_compareTo_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
-    return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
+        break $l$block;
+      }
+      var tmp0_compareTo_0 = tmp$ret$0;
+      tmp$ret$1 = ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__plus_impl(this_0, other) {
-    var tmp0_plus_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return _UInt___init__impl_(_UInt___get_data__impl_(this_0) + _UInt___get_data__impl_(tmp0_plus_0) | 0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block;
+      }
+      var tmp0_plus_0 = tmp$ret$0;
+      tmp$ret$1 = _UInt___init__impl_(_UInt___get_data__impl_(this_0) + _UInt___get_data__impl_(tmp0_plus_0) | 0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__plus_impl_0(this_0, other) {
-    var tmp0_plus_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return _UInt___init__impl_(_UInt___get_data__impl_(this_0) + _UInt___get_data__impl_(tmp0_plus_0) | 0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block;
+      }
+      var tmp0_plus_0 = tmp$ret$0;
+      tmp$ret$1 = _UInt___init__impl_(_UInt___get_data__impl_(this_0) + _UInt___get_data__impl_(tmp0_plus_0) | 0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__plus_impl_1(this_0, other) {
     return _UInt___init__impl_(_UInt___get_data__impl_(this_0) + _UInt___get_data__impl_(other) | 0);
   }
   function UInt__plus_impl_2(this_0, other) {
-    var tmp0_plus_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus_wiekkq_k$(_ULong___get_data__impl_(other)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
+        break $l$block;
+      }
+      var tmp0_plus_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus_wiekkq_k$(_ULong___get_data__impl_(other)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__minus_impl(this_0, other) {
-    var tmp0_minus_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return _UInt___init__impl_(_UInt___get_data__impl_(this_0) - _UInt___get_data__impl_(tmp0_minus_0) | 0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block;
+      }
+      var tmp0_minus_0 = tmp$ret$0;
+      tmp$ret$1 = _UInt___init__impl_(_UInt___get_data__impl_(this_0) - _UInt___get_data__impl_(tmp0_minus_0) | 0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__minus_impl_0(this_0, other) {
-    var tmp0_minus_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return _UInt___init__impl_(_UInt___get_data__impl_(this_0) - _UInt___get_data__impl_(tmp0_minus_0) | 0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block;
+      }
+      var tmp0_minus_0 = tmp$ret$0;
+      tmp$ret$1 = _UInt___init__impl_(_UInt___get_data__impl_(this_0) - _UInt___get_data__impl_(tmp0_minus_0) | 0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__minus_impl_1(this_0, other) {
     return _UInt___init__impl_(_UInt___get_data__impl_(this_0) - _UInt___get_data__impl_(other) | 0);
   }
   function UInt__minus_impl_2(this_0, other) {
-    var tmp0_minus_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_minus_0).minus_wiekkq_k$(_ULong___get_data__impl_(other)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
+        break $l$block;
+      }
+      var tmp0_minus_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_minus_0).minus_wiekkq_k$(_ULong___get_data__impl_(other)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__times_impl(this_0, other) {
-    var tmp0_times_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return _UInt___init__impl_(imul(_UInt___get_data__impl_(this_0), _UInt___get_data__impl_(tmp0_times_0)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block;
+      }
+      var tmp0_times_0 = tmp$ret$0;
+      tmp$ret$1 = _UInt___init__impl_(imul(_UInt___get_data__impl_(this_0), _UInt___get_data__impl_(tmp0_times_0)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__times_impl_0(this_0, other) {
-    var tmp0_times_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return _UInt___init__impl_(imul(_UInt___get_data__impl_(this_0), _UInt___get_data__impl_(tmp0_times_0)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block;
+      }
+      var tmp0_times_0 = tmp$ret$0;
+      tmp$ret$1 = _UInt___init__impl_(imul(_UInt___get_data__impl_(this_0), _UInt___get_data__impl_(tmp0_times_0)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__times_impl_1(this_0, other) {
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(this_0), _UInt___get_data__impl_(other)));
   }
   function UInt__times_impl_2(this_0, other) {
-    var tmp0_times_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_times_0).times_wiekkq_k$(_ULong___get_data__impl_(other)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
+        break $l$block;
+      }
+      var tmp0_times_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_times_0).times_wiekkq_k$(_ULong___get_data__impl_(other)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__div_impl(this_0, other) {
-    var tmp0_div_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return uintDivide(this_0, tmp0_div_0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block;
+      }
+      var tmp0_div_0 = tmp$ret$0;
+      tmp$ret$1 = uintDivide(this_0, tmp0_div_0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__div_impl_0(this_0, other) {
-    var tmp0_div_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return uintDivide(this_0, tmp0_div_0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block;
+      }
+      var tmp0_div_0 = tmp$ret$0;
+      tmp$ret$1 = uintDivide(this_0, tmp0_div_0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__div_impl_1(this_0, other) {
     return uintDivide(this_0, other);
   }
   function UInt__div_impl_2(this_0, other) {
-    var tmp0_div_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
-    return ulongDivide(tmp0_div_0, other);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
+        break $l$block;
+      }
+      var tmp0_div_0 = tmp$ret$0;
+      tmp$ret$1 = ulongDivide(tmp0_div_0, other);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__rem_impl(this_0, other) {
-    var tmp0_rem_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return uintRemainder(this_0, tmp0_rem_0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block;
+      }
+      var tmp0_rem_0 = tmp$ret$0;
+      tmp$ret$1 = uintRemainder(this_0, tmp0_rem_0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__rem_impl_0(this_0, other) {
-    var tmp0_rem_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return uintRemainder(this_0, tmp0_rem_0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block;
+      }
+      var tmp0_rem_0 = tmp$ret$0;
+      tmp$ret$1 = uintRemainder(this_0, tmp0_rem_0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__rem_impl_1(this_0, other) {
     return uintRemainder(this_0, other);
   }
   function UInt__rem_impl_2(this_0, other) {
-    var tmp0_rem_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
-    return ulongRemainder(tmp0_rem_0, other);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
+        break $l$block;
+      }
+      var tmp0_rem_0 = tmp$ret$0;
+      tmp$ret$1 = ulongRemainder(tmp0_rem_0, other);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UInt__floorDiv_impl(this_0, other) {
-    var tmp0_floorDiv_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return uintDivide(this_0, tmp0_floorDiv_0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block;
+      }
+      var tmp0_floorDiv_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = uintDivide(this_0, tmp0_floorDiv_0);
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UInt__floorDiv_impl_0(this_0, other) {
-    var tmp0_floorDiv_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return uintDivide(this_0, tmp0_floorDiv_0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block;
+      }
+      var tmp0_floorDiv_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = uintDivide(this_0, tmp0_floorDiv_0);
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UInt__floorDiv_impl_1(this_0, other) {
-    return uintDivide(this_0, other);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = uintDivide(this_0, other);
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function UInt__floorDiv_impl_2(this_0, other) {
-    var tmp0_floorDiv_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
-    return ulongDivide(tmp0_floorDiv_0, other);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
+        break $l$block;
+      }
+      var tmp0_floorDiv_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = ulongDivide(tmp0_floorDiv_0, other);
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UInt__mod_impl(this_0, other) {
-    var tmp0_mod_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    var tmp2_toUByte_0 = uintRemainder(this_0, tmp0_mod_0);
-    var tmp1_toUByte_0 = _UInt___get_data__impl_(tmp2_toUByte_0);
-    return _UByte___init__impl_(toByte(tmp1_toUByte_0));
+    var tmp$ret$4;
+    $l$block_3: {
+      var tmp$ret$2;
+      $l$block_1: {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+          break $l$block;
+        }
+        var tmp0_mod_0 = tmp$ret$0;
+        var tmp$ret$1;
+        $l$block_0: {
+          tmp$ret$1 = uintRemainder(this_0, tmp0_mod_0);
+          break $l$block_0;
+        }
+        tmp$ret$2 = tmp$ret$1;
+        break $l$block_1;
+      }
+      var tmp2_toUByte_0 = tmp$ret$2;
+      var tmp$ret$3;
+      $l$block_2: {
+        var tmp1_toUByte_0 = _UInt___get_data__impl_(tmp2_toUByte_0);
+        tmp$ret$3 = _UByte___init__impl_(toByte(tmp1_toUByte_0));
+        break $l$block_2;
+      }
+      tmp$ret$4 = tmp$ret$3;
+      break $l$block_3;
+    }
+    return tmp$ret$4;
   }
   function UInt__mod_impl_0(this_0, other) {
-    var tmp0_mod_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    var tmp2_toUShort_0 = uintRemainder(this_0, tmp0_mod_0);
-    var tmp1_toUShort_0 = _UInt___get_data__impl_(tmp2_toUShort_0);
-    return _UShort___init__impl_(toShort(tmp1_toUShort_0));
+    var tmp$ret$4;
+    $l$block_3: {
+      var tmp$ret$2;
+      $l$block_1: {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+          break $l$block;
+        }
+        var tmp0_mod_0 = tmp$ret$0;
+        var tmp$ret$1;
+        $l$block_0: {
+          tmp$ret$1 = uintRemainder(this_0, tmp0_mod_0);
+          break $l$block_0;
+        }
+        tmp$ret$2 = tmp$ret$1;
+        break $l$block_1;
+      }
+      var tmp2_toUShort_0 = tmp$ret$2;
+      var tmp$ret$3;
+      $l$block_2: {
+        var tmp1_toUShort_0 = _UInt___get_data__impl_(tmp2_toUShort_0);
+        tmp$ret$3 = _UShort___init__impl_(toShort(tmp1_toUShort_0));
+        break $l$block_2;
+      }
+      tmp$ret$4 = tmp$ret$3;
+      break $l$block_3;
+    }
+    return tmp$ret$4;
   }
   function UInt__mod_impl_1(this_0, other) {
-    return uintRemainder(this_0, other);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = uintRemainder(this_0, other);
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function UInt__mod_impl_2(this_0, other) {
-    var tmp0_mod_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
-    return ulongRemainder(tmp0_mod_0, other);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
+        break $l$block;
+      }
+      var tmp0_mod_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = ulongRemainder(tmp0_mod_0, other);
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UInt__inc_impl(this_0) {
     return _UInt___init__impl_(_UInt___get_data__impl_(this_0) + 1 | 0);
@@ -3172,12 +4487,22 @@ this['out-ir'] = function (_) {
     return toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0));
   }
   function UInt__toUByte_impl(this_0) {
-    var tmp0_toUByte_0 = _UInt___get_data__impl_(this_0);
-    return _UByte___init__impl_(toByte(tmp0_toUByte_0));
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_toUByte_0 = _UInt___get_data__impl_(this_0);
+      tmp$ret$0 = _UByte___init__impl_(toByte(tmp0_toUByte_0));
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function UInt__toUShort_impl(this_0) {
-    var tmp0_toUShort_0 = _UInt___get_data__impl_(this_0);
-    return _UShort___init__impl_(toShort(tmp0_toUShort_0));
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_toUShort_0 = _UInt___get_data__impl_(this_0);
+      tmp$ret$0 = _UShort___init__impl_(toShort(tmp0_toUShort_0));
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function UInt__toUInt_impl(this_0) {
     return this_0;
@@ -3186,13 +4511,23 @@ this['out-ir'] = function (_) {
     return _ULong___init__impl_(toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)));
   }
   function UInt__toFloat_impl(this_0) {
-    return uintToDouble(_UInt___get_data__impl_(this_0));
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = uintToDouble(_UInt___get_data__impl_(this_0));
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function UInt__toDouble_impl(this_0) {
     return uintToDouble(_UInt___get_data__impl_(this_0));
   }
   function UInt__toString_impl(this_0) {
-    return toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0)).toString();
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = toLong(_UInt___get_data__impl_(this_0)).and_wiekkq_k$(new Long(-1, 0));
+      break $l$block;
+    }
+    return tmp$ret$0.toString();
   }
   function UInt__hashCode_impl(this_0) {
     return this_0;
@@ -3269,12 +4604,22 @@ this['out-ir'] = function (_) {
     return tmp;
   }
   function UIntArray__get_impl(this_0, index) {
-    var tmp0_toUInt_0 = _UIntArray___get_storage__impl_(this_0)[index];
-    return _UInt___init__impl_(tmp0_toUInt_0);
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_toUInt_0 = _UIntArray___get_storage__impl_(this_0)[index];
+      tmp$ret$0 = _UInt___init__impl_(tmp0_toUInt_0);
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function UIntArray__set_impl(this_0, index, value) {
     var tmp = _UIntArray___get_storage__impl_(this_0);
-    tmp[index] = _UInt___get_data__impl_(value);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UInt___get_data__impl_(value);
+      break $l$block;
+    }
+    tmp[index] = tmp$ret$0;
   }
   function _UIntArray___get_size__impl_(this_0) {
     return _UIntArray___get_storage__impl_(this_0).length;
@@ -3293,11 +4638,16 @@ this['out-ir'] = function (_) {
   Iterator_0.prototype.nextUInt_sv9k7v_k$ = function () {
     var tmp;
     if (this._index_1 < this._array_0.length) {
-      var tmp0_this = this;
-      var tmp1 = tmp0_this._index_1;
-      tmp0_this._index_1 = tmp1 + 1 | 0;
-      var tmp0_toUInt_0 = this._array_0[tmp1];
-      tmp = _UInt___init__impl_(tmp0_toUInt_0);
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_this = this;
+        var tmp1 = tmp0_this._index_1;
+        tmp0_this._index_1 = tmp1 + 1 | 0;
+        var tmp0_toUInt_0 = this._array_0[tmp1];
+        tmp$ret$0 = _UInt___init__impl_(tmp0_toUInt_0);
+        break $l$block;
+      }
+      tmp = tmp$ret$0;
     } else {
       throw NoSuchElementException_init_$Create$_0(this._index_1.toString());
     }
@@ -3315,7 +4665,12 @@ this['out-ir'] = function (_) {
     else {
     }
     var tmp_0 = _UIntArray___get_storage__impl_(this_0);
-    return contains_1(tmp_0, _UInt___get_data__impl_(element));
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UInt___get_data__impl_(element);
+      break $l$block;
+    }
+    return contains_1(tmp_0, tmp$ret$0);
   }
   function UIntArray__contains_impl_0(this_0, element) {
     if (!(element instanceof UInt))
@@ -3327,7 +4682,7 @@ this['out-ir'] = function (_) {
   }
   function UIntArray__containsAll_impl(this_0, elements) {
     var tmp$ret$0;
-    l$ret$1: do {
+    $l$block_3: {
       var tmp0_all_0 = isInterface(elements, Collection) ? elements : THROW_CCE();
       var tmp;
       if (isInterface(tmp0_all_0, Collection)) {
@@ -3339,31 +4694,41 @@ this['out-ir'] = function (_) {
       }
       if (tmp) {
         tmp$ret$0 = true;
-        break l$ret$1;
+        break $l$block_3;
       } else {
       }
       var tmp0_iterator_1 = tmp0_all_0.iterator_0_k$();
       while (tmp0_iterator_1.hasNext_0_k$()) {
         var element_2 = tmp0_iterator_1.next_0_k$();
-        var tmp_0;
-        if (element_2 instanceof UInt) {
-          var tmp_1 = _UIntArray___get_storage__impl_(this_0);
-          var tmp0_toInt_0_4 = element_2._data_0;
-          tmp_0 = contains_1(tmp_1, _UInt___get_data__impl_(tmp0_toInt_0_4));
-        } else {
-          {
-            tmp_0 = false;
+        var tmp$ret$2;
+        $l$block_1: {
+          var tmp_0;
+          if (element_2 instanceof UInt) {
+            var tmp_1 = _UIntArray___get_storage__impl_(this_0);
+            var tmp$ret$1;
+            $l$block_0: {
+              var tmp0_toInt_0_4 = element_2._data_0;
+              tmp$ret$1 = _UInt___get_data__impl_(tmp0_toInt_0_4);
+              break $l$block_0;
+            }
+            tmp_0 = contains_1(tmp_1, tmp$ret$1);
+          } else {
+            {
+              tmp_0 = false;
+            }
           }
+          tmp$ret$2 = tmp_0;
+          break $l$block_1;
         }
-        if (!tmp_0) {
+        if (!tmp$ret$2) {
           tmp$ret$0 = false;
-          break l$ret$1;
+          break $l$block_3;
         } else {
         }
       }
       tmp$ret$0 = true;
+      break $l$block_3;
     }
-     while (false);
     return tmp$ret$0;
   }
   function UIntArray__containsAll_impl_0(this_0, elements) {
@@ -3466,10 +4831,20 @@ this['out-ir'] = function (_) {
   };
   UIntRange.prototype.contains_wijjag_k$ = function (value) {
     var tmp;
-    var tmp0_compareTo_0 = this._get_first__sv9k7v_k$();
-    if (uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(value)) <= 0) {
-      var tmp1_compareTo_0 = this._get_last__sv9k7v_k$();
-      tmp = uintCompare(_UInt___get_data__impl_(value), _UInt___get_data__impl_(tmp1_compareTo_0)) <= 0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_compareTo_0 = this._get_first__sv9k7v_k$();
+      tmp$ret$0 = uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(value));
+      break $l$block;
+    }
+    if (tmp$ret$0 <= 0) {
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp1_compareTo_0 = this._get_last__sv9k7v_k$();
+        tmp$ret$1 = uintCompare(_UInt___get_data__impl_(value), _UInt___get_data__impl_(tmp1_compareTo_0));
+        break $l$block_0;
+      }
+      tmp = tmp$ret$1 <= 0;
     } else {
       {
         tmp = false;
@@ -3481,9 +4856,14 @@ this['out-ir'] = function (_) {
     return this.contains_wijjag_k$(value instanceof UInt ? value._data_0 : THROW_CCE());
   };
   UIntRange.prototype.isEmpty_0_k$ = function () {
-    var tmp0_compareTo_0 = this._get_first__sv9k7v_k$();
-    var tmp1_compareTo_0 = this._get_last__sv9k7v_k$();
-    return uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(tmp1_compareTo_0)) > 0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_compareTo_0 = this._get_first__sv9k7v_k$();
+      var tmp1_compareTo_0 = this._get_last__sv9k7v_k$();
+      tmp$ret$0 = uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(tmp1_compareTo_0));
+      break $l$block;
+    }
+    return tmp$ret$0 > 0;
   };
   UIntRange.prototype.equals = function (other) {
     var tmp;
@@ -3501,10 +4881,20 @@ this['out-ir'] = function (_) {
     if (this.isEmpty_0_k$()) {
       tmp = -1;
     } else {
-      var tmp0_toInt_0 = this._get_first__sv9k7v_k$();
-      var tmp_0 = imul(31, _UInt___get_data__impl_(tmp0_toInt_0));
-      var tmp1_toInt_0 = this._get_last__sv9k7v_k$();
-      tmp = tmp_0 + _UInt___get_data__impl_(tmp1_toInt_0) | 0;
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_toInt_0 = this._get_first__sv9k7v_k$();
+        tmp$ret$0 = _UInt___get_data__impl_(tmp0_toInt_0);
+        break $l$block;
+      }
+      var tmp_0 = imul(31, tmp$ret$0);
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp1_toInt_0 = this._get_last__sv9k7v_k$();
+        tmp$ret$1 = _UInt___get_data__impl_(tmp1_toInt_0);
+        break $l$block_0;
+      }
+      tmp = tmp_0 + tmp$ret$1 | 0;
     }
     return tmp;
   };
@@ -3558,13 +4948,23 @@ this['out-ir'] = function (_) {
   UIntProgression.prototype.isEmpty_0_k$ = function () {
     var tmp;
     if (this._step > 0) {
-      var tmp0_compareTo_0 = this._first;
-      var tmp1_compareTo_0 = this._last;
-      tmp = uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(tmp1_compareTo_0)) > 0;
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_compareTo_0 = this._first;
+        var tmp1_compareTo_0 = this._last;
+        tmp$ret$0 = uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(tmp1_compareTo_0));
+        break $l$block;
+      }
+      tmp = tmp$ret$0 > 0;
     } else {
-      var tmp2_compareTo_0 = this._first;
-      var tmp3_compareTo_0 = this._last;
-      tmp = uintCompare(_UInt___get_data__impl_(tmp2_compareTo_0), _UInt___get_data__impl_(tmp3_compareTo_0)) < 0;
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp2_compareTo_0 = this._first;
+        var tmp3_compareTo_0 = this._last;
+        tmp$ret$1 = uintCompare(_UInt___get_data__impl_(tmp2_compareTo_0), _UInt___get_data__impl_(tmp3_compareTo_0));
+        break $l$block_0;
+      }
+      tmp = tmp$ret$1 < 0;
     }
     return tmp;
   };
@@ -3584,10 +4984,20 @@ this['out-ir'] = function (_) {
     if (this.isEmpty_0_k$()) {
       tmp = -1;
     } else {
-      var tmp0_toInt_0 = this._first;
-      var tmp_0 = imul(31, _UInt___get_data__impl_(tmp0_toInt_0));
-      var tmp1_toInt_0 = this._last;
-      tmp = imul(31, tmp_0 + _UInt___get_data__impl_(tmp1_toInt_0) | 0) + this._step | 0;
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_toInt_0 = this._first;
+        tmp$ret$0 = _UInt___get_data__impl_(tmp0_toInt_0);
+        break $l$block;
+      }
+      var tmp_0 = imul(31, tmp$ret$0);
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp1_toInt_0 = this._last;
+        tmp$ret$1 = _UInt___get_data__impl_(tmp1_toInt_0);
+        break $l$block_0;
+      }
+      tmp = imul(31, tmp_0 + tmp$ret$1 | 0) + this._step | 0;
     }
     return tmp;
   };
@@ -3623,13 +5033,28 @@ this['out-ir'] = function (_) {
     var tmp = this;
     var tmp_0;
     if (step > 0) {
-      tmp_0 = uintCompare(_UInt___get_data__impl_(first), _UInt___get_data__impl_(last)) <= 0;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = uintCompare(_UInt___get_data__impl_(first), _UInt___get_data__impl_(last));
+        break $l$block;
+      }
+      tmp_0 = tmp$ret$0 <= 0;
     } else {
-      tmp_0 = uintCompare(_UInt___get_data__impl_(first), _UInt___get_data__impl_(last)) >= 0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = uintCompare(_UInt___get_data__impl_(first), _UInt___get_data__impl_(last));
+        break $l$block_0;
+      }
+      tmp_0 = tmp$ret$1 >= 0;
     }
     tmp._hasNext = tmp_0;
     var tmp_1 = this;
-    tmp_1._step_0 = _UInt___init__impl_(step);
+    var tmp$ret$2;
+    $l$block_1: {
+      tmp$ret$2 = _UInt___init__impl_(step);
+      break $l$block_1;
+    }
+    tmp_1._step_0 = tmp$ret$2;
     this._next = this._hasNext ? first : this._finalElement;
   }
   UIntProgressionIterator.prototype.hasNext_0_k$ = function () {
@@ -3644,9 +5069,14 @@ this['out-ir'] = function (_) {
     } else {
       var tmp0_this = this;
       var tmp = tmp0_this;
-      var tmp0_plus_0 = tmp0_this._next;
-      var tmp1_plus_0 = this._step_0;
-      tmp._next = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0) | 0);
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_plus_0 = tmp0_this._next;
+        var tmp1_plus_0 = this._step_0;
+        tmp$ret$0 = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0) | 0);
+        break $l$block;
+      }
+      tmp._next = tmp$ret$0;
     }
     return value;
   };
@@ -3744,16 +5174,46 @@ this['out-ir'] = function (_) {
     return Companion_instance_7;
   }
   function ULong__compareTo_impl(this_0, other) {
-    var tmp0_compareTo_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other)).and_wiekkq_k$(new Long(255, 0)));
-    return ulongCompare(_ULong___get_data__impl_(this_0), _ULong___get_data__impl_(tmp0_compareTo_0));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other)).and_wiekkq_k$(new Long(255, 0)));
+        break $l$block;
+      }
+      var tmp0_compareTo_0 = tmp$ret$0;
+      tmp$ret$1 = ulongCompare(_ULong___get_data__impl_(this_0), _ULong___get_data__impl_(tmp0_compareTo_0));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__compareTo_impl_0(this_0, other) {
-    var tmp0_compareTo_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other)).and_wiekkq_k$(new Long(65535, 0)));
-    return ulongCompare(_ULong___get_data__impl_(this_0), _ULong___get_data__impl_(tmp0_compareTo_0));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other)).and_wiekkq_k$(new Long(65535, 0)));
+        break $l$block;
+      }
+      var tmp0_compareTo_0 = tmp$ret$0;
+      tmp$ret$1 = ulongCompare(_ULong___get_data__impl_(this_0), _ULong___get_data__impl_(tmp0_compareTo_0));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__compareTo_impl_1(this_0, other) {
-    var tmp0_compareTo_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other)).and_wiekkq_k$(new Long(-1, 0)));
-    return ulongCompare(_ULong___get_data__impl_(this_0), _ULong___get_data__impl_(tmp0_compareTo_0));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other)).and_wiekkq_k$(new Long(-1, 0)));
+        break $l$block;
+      }
+      var tmp0_compareTo_0 = tmp$ret$0;
+      tmp$ret$1 = ulongCompare(_ULong___get_data__impl_(this_0), _ULong___get_data__impl_(tmp0_compareTo_0));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__compareTo_impl_2(this_0, other) {
     return ulongCompare(_ULong___get_data__impl_(this_0), _ULong___get_data__impl_(other));
@@ -3763,115 +5223,395 @@ this['out-ir'] = function (_) {
     return ULong__compareTo_impl_2(tmp, other instanceof ULong ? other._data_1 : THROW_CCE());
   }
   function ULong__plus_impl(this_0, other) {
-    var tmp0_plus_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other)).and_wiekkq_k$(new Long(255, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(this_0).plus_wiekkq_k$(_ULong___get_data__impl_(tmp0_plus_0)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other)).and_wiekkq_k$(new Long(255, 0)));
+        break $l$block;
+      }
+      var tmp0_plus_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(this_0).plus_wiekkq_k$(_ULong___get_data__impl_(tmp0_plus_0)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__plus_impl_0(this_0, other) {
-    var tmp0_plus_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other)).and_wiekkq_k$(new Long(65535, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(this_0).plus_wiekkq_k$(_ULong___get_data__impl_(tmp0_plus_0)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other)).and_wiekkq_k$(new Long(65535, 0)));
+        break $l$block;
+      }
+      var tmp0_plus_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(this_0).plus_wiekkq_k$(_ULong___get_data__impl_(tmp0_plus_0)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__plus_impl_1(this_0, other) {
-    var tmp0_plus_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other)).and_wiekkq_k$(new Long(-1, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(this_0).plus_wiekkq_k$(_ULong___get_data__impl_(tmp0_plus_0)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other)).and_wiekkq_k$(new Long(-1, 0)));
+        break $l$block;
+      }
+      var tmp0_plus_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(this_0).plus_wiekkq_k$(_ULong___get_data__impl_(tmp0_plus_0)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__plus_impl_2(this_0, other) {
     return _ULong___init__impl_(_ULong___get_data__impl_(this_0).plus_wiekkq_k$(_ULong___get_data__impl_(other)));
   }
   function ULong__minus_impl(this_0, other) {
-    var tmp0_minus_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other)).and_wiekkq_k$(new Long(255, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(this_0).minus_wiekkq_k$(_ULong___get_data__impl_(tmp0_minus_0)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other)).and_wiekkq_k$(new Long(255, 0)));
+        break $l$block;
+      }
+      var tmp0_minus_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(this_0).minus_wiekkq_k$(_ULong___get_data__impl_(tmp0_minus_0)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__minus_impl_0(this_0, other) {
-    var tmp0_minus_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other)).and_wiekkq_k$(new Long(65535, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(this_0).minus_wiekkq_k$(_ULong___get_data__impl_(tmp0_minus_0)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other)).and_wiekkq_k$(new Long(65535, 0)));
+        break $l$block;
+      }
+      var tmp0_minus_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(this_0).minus_wiekkq_k$(_ULong___get_data__impl_(tmp0_minus_0)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__minus_impl_1(this_0, other) {
-    var tmp0_minus_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other)).and_wiekkq_k$(new Long(-1, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(this_0).minus_wiekkq_k$(_ULong___get_data__impl_(tmp0_minus_0)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other)).and_wiekkq_k$(new Long(-1, 0)));
+        break $l$block;
+      }
+      var tmp0_minus_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(this_0).minus_wiekkq_k$(_ULong___get_data__impl_(tmp0_minus_0)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__minus_impl_2(this_0, other) {
     return _ULong___init__impl_(_ULong___get_data__impl_(this_0).minus_wiekkq_k$(_ULong___get_data__impl_(other)));
   }
   function ULong__times_impl(this_0, other) {
-    var tmp0_times_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other)).and_wiekkq_k$(new Long(255, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(this_0).times_wiekkq_k$(_ULong___get_data__impl_(tmp0_times_0)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other)).and_wiekkq_k$(new Long(255, 0)));
+        break $l$block;
+      }
+      var tmp0_times_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(this_0).times_wiekkq_k$(_ULong___get_data__impl_(tmp0_times_0)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__times_impl_0(this_0, other) {
-    var tmp0_times_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other)).and_wiekkq_k$(new Long(65535, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(this_0).times_wiekkq_k$(_ULong___get_data__impl_(tmp0_times_0)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other)).and_wiekkq_k$(new Long(65535, 0)));
+        break $l$block;
+      }
+      var tmp0_times_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(this_0).times_wiekkq_k$(_ULong___get_data__impl_(tmp0_times_0)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__times_impl_1(this_0, other) {
-    var tmp0_times_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other)).and_wiekkq_k$(new Long(-1, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(this_0).times_wiekkq_k$(_ULong___get_data__impl_(tmp0_times_0)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other)).and_wiekkq_k$(new Long(-1, 0)));
+        break $l$block;
+      }
+      var tmp0_times_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(this_0).times_wiekkq_k$(_ULong___get_data__impl_(tmp0_times_0)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__times_impl_2(this_0, other) {
     return _ULong___init__impl_(_ULong___get_data__impl_(this_0).times_wiekkq_k$(_ULong___get_data__impl_(other)));
   }
   function ULong__div_impl(this_0, other) {
-    var tmp0_div_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other)).and_wiekkq_k$(new Long(255, 0)));
-    return ulongDivide(this_0, tmp0_div_0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other)).and_wiekkq_k$(new Long(255, 0)));
+        break $l$block;
+      }
+      var tmp0_div_0 = tmp$ret$0;
+      tmp$ret$1 = ulongDivide(this_0, tmp0_div_0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__div_impl_0(this_0, other) {
-    var tmp0_div_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other)).and_wiekkq_k$(new Long(65535, 0)));
-    return ulongDivide(this_0, tmp0_div_0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other)).and_wiekkq_k$(new Long(65535, 0)));
+        break $l$block;
+      }
+      var tmp0_div_0 = tmp$ret$0;
+      tmp$ret$1 = ulongDivide(this_0, tmp0_div_0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__div_impl_1(this_0, other) {
-    var tmp0_div_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other)).and_wiekkq_k$(new Long(-1, 0)));
-    return ulongDivide(this_0, tmp0_div_0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other)).and_wiekkq_k$(new Long(-1, 0)));
+        break $l$block;
+      }
+      var tmp0_div_0 = tmp$ret$0;
+      tmp$ret$1 = ulongDivide(this_0, tmp0_div_0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__div_impl_2(this_0, other) {
     return ulongDivide(this_0, other);
   }
   function ULong__rem_impl(this_0, other) {
-    var tmp0_rem_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other)).and_wiekkq_k$(new Long(255, 0)));
-    return ulongRemainder(this_0, tmp0_rem_0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other)).and_wiekkq_k$(new Long(255, 0)));
+        break $l$block;
+      }
+      var tmp0_rem_0 = tmp$ret$0;
+      tmp$ret$1 = ulongRemainder(this_0, tmp0_rem_0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__rem_impl_0(this_0, other) {
-    var tmp0_rem_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other)).and_wiekkq_k$(new Long(65535, 0)));
-    return ulongRemainder(this_0, tmp0_rem_0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other)).and_wiekkq_k$(new Long(65535, 0)));
+        break $l$block;
+      }
+      var tmp0_rem_0 = tmp$ret$0;
+      tmp$ret$1 = ulongRemainder(this_0, tmp0_rem_0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__rem_impl_1(this_0, other) {
-    var tmp0_rem_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other)).and_wiekkq_k$(new Long(-1, 0)));
-    return ulongRemainder(this_0, tmp0_rem_0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other)).and_wiekkq_k$(new Long(-1, 0)));
+        break $l$block;
+      }
+      var tmp0_rem_0 = tmp$ret$0;
+      tmp$ret$1 = ulongRemainder(this_0, tmp0_rem_0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function ULong__rem_impl_2(this_0, other) {
     return ulongRemainder(this_0, other);
   }
   function ULong__floorDiv_impl(this_0, other) {
-    var tmp0_floorDiv_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other)).and_wiekkq_k$(new Long(255, 0)));
-    return ulongDivide(this_0, tmp0_floorDiv_0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other)).and_wiekkq_k$(new Long(255, 0)));
+        break $l$block;
+      }
+      var tmp0_floorDiv_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = ulongDivide(this_0, tmp0_floorDiv_0);
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function ULong__floorDiv_impl_0(this_0, other) {
-    var tmp0_floorDiv_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other)).and_wiekkq_k$(new Long(65535, 0)));
-    return ulongDivide(this_0, tmp0_floorDiv_0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other)).and_wiekkq_k$(new Long(65535, 0)));
+        break $l$block;
+      }
+      var tmp0_floorDiv_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = ulongDivide(this_0, tmp0_floorDiv_0);
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function ULong__floorDiv_impl_1(this_0, other) {
-    var tmp0_floorDiv_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other)).and_wiekkq_k$(new Long(-1, 0)));
-    return ulongDivide(this_0, tmp0_floorDiv_0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other)).and_wiekkq_k$(new Long(-1, 0)));
+        break $l$block;
+      }
+      var tmp0_floorDiv_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = ulongDivide(this_0, tmp0_floorDiv_0);
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function ULong__floorDiv_impl_2(this_0, other) {
-    return ulongDivide(this_0, other);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = ulongDivide(this_0, other);
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function ULong__mod_impl(this_0, other) {
-    var tmp0_mod_0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other)).and_wiekkq_k$(new Long(255, 0)));
-    var tmp2_toUByte_0 = ulongRemainder(this_0, tmp0_mod_0);
-    var tmp1_toUByte_0 = _ULong___get_data__impl_(tmp2_toUByte_0);
-    return _UByte___init__impl_(tmp1_toUByte_0.toByte_0_k$());
+    var tmp$ret$4;
+    $l$block_3: {
+      var tmp$ret$2;
+      $l$block_1: {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = _ULong___init__impl_(toLong(_UByte___get_data__impl_(other)).and_wiekkq_k$(new Long(255, 0)));
+          break $l$block;
+        }
+        var tmp0_mod_0 = tmp$ret$0;
+        var tmp$ret$1;
+        $l$block_0: {
+          tmp$ret$1 = ulongRemainder(this_0, tmp0_mod_0);
+          break $l$block_0;
+        }
+        tmp$ret$2 = tmp$ret$1;
+        break $l$block_1;
+      }
+      var tmp2_toUByte_0 = tmp$ret$2;
+      var tmp$ret$3;
+      $l$block_2: {
+        var tmp1_toUByte_0 = _ULong___get_data__impl_(tmp2_toUByte_0);
+        tmp$ret$3 = _UByte___init__impl_(tmp1_toUByte_0.toByte_0_k$());
+        break $l$block_2;
+      }
+      tmp$ret$4 = tmp$ret$3;
+      break $l$block_3;
+    }
+    return tmp$ret$4;
   }
   function ULong__mod_impl_0(this_0, other) {
-    var tmp0_mod_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other)).and_wiekkq_k$(new Long(65535, 0)));
-    var tmp2_toUShort_0 = ulongRemainder(this_0, tmp0_mod_0);
-    var tmp1_toUShort_0 = _ULong___get_data__impl_(tmp2_toUShort_0);
-    return _UShort___init__impl_(tmp1_toUShort_0.toShort_0_k$());
+    var tmp$ret$4;
+    $l$block_3: {
+      var tmp$ret$2;
+      $l$block_1: {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(other)).and_wiekkq_k$(new Long(65535, 0)));
+          break $l$block;
+        }
+        var tmp0_mod_0 = tmp$ret$0;
+        var tmp$ret$1;
+        $l$block_0: {
+          tmp$ret$1 = ulongRemainder(this_0, tmp0_mod_0);
+          break $l$block_0;
+        }
+        tmp$ret$2 = tmp$ret$1;
+        break $l$block_1;
+      }
+      var tmp2_toUShort_0 = tmp$ret$2;
+      var tmp$ret$3;
+      $l$block_2: {
+        var tmp1_toUShort_0 = _ULong___get_data__impl_(tmp2_toUShort_0);
+        tmp$ret$3 = _UShort___init__impl_(tmp1_toUShort_0.toShort_0_k$());
+        break $l$block_2;
+      }
+      tmp$ret$4 = tmp$ret$3;
+      break $l$block_3;
+    }
+    return tmp$ret$4;
   }
   function ULong__mod_impl_1(this_0, other) {
-    var tmp0_mod_0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other)).and_wiekkq_k$(new Long(-1, 0)));
-    var tmp2_toUInt_0 = ulongRemainder(this_0, tmp0_mod_0);
-    var tmp1_toUInt_0 = _ULong___get_data__impl_(tmp2_toUInt_0);
-    return _UInt___init__impl_(tmp1_toUInt_0.toInt_0_k$());
+    var tmp$ret$4;
+    $l$block_3: {
+      var tmp$ret$2;
+      $l$block_1: {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = _ULong___init__impl_(toLong(_UInt___get_data__impl_(other)).and_wiekkq_k$(new Long(-1, 0)));
+          break $l$block;
+        }
+        var tmp0_mod_0 = tmp$ret$0;
+        var tmp$ret$1;
+        $l$block_0: {
+          tmp$ret$1 = ulongRemainder(this_0, tmp0_mod_0);
+          break $l$block_0;
+        }
+        tmp$ret$2 = tmp$ret$1;
+        break $l$block_1;
+      }
+      var tmp2_toUInt_0 = tmp$ret$2;
+      var tmp$ret$3;
+      $l$block_2: {
+        var tmp1_toUInt_0 = _ULong___get_data__impl_(tmp2_toUInt_0);
+        tmp$ret$3 = _UInt___init__impl_(tmp1_toUInt_0.toInt_0_k$());
+        break $l$block_2;
+      }
+      tmp$ret$4 = tmp$ret$3;
+      break $l$block_3;
+    }
+    return tmp$ret$4;
   }
   function ULong__mod_impl_2(this_0, other) {
-    return ulongRemainder(this_0, other);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = ulongRemainder(this_0, other);
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function ULong__inc_impl(this_0) {
     return _ULong___init__impl_(_ULong___get_data__impl_(this_0).inc_0_k$());
@@ -3913,22 +5653,42 @@ this['out-ir'] = function (_) {
     return _ULong___get_data__impl_(this_0);
   }
   function ULong__toUByte_impl(this_0) {
-    var tmp0_toUByte_0 = _ULong___get_data__impl_(this_0);
-    return _UByte___init__impl_(tmp0_toUByte_0.toByte_0_k$());
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_toUByte_0 = _ULong___get_data__impl_(this_0);
+      tmp$ret$0 = _UByte___init__impl_(tmp0_toUByte_0.toByte_0_k$());
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function ULong__toUShort_impl(this_0) {
-    var tmp0_toUShort_0 = _ULong___get_data__impl_(this_0);
-    return _UShort___init__impl_(tmp0_toUShort_0.toShort_0_k$());
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_toUShort_0 = _ULong___get_data__impl_(this_0);
+      tmp$ret$0 = _UShort___init__impl_(tmp0_toUShort_0.toShort_0_k$());
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function ULong__toUInt_impl(this_0) {
-    var tmp0_toUInt_0 = _ULong___get_data__impl_(this_0);
-    return _UInt___init__impl_(tmp0_toUInt_0.toInt_0_k$());
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_toUInt_0 = _ULong___get_data__impl_(this_0);
+      tmp$ret$0 = _UInt___init__impl_(tmp0_toUInt_0.toInt_0_k$());
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function ULong__toULong_impl(this_0) {
     return this_0;
   }
   function ULong__toFloat_impl(this_0) {
-    return ulongToDouble(_ULong___get_data__impl_(this_0));
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = ulongToDouble(_ULong___get_data__impl_(this_0));
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function ULong__toDouble_impl(this_0) {
     return ulongToDouble(_ULong___get_data__impl_(this_0));
@@ -4011,12 +5771,22 @@ this['out-ir'] = function (_) {
     return tmp;
   }
   function ULongArray__get_impl(this_0, index) {
-    var tmp0_toULong_0 = _ULongArray___get_storage__impl_(this_0)[index];
-    return _ULong___init__impl_(tmp0_toULong_0);
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_toULong_0 = _ULongArray___get_storage__impl_(this_0)[index];
+      tmp$ret$0 = _ULong___init__impl_(tmp0_toULong_0);
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function ULongArray__set_impl(this_0, index, value) {
     var tmp = _ULongArray___get_storage__impl_(this_0);
-    tmp[index] = _ULong___get_data__impl_(value);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _ULong___get_data__impl_(value);
+      break $l$block;
+    }
+    tmp[index] = tmp$ret$0;
   }
   function _ULongArray___get_size__impl_(this_0) {
     return _ULongArray___get_storage__impl_(this_0).length;
@@ -4035,11 +5805,16 @@ this['out-ir'] = function (_) {
   Iterator_1.prototype.nextULong_sha8jq_k$ = function () {
     var tmp;
     if (this._index_2 < this._array_1.length) {
-      var tmp0_this = this;
-      var tmp1 = tmp0_this._index_2;
-      tmp0_this._index_2 = tmp1 + 1 | 0;
-      var tmp0_toULong_0 = this._array_1[tmp1];
-      tmp = _ULong___init__impl_(tmp0_toULong_0);
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_this = this;
+        var tmp1 = tmp0_this._index_2;
+        tmp0_this._index_2 = tmp1 + 1 | 0;
+        var tmp0_toULong_0 = this._array_1[tmp1];
+        tmp$ret$0 = _ULong___init__impl_(tmp0_toULong_0);
+        break $l$block;
+      }
+      tmp = tmp$ret$0;
     } else {
       throw NoSuchElementException_init_$Create$_0(this._index_2.toString());
     }
@@ -4057,7 +5832,12 @@ this['out-ir'] = function (_) {
     else {
     }
     var tmp_0 = _ULongArray___get_storage__impl_(this_0);
-    return contains_2(tmp_0, _ULong___get_data__impl_(element));
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _ULong___get_data__impl_(element);
+      break $l$block;
+    }
+    return contains_2(tmp_0, tmp$ret$0);
   }
   function ULongArray__contains_impl_0(this_0, element) {
     if (!(element instanceof ULong))
@@ -4069,7 +5849,7 @@ this['out-ir'] = function (_) {
   }
   function ULongArray__containsAll_impl(this_0, elements) {
     var tmp$ret$0;
-    l$ret$1: do {
+    $l$block_3: {
       var tmp0_all_0 = isInterface(elements, Collection) ? elements : THROW_CCE();
       var tmp;
       if (isInterface(tmp0_all_0, Collection)) {
@@ -4081,31 +5861,41 @@ this['out-ir'] = function (_) {
       }
       if (tmp) {
         tmp$ret$0 = true;
-        break l$ret$1;
+        break $l$block_3;
       } else {
       }
       var tmp0_iterator_1 = tmp0_all_0.iterator_0_k$();
       while (tmp0_iterator_1.hasNext_0_k$()) {
         var element_2 = tmp0_iterator_1.next_0_k$();
-        var tmp_0;
-        if (element_2 instanceof ULong) {
-          var tmp_1 = _ULongArray___get_storage__impl_(this_0);
-          var tmp0_toLong_0_4 = element_2._data_1;
-          tmp_0 = contains_2(tmp_1, _ULong___get_data__impl_(tmp0_toLong_0_4));
-        } else {
-          {
-            tmp_0 = false;
+        var tmp$ret$2;
+        $l$block_1: {
+          var tmp_0;
+          if (element_2 instanceof ULong) {
+            var tmp_1 = _ULongArray___get_storage__impl_(this_0);
+            var tmp$ret$1;
+            $l$block_0: {
+              var tmp0_toLong_0_4 = element_2._data_1;
+              tmp$ret$1 = _ULong___get_data__impl_(tmp0_toLong_0_4);
+              break $l$block_0;
+            }
+            tmp_0 = contains_2(tmp_1, tmp$ret$1);
+          } else {
+            {
+              tmp_0 = false;
+            }
           }
+          tmp$ret$2 = tmp_0;
+          break $l$block_1;
         }
-        if (!tmp_0) {
+        if (!tmp$ret$2) {
           tmp$ret$0 = false;
-          break l$ret$1;
+          break $l$block_3;
         } else {
         }
       }
       tmp$ret$0 = true;
+      break $l$block_3;
     }
-     while (false);
     return tmp$ret$0;
   }
   function ULongArray__containsAll_impl_0(this_0, elements) {
@@ -4208,10 +5998,20 @@ this['out-ir'] = function (_) {
   };
   ULongRange.prototype.contains_djarz7_k$ = function (value) {
     var tmp;
-    var tmp0_compareTo_0 = this._get_first__sha8jq_k$();
-    if (ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(value)) <= 0) {
-      var tmp1_compareTo_0 = this._get_last__sha8jq_k$();
-      tmp = ulongCompare(_ULong___get_data__impl_(value), _ULong___get_data__impl_(tmp1_compareTo_0)) <= 0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_compareTo_0 = this._get_first__sha8jq_k$();
+      tmp$ret$0 = ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(value));
+      break $l$block;
+    }
+    if (tmp$ret$0 <= 0) {
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp1_compareTo_0 = this._get_last__sha8jq_k$();
+        tmp$ret$1 = ulongCompare(_ULong___get_data__impl_(value), _ULong___get_data__impl_(tmp1_compareTo_0));
+        break $l$block_0;
+      }
+      tmp = tmp$ret$1 <= 0;
     } else {
       {
         tmp = false;
@@ -4223,9 +6023,14 @@ this['out-ir'] = function (_) {
     return this.contains_djarz7_k$(value instanceof ULong ? value._data_1 : THROW_CCE());
   };
   ULongRange.prototype.isEmpty_0_k$ = function () {
-    var tmp0_compareTo_0 = this._get_first__sha8jq_k$();
-    var tmp1_compareTo_0 = this._get_last__sha8jq_k$();
-    return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(tmp1_compareTo_0)) > 0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_compareTo_0 = this._get_first__sha8jq_k$();
+      var tmp1_compareTo_0 = this._get_last__sha8jq_k$();
+      tmp$ret$0 = ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(tmp1_compareTo_0));
+      break $l$block;
+    }
+    return tmp$ret$0 > 0;
   };
   ULongRange.prototype.equals = function (other) {
     var tmp;
@@ -4243,16 +6048,46 @@ this['out-ir'] = function (_) {
     if (this.isEmpty_0_k$()) {
       tmp = -1;
     } else {
-      var tmp1_xor_0 = this._get_first__sha8jq_k$();
-      var tmp0_shr_0 = this._get_first__sha8jq_k$();
-      var tmp2_xor_0 = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_shr_0).ushr_ha5a7z_k$(32));
-      var tmp3_toInt_0 = _ULong___init__impl_(_ULong___get_data__impl_(tmp1_xor_0).xor_wiekkq_k$(_ULong___get_data__impl_(tmp2_xor_0)));
-      var tmp_0 = imul(31, _ULong___get_data__impl_(tmp3_toInt_0).toInt_0_k$());
-      var tmp5_xor_0 = this._get_last__sha8jq_k$();
-      var tmp4_shr_0 = this._get_last__sha8jq_k$();
-      var tmp6_xor_0 = _ULong___init__impl_(_ULong___get_data__impl_(tmp4_shr_0).ushr_ha5a7z_k$(32));
-      var tmp7_toInt_0 = _ULong___init__impl_(_ULong___get_data__impl_(tmp5_xor_0).xor_wiekkq_k$(_ULong___get_data__impl_(tmp6_xor_0)));
-      tmp = tmp_0 + _ULong___get_data__impl_(tmp7_toInt_0).toInt_0_k$() | 0;
+      var tmp$ret$2;
+      $l$block_1: {
+        var tmp$ret$1;
+        $l$block_0: {
+          var tmp1_xor_0 = this._get_first__sha8jq_k$();
+          var tmp$ret$0;
+          $l$block: {
+            var tmp0_shr_0 = this._get_first__sha8jq_k$();
+            tmp$ret$0 = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_shr_0).ushr_ha5a7z_k$(32));
+            break $l$block;
+          }
+          var tmp2_xor_0 = tmp$ret$0;
+          tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(tmp1_xor_0).xor_wiekkq_k$(_ULong___get_data__impl_(tmp2_xor_0)));
+          break $l$block_0;
+        }
+        var tmp3_toInt_0 = tmp$ret$1;
+        tmp$ret$2 = _ULong___get_data__impl_(tmp3_toInt_0).toInt_0_k$();
+        break $l$block_1;
+      }
+      var tmp_0 = imul(31, tmp$ret$2);
+      var tmp$ret$5;
+      $l$block_4: {
+        var tmp$ret$4;
+        $l$block_3: {
+          var tmp5_xor_0 = this._get_last__sha8jq_k$();
+          var tmp$ret$3;
+          $l$block_2: {
+            var tmp4_shr_0 = this._get_last__sha8jq_k$();
+            tmp$ret$3 = _ULong___init__impl_(_ULong___get_data__impl_(tmp4_shr_0).ushr_ha5a7z_k$(32));
+            break $l$block_2;
+          }
+          var tmp6_xor_0 = tmp$ret$3;
+          tmp$ret$4 = _ULong___init__impl_(_ULong___get_data__impl_(tmp5_xor_0).xor_wiekkq_k$(_ULong___get_data__impl_(tmp6_xor_0)));
+          break $l$block_3;
+        }
+        var tmp7_toInt_0 = tmp$ret$4;
+        tmp$ret$5 = _ULong___get_data__impl_(tmp7_toInt_0).toInt_0_k$();
+        break $l$block_4;
+      }
+      tmp = tmp_0 + tmp$ret$5 | 0;
     }
     return tmp;
   };
@@ -4309,13 +6144,23 @@ this['out-ir'] = function (_) {
   ULongProgression.prototype.isEmpty_0_k$ = function () {
     var tmp;
     if (this._step_1.compareTo_wiekkq_k$(new Long(0, 0)) > 0) {
-      var tmp0_compareTo_0 = this._first_0;
-      var tmp1_compareTo_0 = this._last_0;
-      tmp = ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(tmp1_compareTo_0)) > 0;
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_compareTo_0 = this._first_0;
+        var tmp1_compareTo_0 = this._last_0;
+        tmp$ret$0 = ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(tmp1_compareTo_0));
+        break $l$block;
+      }
+      tmp = tmp$ret$0 > 0;
     } else {
-      var tmp2_compareTo_0 = this._first_0;
-      var tmp3_compareTo_0 = this._last_0;
-      tmp = ulongCompare(_ULong___get_data__impl_(tmp2_compareTo_0), _ULong___get_data__impl_(tmp3_compareTo_0)) < 0;
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp2_compareTo_0 = this._first_0;
+        var tmp3_compareTo_0 = this._last_0;
+        tmp$ret$1 = ulongCompare(_ULong___get_data__impl_(tmp2_compareTo_0), _ULong___get_data__impl_(tmp3_compareTo_0));
+        break $l$block_0;
+      }
+      tmp = tmp$ret$1 < 0;
     }
     return tmp;
   };
@@ -4335,16 +6180,46 @@ this['out-ir'] = function (_) {
     if (this.isEmpty_0_k$()) {
       tmp = -1;
     } else {
-      var tmp1_xor_0 = this._first_0;
-      var tmp0_shr_0 = this._first_0;
-      var tmp2_xor_0 = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_shr_0).ushr_ha5a7z_k$(32));
-      var tmp3_toInt_0 = _ULong___init__impl_(_ULong___get_data__impl_(tmp1_xor_0).xor_wiekkq_k$(_ULong___get_data__impl_(tmp2_xor_0)));
-      var tmp_0 = imul(31, _ULong___get_data__impl_(tmp3_toInt_0).toInt_0_k$());
-      var tmp5_xor_0 = this._last_0;
-      var tmp4_shr_0 = this._last_0;
-      var tmp6_xor_0 = _ULong___init__impl_(_ULong___get_data__impl_(tmp4_shr_0).ushr_ha5a7z_k$(32));
-      var tmp7_toInt_0 = _ULong___init__impl_(_ULong___get_data__impl_(tmp5_xor_0).xor_wiekkq_k$(_ULong___get_data__impl_(tmp6_xor_0)));
-      tmp = imul(31, tmp_0 + _ULong___get_data__impl_(tmp7_toInt_0).toInt_0_k$() | 0) + this._step_1.xor_wiekkq_k$(this._step_1.ushr_ha5a7z_k$(32)).toInt_0_k$() | 0;
+      var tmp$ret$2;
+      $l$block_1: {
+        var tmp$ret$1;
+        $l$block_0: {
+          var tmp1_xor_0 = this._first_0;
+          var tmp$ret$0;
+          $l$block: {
+            var tmp0_shr_0 = this._first_0;
+            tmp$ret$0 = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_shr_0).ushr_ha5a7z_k$(32));
+            break $l$block;
+          }
+          var tmp2_xor_0 = tmp$ret$0;
+          tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(tmp1_xor_0).xor_wiekkq_k$(_ULong___get_data__impl_(tmp2_xor_0)));
+          break $l$block_0;
+        }
+        var tmp3_toInt_0 = tmp$ret$1;
+        tmp$ret$2 = _ULong___get_data__impl_(tmp3_toInt_0).toInt_0_k$();
+        break $l$block_1;
+      }
+      var tmp_0 = imul(31, tmp$ret$2);
+      var tmp$ret$5;
+      $l$block_4: {
+        var tmp$ret$4;
+        $l$block_3: {
+          var tmp5_xor_0 = this._last_0;
+          var tmp$ret$3;
+          $l$block_2: {
+            var tmp4_shr_0 = this._last_0;
+            tmp$ret$3 = _ULong___init__impl_(_ULong___get_data__impl_(tmp4_shr_0).ushr_ha5a7z_k$(32));
+            break $l$block_2;
+          }
+          var tmp6_xor_0 = tmp$ret$3;
+          tmp$ret$4 = _ULong___init__impl_(_ULong___get_data__impl_(tmp5_xor_0).xor_wiekkq_k$(_ULong___get_data__impl_(tmp6_xor_0)));
+          break $l$block_3;
+        }
+        var tmp7_toInt_0 = tmp$ret$4;
+        tmp$ret$5 = _ULong___get_data__impl_(tmp7_toInt_0).toInt_0_k$();
+        break $l$block_4;
+      }
+      tmp = imul(31, tmp_0 + tmp$ret$5 | 0) + this._step_1.xor_wiekkq_k$(this._step_1.ushr_ha5a7z_k$(32)).toInt_0_k$() | 0;
     }
     return tmp;
   };
@@ -4380,13 +6255,28 @@ this['out-ir'] = function (_) {
     var tmp = this;
     var tmp_0;
     if (step.compareTo_wiekkq_k$(new Long(0, 0)) > 0) {
-      tmp_0 = ulongCompare(_ULong___get_data__impl_(first), _ULong___get_data__impl_(last)) <= 0;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = ulongCompare(_ULong___get_data__impl_(first), _ULong___get_data__impl_(last));
+        break $l$block;
+      }
+      tmp_0 = tmp$ret$0 <= 0;
     } else {
-      tmp_0 = ulongCompare(_ULong___get_data__impl_(first), _ULong___get_data__impl_(last)) >= 0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = ulongCompare(_ULong___get_data__impl_(first), _ULong___get_data__impl_(last));
+        break $l$block_0;
+      }
+      tmp_0 = tmp$ret$1 >= 0;
     }
     tmp._hasNext_0 = tmp_0;
     var tmp_1 = this;
-    tmp_1._step_2 = _ULong___init__impl_(step);
+    var tmp$ret$2;
+    $l$block_1: {
+      tmp$ret$2 = _ULong___init__impl_(step);
+      break $l$block_1;
+    }
+    tmp_1._step_2 = tmp$ret$2;
     this._next_0 = this._hasNext_0 ? first : this._finalElement_0;
   }
   ULongProgressionIterator.prototype.hasNext_0_k$ = function () {
@@ -4401,9 +6291,14 @@ this['out-ir'] = function (_) {
     } else {
       var tmp0_this = this;
       var tmp = tmp0_this;
-      var tmp0_plus_0 = tmp0_this._next_0;
-      var tmp1_plus_0 = this._step_2;
-      tmp._next_0 = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus_wiekkq_k$(_ULong___get_data__impl_(tmp1_plus_0)));
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_plus_0 = tmp0_this._next_0;
+        var tmp1_plus_0 = this._step_2;
+        tmp$ret$0 = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus_wiekkq_k$(_ULong___get_data__impl_(tmp1_plus_0)));
+        break $l$block;
+      }
+      tmp._next_0 = tmp$ret$0;
     }
     return value;
   };
@@ -4416,24 +6311,54 @@ this['out-ir'] = function (_) {
     var tmp;
     if (step > 0) {
       var tmp_0;
-      if (uintCompare(_UInt___get_data__impl_(start), _UInt___get_data__impl_(end)) >= 0) {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = uintCompare(_UInt___get_data__impl_(start), _UInt___get_data__impl_(end));
+        break $l$block;
+      }
+      if (tmp$ret$0 >= 0) {
         tmp_0 = end;
       } else {
         {
-          var tmp0_minus_0 = differenceModulo(end, start, _UInt___init__impl_(step));
-          tmp_0 = _UInt___init__impl_(_UInt___get_data__impl_(end) - _UInt___get_data__impl_(tmp0_minus_0) | 0);
+          var tmp$ret$2;
+          $l$block_1: {
+            var tmp$ret$1;
+            $l$block_0: {
+              tmp$ret$1 = _UInt___init__impl_(step);
+              break $l$block_0;
+            }
+            var tmp0_minus_0 = differenceModulo(end, start, tmp$ret$1);
+            tmp$ret$2 = _UInt___init__impl_(_UInt___get_data__impl_(end) - _UInt___get_data__impl_(tmp0_minus_0) | 0);
+            break $l$block_1;
+          }
+          tmp_0 = tmp$ret$2;
         }
       }
       tmp = tmp_0;
     } else if (step < 0) {
       var tmp_1;
-      if (uintCompare(_UInt___get_data__impl_(start), _UInt___get_data__impl_(end)) <= 0) {
+      var tmp$ret$3;
+      $l$block_2: {
+        tmp$ret$3 = uintCompare(_UInt___get_data__impl_(start), _UInt___get_data__impl_(end));
+        break $l$block_2;
+      }
+      if (tmp$ret$3 <= 0) {
         tmp_1 = end;
       } else {
         {
-          var tmp1_toUInt_0 = -step | 0;
-          var tmp2_plus_0 = differenceModulo(start, end, _UInt___init__impl_(tmp1_toUInt_0));
-          tmp_1 = _UInt___init__impl_(_UInt___get_data__impl_(end) + _UInt___get_data__impl_(tmp2_plus_0) | 0);
+          var tmp$ret$5;
+          $l$block_4: {
+            var tmp$ret$4;
+            $l$block_3: {
+              var tmp1_toUInt_0 = -step | 0;
+              tmp$ret$4 = _UInt___init__impl_(tmp1_toUInt_0);
+              break $l$block_3;
+            }
+            var tmp2_plus_0 = differenceModulo(start, end, tmp$ret$4);
+            tmp$ret$5 = _UInt___init__impl_(_UInt___get_data__impl_(end) + _UInt___get_data__impl_(tmp2_plus_0) | 0);
+            break $l$block_4;
+          }
+          tmp_1 = tmp$ret$5;
         }
       }
       tmp = tmp_1;
@@ -4446,24 +6371,54 @@ this['out-ir'] = function (_) {
     var tmp;
     if (step.compareTo_wiekkq_k$(new Long(0, 0)) > 0) {
       var tmp_0;
-      if (ulongCompare(_ULong___get_data__impl_(start), _ULong___get_data__impl_(end)) >= 0) {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = ulongCompare(_ULong___get_data__impl_(start), _ULong___get_data__impl_(end));
+        break $l$block;
+      }
+      if (tmp$ret$0 >= 0) {
         tmp_0 = end;
       } else {
         {
-          var tmp0_minus_0 = differenceModulo_0(end, start, _ULong___init__impl_(step));
-          tmp_0 = _ULong___init__impl_(_ULong___get_data__impl_(end).minus_wiekkq_k$(_ULong___get_data__impl_(tmp0_minus_0)));
+          var tmp$ret$2;
+          $l$block_1: {
+            var tmp$ret$1;
+            $l$block_0: {
+              tmp$ret$1 = _ULong___init__impl_(step);
+              break $l$block_0;
+            }
+            var tmp0_minus_0 = differenceModulo_0(end, start, tmp$ret$1);
+            tmp$ret$2 = _ULong___init__impl_(_ULong___get_data__impl_(end).minus_wiekkq_k$(_ULong___get_data__impl_(tmp0_minus_0)));
+            break $l$block_1;
+          }
+          tmp_0 = tmp$ret$2;
         }
       }
       tmp = tmp_0;
     } else if (step.compareTo_wiekkq_k$(new Long(0, 0)) < 0) {
       var tmp_1;
-      if (ulongCompare(_ULong___get_data__impl_(start), _ULong___get_data__impl_(end)) <= 0) {
+      var tmp$ret$3;
+      $l$block_2: {
+        tmp$ret$3 = ulongCompare(_ULong___get_data__impl_(start), _ULong___get_data__impl_(end));
+        break $l$block_2;
+      }
+      if (tmp$ret$3 <= 0) {
         tmp_1 = end;
       } else {
         {
-          var tmp1_toULong_0 = step.unaryMinus_0_k$();
-          var tmp2_plus_0 = differenceModulo_0(start, end, _ULong___init__impl_(tmp1_toULong_0));
-          tmp_1 = _ULong___init__impl_(_ULong___get_data__impl_(end).plus_wiekkq_k$(_ULong___get_data__impl_(tmp2_plus_0)));
+          var tmp$ret$5;
+          $l$block_4: {
+            var tmp$ret$4;
+            $l$block_3: {
+              var tmp1_toULong_0 = step.unaryMinus_0_k$();
+              tmp$ret$4 = _ULong___init__impl_(tmp1_toULong_0);
+              break $l$block_3;
+            }
+            var tmp2_plus_0 = differenceModulo_0(start, end, tmp$ret$4);
+            tmp$ret$5 = _ULong___init__impl_(_ULong___get_data__impl_(end).plus_wiekkq_k$(_ULong___get_data__impl_(tmp2_plus_0)));
+            break $l$block_4;
+          }
+          tmp_1 = tmp$ret$5;
         }
       }
       tmp = tmp_1;
@@ -4473,29 +6428,89 @@ this['out-ir'] = function (_) {
     return tmp;
   }
   function differenceModulo(a_0, b_0, c) {
-    var ac = uintRemainder(a_0, c);
-    var bc = uintRemainder(b_0, c);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = uintRemainder(a_0, c);
+      break $l$block;
+    }
+    var ac = tmp$ret$0;
+    var tmp$ret$1;
+    $l$block_0: {
+      tmp$ret$1 = uintRemainder(b_0, c);
+      break $l$block_0;
+    }
+    var bc = tmp$ret$1;
     var tmp;
-    if (uintCompare(_UInt___get_data__impl_(ac), _UInt___get_data__impl_(bc)) >= 0) {
-      tmp = _UInt___init__impl_(_UInt___get_data__impl_(ac) - _UInt___get_data__impl_(bc) | 0);
+    var tmp$ret$2;
+    $l$block_1: {
+      tmp$ret$2 = uintCompare(_UInt___get_data__impl_(ac), _UInt___get_data__impl_(bc));
+      break $l$block_1;
+    }
+    if (tmp$ret$2 >= 0) {
+      var tmp$ret$3;
+      $l$block_2: {
+        tmp$ret$3 = _UInt___init__impl_(_UInt___get_data__impl_(ac) - _UInt___get_data__impl_(bc) | 0);
+        break $l$block_2;
+      }
+      tmp = tmp$ret$3;
     } else {
       {
-        var tmp0_plus_0 = _UInt___init__impl_(_UInt___get_data__impl_(ac) - _UInt___get_data__impl_(bc) | 0);
-        tmp = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(c) | 0);
+        var tmp$ret$5;
+        $l$block_4: {
+          var tmp$ret$4;
+          $l$block_3: {
+            tmp$ret$4 = _UInt___init__impl_(_UInt___get_data__impl_(ac) - _UInt___get_data__impl_(bc) | 0);
+            break $l$block_3;
+          }
+          var tmp0_plus_0 = tmp$ret$4;
+          tmp$ret$5 = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(c) | 0);
+          break $l$block_4;
+        }
+        tmp = tmp$ret$5;
       }
     }
     return tmp;
   }
   function differenceModulo_0(a_0, b_0, c) {
-    var ac = ulongRemainder(a_0, c);
-    var bc = ulongRemainder(b_0, c);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = ulongRemainder(a_0, c);
+      break $l$block;
+    }
+    var ac = tmp$ret$0;
+    var tmp$ret$1;
+    $l$block_0: {
+      tmp$ret$1 = ulongRemainder(b_0, c);
+      break $l$block_0;
+    }
+    var bc = tmp$ret$1;
     var tmp;
-    if (ulongCompare(_ULong___get_data__impl_(ac), _ULong___get_data__impl_(bc)) >= 0) {
-      tmp = _ULong___init__impl_(_ULong___get_data__impl_(ac).minus_wiekkq_k$(_ULong___get_data__impl_(bc)));
+    var tmp$ret$2;
+    $l$block_1: {
+      tmp$ret$2 = ulongCompare(_ULong___get_data__impl_(ac), _ULong___get_data__impl_(bc));
+      break $l$block_1;
+    }
+    if (tmp$ret$2 >= 0) {
+      var tmp$ret$3;
+      $l$block_2: {
+        tmp$ret$3 = _ULong___init__impl_(_ULong___get_data__impl_(ac).minus_wiekkq_k$(_ULong___get_data__impl_(bc)));
+        break $l$block_2;
+      }
+      tmp = tmp$ret$3;
     } else {
       {
-        var tmp0_plus_0 = _ULong___init__impl_(_ULong___get_data__impl_(ac).minus_wiekkq_k$(_ULong___get_data__impl_(bc)));
-        tmp = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus_wiekkq_k$(_ULong___get_data__impl_(c)));
+        var tmp$ret$5;
+        $l$block_4: {
+          var tmp$ret$4;
+          $l$block_3: {
+            tmp$ret$4 = _ULong___init__impl_(_ULong___get_data__impl_(ac).minus_wiekkq_k$(_ULong___get_data__impl_(bc)));
+            break $l$block_3;
+          }
+          var tmp0_plus_0 = tmp$ret$4;
+          tmp$ret$5 = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus_wiekkq_k$(_ULong___get_data__impl_(c)));
+          break $l$block_4;
+        }
+        tmp = tmp$ret$5;
       }
     }
     return tmp;
@@ -4537,154 +6552,604 @@ this['out-ir'] = function (_) {
     return Companion_instance_10;
   }
   function UShort__compareTo_impl(this_0, other) {
-    var tmp = _UShort___get_data__impl_(this_0) & 65535;
-    return compareTo_0(tmp, _UByte___get_data__impl_(other) & 255);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UShort___get_data__impl_(this_0) & 65535;
+      break $l$block;
+    }
+    var tmp = tmp$ret$0;
+    var tmp$ret$1;
+    $l$block_0: {
+      tmp$ret$1 = _UByte___get_data__impl_(other) & 255;
+      break $l$block_0;
+    }
+    return compareTo_0(tmp, tmp$ret$1);
   }
   function UShort__compareTo_impl_0(this_0, other) {
-    var tmp = _UShort___get_data__impl_(this_0) & 65535;
-    return compareTo_0(tmp, _UShort___get_data__impl_(other) & 65535);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UShort___get_data__impl_(this_0) & 65535;
+      break $l$block;
+    }
+    var tmp = tmp$ret$0;
+    var tmp$ret$1;
+    $l$block_0: {
+      tmp$ret$1 = _UShort___get_data__impl_(other) & 65535;
+      break $l$block_0;
+    }
+    return compareTo_0(tmp, tmp$ret$1);
   }
   function UShort__compareTo_impl_1(this_0, other) {
     var tmp = this_0._data_2;
     return UShort__compareTo_impl_0(tmp, other instanceof UShort ? other._data_2 : THROW_CCE());
   }
   function UShort__compareTo_impl_2(this_0, other) {
-    var tmp0_compareTo_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    return uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(other));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_compareTo_0 = tmp$ret$0;
+      tmp$ret$1 = uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(other));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UShort__compareTo_impl_3(this_0, other) {
-    var tmp0_compareTo_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
-    return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
+        break $l$block;
+      }
+      var tmp0_compareTo_0 = tmp$ret$0;
+      tmp$ret$1 = ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UShort__plus_impl(this_0, other) {
-    var tmp0_plus_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    var tmp1_plus_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0) | 0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_plus_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block_0;
+      }
+      var tmp1_plus_0 = tmp$ret$1;
+      tmp$ret$2 = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0) | 0);
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UShort__plus_impl_0(this_0, other) {
-    var tmp0_plus_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    var tmp1_plus_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0) | 0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_plus_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block_0;
+      }
+      var tmp1_plus_0 = tmp$ret$1;
+      tmp$ret$2 = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0) | 0);
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UShort__plus_impl_1(this_0, other) {
-    var tmp0_plus_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    return _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(other) | 0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_plus_0 = tmp$ret$0;
+      tmp$ret$1 = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(other) | 0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UShort__plus_impl_2(this_0, other) {
-    var tmp0_plus_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus_wiekkq_k$(_ULong___get_data__impl_(other)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
+        break $l$block;
+      }
+      var tmp0_plus_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_plus_0).plus_wiekkq_k$(_ULong___get_data__impl_(other)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UShort__minus_impl(this_0, other) {
-    var tmp0_minus_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    var tmp1_minus_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return _UInt___init__impl_(_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0) | 0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_minus_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block_0;
+      }
+      var tmp1_minus_0 = tmp$ret$1;
+      tmp$ret$2 = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0) | 0);
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UShort__minus_impl_0(this_0, other) {
-    var tmp0_minus_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    var tmp1_minus_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return _UInt___init__impl_(_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0) | 0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_minus_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block_0;
+      }
+      var tmp1_minus_0 = tmp$ret$1;
+      tmp$ret$2 = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0) | 0);
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UShort__minus_impl_1(this_0, other) {
-    var tmp0_minus_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    return _UInt___init__impl_(_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(other) | 0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_minus_0 = tmp$ret$0;
+      tmp$ret$1 = _UInt___init__impl_(_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(other) | 0);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UShort__minus_impl_2(this_0, other) {
-    var tmp0_minus_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_minus_0).minus_wiekkq_k$(_ULong___get_data__impl_(other)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
+        break $l$block;
+      }
+      var tmp0_minus_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_minus_0).minus_wiekkq_k$(_ULong___get_data__impl_(other)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UShort__times_impl(this_0, other) {
-    var tmp0_times_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    var tmp1_times_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)));
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_times_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block_0;
+      }
+      var tmp1_times_0 = tmp$ret$1;
+      tmp$ret$2 = _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)));
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UShort__times_impl_0(this_0, other) {
-    var tmp0_times_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    var tmp1_times_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)));
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_times_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block_0;
+      }
+      var tmp1_times_0 = tmp$ret$1;
+      tmp$ret$2 = _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(tmp1_times_0)));
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UShort__times_impl_1(this_0, other) {
-    var tmp0_times_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(other)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_times_0 = tmp$ret$0;
+      tmp$ret$1 = _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(other)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UShort__times_impl_2(this_0, other) {
-    var tmp0_times_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
-    return _ULong___init__impl_(_ULong___get_data__impl_(tmp0_times_0).times_wiekkq_k$(_ULong___get_data__impl_(other)));
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
+        break $l$block;
+      }
+      var tmp0_times_0 = tmp$ret$0;
+      tmp$ret$1 = _ULong___init__impl_(_ULong___get_data__impl_(tmp0_times_0).times_wiekkq_k$(_ULong___get_data__impl_(other)));
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UShort__div_impl(this_0, other) {
-    var tmp0_div_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    var tmp1_div_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return uintDivide(tmp0_div_0, tmp1_div_0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_div_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block_0;
+      }
+      var tmp1_div_0 = tmp$ret$1;
+      tmp$ret$2 = uintDivide(tmp0_div_0, tmp1_div_0);
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UShort__div_impl_0(this_0, other) {
-    var tmp0_div_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    var tmp1_div_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return uintDivide(tmp0_div_0, tmp1_div_0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_div_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block_0;
+      }
+      var tmp1_div_0 = tmp$ret$1;
+      tmp$ret$2 = uintDivide(tmp0_div_0, tmp1_div_0);
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UShort__div_impl_1(this_0, other) {
-    var tmp0_div_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    return uintDivide(tmp0_div_0, other);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_div_0 = tmp$ret$0;
+      tmp$ret$1 = uintDivide(tmp0_div_0, other);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UShort__div_impl_2(this_0, other) {
-    var tmp0_div_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
-    return ulongDivide(tmp0_div_0, other);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
+        break $l$block;
+      }
+      var tmp0_div_0 = tmp$ret$0;
+      tmp$ret$1 = ulongDivide(tmp0_div_0, other);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UShort__rem_impl(this_0, other) {
-    var tmp0_rem_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    var tmp1_rem_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return uintRemainder(tmp0_rem_0, tmp1_rem_0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_rem_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block_0;
+      }
+      var tmp1_rem_0 = tmp$ret$1;
+      tmp$ret$2 = uintRemainder(tmp0_rem_0, tmp1_rem_0);
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UShort__rem_impl_0(this_0, other) {
-    var tmp0_rem_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    var tmp1_rem_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return uintRemainder(tmp0_rem_0, tmp1_rem_0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_rem_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block_0;
+      }
+      var tmp1_rem_0 = tmp$ret$1;
+      tmp$ret$2 = uintRemainder(tmp0_rem_0, tmp1_rem_0);
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UShort__rem_impl_1(this_0, other) {
-    var tmp0_rem_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    return uintRemainder(tmp0_rem_0, other);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_rem_0 = tmp$ret$0;
+      tmp$ret$1 = uintRemainder(tmp0_rem_0, other);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UShort__rem_impl_2(this_0, other) {
-    var tmp0_rem_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
-    return ulongRemainder(tmp0_rem_0, other);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
+        break $l$block;
+      }
+      var tmp0_rem_0 = tmp$ret$0;
+      tmp$ret$1 = ulongRemainder(tmp0_rem_0, other);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function UShort__floorDiv_impl(this_0, other) {
-    var tmp0_floorDiv_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    var tmp1_floorDiv_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    return uintDivide(tmp0_floorDiv_0, tmp1_floorDiv_0);
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_floorDiv_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+        break $l$block_0;
+      }
+      var tmp1_floorDiv_0 = tmp$ret$1;
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = uintDivide(tmp0_floorDiv_0, tmp1_floorDiv_0);
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2;
+      break $l$block_2;
+    }
+    return tmp$ret$3;
   }
   function UShort__floorDiv_impl_0(this_0, other) {
-    var tmp0_floorDiv_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    var tmp1_floorDiv_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    return uintDivide(tmp0_floorDiv_0, tmp1_floorDiv_0);
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_floorDiv_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+        break $l$block_0;
+      }
+      var tmp1_floorDiv_0 = tmp$ret$1;
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = uintDivide(tmp0_floorDiv_0, tmp1_floorDiv_0);
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2;
+      break $l$block_2;
+    }
+    return tmp$ret$3;
   }
   function UShort__floorDiv_impl_1(this_0, other) {
-    var tmp0_floorDiv_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    return uintDivide(tmp0_floorDiv_0, other);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_floorDiv_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = uintDivide(tmp0_floorDiv_0, other);
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UShort__floorDiv_impl_2(this_0, other) {
-    var tmp0_floorDiv_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
-    return ulongDivide(tmp0_floorDiv_0, other);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
+        break $l$block;
+      }
+      var tmp0_floorDiv_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = ulongDivide(tmp0_floorDiv_0, other);
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UShort__mod_impl(this_0, other) {
-    var tmp0_mod_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    var tmp1_mod_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
-    var tmp2_toUByte_0 = uintRemainder(tmp0_mod_0, tmp1_mod_0);
-    var tmp0_toUByte_0_1 = _UInt___get_data__impl_(tmp2_toUByte_0);
-    return _UByte___init__impl_(toByte(tmp0_toUByte_0_1));
+    var tmp$ret$5;
+    $l$block_4: {
+      var tmp$ret$3;
+      $l$block_2: {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+          break $l$block;
+        }
+        var tmp0_mod_0 = tmp$ret$0;
+        var tmp$ret$1;
+        $l$block_0: {
+          tmp$ret$1 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255);
+          break $l$block_0;
+        }
+        var tmp1_mod_0 = tmp$ret$1;
+        var tmp$ret$2;
+        $l$block_1: {
+          tmp$ret$2 = uintRemainder(tmp0_mod_0, tmp1_mod_0);
+          break $l$block_1;
+        }
+        tmp$ret$3 = tmp$ret$2;
+        break $l$block_2;
+      }
+      var tmp2_toUByte_0 = tmp$ret$3;
+      var tmp$ret$4;
+      $l$block_3: {
+        var tmp0_toUByte_0_1 = _UInt___get_data__impl_(tmp2_toUByte_0);
+        tmp$ret$4 = _UByte___init__impl_(toByte(tmp0_toUByte_0_1));
+        break $l$block_3;
+      }
+      tmp$ret$5 = tmp$ret$4;
+      break $l$block_4;
+    }
+    return tmp$ret$5;
   }
   function UShort__mod_impl_0(this_0, other) {
-    var tmp0_mod_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    var tmp1_mod_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
-    var tmp2_toUShort_0 = uintRemainder(tmp0_mod_0, tmp1_mod_0);
-    var tmp0_toUShort_0_1 = _UInt___get_data__impl_(tmp2_toUShort_0);
-    return _UShort___init__impl_(toShort(tmp0_toUShort_0_1));
+    var tmp$ret$5;
+    $l$block_4: {
+      var tmp$ret$3;
+      $l$block_2: {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+          break $l$block;
+        }
+        var tmp0_mod_0 = tmp$ret$0;
+        var tmp$ret$1;
+        $l$block_0: {
+          tmp$ret$1 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+          break $l$block_0;
+        }
+        var tmp1_mod_0 = tmp$ret$1;
+        var tmp$ret$2;
+        $l$block_1: {
+          tmp$ret$2 = uintRemainder(tmp0_mod_0, tmp1_mod_0);
+          break $l$block_1;
+        }
+        tmp$ret$3 = tmp$ret$2;
+        break $l$block_2;
+      }
+      var tmp2_toUShort_0 = tmp$ret$3;
+      var tmp$ret$4;
+      $l$block_3: {
+        var tmp0_toUShort_0_1 = _UInt___get_data__impl_(tmp2_toUShort_0);
+        tmp$ret$4 = _UShort___init__impl_(toShort(tmp0_toUShort_0_1));
+        break $l$block_3;
+      }
+      tmp$ret$5 = tmp$ret$4;
+      break $l$block_4;
+    }
+    return tmp$ret$5;
   }
   function UShort__mod_impl_1(this_0, other) {
-    var tmp0_mod_0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    return uintRemainder(tmp0_mod_0, other);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+        break $l$block;
+      }
+      var tmp0_mod_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = uintRemainder(tmp0_mod_0, other);
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UShort__mod_impl_2(this_0, other) {
-    var tmp0_mod_0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
-    return ulongRemainder(tmp0_mod_0, other);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
+        break $l$block;
+      }
+      var tmp0_mod_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = ulongRemainder(tmp0_mod_0, other);
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function UShort__inc_impl(this_0) {
     return _UShort___init__impl_(numberToShort(_UShort___get_data__impl_(this_0) + 1));
@@ -4693,27 +7158,57 @@ this['out-ir'] = function (_) {
     return _UShort___init__impl_(numberToShort(_UShort___get_data__impl_(this_0) - 1));
   }
   function UShort__rangeTo_impl(this_0, other) {
-    var tmp = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
-    return new UIntRange(tmp, _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535));
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UInt___init__impl_(_UShort___get_data__impl_(this_0) & 65535);
+      break $l$block;
+    }
+    var tmp = tmp$ret$0;
+    var tmp$ret$1;
+    $l$block_0: {
+      tmp$ret$1 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535);
+      break $l$block_0;
+    }
+    return new UIntRange(tmp, tmp$ret$1);
   }
   function UShort__and_impl(this_0, other) {
-    var tmp0_and_0 = _UShort___get_data__impl_(this_0);
-    var tmp1_and_0 = _UShort___get_data__impl_(other);
-    return _UShort___init__impl_(toShort(tmp0_and_0 & tmp1_and_0));
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_and_0 = _UShort___get_data__impl_(this_0);
+      var tmp1_and_0 = _UShort___get_data__impl_(other);
+      tmp$ret$0 = toShort(tmp0_and_0 & tmp1_and_0);
+      break $l$block;
+    }
+    return _UShort___init__impl_(tmp$ret$0);
   }
   function UShort__or_impl(this_0, other) {
-    var tmp0_or_0 = _UShort___get_data__impl_(this_0);
-    var tmp1_or_0 = _UShort___get_data__impl_(other);
-    return _UShort___init__impl_(toShort(tmp0_or_0 | tmp1_or_0));
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_or_0 = _UShort___get_data__impl_(this_0);
+      var tmp1_or_0 = _UShort___get_data__impl_(other);
+      tmp$ret$0 = toShort(tmp0_or_0 | tmp1_or_0);
+      break $l$block;
+    }
+    return _UShort___init__impl_(tmp$ret$0);
   }
   function UShort__xor_impl(this_0, other) {
-    var tmp0_xor_0 = _UShort___get_data__impl_(this_0);
-    var tmp1_xor_0 = _UShort___get_data__impl_(other);
-    return _UShort___init__impl_(toShort(tmp0_xor_0 ^ tmp1_xor_0));
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_xor_0 = _UShort___get_data__impl_(this_0);
+      var tmp1_xor_0 = _UShort___get_data__impl_(other);
+      tmp$ret$0 = toShort(tmp0_xor_0 ^ tmp1_xor_0);
+      break $l$block;
+    }
+    return _UShort___init__impl_(tmp$ret$0);
   }
   function UShort__inv_impl(this_0) {
-    var tmp0_inv_0 = _UShort___get_data__impl_(this_0);
-    return _UShort___init__impl_(toShort(~tmp0_inv_0));
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_inv_0 = _UShort___get_data__impl_(this_0);
+      tmp$ret$0 = toShort(~tmp0_inv_0);
+      break $l$block;
+    }
+    return _UShort___init__impl_(tmp$ret$0);
   }
   function UShort__toByte_impl(this_0) {
     return toByte(_UShort___get_data__impl_(this_0));
@@ -4728,8 +7223,13 @@ this['out-ir'] = function (_) {
     return toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0));
   }
   function UShort__toUByte_impl(this_0) {
-    var tmp0_toUByte_0 = _UShort___get_data__impl_(this_0);
-    return _UByte___init__impl_(toByte(tmp0_toUByte_0));
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_toUByte_0 = _UShort___get_data__impl_(this_0);
+      tmp$ret$0 = _UByte___init__impl_(toByte(tmp0_toUByte_0));
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function UShort__toUShort_impl(this_0) {
     return this_0;
@@ -4741,13 +7241,28 @@ this['out-ir'] = function (_) {
     return _ULong___init__impl_(toLong(_UShort___get_data__impl_(this_0)).and_wiekkq_k$(new Long(65535, 0)));
   }
   function UShort__toFloat_impl(this_0) {
-    return _UShort___get_data__impl_(this_0) & 65535;
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UShort___get_data__impl_(this_0) & 65535;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function UShort__toDouble_impl(this_0) {
-    return _UShort___get_data__impl_(this_0) & 65535;
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UShort___get_data__impl_(this_0) & 65535;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function UShort__toString_impl(this_0) {
-    return (_UShort___get_data__impl_(this_0) & 65535).toString();
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UShort___get_data__impl_(this_0) & 65535;
+      break $l$block;
+    }
+    return tmp$ret$0.toString();
   }
   function UShort__hashCode_impl(this_0) {
     return this_0;
@@ -4815,12 +7330,22 @@ this['out-ir'] = function (_) {
     return tmp;
   }
   function UShortArray__get_impl(this_0, index) {
-    var tmp0_toUShort_0 = _UShortArray___get_storage__impl_(this_0)[index];
-    return _UShort___init__impl_(tmp0_toUShort_0);
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_toUShort_0 = _UShortArray___get_storage__impl_(this_0)[index];
+      tmp$ret$0 = _UShort___init__impl_(tmp0_toUShort_0);
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function UShortArray__set_impl(this_0, index, value) {
     var tmp = _UShortArray___get_storage__impl_(this_0);
-    tmp[index] = _UShort___get_data__impl_(value);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UShort___get_data__impl_(value);
+      break $l$block;
+    }
+    tmp[index] = tmp$ret$0;
   }
   function _UShortArray___get_size__impl_(this_0) {
     return _UShortArray___get_storage__impl_(this_0).length;
@@ -4839,11 +7364,16 @@ this['out-ir'] = function (_) {
   Iterator_2.prototype.nextUShort_um6tma_k$ = function () {
     var tmp;
     if (this._index_3 < this._array_2.length) {
-      var tmp0_this = this;
-      var tmp1 = tmp0_this._index_3;
-      tmp0_this._index_3 = tmp1 + 1 | 0;
-      var tmp0_toUShort_0 = this._array_2[tmp1];
-      tmp = _UShort___init__impl_(tmp0_toUShort_0);
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_this = this;
+        var tmp1 = tmp0_this._index_3;
+        tmp0_this._index_3 = tmp1 + 1 | 0;
+        var tmp0_toUShort_0 = this._array_2[tmp1];
+        tmp$ret$0 = _UShort___init__impl_(tmp0_toUShort_0);
+        break $l$block;
+      }
+      tmp = tmp$ret$0;
     } else {
       throw NoSuchElementException_init_$Create$_0(this._index_3.toString());
     }
@@ -4861,7 +7391,12 @@ this['out-ir'] = function (_) {
     else {
     }
     var tmp_0 = _UShortArray___get_storage__impl_(this_0);
-    return contains_0(tmp_0, _UShort___get_data__impl_(element));
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UShort___get_data__impl_(element);
+      break $l$block;
+    }
+    return contains_0(tmp_0, tmp$ret$0);
   }
   function UShortArray__contains_impl_0(this_0, element) {
     if (!(element instanceof UShort))
@@ -4873,7 +7408,7 @@ this['out-ir'] = function (_) {
   }
   function UShortArray__containsAll_impl(this_0, elements) {
     var tmp$ret$0;
-    l$ret$1: do {
+    $l$block_3: {
       var tmp0_all_0 = isInterface(elements, Collection) ? elements : THROW_CCE();
       var tmp;
       if (isInterface(tmp0_all_0, Collection)) {
@@ -4885,31 +7420,41 @@ this['out-ir'] = function (_) {
       }
       if (tmp) {
         tmp$ret$0 = true;
-        break l$ret$1;
+        break $l$block_3;
       } else {
       }
       var tmp0_iterator_1 = tmp0_all_0.iterator_0_k$();
       while (tmp0_iterator_1.hasNext_0_k$()) {
         var element_2 = tmp0_iterator_1.next_0_k$();
-        var tmp_0;
-        if (element_2 instanceof UShort) {
-          var tmp_1 = _UShortArray___get_storage__impl_(this_0);
-          var tmp0_toShort_0_4 = element_2._data_2;
-          tmp_0 = contains_0(tmp_1, _UShort___get_data__impl_(tmp0_toShort_0_4));
-        } else {
-          {
-            tmp_0 = false;
+        var tmp$ret$2;
+        $l$block_1: {
+          var tmp_0;
+          if (element_2 instanceof UShort) {
+            var tmp_1 = _UShortArray___get_storage__impl_(this_0);
+            var tmp$ret$1;
+            $l$block_0: {
+              var tmp0_toShort_0_4 = element_2._data_2;
+              tmp$ret$1 = _UShort___get_data__impl_(tmp0_toShort_0_4);
+              break $l$block_0;
+            }
+            tmp_0 = contains_0(tmp_1, tmp$ret$1);
+          } else {
+            {
+              tmp_0 = false;
+            }
           }
+          tmp$ret$2 = tmp_0;
+          break $l$block_1;
         }
-        if (!tmp_0) {
+        if (!tmp$ret$2) {
           tmp$ret$0 = false;
-          break l$ret$1;
+          break $l$block_3;
         } else {
         }
       }
       tmp$ret$0 = true;
+      break $l$block_3;
     }
-     while (false);
     return tmp$ret$0;
   }
   function UShortArray__containsAll_impl_0(this_0, elements) {
@@ -4976,14 +7521,44 @@ this['out-ir'] = function (_) {
     return compareTo_0(v1 ^ IntCompanionObject_getInstance()._MIN_VALUE_5, v2 ^ IntCompanionObject_getInstance()._MIN_VALUE_5);
   }
   function uintDivide(v1, v2) {
-    var tmp = toLong(_UInt___get_data__impl_(v1)).and_wiekkq_k$(new Long(-1, 0));
-    var tmp0_toUInt_0 = tmp.div_wiekkq_k$(toLong(_UInt___get_data__impl_(v2)).and_wiekkq_k$(new Long(-1, 0)));
-    return _UInt___init__impl_(tmp0_toUInt_0.toInt_0_k$());
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = toLong(_UInt___get_data__impl_(v1)).and_wiekkq_k$(new Long(-1, 0));
+        break $l$block;
+      }
+      var tmp = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = toLong(_UInt___get_data__impl_(v2)).and_wiekkq_k$(new Long(-1, 0));
+        break $l$block_0;
+      }
+      var tmp0_toUInt_0 = tmp.div_wiekkq_k$(tmp$ret$1);
+      tmp$ret$2 = _UInt___init__impl_(tmp0_toUInt_0.toInt_0_k$());
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function uintRemainder(v1, v2) {
-    var tmp = toLong(_UInt___get_data__impl_(v1)).and_wiekkq_k$(new Long(-1, 0));
-    var tmp0_toUInt_0 = tmp.rem_wiekkq_k$(toLong(_UInt___get_data__impl_(v2)).and_wiekkq_k$(new Long(-1, 0)));
-    return _UInt___init__impl_(tmp0_toUInt_0.toInt_0_k$());
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = toLong(_UInt___get_data__impl_(v1)).and_wiekkq_k$(new Long(-1, 0));
+        break $l$block;
+      }
+      var tmp = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = toLong(_UInt___get_data__impl_(v2)).and_wiekkq_k$(new Long(-1, 0));
+        break $l$block_0;
+      }
+      var tmp0_toUInt_0 = tmp.rem_wiekkq_k$(tmp$ret$1);
+      tmp$ret$2 = _UInt___init__impl_(tmp0_toUInt_0.toInt_0_k$());
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function uintToDouble(v) {
     return (v & IntCompanionObject_getInstance()._MAX_VALUE_5) + (v >>> 31 << 30) * 2;
@@ -4995,11 +7570,26 @@ this['out-ir'] = function (_) {
     return tmp.compareTo_wiekkq_k$(v2.xor_wiekkq_k$(new Long(0, -2147483648)));
   }
   function ulongDivide(v1, v2) {
-    var dividend = _ULong___get_data__impl_(v1);
-    var divisor = _ULong___get_data__impl_(v2);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _ULong___get_data__impl_(v1);
+      break $l$block;
+    }
+    var dividend = tmp$ret$0;
+    var tmp$ret$1;
+    $l$block_0: {
+      tmp$ret$1 = _ULong___get_data__impl_(v2);
+      break $l$block_0;
+    }
+    var divisor = tmp$ret$1;
     if (divisor.compareTo_wiekkq_k$(new Long(0, 0)) < 0) {
       var tmp;
-      if (ulongCompare(_ULong___get_data__impl_(v1), _ULong___get_data__impl_(v2)) < 0) {
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = ulongCompare(_ULong___get_data__impl_(v1), _ULong___get_data__impl_(v2));
+        break $l$block_1;
+      }
+      if (tmp$ret$2 < 0) {
         tmp = _ULong___init__impl_(new Long(0, 0));
       } else {
         {
@@ -5011,29 +7601,59 @@ this['out-ir'] = function (_) {
       return _ULong___init__impl_(dividend.div_wiekkq_k$(divisor));
     }var quotient = dividend.ushr_ha5a7z_k$(1).div_wiekkq_k$(divisor).shl_ha5a7z_k$(1);
     var rem = dividend.minus_wiekkq_k$(quotient.times_wiekkq_k$(divisor));
-    var tmp_0;
-    var tmp0_compareTo_0 = _ULong___init__impl_(rem);
-    var tmp1_compareTo_0 = _ULong___init__impl_(divisor);
-    if (ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(tmp1_compareTo_0)) >= 0) {
-      tmp_0 = 1;
-    } else {
-      {
-        tmp_0 = 0;
+    var tmp$ret$4;
+    $l$block_3: {
+      var tmp_0;
+      var tmp$ret$3;
+      $l$block_2: {
+        var tmp0_compareTo_0 = _ULong___init__impl_(rem);
+        var tmp1_compareTo_0 = _ULong___init__impl_(divisor);
+        tmp$ret$3 = ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(tmp1_compareTo_0));
+        break $l$block_2;
       }
+      if (tmp$ret$3 >= 0) {
+        tmp_0 = 1;
+      } else {
+        {
+          tmp_0 = 0;
+        }
+      }
+      var tmp2_plus_0 = tmp_0;
+      tmp$ret$4 = quotient.plus_wiekkq_k$(toLong(tmp2_plus_0));
+      break $l$block_3;
     }
-    var tmp2_plus_0 = tmp_0;
-    return _ULong___init__impl_(quotient.plus_wiekkq_k$(toLong(tmp2_plus_0)));
+    return _ULong___init__impl_(tmp$ret$4);
   }
   function ulongRemainder(v1, v2) {
-    var dividend = _ULong___get_data__impl_(v1);
-    var divisor = _ULong___get_data__impl_(v2);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _ULong___get_data__impl_(v1);
+      break $l$block;
+    }
+    var dividend = tmp$ret$0;
+    var tmp$ret$1;
+    $l$block_0: {
+      tmp$ret$1 = _ULong___get_data__impl_(v2);
+      break $l$block_0;
+    }
+    var divisor = tmp$ret$1;
     if (divisor.compareTo_wiekkq_k$(new Long(0, 0)) < 0) {
       var tmp;
-      if (ulongCompare(_ULong___get_data__impl_(v1), _ULong___get_data__impl_(v2)) < 0) {
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = ulongCompare(_ULong___get_data__impl_(v1), _ULong___get_data__impl_(v2));
+        break $l$block_1;
+      }
+      if (tmp$ret$2 < 0) {
         tmp = v1;
       } else {
         {
-          tmp = _ULong___init__impl_(_ULong___get_data__impl_(v1).minus_wiekkq_k$(_ULong___get_data__impl_(v2)));
+          var tmp$ret$3;
+          $l$block_2: {
+            tmp$ret$3 = _ULong___init__impl_(_ULong___get_data__impl_(v1).minus_wiekkq_k$(_ULong___get_data__impl_(v2)));
+            break $l$block_2;
+          }
+          tmp = tmp$ret$3;
         }
       }
       return tmp;
@@ -5042,9 +7662,14 @@ this['out-ir'] = function (_) {
     }var quotient = dividend.ushr_ha5a7z_k$(1).div_wiekkq_k$(divisor).shl_ha5a7z_k$(1);
     var rem = dividend.minus_wiekkq_k$(quotient.times_wiekkq_k$(divisor));
     var tmp_0;
-    var tmp0_compareTo_0 = _ULong___init__impl_(rem);
-    var tmp1_compareTo_0 = _ULong___init__impl_(divisor);
-    if (ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(tmp1_compareTo_0)) >= 0) {
+    var tmp$ret$4;
+    $l$block_3: {
+      var tmp0_compareTo_0 = _ULong___init__impl_(rem);
+      var tmp1_compareTo_0 = _ULong___init__impl_(divisor);
+      tmp$ret$4 = ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(tmp1_compareTo_0));
+      break $l$block_3;
+    }
+    if (tmp$ret$4 >= 0) {
       tmp_0 = divisor;
     } else {
       {
@@ -5062,15 +7687,35 @@ this['out-ir'] = function (_) {
   function ulongToString_0(v, base) {
     if (v.compareTo_wiekkq_k$(new Long(0, 0)) >= 0)
       return toString_1(v, base);
-    var tmp0_div_0 = v.ushr_ha5a7z_k$(1);
-    var quotient = tmp0_div_0.div_wiekkq_k$(toLong(base)).shl_ha5a7z_k$(1);
-    var tmp1_times_0 = quotient;
-    var rem = v.minus_wiekkq_k$(tmp1_times_0.times_wiekkq_k$(toLong(base)));
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_div_0 = v.ushr_ha5a7z_k$(1);
+      tmp$ret$0 = tmp0_div_0.div_wiekkq_k$(toLong(base));
+      break $l$block;
+    }
+    var quotient = tmp$ret$0.shl_ha5a7z_k$(1);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp1_times_0 = quotient;
+      tmp$ret$1 = tmp1_times_0.times_wiekkq_k$(toLong(base));
+      break $l$block_0;
+    }
+    var rem = v.minus_wiekkq_k$(tmp$ret$1);
     if (rem.compareTo_wiekkq_k$(toLong(base)) >= 0) {
-      var tmp2_minus_0 = rem;
-      rem = tmp2_minus_0.minus_wiekkq_k$(toLong(base));
-      var tmp3_plus_0 = quotient;
-      quotient = tmp3_plus_0.plus_wiekkq_k$(new Long(1, 0));
+      var tmp$ret$2;
+      $l$block_1: {
+        var tmp2_minus_0 = rem;
+        tmp$ret$2 = tmp2_minus_0.minus_wiekkq_k$(toLong(base));
+        break $l$block_1;
+      }
+      rem = tmp$ret$2;
+      var tmp$ret$3;
+      $l$block_2: {
+        var tmp3_plus_0 = quotient;
+        tmp$ret$3 = tmp3_plus_0.plus_wiekkq_k$(new Long(1, 0));
+        break $l$block_2;
+      }
+      quotient = tmp$ret$3;
     }return toString_1(quotient, base) + toString_1(rem, base);
   }
   function doubleToUInt(v) {
@@ -5078,28 +7723,58 @@ this['out-ir'] = function (_) {
     if (isNaN_0(v)) {
       tmp = _UInt___init__impl_(0);
     } else {
-      Companion_getInstance_4();
-      var tmp0_toDouble_0 = _UInt___init__impl_(0);
-      if (v <= uintToDouble(_UInt___get_data__impl_(tmp0_toDouble_0))) {
+      var tmp$ret$0;
+      $l$block: {
+        Companion_getInstance_4();
+        var tmp0_toDouble_0 = _UInt___init__impl_(0);
+        tmp$ret$0 = uintToDouble(_UInt___get_data__impl_(tmp0_toDouble_0));
+        break $l$block;
+      }
+      if (v <= tmp$ret$0) {
         Companion_getInstance_4();
         tmp = _UInt___init__impl_(0);
       } else {
-        Companion_getInstance_4();
-        var tmp1_toDouble_0 = _UInt___init__impl_(-1);
-        if (v >= uintToDouble(_UInt___get_data__impl_(tmp1_toDouble_0))) {
+        var tmp$ret$1;
+        $l$block_0: {
+          Companion_getInstance_4();
+          var tmp1_toDouble_0 = _UInt___init__impl_(-1);
+          tmp$ret$1 = uintToDouble(_UInt___get_data__impl_(tmp1_toDouble_0));
+          break $l$block_0;
+        }
+        if (v >= tmp$ret$1) {
           Companion_getInstance_4();
           tmp = _UInt___init__impl_(-1);
         } else {
           if (v <= IntCompanionObject_getInstance()._MAX_VALUE_5) {
-            var tmp2_toUInt_0 = numberToInt(v);
-            tmp = _UInt___init__impl_(tmp2_toUInt_0);
+            var tmp$ret$2;
+            $l$block_1: {
+              var tmp2_toUInt_0 = numberToInt(v);
+              tmp$ret$2 = _UInt___init__impl_(tmp2_toUInt_0);
+              break $l$block_1;
+            }
+            tmp = tmp$ret$2;
           } else {
             {
-              var tmp3_toUInt_0 = numberToInt(v - IntCompanionObject_getInstance()._MAX_VALUE_5);
-              var tmp5_plus_0 = _UInt___init__impl_(tmp3_toUInt_0);
-              var tmp4_toUInt_0 = IntCompanionObject_getInstance()._MAX_VALUE_5;
-              var tmp6_plus_0 = _UInt___init__impl_(tmp4_toUInt_0);
-              tmp = _UInt___init__impl_(_UInt___get_data__impl_(tmp5_plus_0) + _UInt___get_data__impl_(tmp6_plus_0) | 0);
+              var tmp$ret$5;
+              $l$block_4: {
+                var tmp$ret$3;
+                $l$block_2: {
+                  var tmp3_toUInt_0 = numberToInt(v - IntCompanionObject_getInstance()._MAX_VALUE_5);
+                  tmp$ret$3 = _UInt___init__impl_(tmp3_toUInt_0);
+                  break $l$block_2;
+                }
+                var tmp5_plus_0 = tmp$ret$3;
+                var tmp$ret$4;
+                $l$block_3: {
+                  var tmp4_toUInt_0 = IntCompanionObject_getInstance()._MAX_VALUE_5;
+                  tmp$ret$4 = _UInt___init__impl_(tmp4_toUInt_0);
+                  break $l$block_3;
+                }
+                var tmp6_plus_0 = tmp$ret$4;
+                tmp$ret$5 = _UInt___init__impl_(_UInt___get_data__impl_(tmp5_plus_0) + _UInt___get_data__impl_(tmp6_plus_0) | 0);
+                break $l$block_4;
+              }
+              tmp = tmp$ret$5;
             }
           }
         }
@@ -5112,27 +7787,52 @@ this['out-ir'] = function (_) {
     if (isNaN_0(v)) {
       tmp = _ULong___init__impl_(new Long(0, 0));
     } else {
-      Companion_getInstance_7();
-      var tmp0_toDouble_0 = _ULong___init__impl_(new Long(0, 0));
-      if (v <= ulongToDouble(_ULong___get_data__impl_(tmp0_toDouble_0))) {
+      var tmp$ret$0;
+      $l$block: {
+        Companion_getInstance_7();
+        var tmp0_toDouble_0 = _ULong___init__impl_(new Long(0, 0));
+        tmp$ret$0 = ulongToDouble(_ULong___get_data__impl_(tmp0_toDouble_0));
+        break $l$block;
+      }
+      if (v <= tmp$ret$0) {
         Companion_getInstance_7();
         tmp = _ULong___init__impl_(new Long(0, 0));
       } else {
-        Companion_getInstance_7();
-        var tmp1_toDouble_0 = _ULong___init__impl_(new Long(-1, -1));
-        if (v >= ulongToDouble(_ULong___get_data__impl_(tmp1_toDouble_0))) {
+        var tmp$ret$1;
+        $l$block_0: {
+          Companion_getInstance_7();
+          var tmp1_toDouble_0 = _ULong___init__impl_(new Long(-1, -1));
+          tmp$ret$1 = ulongToDouble(_ULong___get_data__impl_(tmp1_toDouble_0));
+          break $l$block_0;
+        }
+        if (v >= tmp$ret$1) {
           Companion_getInstance_7();
           tmp = _ULong___init__impl_(new Long(-1, -1));
         } else {
           Companion_getInstance_19();
           if (v < (new Long(-1, 2147483647)).toDouble_0_k$()) {
-            var tmp2_toULong_0 = numberToLong(v);
-            tmp = _ULong___init__impl_(tmp2_toULong_0);
+            var tmp$ret$2;
+            $l$block_1: {
+              var tmp2_toULong_0 = numberToLong(v);
+              tmp$ret$2 = _ULong___init__impl_(tmp2_toULong_0);
+              break $l$block_1;
+            }
+            tmp = tmp$ret$2;
           } else {
             {
-              var tmp3_toULong_0 = numberToLong(v - 9.223372036854776E18);
-              var tmp4_plus_0 = _ULong___init__impl_(tmp3_toULong_0);
-              tmp = _ULong___init__impl_(_ULong___get_data__impl_(tmp4_plus_0).plus_wiekkq_k$(_ULong___get_data__impl_(_ULong___init__impl_(new Long(0, -2147483648)))));
+              var tmp$ret$4;
+              $l$block_3: {
+                var tmp$ret$3;
+                $l$block_2: {
+                  var tmp3_toULong_0 = numberToLong(v - 9.223372036854776E18);
+                  tmp$ret$3 = _ULong___init__impl_(tmp3_toULong_0);
+                  break $l$block_2;
+                }
+                var tmp4_plus_0 = tmp$ret$3;
+                tmp$ret$4 = _ULong___init__impl_(_ULong___get_data__impl_(tmp4_plus_0).plus_wiekkq_k$(_ULong___get_data__impl_(_ULong___init__impl_(new Long(0, -2147483648)))));
+                break $l$block_3;
+              }
+              tmp = tmp$ret$4;
             }
           }
         }
@@ -5142,6 +7842,20 @@ this['out-ir'] = function (_) {
   }
   function ExperimentalUnsignedTypes() {
   }
+  ExperimentalUnsignedTypes.prototype.equals = function (other) {
+    if (!(other instanceof ExperimentalUnsignedTypes))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof ExperimentalUnsignedTypes ? other : THROW_CCE();
+    return true;
+  };
+  ExperimentalUnsignedTypes.prototype.hashCode = function () {
+    return 0;
+  };
+  ExperimentalUnsignedTypes.prototype.toString = function () {
+    return '@kotlin.ExperimentalUnsignedTypes()';
+  };
   ExperimentalUnsignedTypes.$metadata$ = {
     simpleName: 'ExperimentalUnsignedTypes',
     kind: 'class',
@@ -5209,6 +7923,22 @@ this['out-ir'] = function (_) {
   SinceKotlin.prototype._get_version__0_k$ = function () {
     return this._version_0;
   };
+  SinceKotlin.prototype.equals = function (other) {
+    if (!(other instanceof SinceKotlin))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof SinceKotlin ? other : THROW_CCE();
+    if (!(this._version_0 === tmp0_other_with_cast._version_0))
+      return false;
+    return true;
+  };
+  SinceKotlin.prototype.hashCode = function () {
+    return imul(getStringHashCode('version'), 127) ^ getStringHashCode(this._version_0);
+  };
+  SinceKotlin.prototype.toString = function () {
+    return '' + '@kotlin.SinceKotlin(version=' + this._version_0 + ')';
+  };
   SinceKotlin.$metadata$ = {
     simpleName: 'SinceKotlin',
     kind: 'class',
@@ -5219,6 +7949,22 @@ this['out-ir'] = function (_) {
   }
   Suppress.prototype._get_names__0_k$ = function () {
     return this._names;
+  };
+  Suppress.prototype.equals = function (other) {
+    if (!(other instanceof Suppress))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof Suppress ? other : THROW_CCE();
+    if (!contentEquals_7(this._names, tmp0_other_with_cast._names))
+      return false;
+    return true;
+  };
+  Suppress.prototype.hashCode = function () {
+    return imul(getStringHashCode('names'), 127) ^ hashCode(this._names);
+  };
+  Suppress.prototype.toString = function () {
+    return '' + '@kotlin.Suppress(names=' + toString_0(this._names) + ')';
   };
   Suppress.$metadata$ = {
     simpleName: 'Suppress',
@@ -5263,6 +8009,20 @@ this['out-ir'] = function (_) {
   };
   function PublishedApi() {
   }
+  PublishedApi.prototype.equals = function (other) {
+    if (!(other instanceof PublishedApi))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof PublishedApi ? other : THROW_CCE();
+    return true;
+  };
+  PublishedApi.prototype.hashCode = function () {
+    return 0;
+  };
+  PublishedApi.prototype.toString = function () {
+    return '@kotlin.PublishedApi()';
+  };
   PublishedApi.$metadata$ = {
     simpleName: 'PublishedApi',
     kind: 'class',
@@ -5273,6 +8033,22 @@ this['out-ir'] = function (_) {
   }
   ParameterName.prototype._get_name__0_k$ = function () {
     return this._name;
+  };
+  ParameterName.prototype.equals = function (other) {
+    if (!(other instanceof ParameterName))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof ParameterName ? other : THROW_CCE();
+    if (!(this._name === tmp0_other_with_cast._name))
+      return false;
+    return true;
+  };
+  ParameterName.prototype.hashCode = function () {
+    return imul(getStringHashCode('name'), 127) ^ getStringHashCode(this._name);
+  };
+  ParameterName.prototype.toString = function () {
+    return '' + '@kotlin.ParameterName(name=' + this._name + ')';
   };
   ParameterName.$metadata$ = {
     simpleName: 'ParameterName',
@@ -5304,6 +8080,29 @@ this['out-ir'] = function (_) {
   Deprecated.prototype._get_level__0_k$ = function () {
     return this._level_2;
   };
+  Deprecated.prototype.equals = function (other) {
+    if (!(other instanceof Deprecated))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof Deprecated ? other : THROW_CCE();
+    if (!(this._message_1 === tmp0_other_with_cast._message_1))
+      return false;
+    if (!this._replaceWith.equals(tmp0_other_with_cast._replaceWith))
+      return false;
+    if (!this._level_2.equals(tmp0_other_with_cast._level_2))
+      return false;
+    return true;
+  };
+  Deprecated.prototype.hashCode = function () {
+    var result = imul(getStringHashCode('message'), 127) ^ getStringHashCode(this._message_1);
+    result = result + (imul(getStringHashCode('replaceWith'), 127) ^ hashCode(this._replaceWith)) | 0;
+    result = result + (imul(getStringHashCode('level'), 127) ^ this._level_2.hashCode()) | 0;
+    return result;
+  };
+  Deprecated.prototype.toString = function () {
+    return '' + '@kotlin.Deprecated(message=' + this._message_1 + ', replaceWith=' + this._replaceWith + ', level=' + this._level_2 + ')';
+  };
   Deprecated.$metadata$ = {
     simpleName: 'Deprecated',
     kind: 'class',
@@ -5318,6 +8117,26 @@ this['out-ir'] = function (_) {
   };
   ReplaceWith.prototype._get_imports__0_k$ = function () {
     return this._imports;
+  };
+  ReplaceWith.prototype.equals = function (other) {
+    if (!(other instanceof ReplaceWith))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof ReplaceWith ? other : THROW_CCE();
+    if (!(this._expression === tmp0_other_with_cast._expression))
+      return false;
+    if (!contentEquals_7(this._imports, tmp0_other_with_cast._imports))
+      return false;
+    return true;
+  };
+  ReplaceWith.prototype.hashCode = function () {
+    var result = imul(getStringHashCode('expression'), 127) ^ getStringHashCode(this._expression);
+    result = result + (imul(getStringHashCode('imports'), 127) ^ hashCode(this._imports)) | 0;
+    return result;
+  };
+  ReplaceWith.prototype.toString = function () {
+    return '' + '@kotlin.ReplaceWith(expression=' + this._expression + ', imports=' + toString_0(this._imports) + ')';
   };
   ReplaceWith.$metadata$ = {
     simpleName: 'ReplaceWith',
@@ -5351,6 +8170,29 @@ this['out-ir'] = function (_) {
   DeprecatedSinceKotlin.prototype._get_hiddenSince__0_k$ = function () {
     return this._hiddenSince;
   };
+  DeprecatedSinceKotlin.prototype.equals = function (other) {
+    if (!(other instanceof DeprecatedSinceKotlin))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof DeprecatedSinceKotlin ? other : THROW_CCE();
+    if (!(this._warningSince === tmp0_other_with_cast._warningSince))
+      return false;
+    if (!(this._errorSince === tmp0_other_with_cast._errorSince))
+      return false;
+    if (!(this._hiddenSince === tmp0_other_with_cast._hiddenSince))
+      return false;
+    return true;
+  };
+  DeprecatedSinceKotlin.prototype.hashCode = function () {
+    var result = imul(getStringHashCode('warningSince'), 127) ^ getStringHashCode(this._warningSince);
+    result = result + (imul(getStringHashCode('errorSince'), 127) ^ getStringHashCode(this._errorSince)) | 0;
+    result = result + (imul(getStringHashCode('hiddenSince'), 127) ^ getStringHashCode(this._hiddenSince)) | 0;
+    return result;
+  };
+  DeprecatedSinceKotlin.prototype.toString = function () {
+    return '' + '@kotlin.DeprecatedSinceKotlin(warningSince=' + this._warningSince + ', errorSince=' + this._errorSince + ', hiddenSince=' + this._hiddenSince + ')';
+  };
   DeprecatedSinceKotlin.$metadata$ = {
     simpleName: 'DeprecatedSinceKotlin',
     kind: 'class',
@@ -5358,6 +8200,20 @@ this['out-ir'] = function (_) {
   };
   function ExtensionFunctionType() {
   }
+  ExtensionFunctionType.prototype.equals = function (other) {
+    if (!(other instanceof ExtensionFunctionType))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof ExtensionFunctionType ? other : THROW_CCE();
+    return true;
+  };
+  ExtensionFunctionType.prototype.hashCode = function () {
+    return 0;
+  };
+  ExtensionFunctionType.prototype.toString = function () {
+    return '@kotlin.ExtensionFunctionType()';
+  };
   ExtensionFunctionType.$metadata$ = {
     simpleName: 'ExtensionFunctionType',
     kind: 'class',
@@ -5365,6 +8221,20 @@ this['out-ir'] = function (_) {
   };
   function UnsafeVariance() {
   }
+  UnsafeVariance.prototype.equals = function (other) {
+    if (!(other instanceof UnsafeVariance))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof UnsafeVariance ? other : THROW_CCE();
+    return true;
+  };
+  UnsafeVariance.prototype.hashCode = function () {
+    return 0;
+  };
+  UnsafeVariance.prototype.toString = function () {
+    return '@kotlin.UnsafeVariance()';
+  };
   UnsafeVariance.$metadata$ = {
     simpleName: 'UnsafeVariance',
     kind: 'class',
@@ -5382,16 +8252,6 @@ this['out-ir'] = function (_) {
     DeprecationLevel_initEntries();
     return DeprecationLevel_HIDDEN_instance;
   }
-  function ByteIterator() {
-  }
-  ByteIterator.prototype.next_0_k$ = function () {
-    return this.nextByte_0_k$();
-  };
-  ByteIterator.$metadata$ = {
-    simpleName: 'ByteIterator',
-    kind: 'class',
-    interfaces: [Iterator_3]
-  };
   function IntIterator() {
   }
   IntIterator.prototype.next_0_k$ = function () {
@@ -5399,6 +8259,16 @@ this['out-ir'] = function (_) {
   };
   IntIterator.$metadata$ = {
     simpleName: 'IntIterator',
+    kind: 'class',
+    interfaces: [Iterator_3]
+  };
+  function ByteIterator() {
+  }
+  ByteIterator.prototype.next_0_k$ = function () {
+    return this.nextByte_0_k$();
+  };
+  ByteIterator.$metadata$ = {
+    simpleName: 'ByteIterator',
     kind: 'class',
     interfaces: [Iterator_3]
   };
@@ -5422,16 +8292,6 @@ this['out-ir'] = function (_) {
     kind: 'class',
     interfaces: [Iterator_3]
   };
-  function LongIterator() {
-  }
-  LongIterator.prototype.next_0_k$ = function () {
-    return this.nextLong_0_k$();
-  };
-  LongIterator.$metadata$ = {
-    simpleName: 'LongIterator',
-    kind: 'class',
-    interfaces: [Iterator_3]
-  };
   function CharIterator() {
   }
   CharIterator.prototype.next_0_k$ = function () {
@@ -5442,13 +8302,13 @@ this['out-ir'] = function (_) {
     kind: 'class',
     interfaces: [Iterator_3]
   };
-  function BooleanIterator() {
+  function LongIterator() {
   }
-  BooleanIterator.prototype.next_0_k$ = function () {
-    return this.nextBoolean_0_k$();
+  LongIterator.prototype.next_0_k$ = function () {
+    return this.nextLong_0_k$();
   };
-  BooleanIterator.$metadata$ = {
-    simpleName: 'BooleanIterator',
+  LongIterator.$metadata$ = {
+    simpleName: 'LongIterator',
     kind: 'class',
     interfaces: [Iterator_3]
   };
@@ -5459,6 +8319,16 @@ this['out-ir'] = function (_) {
   };
   ShortIterator.$metadata$ = {
     simpleName: 'ShortIterator',
+    kind: 'class',
+    interfaces: [Iterator_3]
+  };
+  function BooleanIterator() {
+  }
+  BooleanIterator.prototype.next_0_k$ = function () {
+    return this.nextBoolean_0_k$();
+  };
+  BooleanIterator.$metadata$ = {
+    simpleName: 'BooleanIterator',
     kind: 'class',
     interfaces: [Iterator_3]
   };
@@ -5522,33 +8392,51 @@ this['out-ir'] = function (_) {
   function _get_next__2($this) {
     return $this._next_2;
   }
-  function LongProgressionIterator(first, last, step) {
-    LongIterator.call(this);
+  function CharProgressionIterator(first, last, step) {
+    CharIterator.call(this);
     this._step_4 = step;
-    this._finalElement_2 = last;
-    this._hasNext_2 = this._step_4.compareTo_wiekkq_k$(new Long(0, 0)) > 0 ? first.compareTo_wiekkq_k$(last) <= 0 : first.compareTo_wiekkq_k$(last) >= 0;
-    this._next_2 = this._hasNext_2 ? first : this._finalElement_2;
+    var tmp = this;
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = last.toInt_0_k$();
+      break $l$block;
+    }
+    tmp._finalElement_2 = tmp$ret$0;
+    this._hasNext_2 = this._step_4 > 0 ? first.compareTo_wi8o78_k$(last) <= 0 : first.compareTo_wi8o78_k$(last) >= 0;
+    var tmp_0 = this;
+    var tmp_1;
+    if (this._hasNext_2) {
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = first.toInt_0_k$();
+        break $l$block_0;
+      }
+      tmp_1 = tmp$ret$1;
+    } else {
+      tmp_1 = this._finalElement_2;
+    }
+    tmp_0._next_2 = tmp_1;
   }
-  LongProgressionIterator.prototype._get_step__0_k$ = function () {
+  CharProgressionIterator.prototype._get_step__0_k$ = function () {
     return this._step_4;
   };
-  LongProgressionIterator.prototype.hasNext_0_k$ = function () {
+  CharProgressionIterator.prototype.hasNext_0_k$ = function () {
     return this._hasNext_2;
   };
-  LongProgressionIterator.prototype.nextLong_0_k$ = function () {
+  CharProgressionIterator.prototype.nextChar_0_k$ = function () {
     var value = this._next_2;
-    if (value.equals(this._finalElement_2)) {
+    if (value === this._finalElement_2) {
       if (!this._hasNext_2)
         throw NoSuchElementException_init_$Create$();
       this._hasNext_2 = false;
     } else {
       var tmp0_this = this;
-      tmp0_this._next_2 = tmp0_this._next_2.plus_wiekkq_k$(this._step_4);
+      tmp0_this._next_2 = tmp0_this._next_2 + this._step_4 | 0;
     }
-    return value;
+    return numberToChar(value);
   };
-  LongProgressionIterator.$metadata$ = {
-    simpleName: 'LongProgressionIterator',
+  CharProgressionIterator.$metadata$ = {
+    simpleName: 'CharProgressionIterator',
     kind: 'class',
     interfaces: []
   };
@@ -5567,41 +8455,33 @@ this['out-ir'] = function (_) {
   function _get_next__3($this) {
     return $this._next_3;
   }
-  function CharProgressionIterator(first, last, step) {
-    CharIterator.call(this);
+  function LongProgressionIterator(first, last, step) {
+    LongIterator.call(this);
     this._step_5 = step;
-    var tmp = this;
-    tmp._finalElement_3 = last.toInt_0_k$();
-    this._hasNext_3 = this._step_5 > 0 ? first.compareTo_wi8o78_k$(last) <= 0 : first.compareTo_wi8o78_k$(last) >= 0;
-    var tmp_0 = this;
-    var tmp_1;
-    if (this._hasNext_3) {
-      tmp_1 = first.toInt_0_k$();
-    } else {
-      tmp_1 = this._finalElement_3;
-    }
-    tmp_0._next_3 = tmp_1;
+    this._finalElement_3 = last;
+    this._hasNext_3 = this._step_5.compareTo_wiekkq_k$(new Long(0, 0)) > 0 ? first.compareTo_wiekkq_k$(last) <= 0 : first.compareTo_wiekkq_k$(last) >= 0;
+    this._next_3 = this._hasNext_3 ? first : this._finalElement_3;
   }
-  CharProgressionIterator.prototype._get_step__0_k$ = function () {
+  LongProgressionIterator.prototype._get_step__0_k$ = function () {
     return this._step_5;
   };
-  CharProgressionIterator.prototype.hasNext_0_k$ = function () {
+  LongProgressionIterator.prototype.hasNext_0_k$ = function () {
     return this._hasNext_3;
   };
-  CharProgressionIterator.prototype.nextChar_0_k$ = function () {
+  LongProgressionIterator.prototype.nextLong_0_k$ = function () {
     var value = this._next_3;
-    if (value === this._finalElement_3) {
+    if (value.equals(this._finalElement_3)) {
       if (!this._hasNext_3)
         throw NoSuchElementException_init_$Create$();
       this._hasNext_3 = false;
     } else {
       var tmp0_this = this;
-      tmp0_this._next_3 = tmp0_this._next_3 + this._step_5 | 0;
+      tmp0_this._next_3 = tmp0_this._next_3.plus_wiekkq_k$(this._step_5);
     }
-    return numberToChar(value);
+    return value;
   };
-  CharProgressionIterator.$metadata$ = {
-    simpleName: 'CharProgressionIterator',
+  LongProgressionIterator.$metadata$ = {
+    simpleName: 'LongProgressionIterator',
     kind: 'class',
     interfaces: []
   };
@@ -5672,8 +8552,8 @@ this['out-ir'] = function (_) {
   function Companion_13() {
     Companion_instance_12 = this;
   }
-  Companion_13.prototype.fromClosedRange_k3cbgi_k$ = function (rangeStart, rangeEnd, step) {
-    return new LongProgression(rangeStart, rangeEnd, step);
+  Companion_13.prototype.fromClosedRange_gtcn47_k$ = function (rangeStart, rangeEnd, step) {
+    return new CharProgression(rangeStart, rangeEnd, step);
   };
   Companion_13.$metadata$ = {
     simpleName: 'Companion',
@@ -5686,104 +8566,47 @@ this['out-ir'] = function (_) {
       new Companion_13();
     return Companion_instance_12;
   }
-  function LongProgression(start, endInclusive, step) {
-    Companion_getInstance_12();
-    if (step.equals(new Long(0, 0)))
-      throw IllegalArgumentException_init_$Create$_0('Step must be non-zero.');
-    Companion_getInstance_19();
-    if (step.equals(new Long(0, -2147483648)))
-      throw IllegalArgumentException_init_$Create$_0('Step must be greater than Long.MIN_VALUE to avoid overflow on negation.');
-    else {
-    }
-    this._first_2 = start;
-    this._last_2 = getProgressionLastElement_2(start, endInclusive, step);
-    this._step_7 = step;
-  }
-  LongProgression.prototype._get_first__0_k$ = function () {
-    return this._first_2;
-  };
-  LongProgression.prototype._get_last__0_k$ = function () {
-    return this._last_2;
-  };
-  LongProgression.prototype._get_step__0_k$ = function () {
-    return this._step_7;
-  };
-  LongProgression.prototype.iterator_0_k$ = function () {
-    return new LongProgressionIterator(this._first_2, this._last_2, this._step_7);
-  };
-  LongProgression.prototype.isEmpty_0_k$ = function () {
-    return this._step_7.compareTo_wiekkq_k$(new Long(0, 0)) > 0 ? this._first_2.compareTo_wiekkq_k$(this._last_2) > 0 : this._first_2.compareTo_wiekkq_k$(this._last_2) < 0;
-  };
-  LongProgression.prototype.equals = function (other) {
-    var tmp;
-    if (other instanceof LongProgression) {
-      tmp = (this.isEmpty_0_k$() ? other.isEmpty_0_k$() : false) ? true : (this._first_2.equals(other._first_2) ? this._last_2.equals(other._last_2) : false) ? this._step_7.equals(other._step_7) : false;
-    } else {
-      {
-        tmp = false;
-      }
-    }
-    return tmp;
-  };
-  LongProgression.prototype.hashCode = function () {
-    return this.isEmpty_0_k$() ? -1 : numberToLong(31).times_wiekkq_k$(numberToLong(31).times_wiekkq_k$(this._first_2.xor_wiekkq_k$(this._first_2.ushr_ha5a7z_k$(32))).plus_wiekkq_k$(this._last_2.xor_wiekkq_k$(this._last_2.ushr_ha5a7z_k$(32)))).plus_wiekkq_k$(this._step_7.xor_wiekkq_k$(this._step_7.ushr_ha5a7z_k$(32))).toInt_0_k$();
-  };
-  LongProgression.prototype.toString = function () {
-    return this._step_7.compareTo_wiekkq_k$(new Long(0, 0)) > 0 ? '' + this._first_2 + '..' + this._last_2 + ' step ' + this._step_7 : '' + this._first_2 + ' downTo ' + this._last_2 + ' step ' + this._step_7.unaryMinus_0_k$();
-  };
-  LongProgression.$metadata$ = {
-    simpleName: 'LongProgression',
-    kind: 'class',
-    interfaces: [Iterable]
-  };
-  function Companion_14() {
-    Companion_instance_13 = this;
-  }
-  Companion_14.prototype.fromClosedRange_gtcn47_k$ = function (rangeStart, rangeEnd, step) {
-    return new CharProgression(rangeStart, rangeEnd, step);
-  };
-  Companion_14.$metadata$ = {
-    simpleName: 'Companion',
-    kind: 'object',
-    interfaces: []
-  };
-  var Companion_instance_13;
-  function Companion_getInstance_13() {
-    if (Companion_instance_13 == null)
-      new Companion_14();
-    return Companion_instance_13;
-  }
   function CharProgression(start, endInclusive, step) {
-    Companion_getInstance_13();
+    Companion_getInstance_12();
     if (step === 0)
       throw IllegalArgumentException_init_$Create$_0('Step must be non-zero.');
     if (step === IntCompanionObject_getInstance()._MIN_VALUE_5)
       throw IllegalArgumentException_init_$Create$_0('Step must be greater than Int.MIN_VALUE to avoid overflow on negation.');
-    this._first_3 = start;
+    this._first_2 = start;
     var tmp = this;
-    var tmp_0 = start.toInt_0_k$();
-    tmp._last_3 = numberToChar(getProgressionLastElement_1(tmp_0, endInclusive.toInt_0_k$(), step));
-    this._step_8 = step;
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = start.toInt_0_k$();
+      break $l$block;
+    }
+    var tmp_0 = tmp$ret$0;
+    var tmp$ret$1;
+    $l$block_0: {
+      tmp$ret$1 = endInclusive.toInt_0_k$();
+      break $l$block_0;
+    }
+    tmp._last_2 = numberToChar(getProgressionLastElement_1(tmp_0, tmp$ret$1, step));
+    this._step_7 = step;
   }
   CharProgression.prototype._get_first__0_k$ = function () {
-    return this._first_3;
+    return this._first_2;
   };
   CharProgression.prototype._get_last__0_k$ = function () {
-    return this._last_3;
+    return this._last_2;
   };
   CharProgression.prototype._get_step__0_k$ = function () {
-    return this._step_8;
+    return this._step_7;
   };
   CharProgression.prototype.iterator_0_k$ = function () {
-    return new CharProgressionIterator(this._first_3, this._last_3, this._step_8);
+    return new CharProgressionIterator(this._first_2, this._last_2, this._step_7);
   };
   CharProgression.prototype.isEmpty_0_k$ = function () {
-    return this._step_8 > 0 ? this._first_3.compareTo_wi8o78_k$(this._last_3) > 0 : this._first_3.compareTo_wi8o78_k$(this._last_3) < 0;
+    return this._step_7 > 0 ? this._first_2.compareTo_wi8o78_k$(this._last_2) > 0 : this._first_2.compareTo_wi8o78_k$(this._last_2) < 0;
   };
   CharProgression.prototype.equals = function (other) {
     var tmp;
     if (other instanceof CharProgression) {
-      tmp = (this.isEmpty_0_k$() ? other.isEmpty_0_k$() : false) ? true : (this._first_3.equals(other._first_3) ? this._last_3.equals(other._last_3) : false) ? this._step_8 === other._step_8 : false;
+      tmp = (this.isEmpty_0_k$() ? other.isEmpty_0_k$() : false) ? true : (this._first_2.equals(other._first_2) ? this._last_2.equals(other._last_2) : false) ? this._step_7 === other._step_7 : false;
     } else {
       {
         tmp = false;
@@ -5796,18 +8619,95 @@ this['out-ir'] = function (_) {
     if (this.isEmpty_0_k$()) {
       tmp = -1;
     } else {
-      var tmp0__get_code__0 = this._first_3;
-      var tmp_0 = imul(31, tmp0__get_code__0.toInt_0_k$());
-      var tmp1__get_code__0 = this._last_3;
-      tmp = imul(31, tmp_0 + tmp1__get_code__0.toInt_0_k$() | 0) + this._step_8 | 0;
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0__get_code__0 = this._first_2;
+        tmp$ret$0 = tmp0__get_code__0.toInt_0_k$();
+        break $l$block;
+      }
+      var tmp_0 = imul(31, tmp$ret$0);
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp1__get_code__0 = this._last_2;
+        tmp$ret$1 = tmp1__get_code__0.toInt_0_k$();
+        break $l$block_0;
+      }
+      tmp = imul(31, tmp_0 + tmp$ret$1 | 0) + this._step_7 | 0;
     }
     return tmp;
   };
   CharProgression.prototype.toString = function () {
-    return this._step_8 > 0 ? '' + this._first_3 + '..' + this._last_3 + ' step ' + this._step_8 : '' + this._first_3 + ' downTo ' + this._last_3 + ' step ' + (-this._step_8 | 0);
+    return this._step_7 > 0 ? '' + this._first_2 + '..' + this._last_2 + ' step ' + this._step_7 : '' + this._first_2 + ' downTo ' + this._last_2 + ' step ' + (-this._step_7 | 0);
   };
   CharProgression.$metadata$ = {
     simpleName: 'CharProgression',
+    kind: 'class',
+    interfaces: [Iterable]
+  };
+  function Companion_14() {
+    Companion_instance_13 = this;
+  }
+  Companion_14.prototype.fromClosedRange_k3cbgi_k$ = function (rangeStart, rangeEnd, step) {
+    return new LongProgression(rangeStart, rangeEnd, step);
+  };
+  Companion_14.$metadata$ = {
+    simpleName: 'Companion',
+    kind: 'object',
+    interfaces: []
+  };
+  var Companion_instance_13;
+  function Companion_getInstance_13() {
+    if (Companion_instance_13 == null)
+      new Companion_14();
+    return Companion_instance_13;
+  }
+  function LongProgression(start, endInclusive, step) {
+    Companion_getInstance_13();
+    if (step.equals(new Long(0, 0)))
+      throw IllegalArgumentException_init_$Create$_0('Step must be non-zero.');
+    Companion_getInstance_19();
+    if (step.equals(new Long(0, -2147483648)))
+      throw IllegalArgumentException_init_$Create$_0('Step must be greater than Long.MIN_VALUE to avoid overflow on negation.');
+    else {
+    }
+    this._first_3 = start;
+    this._last_3 = getProgressionLastElement_2(start, endInclusive, step);
+    this._step_8 = step;
+  }
+  LongProgression.prototype._get_first__0_k$ = function () {
+    return this._first_3;
+  };
+  LongProgression.prototype._get_last__0_k$ = function () {
+    return this._last_3;
+  };
+  LongProgression.prototype._get_step__0_k$ = function () {
+    return this._step_8;
+  };
+  LongProgression.prototype.iterator_0_k$ = function () {
+    return new LongProgressionIterator(this._first_3, this._last_3, this._step_8);
+  };
+  LongProgression.prototype.isEmpty_0_k$ = function () {
+    return this._step_8.compareTo_wiekkq_k$(new Long(0, 0)) > 0 ? this._first_3.compareTo_wiekkq_k$(this._last_3) > 0 : this._first_3.compareTo_wiekkq_k$(this._last_3) < 0;
+  };
+  LongProgression.prototype.equals = function (other) {
+    var tmp;
+    if (other instanceof LongProgression) {
+      tmp = (this.isEmpty_0_k$() ? other.isEmpty_0_k$() : false) ? true : (this._first_3.equals(other._first_3) ? this._last_3.equals(other._last_3) : false) ? this._step_8.equals(other._step_8) : false;
+    } else {
+      {
+        tmp = false;
+      }
+    }
+    return tmp;
+  };
+  LongProgression.prototype.hashCode = function () {
+    return this.isEmpty_0_k$() ? -1 : numberToLong(31).times_wiekkq_k$(numberToLong(31).times_wiekkq_k$(this._first_3.xor_wiekkq_k$(this._first_3.ushr_ha5a7z_k$(32))).plus_wiekkq_k$(this._last_3.xor_wiekkq_k$(this._last_3.ushr_ha5a7z_k$(32)))).plus_wiekkq_k$(this._step_8.xor_wiekkq_k$(this._step_8.ushr_ha5a7z_k$(32))).toInt_0_k$();
+  };
+  LongProgression.prototype.toString = function () {
+    return this._step_8.compareTo_wiekkq_k$(new Long(0, 0)) > 0 ? '' + this._first_3 + '..' + this._last_3 + ' step ' + this._step_8 : '' + this._first_3 + ' downTo ' + this._last_3 + ' step ' + this._step_8.unaryMinus_0_k$();
+  };
+  LongProgression.$metadata$ = {
+    simpleName: 'LongProgression',
     kind: 'class',
     interfaces: [Iterable]
   };
@@ -5885,7 +8785,7 @@ this['out-ir'] = function (_) {
   };
   function Companion_16() {
     Companion_instance_15 = this;
-    this._EMPTY_2 = new LongRange(new Long(1, 0), new Long(0, 0));
+    this._EMPTY_2 = new CharRange(new Char_0(1), new Char_0(0));
   }
   Companion_16.prototype._get_EMPTY__0_k$ = function () {
     return this._EMPTY_2;
@@ -5901,8 +8801,86 @@ this['out-ir'] = function (_) {
       new Companion_16();
     return Companion_instance_15;
   }
-  function LongRange(start, endInclusive) {
+  function CharRange(start, endInclusive) {
     Companion_getInstance_15();
+    CharProgression.call(this, start, endInclusive, 1);
+  }
+  CharRange.prototype._get_start__0_k$ = function () {
+    return this._get_first__0_k$();
+  };
+  CharRange.prototype._get_endInclusive__0_k$ = function () {
+    return this._get_last__0_k$();
+  };
+  CharRange.prototype.contains_wi8o78_k$ = function (value) {
+    return this._get_first__0_k$().compareTo_wi8o78_k$(value) <= 0 ? value.compareTo_wi8o78_k$(this._get_last__0_k$()) <= 0 : false;
+  };
+  CharRange.prototype.contains_2c5_k$ = function (value) {
+    return this.contains_wi8o78_k$(value instanceof Char_0 ? value : THROW_CCE());
+  };
+  CharRange.prototype.isEmpty_0_k$ = function () {
+    return this._get_first__0_k$().compareTo_wi8o78_k$(this._get_last__0_k$()) > 0;
+  };
+  CharRange.prototype.equals = function (other) {
+    var tmp;
+    if (other instanceof CharRange) {
+      tmp = (this.isEmpty_0_k$() ? other.isEmpty_0_k$() : false) ? true : this._get_first__0_k$().equals(other._get_first__0_k$()) ? this._get_last__0_k$().equals(other._get_last__0_k$()) : false;
+    } else {
+      {
+        tmp = false;
+      }
+    }
+    return tmp;
+  };
+  CharRange.prototype.hashCode = function () {
+    var tmp;
+    if (this.isEmpty_0_k$()) {
+      tmp = -1;
+    } else {
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0__get_code__0 = this._get_first__0_k$();
+        tmp$ret$0 = tmp0__get_code__0.toInt_0_k$();
+        break $l$block;
+      }
+      var tmp_0 = imul(31, tmp$ret$0);
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp1__get_code__0 = this._get_last__0_k$();
+        tmp$ret$1 = tmp1__get_code__0.toInt_0_k$();
+        break $l$block_0;
+      }
+      tmp = tmp_0 + tmp$ret$1 | 0;
+    }
+    return tmp;
+  };
+  CharRange.prototype.toString = function () {
+    return '' + this._get_first__0_k$() + '..' + this._get_last__0_k$();
+  };
+  CharRange.$metadata$ = {
+    simpleName: 'CharRange',
+    kind: 'class',
+    interfaces: [ClosedRange]
+  };
+  function Companion_17() {
+    Companion_instance_16 = this;
+    this._EMPTY_3 = new LongRange(new Long(1, 0), new Long(0, 0));
+  }
+  Companion_17.prototype._get_EMPTY__0_k$ = function () {
+    return this._EMPTY_3;
+  };
+  Companion_17.$metadata$ = {
+    simpleName: 'Companion',
+    kind: 'object',
+    interfaces: []
+  };
+  var Companion_instance_16;
+  function Companion_getInstance_16() {
+    if (Companion_instance_16 == null)
+      new Companion_17();
+    return Companion_instance_16;
+  }
+  function LongRange(start, endInclusive) {
+    Companion_getInstance_16();
     LongProgression.call(this, start, endInclusive, new Long(1, 0));
   }
   LongRange.prototype._get_start__0_k$ = function () {
@@ -5942,74 +8920,6 @@ this['out-ir'] = function (_) {
     kind: 'class',
     interfaces: [ClosedRange]
   };
-  function Companion_17() {
-    Companion_instance_16 = this;
-    this._EMPTY_3 = new CharRange(new Char_0(1), new Char_0(0));
-  }
-  Companion_17.prototype._get_EMPTY__0_k$ = function () {
-    return this._EMPTY_3;
-  };
-  Companion_17.$metadata$ = {
-    simpleName: 'Companion',
-    kind: 'object',
-    interfaces: []
-  };
-  var Companion_instance_16;
-  function Companion_getInstance_16() {
-    if (Companion_instance_16 == null)
-      new Companion_17();
-    return Companion_instance_16;
-  }
-  function CharRange(start, endInclusive) {
-    Companion_getInstance_16();
-    CharProgression.call(this, start, endInclusive, 1);
-  }
-  CharRange.prototype._get_start__0_k$ = function () {
-    return this._get_first__0_k$();
-  };
-  CharRange.prototype._get_endInclusive__0_k$ = function () {
-    return this._get_last__0_k$();
-  };
-  CharRange.prototype.contains_wi8o78_k$ = function (value) {
-    return this._get_first__0_k$().compareTo_wi8o78_k$(value) <= 0 ? value.compareTo_wi8o78_k$(this._get_last__0_k$()) <= 0 : false;
-  };
-  CharRange.prototype.contains_2c5_k$ = function (value) {
-    return this.contains_wi8o78_k$(value instanceof Char_0 ? value : THROW_CCE());
-  };
-  CharRange.prototype.isEmpty_0_k$ = function () {
-    return this._get_first__0_k$().compareTo_wi8o78_k$(this._get_last__0_k$()) > 0;
-  };
-  CharRange.prototype.equals = function (other) {
-    var tmp;
-    if (other instanceof CharRange) {
-      tmp = (this.isEmpty_0_k$() ? other.isEmpty_0_k$() : false) ? true : this._get_first__0_k$().equals(other._get_first__0_k$()) ? this._get_last__0_k$().equals(other._get_last__0_k$()) : false;
-    } else {
-      {
-        tmp = false;
-      }
-    }
-    return tmp;
-  };
-  CharRange.prototype.hashCode = function () {
-    var tmp;
-    if (this.isEmpty_0_k$()) {
-      tmp = -1;
-    } else {
-      var tmp0__get_code__0 = this._get_first__0_k$();
-      var tmp_0 = imul(31, tmp0__get_code__0.toInt_0_k$());
-      var tmp1__get_code__0 = this._get_last__0_k$();
-      tmp = tmp_0 + tmp1__get_code__0.toInt_0_k$() | 0;
-    }
-    return tmp;
-  };
-  CharRange.prototype.toString = function () {
-    return '' + this._get_first__0_k$() + '..' + this._get_last__0_k$();
-  };
-  CharRange.$metadata$ = {
-    simpleName: 'CharRange',
-    kind: 'class',
-    interfaces: [ClosedRange]
-  };
   function Unit() {
     Unit_instance = this;
   }
@@ -6032,6 +8942,22 @@ this['out-ir'] = function (_) {
   }
   Target.prototype._get_allowedTargets__0_k$ = function () {
     return this._allowedTargets;
+  };
+  Target.prototype.equals = function (other) {
+    if (!(other instanceof Target))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof Target ? other : THROW_CCE();
+    if (!contentEquals_7(this._allowedTargets, tmp0_other_with_cast._allowedTargets))
+      return false;
+    return true;
+  };
+  Target.prototype.hashCode = function () {
+    return imul(getStringHashCode('allowedTargets'), 127) ^ hashCode(this._allowedTargets);
+  };
+  Target.prototype.toString = function () {
+    return '' + '@kotlin.annotation.Target(allowedTargets=' + toString_0(this._allowedTargets) + ')';
   };
   Target.$metadata$ = {
     simpleName: 'Target',
@@ -6124,6 +9050,20 @@ this['out-ir'] = function (_) {
   };
   function MustBeDocumented() {
   }
+  MustBeDocumented.prototype.equals = function (other) {
+    if (!(other instanceof MustBeDocumented))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof MustBeDocumented ? other : THROW_CCE();
+    return true;
+  };
+  MustBeDocumented.prototype.hashCode = function () {
+    return 0;
+  };
+  MustBeDocumented.prototype.toString = function () {
+    return '@kotlin.annotation.MustBeDocumented()';
+  };
   MustBeDocumented.$metadata$ = {
     simpleName: 'MustBeDocumented',
     kind: 'class',
@@ -6143,6 +9083,22 @@ this['out-ir'] = function (_) {
   }
   Retention.prototype._get_value__0_k$ = function () {
     return this._value_0;
+  };
+  Retention.prototype.equals = function (other) {
+    if (!(other instanceof Retention))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof Retention ? other : THROW_CCE();
+    if (!this._value_0.equals(tmp0_other_with_cast._value_0))
+      return false;
+    return true;
+  };
+  Retention.prototype.hashCode = function () {
+    return imul(getStringHashCode('value'), 127) ^ this._value_0.hashCode();
+  };
+  Retention.prototype.toString = function () {
+    return '' + '@kotlin.annotation.Retention(value=' + this._value_0 + ')';
   };
   Retention.$metadata$ = {
     simpleName: 'Retention',
@@ -6187,6 +9143,20 @@ this['out-ir'] = function (_) {
   };
   function Repeatable() {
   }
+  Repeatable.prototype.equals = function (other) {
+    if (!(other instanceof Repeatable))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof Repeatable ? other : THROW_CCE();
+    return true;
+  };
+  Repeatable.prototype.hashCode = function () {
+    return 0;
+  };
+  Repeatable.prototype.toString = function () {
+    return '@kotlin.annotation.Repeatable()';
+  };
   Repeatable.$metadata$ = {
     simpleName: 'Repeatable',
     kind: 'class',
@@ -6619,6 +9589,22 @@ this['out-ir'] = function (_) {
   JsName.prototype._get_name__0_k$ = function () {
     return this._name_0;
   };
+  JsName.prototype.equals = function (other) {
+    if (!(other instanceof JsName))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof JsName ? other : THROW_CCE();
+    if (!(this._name_0 === tmp0_other_with_cast._name_0))
+      return false;
+    return true;
+  };
+  JsName.prototype.hashCode = function () {
+    return imul(getStringHashCode('name'), 127) ^ getStringHashCode(this._name_0);
+  };
+  JsName.prototype.toString = function () {
+    return '' + '@kotlin.js.JsName(name=' + this._name_0 + ')';
+  };
   JsName.$metadata$ = {
     simpleName: 'JsName',
     kind: 'class',
@@ -6629,22 +9615,57 @@ this['out-ir'] = function (_) {
   }
   function copyToArray_0(collection) {
     var tmp;
-    if (collection.toArray !== undefined) {
-      var tmp0_unsafeCast_0 = collection.toArray();
-      tmp = tmp0_unsafeCast_0;
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = collection;
+      break $l$block;
+    }
+    if (tmp$ret$0.toArray !== undefined) {
+      var tmp$ret$2;
+      $l$block_1: {
+        var tmp$ret$1;
+        $l$block_0: {
+          tmp$ret$1 = collection;
+          break $l$block_0;
+        }
+        var tmp0_unsafeCast_0 = tmp$ret$1.toArray();
+        tmp$ret$2 = tmp0_unsafeCast_0;
+        break $l$block_1;
+      }
+      tmp = tmp$ret$2;
     } else {
       {
-        var tmp1_unsafeCast_0 = copyToArrayImpl_0(collection);
-        tmp = tmp1_unsafeCast_0;
+        var tmp$ret$4;
+        $l$block_3: {
+          var tmp1_unsafeCast_0 = copyToArrayImpl_0(collection);
+          var tmp$ret$3;
+          $l$block_2: {
+            tmp$ret$3 = tmp1_unsafeCast_0;
+            break $l$block_2;
+          }
+          tmp$ret$4 = tmp$ret$3;
+          break $l$block_3;
+        }
+        tmp = tmp$ret$4;
       }
     }
     return tmp;
   }
   function copyToArrayImpl_0(collection) {
-    var array = [];
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = [];
+      break $l$block;
+    }
+    var array = tmp$ret$0;
     var iterator = collection.iterator_0_k$();
     while (iterator.hasNext_0_k$()) {
-      array.push(iterator.next_0_k$());
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = array;
+        break $l$block_0;
+      }
+      tmp$ret$1.push(iterator.next_0_k$());
     }
     return array;
   }
@@ -6653,8 +9674,18 @@ this['out-ir'] = function (_) {
     var rangeSize = endIndex - startIndex | 0;
     Companion_getInstance().checkRangeIndexes_zd700_k$(destinationOffset, destinationOffset + rangeSize | 0, destination.length);
     if (ArrayBuffer.isView(destination) && ArrayBuffer.isView(source)) {
-      var subrange = source.subarray(startIndex, endIndex);
-      destination.set(subrange, destinationOffset);
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = source;
+        break $l$block;
+      }
+      var subrange = tmp$ret$0.subarray(startIndex, endIndex);
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = destination;
+        break $l$block_0;
+      }
+      tmp$ret$1.set(subrange, destinationOffset);
     } else {
       if (!(source === destination) ? true : destinationOffset <= startIndex) {
         var inductionVariable = 0;
@@ -6679,19 +9710,49 @@ this['out-ir'] = function (_) {
   }
   function copyToArrayImpl_1(collection, array) {
     if (array.length < collection._get_size__0_k$()) {
-      var tmp0_unsafeCast_0 = copyToArrayImpl_0(collection);
-      return tmp0_unsafeCast_0;
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp0_unsafeCast_0 = copyToArrayImpl_0(collection);
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = tmp0_unsafeCast_0;
+          break $l$block;
+        }
+        tmp$ret$1 = tmp$ret$0;
+        break $l$block_0;
+      }
+      return tmp$ret$1;
     }var iterator = collection.iterator_0_k$();
     var index = 0;
     while (iterator.hasNext_0_k$()) {
       var tmp0 = index;
       index = tmp0 + 1 | 0;
-      var tmp1_unsafeCast_0 = iterator.next_0_k$();
-      array[tmp0] = tmp1_unsafeCast_0;
+      var tmp$ret$3;
+      $l$block_2: {
+        var tmp1_unsafeCast_0 = iterator.next_0_k$();
+        var tmp$ret$2;
+        $l$block_1: {
+          tmp$ret$2 = tmp1_unsafeCast_0;
+          break $l$block_1;
+        }
+        tmp$ret$3 = tmp$ret$2;
+        break $l$block_2;
+      }
+      array[tmp0] = tmp$ret$3;
     }
     if (index < array.length) {
       var tmp = index;
-      array[tmp] = null;
+      var tmp$ret$5;
+      $l$block_4: {
+        var tmp$ret$4;
+        $l$block_3: {
+          tmp$ret$4 = null;
+          break $l$block_3;
+        }
+        tmp$ret$5 = tmp$ret$4;
+        break $l$block_4;
+      }
+      array[tmp] = tmp$ret$5;
     }return array;
   }
   function _no_name_provided__4($elements) {
@@ -6828,11 +9889,20 @@ this['out-ir'] = function (_) {
     return this._$this_1.get_ha5a7z_k$(this._last_4);
   };
   IteratorImpl_0.prototype.remove_sv8swh_k$ = function () {
-    var tmp0_check_0 = !(this._last_4 === -1);
-    if (!tmp0_check_0) {
-      var message_1 = 'Call next() or previous() before removing element from the iterator.';
-      throw IllegalStateException_init_$Create$_0(toString_0(message_1));
-    }this._$this_1.removeAt_ha5a7z_k$(this._last_4);
+    {
+      var tmp0_check_0 = !(this._last_4 === -1);
+      {
+      }
+      if (!tmp0_check_0) {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = 'Call next() or previous() before removing element from the iterator.';
+          break $l$block;
+        }
+        var message_1 = tmp$ret$0;
+        throw IllegalStateException_init_$Create$_0(toString_0(message_1));
+      }}
+    this._$this_1.removeAt_ha5a7z_k$(this._last_4);
     Unit_getInstance();
     this._index_4 = this._last_4;
     this._last_4 = -1;
@@ -6877,11 +9947,20 @@ this['out-ir'] = function (_) {
     return this.add_jxzaet_k$((element == null ? true : isObject(element)) ? element : THROW_CCE());
   };
   ListIteratorImpl_0.prototype.set_jxzaet_k$ = function (element) {
-    var tmp0_check_0 = !(this._get_last__0_k$() === -1);
-    if (!tmp0_check_0) {
-      var message_1 = 'Call next() or previous() before updating element value with the iterator.';
-      throw IllegalStateException_init_$Create$_0(toString_0(message_1));
-    }this._$this_2.set_ddb1qf_k$(this._get_last__0_k$(), element);
+    {
+      var tmp0_check_0 = !(this._get_last__0_k$() === -1);
+      {
+      }
+      if (!tmp0_check_0) {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = 'Call next() or previous() before updating element value with the iterator.';
+          break $l$block;
+        }
+        var message_1 = tmp$ret$0;
+        throw IllegalStateException_init_$Create$_0(toString_0(message_1));
+      }}
+    this._$this_2.set_ddb1qf_k$(this._get_last__0_k$(), element);
     Unit_getInstance();
   };
   ListIteratorImpl_0.prototype.set_iav7o_k$ = function (element) {
@@ -6978,6 +10057,7 @@ this['out-ir'] = function (_) {
     return true;
   };
   AbstractMutableList.prototype.addAll_xggsjz_k$ = function (index, elements) {
+    Companion_getInstance().checkPositionIndex_rvwcgf_k$(index, this._get_size__0_k$());
     this.checkIsMutable_sv8swh_k$();
     var _index = index;
     var changed = false;
@@ -7045,17 +10125,23 @@ this['out-ir'] = function (_) {
   };
   AbstractMutableList.prototype.removeRange_rvwcgf_k$ = function (fromIndex, toIndex) {
     var iterator = this.listIterator_ha5a7z_k$(fromIndex);
-    var tmp0_repeat_0 = toIndex - fromIndex | 0;
-    var inductionVariable = 0;
-    if (inductionVariable < tmp0_repeat_0)
-      do {
-        var index_2 = inductionVariable;
-        inductionVariable = inductionVariable + 1 | 0;
-        iterator.next_0_k$();
-        Unit_getInstance();
-        iterator.remove_sv8swh_k$();
+    {
+      var tmp0_repeat_0 = toIndex - fromIndex | 0;
+      {
       }
-       while (inductionVariable < tmp0_repeat_0);
+      var inductionVariable = 0;
+      if (inductionVariable < tmp0_repeat_0)
+        do {
+          var index_2 = inductionVariable;
+          inductionVariable = inductionVariable + 1 | 0;
+          {
+            iterator.next_0_k$();
+            Unit_getInstance();
+            iterator.remove_sv8swh_k$();
+          }
+        }
+         while (inductionVariable < tmp0_repeat_0);
+    }
   };
   AbstractMutableList.prototype.equals = function (other) {
     if (other === this)
@@ -7099,42 +10185,66 @@ this['out-ir'] = function (_) {
     return $this._isReadOnly;
   }
   function ArrayList_init_$Init$($this) {
-    ArrayList.call($this, []);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = [];
+      break $l$block;
+    }
+    ArrayList.call($this, tmp$ret$0);
     return $this;
   }
   function ArrayList_init_$Create$() {
     return ArrayList_init_$Init$(Object.create(ArrayList.prototype));
   }
   function ArrayList_init_$Init$_0(initialCapacity, $this) {
-    ArrayList.call($this, []);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = [];
+      break $l$block;
+    }
+    ArrayList.call($this, tmp$ret$0);
     return $this;
   }
   function ArrayList_init_$Create$_0(initialCapacity) {
     return ArrayList_init_$Init$_0(initialCapacity, Object.create(ArrayList.prototype));
   }
-  function ArrayList_init_$Init$_1(initialCapacity, $mask0, $marker, $this) {
-    if (!(($mask0 & 1) === 0))
-      initialCapacity = 0;
-    ArrayList_init_$Init$_0(initialCapacity, $this);
+  function ArrayList_init_$Init$_1(elements, $this) {
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = copyToArray_0(elements);
+      break $l$block;
+    }
+    ArrayList.call($this, tmp$ret$0);
     return $this;
   }
-  function ArrayList_init_$Create$_1(initialCapacity, $mask0, $marker) {
-    return ArrayList_init_$Init$_1(initialCapacity, $mask0, $marker, Object.create(ArrayList.prototype));
-  }
-  function ArrayList_init_$Init$_2(elements, $this) {
-    ArrayList.call($this, copyToArray_0(elements));
-    return $this;
-  }
-  function ArrayList_init_$Create$_2(elements) {
-    return ArrayList_init_$Init$_2(elements, Object.create(ArrayList.prototype));
+  function ArrayList_init_$Create$_1(elements) {
+    return ArrayList_init_$Init$_1(elements, Object.create(ArrayList.prototype));
   }
   function rangeCheck($this, index) {
-    Companion_getInstance().checkElementIndex_rvwcgf_k$(index, $this._get_size__0_k$());
-    return index;
+    var tmp$ret$0;
+    $l$block: {
+      {
+      }
+      {
+        Companion_getInstance().checkElementIndex_rvwcgf_k$(index, $this._get_size__0_k$());
+      }
+      tmp$ret$0 = index;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function insertionRangeCheck($this, index) {
-    Companion_getInstance().checkPositionIndex_rvwcgf_k$(index, $this._get_size__0_k$());
-    return index;
+    var tmp$ret$0;
+    $l$block: {
+      {
+      }
+      {
+        Companion_getInstance().checkPositionIndex_rvwcgf_k$(index, $this._get_size__0_k$());
+      }
+      tmp$ret$0 = index;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function ArrayList(array) {
     AbstractMutableList.call(this);
@@ -7161,15 +10271,29 @@ this['out-ir'] = function (_) {
     this.checkIsMutable_sv8swh_k$();
     rangeCheck(this, index);
     Unit_getInstance();
-    var tmp0_apply_0 = this._array_3[index];
-    this._array_3[index] = element;
-    var tmp = tmp0_apply_0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_apply_0 = this._array_3[index];
+      {
+      }
+      {
+        this._array_3[index] = element;
+      }
+      tmp$ret$0 = tmp0_apply_0;
+      break $l$block;
+    }
+    var tmp = tmp$ret$0;
     return (tmp == null ? true : isObject(tmp)) ? tmp : THROW_CCE();
   };
   ArrayList.prototype.add_2bq_k$ = function (element) {
     this.checkIsMutable_sv8swh_k$();
-    var tmp0_asDynamic_0 = this._array_3;
-    tmp0_asDynamic_0.push(element);
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_asDynamic_0 = this._array_3;
+      tmp$ret$0 = tmp0_asDynamic_0;
+      break $l$block;
+    }
+    tmp$ret$0.push(element);
     var tmp0_this = this;
     var tmp1 = tmp0_this._get_modCount__0_k$();
     tmp0_this._set_modCount__majfzk_k$(tmp1 + 1 | 0);
@@ -7178,8 +10302,13 @@ this['out-ir'] = function (_) {
   };
   ArrayList.prototype.add_vz2mgm_k$ = function (index, element) {
     this.checkIsMutable_sv8swh_k$();
-    var tmp0_asDynamic_0 = this._array_3;
-    tmp0_asDynamic_0.splice(insertionRangeCheck(this, index), 0, element);
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_asDynamic_0 = this._array_3;
+      tmp$ret$0 = tmp0_asDynamic_0;
+      break $l$block;
+    }
+    tmp$ret$0.splice(insertionRangeCheck(this, index), 0, element);
     var tmp0_this = this;
     var tmp1 = tmp0_this._get_modCount__0_k$();
     tmp0_this._set_modCount__majfzk_k$(tmp1 + 1 | 0);
@@ -7191,9 +10320,24 @@ this['out-ir'] = function (_) {
       return false;
     var tmp0_this = this;
     var tmp = tmp0_this;
-    var tmp0_plus_0 = tmp0_this._array_3;
-    var tmp1_plus_0 = copyToArray_0(elements);
-    tmp._array_3 = tmp0_plus_0.concat(tmp1_plus_0);
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp0_plus_0 = tmp0_this._array_3;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = copyToArray_0(elements);
+        break $l$block;
+      }
+      var tmp1_plus_0 = tmp$ret$0;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = tmp0_plus_0;
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1.concat(tmp1_plus_0);
+      break $l$block_1;
+    }
+    tmp._array_3 = tmp$ret$2;
     var tmp1_this = this;
     var tmp2 = tmp1_this._get_modCount__0_k$();
     tmp1_this._set_modCount__majfzk_k$(tmp2 + 1 | 0);
@@ -7213,13 +10357,38 @@ this['out-ir'] = function (_) {
       return this.addAll_dxd4eo_k$(elements);
     else if (tmp0_subject === 0) {
       var tmp = this;
-      var tmp0_plus_0 = copyToArray_0(elements);
-      var tmp1_plus_0 = this._array_3;
-      tmp._array_3 = tmp0_plus_0.concat(tmp1_plus_0);
+      var tmp$ret$2;
+      $l$block_1: {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = copyToArray_0(elements);
+          break $l$block;
+        }
+        var tmp0_plus_0 = tmp$ret$0;
+        var tmp1_plus_0 = this._array_3;
+        var tmp$ret$1;
+        $l$block_0: {
+          tmp$ret$1 = tmp0_plus_0;
+          break $l$block_0;
+        }
+        tmp$ret$2 = tmp$ret$1.concat(tmp1_plus_0);
+        break $l$block_1;
+      }
+      tmp._array_3 = tmp$ret$2;
     } else {
       var tmp_0 = this;
-      var tmp2_asDynamic_0 = copyOfRange(this._array_3, 0, index);
-      tmp_0._array_3 = tmp2_asDynamic_0.concat(copyToArray_0(elements), copyOfRange(this._array_3, index, this._get_size__0_k$()));
+      var tmp$ret$3;
+      $l$block_2: {
+        var tmp2_asDynamic_0 = copyOfRange(this._array_3, 0, index);
+        tmp$ret$3 = tmp2_asDynamic_0;
+        break $l$block_2;
+      }
+      var tmp$ret$4;
+      $l$block_3: {
+        tmp$ret$4 = copyToArray_0(elements);
+        break $l$block_3;
+      }
+      tmp_0._array_3 = tmp$ret$3.concat(tmp$ret$4, copyOfRange(this._array_3, index, this._get_size__0_k$()));
     }
     var tmp1_this = this;
     var tmp2 = tmp1_this._get_modCount__0_k$();
@@ -7237,11 +10406,21 @@ this['out-ir'] = function (_) {
     Unit_getInstance();
     var tmp;
     if (index === _get_lastIndex__4(this)) {
-      var tmp0_asDynamic_0 = this._array_3;
-      tmp = tmp0_asDynamic_0.pop();
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_asDynamic_0 = this._array_3;
+        tmp$ret$0 = tmp0_asDynamic_0;
+        break $l$block;
+      }
+      tmp = tmp$ret$0.pop();
     } else {
-      var tmp1_asDynamic_0 = this._array_3;
-      tmp = tmp1_asDynamic_0.splice(index, 1)[0];
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp1_asDynamic_0 = this._array_3;
+        tmp$ret$1 = tmp1_asDynamic_0;
+        break $l$block_0;
+      }
+      tmp = tmp$ret$1.splice(index, 1)[0];
     }
     return tmp;
   };
@@ -7254,8 +10433,13 @@ this['out-ir'] = function (_) {
         var index = inductionVariable;
         inductionVariable = inductionVariable + 1 | 0;
         if (equals(this._array_3[index], element)) {
-          var tmp0_asDynamic_0 = this._array_3;
-          tmp0_asDynamic_0.splice(index, 1);
+          var tmp$ret$0;
+          $l$block: {
+            var tmp0_asDynamic_0 = this._array_3;
+            tmp$ret$0 = tmp0_asDynamic_0;
+            break $l$block;
+          }
+          tmp$ret$0.splice(index, 1);
           var tmp1_this = this;
           var tmp2 = tmp1_this._get_modCount__0_k$();
           tmp1_this._set_modCount__majfzk_k$(tmp2 + 1 | 0);
@@ -7271,20 +10455,30 @@ this['out-ir'] = function (_) {
     var tmp1 = tmp0_this._get_modCount__0_k$();
     tmp0_this._set_modCount__majfzk_k$(tmp1 + 1 | 0);
     Unit_getInstance();
-    var tmp0_asDynamic_0 = this._array_3;
-    tmp0_asDynamic_0.splice(fromIndex, toIndex - fromIndex | 0);
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_asDynamic_0 = this._array_3;
+      tmp$ret$0 = tmp0_asDynamic_0;
+      break $l$block;
+    }
+    tmp$ret$0.splice(fromIndex, toIndex - fromIndex | 0);
   };
   ArrayList.prototype.clear_sv8swh_k$ = function () {
     this.checkIsMutable_sv8swh_k$();
     var tmp = this;
-    tmp._array_3 = [];
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = [];
+      break $l$block;
+    }
+    tmp._array_3 = tmp$ret$0;
     var tmp0_this = this;
     var tmp1 = tmp0_this._get_modCount__0_k$();
     tmp0_this._set_modCount__majfzk_k$(tmp1 + 1 | 0);
     Unit_getInstance();
   };
   ArrayList.prototype.indexOf_2bq_k$ = function (element) {
-    return indexOf(this._array_3, element);
+    return indexOf_3(this._array_3, element);
   };
   ArrayList.prototype.lastIndexOf_2bq_k$ = function (element) {
     return lastIndexOf(this._array_3, element);
@@ -7296,10 +10490,15 @@ this['out-ir'] = function (_) {
     if (array.length < this._get_size__0_k$()) {
       var tmp = this.toArray_0_k$();
       return isArray(tmp) ? tmp : THROW_CCE();
-    }var tmp_0 = this._array_3;
-    var tmp0_copyInto_0 = isArray(tmp_0) ? tmp_0 : THROW_CCE();
-    var tmp1_copyInto_0 = tmp0_copyInto_0.length;
-    arrayCopy_0(tmp0_copyInto_0, array, 0, 0, tmp1_copyInto_0);
+    }var tmp$ret$0;
+    $l$block: {
+      var tmp_0 = this._array_3;
+      var tmp0_copyInto_0 = isArray(tmp_0) ? tmp_0 : THROW_CCE();
+      var tmp1_copyInto_0 = tmp0_copyInto_0.length;
+      arrayCopy_0(tmp0_copyInto_0, array, 0, 0, tmp1_copyInto_0);
+      tmp$ret$0 = array;
+      break $l$block;
+    }
     Unit_getInstance();
     if (array.length > this._get_size__0_k$()) {
       var tmp_1 = this._get_size__0_k$();
@@ -7368,7 +10567,12 @@ this['out-ir'] = function (_) {
     return this._outputStream;
   };
   NodeJsOutput_0.prototype.print_qi8yb4_k$ = function (message) {
-    var messageString = String(message);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = String(message);
+      break $l$block;
+    }
+    var messageString = tmp$ret$0;
     this._outputStream.write(messageString);
   };
   NodeJsOutput_0.$metadata$ = {
@@ -7380,18 +10584,53 @@ this['out-ir'] = function (_) {
     BufferedOutput_0.call(this);
   }
   BufferedOutputToConsoleLog_0.prototype.print_qi8yb4_k$ = function (message) {
-    var s = String(message);
-    var tmp0_nativeLastIndexOf_0 = s;
-    var i = tmp0_nativeLastIndexOf_0.lastIndexOf('\n', 0);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = String(message);
+      break $l$block;
+    }
+    var s = tmp$ret$0;
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp0_nativeLastIndexOf_0 = s;
+      var tmp$ret$1;
+      $l$block_0: {
+        tmp$ret$1 = tmp0_nativeLastIndexOf_0;
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1.lastIndexOf('\n', 0);
+      break $l$block_1;
+    }
+    var i = tmp$ret$2;
     if (i >= 0) {
       var tmp0_this = this;
       var tmp = tmp0_this._get_buffer__0_k$();
-      var tmp1_substring_0 = s;
-      tmp0_this._set_buffer__a4enbm_k$(tmp + tmp1_substring_0.substring(0, i));
+      var tmp$ret$4;
+      $l$block_3: {
+        var tmp1_substring_0 = s;
+        var tmp$ret$3;
+        $l$block_2: {
+          tmp$ret$3 = tmp1_substring_0;
+          break $l$block_2;
+        }
+        tmp$ret$4 = tmp$ret$3.substring(0, i);
+        break $l$block_3;
+      }
+      tmp0_this._set_buffer__a4enbm_k$(tmp + tmp$ret$4);
       this.flush_sv8swh_k$();
-      var tmp2_substring_0 = s;
-      var tmp3_substring_0 = i + 1 | 0;
-      s = tmp2_substring_0.substring(tmp3_substring_0);
+      var tmp$ret$6;
+      $l$block_5: {
+        var tmp2_substring_0 = s;
+        var tmp3_substring_0 = i + 1 | 0;
+        var tmp$ret$5;
+        $l$block_4: {
+          tmp$ret$5 = tmp2_substring_0;
+          break $l$block_4;
+        }
+        tmp$ret$6 = tmp$ret$5.substring(tmp3_substring_0);
+        break $l$block_5;
+      }
+      s = tmp$ret$6;
     }var tmp1_this = this;
     tmp1_this._set_buffer__a4enbm_k$(tmp1_this._get_buffer__0_k$() + s);
   };
@@ -7422,7 +10661,12 @@ this['out-ir'] = function (_) {
     var tmp0_this = this;
     var tmp = tmp0_this;
     var tmp_0 = tmp0_this._buffer;
-    tmp._buffer = tmp_0 + String(message);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = String(message);
+      break $l$block;
+    }
+    tmp._buffer = tmp_0 + tmp$ret$0;
   };
   BufferedOutput_0.prototype.flush_sv8swh_k$ = function () {
     this._buffer = '';
@@ -7440,8 +10684,20 @@ this['out-ir'] = function (_) {
   function init_properties_console_kt() {
     if (!properties_initialized_console_kt) {
       properties_initialized_console_kt = true;
-      var isNode_2 = typeof process !== 'undefined' && process.versions && !!process.versions.node;
-      output = isNode_2 ? new NodeJsOutput_0(process.stdout) : new BufferedOutputToConsoleLog_0();
+      var tmp$ret$1;
+      $l$block_0: {
+        {
+        }
+        var tmp$ret$0;
+        $l$block: {
+          var isNode_2 = typeof process !== 'undefined' && process.versions && !!process.versions.node;
+          tmp$ret$0 = isNode_2 ? new NodeJsOutput_0(process.stdout) : new BufferedOutputToConsoleLog_0();
+          break $l$block;
+        }
+        tmp$ret$1 = tmp$ret$0;
+        break $l$block_0;
+      }
+      output = tmp$ret$1;
     }}
   function _get_EmptyContinuation_() {
     init_properties_EmptyContinuation_kt();
@@ -7458,12 +10714,13 @@ this['out-ir'] = function (_) {
     return this._get_context__2_0_k$();
   };
   _no_name_provided__1_0.prototype.resumeWith_3_jccoe6_k$ = function (result) {
-    throwOnFailure(result);
-    var tmp = _Result___get_value__impl_(result);
-    if (tmp == null ? true : isObject(tmp))
-      tmp;
-    else
-      THROW_CCE();
+    var tmp$ret$0;
+    $l$block: {
+      throwOnFailure(result);
+      var tmp = _Result___get_value__impl_(result);
+      tmp$ret$0 = (tmp == null ? true : isObject(tmp)) ? tmp : THROW_CCE();
+      break $l$block;
+    }
     return Unit_getInstance();
   };
   _no_name_provided__1_0.prototype.resumeWith_bnunh2_k$ = function (result) {
@@ -7478,8 +10735,13 @@ this['out-ir'] = function (_) {
   function init_properties_EmptyContinuation_kt() {
     if (!properties_initialized_EmptyContinuation_kt) {
       properties_initialized_EmptyContinuation_kt = true;
-      var tmp0_Continuation_0 = EmptyCoroutineContext_getInstance();
-      EmptyContinuation = new _no_name_provided__1_0(tmp0_Continuation_0);
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_Continuation_0 = EmptyCoroutineContext_getInstance();
+        tmp$ret$0 = new _no_name_provided__1_0(tmp0_Continuation_0);
+        break $l$block;
+      }
+      EmptyContinuation = tmp$ret$0;
     }}
   function asDynamic(_this_) {
     return _this_;
@@ -7488,7 +10750,12 @@ this['out-ir'] = function (_) {
     return _this_;
   }
   function unsafeCast_0(_this_) {
-    return _this_;
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _this_;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function Serializable() {
   }
@@ -7517,8 +10784,18 @@ this['out-ir'] = function (_) {
   function init_properties_PlatformRandom_kt() {
     if (!properties_initialized_PlatformRandom_kt) {
       properties_initialized_PlatformRandom_kt = true;
-      INV_2_26 = Math.pow(2.0, -26.0);
-      INV_2_53 = Math.pow(2.0, -53.0);
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = Math.pow(2.0, -26.0);
+        break $l$block;
+      }
+      INV_2_26 = tmp$ret$0;
+      var tmp$ret$0_0;
+      $l$block_0: {
+        tmp$ret$0_0 = Math.pow(2.0, -53.0);
+        break $l$block_0;
+      }
+      INV_2_53 = tmp$ret$0_0;
     }}
   function _get_js_(_this_) {
     return (_this_ instanceof KClassImpl ? _this_ : THROW_CCE())._get_jClass__0_k$();
@@ -7655,9 +10932,19 @@ this['out-ir'] = function (_) {
   function SimpleKClassImpl(jClass) {
     KClassImpl.call(this, jClass);
     var tmp = this;
-    var tmp0_safe_receiver = jClass.$metadata$;
-    var tmp0_unsafeCast_0 = tmp0_safe_receiver == null ? null : tmp0_safe_receiver.simpleName;
-    tmp._simpleName_0 = tmp0_unsafeCast_0;
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = jClass;
+        break $l$block;
+      }
+      var tmp0_safe_receiver = tmp$ret$0.$metadata$;
+      var tmp0_unsafeCast_0 = tmp0_safe_receiver == null ? null : tmp0_safe_receiver.simpleName;
+      tmp$ret$1 = tmp0_unsafeCast_0;
+      break $l$block_0;
+    }
+    tmp._simpleName_0 = tmp$ret$1;
   }
   SimpleKClassImpl.prototype._get_simpleName__0_k$ = function () {
     return this._simpleName_0;
@@ -8221,7 +11508,12 @@ this['out-ir'] = function (_) {
   _no_name_provided__28.prototype.invoke_wi7j7l_k$ = function (it) {
     var tmp;
     if (typeof it === 'function') {
-      tmp = it.length === this._$arity;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = it;
+        break $l$block;
+      }
+      tmp = tmp$ret$0.length === this._$arity;
     } else {
       tmp = false;
     }
@@ -8237,63 +11529,177 @@ this['out-ir'] = function (_) {
   function PrimitiveClasses_0() {
     PrimitiveClasses_instance = this;
     var tmp = this;
-    var tmp0_unsafeCast_0 = Object;
-    tmp._anyClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0, 'Any', _no_name_provided_$factory_8());
-    var tmp_0 = this;
-    var tmp0_unsafeCast_0_0 = Number;
-    tmp_0._numberClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_0, 'Number', _no_name_provided_$factory_9());
-    this._nothingClass = NothingKClassImpl_getInstance();
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_unsafeCast_0 = Object;
+      tmp$ret$0 = tmp0_unsafeCast_0;
+      break $l$block;
+    }
+    var tmp_0 = tmp$ret$0;
+    tmp._anyClass = new PrimitiveKClassImpl(tmp_0, 'Any', _no_name_provided_$factory_8());
     var tmp_1 = this;
-    var tmp0_unsafeCast_0_1 = Boolean;
-    tmp_1._booleanClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_1, 'Boolean', _no_name_provided_$factory_10());
-    var tmp_2 = this;
-    var tmp0_unsafeCast_0_2 = Number;
-    tmp_2._byteClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_2, 'Byte', _no_name_provided_$factory_11());
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_unsafeCast_0_0 = Number;
+      tmp$ret$1 = tmp0_unsafeCast_0_0;
+      break $l$block_0;
+    }
+    var tmp_2 = tmp$ret$1;
+    tmp_1._numberClass = new PrimitiveKClassImpl(tmp_2, 'Number', _no_name_provided_$factory_9());
+    this._nothingClass = NothingKClassImpl_getInstance();
     var tmp_3 = this;
-    var tmp0_unsafeCast_0_3 = Number;
-    tmp_3._shortClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_3, 'Short', _no_name_provided_$factory_12());
-    var tmp_4 = this;
-    var tmp0_unsafeCast_0_4 = Number;
-    tmp_4._intClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_4, 'Int', _no_name_provided_$factory_13());
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp0_unsafeCast_0_1 = Boolean;
+      tmp$ret$2 = tmp0_unsafeCast_0_1;
+      break $l$block_1;
+    }
+    var tmp_4 = tmp$ret$2;
+    tmp_3._booleanClass = new PrimitiveKClassImpl(tmp_4, 'Boolean', _no_name_provided_$factory_10());
     var tmp_5 = this;
-    var tmp0_unsafeCast_0_5 = Number;
-    tmp_5._floatClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_5, 'Float', _no_name_provided_$factory_14());
-    var tmp_6 = this;
-    var tmp0_unsafeCast_0_6 = Number;
-    tmp_6._doubleClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_6, 'Double', _no_name_provided_$factory_15());
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp0_unsafeCast_0_2 = Number;
+      tmp$ret$3 = tmp0_unsafeCast_0_2;
+      break $l$block_2;
+    }
+    var tmp_6 = tmp$ret$3;
+    tmp_5._byteClass = new PrimitiveKClassImpl(tmp_6, 'Byte', _no_name_provided_$factory_11());
     var tmp_7 = this;
-    var tmp0_unsafeCast_0_7 = Array;
-    tmp_7._arrayClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_7, 'Array', _no_name_provided_$factory_16());
-    var tmp_8 = this;
-    var tmp0_unsafeCast_0_8 = String;
-    tmp_8._stringClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_8, 'String', _no_name_provided_$factory_17());
+    var tmp$ret$4;
+    $l$block_3: {
+      var tmp0_unsafeCast_0_3 = Number;
+      tmp$ret$4 = tmp0_unsafeCast_0_3;
+      break $l$block_3;
+    }
+    var tmp_8 = tmp$ret$4;
+    tmp_7._shortClass = new PrimitiveKClassImpl(tmp_8, 'Short', _no_name_provided_$factory_12());
     var tmp_9 = this;
-    var tmp0_unsafeCast_0_9 = Error;
-    tmp_9._throwableClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_9, 'Throwable', _no_name_provided_$factory_18());
-    var tmp_10 = this;
-    var tmp0_unsafeCast_0_10 = Array;
-    tmp_10._booleanArrayClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_10, 'BooleanArray', _no_name_provided_$factory_19());
+    var tmp$ret$5;
+    $l$block_4: {
+      var tmp0_unsafeCast_0_4 = Number;
+      tmp$ret$5 = tmp0_unsafeCast_0_4;
+      break $l$block_4;
+    }
+    var tmp_10 = tmp$ret$5;
+    tmp_9._intClass = new PrimitiveKClassImpl(tmp_10, 'Int', _no_name_provided_$factory_13());
     var tmp_11 = this;
-    var tmp0_unsafeCast_0_11 = Uint16Array;
-    tmp_11._charArrayClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_11, 'CharArray', _no_name_provided_$factory_20());
-    var tmp_12 = this;
-    var tmp0_unsafeCast_0_12 = Int8Array;
-    tmp_12._byteArrayClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_12, 'ByteArray', _no_name_provided_$factory_21());
+    var tmp$ret$6;
+    $l$block_5: {
+      var tmp0_unsafeCast_0_5 = Number;
+      tmp$ret$6 = tmp0_unsafeCast_0_5;
+      break $l$block_5;
+    }
+    var tmp_12 = tmp$ret$6;
+    tmp_11._floatClass = new PrimitiveKClassImpl(tmp_12, 'Float', _no_name_provided_$factory_14());
     var tmp_13 = this;
-    var tmp0_unsafeCast_0_13 = Int16Array;
-    tmp_13._shortArrayClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_13, 'ShortArray', _no_name_provided_$factory_22());
-    var tmp_14 = this;
-    var tmp0_unsafeCast_0_14 = Int32Array;
-    tmp_14._intArrayClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_14, 'IntArray', _no_name_provided_$factory_23());
+    var tmp$ret$7;
+    $l$block_6: {
+      var tmp0_unsafeCast_0_6 = Number;
+      tmp$ret$7 = tmp0_unsafeCast_0_6;
+      break $l$block_6;
+    }
+    var tmp_14 = tmp$ret$7;
+    tmp_13._doubleClass = new PrimitiveKClassImpl(tmp_14, 'Double', _no_name_provided_$factory_15());
     var tmp_15 = this;
-    var tmp0_unsafeCast_0_15 = Array;
-    tmp_15._longArrayClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_15, 'LongArray', _no_name_provided_$factory_24());
-    var tmp_16 = this;
-    var tmp0_unsafeCast_0_16 = Float32Array;
-    tmp_16._floatArrayClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_16, 'FloatArray', _no_name_provided_$factory_25());
+    var tmp$ret$8;
+    $l$block_7: {
+      var tmp0_unsafeCast_0_7 = Array;
+      tmp$ret$8 = tmp0_unsafeCast_0_7;
+      break $l$block_7;
+    }
+    var tmp_16 = tmp$ret$8;
+    tmp_15._arrayClass = new PrimitiveKClassImpl(tmp_16, 'Array', _no_name_provided_$factory_16());
     var tmp_17 = this;
-    var tmp0_unsafeCast_0_17 = Float64Array;
-    tmp_17._doubleArrayClass = new PrimitiveKClassImpl(tmp0_unsafeCast_0_17, 'DoubleArray', _no_name_provided_$factory_26());
+    var tmp$ret$9;
+    $l$block_8: {
+      var tmp0_unsafeCast_0_8 = String;
+      tmp$ret$9 = tmp0_unsafeCast_0_8;
+      break $l$block_8;
+    }
+    var tmp_18 = tmp$ret$9;
+    tmp_17._stringClass = new PrimitiveKClassImpl(tmp_18, 'String', _no_name_provided_$factory_17());
+    var tmp_19 = this;
+    var tmp$ret$10;
+    $l$block_9: {
+      var tmp0_unsafeCast_0_9 = Error;
+      tmp$ret$10 = tmp0_unsafeCast_0_9;
+      break $l$block_9;
+    }
+    var tmp_20 = tmp$ret$10;
+    tmp_19._throwableClass = new PrimitiveKClassImpl(tmp_20, 'Throwable', _no_name_provided_$factory_18());
+    var tmp_21 = this;
+    var tmp$ret$11;
+    $l$block_10: {
+      var tmp0_unsafeCast_0_10 = Array;
+      tmp$ret$11 = tmp0_unsafeCast_0_10;
+      break $l$block_10;
+    }
+    var tmp_22 = tmp$ret$11;
+    tmp_21._booleanArrayClass = new PrimitiveKClassImpl(tmp_22, 'BooleanArray', _no_name_provided_$factory_19());
+    var tmp_23 = this;
+    var tmp$ret$12;
+    $l$block_11: {
+      var tmp0_unsafeCast_0_11 = Uint16Array;
+      tmp$ret$12 = tmp0_unsafeCast_0_11;
+      break $l$block_11;
+    }
+    var tmp_24 = tmp$ret$12;
+    tmp_23._charArrayClass = new PrimitiveKClassImpl(tmp_24, 'CharArray', _no_name_provided_$factory_20());
+    var tmp_25 = this;
+    var tmp$ret$13;
+    $l$block_12: {
+      var tmp0_unsafeCast_0_12 = Int8Array;
+      tmp$ret$13 = tmp0_unsafeCast_0_12;
+      break $l$block_12;
+    }
+    var tmp_26 = tmp$ret$13;
+    tmp_25._byteArrayClass = new PrimitiveKClassImpl(tmp_26, 'ByteArray', _no_name_provided_$factory_21());
+    var tmp_27 = this;
+    var tmp$ret$14;
+    $l$block_13: {
+      var tmp0_unsafeCast_0_13 = Int16Array;
+      tmp$ret$14 = tmp0_unsafeCast_0_13;
+      break $l$block_13;
+    }
+    var tmp_28 = tmp$ret$14;
+    tmp_27._shortArrayClass = new PrimitiveKClassImpl(tmp_28, 'ShortArray', _no_name_provided_$factory_22());
+    var tmp_29 = this;
+    var tmp$ret$15;
+    $l$block_14: {
+      var tmp0_unsafeCast_0_14 = Int32Array;
+      tmp$ret$15 = tmp0_unsafeCast_0_14;
+      break $l$block_14;
+    }
+    var tmp_30 = tmp$ret$15;
+    tmp_29._intArrayClass = new PrimitiveKClassImpl(tmp_30, 'IntArray', _no_name_provided_$factory_23());
+    var tmp_31 = this;
+    var tmp$ret$16;
+    $l$block_15: {
+      var tmp0_unsafeCast_0_15 = Array;
+      tmp$ret$16 = tmp0_unsafeCast_0_15;
+      break $l$block_15;
+    }
+    var tmp_32 = tmp$ret$16;
+    tmp_31._longArrayClass = new PrimitiveKClassImpl(tmp_32, 'LongArray', _no_name_provided_$factory_24());
+    var tmp_33 = this;
+    var tmp$ret$17;
+    $l$block_16: {
+      var tmp0_unsafeCast_0_16 = Float32Array;
+      tmp$ret$17 = tmp0_unsafeCast_0_16;
+      break $l$block_16;
+    }
+    var tmp_34 = tmp$ret$17;
+    tmp_33._floatArrayClass = new PrimitiveKClassImpl(tmp_34, 'FloatArray', _no_name_provided_$factory_25());
+    var tmp_35 = this;
+    var tmp$ret$18;
+    $l$block_17: {
+      var tmp0_unsafeCast_0_17 = Float64Array;
+      tmp$ret$18 = tmp0_unsafeCast_0_17;
+      break $l$block_17;
+    }
+    var tmp_36 = tmp$ret$18;
+    tmp_35._doubleArrayClass = new PrimitiveKClassImpl(tmp_36, 'DoubleArray', _no_name_provided_$factory_26());
   }
   PrimitiveClasses_0.prototype._get_anyClass__0_k$ = function () {
     return this._anyClass;
@@ -8359,12 +11765,35 @@ this['out-ir'] = function (_) {
     var tmp0_elvis_lhs = _get_functionClasses_()[arity];
     var tmp;
     if (tmp0_elvis_lhs == null) {
-      var tmp0_unsafeCast_0_3 = Function;
-      var tmp_0 = '' + 'Function' + arity;
-      var result_2 = new PrimitiveKClassImpl(tmp0_unsafeCast_0_3, tmp_0, _no_name_provided_$factory_27(arity));
-      var tmp1_asDynamic_0_5 = _get_functionClasses_();
-      tmp1_asDynamic_0_5[arity] = result_2;
-      tmp = result_2;
+      var tmp$ret$3;
+      $l$block_2: {
+        {
+        }
+        var tmp$ret$2;
+        $l$block_1: {
+          var tmp$ret$0;
+          $l$block: {
+            var tmp0_unsafeCast_0_3 = Function;
+            tmp$ret$0 = tmp0_unsafeCast_0_3;
+            break $l$block;
+          }
+          var tmp_0 = tmp$ret$0;
+          var tmp_1 = '' + 'Function' + arity;
+          var result_2 = new PrimitiveKClassImpl(tmp_0, tmp_1, _no_name_provided_$factory_27(arity));
+          var tmp$ret$1;
+          $l$block_0: {
+            var tmp1_asDynamic_0_5 = _get_functionClasses_();
+            tmp$ret$1 = tmp1_asDynamic_0_5;
+            break $l$block_0;
+          }
+          tmp$ret$1[arity] = result_2;
+          tmp$ret$2 = result_2;
+          break $l$block_1;
+        }
+        tmp$ret$3 = tmp$ret$2;
+        break $l$block_2;
+      }
+      tmp = tmp$ret$3;
     } else {
       tmp = tmp0_elvis_lhs;
     }
@@ -8585,14 +12014,39 @@ this['out-ir'] = function (_) {
   function init_properties_primitives_kt() {
     if (!properties_initialized_primitives_kt) {
       properties_initialized_primitives_kt = true;
-      functionClasses = fillArrayVal(Array(0), null);
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = fillArrayVal(Array(0), null);
+        break $l$block;
+      }
+      functionClasses = tmp$ret$0;
     }}
   function getKClass_0(jClass) {
     var tmp;
     if (Array.isArray(jClass)) {
-      tmp = getKClassM_0(jClass);
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = jClass;
+          break $l$block;
+        }
+        tmp$ret$1 = tmp$ret$0;
+        break $l$block_0;
+      }
+      tmp = getKClassM_0(tmp$ret$1);
     } else {
-      tmp = getKClass1_0(jClass);
+      var tmp$ret$3;
+      $l$block_2: {
+        var tmp$ret$2;
+        $l$block_1: {
+          tmp$ret$2 = jClass;
+          break $l$block_1;
+        }
+        tmp$ret$3 = tmp$ret$2;
+        break $l$block_2;
+      }
+      tmp = getKClass1_0(tmp$ret$3);
     }
     return tmp;
   }
@@ -8604,20 +12058,57 @@ this['out-ir'] = function (_) {
         tmp = getKClass1_0(jClasses[0]);
         break;
       case 0:
-        var tmp0_unsafeCast_0 = NothingKClassImpl_getInstance();
-        tmp = tmp0_unsafeCast_0;
+        var tmp$ret$1;
+        $l$block_0: {
+          var tmp0_unsafeCast_0 = NothingKClassImpl_getInstance();
+          var tmp$ret$0;
+          $l$block: {
+            tmp$ret$0 = tmp0_unsafeCast_0;
+            break $l$block;
+          }
+          tmp$ret$1 = tmp$ret$0;
+          break $l$block_0;
+        }
+
+        tmp = tmp$ret$1;
         break;
-      default:var tmp1_unsafeCast_0 = new ErrorKClass();
-        tmp = tmp1_unsafeCast_0;
+      default:var tmp$ret$3;
+        $l$block_2: {
+          var tmp1_unsafeCast_0 = new ErrorKClass();
+          var tmp$ret$2;
+          $l$block_1: {
+            tmp$ret$2 = tmp1_unsafeCast_0;
+            break $l$block_1;
+          }
+          tmp$ret$3 = tmp$ret$2;
+          break $l$block_2;
+        }
+
+        tmp = tmp$ret$3;
         break;
     }
     return tmp;
   }
   function getKClass1_0(jClass) {
     if (jClass === String) {
-      var tmp0_unsafeCast_0 = PrimitiveClasses_getInstance()._stringClass;
-      return tmp0_unsafeCast_0;
-    }var metadata = jClass.$metadata$;
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp0_unsafeCast_0 = PrimitiveClasses_getInstance()._stringClass;
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = tmp0_unsafeCast_0;
+          break $l$block;
+        }
+        tmp$ret$1 = tmp$ret$0;
+        break $l$block_0;
+      }
+      return tmp$ret$1;
+    }var tmp$ret$2;
+    $l$block_1: {
+      tmp$ret$2 = jClass;
+      break $l$block_1;
+    }
+    var metadata = tmp$ret$2.$metadata$;
     var tmp;
     if (metadata != null) {
       var tmp_0;
@@ -8635,75 +12126,90 @@ this['out-ir'] = function (_) {
     return tmp;
   }
   function getKClassFromExpression_0(e) {
-    var tmp0_subject = typeof e;
-    var tmp;
-    switch (tmp0_subject) {
-      case 'string':
-        tmp = PrimitiveClasses_getInstance()._stringClass;
-        break;
-      case 'number':
-        var tmp_0;
-        var tmp0_asDynamic_0 = jsBitwiseOr(e, 0);
-        if (tmp0_asDynamic_0 === e) {
-          tmp_0 = PrimitiveClasses_getInstance()._intClass;
-        } else {
-          {
-            tmp_0 = PrimitiveClasses_getInstance()._doubleClass;
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp0_subject = typeof e;
+      var tmp;
+      switch (tmp0_subject) {
+        case 'string':
+          tmp = PrimitiveClasses_getInstance()._stringClass;
+          break;
+        case 'number':
+          var tmp_0;
+          var tmp$ret$0;
+          $l$block: {
+            var tmp0_asDynamic_0 = jsBitwiseOr(e, 0);
+            tmp$ret$0 = tmp0_asDynamic_0;
+            break $l$block;
           }
-        }
 
-        tmp = tmp_0;
-        break;
-      case 'boolean':
-        tmp = PrimitiveClasses_getInstance()._booleanClass;
-        break;
-      case 'function':
-        var tmp_1 = PrimitiveClasses_getInstance();
-        tmp = tmp_1.functionClass(e.length);
-        break;
-      default:var tmp_2;
-        if (isBooleanArray(e)) {
-          tmp_2 = PrimitiveClasses_getInstance()._booleanArrayClass;
-        } else {
-          if (isCharArray(e)) {
-            tmp_2 = PrimitiveClasses_getInstance()._charArrayClass;
+          if (tmp$ret$0 === e) {
+            tmp_0 = PrimitiveClasses_getInstance()._intClass;
           } else {
-            if (isByteArray(e)) {
-              tmp_2 = PrimitiveClasses_getInstance()._byteArrayClass;
+            {
+              tmp_0 = PrimitiveClasses_getInstance()._doubleClass;
+            }
+          }
+
+          tmp = tmp_0;
+          break;
+        case 'boolean':
+          tmp = PrimitiveClasses_getInstance()._booleanClass;
+          break;
+        case 'function':
+          var tmp_1 = PrimitiveClasses_getInstance();
+          var tmp$ret$1;
+          $l$block_0: {
+            tmp$ret$1 = e;
+            break $l$block_0;
+          }
+
+          tmp = tmp_1.functionClass(tmp$ret$1.length);
+          break;
+        default:var tmp_2;
+          if (isBooleanArray(e)) {
+            tmp_2 = PrimitiveClasses_getInstance()._booleanArrayClass;
+          } else {
+            if (isCharArray(e)) {
+              tmp_2 = PrimitiveClasses_getInstance()._charArrayClass;
             } else {
-              if (isShortArray(e)) {
-                tmp_2 = PrimitiveClasses_getInstance()._shortArrayClass;
+              if (isByteArray(e)) {
+                tmp_2 = PrimitiveClasses_getInstance()._byteArrayClass;
               } else {
-                if (isIntArray(e)) {
-                  tmp_2 = PrimitiveClasses_getInstance()._intArrayClass;
+                if (isShortArray(e)) {
+                  tmp_2 = PrimitiveClasses_getInstance()._shortArrayClass;
                 } else {
-                  if (isLongArray(e)) {
-                    tmp_2 = PrimitiveClasses_getInstance()._longArrayClass;
+                  if (isIntArray(e)) {
+                    tmp_2 = PrimitiveClasses_getInstance()._intArrayClass;
                   } else {
-                    if (isFloatArray(e)) {
-                      tmp_2 = PrimitiveClasses_getInstance()._floatArrayClass;
+                    if (isLongArray(e)) {
+                      tmp_2 = PrimitiveClasses_getInstance()._longArrayClass;
                     } else {
-                      if (isDoubleArray(e)) {
-                        tmp_2 = PrimitiveClasses_getInstance()._doubleArrayClass;
+                      if (isFloatArray(e)) {
+                        tmp_2 = PrimitiveClasses_getInstance()._floatArrayClass;
                       } else {
-                        if (isInterface(e, KClass)) {
-                          tmp_2 = getKClass_0(KClass);
+                        if (isDoubleArray(e)) {
+                          tmp_2 = PrimitiveClasses_getInstance()._doubleArrayClass;
                         } else {
-                          if (isArray(e)) {
-                            tmp_2 = PrimitiveClasses_getInstance()._arrayClass;
+                          if (isInterface(e, KClass)) {
+                            tmp_2 = getKClass_0(KClass);
                           } else {
-                            {
-                              var constructor = Object.getPrototypeOf(e).constructor;
-                              var tmp_3;
-                              if (constructor === Object) {
-                                tmp_3 = PrimitiveClasses_getInstance()._anyClass;
-                              } else if (constructor === Error) {
-                                tmp_3 = PrimitiveClasses_getInstance()._throwableClass;
-                              } else {
-                                var jsClass_1 = constructor;
-                                tmp_3 = getKClass1_0(jsClass_1);
+                            if (isArray(e)) {
+                              tmp_2 = PrimitiveClasses_getInstance()._arrayClass;
+                            } else {
+                              {
+                                var constructor = Object.getPrototypeOf(e).constructor;
+                                var tmp_3;
+                                if (constructor === Object) {
+                                  tmp_3 = PrimitiveClasses_getInstance()._anyClass;
+                                } else if (constructor === Error) {
+                                  tmp_3 = PrimitiveClasses_getInstance()._throwableClass;
+                                } else {
+                                  var jsClass = constructor;
+                                  tmp_3 = getKClass1_0(jsClass);
+                                }
+                                tmp_2 = tmp_3;
                               }
-                              tmp_2 = tmp_3;
                             }
                           }
                         }
@@ -8714,13 +12220,20 @@ this['out-ir'] = function (_) {
               }
             }
           }
-        }
 
-        tmp = tmp_2;
-        break;
+          tmp = tmp_2;
+          break;
+      }
+      var tmp1_unsafeCast_0 = tmp;
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = tmp1_unsafeCast_0;
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2;
+      break $l$block_2;
     }
-    var tmp1_unsafeCast_0 = tmp;
-    return tmp1_unsafeCast_0;
+    return tmp$ret$3;
   }
   function Appendable() {
   }
@@ -8766,22 +12279,42 @@ this['out-ir'] = function (_) {
     this._string = !(content === undefined) ? content : '';
   }
   StringBuilder.prototype._get_length__0_k$ = function () {
-    var tmp0_asDynamic_0 = this._string;
-    return tmp0_asDynamic_0.length;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_asDynamic_0 = this._string;
+      tmp$ret$0 = tmp0_asDynamic_0;
+      break $l$block;
+    }
+    return tmp$ret$0.length;
   };
   StringBuilder.prototype.get_ha5a7z_k$ = function (index) {
-    var tmp0_getOrElse_0 = this._string;
-    var tmp;
-    if (index >= 0 ? index <= _get_lastIndex__5(tmp0_getOrElse_0) : false) {
-      tmp = charSequenceGet(tmp0_getOrElse_0, index);
-    } else {
-      throw IndexOutOfBoundsException_init_$Create$_0('' + 'index: ' + index + ', length: ' + this._get_length__0_k$() + '}');
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_getOrElse_0 = this._string;
+      var tmp;
+      if (index >= 0 ? index <= _get_lastIndex__5(tmp0_getOrElse_0) : false) {
+        tmp = charSequenceGet(tmp0_getOrElse_0, index);
+      } else {
+        throw IndexOutOfBoundsException_init_$Create$_0('' + 'index: ' + index + ', length: ' + this._get_length__0_k$() + '}');
+      }
+      tmp$ret$0 = tmp;
+      break $l$block;
     }
-    return tmp;
+    return tmp$ret$0;
   };
   StringBuilder.prototype.subSequence_27zxwg_k$ = function (startIndex, endIndex) {
-    var tmp0_substring_0 = this._string;
-    return tmp0_substring_0.substring(startIndex, endIndex);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_substring_0 = this._string;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_substring_0;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0.substring(startIndex, endIndex);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   };
   StringBuilder.prototype.append_wi8o78_k$ = function (value) {
     var tmp0_this = this;
@@ -8854,20 +12387,40 @@ this['out-ir'] = function (_) {
   StringBuilder.prototype.ensureCapacity_majfzk_k$ = function (minimumCapacity) {
   };
   StringBuilder.prototype.indexOf_6wfw3l_k$ = function (string) {
-    var tmp0_asDynamic_0 = this._string;
-    return tmp0_asDynamic_0.indexOf(string);
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_asDynamic_0 = this._string;
+      tmp$ret$0 = tmp0_asDynamic_0;
+      break $l$block;
+    }
+    return tmp$ret$0.indexOf(string);
   };
   StringBuilder.prototype.indexOf_8i7b4u_k$ = function (string, startIndex) {
-    var tmp0_asDynamic_0 = this._string;
-    return tmp0_asDynamic_0.indexOf(string, startIndex);
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_asDynamic_0 = this._string;
+      tmp$ret$0 = tmp0_asDynamic_0;
+      break $l$block;
+    }
+    return tmp$ret$0.indexOf(string, startIndex);
   };
   StringBuilder.prototype.lastIndexOf_6wfw3l_k$ = function (string) {
-    var tmp0_asDynamic_0 = this._string;
-    return tmp0_asDynamic_0.lastIndexOf(string);
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_asDynamic_0 = this._string;
+      tmp$ret$0 = tmp0_asDynamic_0;
+      break $l$block;
+    }
+    return tmp$ret$0.lastIndexOf(string);
   };
   StringBuilder.prototype.lastIndexOf_8i7b4u_k$ = function (string, startIndex) {
     var tmp;
-    if (charSequenceLength(string) === 0) {
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = charSequenceLength(string) === 0;
+      break $l$block;
+    }
+    if (tmp$ret$0) {
       tmp = startIndex < 0;
     } else {
       {
@@ -8878,52 +12431,157 @@ this['out-ir'] = function (_) {
       return -1;
     else {
     }
-    var tmp0_asDynamic_0 = this._string;
-    return tmp0_asDynamic_0.lastIndexOf(string, startIndex);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_asDynamic_0 = this._string;
+      tmp$ret$1 = tmp0_asDynamic_0;
+      break $l$block_0;
+    }
+    return tmp$ret$1.lastIndexOf(string, startIndex);
   };
   StringBuilder.prototype.insert_sv7uuf_k$ = function (index, value) {
     Companion_getInstance().checkPositionIndex_rvwcgf_k$(index, this._get_length__0_k$());
     var tmp = this;
-    var tmp0_substring_0 = this._string;
-    var tmp_0 = tmp0_substring_0.substring(0, index) + value;
-    var tmp1_substring_0 = this._string;
-    tmp._string = tmp_0 + tmp1_substring_0.substring(index);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_substring_0 = this._string;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_substring_0;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0.substring(0, index);
+      break $l$block_0;
+    }
+    var tmp_0 = tmp$ret$1 + value;
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp1_substring_0 = this._string;
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = tmp1_substring_0;
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2.substring(index);
+      break $l$block_2;
+    }
+    tmp._string = tmp_0 + tmp$ret$3;
     return this;
   };
   StringBuilder.prototype.insert_259trv_k$ = function (index, value) {
     Companion_getInstance().checkPositionIndex_rvwcgf_k$(index, this._get_length__0_k$());
     var tmp = this;
-    var tmp0_substring_0 = this._string;
-    var tmp_0 = tmp0_substring_0.substring(0, index) + value;
-    var tmp1_substring_0 = this._string;
-    tmp._string = tmp_0 + tmp1_substring_0.substring(index);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_substring_0 = this._string;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_substring_0;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0.substring(0, index);
+      break $l$block_0;
+    }
+    var tmp_0 = tmp$ret$1 + value;
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp1_substring_0 = this._string;
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = tmp1_substring_0;
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2.substring(index);
+      break $l$block_2;
+    }
+    tmp._string = tmp_0 + tmp$ret$3;
     return this;
   };
   StringBuilder.prototype.insert_n2q82c_k$ = function (index, value) {
     Companion_getInstance().checkPositionIndex_rvwcgf_k$(index, this._get_length__0_k$());
     var tmp = this;
-    var tmp0_substring_0 = this._string;
-    var tmp_0 = tmp0_substring_0.substring(0, index) + concatToString(value);
-    var tmp1_substring_0 = this._string;
-    tmp._string = tmp_0 + tmp1_substring_0.substring(index);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_substring_0 = this._string;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_substring_0;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0.substring(0, index);
+      break $l$block_0;
+    }
+    var tmp_0 = tmp$ret$1 + concatToString(value);
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp1_substring_0 = this._string;
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = tmp1_substring_0;
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2.substring(index);
+      break $l$block_2;
+    }
+    tmp._string = tmp_0 + tmp$ret$3;
     return this;
   };
   StringBuilder.prototype.insert_59w5qx_k$ = function (index, value) {
     Companion_getInstance().checkPositionIndex_rvwcgf_k$(index, this._get_length__0_k$());
     var tmp = this;
-    var tmp0_substring_0 = this._string;
-    var tmp_0 = tmp0_substring_0.substring(0, index) + toString(value);
-    var tmp1_substring_0 = this._string;
-    tmp._string = tmp_0 + tmp1_substring_0.substring(index);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_substring_0 = this._string;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_substring_0;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0.substring(0, index);
+      break $l$block_0;
+    }
+    var tmp_0 = tmp$ret$1 + toString(value);
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp1_substring_0 = this._string;
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = tmp1_substring_0;
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2.substring(index);
+      break $l$block_2;
+    }
+    tmp._string = tmp_0 + tmp$ret$3;
     return this;
   };
   StringBuilder.prototype.insert_25ayri_k$ = function (index, value) {
     Companion_getInstance().checkPositionIndex_rvwcgf_k$(index, this._get_length__0_k$());
     var tmp = this;
-    var tmp0_substring_0 = this._string;
-    var tmp_0 = tmp0_substring_0.substring(0, index) + toString(value);
-    var tmp1_substring_0 = this._string;
-    tmp._string = tmp_0 + tmp1_substring_0.substring(index);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_substring_0 = this._string;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_substring_0;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0.substring(0, index);
+      break $l$block_0;
+    }
+    var tmp_0 = tmp$ret$1 + toString(value);
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp1_substring_0 = this._string;
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = tmp1_substring_0;
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2.substring(index);
+      break $l$block_2;
+    }
+    tmp._string = tmp_0 + tmp$ret$3;
     return this;
   };
   StringBuilder.prototype.insert_4wk0sg_k$ = function (index, value) {
@@ -8934,10 +12592,30 @@ this['out-ir'] = function (_) {
     var tmp0_elvis_lhs = value;
     var toInsert = tmp0_elvis_lhs == null ? 'null' : tmp0_elvis_lhs;
     var tmp = this;
-    var tmp0_substring_0 = this._string;
-    var tmp_0 = tmp0_substring_0.substring(0, index) + toInsert;
-    var tmp1_substring_0 = this._string;
-    tmp._string = tmp_0 + tmp1_substring_0.substring(index);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_substring_0 = this._string;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_substring_0;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0.substring(0, index);
+      break $l$block_0;
+    }
+    var tmp_0 = tmp$ret$1 + toInsert;
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp1_substring_0 = this._string;
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = tmp1_substring_0;
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2.substring(index);
+      break $l$block_2;
+    }
+    tmp._string = tmp_0 + tmp$ret$3;
     return this;
   };
   StringBuilder.prototype.setLength_majfzk_k$ = function (newLength) {
@@ -8945,8 +12623,18 @@ this['out-ir'] = function (_) {
       throw IllegalArgumentException_init_$Create$_0('' + 'Negative new length: ' + newLength + '.');
     }if (newLength <= this._get_length__0_k$()) {
       var tmp = this;
-      var tmp0_substring_0 = this._string;
-      tmp._string = tmp0_substring_0.substring(0, newLength);
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp0_substring_0 = this._string;
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = tmp0_substring_0;
+          break $l$block;
+        }
+        tmp$ret$1 = tmp$ret$0.substring(0, newLength);
+        break $l$block_0;
+      }
+      tmp._string = tmp$ret$1;
     } else {
       var inductionVariable = this._get_length__0_k$();
       if (inductionVariable < newLength)
@@ -8961,13 +12649,33 @@ this['out-ir'] = function (_) {
   };
   StringBuilder.prototype.substring_ha5a7z_k$ = function (startIndex) {
     Companion_getInstance().checkPositionIndex_rvwcgf_k$(startIndex, this._get_length__0_k$());
-    var tmp0_substring_0 = this._string;
-    return tmp0_substring_0.substring(startIndex);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_substring_0 = this._string;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_substring_0;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0.substring(startIndex);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   };
   StringBuilder.prototype.substring_27zxwg_k$ = function (startIndex, endIndex) {
     Companion_getInstance().checkBoundsIndexes_zd700_k$(startIndex, endIndex, this._get_length__0_k$());
-    var tmp0_substring_0 = this._string;
-    return tmp0_substring_0.substring(startIndex, endIndex);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_substring_0 = this._string;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_substring_0;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0.substring(startIndex, endIndex);
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   };
   StringBuilder.prototype.trimToSize_sv8swh_k$ = function () {
   };
@@ -8981,38 +12689,118 @@ this['out-ir'] = function (_) {
   StringBuilder.prototype.set_vljvec_k$ = function (index, value) {
     Companion_getInstance().checkElementIndex_rvwcgf_k$(index, this._get_length__0_k$());
     var tmp = this;
-    var tmp0_substring_0 = this._string;
-    var tmp_0 = tmp0_substring_0.substring(0, index) + value;
-    var tmp1_substring_0 = this._string;
-    var tmp2_substring_0 = index + 1 | 0;
-    tmp._string = tmp_0 + tmp1_substring_0.substring(tmp2_substring_0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_substring_0 = this._string;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_substring_0;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0.substring(0, index);
+      break $l$block_0;
+    }
+    var tmp_0 = tmp$ret$1 + value;
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp1_substring_0 = this._string;
+      var tmp2_substring_0 = index + 1 | 0;
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = tmp1_substring_0;
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2.substring(tmp2_substring_0);
+      break $l$block_2;
+    }
+    tmp._string = tmp_0 + tmp$ret$3;
   };
   StringBuilder.prototype.setRange_sfallt_k$ = function (startIndex, endIndex, value) {
     checkReplaceRange(this, startIndex, endIndex, this._get_length__0_k$());
     var tmp = this;
-    var tmp0_substring_0 = this._string;
-    var tmp_0 = tmp0_substring_0.substring(0, startIndex) + value;
-    var tmp1_substring_0 = this._string;
-    tmp._string = tmp_0 + tmp1_substring_0.substring(endIndex);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_substring_0 = this._string;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_substring_0;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0.substring(0, startIndex);
+      break $l$block_0;
+    }
+    var tmp_0 = tmp$ret$1 + value;
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp1_substring_0 = this._string;
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = tmp1_substring_0;
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2.substring(endIndex);
+      break $l$block_2;
+    }
+    tmp._string = tmp_0 + tmp$ret$3;
     return this;
   };
   StringBuilder.prototype.deleteAt_ha5a7z_k$ = function (index) {
     Companion_getInstance().checkElementIndex_rvwcgf_k$(index, this._get_length__0_k$());
     var tmp = this;
-    var tmp0_substring_0 = this._string;
-    var tmp_0 = tmp0_substring_0.substring(0, index);
-    var tmp1_substring_0 = this._string;
-    var tmp2_substring_0 = index + 1 | 0;
-    tmp._string = tmp_0 + tmp1_substring_0.substring(tmp2_substring_0);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_substring_0 = this._string;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_substring_0;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0.substring(0, index);
+      break $l$block_0;
+    }
+    var tmp_0 = tmp$ret$1;
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp1_substring_0 = this._string;
+      var tmp2_substring_0 = index + 1 | 0;
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = tmp1_substring_0;
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2.substring(tmp2_substring_0);
+      break $l$block_2;
+    }
+    tmp._string = tmp_0 + tmp$ret$3;
     return this;
   };
   StringBuilder.prototype.deleteRange_27zxwg_k$ = function (startIndex, endIndex) {
     checkReplaceRange(this, startIndex, endIndex, this._get_length__0_k$());
     var tmp = this;
-    var tmp0_substring_0 = this._string;
-    var tmp_0 = tmp0_substring_0.substring(0, startIndex);
-    var tmp1_substring_0 = this._string;
-    tmp._string = tmp_0 + tmp1_substring_0.substring(endIndex);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_substring_0 = this._string;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_substring_0;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0.substring(0, startIndex);
+      break $l$block_0;
+    }
+    var tmp_0 = tmp$ret$1;
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp1_substring_0 = this._string;
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = tmp1_substring_0;
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2.substring(endIndex);
+      break $l$block_2;
+    }
+    tmp._string = tmp_0 + tmp$ret$3;
     return this;
   };
   StringBuilder.prototype.toCharArray_tnuj0b_k$ = function (destination, destinationOffset, startIndex, endIndex) {
@@ -9050,16 +12838,46 @@ this['out-ir'] = function (_) {
     var tmp0_this = this;
     var tmp = tmp0_this;
     var tmp_0 = tmp0_this._string;
-    tmp._string = tmp_0 + stringCsq.substring(startIndex, endIndex);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = stringCsq;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0.substring(startIndex, endIndex);
+      break $l$block_0;
+    }
+    tmp._string = tmp_0 + tmp$ret$1;
     return this;
   };
   StringBuilder.prototype.insertRange_nw7vlg_k$ = function (index, value, startIndex, endIndex) {
     Companion_getInstance().checkPositionIndex_rvwcgf_k$(index, this._get_length__0_k$());
     var tmp = this;
-    var tmp0_substring_0 = this._string;
-    var tmp_0 = tmp0_substring_0.substring(0, index) + concatToString_0(value, startIndex, endIndex);
-    var tmp1_substring_0 = this._string;
-    tmp._string = tmp_0 + tmp1_substring_0.substring(index);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_substring_0 = this._string;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_substring_0;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0.substring(0, index);
+      break $l$block_0;
+    }
+    var tmp_0 = tmp$ret$1 + concatToString_0(value, startIndex, endIndex);
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp1_substring_0 = this._string;
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = tmp1_substring_0;
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2.substring(index);
+      break $l$block_2;
+    }
+    tmp._string = tmp_0 + tmp$ret$3;
     return this;
   };
   StringBuilder.prototype.insertRange_nws7cq_k$ = function (index, value, startIndex, endIndex) {
@@ -9067,11 +12885,41 @@ this['out-ir'] = function (_) {
     var stringCsq = toString_0(value);
     Companion_getInstance().checkBoundsIndexes_zd700_k$(startIndex, endIndex, stringCsq.length);
     var tmp = this;
-    var tmp0_substring_0 = this._string;
-    var tmp_0 = tmp0_substring_0.substring(0, index);
-    var tmp_1 = tmp_0 + stringCsq.substring(startIndex, endIndex);
-    var tmp1_substring_0 = this._string;
-    tmp._string = tmp_1 + tmp1_substring_0.substring(index);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_substring_0 = this._string;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_substring_0;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0.substring(0, index);
+      break $l$block_0;
+    }
+    var tmp_0 = tmp$ret$1;
+    var tmp$ret$3;
+    $l$block_2: {
+      var tmp$ret$2;
+      $l$block_1: {
+        tmp$ret$2 = stringCsq;
+        break $l$block_1;
+      }
+      tmp$ret$3 = tmp$ret$2.substring(startIndex, endIndex);
+      break $l$block_2;
+    }
+    var tmp_1 = tmp_0 + tmp$ret$3;
+    var tmp$ret$5;
+    $l$block_4: {
+      var tmp1_substring_0 = this._string;
+      var tmp$ret$4;
+      $l$block_3: {
+        tmp$ret$4 = tmp1_substring_0;
+        break $l$block_3;
+      }
+      tmp$ret$5 = tmp$ret$4.substring(index);
+      break $l$block_4;
+    }
+    tmp._string = tmp_1 + tmp$ret$5;
     return this;
   };
   StringBuilder.$metadata$ = {
@@ -9079,6 +12927,77 @@ this['out-ir'] = function (_) {
     kind: 'class',
     interfaces: [Appendable, CharSequence]
   };
+  function uppercaseChar(_this_) {
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp$ret$0;
+        $l$block: {
+          var tmp0_asDynamic_0 = _this_.toString();
+          tmp$ret$0 = tmp0_asDynamic_0;
+          break $l$block;
+        }
+        var tmp1_unsafeCast_0 = tmp$ret$0.toUpperCase();
+        tmp$ret$1 = tmp1_unsafeCast_0;
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    var uppercase_0 = tmp$ret$2;
+    return uppercase_0.length > 1 ? _this_ : charSequenceGet(uppercase_0, 0);
+  }
+  function lowercaseChar(_this_) {
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp$ret$0;
+        $l$block: {
+          var tmp0_asDynamic_0 = _this_.toString();
+          tmp$ret$0 = tmp0_asDynamic_0;
+          break $l$block;
+        }
+        var tmp1_unsafeCast_0 = tmp$ret$0.toLowerCase();
+        tmp$ret$1 = tmp1_unsafeCast_0;
+        break $l$block_0;
+      }
+      tmp$ret$2 = tmp$ret$1;
+      break $l$block_1;
+    }
+    return charSequenceGet(tmp$ret$2, 0);
+  }
+  function uppercase(_this_) {
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_asDynamic_0 = _this_.toString();
+        tmp$ret$0 = tmp0_asDynamic_0;
+        break $l$block;
+      }
+      var tmp1_unsafeCast_0 = tmp$ret$0.toUpperCase();
+      tmp$ret$1 = tmp1_unsafeCast_0;
+      break $l$block_0;
+    }
+    return tmp$ret$1;
+  }
+  function lowercase(_this_) {
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_asDynamic_0 = _this_.toString();
+        tmp$ret$0 = tmp0_asDynamic_0;
+        break $l$block;
+      }
+      var tmp1_unsafeCast_0 = tmp$ret$0.toLowerCase();
+      tmp$ret$1 = tmp1_unsafeCast_0;
+      break $l$block_0;
+    }
+    return tmp$ret$1;
+  }
   function isLowSurrogate(_this_) {
     Companion_getInstance_17();
     var containsLower = new Char_0(56320);
@@ -9119,48 +13038,107 @@ this['out-ir'] = function (_) {
   var STRING_CASE_INSENSITIVE_ORDER;
   function nativeLastIndexOf(_this_, str, fromIndex) {
     init_properties_string_kt();
-    return _this_.lastIndexOf(str, fromIndex);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _this_;
+      break $l$block;
+    }
+    return tmp$ret$0.lastIndexOf(str, fromIndex);
   }
   function substring(_this_, startIndex, endIndex) {
     init_properties_string_kt();
-    return _this_.substring(startIndex, endIndex);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _this_;
+      break $l$block;
+    }
+    return tmp$ret$0.substring(startIndex, endIndex);
   }
   function substring_0(_this_, startIndex) {
     init_properties_string_kt();
-    return _this_.substring(startIndex);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _this_;
+      break $l$block;
+    }
+    return tmp$ret$0.substring(startIndex);
   }
   function compareTo(_this_, other, ignoreCase) {
     init_properties_string_kt();
     if (ignoreCase) {
       var n1 = _this_.length;
       var n2 = other.length;
-      var min = Math.min(n1, n2);
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = Math.min(n1, n2);
+        break $l$block;
+      }
+      var min = tmp$ret$0;
       if (min === 0)
         return n1 - n2 | 0;
-      var start = 0;
-      $l$break: while (true) {
-        var tmp0_minOf_0 = start + 16 | 0;
-        var end = Math.min(tmp0_minOf_0, min);
-        var tmp1_substring_0 = start;
-        var s1 = _this_.substring(tmp1_substring_0, end);
-        var tmp2_substring_0 = start;
-        var s2 = other.substring(tmp2_substring_0, end);
-        if (!(s1 === s2)) {
-          var tmp3_uppercase_0 = s1;
-          s1 = tmp3_uppercase_0.toUpperCase();
-          var tmp4_uppercase_0 = s2;
-          s2 = tmp4_uppercase_0.toUpperCase();
-          if (!(s1 === s2)) {
-            var tmp5_lowercase_0 = s1;
-            s1 = tmp5_lowercase_0.toLowerCase();
-            var tmp6_lowercase_0 = s2;
-            s2 = tmp6_lowercase_0.toLowerCase();
-            if (!(s1 === s2)) {
-              return compareTo_0(s1, s2);
-            }}}if (end === min)
-          break $l$break;
-        start = end;
-      }
+      var inductionVariable = 0;
+      if (inductionVariable < min)
+        do {
+          var index = inductionVariable;
+          inductionVariable = inductionVariable + 1 | 0;
+          var thisChar = charSequenceGet(_this_, index);
+          var otherChar = charSequenceGet(other, index);
+          if (!thisChar.equals(otherChar)) {
+            thisChar = uppercaseChar(thisChar);
+            otherChar = uppercaseChar(otherChar);
+            if (!thisChar.equals(otherChar)) {
+              var tmp$ret$4;
+              $l$block_3: {
+                var tmp0_lowercaseChar_0 = thisChar;
+                var tmp$ret$3;
+                $l$block_2: {
+                  var tmp$ret$2;
+                  $l$block_1: {
+                    var tmp$ret$1;
+                    $l$block_0: {
+                      var tmp0_asDynamic_0_2 = tmp0_lowercaseChar_0.toString();
+                      tmp$ret$1 = tmp0_asDynamic_0_2;
+                      break $l$block_0;
+                    }
+                    var tmp1_unsafeCast_0_1 = tmp$ret$1.toLowerCase();
+                    tmp$ret$2 = tmp1_unsafeCast_0_1;
+                    break $l$block_1;
+                  }
+                  tmp$ret$3 = tmp$ret$2;
+                  break $l$block_2;
+                }
+                tmp$ret$4 = charSequenceGet(tmp$ret$3, 0);
+                break $l$block_3;
+              }
+              thisChar = tmp$ret$4;
+              var tmp$ret$8;
+              $l$block_7: {
+                var tmp1_lowercaseChar_0 = otherChar;
+                var tmp$ret$7;
+                $l$block_6: {
+                  var tmp$ret$6;
+                  $l$block_5: {
+                    var tmp$ret$5;
+                    $l$block_4: {
+                      var tmp0_asDynamic_0_2_0 = tmp1_lowercaseChar_0.toString();
+                      tmp$ret$5 = tmp0_asDynamic_0_2_0;
+                      break $l$block_4;
+                    }
+                    var tmp1_unsafeCast_0_1_0 = tmp$ret$5.toLowerCase();
+                    tmp$ret$6 = tmp1_unsafeCast_0_1_0;
+                    break $l$block_5;
+                  }
+                  tmp$ret$7 = tmp$ret$6;
+                  break $l$block_6;
+                }
+                tmp$ret$8 = charSequenceGet(tmp$ret$7, 0);
+                break $l$block_7;
+              }
+              otherChar = tmp$ret$8;
+              if (!thisChar.equals(otherChar)) {
+                return thisChar.compareTo_wi8o78_k$(otherChar);
+              }}}}
+         while (inductionVariable < min);
       return n1 - n2 | 0;
     } else {
       return compareTo_0(_this_, other);
@@ -9170,14 +13148,6 @@ this['out-ir'] = function (_) {
     if (!(($mask0 & 2) === 0))
       ignoreCase = false;
     return compareTo(_this_, other, ignoreCase);
-  }
-  function uppercase(_this_) {
-    init_properties_string_kt();
-    return _this_.toUpperCase();
-  }
-  function lowercase(_this_) {
-    init_properties_string_kt();
-    return _this_.toLowerCase();
   }
   function concatToString(_this_) {
     init_properties_string_kt();
@@ -9215,7 +13185,12 @@ this['out-ir'] = function (_) {
   }
   function toUpperCase(_this_) {
     init_properties_string_kt();
-    return _this_.toUpperCase();
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _this_;
+      break $l$block;
+    }
+    return tmp$ret$0.toUpperCase();
   }
   function sam$kotlin_Comparator$0(function_0) {
     this._function = function_0;
@@ -9266,8 +13241,13 @@ this['out-ir'] = function (_) {
   function init_properties_utf8Encoding_kt() {
     if (!properties_initialized_utf8Encoding_kt) {
       properties_initialized_utf8Encoding_kt = true;
-      var tmp0_byteArrayOf_0 = new Int8Array([-17, -65, -67]);
-      REPLACEMENT_BYTE_SEQUENCE = tmp0_byteArrayOf_0;
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_byteArrayOf_0 = new Int8Array([-17, -65, -67]);
+        tmp$ret$0 = tmp0_byteArrayOf_0;
+        break $l$block;
+      }
+      REPLACEMENT_BYTE_SEQUENCE = tmp$ret$0;
     }}
   function _get_value_($this) {
     return $this._value_1;
@@ -9329,7 +13309,12 @@ this['out-ir'] = function (_) {
   function Char_0(code) {
     Companion_getInstance_17();
     var tmp = this;
-    tmp._value_1 = _UShort___get_data__impl_(code) & 65535;
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _UShort___get_data__impl_(code) & 65535;
+      break $l$block;
+    }
+    tmp._value_1 = tmp$ret$0;
   }
   Char_0.prototype.compareTo_wi8o78_k$ = function (other) {
     return this._value_1 - other._value_1 | 0;
@@ -9389,8 +13374,13 @@ this['out-ir'] = function (_) {
     return this._value_1;
   };
   Char_0.prototype.toString = function () {
-    var tmp0_unsafeCast_0 = String.fromCharCode(this._value_1);
-    return tmp0_unsafeCast_0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_unsafeCast_0 = String.fromCharCode(this._value_1);
+      tmp$ret$0 = tmp0_unsafeCast_0;
+      break $l$block;
+    }
+    return tmp$ret$0;
   };
   Char_0.$metadata$ = {
     simpleName: 'Char',
@@ -9411,38 +13401,17 @@ this['out-ir'] = function (_) {
     kind: 'interface',
     interfaces: [Iterable]
   };
-  function List() {
-  }
-  List.$metadata$ = {
-    simpleName: 'List',
-    kind: 'interface',
-    interfaces: [Collection]
-  };
-  function MutableList() {
-  }
-  MutableList.$metadata$ = {
-    simpleName: 'MutableList',
-    kind: 'interface',
-    interfaces: [List, MutableCollection]
-  };
-  function MutableCollection() {
-  }
-  MutableCollection.$metadata$ = {
-    simpleName: 'MutableCollection',
-    kind: 'interface',
-    interfaces: [Collection, MutableIterable]
-  };
-  function MutableIterable() {
-  }
-  MutableIterable.$metadata$ = {
-    simpleName: 'MutableIterable',
-    kind: 'interface',
-    interfaces: [Iterable]
-  };
   function Set() {
   }
   Set.$metadata$ = {
     simpleName: 'Set',
+    kind: 'interface',
+    interfaces: [Collection]
+  };
+  function List() {
+  }
+  List.$metadata$ = {
+    simpleName: 'List',
     kind: 'interface',
     interfaces: [Collection]
   };
@@ -9460,12 +13429,33 @@ this['out-ir'] = function (_) {
     kind: 'interface',
     interfaces: []
   };
+  function MutableCollection() {
+  }
+  MutableCollection.$metadata$ = {
+    simpleName: 'MutableCollection',
+    kind: 'interface',
+    interfaces: [Collection, MutableIterable]
+  };
+  function MutableIterable() {
+  }
+  MutableIterable.$metadata$ = {
+    simpleName: 'MutableIterable',
+    kind: 'interface',
+    interfaces: [Iterable]
+  };
   function MutableSet() {
   }
   MutableSet.$metadata$ = {
     simpleName: 'MutableSet',
     kind: 'interface',
     interfaces: [Set, MutableCollection]
+  };
+  function MutableList() {
+  }
+  MutableList.$metadata$ = {
+    simpleName: 'MutableList',
+    kind: 'interface',
+    interfaces: [List, MutableCollection]
   };
   function MutableEntry() {
   }
@@ -9530,7 +13520,17 @@ this['out-ir'] = function (_) {
     return elements;
   }
   function arrayOf(elements) {
-    return elements;
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = elements;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0;
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function toString(_this_) {
     var tmp0_safe_receiver = _this_;
@@ -9544,27 +13544,6 @@ this['out-ir'] = function (_) {
     var tmp0_safe_receiver = other;
     var tmp1_elvis_lhs = tmp0_safe_receiver == null ? null : toString_0(tmp0_safe_receiver);
     return tmp + (tmp1_elvis_lhs == null ? 'null' : tmp1_elvis_lhs);
-  }
-  function booleanArrayOf(elements) {
-    return elements;
-  }
-  function charArrayOf(elements) {
-    return elements;
-  }
-  function shortArrayOf(elements) {
-    return elements;
-  }
-  function intArrayOf(elements) {
-    return elements;
-  }
-  function floatArrayOf(elements) {
-    return elements;
-  }
-  function longArrayOf(elements) {
-    return elements;
-  }
-  function doubleArrayOf(elements) {
-    return elements;
   }
   function DefaultConstructorMarker() {
     DefaultConstructorMarker_instance = this;
@@ -9593,18 +13572,33 @@ this['out-ir'] = function (_) {
     return array;
   }
   function arrayWithFun(size_0, init) {
-    var tmp0_fillArrayFun_0 = Array(size_0);
-    var result_1 = tmp0_fillArrayFun_0;
-    var i_2 = 0;
-    while (!(i_2 === result_1.length)) {
-      result_1[i_2] = init(i_2);
-      i_2 = i_2 + 1 | 0;
-      Unit_getInstance();
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_fillArrayFun_0 = Array(size_0);
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_fillArrayFun_0;
+        break $l$block;
+      }
+      var result_1 = tmp$ret$0;
+      var i_2 = 0;
+      while (!(i_2 === result_1.length)) {
+        result_1[i_2] = init(i_2);
+        i_2 = i_2 + 1 | 0;
+        Unit_getInstance();
+      }
+      tmp$ret$1 = result_1;
+      break $l$block_0;
     }
-    return result_1;
+    return tmp$ret$1;
   }
   function fillArrayFun(array, init) {
-    var result = array;
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = array;
+      break $l$block;
+    }
+    var result = tmp$ret$0;
     var i = 0;
     while (!(i === result.length)) {
       result[i] = init(i);
@@ -9641,57 +13635,147 @@ this['out-ir'] = function (_) {
     return new _no_name_provided__38(array);
   }
   function booleanArray(size_0) {
-    var tmp0_withType_0 = fillArrayVal(Array(size_0), false);
-    tmp0_withType_0.$type$ = 'BooleanArray';
-    var tmp1_unsafeCast_0 = tmp0_withType_0;
-    return tmp1_unsafeCast_0;
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_withType_0 = fillArrayVal(Array(size_0), false);
+        tmp0_withType_0.$type$ = 'BooleanArray';
+        tmp$ret$0 = tmp0_withType_0;
+        break $l$block;
+      }
+      var tmp1_unsafeCast_0 = tmp$ret$0;
+      tmp$ret$1 = tmp1_unsafeCast_0;
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
   function charArray(size_0) {
-    var tmp = Array(size_0);
-    var tmp_0;
-    Companion_getInstance_17();
-    var tmp0__get_code__0_1 = new Char_0(0);
-    if (0 < tmp0__get_code__0_1.toInt_0_k$()) {
-      tmp_0 = true;
-    } else {
-      {
-        Companion_getInstance_17();
-        var tmp1__get_code__0_2 = new Char_0(65535);
-        tmp_0 = 0 > tmp1__get_code__0_2.toInt_0_k$();
+    var tmp$ret$4;
+    $l$block_3: {
+      var tmp$ret$3;
+      $l$block_2: {
+        var tmp = Array(size_0);
+        var tmp$ret$2;
+        $l$block_1: {
+          var tmp_0;
+          var tmp$ret$0;
+          $l$block: {
+            Companion_getInstance_17();
+            var tmp0__get_code__0_1 = new Char_0(0);
+            tmp$ret$0 = tmp0__get_code__0_1.toInt_0_k$();
+            break $l$block;
+          }
+          if (0 < tmp$ret$0) {
+            tmp_0 = true;
+          } else {
+            {
+              var tmp$ret$1;
+              $l$block_0: {
+                Companion_getInstance_17();
+                var tmp1__get_code__0_2 = new Char_0(65535);
+                tmp$ret$1 = tmp1__get_code__0_2.toInt_0_k$();
+                break $l$block_0;
+              }
+              tmp_0 = 0 > tmp$ret$1;
+            }
+          }
+          if (tmp_0) {
+            throw IllegalArgumentException_init_$Create$_0('Invalid Char code: 0');
+          } else {
+          }
+          tmp$ret$2 = new Char_0(0);
+          break $l$block_1;
+        }
+        var tmp0_withType_0 = fillArrayVal(tmp, tmp$ret$2);
+        tmp0_withType_0.$type$ = 'CharArray';
+        tmp$ret$3 = tmp0_withType_0;
+        break $l$block_2;
       }
+      var tmp1_unsafeCast_0 = tmp$ret$3;
+      tmp$ret$4 = tmp1_unsafeCast_0;
+      break $l$block_3;
     }
-    if (tmp_0) {
-      throw IllegalArgumentException_init_$Create$_0('Invalid Char code: 0');
-    } else {
-    }
-    var tmp0_withType_0 = fillArrayVal(tmp, new Char_0(0));
-    tmp0_withType_0.$type$ = 'CharArray';
-    var tmp1_unsafeCast_0 = tmp0_withType_0;
-    return tmp1_unsafeCast_0;
+    return tmp$ret$4;
   }
   function longArray(size_0) {
-    var tmp0_withType_0 = fillArrayVal(Array(size_0), new Long(0, 0));
-    tmp0_withType_0.$type$ = 'LongArray';
-    var tmp1_unsafeCast_0 = tmp0_withType_0;
-    return tmp1_unsafeCast_0;
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_withType_0 = fillArrayVal(Array(size_0), new Long(0, 0));
+        tmp0_withType_0.$type$ = 'LongArray';
+        tmp$ret$0 = tmp0_withType_0;
+        break $l$block;
+      }
+      var tmp1_unsafeCast_0 = tmp$ret$0;
+      tmp$ret$1 = tmp1_unsafeCast_0;
+      break $l$block_0;
+    }
+    return tmp$ret$1;
   }
-  function booleanArrayOf_0(arr) {
-    var tmp0_withType_0 = arr.slice();
-    tmp0_withType_0.$type$ = 'BooleanArray';
-    var tmp1_unsafeCast_0 = tmp0_withType_0;
-    return tmp1_unsafeCast_0;
+  function booleanArrayOf(arr) {
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = arr;
+          break $l$block;
+        }
+        var tmp0_withType_0 = tmp$ret$0.slice();
+        tmp0_withType_0.$type$ = 'BooleanArray';
+        tmp$ret$1 = tmp0_withType_0;
+        break $l$block_0;
+      }
+      var tmp1_unsafeCast_0 = tmp$ret$1;
+      tmp$ret$2 = tmp1_unsafeCast_0;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
-  function charArrayOf_0(arr) {
-    var tmp0_withType_0 = arr.slice();
-    tmp0_withType_0.$type$ = 'CharArray';
-    var tmp1_unsafeCast_0 = tmp0_withType_0;
-    return tmp1_unsafeCast_0;
+  function charArrayOf(arr) {
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = arr;
+          break $l$block;
+        }
+        var tmp0_withType_0 = tmp$ret$0.slice();
+        tmp0_withType_0.$type$ = 'CharArray';
+        tmp$ret$1 = tmp0_withType_0;
+        break $l$block_0;
+      }
+      var tmp1_unsafeCast_0 = tmp$ret$1;
+      tmp$ret$2 = tmp1_unsafeCast_0;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
-  function longArrayOf_0(arr) {
-    var tmp0_withType_0 = arr.slice();
-    tmp0_withType_0.$type$ = 'LongArray';
-    var tmp1_unsafeCast_0 = tmp0_withType_0;
-    return tmp1_unsafeCast_0;
+  function longArrayOf(arr) {
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = arr;
+          break $l$block;
+        }
+        var tmp0_withType_0 = tmp$ret$0.slice();
+        tmp0_withType_0.$type$ = 'LongArray';
+        tmp$ret$1 = tmp0_withType_0;
+        break $l$block_0;
+      }
+      var tmp1_unsafeCast_0 = tmp$ret$1;
+      tmp$ret$2 = tmp1_unsafeCast_0;
+      break $l$block_1;
+    }
+    return tmp$ret$2;
   }
   function _no_name_provided__30($array) {
     this._$array = $array;
@@ -9994,8 +14078,18 @@ this['out-ir'] = function (_) {
   var highIndex;
   function getNumberHashCode(obj) {
     init_properties_bitUtils_kt();
-    var tmp0_unsafeCast_0 = jsBitwiseOr(obj, 0);
-    if (tmp0_unsafeCast_0 === obj) {
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp0_unsafeCast_0 = jsBitwiseOr(obj, 0);
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = tmp0_unsafeCast_0;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0;
+      break $l$block_0;
+    }
+    if (tmp$ret$1 === obj) {
       return numberToInt(obj);
     } else {
     }
@@ -10007,18 +14101,88 @@ this['out-ir'] = function (_) {
     if (!properties_initialized_bitUtils_kt) {
       properties_initialized_bitUtils_kt = true;
       buf = new ArrayBuffer(8);
-      var tmp0_unsafeCast_0 = new Float64Array(_get_buf_());
-      bufFloat64 = tmp0_unsafeCast_0;
-      var tmp0_unsafeCast_0_0 = new Float32Array(_get_buf_());
-      bufFloat32 = tmp0_unsafeCast_0_0;
-      var tmp0_unsafeCast_0_1 = new Int32Array(_get_buf_());
-      bufInt32 = tmp0_unsafeCast_0_1;
-      _get_bufFloat64_()[0] = -1.0;
-      lowIndex = !(_get_bufInt32_()[0] === 0) ? 1 : 0;
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp0_unsafeCast_0 = new Float64Array(_get_buf_());
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = tmp0_unsafeCast_0;
+          break $l$block;
+        }
+        tmp$ret$1 = tmp$ret$0;
+        break $l$block_0;
+      }
+      bufFloat64 = tmp$ret$1;
+      var tmp$ret$1_0;
+      $l$block_2: {
+        var tmp0_unsafeCast_0_0 = new Float32Array(_get_buf_());
+        var tmp$ret$0_0;
+        $l$block_1: {
+          tmp$ret$0_0 = tmp0_unsafeCast_0_0;
+          break $l$block_1;
+        }
+        tmp$ret$1_0 = tmp$ret$0_0;
+        break $l$block_2;
+      }
+      bufFloat32 = tmp$ret$1_0;
+      var tmp$ret$1_1;
+      $l$block_4: {
+        var tmp0_unsafeCast_0_1 = new Int32Array(_get_buf_());
+        var tmp$ret$0_1;
+        $l$block_3: {
+          tmp$ret$0_1 = tmp0_unsafeCast_0_1;
+          break $l$block_3;
+        }
+        tmp$ret$1_1 = tmp$ret$0_1;
+        break $l$block_4;
+      }
+      bufInt32 = tmp$ret$1_1;
+      var tmp$ret$1_2;
+      $l$block_6: {
+        {
+        }
+        var tmp$ret$0_2;
+        $l$block_5: {
+          _get_bufFloat64_()[0] = -1.0;
+          tmp$ret$0_2 = !(_get_bufInt32_()[0] === 0) ? 1 : 0;
+          break $l$block_5;
+        }
+        tmp$ret$1_2 = tmp$ret$0_2;
+        break $l$block_6;
+      }
+      lowIndex = tmp$ret$1_2;
       highIndex = 1 - _get_lowIndex_() | 0;
+    }}
+  function booleanInExternalLog(name, obj) {
+    if (!(typeof obj === 'boolean')) {
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_asDynamic_0 = console;
+        tmp$ret$0 = tmp0_asDynamic_0;
+        break $l$block;
+      }
+      tmp$ret$0.error('' + "Boolean expected for '" + name + "', but actual:", obj);
+    }}
+  function booleanInExternalException(name, obj) {
+    if (!(typeof obj === 'boolean')) {
+      throw new Error('' + "Boolean expected for '" + name + "', but actual: " + obj);
     }}
   function DoNotIntrinsify() {
   }
+  DoNotIntrinsify.prototype.equals = function (other) {
+    if (!(other instanceof DoNotIntrinsify))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof DoNotIntrinsify ? other : THROW_CCE();
+    return true;
+  };
+  DoNotIntrinsify.prototype.hashCode = function () {
+    return 0;
+  };
+  DoNotIntrinsify.prototype.toString = function () {
+    return '@kotlin.js.DoNotIntrinsify()';
+  };
   DoNotIntrinsify.$metadata$ = {
     simpleName: 'DoNotIntrinsify',
     kind: 'class',
@@ -10027,25 +14191,50 @@ this['out-ir'] = function (_) {
   function charSequenceGet(a_0, index) {
     var tmp;
     if (isString(a_0)) {
-      var tmp0_unsafeCast_0 = a_0.charCodeAt(index);
-      var tmp1_Char_0 = tmp0_unsafeCast_0;
-      var tmp_0;
-      Companion_getInstance_17();
-      var tmp0__get_code__0_1 = new Char_0(0);
-      if (tmp1_Char_0 < tmp0__get_code__0_1.toInt_0_k$()) {
-        tmp_0 = true;
-      } else {
-        {
-          Companion_getInstance_17();
-          var tmp1__get_code__0_2 = new Char_0(65535);
-          tmp_0 = tmp1_Char_0 > tmp1__get_code__0_2.toInt_0_k$();
+      var tmp$ret$4;
+      $l$block_3: {
+        var tmp$ret$1;
+        $l$block_0: {
+          var tmp$ret$0;
+          $l$block: {
+            tmp$ret$0 = a_0;
+            break $l$block;
+          }
+          var tmp0_unsafeCast_0 = tmp$ret$0.charCodeAt(index);
+          tmp$ret$1 = tmp0_unsafeCast_0;
+          break $l$block_0;
         }
+        var tmp1_Char_0 = tmp$ret$1;
+        var tmp_0;
+        var tmp$ret$2;
+        $l$block_1: {
+          Companion_getInstance_17();
+          var tmp0__get_code__0_1 = new Char_0(0);
+          tmp$ret$2 = tmp0__get_code__0_1.toInt_0_k$();
+          break $l$block_1;
+        }
+        if (tmp1_Char_0 < tmp$ret$2) {
+          tmp_0 = true;
+        } else {
+          {
+            var tmp$ret$3;
+            $l$block_2: {
+              Companion_getInstance_17();
+              var tmp1__get_code__0_2 = new Char_0(65535);
+              tmp$ret$3 = tmp1__get_code__0_2.toInt_0_k$();
+              break $l$block_2;
+            }
+            tmp_0 = tmp1_Char_0 > tmp$ret$3;
+          }
+        }
+        if (tmp_0) {
+          throw IllegalArgumentException_init_$Create$_0('' + 'Invalid Char code: ' + tmp1_Char_0);
+        } else {
+        }
+        tmp$ret$4 = numberToChar(tmp1_Char_0);
+        break $l$block_3;
       }
-      if (tmp_0) {
-        throw IllegalArgumentException_init_$Create$_0('' + 'Invalid Char code: ' + tmp1_Char_0);
-      } else {
-      }
-      tmp = numberToChar(tmp1_Char_0);
+      tmp = tmp$ret$4;
     } else {
       tmp = a_0.get_ha5a7z_k$(index);
     }
@@ -10057,8 +14246,18 @@ this['out-ir'] = function (_) {
   function charSequenceLength(a_0) {
     var tmp;
     if (isString(a_0)) {
-      var tmp0_unsafeCast_0 = a_0.length;
-      tmp = tmp0_unsafeCast_0;
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = a_0;
+          break $l$block;
+        }
+        var tmp0_unsafeCast_0 = tmp$ret$0.length;
+        tmp$ret$1 = tmp0_unsafeCast_0;
+        break $l$block_0;
+      }
+      tmp = tmp$ret$1;
     } else {
       tmp = a_0._get_length__0_k$();
     }
@@ -10067,8 +14266,18 @@ this['out-ir'] = function (_) {
   function charSequenceSubSequence(a_0, startIndex, endIndex) {
     var tmp;
     if (isString(a_0)) {
-      var tmp0_unsafeCast_0 = a_0.substring(startIndex, endIndex);
-      tmp = tmp0_unsafeCast_0;
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = a_0;
+          break $l$block;
+        }
+        var tmp0_unsafeCast_0 = tmp$ret$0.substring(startIndex, endIndex);
+        tmp$ret$1 = tmp0_unsafeCast_0;
+        break $l$block_0;
+      }
+      tmp = tmp$ret$1;
     } else {
       tmp = a_0.subSequence_27zxwg_k$(startIndex, endIndex);
     }
@@ -10076,6 +14285,35 @@ this['out-ir'] = function (_) {
   }
   function arrayToString(array) {
     return joinToString$default(array, ', ', '[', ']', 0, null, _no_name_provided_$factory_29(), 24, null);
+  }
+  function contentEqualsInternal(_this_, other) {
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _this_;
+      break $l$block;
+    }
+    var a_0 = tmp$ret$0;
+    var tmp$ret$1;
+    $l$block_0: {
+      tmp$ret$1 = other;
+      break $l$block_0;
+    }
+    var b_0 = tmp$ret$1;
+    if (a_0 === b_0)
+      return true;
+    if (((a_0 == null ? true : b_0 == null) ? true : !isArrayish(b_0)) ? true : a_0.length != b_0.length)
+      return false;
+    var inductionVariable = 0;
+    var last = a_0.length;
+    if (inductionVariable < last)
+      do {
+        var i = inductionVariable;
+        inductionVariable = inductionVariable + 1 | 0;
+        if (!equals(a_0[i], b_0[i])) {
+          return false;
+        }}
+       while (inductionVariable < last);
+    return true;
   }
   function _no_name_provided__39() {
   }
@@ -10135,9 +14373,19 @@ this['out-ir'] = function (_) {
       if (a_0 !== 0) {
         tmp_0 = 0;
       } else {
-        var ia = 1 / a_0;
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = 1;
+          break $l$block;
+        }
+        var ia = tmp$ret$0 / a_0;
         var tmp_1;
-        if (ia === 1 / b_0) {
+        var tmp$ret$1;
+        $l$block_0: {
+          tmp$ret$1 = 1;
+          break $l$block_0;
+        }
+        if (ia === tmp$ret$1 / b_0) {
           tmp_1 = 0;
         } else {
           if (ia < 0) {
@@ -10177,8 +14425,13 @@ this['out-ir'] = function (_) {
       descriptor.value = hash;
       descriptor.enumerable = false;
       Object.defineProperty(obj, 'kotlinHashCodeValue$', descriptor);
-    }var tmp0_unsafeCast_0 = obj['kotlinHashCodeValue$'];
-    return tmp0_unsafeCast_0;
+    }var tmp$ret$0;
+    $l$block: {
+      var tmp0_unsafeCast_0 = obj['kotlinHashCodeValue$'];
+      tmp$ret$0 = tmp0_unsafeCast_0;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function _get_OBJECT_HASH_CODE_PROPERTY_NAME_() {
     return OBJECT_HASH_CODE_PROPERTY_NAME;
@@ -10195,8 +14448,13 @@ this['out-ir'] = function (_) {
     } else if (isArrayish(o)) {
       tmp = '[...]';
     } else {
-      var tmp0_unsafeCast_0 = o.toString();
-      tmp = tmp0_unsafeCast_0;
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_unsafeCast_0 = o.toString();
+        tmp$ret$0 = tmp0_unsafeCast_0;
+        break $l$block;
+      }
+      tmp = tmp$ret$0;
     }
     return tmp;
   }
@@ -10217,7 +14475,13 @@ this['out-ir'] = function (_) {
         break;
       case 'boolean':
         var tmp_0;
-        if (obj) {
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = obj;
+          break $l$block;
+        }
+
+        if (tmp$ret$0) {
           tmp_0 = 1;
         } else {
           {
@@ -10241,7 +14505,12 @@ this['out-ir'] = function (_) {
       do {
         var i = inductionVariable;
         inductionVariable = inductionVariable + 1 | 0;
-        var code = str.charCodeAt(i);
+        var tmp$ret$0;
+        $l$block: {
+          tmp$ret$0 = str;
+          break $l$block;
+        }
+        var code = tmp$ret$0.charCodeAt(i);
         hash = imul(hash, 31) + code | 0;
       }
        while (!(i === last));
@@ -10266,8 +14535,18 @@ this['out-ir'] = function (_) {
         if (obj1 !== 0) {
           tmp_0 = true;
         } else {
-          var tmp_1 = 1 / obj1;
-          tmp_0 = tmp_1 === 1 / obj2;
+          var tmp$ret$0;
+          $l$block: {
+            tmp$ret$0 = 1;
+            break $l$block;
+          }
+          var tmp_1 = tmp$ret$0 / obj1;
+          var tmp$ret$1;
+          $l$block_0: {
+            tmp$ret$1 = 1;
+            break $l$block_0;
+          }
+          tmp_0 = tmp_1 === tmp$ret$1 / obj2;
         }
         tmp = tmp_0;
       } else {
@@ -10286,7 +14565,12 @@ this['out-ir'] = function (_) {
     if (Error.captureStackTrace != null) {
       Error.captureStackTrace(instance, constructorFunction);
     } else {
-      instance.stack = (new Error()).stack;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = instance;
+        break $l$block;
+      }
+      tmp$ret$0.stack = (new Error()).stack;
     }
   }
   function newThrowable(message, cause) {
@@ -10309,7 +14593,12 @@ this['out-ir'] = function (_) {
     throwable.message = tmp;
     throwable.cause = cause;
     throwable.name = 'Throwable';
-    return throwable;
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = throwable;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function isUndefined(value) {
     return value === undefined;
@@ -10340,8 +14629,13 @@ this['out-ir'] = function (_) {
     }this_.name = Object.getPrototypeOf(this_).constructor.name;
   }
   function hasOwnPrototypeProperty(o, name) {
-    var tmp0_unsafeCast_0 = Object.getPrototypeOf(o).hasOwnProperty(name);
-    return tmp0_unsafeCast_0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_unsafeCast_0 = Object.getPrototypeOf(o).hasOwnProperty(name);
+      tmp$ret$0 = tmp0_unsafeCast_0;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function getContinuation() {
     throw Exception_init_$Create$_0('Implemented as intrinsic');
@@ -10356,8 +14650,13 @@ this['out-ir'] = function (_) {
     return $cont._get_context__0_k$();
   }
   function unreachableDeclarationLog() {
-    var tmp0_asDynamic_0 = console;
-    tmp0_asDynamic_0.trace('Unreachable declaration');
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_asDynamic_0 = console;
+      tmp$ret$0 = tmp0_asDynamic_0;
+      break $l$block;
+    }
+    tmp$ret$0.trace('Unreachable declaration');
   }
   function unreachableDeclarationException() {
     throw new Error('Unreachable declaration');
@@ -10392,6 +14691,27 @@ this['out-ir'] = function (_) {
   function THROW_IAE(msg) {
     throw IllegalArgumentException_init_$Create$_0(msg);
   }
+  function JsIntrinsic() {
+  }
+  JsIntrinsic.prototype.equals = function (other) {
+    if (!(other instanceof JsIntrinsic))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof JsIntrinsic ? other : THROW_CCE();
+    return true;
+  };
+  JsIntrinsic.prototype.hashCode = function () {
+    return 0;
+  };
+  JsIntrinsic.prototype.toString = function () {
+    return '@kotlin.js.JsIntrinsic()';
+  };
+  JsIntrinsic.$metadata$ = {
+    simpleName: 'JsIntrinsic',
+    kind: 'class',
+    interfaces: [Annotation]
+  };
   function emptyArray() {
     return [];
   }
@@ -10400,6 +14720,22 @@ this['out-ir'] = function (_) {
   }
   JsFun.prototype._get_code__0_k$ = function () {
     return this._code;
+  };
+  JsFun.prototype.equals = function (other) {
+    if (!(other instanceof JsFun))
+      return false;
+    else {
+    }
+    var tmp0_other_with_cast = other instanceof JsFun ? other : THROW_CCE();
+    if (!(this._code === tmp0_other_with_cast._code))
+      return false;
+    return true;
+  };
+  JsFun.prototype.hashCode = function () {
+    return imul(getStringHashCode('code'), 127) ^ getStringHashCode(this._code);
+  };
+  JsFun.prototype.toString = function () {
+    return '' + '@kotlin.js.JsFun(code=' + this._code + ')';
   };
   JsFun.$metadata$ = {
     simpleName: 'JsFun',
@@ -10411,6 +14747,17 @@ this['out-ir'] = function (_) {
   }
   function enumValuesIntrinsic() {
     throw IllegalStateException_init_$Create$_0('Should be replaced by compiler');
+  }
+  function safePropertyGet(self_0, getterName, propName) {
+    var getter = self_0[getterName];
+    return getter != null ? getter.call(self_0) : self_0[propName];
+  }
+  function safePropertySet(self_0, setterName, propName, value) {
+    var setter = self_0[setterName];
+    if (setter != null)
+      setter.call(self_0, value);
+    else
+      self_0[propName] = value;
   }
   function Companion_20() {
     Companion_instance_19 = this;
@@ -10908,8 +15255,18 @@ this['out-ir'] = function (_) {
         var div = _this_.div_wiekkq_k$(radixLong);
         var rem = subtract(multiply(div, radixLong), _this_).toInt_0_k$();
         var tmp = toStringImpl(div, radix);
-        var tmp0_unsafeCast_0 = rem.toString(radix);
-        return tmp + tmp0_unsafeCast_0;
+        var tmp$ret$1;
+        $l$block_0: {
+          var tmp$ret$0;
+          $l$block: {
+            tmp$ret$0 = rem;
+            break $l$block;
+          }
+          var tmp0_unsafeCast_0 = tmp$ret$0.toString(radix);
+          tmp$ret$1 = tmp0_unsafeCast_0;
+          break $l$block_0;
+        }
+        return tmp + tmp$ret$1;
       } else {
         return '' + '-' + toStringImpl(negate(_this_), radix);
       }
@@ -10919,8 +15276,18 @@ this['out-ir'] = function (_) {
     while (true) {
       var remDiv = rem_0.div_wiekkq_k$(radixToPower);
       var intval = subtract(rem_0, multiply(remDiv, radixToPower)).toInt_0_k$();
-      var tmp1_unsafeCast_0 = intval.toString(radix);
-      var digits = tmp1_unsafeCast_0;
+      var tmp$ret$3;
+      $l$block_2: {
+        var tmp$ret$2;
+        $l$block_1: {
+          tmp$ret$2 = intval;
+          break $l$block_1;
+        }
+        var tmp1_unsafeCast_0 = tmp$ret$2.toString(radix);
+        tmp$ret$3 = tmp1_unsafeCast_0;
+        break $l$block_2;
+      }
+      var digits = tmp$ret$3;
       rem_0 = remDiv;
       if (isZero(rem_0)) {
         return digits + result;
@@ -11015,8 +15382,13 @@ this['out-ir'] = function (_) {
   }
   function arrayConcat(args) {
     var len = args.length;
-    var tmp0_unsafeCast_0 = arrayConcat$outlinedJsCode$(len);
-    var typed = tmp0_unsafeCast_0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_unsafeCast_0 = arrayConcat$outlinedJsCode$(len);
+      tmp$ret$0 = tmp0_unsafeCast_0;
+      break $l$block;
+    }
+    var typed = tmp$ret$0;
     var inductionVariable = 0;
     var last = len - 1 | 0;
     if (inductionVariable <= last)
@@ -11044,16 +15416,46 @@ this['out-ir'] = function (_) {
         var i = inductionVariable;
         inductionVariable = inductionVariable + 1 | 0;
         var tmp = size_local;
-        var tmp0_unsafeCast_0 = args[i];
-        size_local = tmp + tmp0_unsafeCast_0.length | 0;
+        var tmp$ret$1;
+        $l$block_0: {
+          var tmp0_unsafeCast_0 = args[i];
+          var tmp$ret$0;
+          $l$block: {
+            tmp$ret$0 = tmp0_unsafeCast_0;
+            break $l$block;
+          }
+          tmp$ret$1 = tmp$ret$0;
+          break $l$block_0;
+        }
+        size_local = tmp + tmp$ret$1.length | 0;
       }
        while (!(i === last));
     var a_0 = args[0];
-    var tmp1_unsafeCast_0 = primitiveArrayConcat$outlinedJsCode$_0(a_0, size_local);
-    var result = tmp1_unsafeCast_0;
-    if (a_0.$type$ != null) {
-      var tmp2_withType_0 = a_0.$type$;
-      result.$type$ = tmp2_withType_0;
+    var tmp$ret$2;
+    $l$block_1: {
+      var tmp1_unsafeCast_0 = primitiveArrayConcat$outlinedJsCode$(a_0, size_local);
+      tmp$ret$2 = tmp1_unsafeCast_0;
+      break $l$block_1;
+    }
+    var result = tmp$ret$2;
+    var tmp$ret$3;
+    $l$block_2: {
+      tmp$ret$3 = a_0;
+      break $l$block_2;
+    }
+    if (tmp$ret$3.$type$ != null) {
+      var tmp$ret$5;
+      $l$block_4: {
+        var tmp$ret$4;
+        $l$block_3: {
+          tmp$ret$4 = a_0;
+          break $l$block_3;
+        }
+        var tmp2_withType_0 = tmp$ret$4.$type$;
+        result.$type$ = tmp2_withType_0;
+        tmp$ret$5 = result;
+        break $l$block_4;
+      }
     } else {
     }
     size_local = 0;
@@ -11063,8 +15465,18 @@ this['out-ir'] = function (_) {
       do {
         var i_0 = inductionVariable_0;
         inductionVariable_0 = inductionVariable_0 + 1 | 0;
-        var tmp3_unsafeCast_0 = args[i_0];
-        var arr = tmp3_unsafeCast_0;
+        var tmp$ret$7;
+        $l$block_6: {
+          var tmp3_unsafeCast_0 = args[i_0];
+          var tmp$ret$6;
+          $l$block_5: {
+            tmp$ret$6 = tmp3_unsafeCast_0;
+            break $l$block_5;
+          }
+          tmp$ret$7 = tmp$ret$6;
+          break $l$block_6;
+        }
+        var arr = tmp$ret$7;
         var inductionVariable_1 = 0;
         var last_1 = arr.length - 1 | 0;
         if (inductionVariable_1 <= last_1)
@@ -11078,25 +15490,45 @@ this['out-ir'] = function (_) {
            while (!(j === last_1));
       }
        while (!(i_0 === last_0));
-    return result;
+    var tmp$ret$9;
+    $l$block_8: {
+      var tmp$ret$8;
+      $l$block_7: {
+        tmp$ret$8 = result;
+        break $l$block_7;
+      }
+      tmp$ret$9 = tmp$ret$8;
+      break $l$block_8;
+    }
+    return tmp$ret$9;
   }
   function taggedArrayCopy(array) {
     var res = array.slice();
     res.$type$ = array.$type$;
-    return res;
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = res;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function arrayConcat$outlinedJsCode$(len) {
     return Array(len);
   }
-  function primitiveArrayConcat$outlinedJsCode$_0(a, size_local) {
+  function primitiveArrayConcat$outlinedJsCode$(a, size_local) {
     return new a.constructor(size_local);
   }
   function numberToByte(a_0) {
     return toByte(numberToInt(a_0));
   }
   function toByte(a_0) {
-    var tmp0_unsafeCast_0 = toByte$outlinedJsCode$(a_0);
-    return tmp0_unsafeCast_0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_unsafeCast_0 = toByte$outlinedJsCode$(a_0);
+      tmp$ret$0 = tmp0_unsafeCast_0;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function numberToInt(a_0) {
     var tmp;
@@ -11113,15 +15545,25 @@ this['out-ir'] = function (_) {
     return a_0 > 2.147483647E9 ? 2147483647 : a_0 < -2.147483648E9 ? -2147483648 : jsBitwiseOr(a_0, 0);
   }
   function numberToDouble(a_0) {
-    var tmp0_unsafeCast_0 = numberToDouble$outlinedJsCode$_0(a_0);
-    return tmp0_unsafeCast_0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_unsafeCast_0 = numberToDouble$outlinedJsCode$(a_0);
+      tmp$ret$0 = tmp0_unsafeCast_0;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function numberToShort(a_0) {
     return toShort(numberToInt(a_0));
   }
   function toShort(a_0) {
-    var tmp0_unsafeCast_0 = toShort$outlinedJsCode$_1(a_0);
-    return tmp0_unsafeCast_0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_unsafeCast_0 = toShort$outlinedJsCode$(a_0);
+      tmp$ret$0 = tmp0_unsafeCast_0;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function numberToLong(a_0) {
     var tmp;
@@ -11135,8 +15577,13 @@ this['out-ir'] = function (_) {
     return tmp;
   }
   function numberToChar(a_0) {
-    var tmp0_toUShort_0 = numberToInt(a_0);
-    return new Char_0(_UShort___init__impl_(toShort(tmp0_toUShort_0)));
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_toUShort_0 = numberToInt(a_0);
+      tmp$ret$0 = _UShort___init__impl_(toShort(tmp0_toUShort_0));
+      break $l$block;
+    }
+    return new Char_0(tmp$ret$0);
   }
   function toLong(a_0) {
     return fromInt(a_0);
@@ -11144,10 +15591,10 @@ this['out-ir'] = function (_) {
   function toByte$outlinedJsCode$(a) {
     return a << 24 >> 24;
   }
-  function numberToDouble$outlinedJsCode$_0(a) {
+  function numberToDouble$outlinedJsCode$(a) {
     return +a;
   }
-  function toShort$outlinedJsCode$_1(a) {
+  function toShort$outlinedJsCode$(a) {
     return a << 16 >> 16;
   }
   function numberRangeToNumber(start, endInclusive) {
@@ -11170,8 +15617,13 @@ this['out-ir'] = function (_) {
     getter.get = getter;
     getter.set = setter;
     getter.callableName = name;
-    var tmp0_unsafeCast_0 = getPropertyRefClass(getter, getKPropMetadata(paramCount, setter, type));
-    return tmp0_unsafeCast_0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_unsafeCast_0 = getPropertyRefClass(getter, getKPropMetadata(paramCount, setter, type));
+      tmp$ret$0 = tmp0_unsafeCast_0;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function getPropertyRefClass(obj, metadata) {
     init_properties_reflectRuntime_kt();
@@ -11194,28 +15646,130 @@ this['out-ir'] = function (_) {
   function init_properties_reflectRuntime_kt() {
     if (!properties_initialized_reflectRuntime_kt) {
       properties_initialized_reflectRuntime_kt = true;
-      var tmp = {kind: 'class', interfaces: []};
-      var tmp0_arrayOf_0 = [tmp, {kind: 'class', interfaces: []}];
-      var tmp_0 = {kind: 'class', interfaces: []};
-      var tmp1_arrayOf_0 = [tmp_0, {kind: 'class', interfaces: []}];
-      var tmp_1 = {kind: 'class', interfaces: []};
-      var tmp2_arrayOf_0 = [tmp_1, {kind: 'class', interfaces: []}];
-      var tmp3_arrayOf_0 = [tmp0_arrayOf_0, tmp1_arrayOf_0, tmp2_arrayOf_0];
-      propertyRefClassMetadataCache = tmp3_arrayOf_0;
+      var tmp$ret$17;
+      $l$block_16: {
+        var tmp$ret$4;
+        $l$block_3: {
+          var tmp$ret$0;
+          $l$block: {
+            tmp$ret$0 = {kind: 'class', interfaces: []};
+            break $l$block;
+          }
+          var tmp = tmp$ret$0;
+          var tmp$ret$1;
+          $l$block_0: {
+            tmp$ret$1 = {kind: 'class', interfaces: []};
+            break $l$block_0;
+          }
+          var tmp0_arrayOf_0 = [tmp, tmp$ret$1];
+          var tmp$ret$3;
+          $l$block_2: {
+            var tmp$ret$2;
+            $l$block_1: {
+              tmp$ret$2 = tmp0_arrayOf_0;
+              break $l$block_1;
+            }
+            tmp$ret$3 = tmp$ret$2;
+            break $l$block_2;
+          }
+          tmp$ret$4 = tmp$ret$3;
+          break $l$block_3;
+        }
+        var tmp_0 = tmp$ret$4;
+        var tmp$ret$9;
+        $l$block_8: {
+          var tmp$ret$5;
+          $l$block_4: {
+            tmp$ret$5 = {kind: 'class', interfaces: []};
+            break $l$block_4;
+          }
+          var tmp_1 = tmp$ret$5;
+          var tmp$ret$6;
+          $l$block_5: {
+            tmp$ret$6 = {kind: 'class', interfaces: []};
+            break $l$block_5;
+          }
+          var tmp1_arrayOf_0 = [tmp_1, tmp$ret$6];
+          var tmp$ret$8;
+          $l$block_7: {
+            var tmp$ret$7;
+            $l$block_6: {
+              tmp$ret$7 = tmp1_arrayOf_0;
+              break $l$block_6;
+            }
+            tmp$ret$8 = tmp$ret$7;
+            break $l$block_7;
+          }
+          tmp$ret$9 = tmp$ret$8;
+          break $l$block_8;
+        }
+        var tmp_2 = tmp$ret$9;
+        var tmp$ret$14;
+        $l$block_13: {
+          var tmp$ret$10;
+          $l$block_9: {
+            tmp$ret$10 = {kind: 'class', interfaces: []};
+            break $l$block_9;
+          }
+          var tmp_3 = tmp$ret$10;
+          var tmp$ret$11;
+          $l$block_10: {
+            tmp$ret$11 = {kind: 'class', interfaces: []};
+            break $l$block_10;
+          }
+          var tmp2_arrayOf_0 = [tmp_3, tmp$ret$11];
+          var tmp$ret$13;
+          $l$block_12: {
+            var tmp$ret$12;
+            $l$block_11: {
+              tmp$ret$12 = tmp2_arrayOf_0;
+              break $l$block_11;
+            }
+            tmp$ret$13 = tmp$ret$12;
+            break $l$block_12;
+          }
+          tmp$ret$14 = tmp$ret$13;
+          break $l$block_13;
+        }
+        var tmp3_arrayOf_0 = [tmp_0, tmp_2, tmp$ret$14];
+        var tmp$ret$16;
+        $l$block_15: {
+          var tmp$ret$15;
+          $l$block_14: {
+            tmp$ret$15 = tmp3_arrayOf_0;
+            break $l$block_14;
+          }
+          tmp$ret$16 = tmp$ret$15;
+          break $l$block_15;
+        }
+        tmp$ret$17 = tmp$ret$16;
+        break $l$block_16;
+      }
+      propertyRefClassMetadataCache = tmp$ret$17;
     }}
   function isArrayish(o) {
     var tmp;
     if (isJsArray(o)) {
       tmp = true;
     } else {
-      var tmp0_unsafeCast_0 = ArrayBuffer.isView(o);
-      tmp = tmp0_unsafeCast_0;
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_unsafeCast_0 = ArrayBuffer.isView(o);
+        tmp$ret$0 = tmp0_unsafeCast_0;
+        break $l$block;
+      }
+      tmp = tmp$ret$0;
     }
     return tmp;
   }
   function isJsArray(obj) {
-    var tmp0_unsafeCast_0 = Array.isArray(obj);
-    return tmp0_unsafeCast_0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_unsafeCast_0 = Array.isArray(obj);
+      tmp$ret$0 = tmp0_unsafeCast_0;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function isInterface(obj, iface) {
     var tmp0_elvis_lhs = obj.constructor;
@@ -11250,7 +15804,12 @@ this['out-ir'] = function (_) {
   function isArray(obj) {
     var tmp;
     if (isJsArray(obj)) {
-      tmp = !obj.$type$;
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = obj;
+        break $l$block;
+      }
+      tmp = !tmp$ret$0.$type$;
     } else {
       tmp = false;
     }
@@ -11273,8 +15832,44 @@ this['out-ir'] = function (_) {
   }
   function isSuspendFunction(obj, arity) {
     if (typeof obj === 'function') {
-      var tmp0_unsafeCast_0 = obj.$arity;
-      return tmp0_unsafeCast_0 === arity;
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_unsafeCast_0 = obj.$arity;
+        tmp$ret$0 = tmp0_unsafeCast_0;
+        break $l$block;
+      }
+      return tmp$ret$0 === arity;
+    }if (typeof obj === 'object' ? jsIn('$metadata$', obj.constructor) : false) {
+      var tmp$ret$1;
+      $l$block_0: {
+        var tmp1_unsafeCast_0 = obj.constructor;
+        tmp$ret$1 = tmp1_unsafeCast_0;
+        break $l$block_0;
+      }
+      var tmp0_safe_receiver = tmp$ret$1.$metadata$;
+      var tmp1_safe_receiver = tmp0_safe_receiver == null ? null : tmp0_safe_receiver.suspendArity;
+      var tmp;
+      if (tmp1_safe_receiver == null) {
+        tmp = null;
+      } else {
+        var tmp$ret$2;
+        {
+          {
+          }
+          var result_2 = false;
+          var tmp0_iterator_3 = arrayIterator(tmp1_safe_receiver);
+          $l$break: while (tmp0_iterator_3.hasNext_0_k$()) {
+            var item_4 = tmp0_iterator_3.next_0_k$();
+            if (arity === item_4) {
+              result_2 = true;
+              break $l$break;
+            }}
+          return result_2;
+        }
+        tmp = tmp$ret$2;
+      }
+      var tmp2_elvis_lhs = tmp;
+      return tmp2_elvis_lhs == null ? false : tmp2_elvis_lhs;
     }return false;
   }
   function isNumber(a_0) {
@@ -11317,43 +15912,90 @@ this['out-ir'] = function (_) {
   function isDoubleArray(a_0) {
     return jsInstanceOf(a_0, Float64Array);
   }
-  function jsIsType(obj, jsClass_1) {
-    if (jsClass_1 === Object) {
+  function jsIsType(obj, jsClass) {
+    if (jsClass === Object) {
       return isObject(obj);
-    }if ((obj == null ? true : jsClass_1 == null) ? true : !(typeof obj === 'object') ? !(typeof obj === 'function') : false) {
+    }if ((obj == null ? true : jsClass == null) ? true : !(typeof obj === 'object') ? !(typeof obj === 'function') : false) {
       return false;
-    }if (typeof jsClass_1 === 'function' ? jsInstanceOf(obj, jsClass_1) : false) {
+    }if (typeof jsClass === 'function' ? jsInstanceOf(obj, jsClass) : false) {
       return true;
-    }var proto = jsGetPrototypeOf(jsClass_1);
+    }var proto = jsGetPrototypeOf(jsClass);
     var tmp0_safe_receiver = proto;
     var constructor = tmp0_safe_receiver == null ? null : tmp0_safe_receiver.constructor;
     if (constructor != null ? jsIn('$metadata$', constructor) : false) {
       var metadata = constructor.$metadata$;
       if (metadata.kind === 'object') {
-        return obj === jsClass_1;
-      }}var klassMetadata = jsClass_1.$metadata$;
+        return obj === jsClass;
+      }}var klassMetadata = jsClass.$metadata$;
     if (klassMetadata == null) {
-      return jsInstanceOf(obj, jsClass_1);
+      return jsInstanceOf(obj, jsClass);
     }if (klassMetadata.kind === 'interface' ? obj.constructor != null : false) {
-      return isInterfaceImpl(obj.constructor, jsClass_1);
+      return isInterfaceImpl(obj.constructor, jsClass);
     }return false;
   }
-  function jsGetPrototypeOf(jsClass_1) {
-    return Object.getPrototypeOf(jsClass_1);
+  function jsGetPrototypeOf(jsClass) {
+    return Object.getPrototypeOf(jsClass);
   }
   function asList(_this_) {
-    return new ArrayList(_this_);
+    var tmp$ret$1;
+    $l$block_0: {
+      var tmp$ret$0;
+      $l$block: {
+        tmp$ret$0 = _this_;
+        break $l$block;
+      }
+      tmp$ret$1 = tmp$ret$0;
+      break $l$block_0;
+    }
+    return new ArrayList(tmp$ret$1);
   }
   function plus_0(_this_, elements) {
-    return _this_.concat(elements);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _this_;
+      break $l$block;
+    }
+    return tmp$ret$0.concat(elements);
   }
   function copyOfRange(_this_, fromIndex, toIndex) {
     Companion_getInstance().checkRangeIndexes_zd700_k$(fromIndex, toIndex, _this_.length);
-    return _this_.slice(fromIndex, toIndex);
+    var tmp$ret$0;
+    $l$block: {
+      tmp$ret$0 = _this_;
+      break $l$block;
+    }
+    return tmp$ret$0.slice(fromIndex, toIndex);
   }
   function copyInto(_this_, destination, destinationOffset, startIndex, endIndex) {
     arrayCopy_0(_this_, destination, destinationOffset, startIndex, endIndex);
     return destination;
+  }
+  function contentEquals_3(_this_, other) {
+    return contentEqualsInternal(_this_, other);
+  }
+  function contentEquals_4(_this_, other) {
+    return contentEqualsInternal(_this_, other);
+  }
+  function contentEquals_5(_this_, other) {
+    return contentEqualsInternal(_this_, other);
+  }
+  function contentEquals_6(_this_, other) {
+    return contentEqualsInternal(_this_, other);
+  }
+  function contentEquals_7(_this_, other) {
+    return contentEqualsInternal(_this_, other);
+  }
+  function contentEquals_8(_this_, other) {
+    return contentEqualsInternal(_this_, other);
+  }
+  function contentEquals_9(_this_, other) {
+    return contentEqualsInternal(_this_, other);
+  }
+  function contentEquals_10(_this_, other) {
+    return contentEqualsInternal(_this_, other);
+  }
+  function contentEquals_11(_this_, other) {
+    return contentEqualsInternal(_this_, other);
   }
   function minOf(a_0, b_0) {
     return Math.min(a_0, b_0);
@@ -11425,11 +16067,20 @@ this['out-ir'] = function (_) {
     var tmp2_elvis_lhs = this._intercepted_;
     var tmp;
     if (tmp2_elvis_lhs == null) {
-      var tmp0_safe_receiver = this._get_context__0_k$().get_9uvjra_k$(Key_getInstance());
-      var tmp1_elvis_lhs = tmp0_safe_receiver == null ? null : tmp0_safe_receiver.interceptContinuation_x4ijla_k$(this);
-      var tmp0_also_0 = tmp1_elvis_lhs == null ? this : tmp1_elvis_lhs;
-      this._intercepted_ = tmp0_also_0;
-      tmp = tmp0_also_0;
+      var tmp$ret$0;
+      $l$block: {
+        var tmp0_safe_receiver = this._get_context__0_k$().get_9uvjra_k$(Key_getInstance());
+        var tmp1_elvis_lhs = tmp0_safe_receiver == null ? null : tmp0_safe_receiver.interceptContinuation_x4ijla_k$(this);
+        var tmp0_also_0 = tmp1_elvis_lhs == null ? this : tmp1_elvis_lhs;
+        {
+        }
+        {
+          this._intercepted_ = tmp0_also_0;
+        }
+        tmp$ret$0 = tmp0_also_0;
+        break $l$block;
+      }
+      tmp = tmp$ret$0;
     } else {
       tmp = tmp2_elvis_lhs;
     }
@@ -11437,50 +16088,87 @@ this['out-ir'] = function (_) {
   };
   CoroutineImpl_0.prototype.resumeWith_jccoe6_k$ = function (result) {
     var current = this;
-    var tmp;
-    if (_Result___get_isFailure__impl_(result)) {
-      tmp = null;
-    } else {
-      var tmp_0 = _Result___get_value__impl_(result);
-      tmp = (tmp_0 == null ? true : isObject(tmp_0)) ? tmp_0 : THROW_CCE();
+    var tmp$ret$0;
+    $l$block: {
+      var tmp;
+      if (_Result___get_isFailure__impl_(result)) {
+        tmp = null;
+      } else {
+        var tmp_0 = _Result___get_value__impl_(result);
+        tmp = (tmp_0 == null ? true : isObject(tmp_0)) ? tmp_0 : THROW_CCE();
+      }
+      tmp$ret$0 = tmp;
+      break $l$block;
     }
-    var currentResult = tmp;
+    var currentResult = tmp$ret$0;
     var currentException = Result__exceptionOrNull_impl(result);
     while (true) {
-      var tmp0_with_0 = current;
-      if (currentException == null) {
-        tmp0_with_0._result = currentResult;
-      } else {
-        tmp0_with_0._state = tmp0_with_0._exceptionState;
-        tmp0_with_0._exception_0 = currentException;
-      }
-      try {
-        var outcome_2 = tmp0_with_0.doResume_0_k$();
-        if (outcome_2 === _get_COROUTINE_SUSPENDED_())
-          return Unit_getInstance();
-        currentResult = outcome_2;
-        currentException = null;
-      } catch ($p) {
-        currentResult = null;
-        currentException = $p;
-      }
-      releaseIntercepted(tmp0_with_0);
-      var completion_4 = ensureNotNull(tmp0_with_0._resultContinuation);
-      if (completion_4 instanceof CoroutineImpl_0) {
-        current = completion_4;
-      } else {
+      var tmp$ret$6;
+      $l$block_5: {
+        var tmp0_with_0 = current;
         {
-          if (!(currentException == null)) {
-            var tmp0_resumeWithException_0_5 = ensureNotNull(currentException);
-            var tmp0_failure_0_1_6 = Companion_getInstance_2();
-            completion_4.resumeWith_bnunh2_k$(_Result___init__impl_(createFailure(tmp0_resumeWithException_0_5)));
-          } else {
-            var tmp1_resume_0_7 = currentResult;
-            var tmp0_success_0_1_8 = Companion_getInstance_2();
-            completion_4.resumeWith_bnunh2_k$(_Result___init__impl_(tmp1_resume_0_7));
-          }
-          return Unit_getInstance();
         }
+        if (currentException == null) {
+          tmp0_with_0._result = currentResult;
+        } else {
+          tmp0_with_0._state = tmp0_with_0._exceptionState;
+          tmp0_with_0._exception_0 = currentException;
+        }
+        try {
+          var outcome_2 = tmp0_with_0.doResume_0_k$();
+          if (outcome_2 === _get_COROUTINE_SUSPENDED_())
+            return Unit_getInstance();
+          currentResult = outcome_2;
+          currentException = null;
+        } catch ($p) {
+          currentResult = null;
+          var tmp$ret$1;
+          $l$block_0: {
+            tmp$ret$1 = $p;
+            break $l$block_0;
+          }
+          currentException = tmp$ret$1;
+        }
+        releaseIntercepted(tmp0_with_0);
+        var completion_4 = ensureNotNull(tmp0_with_0._resultContinuation);
+        var tmp_1;
+        if (completion_4 instanceof CoroutineImpl_0) {
+          current = completion_4;
+          tmp_1 = Unit_getInstance();
+        } else {
+          {
+            if (!(currentException == null)) {
+              var tmp$ret$3;
+              $l$block_2: {
+                var tmp0_resumeWithException_0_5 = ensureNotNull(currentException);
+                var tmp$ret$2;
+                $l$block_1: {
+                  var tmp0_failure_0_1_6 = Companion_getInstance_2();
+                  tmp$ret$2 = _Result___init__impl_(createFailure(tmp0_resumeWithException_0_5));
+                  break $l$block_1;
+                }
+                tmp$ret$3 = completion_4.resumeWith_bnunh2_k$(tmp$ret$2);
+                break $l$block_2;
+              }
+            } else {
+              var tmp$ret$5;
+              $l$block_4: {
+                var tmp1_resume_0_7 = currentResult;
+                var tmp$ret$4;
+                $l$block_3: {
+                  var tmp0_success_0_1_8 = Companion_getInstance_2();
+                  tmp$ret$4 = _Result___init__impl_(tmp1_resume_0_7);
+                  break $l$block_3;
+                }
+                tmp$ret$5 = completion_4.resumeWith_bnunh2_k$(tmp$ret$4);
+                break $l$block_4;
+              }
+            }
+            return Unit_getInstance();
+          }
+        }
+        tmp$ret$6 = tmp_1;
+        break $l$block_5;
       }
     }
   };
@@ -11505,7 +16193,9 @@ this['out-ir'] = function (_) {
     throw IllegalStateException_init_$Create$_0('This continuation is already complete');
   };
   CompletedContinuation.prototype.resumeWith_jccoe6_k$ = function (result) {
-    throw IllegalStateException_init_$Create$_0('This continuation is already complete');
+    {
+      throw IllegalStateException_init_$Create$_0('This continuation is already complete');
+    }
   };
   CompletedContinuation.prototype.resumeWith_bnunh2_k$ = function (result) {
     return this.resumeWith_jccoe6_k$(result);
@@ -11523,6 +16213,15 @@ this['out-ir'] = function (_) {
     if (CompletedContinuation_instance == null)
       new CompletedContinuation();
     return CompletedContinuation_instance;
+  }
+  function invokeSuspendSuperType(_this_, completion) {
+    throw new NotImplementedError('It is intrinsic method');
+  }
+  function invokeSuspendSuperTypeWithReceiver(_this_, receiver, completion) {
+    throw new NotImplementedError('It is intrinsic method');
+  }
+  function invokeSuspendSuperTypeWithReceiverAndParam(_this_, receiver, param, completion) {
+    throw new NotImplementedError('It is intrinsic method');
   }
   function Exception_init_$Init$($this) {
     extendThrowable($this, void 1, void 1);
@@ -11668,6 +16367,34 @@ this['out-ir'] = function (_) {
     kind: 'class',
     interfaces: []
   };
+  function NoSuchElementException_init_$Init$($this) {
+    RuntimeException_init_$Init$($this);
+    NoSuchElementException.call($this);
+    return $this;
+  }
+  function NoSuchElementException_init_$Create$() {
+    var tmp = NoSuchElementException_init_$Init$(Object.create(NoSuchElementException.prototype));
+    captureStack(tmp, NoSuchElementException_init_$Create$);
+    return tmp;
+  }
+  function NoSuchElementException_init_$Init$_0(message, $this) {
+    RuntimeException_init_$Init$_0(message, $this);
+    NoSuchElementException.call($this);
+    return $this;
+  }
+  function NoSuchElementException_init_$Create$_0(message) {
+    var tmp = NoSuchElementException_init_$Init$_0(message, Object.create(NoSuchElementException.prototype));
+    captureStack(tmp, NoSuchElementException_init_$Create$_0);
+    return tmp;
+  }
+  function NoSuchElementException() {
+    captureStack(this, NoSuchElementException);
+  }
+  NoSuchElementException.$metadata$ = {
+    simpleName: 'NoSuchElementException',
+    kind: 'class',
+    interfaces: []
+  };
   function RuntimeException_init_$Init$($this) {
     Exception_init_$Init$($this);
     RuntimeException.call($this);
@@ -11713,34 +16440,6 @@ this['out-ir'] = function (_) {
   }
   RuntimeException.$metadata$ = {
     simpleName: 'RuntimeException',
-    kind: 'class',
-    interfaces: []
-  };
-  function NoSuchElementException_init_$Init$($this) {
-    RuntimeException_init_$Init$($this);
-    NoSuchElementException.call($this);
-    return $this;
-  }
-  function NoSuchElementException_init_$Create$() {
-    var tmp = NoSuchElementException_init_$Init$(Object.create(NoSuchElementException.prototype));
-    captureStack(tmp, NoSuchElementException_init_$Create$);
-    return tmp;
-  }
-  function NoSuchElementException_init_$Init$_0(message, $this) {
-    RuntimeException_init_$Init$_0(message, $this);
-    NoSuchElementException.call($this);
-    return $this;
-  }
-  function NoSuchElementException_init_$Create$_0(message) {
-    var tmp = NoSuchElementException_init_$Init$_0(message, Object.create(NoSuchElementException.prototype));
-    captureStack(tmp, NoSuchElementException_init_$Create$_0);
-    return tmp;
-  }
-  function NoSuchElementException() {
-    captureStack(this, NoSuchElementException);
-  }
-  NoSuchElementException.$metadata$ = {
-    simpleName: 'NoSuchElementException',
     kind: 'class',
     interfaces: []
   };
@@ -12021,38 +16720,63 @@ this['out-ir'] = function (_) {
     interfaces: []
   };
   function jsIn(lhs_hack, rhs_hack) {
-    var tmp0_unsafeCast_0 = jsIn$outlinedJsCode$(lhs_hack, rhs_hack);
-    return tmp0_unsafeCast_0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_unsafeCast_0 = jsIn$outlinedJsCode$(lhs_hack, rhs_hack);
+      tmp$ret$0 = tmp0_unsafeCast_0;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function jsBitwiseOr(lhs_hack, rhs_hack) {
-    var tmp0_unsafeCast_0 = jsBitwiseOr$outlinedJsCode$_0(lhs_hack, rhs_hack);
-    return tmp0_unsafeCast_0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_unsafeCast_0 = jsBitwiseOr$outlinedJsCode$(lhs_hack, rhs_hack);
+      tmp$ret$0 = tmp0_unsafeCast_0;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function jsTypeOf(value_hack) {
-    var tmp0_unsafeCast_0 = jsTypeOf$outlinedJsCode$_1(value_hack);
-    return tmp0_unsafeCast_0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_unsafeCast_0 = jsTypeOf$outlinedJsCode$(value_hack);
+      tmp$ret$0 = tmp0_unsafeCast_0;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function jsInstanceOf(obj_hack, jsClass_hack) {
-    var tmp0_unsafeCast_0 = jsInstanceOf$outlinedJsCode$_2(obj_hack, jsClass_hack);
-    return tmp0_unsafeCast_0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_unsafeCast_0 = jsInstanceOf$outlinedJsCode$(obj_hack, jsClass_hack);
+      tmp$ret$0 = tmp0_unsafeCast_0;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function jsBitwiseAnd(lhs_hack, rhs_hack) {
-    var tmp0_unsafeCast_0 = jsBitwiseAnd$outlinedJsCode$_3(lhs_hack, rhs_hack);
-    return tmp0_unsafeCast_0;
+    var tmp$ret$0;
+    $l$block: {
+      var tmp0_unsafeCast_0 = jsBitwiseAnd$outlinedJsCode$(lhs_hack, rhs_hack);
+      tmp$ret$0 = tmp0_unsafeCast_0;
+      break $l$block;
+    }
+    return tmp$ret$0;
   }
   function jsIn$outlinedJsCode$(lhs_hack, rhs_hack) {
     return lhs_hack in rhs_hack;
   }
-  function jsBitwiseOr$outlinedJsCode$_0(lhs_hack, rhs_hack) {
+  function jsBitwiseOr$outlinedJsCode$(lhs_hack, rhs_hack) {
     return lhs_hack | rhs_hack;
   }
-  function jsTypeOf$outlinedJsCode$_1(value_hack) {
+  function jsTypeOf$outlinedJsCode$(value_hack) {
     return typeof value_hack;
   }
-  function jsInstanceOf$outlinedJsCode$_2(obj_hack, jsClass_hack) {
+  function jsInstanceOf$outlinedJsCode$(obj_hack, jsClass_hack) {
     return obj_hack instanceof jsClass_hack;
   }
-  function jsBitwiseAnd$outlinedJsCode$_3(lhs_hack, rhs_hack) {
+  function jsBitwiseAnd$outlinedJsCode$(lhs_hack, rhs_hack) {
     return lhs_hack & rhs_hack;
   }
   function toString_1(_this_, radix) {
@@ -12110,19 +16834,48 @@ this['out-ir'] = function (_) {
     a(1, new Int32Array([2, 3]));
   }
   function newCode() {
-    var tmp0_map_0 = listOf(['apple', 'banana', 'cherry']);
-    var tmp0_mapTo_0_1 = ArrayList_init_$Create$_0(collectionSizeOrDefault(tmp0_map_0, 10));
-    var tmp0_iterator_1_2 = tmp0_map_0.iterator_0_k$();
-    while (tmp0_iterator_1_2.hasNext_0_k$()) {
-      var item_2_3 = tmp0_iterator_1_2.next_0_k$();
-      tmp0_mapTo_0_1.add_2bq_k$(item_2_3.toUpperCase());
-      Unit_getInstance();
-    }
-    var tmp1_forEach_0 = tmp0_mapTo_0_1;
-    var tmp0_iterator_1 = tmp1_forEach_0.iterator_0_k$();
-    while (tmp0_iterator_1.hasNext_0_k$()) {
-      var element_2 = tmp0_iterator_1.next_0_k$();
-      println(element_2);
+    {
+      var tmp$ret$4;
+      $l$block_3: {
+        var tmp0_map_0 = listOf(['apple', 'banana', 'cherry']);
+        var tmp$ret$3;
+        $l$block_2: {
+          var tmp0_mapTo_0_1 = ArrayList_init_$Create$_0(collectionSizeOrDefault(tmp0_map_0, 10));
+          var tmp0_iterator_1_2 = tmp0_map_0.iterator_0_k$();
+          while (tmp0_iterator_1_2.hasNext_0_k$()) {
+            var item_2_3 = tmp0_iterator_1_2.next_0_k$();
+            var tmp$ret$2;
+            $l$block_1: {
+              var tmp$ret$1;
+              $l$block_0: {
+                var tmp$ret$0;
+                $l$block: {
+                  tmp$ret$0 = item_2_3;
+                  break $l$block;
+                }
+                tmp$ret$1 = tmp$ret$0.toUpperCase();
+                break $l$block_0;
+              }
+              tmp$ret$2 = tmp$ret$1;
+              break $l$block_1;
+            }
+            tmp0_mapTo_0_1.add_2bq_k$(tmp$ret$2);
+            Unit_getInstance();
+          }
+          tmp$ret$3 = tmp0_mapTo_0_1;
+          break $l$block_2;
+        }
+        tmp$ret$4 = tmp$ret$3;
+        break $l$block_3;
+      }
+      var tmp1_forEach_0 = tmp$ret$4;
+      var tmp0_iterator_1 = tmp1_forEach_0.iterator_0_k$();
+      while (tmp0_iterator_1.hasNext_0_k$()) {
+        var element_2 = tmp0_iterator_1.next_0_k$();
+        {
+          println(element_2);
+        }
+      }
     }
   }
   function TestClass(classParameter) {
@@ -12188,21 +16941,6 @@ this['out-ir'] = function (_) {
     };
   }
   CombinedContext.prototype.plus_d7pszg_k$ = CoroutineContext.prototype.plus_d7pszg_k$;
-  UByteIterator.prototype.hasNext_0_k$ = Iterator_3.prototype.hasNext_0_k$;
-  UIntIterator.prototype.hasNext_0_k$ = Iterator_3.prototype.hasNext_0_k$;
-  ULongIterator.prototype.hasNext_0_k$ = Iterator_3.prototype.hasNext_0_k$;
-  UShortIterator.prototype.hasNext_0_k$ = Iterator_3.prototype.hasNext_0_k$;
-  ByteIterator.prototype.hasNext_0_k$ = Iterator_3.prototype.hasNext_0_k$;
-  IntIterator.prototype.hasNext_0_k$ = Iterator_3.prototype.hasNext_0_k$;
-  DoubleIterator.prototype.hasNext_0_k$ = Iterator_3.prototype.hasNext_0_k$;
-  FloatIterator.prototype.hasNext_0_k$ = Iterator_3.prototype.hasNext_0_k$;
-  LongIterator.prototype.hasNext_0_k$ = Iterator_3.prototype.hasNext_0_k$;
-  CharIterator.prototype.hasNext_0_k$ = Iterator_3.prototype.hasNext_0_k$;
-  BooleanIterator.prototype.hasNext_0_k$ = Iterator_3.prototype.hasNext_0_k$;
-  ShortIterator.prototype.hasNext_0_k$ = Iterator_3.prototype.hasNext_0_k$;
-  AbstractMutableList.prototype.get_ha5a7z_k$ = List.prototype.get_ha5a7z_k$;
-  KClassImpl.prototype._get_simpleName__0_k$ = KClass.prototype._get_simpleName__0_k$;
-  KClassImpl.prototype.isInstance_wi7j7l_k$ = KClass.prototype.isInstance_wi7j7l_k$;
   _stableSortingIsSupported = null;
   OBJECT_HASH_CODE_PROPERTY_NAME = 'kotlinHashCodeValue$';
   POW_2_32 = 4.294967296E9;

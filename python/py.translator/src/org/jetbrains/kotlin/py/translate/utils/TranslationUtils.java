@@ -11,9 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.kotlin.builtins.FunctionTypesKt;
 import org.jetbrains.kotlin.builtins.KotlinBuiltIns;
-import org.jetbrains.kotlin.builtins.StandardNames;
 import org.jetbrains.kotlin.builtins.PrimitiveType;
-import org.jetbrains.kotlin.config.CoroutineLanguageVersionSettingsUtilKt;
+import org.jetbrains.kotlin.builtins.StandardNames;
 import org.jetbrains.kotlin.descriptors.*;
 import org.jetbrains.kotlin.descriptors.impl.AnonymousFunctionDescriptor;
 import org.jetbrains.kotlin.descriptors.impl.LocalVariableAccessorDescriptor;
@@ -23,13 +22,6 @@ import org.jetbrains.kotlin.js.backend.ast.*;
 import org.jetbrains.kotlin.js.backend.ast.metadata.BoxingKind;
 import org.jetbrains.kotlin.js.backend.ast.metadata.MetadataProperties;
 import org.jetbrains.kotlin.js.backend.ast.metadata.SpecialFunction;
-import org.jetbrains.kotlin.py.translate.context.Namer;
-import org.jetbrains.kotlin.py.translate.context.TemporaryConstVariable;
-import org.jetbrains.kotlin.py.translate.context.TranslationContext;
-import org.jetbrains.kotlin.py.translate.expression.InlineMetadata;
-import org.jetbrains.kotlin.py.translate.general.Translation;
-import org.jetbrains.kotlin.py.translate.intrinsic.functions.factories.ArrayFIF;
-import org.jetbrains.kotlin.py.translate.reference.ReferenceTranslator;
 import org.jetbrains.kotlin.js.translate.utils.AnnotationsUtils;
 import org.jetbrains.kotlin.js.translate.utils.jsAstUtils.AstUtilsKt;
 import org.jetbrains.kotlin.name.ClassId;
@@ -40,14 +32,16 @@ import org.jetbrains.kotlin.psi.*;
 import org.jetbrains.kotlin.py.translate.context.Namer;
 import org.jetbrains.kotlin.py.translate.context.TemporaryConstVariable;
 import org.jetbrains.kotlin.py.translate.context.TranslationContext;
+import org.jetbrains.kotlin.py.translate.expression.InlineMetadata;
 import org.jetbrains.kotlin.py.translate.general.Translation;
 import org.jetbrains.kotlin.py.translate.intrinsic.functions.factories.ArrayFIF;
+import org.jetbrains.kotlin.py.translate.reference.ReferenceTranslator;
 import org.jetbrains.kotlin.resolve.BindingContext;
 import org.jetbrains.kotlin.resolve.BindingContextUtils;
 import org.jetbrains.kotlin.resolve.DescriptorUtils;
 import org.jetbrains.kotlin.resolve.descriptorUtil.DescriptorUtilsKt;
 import org.jetbrains.kotlin.resolve.inline.InlineUtil;
-import org.jetbrains.kotlin.resolve.source.KotlinSourceElementKt;
+import org.jetbrains.kotlin.resolve.source.PsiSourceElementKt;
 import org.jetbrains.kotlin.types.DynamicTypesKt;
 import org.jetbrains.kotlin.types.KotlinType;
 import org.jetbrains.kotlin.types.TypeUtils;
@@ -80,7 +74,7 @@ public final class TranslationUtils {
         JsExpression functionExpression = function;
         if (InlineUtil.isInline(descriptor)) {
             InlineMetadata metadata = InlineMetadata.compose(function, descriptor, context);
-            PsiElement sourceInfo = KotlinSourceElementKt.getPsi(descriptor.getSource());
+            PsiElement sourceInfo = PsiSourceElementKt.getPsi(descriptor.getSource());
             functionExpression = metadata.functionWithMetadata(context, sourceInfo);
         }
 
@@ -402,8 +396,7 @@ public final class TranslationUtils {
 
     @NotNull
     public static ClassDescriptor getCoroutineBaseClass(@NotNull TranslationContext context) {
-        FqName className = CoroutineLanguageVersionSettingsUtilKt.coroutinesPackageFqName(context.getLanguageVersionSettings())
-                .child(Name.identifier("CoroutineImpl"));
+        FqName className = StandardNames.COROUTINES_PACKAGE_FQ_NAME.child(Name.identifier("CoroutineImpl"));
         ClassDescriptor descriptor = FindClassInModuleKt.findClassAcrossModuleDependencies(
                 context.getCurrentModule(), ClassId.topLevel(className));
         assert descriptor != null;
@@ -559,7 +552,7 @@ public final class TranslationUtils {
             if (d instanceof ClassDescriptor && ((ClassDescriptor)d).isFun()) {
                 JsName constructorName = context.getInlineableInnerNameForDescriptor(d.getOriginal());
                 if (to.isMarkedNullable()) {
-                    JsConditional c = TranslationUtils.notNullConditional(value, new JsNullLiteral(), context);
+                    JsConditional c = notNullConditional(value, new JsNullLiteral(), context);
                     c.setThenExpression(new JsNew(new JsNameRef(constructorName), Collections.singletonList(c.getThenExpression())));
                     value = c;
                 } else {

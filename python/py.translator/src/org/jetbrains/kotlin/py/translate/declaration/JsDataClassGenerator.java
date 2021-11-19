@@ -8,9 +8,6 @@ package org.jetbrains.kotlin.py.translate.declaration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.kotlin.descriptors.*;
 import org.jetbrains.kotlin.js.backend.ast.*;
-import org.jetbrains.kotlin.py.translate.context.Namer;
-import org.jetbrains.kotlin.py.translate.context.TranslationContext;
-import org.jetbrains.kotlin.py.translate.utils.JsAstUtils;
 import org.jetbrains.kotlin.psi.KtClassOrObject;
 import org.jetbrains.kotlin.psi.KtParameter;
 import org.jetbrains.kotlin.py.translate.context.Namer;
@@ -19,7 +16,7 @@ import org.jetbrains.kotlin.py.translate.utils.JsAstUtils;
 import org.jetbrains.kotlin.resolve.BindingContext;
 import org.jetbrains.kotlin.resolve.BindingContextUtils;
 import org.jetbrains.kotlin.resolve.calls.components.ArgumentsUtilsKt;
-import org.jetbrains.kotlin.resolve.source.KotlinSourceElementKt;
+import org.jetbrains.kotlin.resolve.source.PsiSourceElementKt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +35,7 @@ class JsDataClassGenerator extends JsEqualsHashcodeToStringGenerator {
         JsFunction functionObject = generateJsMethod(function);
         JsExpression returnExpression = JsAstUtils.pureFqn(context.getNameForDescriptor(propertyDescriptor), new JsThisRef());
         JsReturn returnStatement = new JsReturn(returnExpression);
-        returnStatement.setSource(KotlinSourceElementKt.getPsi(parameter.getSource()));
+        returnStatement.setSource(PsiSourceElementKt.getPsi(parameter.getSource()));
         functionObject.getBody().getStatements().add(returnStatement);
     }
 

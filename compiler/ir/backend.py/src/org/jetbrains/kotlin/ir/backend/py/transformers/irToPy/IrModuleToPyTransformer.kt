@@ -31,7 +31,6 @@ class IrModuleToPyTransformer(
         val additionalPackages = with(backendContext) {
             externalPackageFragment.values + listOf(
                 bodilessBuiltInsPackageFragment,
-                intrinsics.externalPackageFragment
             ) + packageLevelJsModules
         }
 

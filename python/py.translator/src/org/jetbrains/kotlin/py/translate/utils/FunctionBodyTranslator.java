@@ -16,20 +16,16 @@ import org.jetbrains.kotlin.descriptors.ValueParameterDescriptor;
 import org.jetbrains.kotlin.js.backend.ast.*;
 import org.jetbrains.kotlin.js.backend.ast.metadata.MetadataProperties;
 import org.jetbrains.kotlin.js.naming.NameSuggestion;
+import org.jetbrains.kotlin.psi.KtBlockExpression;
+import org.jetbrains.kotlin.psi.KtDeclarationWithBody;
+import org.jetbrains.kotlin.psi.KtExpression;
 import org.jetbrains.kotlin.py.translate.context.Namer;
 import org.jetbrains.kotlin.py.translate.context.TranslationContext;
 import org.jetbrains.kotlin.py.translate.expression.LocalFunctionCollector;
 import org.jetbrains.kotlin.py.translate.general.AbstractTranslator;
 import org.jetbrains.kotlin.py.translate.general.Translation;
 import org.jetbrains.kotlin.py.translate.reference.ReferenceTranslator;
-import org.jetbrains.kotlin.psi.KtBlockExpression;
-import org.jetbrains.kotlin.psi.KtDeclarationWithBody;
-import org.jetbrains.kotlin.psi.KtExpression;
-import org.jetbrains.kotlin.py.translate.context.Namer;
-import org.jetbrains.kotlin.py.translate.context.TranslationContext;
-import org.jetbrains.kotlin.py.translate.general.AbstractTranslator;
-import org.jetbrains.kotlin.py.translate.general.Translation;
-import org.jetbrains.kotlin.resolve.source.KotlinSourceElementKt;
+import org.jetbrains.kotlin.resolve.source.PsiSourceElementKt;
 import org.jetbrains.kotlin.types.KotlinType;
 
 import java.util.ArrayList;
@@ -90,7 +86,7 @@ public final class FunctionBodyTranslator extends AbstractTranslator {
             JsExpression defaultValue = Translation.translateAsExpression(defaultArgument, context, defaultArgBlock);
 
             // parameterName = defaultValue
-            PsiElement psi = KotlinSourceElementKt.getPsi(valueParameter.getSource());
+            PsiElement psi = PsiSourceElementKt.getPsi(valueParameter.getSource());
             JsStatement assignStatement = assignment(jsNameRef, defaultValue).source(psi).makeStmt();
 
             JsStatement thenStatement = JsAstUtils.mergeStatementInBlockIfNeeded(assignStatement, defaultArgBlock);

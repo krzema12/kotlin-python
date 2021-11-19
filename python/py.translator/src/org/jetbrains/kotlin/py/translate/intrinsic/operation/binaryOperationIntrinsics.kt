@@ -5,10 +5,12 @@
 
 package org.jetbrains.kotlin.py.translate.intrinsic.operation
 
-import org.jetbrains.kotlin.js.backend.ast.JsExpression
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.js.backend.ast.JsBinaryOperation
 import org.jetbrains.kotlin.js.backend.ast.JsBinaryOperator
+import org.jetbrains.kotlin.js.backend.ast.JsExpression
+import org.jetbrains.kotlin.lexer.KtToken
+import org.jetbrains.kotlin.psi.KtBinaryExpression
 import org.jetbrains.kotlin.py.translate.context.TranslationContext
 import org.jetbrains.kotlin.py.translate.operation.OperatorTable
 import org.jetbrains.kotlin.py.translate.utils.BindingUtils.getCallableDescriptorForOperationExpression
@@ -16,10 +18,7 @@ import org.jetbrains.kotlin.py.translate.utils.PsiUtils.getOperationToken
 import org.jetbrains.kotlin.py.translate.utils.TranslationUtils
 import org.jetbrains.kotlin.py.translate.utils.getPrecisePrimitiveType
 import org.jetbrains.kotlin.py.translate.utils.getPrimitiveNumericComparisonInfo
-import org.jetbrains.kotlin.lexer.KtToken
-import org.jetbrains.kotlin.psi.KtBinaryExpression
 import org.jetbrains.kotlin.types.KotlinType
-import org.jetbrains.kotlin.utils.addToStdlib.firstNotNullResult
 
 class BinaryOperationIntrinsics {
 
@@ -48,7 +47,7 @@ class BinaryOperationIntrinsics {
     private fun computeAndCache(key: IntrinsicKey): BinaryOperationIntrinsic? {
         if (key in intrinsicCache) return intrinsicCache[key]
 
-        val result = factories.firstNotNullResult { factory ->
+        val result = factories.firstNotNullOfOrNull { factory ->
             if (factory.getSupportTokens().contains(key.token)) {
                 factory.getIntrinsic(key.function, key.leftType, key.rightType)
             } else null

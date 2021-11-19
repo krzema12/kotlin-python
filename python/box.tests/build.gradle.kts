@@ -24,9 +24,6 @@ dependencies {
     testCompileOnly(project(":compiler:cli-js"))
     testCompileOnly(project(":compiler:util"))
     testCompileOnly(intellijCoreDep()) { includeJars("intellij-core") }
-    Platform[193].orLower {
-        testCompileOnly(intellijDep()) { includeJars("openapi", rootProject = rootProject) }
-    }
     testCompileOnly(intellijDep()) { includeJars("idea", "idea_rt", "util") }
     testCompile(project(":compiler:backend.py"))
     testCompile(project(":compiler:backend.wasm"))
@@ -46,9 +43,6 @@ dependencies {
 
     testRuntime(project(":kotlin-reflect"))
 
-    if (Platform[193].orLower()) {
-        testRuntime(intellijDep()) { includeJars("picocontainer", rootProject = rootProject) }
-    }
     testRuntime(intellijDep()) { includeJars("trove4j", "guava", "jdom", rootProject = rootProject) }
 
     testRuntime(kotlinStdlib())

@@ -14,21 +14,17 @@ import org.jetbrains.kotlin.backend.common.phaser.toPhaseMap
 import org.jetbrains.kotlin.checkers.CompilerTestLanguageVersionSettings
 import org.jetbrains.kotlin.checkers.parseLanguageVersionSettings
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
-import org.jetbrains.kotlin.cli.common.messages.MessageCollector
-import org.jetbrains.kotlin.cli.js.messageCollectorLogger
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.config.*
 import org.jetbrains.kotlin.idea.KotlinFileType
 import org.jetbrains.kotlin.incremental.js.IncrementalResultsConsumerImpl
-import org.jetbrains.kotlin.ir.backend.js.MainModule
-import org.jetbrains.kotlin.ir.backend.js.generateKLib
-import org.jetbrains.kotlin.ir.backend.js.jsResolveLibraries
+import org.jetbrains.kotlin.ir.backend.js.prepareAnalyzedSourceModule
 import org.jetbrains.kotlin.ir.backend.py.CompilerResult
 import org.jetbrains.kotlin.ir.backend.py.PyCode
 import org.jetbrains.kotlin.ir.backend.py.compile
 import org.jetbrains.kotlin.ir.backend.py.jsPhases
-import org.jetbrains.kotlin.ir.declarations.impl.IrFactoryImpl
+import org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFactory
 import org.jetbrains.kotlin.js.config.ErrorTolerancePolicy
 import org.jetbrains.kotlin.js.config.JSConfigurationKeys
 import org.jetbrains.kotlin.js.config.JsConfig
@@ -122,7 +118,6 @@ abstract class BasicIrBoxTest(
                 TEST_MODULE in modules -> TEST_MODULE
                 else -> DEFAULT_MODULE
             }
-            val testModuleName = if (runPlainBoxFunction) null else mainModuleName
 
             val generatedPyFiles = orderedModules.asReversed().mapNotNull { module ->
                 val dependencies = module.dependenciesSymbols.map { outputFileName(outputDir) + ".meta.py" }
@@ -133,9 +128,21 @@ abstract class BasicIrBoxTest(
                 val isMainModule = mainModuleName == module.name
                 generateJavaScriptFile(
                     testFactory.tmpDir,
-                    file.parent, module, outputFileName, dependencies, allDependencies, friends, modules.size > 1,
-                    !SKIP_SOURCEMAP_REMAPPING.matcher(fileContent).find(),
-                    actualMainCallParameters, testPackage, testFunction, needsFullIrRuntime, isMainModule, expectActualLinker, splitPerModule, errorPolicy,
+                    file.parent,
+                    module,
+                    outputFileName,
+                    dependencies,
+                    allDependencies,
+                    friends,
+                    modules.size > 1,
+                    actualMainCallParameters,
+                    testPackage,
+                    testFunction,
+                    needsFullIrRuntime,
+                    isMainModule,
+                    expectActualLinker,
+                    splitPerModule,
+                    errorPolicy,
                     propertyLazyInitialization
                 )
 
@@ -162,7 +169,7 @@ abstract class BasicIrBoxTest(
             val skipRunningGeneratedCode = InTextDirectivesUtils.dontRunGeneratedCode(pythonBackend, file)
 
             if (!skipRunningGeneratedCode) {
-                runGeneratedCode(allPyFiles, testModuleName, testPackage, testFunction, expectedResult)
+                runGeneratedCode(allPyFiles, expectedResult)
             } else {
                 val ignored = InTextDirectivesUtils.isIgnoredTarget(
                     pythonBackend, file,
@@ -200,7 +207,6 @@ abstract class BasicIrBoxTest(
         allDependencies: List<String>,
         friends: List<String>,
         multiModule: Boolean,
-        remap: Boolean,
         mainCallParameters: MainCallParameters,
         testPackage: String?,
         testFunction: String,
@@ -220,14 +226,21 @@ abstract class BasicIrBoxTest(
         val allSourceFiles = (testFiles + additionalFiles).map(::File)
         val psiFiles = createPsiFiles(allSourceFiles.sortedBy { it.canonicalPath }.map { it.canonicalPath })
 
-        val sourceDirs = (testFiles + additionalFiles).map { File(it).parent }.distinct()
-        val config = createConfig(sourceDirs, module, dependencies, allDependencies, friends, multiModule, tmpDir, expectActualLinker = expectActualLinker, errorIgnorancePolicy)
+        val config = createConfig(
+            module,
+            dependencies,
+            allDependencies,
+            friends,
+            multiModule,
+            tmpDir,
+            expectActualLinker = expectActualLinker,
+            errorIgnorancePolicy
+        )
         val outputFile = File(outputFileName)
 
         translateFiles(
             psiFiles.map(TranslationUnit::SourceFile), outputFile, config,
-            mainCallParameters, remap, testPackage, testFunction, needsFullIrRuntime, isMainModule, splitPerModule,
-            propertyLazyInitialization,
+            mainCallParameters, testPackage, testFunction, needsFullIrRuntime, isMainModule, splitPerModule, propertyLazyInitialization,
         )
     }
 
@@ -243,8 +256,8 @@ abstract class BasicIrBoxTest(
     private fun createPsiFiles(fileNames: List<String>): List<KtFile> = fileNames.map(this::createPsiFile)
 
     private fun createConfig(
-        sourceDirs: List<String>, module: TestModule, dependencies: List<String>, allDependencies: List<String>, friends: List<String>,
-        multiModule: Boolean, tmpDir: File, expectActualLinker: Boolean, errorIgnorancePolicy: ErrorTolerancePolicy
+        module: TestModule, dependencies: List<String>, allDependencies: List<String>, friends: List<String>, multiModule: Boolean,
+        tmpDir: File, expectActualLinker: Boolean, errorIgnorancePolicy: ErrorTolerancePolicy
     ): JsConfig {
         val configuration = environment.configuration.copy()
 
@@ -343,20 +356,20 @@ abstract class BasicIrBoxTest(
             return TestFile(
                 temporaryFile.absolutePath,
                 currentModule,
-                recompile = RECOMPILE_PATTERN.matcher(text).find(),
-                packageName = ktFile.packageFqName.asString()
+                recompile = RECOMPILE_PATTERN.matcher(text).find()
             )
         }
 
-        override fun createModule(name: String, dependencies: List<String>, friends: List<String>) =
-            TestModule(name, dependencies, friends)
+        override fun createModule(name: String, dependencies: List<String>, friends: List<String>, abiVersions: List<Int>): TestModule {
+            return TestModule(name, dependencies, friends)
+        }
 
         override fun close() {
             FileUtil.delete(tmpDir)
         }
     }
 
-    private class TestFile(val fileName: String, val module: TestModule, val recompile: Boolean, val packageName: String) {
+    private class TestFile(val fileName: String, val module: TestModule, val recompile: Boolean) {
         init {
             module.files += this
         }
@@ -365,7 +378,7 @@ abstract class BasicIrBoxTest(
     private class TestModule(
         name: String,
         dependencies: List<String>,
-        friends: List<String>
+        friends: List<String>,
     ): KotlinBaseTest.TestModule(name, dependencies, friends) {
         var inliningDisabled = false
         val files = mutableListOf<TestFile>()
@@ -383,7 +396,6 @@ abstract class BasicIrBoxTest(
         outputFile: File,
         config: JsConfig,
         mainCallParameters: MainCallParameters,
-        remap: Boolean,
         testPackage: String?,
         testFunction: String,
         needsFullIrRuntime: Boolean,
@@ -400,12 +412,6 @@ abstract class BasicIrBoxTest(
         val allKlibPaths = (runtimeKlibs + transitiveLibraries.map {
             compilationCache[it] ?: error("Can't find compiled module for dependency $it")
         }).map { File(it).absolutePath }
-
-        val resolvedLibraries = jsResolveLibraries(allKlibPaths, emptyList(), messageCollectorLogger(MessageCollector.NONE))
-
-        val actualOutputFile = outputFile.absolutePath.let {
-            if (!isMainModule) it.replace("_v5.js", "/") else it
-        }
 
         if (isMainModule) {
             val debugMode = getBoolean("kotlin.py.debugMode")
@@ -425,23 +431,27 @@ abstract class BasicIrBoxTest(
                 PhaseConfig(jsPhases)
             }
 
+            val module = prepareAnalyzedSourceModule(
+                config.project,
+                filesToCompile,
+                config.configuration,
+                allKlibPaths,
+                emptyList(),
+                AnalyzerWithCompilerReport(config.configuration),
+            )
+
             var compilationException: Throwable? = null
             val compiledModuleWithDuration: Pair<Long, CompilerResult?> = measureTimeMillisWithResult {
                 try {
                     compile(
-                        project = config.project,
-                        mainModule = MainModule.SourceFiles(filesToCompile),
-                        analyzer = AnalyzerWithCompilerReport(config.configuration),
-                        configuration = config.configuration,
+                        module,
                         phaseConfig = phaseConfig,
-                        irFactory = IrFactoryImpl,
-                        allDependencies = resolvedLibraries,
-                        friendDependencies = emptyList(),
+                        irFactory = PersistentIrFactory(),
                         mainArguments = mainCallParameters.run { if (shouldBeGenerated()) arguments() else null },
                         exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, testFunction))),
-                        generateFullJs = true,
                         multiModule = splitPerModule,
                         propertyLazyInitialization = propertyLazyInitialization,
+                        verifySignatures = true,
                     )
                 } catch (e: Throwable) {
                     compilationException = e
@@ -457,19 +467,7 @@ abstract class BasicIrBoxTest(
 
             compiledModule.pyCode!!.writeTo(outputFile)
         } else {
-            generateKLib(
-                project = config.project,
-                files = filesToCompile,
-                analyzer = AnalyzerWithCompilerReport(config.configuration),
-                configuration = config.configuration,
-                allDependencies = resolvedLibraries,
-                friendDependencies = emptyList(),
-                irFactory = IrFactoryImpl,
-                outputKlibPath = actualOutputFile,
-                nopack = true
-            )
-
-            compilationCache[outputFile.name.replace(".js", ".meta.js")] = actualOutputFile
+            TODO()
         }
     }
 
@@ -495,9 +493,6 @@ abstract class BasicIrBoxTest(
 
     private fun runGeneratedCode(
         jsFiles: List<String>,
-        testModuleName: String?,
-        testPackage: String?,
-        testFunction: String,
         expectedResult: String,
     ) {
         // TODO: should we do anything special for module systems?
@@ -528,7 +523,6 @@ abstract class BasicIrBoxTest(
         private val RUN_PLAIN_BOX_FUNCTION = Pattern.compile("^// *RUN_PLAIN_BOX_FUNCTION", Pattern.MULTILINE)
 
         private val NO_INLINE_PATTERN = Pattern.compile("^// *NO_INLINE *$", Pattern.MULTILINE)
-        private val SKIP_SOURCEMAP_REMAPPING = Pattern.compile("^// *SKIP_SOURCEMAP_REMAPPING *$", Pattern.MULTILINE)
         private val RECOMPILE_PATTERN = Pattern.compile("^// *RECOMPILE *$", Pattern.MULTILINE)
         private val SOURCE_MAP_SOURCE_EMBEDDING = Regex("^// *SOURCE_MAP_EMBED_SOURCES: ([A-Z]+)*\$", RegexOption.MULTILINE)
         private val CALL_MAIN_PATTERN = Pattern.compile("^// *CALL_MAIN *$", Pattern.MULTILINE)

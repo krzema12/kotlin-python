@@ -16,10 +16,7 @@ import org.jetbrains.kotlin.descriptors.PropertyDescriptor
 import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
 import org.jetbrains.kotlin.descriptors.impl.EmptyPackageFragmentDescriptor
 import org.jetbrains.kotlin.incremental.components.NoLookupLocation
-import org.jetbrains.kotlin.ir.IrElement
-import org.jetbrains.kotlin.ir.IrFileEntry
-import org.jetbrains.kotlin.ir.SourceRangeInfo
-import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
+import org.jetbrains.kotlin.ir.*
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.backend.py.lower.JsInnerClassesSupport
 import org.jetbrains.kotlin.ir.backend.py.utils.JsInlineClassesUtils
@@ -28,7 +25,6 @@ import org.jetbrains.kotlin.ir.builders.declarations.addFunction
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.declarations.impl.IrExternalPackageFragmentImpl
 import org.jetbrains.kotlin.ir.declarations.impl.IrFileImpl
-import org.jetbrains.kotlin.ir.descriptors.IrBuiltIns
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
@@ -41,9 +37,9 @@ import org.jetbrains.kotlin.ir.util.SymbolTable
 import org.jetbrains.kotlin.ir.util.getPropertyGetter
 import org.jetbrains.kotlin.ir.util.getPropertySetter
 import org.jetbrains.kotlin.ir.util.kotlinPackageFqn
-import org.jetbrains.kotlin.js.config.DceRuntimeDiagnostic
 import org.jetbrains.kotlin.js.config.ErrorTolerancePolicy
 import org.jetbrains.kotlin.js.config.JSConfigurationKeys
+import org.jetbrains.kotlin.js.config.RuntimeDiagnostic
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.resolve.scopes.MemberScope
@@ -58,7 +54,7 @@ class JsIrBackendContext(
     override val configuration: CompilerConfiguration, // TODO: remove configuration from backend context
     override val scriptMode: Boolean = false,
     override val es6mode: Boolean = false,
-    val dceRuntimeDiagnostic: DceRuntimeDiagnostic? = null,
+    val dceRuntimeDiagnostic: RuntimeDiagnostic? = null,
     val propertyLazyInitialization: Boolean = false,
 ) : JsCommonBackendContext {
     val fileToInitializationFuns: MutableMap<IrFile, IrSimpleFunction?> = mutableMapOf()
@@ -67,6 +63,7 @@ class JsIrBackendContext(
     val extractedLocalClasses: MutableSet<IrClass> = hashSetOf()
 
     override val builtIns = module.builtIns
+    override val typeSystem: IrTypeSystemContext = IrTypeSystemContextImpl(irBuiltIns)
 
     override val irFactory: IrFactory = symbolTable.irFactory
 
@@ -199,8 +196,9 @@ class JsIrBackendContext(
             override val throwNullPointerException =
                 symbolTable.referenceSimpleFunction(getFunctions(kotlinPackageFqn.child(Name.identifier("THROW_NPE"))).single())
 
-            override val throwNoWhenBranchMatchedException =
+            init {
                 symbolTable.referenceSimpleFunction(getFunctions(kotlinPackageFqn.child(Name.identifier("noWhenBranchMatchedException"))).single())
+            }
 
             override val throwTypeCastException =
                 symbolTable.referenceSimpleFunction(getFunctions(kotlinPackageFqn.child(Name.identifier("THROW_CCE"))).single())
@@ -218,8 +216,6 @@ class JsIrBackendContext(
                 symbolTable.referenceSimpleFunction(getFunctions(kotlinPackageFqn.child(Name.identifier("THROW_ISE"))).single())
 
             override val stringBuilder
-                get() = TODO("not implemented")
-            override val copyRangeTo: Map<ClassDescriptor, IrSimpleFunctionSymbol>
                 get() = TODO("not implemented")
             override val coroutineImpl =
                 symbolTable.referenceClass(findClass(coroutinePackage.memberScope, COROUTINE_IMPL_NAME))

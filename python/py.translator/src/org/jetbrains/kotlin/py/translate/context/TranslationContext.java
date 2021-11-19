@@ -9,7 +9,6 @@ import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.kotlin.config.CommonConfigurationKeysKt;
-import org.jetbrains.kotlin.config.LanguageFeature;
 import org.jetbrains.kotlin.config.LanguageVersionSettings;
 import org.jetbrains.kotlin.descriptors.*;
 import org.jetbrains.kotlin.descriptors.annotations.Annotations;
@@ -24,18 +23,18 @@ import org.jetbrains.kotlin.js.backend.ast.metadata.SpecialFunction;
 import org.jetbrains.kotlin.js.config.JsConfig;
 import org.jetbrains.kotlin.js.naming.NameSuggestion;
 import org.jetbrains.kotlin.js.naming.SuggestedName;
+import org.jetbrains.kotlin.js.translate.utils.AnnotationsUtils;
+import org.jetbrains.kotlin.name.Name;
+import org.jetbrains.kotlin.psi.KtExpression;
+import org.jetbrains.kotlin.psi.KtSimpleNameExpression;
 import org.jetbrains.kotlin.py.sourceMap.SourceFilePathResolver;
 import org.jetbrains.kotlin.py.translate.declaration.ClassModelGenerator;
 import org.jetbrains.kotlin.py.translate.intrinsic.Intrinsics;
 import org.jetbrains.kotlin.py.translate.reference.CallExpressionTranslator;
 import org.jetbrains.kotlin.py.translate.reference.ReferenceTranslator;
-import org.jetbrains.kotlin.js.translate.utils.AnnotationsUtils;
 import org.jetbrains.kotlin.py.translate.utils.JsAstUtils;
 import org.jetbrains.kotlin.py.translate.utils.TranslationUtils;
 import org.jetbrains.kotlin.py.translate.utils.UtilsKt;
-import org.jetbrains.kotlin.name.Name;
-import org.jetbrains.kotlin.psi.KtExpression;
-import org.jetbrains.kotlin.psi.KtSimpleNameExpression;
 import org.jetbrains.kotlin.resolve.BindingContext;
 import org.jetbrains.kotlin.resolve.BindingTrace;
 import org.jetbrains.kotlin.resolve.DescriptorUtils;
@@ -49,8 +48,8 @@ import java.util.*;
 
 import static org.jetbrains.kotlin.js.descriptorUtils.DescriptorUtilsKt.isCoroutineLambda;
 import static org.jetbrains.kotlin.js.descriptorUtils.DescriptorUtilsKt.shouldBeExported;
-import static org.jetbrains.kotlin.py.translate.context.UsageTrackerKt.getNameForCapturedDescriptor;
 import static org.jetbrains.kotlin.js.translate.utils.AnnotationsUtils.isNativeObject;
+import static org.jetbrains.kotlin.py.translate.context.UsageTrackerKt.getNameForCapturedDescriptor;
 import static org.jetbrains.kotlin.py.translate.utils.BindingUtils.getDescriptorForElement;
 import static org.jetbrains.kotlin.py.translate.utils.JsAstUtils.pureFqn;
 import static org.jetbrains.kotlin.resolve.BindingContextUtils.isCapturedInClosure;
@@ -131,8 +130,8 @@ public class TranslationContext {
             if (function.isSuspend()) {
                 ClassDescriptor continuationDescriptor =
                         DescriptorUtilKt.findContinuationClassDescriptor(
-                                getCurrentModule(), NoLookupLocation.FROM_BACKEND,
-                                getLanguageVersionSettings().supportsFeature(LanguageFeature.ReleaseCoroutines));
+                                getCurrentModule(), NoLookupLocation.FROM_BACKEND
+                        );
 
                 return new ValueParameterDescriptorImpl(function, null, function.getValueParameters().size(),
                                                         Annotations.Companion.getEMPTY(), Name.identifier("continuation"),

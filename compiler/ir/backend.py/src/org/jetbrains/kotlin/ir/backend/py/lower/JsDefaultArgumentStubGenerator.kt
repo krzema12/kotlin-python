@@ -9,8 +9,8 @@ import org.jetbrains.kotlin.backend.common.BodyLoweringPass
 import org.jetbrains.kotlin.backend.common.deepCopyWithVariables
 import org.jetbrains.kotlin.backend.common.ir.copyAnnotationsWhen
 import org.jetbrains.kotlin.backend.common.ir.isOverridableOrOverrides
-import org.jetbrains.kotlin.backend.common.lower.DEFAULT_DISPATCH_CALL
 import org.jetbrains.kotlin.backend.common.lower.DefaultArgumentStubGenerator
+import org.jetbrains.kotlin.backend.common.lower.LoweredStatementOrigins
 import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.utils.JsAnnotations
 import org.jetbrains.kotlin.ir.builders.IrBlockBodyBuilder
@@ -74,7 +74,7 @@ class JsDefaultCallbackGenerator(val context: JsIrBackendContext): BodyLoweringP
         irBody.transformChildrenVoid(object : IrElementTransformerVoid() {
             override fun visitCall(expression: IrCall): IrExpression {
                 super.visitCall(expression)
-                if (expression.origin != DEFAULT_DISPATCH_CALL || expression.superQualifierSymbol == null) return expression
+                if (expression.origin != LoweredStatementOrigins.DEFAULT_DISPATCH_CALL || expression.superQualifierSymbol == null) return expression
 
                 val binding = buildBoundSuperCall(expression)
 
@@ -107,7 +107,7 @@ class JsDefaultCallbackGenerator(val context: JsIrBackendContext): BodyLoweringP
                 startOffset,
                 endOffset,
                 context.irBuiltIns.anyType,
-                context.intrinsics.jsBind.symbol,
+                context.intrinsics.jsBind,
                 valueArgumentsCount = 2,
                 typeArgumentsCount = 0,
                 origin = BIND_CALL,

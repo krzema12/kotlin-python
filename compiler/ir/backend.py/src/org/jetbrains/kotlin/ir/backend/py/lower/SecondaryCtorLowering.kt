@@ -10,8 +10,8 @@ import org.jetbrains.kotlin.backend.common.DeclarationTransformer
 import org.jetbrains.kotlin.backend.common.getOrPut
 import org.jetbrains.kotlin.backend.common.ir.copyTo
 import org.jetbrains.kotlin.backend.common.ir.copyTypeParametersFrom
-import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
+import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
@@ -86,7 +86,7 @@ class SecondaryConstructorLowering(val context: JsIrBackendContext) : Declaratio
         stub.body = context.irFactory.createBlockBody(UNDEFINED_OFFSET, UNDEFINED_OFFSET) {
             val type = irClass.defaultType
             val createFunctionIntrinsic = context.intrinsics.jsObjectCreate
-            val irCreateCall = JsIrBuilder.buildCall(createFunctionIntrinsic.symbol, type, listOf(type))
+            val irCreateCall = JsIrBuilder.buildCall(createFunctionIntrinsic, type, listOf(type))
             val irDelegateCall = JsIrBuilder.buildCall(delegate.symbol, type).also { call ->
                 for (i in 0 until stub.typeParameters.size) {
                     call.putTypeArgument(i, stub.typeParameters[i].toIrType())

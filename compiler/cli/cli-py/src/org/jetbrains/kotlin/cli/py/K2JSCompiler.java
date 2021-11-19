@@ -212,7 +212,7 @@ public class K2JSCompiler extends CLICompiler<K2JSCompilerArguments> {
 
         environmentForJS.getConfiguration().put(CLIConfigurationKeys.ALLOW_KOTLIN_PACKAGE, arguments.getAllowKotlinPackage());
 
-        if (!checkKotlinPackageUsage(environmentForJS, sourcesFiles)) return ExitCode.COMPILATION_ERROR;
+        if (!checkKotlinPackageUsage(environmentForJS.getConfiguration(), sourcesFiles)) return ExitCode.COMPILATION_ERROR;
 
         if (arguments.getOutputFile() == null) {
             messageCollector.report(ERROR, "Specify output file via -output", null);
@@ -550,7 +550,7 @@ public class K2JSCompiler extends CLICompiler<K2JSCompilerArguments> {
 
     @NotNull
     @Override
-    protected CommonCompilerPerformanceManager getPerformanceManager() {
+    public CommonCompilerPerformanceManager getDefaultPerformanceManager() {
         return performanceManager;
     }
 

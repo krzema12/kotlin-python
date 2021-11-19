@@ -110,9 +110,11 @@ It will generate various reports and summaries:
 
 ![git-history-plot](experiments/git-history-plot.svg)
 
-Current status: **2156**/5787 passed
+Current status: **2199**/5970 passed
 
 #### History (newest on top)
+
+* after updating to Kotlin 1.6.0: **2199**/5970 (incomparable)
 
 * after supporting dynamic expressions (not statements): **2156**/5787 passed (+2)
 
