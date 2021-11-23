@@ -62,10 +62,16 @@ sourceSets {
 }
 
 projectTest("pythonTest", parallel = true) {
+    definePythonTestTask("python3.8")
+}
+
+fun Test.definePythonTestTask(interpreterBinary: String) {
     dependsOn(":dist")
     workingDir = rootDir
     jvmArgs!!.removeIf { it.contains("-Xmx") }
     maxHeapSize = "3g"
+
+    systemProperty("kotlin.py.interpreter.binary", interpreterBinary)
 
     dependsOn(":kotlin-stdlib-js-ir:compileKotlinJs")  // todo: remove js stuff
     systemProperty("kotlin.js.full.stdlib.path", "libraries/stdlib/js-ir/build/classes/kotlin/js/main")  // todo: remove js stuff
