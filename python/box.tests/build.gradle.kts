@@ -65,6 +65,10 @@ projectTest("pythonTest", parallel = true) {
     definePythonTestTask("python3.8")
 }
 
+projectTest("microPythonTest", parallel = true) {
+    definePythonTestTask("micropython")
+}
+
 fun Test.definePythonTestTask(interpreterBinary: String) {
     dependsOn(":dist")
     workingDir = rootDir
