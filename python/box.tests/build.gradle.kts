@@ -70,6 +70,15 @@ projectTest("microPythonTest", parallel = true) {
 }
 
 fun Test.definePythonTestTask(interpreterBinary: String) {
+    doFirst {
+        try {
+            exec {
+                executable = interpreterBinary
+            }
+        } catch (e: Throwable) {
+            throw RuntimeException("There was a problem running '$interpreterBinary' binary! Please ensure it's installed.", e)
+        }
+    }
     dependsOn(":dist")
     workingDir = rootDir
     jvmArgs!!.removeIf { it.contains("-Xmx") }
