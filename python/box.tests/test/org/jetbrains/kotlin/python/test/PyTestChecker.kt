@@ -42,8 +42,9 @@ object PythonTestChecker {
     }
 
     private fun runPython(scriptPath: String): String {
-        val interpreterBinary = System.getProperty("kotlin.py.interpreter.binary")
-            ?: throw IllegalArgumentException("Python interpreter binary is not set! It should be set by the build logic.")
+        val interpreterBinary = requireNotNull(System.getProperty("kotlin.py.interpreter.binary")) {
+            "Python interpreter binary is not set! It should be set by the build logic."
+        }
         val process = Runtime.getRuntime().exec("$interpreterBinary $scriptPath")
         val runningTime = measureTimeMillis {
             process.waitFor(10, TimeUnit.SECONDS)
