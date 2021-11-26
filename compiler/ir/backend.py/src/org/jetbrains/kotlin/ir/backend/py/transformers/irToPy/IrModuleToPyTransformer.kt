@@ -19,7 +19,6 @@ import topython.toPython
 // TODO
 class IrModuleToPyTransformer(
     private val backendContext: JsIrBackendContext,
-    private val mainArguments: List<String>?,
     private val generateScriptModule: Boolean = false,
     var namer: NameTables = NameTables(emptyList()),
     private val fullJs: Boolean = true,

@@ -32,7 +32,6 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtPsiFactory
-import org.jetbrains.kotlin.py.facade.MainCallParameters
 import org.jetbrains.kotlin.py.facade.TranslationUnit
 import org.jetbrains.kotlin.python.test.utils.PyTestUtils
 import org.jetbrains.kotlin.resolve.CompilerEnvironment
@@ -64,15 +63,14 @@ abstract class BasicIrBoxTest(
     private val testGroupOutputDirForCompilation = File(pathToRootOutputDir + "out/" + testGroupOutputDirPrefix)
 
     fun doTest(filePath: String) {
-        val pars = MainCallParameters.noCall()
-        doTest(filePath, "OK", pars)
+        doTest(filePath, "OK")
     }
 
     private val compilationCache = mutableMapOf<String, String>()
 
     private val cachedDependencies = mutableMapOf<String, Collection<String>>()
 
-    private fun doTest(filePath: String, expectedResult: String, mainCallParameters: MainCallParameters) {
+    private fun doTest(filePath: String, expectedResult: String) {
         compilationCache.clear()
         cachedDependencies.clear()
         val file = File(filePath)
@@ -80,8 +78,6 @@ abstract class BasicIrBoxTest(
         val fileContent = KtTestUtil.doLoadFile(file)
 
         val needsFullIrRuntime = KJS_WITH_FULL_RUNTIME.matcher(fileContent).find()
-
-        val actualMainCallParameters = if (CALL_MAIN_PATTERN.matcher(fileContent).find()) MainCallParameters.mainWithArguments(listOf("testArg")) else mainCallParameters
 
         val runPlainBoxFunction = RUN_PLAIN_BOX_FUNCTION.matcher(fileContent).find()
         val inferMainModule = INFER_MAIN_MODULE.matcher(fileContent).find()
@@ -134,7 +130,6 @@ abstract class BasicIrBoxTest(
                     allDependencies,
                     friends,
                     modules.size > 1,
-                    actualMainCallParameters,
                     testPackage,
                     testFunction,
                     needsFullIrRuntime,
@@ -206,7 +201,6 @@ abstract class BasicIrBoxTest(
         allDependencies: List<String>,
         friends: List<String>,
         multiModule: Boolean,
-        mainCallParameters: MainCallParameters,
         testPackage: String?,
         testFunction: String,
         needsFullIrRuntime: Boolean,
@@ -239,7 +233,7 @@ abstract class BasicIrBoxTest(
 
         translateFiles(
             psiFiles.map(TranslationUnit::SourceFile), outputFile, config,
-            mainCallParameters, testPackage, testFunction, needsFullIrRuntime, isMainModule, splitPerModule, propertyLazyInitialization,
+            testPackage, testFunction, needsFullIrRuntime, isMainModule, splitPerModule, propertyLazyInitialization,
         )
     }
 
@@ -394,7 +388,6 @@ abstract class BasicIrBoxTest(
         units: List<TranslationUnit>,
         outputFile: File,
         config: JsConfig,
-        mainCallParameters: MainCallParameters,
         testPackage: String?,
         testFunction: String,
         needsFullIrRuntime: Boolean,
@@ -446,7 +439,6 @@ abstract class BasicIrBoxTest(
                         module,
                         phaseConfig = phaseConfig,
                         irFactory = PersistentIrFactory(),
-                        mainArguments = mainCallParameters.run { if (shouldBeGenerated()) arguments() else null },
                         exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, testFunction))),
                         multiModule = splitPerModule,
                         propertyLazyInitialization = propertyLazyInitialization,
@@ -523,7 +515,6 @@ abstract class BasicIrBoxTest(
         private val NO_INLINE_PATTERN = Pattern.compile("^// *NO_INLINE *$", Pattern.MULTILINE)
         private val RECOMPILE_PATTERN = Pattern.compile("^// *RECOMPILE *$", Pattern.MULTILINE)
         private val SOURCE_MAP_SOURCE_EMBEDDING = Regex("^// *SOURCE_MAP_EMBED_SOURCES: ([A-Z]+)*\$", RegexOption.MULTILINE)
-        private val CALL_MAIN_PATTERN = Pattern.compile("^// *CALL_MAIN *$", Pattern.MULTILINE)
         private val KJS_WITH_FULL_RUNTIME = Pattern.compile("^// *KJS_WITH_FULL_RUNTIME *\$", Pattern.MULTILINE)
         private val EXPECT_ACTUAL_LINKER = Pattern.compile("^// EXPECT_ACTUAL_LINKER *$", Pattern.MULTILINE)
         private val SPLIT_PER_MODULE = Pattern.compile("^// *SPLIT_PER_MODULE *$", Pattern.MULTILINE)

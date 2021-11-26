@@ -13,7 +13,6 @@ import org.jetbrains.kotlin.ir.backend.js.loadIr
 import org.jetbrains.kotlin.ir.backend.py.lower.generateTests
 import org.jetbrains.kotlin.ir.backend.py.lower.moveBodilessDeclarationsToSeparatePlace
 import org.jetbrains.kotlin.ir.backend.py.transformers.irToPy.IrModuleToPyTransformer
-import org.jetbrains.kotlin.ir.backend.py.utils.NameTables
 import org.jetbrains.kotlin.ir.declarations.IrFactory
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.StageController
@@ -34,7 +33,6 @@ fun compile(
     depsDescriptors: ModulesStructure,
     phaseConfig: PhaseConfig,
     irFactory: IrFactory,
-    mainArguments: List<String>?,
     exportedDeclarations: Set<FqName> = emptySet(),
     generateFullJs: Boolean = true,
     generateDceJs: Boolean = false,
@@ -98,7 +96,6 @@ fun compile(
 
         val transformer = IrModuleToPyTransformer(
             context,
-            mainArguments,
             fullJs = true,
             dceJs = false,
             multiModule = multiModule,
@@ -109,7 +106,6 @@ fun compile(
         jsPhases.invokeToplevel(phaseConfig, context, allModules)
         val transformer = IrModuleToPyTransformer(
             context,
-            mainArguments,
             fullJs = generateFullJs,
             dceJs = generateDceJs,
             multiModule = multiModule,
@@ -117,16 +113,4 @@ fun compile(
         )
         return transformer.generateModule(allModules)
     }
-}
-
-fun generateJsCode(
-    context: JsIrBackendContext,
-    moduleFragment: IrModuleFragment,
-    nameTables: NameTables
-): String {
-    moveBodilessDeclarationsToSeparatePlace(context, moduleFragment)
-    jsPhases.invokeToplevel(PhaseConfig(jsPhases), context, listOf(moduleFragment))
-
-    val transformer = IrModuleToPyTransformer(context, null, true, nameTables)
-    return transformer.generateModule(listOf(moduleFragment)).pyCode!!.mainModule
 }
