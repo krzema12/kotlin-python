@@ -28,17 +28,21 @@ object PythonTestChecker {
         val pathToFileToRun = Paths.get(generatedPyFilePath)
 
         val temporaryDirectory = Files.createTempDirectory(pathToFileToRun.parent, pathToFileToRun.fileName.toString())
-        Files.copy(pathToFileToRun, temporaryDirectory.resolve("compiled_module.py"))
-        val consumerScriptPath = temporaryDirectory.resolve("consumer.py")
-        consumerScriptPath.toFile().writeText("""
-            from compiled_module import box
+        try {
+            Files.copy(pathToFileToRun, temporaryDirectory.resolve("compiled_module.py"))
+            val consumerScriptPath = temporaryDirectory.resolve("consumer.py")
+            consumerScriptPath.toFile().writeText(
+                """
+                    from compiled_module import box
+        
+                    print(box())
+                """.trimIndent()
+            )
 
-            print(box())
-        """.trimIndent())
-
-        val pythonOutput = runPython(consumerScriptPath.toString())
-        temporaryDirectory.toFile().deleteRecursively()
-        return pythonOutput
+            return runPython(consumerScriptPath.toString())
+        } finally {
+            temporaryDirectory.toFile().deleteRecursively()
+        }
     }
 
     private fun runPython(scriptPath: String): String {
