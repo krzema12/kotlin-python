@@ -43,7 +43,7 @@ val testResults = getTestResults(Paths.get("python/box.tests/build/test-results/
 testResults.writeFailedTestsSummary(targetFailedTestsReportPath)
 testResults.writeSummaryTsvToFile(targetBoxTestsReportPath)
 testResults.writeFailureCount(failureCountReportPath)
-//generateGitHistoryPlot(gitHistoryPlotPath)  // todo: resolve OOM
+generateGitHistoryPlot(gitHistoryPlotPath)
 
 fun List<TestResult>.writeFailedTestsSummary(targetFile: Path) = targetFile.toFile().printWriter().use { out ->
     this
