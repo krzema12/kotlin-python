@@ -18,7 +18,6 @@ import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.config.*
 import org.jetbrains.kotlin.idea.KotlinFileType
-import org.jetbrains.kotlin.incremental.js.IncrementalResultsConsumerImpl
 import org.jetbrains.kotlin.ir.backend.js.prepareAnalyzedSourceModule
 import org.jetbrains.kotlin.ir.backend.py.PyCode
 import org.jetbrains.kotlin.ir.backend.py.compile
@@ -26,7 +25,6 @@ import org.jetbrains.kotlin.ir.backend.py.jsPhases
 import org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFactory
 import org.jetbrains.kotlin.js.config.JSConfigurationKeys
 import org.jetbrains.kotlin.js.config.JsConfig
-import org.jetbrains.kotlin.js.config.SourceMapSourceEmbedding
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtNamedFunction
@@ -241,11 +239,7 @@ abstract class BasicIrBoxTest(
 
         configuration.put(CommonConfigurationKeys.MODULE_NAME, module.name.removeSuffix(OLD_MODULE_SUFFIX))
 
-        val hasFilesToRecompile = module.hasFilesToRecompile
         configuration.put(JSConfigurationKeys.META_INFO, multiModule)
-        if (hasFilesToRecompile) {
-            configuration.put(JSConfigurationKeys.INCREMENTAL_RESULTS_CONSUMER, IncrementalResultsConsumerImpl())
-        }
 
         configuration.put(JSConfigurationKeys.GENERATE_REGION_COMMENTS, true)
 
@@ -278,10 +272,6 @@ abstract class BasicIrBoxTest(
                 }
             }
 
-            if (NO_INLINE_PATTERN.matcher(text).find()) {
-                currentModule.inliningDisabled = true
-            }
-
             val temporaryFile = File(tmpDir, "${currentModule.name}/$fileName")
             KtTestUtil.mkdirs(temporaryFile.parentFile)
             temporaryFile.writeText(text, Charsets.UTF_8)
@@ -309,14 +299,9 @@ abstract class BasicIrBoxTest(
             // TODO is that ok?
             currentModule.languageVersionSettings = languageVersionSettings
 
-            SOURCE_MAP_SOURCE_EMBEDDING.find(text)?.let { match ->
-                currentModule.sourceMapSourceEmbedding = SourceMapSourceEmbedding.valueOf(match.groupValues[1])
-            }
-
             return TestFile(
                 temporaryFile.absolutePath,
                 currentModule,
-                recompile = RECOMPILE_PATTERN.matcher(text).find()
             )
         }
 
@@ -329,7 +314,7 @@ abstract class BasicIrBoxTest(
         }
     }
 
-    private class TestFile(val fileName: String, val module: TestModule, val recompile: Boolean) {
+    private class TestFile(val fileName: String, val module: TestModule) {
         init {
             module.files += this
         }
@@ -343,9 +328,6 @@ abstract class BasicIrBoxTest(
         var inliningDisabled = false
         val files = mutableListOf<TestFile>()
         var languageVersionSettings: LanguageVersionSettings? = null
-        var sourceMapSourceEmbedding = SourceMapSourceEmbedding.NEVER
-
-        val hasFilesToRecompile get() = files.any { it.recompile }
     }
 
     override fun createEnvironment() =
@@ -466,9 +448,6 @@ abstract class BasicIrBoxTest(
         private const val COMMON_FILES_DIR = "_commonFiles/"
         const val COMMON_FILES_DIR_PATH = TEST_DATA_DIR_PATH + COMMON_FILES_DIR
 
-        private val NO_INLINE_PATTERN = Pattern.compile("^// *NO_INLINE *$", Pattern.MULTILINE)
-        private val RECOMPILE_PATTERN = Pattern.compile("^// *RECOMPILE *$", Pattern.MULTILINE)
-        private val SOURCE_MAP_SOURCE_EMBEDDING = Regex("^// *SOURCE_MAP_EMBED_SOURCES: ([A-Z]+)*\$", RegexOption.MULTILINE)
         private val KJS_WITH_FULL_RUNTIME = Pattern.compile("^// *KJS_WITH_FULL_RUNTIME *\$", Pattern.MULTILINE)
 
         private const val TEST_MODULE = "JS_TESTS"
