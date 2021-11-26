@@ -1,6 +1,6 @@
 521	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
 421	NameError: name 'js' is not defined
-272	AttributeError: 'Companion_19' object has no attribute 'constructor'
+271	AttributeError: 'Companion_19' object has no attribute 'constructor'
 190	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 170	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 166	NameError: name 'Unexpected_operator_EQ' is not defined
@@ -64,15 +64,16 @@
 6	TypeError: unsupported operand type(s) for +: 'M' and 'int'
 6	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: 1:2;]>
 5	AttributeError: 'NoneType' object has no attribute 'getValue_1kobyo_k_'
-5	AttributeError: 'float' object has no attribute '__and__'
 5	NameError: name 'kotlin_ULong' is not defined
 5	NameError: name 'test_A' is not defined
 5	NameError: name 'test_C' is not defined
 5	TypeError: can only concatenate str (not "NoneType") to str
+5	TypeError: unsupported operand type(s) for &: 'float' and 'int'
 5	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail: None]>
 5	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: None]>
 4	AttributeError: 'Companion_20' object has no attribute 'getO_0_k_'
 4	AttributeError: 'SequenceBuilderIterator' object has no attribute 'constructor'
+4	MemoryError
 4	NameError: name 'Infinity' is not defined
 4	NameError: name 'T' is not defined
 4	NameError: name 'test_S' is not defined
@@ -91,7 +92,6 @@
 3	AttributeError: 'NoneType' object has no attribute 'iterator_0_k_'
 3	AttributeError: 'NoneType' object has no attribute 'string'
 3	AttributeError: 'int' object has no attribute 'toDouble_0_k_'
-3	MemoryError
 3	NameError: name 'Foo_T_' is not defined
 3	NameError: name 'kotlin_Double_' is not defined
 3	NameError: name 'translateCallArguments_1' is not defined
@@ -127,6 +127,7 @@
 2	TypeError: __init__() missing 1 required positional argument: 'ordinal'
 2	TypeError: __init__() takes 2 positional arguments but 4 were given
 2	TypeError: bad operand type for unary +: 'str'
+2	TypeError: unsupported operand type(s) for +: 'Test' and 'int'
 2	UnboundLocalError: local variable 'invokeOnA' referenced before assignment
 2	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: Pair (6,36) in <path-truncated>
 2	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: fail (132,9) in <path-truncated>
@@ -201,11 +202,9 @@
 1	AttributeError: 'NoneType' object has no attribute 'x'
 1	AttributeError: 'NotEmptyList' object has no attribute 'constructor'
 1	AttributeError: 'Scope' object has no attribute 'test_sv8swh_k_'
-1	AttributeError: 'Test' object has no attribute '__add__'
 1	AttributeError: 'Test' object has no attribute 'constructor'
 1	AttributeError: 'UIntArray' object has no attribute 'intArray'
 1	AttributeError: 'Y' object has no attribute 'constructor'
-1	AttributeError: 'Z' object has no attribute '__add__'
 1	AttributeError: 'Z' object has no attribute 'constructor'
 1	AttributeError: 'Z2' object has no attribute 'p'
 1	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
@@ -264,8 +263,8 @@
 1	TypeError: test_1() takes 1 positional argument but 4 were given
 1	TypeError: unsupported operand type(s) for +: 'ExtProvider' and 'int'
 1	TypeError: unsupported operand type(s) for +: 'Outer' and 'str'
-1	TypeError: unsupported operand type(s) for +: 'Test' and 'int'
 1	TypeError: unsupported operand type(s) for +: 'X' and 'str'
+1	TypeError: unsupported operand type(s) for +: 'Z' and 'int'
 1	UnboundLocalError: local variable 'call' referenced before assignment
 1	UnboundLocalError: local variable 'changeObject' referenced before assignment
 1	UnboundLocalError: local variable 'nullableK' referenced before assignment

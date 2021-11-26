@@ -40,10 +40,10 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ar
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testArgumentOrderInSuperCall	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'NoneType'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testArguments	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testCaptured	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testCapturedInExtension	Failed	PythonExecution	AttributeError: 'float' object has no attribute '__and__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testCapturedInExtension	Failed	PythonExecution	TypeError: unsupported operand type(s) for &: 'float' and 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testDefaults	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testExtension	Failed	PythonExecution	AttributeError: 'float' object has no attribute '__and__'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testExtensionInClass	Failed	PythonExecution	AttributeError: 'Z' object has no attribute '__add__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testExtension	Failed	PythonExecution	TypeError: unsupported operand type(s) for &: 'float' and 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testExtensionInClass	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'Z' and 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testKt17691WithEnabledFeature	Failed	KotlinCompilation	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testKt9277	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testLambdaMigration	Succeeded		
@@ -1147,7 +1147,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$TryCatchInExpressions.testTryInsideCatch	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$TryCatchInExpressions.testTryInsideTry	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$TryCatchInExpressions.testUnmatchedInlineMarkers	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines.test32defaultParametersInSuspend	Failed	PythonExecution	AttributeError: 'Companion_19' object has no attribute 'constructor'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines.test32defaultParametersInSuspend	Failed	PythonExecution	MemoryError
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines.testAccessorForSuspend	Failed	PythonExecution	AttributeError: 'Companion_19' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines.testAllFilesPresentInCoroutines	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines.testAsyncIteratorNullMerge_1_3	Failed	PythonExecution	AttributeError: 'Companion_19' object has no attribute 'constructor'
@@ -3059,7 +3059,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ma
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Mangling.testPublicOverrideSuperCall	Failed	PythonExecution	RecursionError: maximum recursion depth exceeded
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$MixedNamedPosition.testAllFilesPresentInMixedNamedPosition	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$MixedNamedPosition.testDefaults	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$MixedNamedPosition.testSimple	Failed	PythonExecution	AttributeError: 'float' object has no attribute '__and__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$MixedNamedPosition.testSimple	Failed	PythonExecution	TypeError: unsupported operand type(s) for &: 'float' and 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$MixedNamedPosition.testVarargs	Failed	KotlinCompilation	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$MixedNamedPosition.testVarargsEvaluationOrder	Failed	KotlinCompilation	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$MultiDecl.testAllFilesPresentInMultiDecl	Succeeded		
@@ -3554,7 +3554,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt4340	Failed	PythonExecution	NameError: name 'kotlin_Double' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt4373	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt4383	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetFieldImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt613	Failed	PythonExecution	AttributeError: 'Test' object has no attribute '__add__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt613	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'Test' and 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt8928	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt9603	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitialization	Failed	PythonExecution	SyntaxError: name 'properties_initialized_DeepRecursive_kt' is used prior to global declaration
@@ -5337,7 +5337,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference.testKt35101	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference.testPropertyIntrinsic	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference.testPropertyReference	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference.testTopLevel	Failed	PythonExecution	AttributeError: 'float' object has no attribute '__and__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference.testTopLevel	Failed	PythonExecution	TypeError: unsupported operand type(s) for &: 'float' and 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference.testTopLevelExtension	Failed	PythonExecution	NameError: name 'kotlin_Double' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference.testTopLevelProperty	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$AdaptedReferences.testAllFilesPresentInAdaptedReferences	Succeeded		
@@ -5616,7 +5616,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns.testNestedNonLocals	Failed	PythonExecution	UnboundLocalError: local variable 'test1' referenced before assignment
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns.testNoInlineLocalReturn	Failed	PythonExecution	UnboundLocalError: local variable 'test1' referenced before assignment
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns.testNonLocalReturnFromOuterLambda	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns.testPropertyAccessors	Failed	PythonExecution	AttributeError: 'float' object has no attribute '__and__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns.testPropertyAccessors	Failed	PythonExecution	TypeError: unsupported operand type(s) for &: 'float' and 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns.testReturnFromFunctionExpr	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns.testSimple	Failed	PythonExecution	UnboundLocalError: local variable 'test1' referenced before assignment
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NonLocalReturns.testSimpleFunctional	Failed	PythonExecution	UnboundLocalError: local variable 'test1' referenced before assignment
