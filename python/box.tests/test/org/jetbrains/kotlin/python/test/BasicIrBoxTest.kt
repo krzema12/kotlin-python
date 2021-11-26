@@ -51,19 +51,10 @@ class KotlinCompilationException(override val message: String, override val caus
 abstract class BasicIrBoxTest(
     private val pathToTestDir: String,
     testGroupOutputDirPrefix: String,
-    pathToRootOutputDir: String = TEST_DATA_DIR_PATH,
 ) : KotlinTestWithEnvironment() {
-    private val pythonBackend = TargetBackend.PYTHON
-
-    private val testGroupOutputDirForCompilation = File(pathToRootOutputDir + "out/" + testGroupOutputDirPrefix)
-
-    private val compilationCache = mutableMapOf<String, String>()
-
-    private val cachedDependencies = mutableMapOf<String, Collection<String>>()
+    private val testGroupOutputDirForCompilation = File(TEST_DATA_DIR_PATH + "out/" + testGroupOutputDirPrefix)
 
     protected fun doTest(filePath: String) {
-        compilationCache.clear()
-        cachedDependencies.clear()
         val file = File(filePath)
         val outputDir = getOutputDir(file)
         val fileContent = KtTestUtil.doLoadFile(file)
@@ -120,30 +111,17 @@ abstract class BasicIrBoxTest(
                 "More than one generated python file is unsupported yet"
             }
 
-            val skipRunningGeneratedCode = InTextDirectivesUtils.dontRunGeneratedCode(pythonBackend, file)
-
-            if (!skipRunningGeneratedCode) {
-                runGeneratedCode(generatedPyFilePath)
-            } else {
-                val ignored = InTextDirectivesUtils.isIgnoredTarget(
-                    pythonBackend, file,
-                    InTextDirectivesUtils.IGNORE_BACKEND_DIRECTIVE_PREFIX
-                )
-
-                if (ignored) {
-                    throw AssertionError("Ignored test hasn't been ran. Emulate its failing")
-                }
-            }
+            runGeneratedCode(generatedPyFilePath)
         }
     }
 
-    private fun getOutputDir(file: File, testGroupOutputDir: File = testGroupOutputDirForCompilation): File {
+    private fun getOutputDir(file: File): File {
         val stopFile = File(pathToTestDir)
         return generateSequence(file.parentFile) { it.parentFile }
             .takeWhile { it != stopFile }
             .map { it.name }
             .toList().asReversed()
-            .fold(testGroupOutputDir, ::File)
+            .fold(testGroupOutputDirForCompilation, ::File)
     }
 
     private fun outputFileSimpleName(): String {
@@ -323,14 +301,7 @@ abstract class BasicIrBoxTest(
         isMainModule: Boolean,
     ) {
         val filesToCompile = units.map { (it as TranslationUnit.SourceFile).file }
-
-        val runtimeKlibs = if (needsFullIrRuntime) listOf(fullRuntimeKlib, kotlinTestKLib) else listOf(defaultRuntimeKlib)
-
-        val transitiveLibraries = config.configuration[JSConfigurationKeys.TRANSITIVE_LIBRARIES]!!.map { File(it).name }
-
-        val allKlibPaths = (runtimeKlibs + transitiveLibraries.map {
-            compilationCache[it] ?: error("Can't find compiled module for dependency $it")
-        }).map { File(it).absolutePath }
+        val allKlibPaths = if (needsFullIrRuntime) listOf(fullRuntimeKlib, kotlinTestKLib) else listOf(defaultRuntimeKlib)
 
         if (isMainModule) {
             val phaseConfig = PhaseConfig(jsPhases)
@@ -382,8 +353,6 @@ abstract class BasicIrBoxTest(
             dependencyPaths += dependencyPath
             File(dependencyPath).write(code)
         }
-
-        cachedDependencies[outputFile.absolutePath] = dependencyPaths
     }
 
     private fun File.write(text: String) {
