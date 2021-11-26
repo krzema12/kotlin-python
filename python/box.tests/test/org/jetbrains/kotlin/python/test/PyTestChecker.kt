@@ -19,15 +19,13 @@ object PythonTestChecker {
 
     const val EXPECTED_RESULT = "OK"
 
-    fun check(files: List<String>) {
-        val actualResult = run(files)
+    fun check(generatedPyFilePath: String) {
+        val actualResult = run(generatedPyFilePath)
         assertEquals(EXPECTED_RESULT, actualResult)
     }
 
-    private fun run(files: List<String>): Any {
-        assert(files.size == 1) { "For now the test checker supports a single output from the compiler!" }
-        val fileToRun = files[0]
-        val pathToFileToRun = Paths.get(fileToRun)
+    private fun run(generatedPyFilePath: String): Any {
+        val pathToFileToRun = Paths.get(generatedPyFilePath)
 
         val temporaryDirectory = Files.createTempDirectory(pathToFileToRun.parent, pathToFileToRun.fileName.toString())
         Files.copy(pathToFileToRun, temporaryDirectory.resolve("compiled_module.py"))

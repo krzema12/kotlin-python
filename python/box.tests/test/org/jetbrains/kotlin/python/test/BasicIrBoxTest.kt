@@ -10,7 +10,6 @@ import com.intellij.openapi.vfs.StandardFileSystems
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.psi.PsiManager
 import org.jetbrains.kotlin.backend.common.phaser.PhaseConfig
-import org.jetbrains.kotlin.backend.common.phaser.toPhaseMap
 import org.jetbrains.kotlin.checkers.CompilerTestLanguageVersionSettings
 import org.jetbrains.kotlin.checkers.parseLanguageVersionSettings
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
@@ -41,7 +40,6 @@ import org.jetbrains.kotlin.utils.KotlinJavascriptMetadataUtils
 import org.jetbrains.kotlin.utils.addToStdlib.measureTimeMillisWithResult
 import java.io.Closeable
 import java.io.File
-import java.lang.Boolean.getBoolean
 import java.util.regex.Pattern
 
 private val fullRuntimeKlib: String = System.getProperty("kotlin.js.full.stdlib.path")
@@ -88,13 +86,7 @@ abstract class BasicIrBoxTest(
             val orderedModules = DFS.topologicalOrder(modules.values) { module -> module.dependenciesSymbols.mapNotNull { modules[it] } }
 
             val testPackage = testFactory.testPackage
-
-            val testFunction = TEST_FUNCTION
-
-            val mainModuleName = when {
-                TEST_MODULE in modules -> TEST_MODULE
-                else -> DEFAULT_MODULE
-            }
+            val mainModuleName = DEFAULT_MODULE
 
             val generatedPyFiles = orderedModules.asReversed().mapNotNull { module ->
                 val dependencies = module.dependenciesSymbols.map { outputFileName(outputDir) + ".meta.py" }
@@ -113,35 +105,25 @@ abstract class BasicIrBoxTest(
                     friends,
                     modules.size > 1,
                     testPackage,
-                    testFunction,
                     needsFullIrRuntime,
                     isMainModule,
                 )
 
                 when {
-                    module.name.endsWith(OLD_MODULE_SUFFIX) -> null
-                    // JS_IR generates single js file for all modules (apart from runtime).
-                    // TODO: Split and refactor test runner for JS_IR
+                    // PY_IR generates single js file for all modules (apart from runtime)
                     !isMainModule -> null
-                    else -> outputFileName to module
+                    else -> outputFileName
                 }
             }
 
-            val inputPyFiles = inputFiles
-                .filter { it.fileName.endsWith(".py") }
-                .map { inputPyFile ->
-                    val sourceFile = File(inputPyFile.fileName)
-                    val targetFile = File(outputDir, outputFileSimpleName() + "-py-" + sourceFile.name)
-                    FileUtil.copy(File(inputPyFile.fileName), targetFile)
-                    targetFile.absolutePath
-                }
-
-            val allPyFiles = inputPyFiles + generatedPyFiles.map { (outputFileName, _) -> outputFileName }
+            val generatedPyFilePath = checkNotNull(generatedPyFiles.singleOrNull()) {
+                "More than one generated python file is unsupported yet"
+            }
 
             val skipRunningGeneratedCode = InTextDirectivesUtils.dontRunGeneratedCode(pythonBackend, file)
 
             if (!skipRunningGeneratedCode) {
-                runGeneratedCode(allPyFiles)
+                runGeneratedCode(generatedPyFilePath)
             } else {
                 val ignored = InTextDirectivesUtils.isIgnoredTarget(
                     pythonBackend, file,
@@ -180,7 +162,6 @@ abstract class BasicIrBoxTest(
         friends: List<String>,
         multiModule: Boolean,
         testPackage: String?,
-        testFunction: String,
         needsFullIrRuntime: Boolean,
         isMainModule: Boolean,
     ) {
@@ -205,7 +186,7 @@ abstract class BasicIrBoxTest(
 
         translateFiles(
             psiFiles.map(TranslationUnit::SourceFile), outputFile, config,
-            testPackage, testFunction, needsFullIrRuntime, isMainModule,
+            testPackage, needsFullIrRuntime, isMainModule,
         )
     }
 
@@ -213,7 +194,7 @@ abstract class BasicIrBoxTest(
         val psiManager = PsiManager.getInstance(project)
         val fileSystem = VirtualFileManager.getInstance().getFileSystem(StandardFileSystems.FILE_PROTOCOL)
 
-        val file = fileSystem.findFileByPath(fileName) ?: error("File not found: ${fileName}")
+        val file = fileSystem.findFileByPath(fileName) ?: error("File not found: $fileName")
 
         return psiManager.findFile(file) as KtFile
     }
@@ -237,7 +218,7 @@ abstract class BasicIrBoxTest(
         configuration.put(JSConfigurationKeys.TRANSITIVE_LIBRARIES, allDependencies)
         configuration.put(JSConfigurationKeys.FRIEND_PATHS, friends)
 
-        configuration.put(CommonConfigurationKeys.MODULE_NAME, module.name.removeSuffix(OLD_MODULE_SUFFIX))
+        configuration.put(CommonConfigurationKeys.MODULE_NAME, module.name)
 
         configuration.put(JSConfigurationKeys.META_INFO, multiModule)
 
@@ -257,7 +238,7 @@ abstract class BasicIrBoxTest(
     private inner class TestFileFactoryImpl : TestFiles.TestFileFactory<TestModule, TestFile>, Closeable {
         var testPackage: String? = null
         val tmpDir = KtTestUtil.tmpDir("js-tests")
-        val defaultModule = TestModule(TEST_MODULE, emptyList(), emptyList())
+        val defaultModule = TestModule(DEFAULT_MODULE, emptyList(), emptyList())
         var languageVersionSettings: LanguageVersionSettings? = null
 
         override fun createFile(module: TestModule?, fileName: String, text: String, directives: Directives): TestFile {
@@ -324,7 +305,7 @@ abstract class BasicIrBoxTest(
         name: String,
         dependencies: List<String>,
         friends: List<String>,
-    ): KotlinBaseTest.TestModule(name, dependencies, friends) {
+    ) : KotlinBaseTest.TestModule(name, dependencies, friends) {
         var inliningDisabled = false
         val files = mutableListOf<TestFile>()
         var languageVersionSettings: LanguageVersionSettings? = null
@@ -338,7 +319,6 @@ abstract class BasicIrBoxTest(
         outputFile: File,
         config: JsConfig,
         testPackage: String?,
-        testFunction: String,
         needsFullIrRuntime: Boolean,
         isMainModule: Boolean,
     ) {
@@ -353,22 +333,7 @@ abstract class BasicIrBoxTest(
         }).map { File(it).absolutePath }
 
         if (isMainModule) {
-            val debugMode = getBoolean("kotlin.py.debugMode")
-
-            val phaseConfig = if (debugMode) {
-                val allPhasesSet = jsPhases.toPhaseMap().values.toSet()
-                val dumpOutputDir = File(outputFile.parent, outputFile.nameWithoutExtension + "-irdump")
-                println("\n ------ Dumping phases to file://$dumpOutputDir")
-                PhaseConfig(
-                    jsPhases,
-                    dumpToDirectory = dumpOutputDir.path,
-                    toDumpStateAfter = allPhasesSet,
-                    toValidateStateAfter = allPhasesSet,
-                    dumpOnlyFqName = null
-                )
-            } else {
-                PhaseConfig(jsPhases)
-            }
+            val phaseConfig = PhaseConfig(jsPhases)
 
             val module = prepareAnalyzedSourceModule(
                 config.project,
@@ -386,7 +351,7 @@ abstract class BasicIrBoxTest(
                         module,
                         phaseConfig = phaseConfig,
                         irFactory = PersistentIrFactory(),
-                        exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, testFunction))),
+                        exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, TEST_FUNCTION))),
                         verifySignatures = true,
                     )
                 } catch (e: Throwable) {
@@ -426,12 +391,8 @@ abstract class BasicIrBoxTest(
         writeText(text)
     }
 
-    private fun runGeneratedCode(jsFiles: List<String>) {
-        // TODO: should we do anything special for module systems?
-        // TODO: return list of js from translateFiles and provide then to this function with other js files
-
-        val allFiles = jsFiles.flatMap { file -> cachedDependencies[File(file).absolutePath]?.let { deps -> deps + file } ?: listOf(file) }
-        PythonTestChecker.check(allFiles)
+    private fun runGeneratedCode(generatedPyFilePath: String) {
+        PythonTestChecker.check(generatedPyFilePath)
     }
 
     companion object {
@@ -450,9 +411,7 @@ abstract class BasicIrBoxTest(
 
         private val KJS_WITH_FULL_RUNTIME = Pattern.compile("^// *KJS_WITH_FULL_RUNTIME *\$", Pattern.MULTILINE)
 
-        private const val TEST_MODULE = "JS_TESTS"
         private const val DEFAULT_MODULE = "main"
         private const val TEST_FUNCTION = "box"
-        private const val OLD_MODULE_SUFFIX = "-old"
     }
 }
