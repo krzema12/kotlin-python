@@ -72,26 +72,18 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
 
             binOp(intrinsics.jsBitShiftR, RShift)
 
-            fun simulateOverflow(expr: expr, overSigned: String, maxUnsigned: String): expr = Call(
-                func = Attribute(
-                    value = Call(
-                        func = Attribute(
-                            value = Call(
-                                func = Attribute(expr, identifier("__add__"), Load),
-                                args = listOf(Constant(constant(overSigned), null)),
-                                keywords = emptyList(),
-                            ),
-                            attr = identifier("__and__"),
-                            ctx = Load,
-                        ),
-                        args = listOf(Constant(constant(maxUnsigned), null)),
-                        keywords = emptyList(),
+            fun simulateOverflow(expr: expr, overSigned: String, maxUnsigned: String): expr = BinOp(
+                left = BinOp(
+                    left = BinOp(
+                        left = expr,
+                        op = Add,
+                        right = Constant(constant(overSigned), null),
                     ),
-                    attr = identifier("__sub__"),
-                    ctx = Load,
+                    op = BitAnd,
+                    right = Constant(constant(maxUnsigned), null),
                 ),
-                args = listOf(Constant(constant(overSigned), null)),
-                keywords = emptyList(),
+                op = Sub,
+                right = Constant(constant(overSigned), null),
             )
 
             fun String.hex() = "0x${this.reversed().chunked(4).joinToString("_").reversed()}"

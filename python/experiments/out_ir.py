@@ -5,7 +5,7 @@ def fold(self, initial, operation):
     last = len(indexedObject)
     while inductionVariable < last:
         element = indexedObject[inductionVariable]
-        inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         accumulator = operation(accumulator, element)
     
     return accumulator
@@ -15,11 +15,11 @@ def contains(self, element):
 
 def indexOf(self, element):
     inductionVariable = 0
-    last = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    last = (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
         while True:
             index = inductionVariable
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             if element == self[index]:
                 return index
             
@@ -34,18 +34,18 @@ def _get_indices_(self):
     return IntRange(0, _get_lastIndex_(self))
 
 def _get_lastIndex_(self):
-    return (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    return (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
 
 def contains_0(self, element):
     return indexOf_0(self, element) >= 0
 
 def indexOf_0(self, element):
     inductionVariable = 0
-    last = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    last = (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
         while True:
             index = inductionVariable
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             if element == self[index]:
                 return index
             
@@ -60,18 +60,18 @@ def _get_indices__0(self):
     return IntRange(0, _get_lastIndex__0(self))
 
 def _get_lastIndex__0(self):
-    return (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    return (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
 
 def contains_1(self, element):
     return indexOf_1(self, element) >= 0
 
 def indexOf_1(self, element):
     inductionVariable = 0
-    last = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    last = (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
         while True:
             index = inductionVariable
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             if element == self[index]:
                 return index
             
@@ -86,18 +86,18 @@ def _get_indices__1(self):
     return IntRange(0, _get_lastIndex__1(self))
 
 def _get_lastIndex__1(self):
-    return (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    return (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
 
 def contains_2(self, element):
     return indexOf_2(self, element) >= 0
 
 def indexOf_2(self, element):
     inductionVariable = 0
-    last = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    last = (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
         while True:
             index = inductionVariable
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             if element == self[index]:
                 return index
             
@@ -112,7 +112,7 @@ def _get_indices__2(self):
     return IntRange(0, _get_lastIndex__2(self))
 
 def _get_lastIndex__2(self):
-    return (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    return (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
 
 def _get_indices__3(self):
     return IntRange(0, _get_lastIndex__3(self))
@@ -120,11 +120,11 @@ def _get_indices__3(self):
 def indexOf_3(self, element):
     if element == None:
         inductionVariable = 0
-        last = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        last = (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         if inductionVariable <= last:
             while True:
                 index = inductionVariable
-                inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 if self[index] == None:
                     return index
                 
@@ -135,11 +135,11 @@ def indexOf_3(self, element):
         
     else:
         inductionVariable = 0
-        last = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        last = (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         if inductionVariable <= last:
             while True:
                 index = inductionVariable
-                inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 if element == self[index]:
                     return index
                 
@@ -153,11 +153,11 @@ def indexOf_3(self, element):
 
 def lastIndexOf(self, element):
     if element == None:
-        inductionVariable = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        inductionVariable = (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         if 0 <= inductionVariable:
             while True:
                 index = inductionVariable
-                inductionVariable = (inductionVariable + -1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                inductionVariable = (((inductionVariable + -1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 if self[index] == None:
                     return index
                 
@@ -167,11 +167,11 @@ def lastIndexOf(self, element):
             
         
     else:
-        inductionVariable = (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        inductionVariable = (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         if 0 <= inductionVariable:
             while True:
                 index = inductionVariable
-                inductionVariable = (inductionVariable + -1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                inductionVariable = (((inductionVariable + -1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 if element == self[index]:
                     return index
                 
@@ -184,7 +184,7 @@ def lastIndexOf(self, element):
     return -1
 
 def _get_lastIndex__3(self):
-    return (len(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    return (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
 
 def joinToString(self, separator, prefix, postfix, limit, truncated, transform):
     return joinTo(self, StringBuilder_init__Create__1(), separator, prefix, postfix, limit, truncated, transform).toString()
@@ -219,8 +219,8 @@ def joinTo(self, buffer, separator, prefix, postfix, limit, truncated, transform
     last = len(indexedObject)
     while inductionVariable < last:
         element = indexedObject[inductionVariable]
-        inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-        count = (count + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+        count = (((count + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         if count > 1:
             buffer.append_v1o70a_k_(separator)
             Unit_getInstance()
@@ -287,7 +287,7 @@ def indexOfFirst(self, predicate):
             return index
         
         tmp1 = index
-        index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         Unit_getInstance()
     
     return -1
@@ -350,7 +350,7 @@ def joinTo_0(self, buffer, separator, prefix, postfix, limit, truncated, transfo
     tmp0_iterator = self.iterator_0_k_()
     while tmp0_iterator.hasNext_0_k_():
         element = tmp0_iterator.next_0_k_()
-        count = (count + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        count = (((count + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         if count > 1:
             buffer.append_v1o70a_k_(separator)
             Unit_getInstance()
@@ -420,13 +420,13 @@ def until(self, to):
     if to <= IntCompanionObject_getInstance().MIN_VALUE:
         return Companion_getInstance_14().EMPTY
     
-    return numberRangeToNumber(self, (to - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return numberRangeToNumber(self, (((to - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def downTo(self, to):
     return Companion_getInstance_11().fromClosedRange_fcwjfj_k_(self, to, -1)
 
 def reversed(self):
-    return Companion_getInstance_11().fromClosedRange_fcwjfj_k_(self.last, self.first, (-self.step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return Companion_getInstance_11().fromClosedRange_fcwjfj_k_(self.last, self.first, ((-self.step + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def getOrElse(self, index, defaultValue):
     return (charSequenceGet(self, index)) if ((index <= _get_lastIndex__5(self)) if (index >= 0) else (False)) else (defaultValue(index))
@@ -876,11 +876,11 @@ class SubList(AbstractList, RandomAccess):
         self.fromIndex = fromIndex
         self._size = 0
         Companion_getInstance().checkRangeIndexes_zd700_k_(self.fromIndex, toIndex, self.list._get_size__0_k_())
-        self._size = (toIndex - self.fromIndex).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        self._size = (((toIndex - self.fromIndex) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     
     def get_ha5a7z_k_(self, index):
         Companion_getInstance().checkElementIndex_rvwcgf_k_(index, self._size)
-        return self.list.get_ha5a7z_k_((self.fromIndex + index).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        return self.list.get_ha5a7z_k_((((self.fromIndex + index) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     
     def _get_size__0_k_(self):
         return self._size
@@ -951,7 +951,7 @@ class IteratorImpl(Iterator_3):
         
         tmp0_this = self
         tmp1 = tmp0_this.index
-        tmp0_this.index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        tmp0_this.index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         return self._this.get_ha5a7z_k_(tmp1)
     
     def equals(self, other):
@@ -985,11 +985,11 @@ class ListIteratorImpl(IteratorImpl, ListIterator):
             raise NoSuchElementException_init__Create_()
         
         tmp0_this = self
-        tmp0_this._set_index__majfzk_k_((tmp0_this._get_index__0_k_() - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp0_this._set_index__majfzk_k_((((tmp0_this._get_index__0_k_() - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
         return self._this.get_ha5a7z_k_(tmp0_this._get_index__0_k_())
     
     def previousIndex_0_k_(self):
-        return (self._get_index__0_k_() - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        return (((self._get_index__0_k_() - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     
     def _set_index__majfzk_k_(self, _set___):
         pass
@@ -1055,7 +1055,7 @@ class Companion_0(Any):
             tmp = imul(31, hashCode)
             tmp1_safe_receiver = e
             tmp2_elvis_lhs = (None) if (tmp1_safe_receiver == None) else (hashCode(tmp1_safe_receiver))
-            hashCode = (tmp + ((0) if (tmp2_elvis_lhs == None) else (tmp2_elvis_lhs))).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            hashCode = (((tmp + ((0) if (tmp2_elvis_lhs == None) else (tmp2_elvis_lhs))) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         
         return hashCode
     
@@ -1119,7 +1119,7 @@ class AbstractList(AbstractCollection, List):
                     break
                 
                 tmp1_4 = index_1
-                index_1 = (tmp1_4 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                index_1 = (((tmp1_4 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 Unit_getInstance()
             
             tmp_ret_0 = -1
@@ -1345,7 +1345,7 @@ def EmptyIterator_getInstance():
     return EmptyIterator_instance
 
 def _get_lastIndex__4(self):
-    return (self._get_size__0_k_() - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    return (((self._get_size__0_k_() - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
 
 def collectionSizeOrDefault(self, default):
     if isInterface(self, Collection):
@@ -1371,7 +1371,7 @@ def filterInPlace(self, predicate, predicateResultToRemove):
     if inductionVariable <= last:
         while True:
             readIndex = inductionVariable
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             element = self.get_ha5a7z_k_(readIndex)
             if predicate(element) == predicateResultToRemove:
                 continue
@@ -1381,7 +1381,7 @@ def filterInPlace(self, predicate, predicateResultToRemove):
                 Unit_getInstance()
             
             tmp1 = writeIndex
-            writeIndex = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            writeIndex = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             Unit_getInstance()
             if not (readIndex == last):
                 break
@@ -1393,7 +1393,7 @@ def filterInPlace(self, predicate, predicateResultToRemove):
         if writeIndex <= inductionVariable:
             while True:
                 removeIndex = inductionVariable
-                inductionVariable = (inductionVariable + -1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                inductionVariable = (((inductionVariable + -1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 self.removeAt_ha5a7z_k_(removeIndex)
                 Unit_getInstance()
                 if not (removeIndex == writeIndex):
@@ -1959,7 +1959,7 @@ def readResolve_1(_this):
     last = len(indexedObject)
     while inductionVariable < last:
         element_3 = indexedObject[inductionVariable]
-        inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         accumulator_1 = accumulator_1.plus_d7pszg_k_(element_3)
     
     return accumulator_1
@@ -1983,7 +1983,7 @@ def size(_this):
         
         cur = tmp
         tmp1 = size
-        size = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        size = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         Unit_getInstance()
     
 
@@ -2010,7 +2010,7 @@ def writeReplace(_this):
     index = {'_v': 0}
     def complexFunction_x3__Assign__Expr__Expr__0(_anonymous_parameter_0_, element):
         tmp0 = index['_v']
-        index.__setitem__('_v', (tmp0 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        index.__setitem__('_v', (((tmp0 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
         elements.__setitem__(tmp0, element)
     
     _this.fold_cq605b_k_(Unit_getInstance(), complexFunction_x3__Assign__Expr__Expr__0)
@@ -2095,7 +2095,7 @@ class CombinedContext(CoroutineContext, Serializable):
         return tmp
     
     def hashCode(self):
-        return (hashCode(self.left) + hashCode(self.element)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        return (((hashCode(self.left) + hashCode(self.element)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     
     def toString(self):
         def complexFunction_x2__If__Return__0(acc, element):
@@ -2213,28 +2213,28 @@ def CoroutineSingletons_RESUMED_getInstance():
     return CoroutineSingletons_RESUMED_instance
 
 def _and(self, other):
-    return (self & other).__add__(0x8000).__and__(0xffff).__sub__(0x8000)
+    return (((self & other) + 0x8000) & 0xffff) - 0x8000
 
 def _or(self, other):
-    return (self | other).__add__(0x8000).__and__(0xffff).__sub__(0x8000)
+    return (((self | other) + 0x8000) & 0xffff) - 0x8000
 
 def xor(self, other):
-    return (self ^ other).__add__(0x8000).__and__(0xffff).__sub__(0x8000)
+    return (((self ^ other) + 0x8000) & 0xffff) - 0x8000
 
 def inv(self):
-    return (~self).__add__(0x8000).__and__(0xffff).__sub__(0x8000)
+    return ((~self + 0x8000) & 0xffff) - 0x8000
 
 def and_0(self, other):
-    return (self & other).__add__(0x80).__and__(0xff).__sub__(0x80)
+    return (((self & other) + 0x80) & 0xff) - 0x80
 
 def or_0(self, other):
-    return (self | other).__add__(0x80).__and__(0xff).__sub__(0x80)
+    return (((self | other) + 0x80) & 0xff) - 0x80
 
 def xor_0(self, other):
-    return (self ^ other).__add__(0x80).__and__(0xff).__sub__(0x80)
+    return (((self ^ other) + 0x80) & 0xff) - 0x80
 
 def inv_0(self):
-    return (~self).__add__(0x80).__and__(0xff).__sub__(0x80)
+    return ((~self + 0x80) & 0xff) - 0x80
 
 class ExperimentalTypeInference(Annotation):
     def __init__(self):
@@ -2580,7 +2580,7 @@ class KTypeProjection(Any):
     
     def hashCode(self):
         result = (0) if (self.variance == None) else (self.variance.hashCode())
-        result = (imul(result, 31) + ((0) if (self.type == None) else (hashCode(self.type)))).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        result = (((imul(result, 31) + ((0) if (self.type == None) else (hashCode(self.type)))) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         return result
     
     def equals(self, other):
@@ -2683,7 +2683,7 @@ def isEmpty(self):
     return charSequenceLength(self) == 0
 
 def _get_lastIndex__5(self):
-    return (charSequenceLength(self) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    return (((charSequenceLength(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
 
 def _get_UNDEFINED_RESULT_():
     return UNDEFINED_RESULT
@@ -2902,7 +2902,7 @@ def repeat(times, action):
     if inductionVariable < times:
         while True:
             index = inductionVariable
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             action(index)
             if inductionVariable < times:
                 break
@@ -2981,44 +2981,44 @@ def UByte__compareTo_impl_2(this, other):
     return uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(other))
 
 def UByte__compareTo_impl_3(this, other):
-    tmp0_compareTo_0 = _ULong___init__impl_((_UByte___get_data__impl_(this) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_compareTo_0 = _ULong___init__impl_((((_UByte___get_data__impl_(this) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other))
 
 def UByte__plus_impl(this, other):
     tmp0_plus_0 = _UInt___init__impl_(_UByte___get_data__impl_(this) & 255)
     tmp1_plus_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255)
-    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UByte__plus_impl_0(this, other):
     tmp0_plus_0 = _UInt___init__impl_(_UByte___get_data__impl_(this) & 255)
     tmp1_plus_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535)
-    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UByte__plus_impl_1(this, other):
     tmp0_plus_0 = _UInt___init__impl_(_UByte___get_data__impl_(this) & 255)
-    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(other)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(other)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UByte__plus_impl_2(this, other):
-    tmp0_plus_0 = _ULong___init__impl_((_UByte___get_data__impl_(this) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(tmp0_plus_0) + _ULong___get_data__impl_(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_plus_0 = _ULong___init__impl_((((_UByte___get_data__impl_(this) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(tmp0_plus_0) + _ULong___get_data__impl_(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def UByte__minus_impl(this, other):
     tmp0_minus_0 = _UInt___init__impl_(_UByte___get_data__impl_(this) & 255)
     tmp1_minus_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255)
-    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UByte__minus_impl_0(this, other):
     tmp0_minus_0 = _UInt___init__impl_(_UByte___get_data__impl_(this) & 255)
     tmp1_minus_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535)
-    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UByte__minus_impl_1(this, other):
     tmp0_minus_0 = _UInt___init__impl_(_UByte___get_data__impl_(this) & 255)
-    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(other)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(other)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UByte__minus_impl_2(this, other):
-    tmp0_minus_0 = _ULong___init__impl_((_UByte___get_data__impl_(this) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(tmp0_minus_0) - _ULong___get_data__impl_(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_minus_0 = _ULong___init__impl_((((_UByte___get_data__impl_(this) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(tmp0_minus_0) - _ULong___get_data__impl_(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def UByte__times_impl(this, other):
     tmp0_times_0 = _UInt___init__impl_(_UByte___get_data__impl_(this) & 255)
@@ -3035,8 +3035,8 @@ def UByte__times_impl_1(this, other):
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(other)))
 
 def UByte__times_impl_2(this, other):
-    tmp0_times_0 = _ULong___init__impl_((_UByte___get_data__impl_(this) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(tmp0_times_0) * _ULong___get_data__impl_(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_times_0 = _ULong___init__impl_((((_UByte___get_data__impl_(this) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(tmp0_times_0) * _ULong___get_data__impl_(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def UByte__div_impl(this, other):
     tmp0_div_0 = _UInt___init__impl_(_UByte___get_data__impl_(this) & 255)
@@ -3053,7 +3053,7 @@ def UByte__div_impl_1(this, other):
     return uintDivide(tmp0_div_0, other)
 
 def UByte__div_impl_2(this, other):
-    tmp0_div_0 = _ULong___init__impl_((_UByte___get_data__impl_(this) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_div_0 = _ULong___init__impl_((((_UByte___get_data__impl_(this) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongDivide(tmp0_div_0, other)
 
 def UByte__rem_impl(this, other):
@@ -3071,7 +3071,7 @@ def UByte__rem_impl_1(this, other):
     return uintRemainder(tmp0_rem_0, other)
 
 def UByte__rem_impl_2(this, other):
-    tmp0_rem_0 = _ULong___init__impl_((_UByte___get_data__impl_(this) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_rem_0 = _ULong___init__impl_((((_UByte___get_data__impl_(this) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongRemainder(tmp0_rem_0, other)
 
 def UByte__floorDiv_impl(this, other):
@@ -3089,7 +3089,7 @@ def UByte__floorDiv_impl_1(this, other):
     return uintDivide(tmp0_floorDiv_0, other)
 
 def UByte__floorDiv_impl_2(this, other):
-    tmp0_floorDiv_0 = _ULong___init__impl_((_UByte___get_data__impl_(this) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_floorDiv_0 = _ULong___init__impl_((((_UByte___get_data__impl_(this) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongDivide(tmp0_floorDiv_0, other)
 
 def UByte__mod_impl(this, other):
@@ -3097,28 +3097,28 @@ def UByte__mod_impl(this, other):
     tmp1_mod_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255)
     tmp3_toUByte_0 = uintRemainder(tmp0_mod_0, tmp1_mod_0)
     tmp2_toUByte_0 = _UInt___get_data__impl_(tmp3_toUByte_0)
-    return _UByte___init__impl_(tmp2_toUByte_0.__add__(0x80).__and__(0xff).__sub__(0x80))
+    return _UByte___init__impl_(((tmp2_toUByte_0 + 0x80) & 0xff) - 0x80)
 
 def UByte__mod_impl_0(this, other):
     tmp0_mod_0 = _UInt___init__impl_(_UByte___get_data__impl_(this) & 255)
     tmp1_mod_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535)
     tmp3_toUShort_0 = uintRemainder(tmp0_mod_0, tmp1_mod_0)
     tmp2_toUShort_0 = _UInt___get_data__impl_(tmp3_toUShort_0)
-    return _UShort___init__impl_(tmp2_toUShort_0.__add__(0x8000).__and__(0xffff).__sub__(0x8000))
+    return _UShort___init__impl_(((tmp2_toUShort_0 + 0x8000) & 0xffff) - 0x8000)
 
 def UByte__mod_impl_1(this, other):
     tmp0_mod_0 = _UInt___init__impl_(_UByte___get_data__impl_(this) & 255)
     return uintRemainder(tmp0_mod_0, other)
 
 def UByte__mod_impl_2(this, other):
-    tmp0_mod_0 = _ULong___init__impl_((_UByte___get_data__impl_(this) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_mod_0 = _ULong___init__impl_((((_UByte___get_data__impl_(this) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongRemainder(tmp0_mod_0, other)
 
 def UByte__inc_impl(this):
-    return _UByte___init__impl_((_UByte___get_data__impl_(this) + 1).__add__(0x80).__and__(0xff).__sub__(0x80))
+    return _UByte___init__impl_((((_UByte___get_data__impl_(this) + 1) + 0x80) & 0xff) - 0x80)
 
 def UByte__dec_impl(this):
-    return _UByte___init__impl_((_UByte___get_data__impl_(this) - 1).__add__(0x80).__and__(0xff).__sub__(0x80))
+    return _UByte___init__impl_((((_UByte___get_data__impl_(this) - 1) + 0x80) & 0xff) - 0x80)
 
 def UByte__rangeTo_impl(this, other):
     tmp = _UInt___init__impl_(_UByte___get_data__impl_(this) & 255)
@@ -3127,47 +3127,47 @@ def UByte__rangeTo_impl(this, other):
 def UByte__and_impl(this, other):
     tmp0_and_0 = _UByte___get_data__impl_(this)
     tmp1_and_0 = _UByte___get_data__impl_(other)
-    return _UByte___init__impl_((tmp0_and_0 & tmp1_and_0).__add__(0x80).__and__(0xff).__sub__(0x80))
+    return _UByte___init__impl_((((tmp0_and_0 & tmp1_and_0) + 0x80) & 0xff) - 0x80)
 
 def UByte__or_impl(this, other):
     tmp0_or_0 = _UByte___get_data__impl_(this)
     tmp1_or_0 = _UByte___get_data__impl_(other)
-    return _UByte___init__impl_((tmp0_or_0 | tmp1_or_0).__add__(0x80).__and__(0xff).__sub__(0x80))
+    return _UByte___init__impl_((((tmp0_or_0 | tmp1_or_0) + 0x80) & 0xff) - 0x80)
 
 def UByte__xor_impl(this, other):
     tmp0_xor_0 = _UByte___get_data__impl_(this)
     tmp1_xor_0 = _UByte___get_data__impl_(other)
-    return _UByte___init__impl_((tmp0_xor_0 ^ tmp1_xor_0).__add__(0x80).__and__(0xff).__sub__(0x80))
+    return _UByte___init__impl_((((tmp0_xor_0 ^ tmp1_xor_0) + 0x80) & 0xff) - 0x80)
 
 def UByte__inv_impl(this):
     tmp0_inv_0 = _UByte___get_data__impl_(this)
-    return _UByte___init__impl_((~tmp0_inv_0).__add__(0x80).__and__(0xff).__sub__(0x80))
+    return _UByte___init__impl_(((~tmp0_inv_0 + 0x80) & 0xff) - 0x80)
 
 def UByte__toByte_impl(this):
     return _UByte___get_data__impl_(this)
 
 def UByte__toShort_impl(this):
     tmp0_and_0 = _UByte___get_data__impl_(this)
-    return (tmp0_and_0 & 255).__add__(0x8000).__and__(0xffff).__sub__(0x8000)
+    return (((tmp0_and_0 & 255) + 0x8000) & 0xffff) - 0x8000
 
 def UByte__toInt_impl(this):
     return _UByte___get_data__impl_(this) & 255
 
 def UByte__toLong_impl(this):
-    return (_UByte___get_data__impl_(this) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+    return (((_UByte___get_data__impl_(this) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
 
 def UByte__toUByte_impl(this):
     return this
 
 def UByte__toUShort_impl(this):
     tmp0_and_0 = _UByte___get_data__impl_(this)
-    return _UShort___init__impl_((tmp0_and_0 & 255).__add__(0x8000).__and__(0xffff).__sub__(0x8000))
+    return _UShort___init__impl_((((tmp0_and_0 & 255) + 0x8000) & 0xffff) - 0x8000)
 
 def UByte__toUInt_impl(this):
     return _UInt___init__impl_(_UByte___get_data__impl_(this) & 255)
 
 def UByte__toULong_impl(this):
-    return _ULong___init__impl_((_UByte___get_data__impl_(this) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return _ULong___init__impl_((((_UByte___get_data__impl_(this) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def UByte__toFloat_impl(this):
     return kotlin_Float(_UByte___get_data__impl_(this) & 255)
@@ -3216,13 +3216,13 @@ class UByte(Comparable):
     
 
 def toUByte(self):
-    return _UByte___init__impl_(self.__add__(0x80).__and__(0xff).__sub__(0x80))
+    return _UByte___init__impl_(((self + 0x80) & 0xff) - 0x80)
 
 def toUByte_0(self):
-    return _UByte___init__impl_(self.__add__(0x80).__and__(0xff).__sub__(0x80))
+    return _UByte___init__impl_(((self + 0x80) & 0xff) - 0x80)
 
 def toUByte_1(self):
-    return _UByte___init__impl_(self.__add__(0x80).__and__(0xff).__sub__(0x80))
+    return _UByte___init__impl_(((self + 0x80) & 0xff) - 0x80)
 
 def toUByte_2(self):
     return _UByte___init__impl_(self)
@@ -3276,7 +3276,7 @@ class Iterator(UByteIterator):
         if self.index < len(self.array):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp0_this.index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp0_toUByte_0 = self.array[tmp1]
             tmp = _UByte___init__impl_(tmp0_toUByte_0)
         else:
@@ -3463,38 +3463,38 @@ def UInt__compareTo_impl_2(this, other):
     return UInt__compareTo_impl_1(tmp, (unboxIntrinsic(other)) if (isinstance(other, UInt)) else (THROW_CCE()))
 
 def UInt__compareTo_impl_3(this, other):
-    tmp0_compareTo_0 = _ULong___init__impl_((_UInt___get_data__impl_(this) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_compareTo_0 = _ULong___init__impl_((((_UInt___get_data__impl_(this) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other))
 
 def UInt__plus_impl(this, other):
     tmp0_plus_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255)
-    return _UInt___init__impl_((_UInt___get_data__impl_(this) + _UInt___get_data__impl_(tmp0_plus_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(this) + _UInt___get_data__impl_(tmp0_plus_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UInt__plus_impl_0(this, other):
     tmp0_plus_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535)
-    return _UInt___init__impl_((_UInt___get_data__impl_(this) + _UInt___get_data__impl_(tmp0_plus_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(this) + _UInt___get_data__impl_(tmp0_plus_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UInt__plus_impl_1(this, other):
-    return _UInt___init__impl_((_UInt___get_data__impl_(this) + _UInt___get_data__impl_(other)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(this) + _UInt___get_data__impl_(other)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UInt__plus_impl_2(this, other):
-    tmp0_plus_0 = _ULong___init__impl_((_UInt___get_data__impl_(this) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(tmp0_plus_0) + _ULong___get_data__impl_(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_plus_0 = _ULong___init__impl_((((_UInt___get_data__impl_(this) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(tmp0_plus_0) + _ULong___get_data__impl_(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def UInt__minus_impl(this, other):
     tmp0_minus_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255)
-    return _UInt___init__impl_((_UInt___get_data__impl_(this) - _UInt___get_data__impl_(tmp0_minus_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(this) - _UInt___get_data__impl_(tmp0_minus_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UInt__minus_impl_0(this, other):
     tmp0_minus_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535)
-    return _UInt___init__impl_((_UInt___get_data__impl_(this) - _UInt___get_data__impl_(tmp0_minus_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(this) - _UInt___get_data__impl_(tmp0_minus_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UInt__minus_impl_1(this, other):
-    return _UInt___init__impl_((_UInt___get_data__impl_(this) - _UInt___get_data__impl_(other)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(this) - _UInt___get_data__impl_(other)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UInt__minus_impl_2(this, other):
-    tmp0_minus_0 = _ULong___init__impl_((_UInt___get_data__impl_(this) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(tmp0_minus_0) - _ULong___get_data__impl_(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_minus_0 = _ULong___init__impl_((((_UInt___get_data__impl_(this) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(tmp0_minus_0) - _ULong___get_data__impl_(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def UInt__times_impl(this, other):
     tmp0_times_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255)
@@ -3508,8 +3508,8 @@ def UInt__times_impl_1(this, other):
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(this), _UInt___get_data__impl_(other)))
 
 def UInt__times_impl_2(this, other):
-    tmp0_times_0 = _ULong___init__impl_((_UInt___get_data__impl_(this) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(tmp0_times_0) * _ULong___get_data__impl_(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_times_0 = _ULong___init__impl_((((_UInt___get_data__impl_(this) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(tmp0_times_0) * _ULong___get_data__impl_(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def UInt__div_impl(this, other):
     tmp0_div_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255)
@@ -3523,7 +3523,7 @@ def UInt__div_impl_1(this, other):
     return uintDivide(this, other)
 
 def UInt__div_impl_2(this, other):
-    tmp0_div_0 = _ULong___init__impl_((_UInt___get_data__impl_(this) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_div_0 = _ULong___init__impl_((((_UInt___get_data__impl_(this) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongDivide(tmp0_div_0, other)
 
 def UInt__rem_impl(this, other):
@@ -3538,7 +3538,7 @@ def UInt__rem_impl_1(this, other):
     return uintRemainder(this, other)
 
 def UInt__rem_impl_2(this, other):
-    tmp0_rem_0 = _ULong___init__impl_((_UInt___get_data__impl_(this) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_rem_0 = _ULong___init__impl_((((_UInt___get_data__impl_(this) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongRemainder(tmp0_rem_0, other)
 
 def UInt__floorDiv_impl(this, other):
@@ -3553,39 +3553,39 @@ def UInt__floorDiv_impl_1(this, other):
     return uintDivide(this, other)
 
 def UInt__floorDiv_impl_2(this, other):
-    tmp0_floorDiv_0 = _ULong___init__impl_((_UInt___get_data__impl_(this) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_floorDiv_0 = _ULong___init__impl_((((_UInt___get_data__impl_(this) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongDivide(tmp0_floorDiv_0, other)
 
 def UInt__mod_impl(this, other):
     tmp0_mod_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255)
     tmp2_toUByte_0 = uintRemainder(this, tmp0_mod_0)
     tmp1_toUByte_0 = _UInt___get_data__impl_(tmp2_toUByte_0)
-    return _UByte___init__impl_(tmp1_toUByte_0.__add__(0x80).__and__(0xff).__sub__(0x80))
+    return _UByte___init__impl_(((tmp1_toUByte_0 + 0x80) & 0xff) - 0x80)
 
 def UInt__mod_impl_0(this, other):
     tmp0_mod_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535)
     tmp2_toUShort_0 = uintRemainder(this, tmp0_mod_0)
     tmp1_toUShort_0 = _UInt___get_data__impl_(tmp2_toUShort_0)
-    return _UShort___init__impl_(tmp1_toUShort_0.__add__(0x8000).__and__(0xffff).__sub__(0x8000))
+    return _UShort___init__impl_(((tmp1_toUShort_0 + 0x8000) & 0xffff) - 0x8000)
 
 def UInt__mod_impl_1(this, other):
     return uintRemainder(this, other)
 
 def UInt__mod_impl_2(this, other):
-    tmp0_mod_0 = _ULong___init__impl_((_UInt___get_data__impl_(this) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_mod_0 = _ULong___init__impl_((((_UInt___get_data__impl_(this) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongRemainder(tmp0_mod_0, other)
 
 def UInt__inc_impl(this):
-    return _UInt___init__impl_((_UInt___get_data__impl_(this) + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(this) + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UInt__dec_impl(this):
-    return _UInt___init__impl_((_UInt___get_data__impl_(this) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(this) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UInt__rangeTo_impl(this, other):
     return UIntRange(this, other)
 
 def UInt__shl_impl(this, bitCount):
-    return _UInt___init__impl_((_UInt___get_data__impl_(this) << bitCount).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(this) << bitCount) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UInt__shr_impl(this, bitCount):
     return _UInt___init__impl_((_UInt___get_data__impl_(this) & 0xffff_ffff) >> bitCount)
@@ -3603,30 +3603,30 @@ def UInt__inv_impl(this):
     return _UInt___init__impl_(~_UInt___get_data__impl_(this))
 
 def UInt__toByte_impl(this):
-    return _UInt___get_data__impl_(this).__add__(0x80).__and__(0xff).__sub__(0x80)
+    return ((_UInt___get_data__impl_(this) + 0x80) & 0xff) - 0x80
 
 def UInt__toShort_impl(this):
-    return _UInt___get_data__impl_(this).__add__(0x8000).__and__(0xffff).__sub__(0x8000)
+    return ((_UInt___get_data__impl_(this) + 0x8000) & 0xffff) - 0x8000
 
 def UInt__toInt_impl(this):
     return _UInt___get_data__impl_(this)
 
 def UInt__toLong_impl(this):
-    return (_UInt___get_data__impl_(this) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+    return (((_UInt___get_data__impl_(this) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
 
 def UInt__toUByte_impl(this):
     tmp0_toUByte_0 = _UInt___get_data__impl_(this)
-    return _UByte___init__impl_(tmp0_toUByte_0.__add__(0x80).__and__(0xff).__sub__(0x80))
+    return _UByte___init__impl_(((tmp0_toUByte_0 + 0x80) & 0xff) - 0x80)
 
 def UInt__toUShort_impl(this):
     tmp0_toUShort_0 = _UInt___get_data__impl_(this)
-    return _UShort___init__impl_(tmp0_toUShort_0.__add__(0x8000).__and__(0xffff).__sub__(0x8000))
+    return _UShort___init__impl_(((tmp0_toUShort_0 + 0x8000) & 0xffff) - 0x8000)
 
 def UInt__toUInt_impl(this):
     return this
 
 def UInt__toULong_impl(this):
-    return _ULong___init__impl_((_UInt___get_data__impl_(this) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return _ULong___init__impl_((((_UInt___get_data__impl_(this) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def UInt__toFloat_impl(this):
     return kotlin_Float(uintToDouble(_UInt___get_data__impl_(this)))
@@ -3635,7 +3635,7 @@ def UInt__toDouble_impl(this):
     return uintToDouble(_UInt___get_data__impl_(this))
 
 def UInt__toString_impl(this):
-    return (_UInt___get_data__impl_(this) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000).toString()
+    return ((((_UInt___get_data__impl_(this) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000).toString()
 
 def UInt__hashCode_impl(this):
     return this.data
@@ -3672,7 +3672,7 @@ class UInt(Comparable):
     
 
 def toUInt(self):
-    return _UInt___init__impl_(self.__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_(((self + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def toUInt_0(self):
     return _UInt___init__impl_(self)
@@ -3738,7 +3738,7 @@ class Iterator_0(UIntIterator):
         if self.index < len(self.array):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp0_this.index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp0_toUInt_0 = self.array[tmp1]
             tmp = _UInt___init__impl_(tmp0_toUInt_0)
         else:
@@ -3951,7 +3951,7 @@ class UIntRange(UIntProgression, ClosedRange):
             tmp0_toInt_0 = self._get_first__sv9k7v_k_()
             tmp = imul(31, _UInt___get_data__impl_(tmp0_toInt_0))
             tmp1_toInt_0 = self._get_last__sv9k7v_k_()
-            tmp = (tmp + _UInt___get_data__impl_(tmp1_toInt_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp = (((tmp + _UInt___get_data__impl_(tmp1_toInt_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         
         return tmp
     
@@ -4051,12 +4051,12 @@ class UIntProgression(Iterable):
             tmp0_toInt_0 = self.first
             tmp = imul(31, _UInt___get_data__impl_(tmp0_toInt_0))
             tmp1_toInt_0 = self.last
-            tmp = (imul(31, (tmp + _UInt___get_data__impl_(tmp1_toInt_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)) + self.step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp = (((imul(31, (((tmp + _UInt___get_data__impl_(tmp1_toInt_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) + self.step) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         
         return tmp
     
     def toString(self):
-        return ((((str(boxIntrinsic(self.first)) + str('..')) + str(boxIntrinsic(self.last))) + str(' step ')) + str(self.step)) if (self.step > 0) else ((((str(boxIntrinsic(self.first)) + str(' downTo ')) + str(boxIntrinsic(self.last))) + str(' step ')) + str((-self.step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)))
+        return ((((str(boxIntrinsic(self.first)) + str('..')) + str(boxIntrinsic(self.last))) + str(' step ')) + str(self.step)) if (self.step > 0) else ((((str(boxIntrinsic(self.first)) + str(' downTo ')) + str(boxIntrinsic(self.last))) + str(' step ')) + str(((-self.step + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000))
     
 
 def _get_finalElement_(_this):
@@ -4107,7 +4107,7 @@ class UIntProgressionIterator(UIntIterator):
             tmp = tmp0_this
             tmp0_plus_0 = tmp0_this.next
             tmp1_plus_0 = self.step
-            tmp.next = _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+            tmp.next = _UInt___init__impl_((((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
         
         return value
     
@@ -4273,15 +4273,15 @@ def Companion_getInstance_7():
     return Companion_instance
 
 def ULong__compareTo_impl(this, other):
-    tmp0_compareTo_0 = _ULong___init__impl_((_UByte___get_data__impl_(other) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_compareTo_0 = _ULong___init__impl_((((_UByte___get_data__impl_(other) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongCompare(_ULong___get_data__impl_(this), _ULong___get_data__impl_(tmp0_compareTo_0))
 
 def ULong__compareTo_impl_0(this, other):
-    tmp0_compareTo_0 = _ULong___init__impl_((_UShort___get_data__impl_(other) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_compareTo_0 = _ULong___init__impl_((((_UShort___get_data__impl_(other) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongCompare(_ULong___get_data__impl_(this), _ULong___get_data__impl_(tmp0_compareTo_0))
 
 def ULong__compareTo_impl_1(this, other):
-    tmp0_compareTo_0 = _ULong___init__impl_((_UInt___get_data__impl_(other) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_compareTo_0 = _ULong___init__impl_((((_UInt___get_data__impl_(other) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongCompare(_ULong___get_data__impl_(this), _ULong___get_data__impl_(tmp0_compareTo_0))
 
 def ULong__compareTo_impl_2(this, other):
@@ -4292,166 +4292,166 @@ def ULong__compareTo_impl_3(this, other):
     return ULong__compareTo_impl_2(tmp, (unboxIntrinsic(other)) if (isinstance(other, ULong)) else (THROW_CCE()))
 
 def ULong__plus_impl(this, other):
-    tmp0_plus_0 = _ULong___init__impl_((_UByte___get_data__impl_(other) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) + _ULong___get_data__impl_(tmp0_plus_0)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_plus_0 = _ULong___init__impl_((((_UByte___get_data__impl_(other) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) + _ULong___get_data__impl_(tmp0_plus_0)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__plus_impl_0(this, other):
-    tmp0_plus_0 = _ULong___init__impl_((_UShort___get_data__impl_(other) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) + _ULong___get_data__impl_(tmp0_plus_0)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_plus_0 = _ULong___init__impl_((((_UShort___get_data__impl_(other) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) + _ULong___get_data__impl_(tmp0_plus_0)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__plus_impl_1(this, other):
-    tmp0_plus_0 = _ULong___init__impl_((_UInt___get_data__impl_(other) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) + _ULong___get_data__impl_(tmp0_plus_0)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_plus_0 = _ULong___init__impl_((((_UInt___get_data__impl_(other) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) + _ULong___get_data__impl_(tmp0_plus_0)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__plus_impl_2(this, other):
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) + _ULong___get_data__impl_(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) + _ULong___get_data__impl_(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__minus_impl(this, other):
-    tmp0_minus_0 = _ULong___init__impl_((_UByte___get_data__impl_(other) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) - _ULong___get_data__impl_(tmp0_minus_0)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_minus_0 = _ULong___init__impl_((((_UByte___get_data__impl_(other) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) - _ULong___get_data__impl_(tmp0_minus_0)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__minus_impl_0(this, other):
-    tmp0_minus_0 = _ULong___init__impl_((_UShort___get_data__impl_(other) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) - _ULong___get_data__impl_(tmp0_minus_0)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_minus_0 = _ULong___init__impl_((((_UShort___get_data__impl_(other) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) - _ULong___get_data__impl_(tmp0_minus_0)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__minus_impl_1(this, other):
-    tmp0_minus_0 = _ULong___init__impl_((_UInt___get_data__impl_(other) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) - _ULong___get_data__impl_(tmp0_minus_0)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_minus_0 = _ULong___init__impl_((((_UInt___get_data__impl_(other) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) - _ULong___get_data__impl_(tmp0_minus_0)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__minus_impl_2(this, other):
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) - _ULong___get_data__impl_(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) - _ULong___get_data__impl_(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__times_impl(this, other):
-    tmp0_times_0 = _ULong___init__impl_((_UByte___get_data__impl_(other) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) * _ULong___get_data__impl_(tmp0_times_0)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_times_0 = _ULong___init__impl_((((_UByte___get_data__impl_(other) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) * _ULong___get_data__impl_(tmp0_times_0)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__times_impl_0(this, other):
-    tmp0_times_0 = _ULong___init__impl_((_UShort___get_data__impl_(other) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) * _ULong___get_data__impl_(tmp0_times_0)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_times_0 = _ULong___init__impl_((((_UShort___get_data__impl_(other) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) * _ULong___get_data__impl_(tmp0_times_0)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__times_impl_1(this, other):
-    tmp0_times_0 = _ULong___init__impl_((_UInt___get_data__impl_(other) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) * _ULong___get_data__impl_(tmp0_times_0)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_times_0 = _ULong___init__impl_((((_UInt___get_data__impl_(other) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) * _ULong___get_data__impl_(tmp0_times_0)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__times_impl_2(this, other):
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) * _ULong___get_data__impl_(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) * _ULong___get_data__impl_(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__div_impl(this, other):
-    tmp0_div_0 = _ULong___init__impl_((_UByte___get_data__impl_(other) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_div_0 = _ULong___init__impl_((((_UByte___get_data__impl_(other) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongDivide(this, tmp0_div_0)
 
 def ULong__div_impl_0(this, other):
-    tmp0_div_0 = _ULong___init__impl_((_UShort___get_data__impl_(other) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_div_0 = _ULong___init__impl_((((_UShort___get_data__impl_(other) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongDivide(this, tmp0_div_0)
 
 def ULong__div_impl_1(this, other):
-    tmp0_div_0 = _ULong___init__impl_((_UInt___get_data__impl_(other) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_div_0 = _ULong___init__impl_((((_UInt___get_data__impl_(other) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongDivide(this, tmp0_div_0)
 
 def ULong__div_impl_2(this, other):
     return ulongDivide(this, other)
 
 def ULong__rem_impl(this, other):
-    tmp0_rem_0 = _ULong___init__impl_((_UByte___get_data__impl_(other) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_rem_0 = _ULong___init__impl_((((_UByte___get_data__impl_(other) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongRemainder(this, tmp0_rem_0)
 
 def ULong__rem_impl_0(this, other):
-    tmp0_rem_0 = _ULong___init__impl_((_UShort___get_data__impl_(other) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_rem_0 = _ULong___init__impl_((((_UShort___get_data__impl_(other) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongRemainder(this, tmp0_rem_0)
 
 def ULong__rem_impl_1(this, other):
-    tmp0_rem_0 = _ULong___init__impl_((_UInt___get_data__impl_(other) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_rem_0 = _ULong___init__impl_((((_UInt___get_data__impl_(other) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongRemainder(this, tmp0_rem_0)
 
 def ULong__rem_impl_2(this, other):
     return ulongRemainder(this, other)
 
 def ULong__floorDiv_impl(this, other):
-    tmp0_floorDiv_0 = _ULong___init__impl_((_UByte___get_data__impl_(other) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_floorDiv_0 = _ULong___init__impl_((((_UByte___get_data__impl_(other) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongDivide(this, tmp0_floorDiv_0)
 
 def ULong__floorDiv_impl_0(this, other):
-    tmp0_floorDiv_0 = _ULong___init__impl_((_UShort___get_data__impl_(other) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_floorDiv_0 = _ULong___init__impl_((((_UShort___get_data__impl_(other) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongDivide(this, tmp0_floorDiv_0)
 
 def ULong__floorDiv_impl_1(this, other):
-    tmp0_floorDiv_0 = _ULong___init__impl_((_UInt___get_data__impl_(other) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_floorDiv_0 = _ULong___init__impl_((((_UInt___get_data__impl_(other) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongDivide(this, tmp0_floorDiv_0)
 
 def ULong__floorDiv_impl_2(this, other):
     return ulongDivide(this, other)
 
 def ULong__mod_impl(this, other):
-    tmp0_mod_0 = _ULong___init__impl_((_UByte___get_data__impl_(other) & 255).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_mod_0 = _ULong___init__impl_((((_UByte___get_data__impl_(other) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     tmp2_toUByte_0 = ulongRemainder(this, tmp0_mod_0)
     tmp1_toUByte_0 = _ULong___get_data__impl_(tmp2_toUByte_0)
-    return _UByte___init__impl_(tmp1_toUByte_0.__add__(0x80).__and__(0xff).__sub__(0x80))
+    return _UByte___init__impl_(((tmp1_toUByte_0 + 0x80) & 0xff) - 0x80)
 
 def ULong__mod_impl_0(this, other):
-    tmp0_mod_0 = _ULong___init__impl_((_UShort___get_data__impl_(other) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_mod_0 = _ULong___init__impl_((((_UShort___get_data__impl_(other) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     tmp2_toUShort_0 = ulongRemainder(this, tmp0_mod_0)
     tmp1_toUShort_0 = _ULong___get_data__impl_(tmp2_toUShort_0)
-    return _UShort___init__impl_(tmp1_toUShort_0.__add__(0x8000).__and__(0xffff).__sub__(0x8000))
+    return _UShort___init__impl_(((tmp1_toUShort_0 + 0x8000) & 0xffff) - 0x8000)
 
 def ULong__mod_impl_1(this, other):
-    tmp0_mod_0 = _ULong___init__impl_((_UInt___get_data__impl_(other) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_mod_0 = _ULong___init__impl_((((_UInt___get_data__impl_(other) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     tmp2_toUInt_0 = ulongRemainder(this, tmp0_mod_0)
     tmp1_toUInt_0 = _ULong___get_data__impl_(tmp2_toUInt_0)
-    return _UInt___init__impl_(tmp1_toUInt_0.__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_(((tmp1_toUInt_0 + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def ULong__mod_impl_2(this, other):
     return ulongRemainder(this, other)
 
 def ULong__inc_impl(this):
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) + 1).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) + 1) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__dec_impl(this):
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) - 1).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) - 1) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__rangeTo_impl(this, other):
     return ULongRange(this, other)
 
 def ULong__shl_impl(this, bitCount):
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) << bitCount).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) << bitCount) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__shr_impl(this, bitCount):
-    return _ULong___init__impl_(((_ULong___get_data__impl_(this) & 0xffff_ffff_ffff_ffff) >> bitCount).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return _ULong___init__impl_(((((_ULong___get_data__impl_(this) & 0xffff_ffff_ffff_ffff) >> bitCount) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__and_impl(this, other):
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) & _ULong___get_data__impl_(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) & _ULong___get_data__impl_(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__or_impl(this, other):
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) | _ULong___get_data__impl_(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) | _ULong___get_data__impl_(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__xor_impl(this, other):
-    return _ULong___init__impl_((_ULong___get_data__impl_(this) ^ _ULong___get_data__impl_(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return _ULong___init__impl_((((_ULong___get_data__impl_(this) ^ _ULong___get_data__impl_(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ULong__inv_impl(this):
     return _ULong___init__impl_(~_ULong___get_data__impl_(this))
 
 def ULong__toByte_impl(this):
-    return _ULong___get_data__impl_(this).__add__(0x80).__and__(0xff).__sub__(0x80)
+    return ((_ULong___get_data__impl_(this) + 0x80) & 0xff) - 0x80
 
 def ULong__toShort_impl(this):
-    return _ULong___get_data__impl_(this).__add__(0x8000).__and__(0xffff).__sub__(0x8000)
+    return ((_ULong___get_data__impl_(this) + 0x8000) & 0xffff) - 0x8000
 
 def ULong__toInt_impl(this):
-    return _ULong___get_data__impl_(this).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    return ((_ULong___get_data__impl_(this) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
 
 def ULong__toLong_impl(this):
     return _ULong___get_data__impl_(this)
 
 def ULong__toUByte_impl(this):
     tmp0_toUByte_0 = _ULong___get_data__impl_(this)
-    return _UByte___init__impl_(tmp0_toUByte_0.__add__(0x80).__and__(0xff).__sub__(0x80))
+    return _UByte___init__impl_(((tmp0_toUByte_0 + 0x80) & 0xff) - 0x80)
 
 def ULong__toUShort_impl(this):
     tmp0_toUShort_0 = _ULong___get_data__impl_(this)
-    return _UShort___init__impl_(tmp0_toUShort_0.__add__(0x8000).__and__(0xffff).__sub__(0x8000))
+    return _UShort___init__impl_(((tmp0_toUShort_0 + 0x8000) & 0xffff) - 0x8000)
 
 def ULong__toUInt_impl(this):
     tmp0_toUInt_0 = _ULong___get_data__impl_(this)
-    return _UInt___init__impl_(tmp0_toUInt_0.__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_(((tmp0_toUInt_0 + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def ULong__toULong_impl(this):
     return this
@@ -4563,7 +4563,7 @@ class Iterator_1(ULongIterator):
         if self.index < len(self.array):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp0_this.index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp0_toULong_0 = self.array[tmp1]
             tmp = _ULong___init__impl_(tmp0_toULong_0)
         else:
@@ -4772,14 +4772,14 @@ class ULongRange(ULongProgression, ClosedRange):
         else:
             tmp1_xor_0 = self._get_first__sha8jq_k_()
             tmp0_shr_0 = self._get_first__sha8jq_k_()
-            tmp2_xor_0 = _ULong___init__impl_(((_ULong___get_data__impl_(tmp0_shr_0) & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-            tmp3_toInt_0 = _ULong___init__impl_((_ULong___get_data__impl_(tmp1_xor_0) ^ _ULong___get_data__impl_(tmp2_xor_0)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-            tmp = imul(31, _ULong___get_data__impl_(tmp3_toInt_0).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+            tmp2_xor_0 = _ULong___init__impl_(((((_ULong___get_data__impl_(tmp0_shr_0) & 0xffff_ffff_ffff_ffff) >> 32) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+            tmp3_toInt_0 = _ULong___init__impl_((((_ULong___get_data__impl_(tmp1_xor_0) ^ _ULong___get_data__impl_(tmp2_xor_0)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+            tmp = imul(31, ((_ULong___get_data__impl_(tmp3_toInt_0) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
             tmp5_xor_0 = self._get_last__sha8jq_k_()
             tmp4_shr_0 = self._get_last__sha8jq_k_()
-            tmp6_xor_0 = _ULong___init__impl_(((_ULong___get_data__impl_(tmp4_shr_0) & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-            tmp7_toInt_0 = _ULong___init__impl_((_ULong___get_data__impl_(tmp5_xor_0) ^ _ULong___get_data__impl_(tmp6_xor_0)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-            tmp = (tmp + _ULong___get_data__impl_(tmp7_toInt_0).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp6_xor_0 = _ULong___init__impl_(((((_ULong___get_data__impl_(tmp4_shr_0) & 0xffff_ffff_ffff_ffff) >> 32) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+            tmp7_toInt_0 = _ULong___init__impl_((((_ULong___get_data__impl_(tmp5_xor_0) ^ _ULong___get_data__impl_(tmp6_xor_0)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+            tmp = (((tmp + (((_ULong___get_data__impl_(tmp7_toInt_0) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         
         return tmp
     
@@ -4876,19 +4876,19 @@ class ULongProgression(Iterable):
         else:
             tmp1_xor_0 = self.first
             tmp0_shr_0 = self.first
-            tmp2_xor_0 = _ULong___init__impl_(((_ULong___get_data__impl_(tmp0_shr_0) & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-            tmp3_toInt_0 = _ULong___init__impl_((_ULong___get_data__impl_(tmp1_xor_0) ^ _ULong___get_data__impl_(tmp2_xor_0)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-            tmp = imul(31, _ULong___get_data__impl_(tmp3_toInt_0).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+            tmp2_xor_0 = _ULong___init__impl_(((((_ULong___get_data__impl_(tmp0_shr_0) & 0xffff_ffff_ffff_ffff) >> 32) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+            tmp3_toInt_0 = _ULong___init__impl_((((_ULong___get_data__impl_(tmp1_xor_0) ^ _ULong___get_data__impl_(tmp2_xor_0)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+            tmp = imul(31, ((_ULong___get_data__impl_(tmp3_toInt_0) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
             tmp5_xor_0 = self.last
             tmp4_shr_0 = self.last
-            tmp6_xor_0 = _ULong___init__impl_(((_ULong___get_data__impl_(tmp4_shr_0) & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-            tmp7_toInt_0 = _ULong___init__impl_((_ULong___get_data__impl_(tmp5_xor_0) ^ _ULong___get_data__impl_(tmp6_xor_0)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-            tmp = (imul(31, (tmp + _ULong___get_data__impl_(tmp7_toInt_0).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)) + (self.step ^ ((self.step & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp6_xor_0 = _ULong___init__impl_(((((_ULong___get_data__impl_(tmp4_shr_0) & 0xffff_ffff_ffff_ffff) >> 32) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+            tmp7_toInt_0 = _ULong___init__impl_((((_ULong___get_data__impl_(tmp5_xor_0) ^ _ULong___get_data__impl_(tmp6_xor_0)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+            tmp = (((imul(31, (((tmp + (((_ULong___get_data__impl_(tmp7_toInt_0) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) + (((((((self.step ^ (((((self.step & 0xffff_ffff_ffff_ffff) >> 32) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         
         return tmp
     
     def toString(self):
-        return ((((str(boxIntrinsic(self.first)) + str('..')) + str(boxIntrinsic(self.last))) + str(' step ')) + str(self.step)) if (self.step.compareTo_wiekkq_k_(0) > 0) else ((((str(boxIntrinsic(self.first)) + str(' downTo ')) + str(boxIntrinsic(self.last))) + str(' step ')) + str((-self.step).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)))
+        return ((((str(boxIntrinsic(self.first)) + str('..')) + str(boxIntrinsic(self.last))) + str(' step ')) + str(self.step)) if (self.step.compareTo_wiekkq_k_(0) > 0) else ((((str(boxIntrinsic(self.first)) + str(' downTo ')) + str(boxIntrinsic(self.last))) + str(' step ')) + str(((-self.step + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000))
     
 
 def _get_finalElement__0(_this):
@@ -4939,7 +4939,7 @@ class ULongProgressionIterator(ULongIterator):
             tmp = tmp0_this
             tmp0_plus_0 = tmp0_this.next
             tmp1_plus_0 = self.step
-            tmp.next = _ULong___init__impl_((_ULong___get_data__impl_(tmp0_plus_0) + _ULong___get_data__impl_(tmp1_plus_0)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+            tmp.next = _ULong___init__impl_((((_ULong___get_data__impl_(tmp0_plus_0) + _ULong___get_data__impl_(tmp1_plus_0)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
         
         return value
     
@@ -4962,16 +4962,16 @@ def getProgressionLastElement(start, end, step):
             tmp = end
         elif True:
             tmp0_minus_0 = differenceModulo(end, start, _UInt___init__impl_(step))
-            tmp = _UInt___init__impl_((_UInt___get_data__impl_(end) - _UInt___get_data__impl_(tmp0_minus_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+            tmp = _UInt___init__impl_((((_UInt___get_data__impl_(end) - _UInt___get_data__impl_(tmp0_minus_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
         
         tmp = tmp
     elif step < 0:
         if uintCompare(_UInt___get_data__impl_(start), _UInt___get_data__impl_(end)) <= 0:
             tmp = end
         elif True:
-            tmp1_toUInt_0 = (-step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp1_toUInt_0 = ((-step + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp2_plus_0 = differenceModulo(start, end, _UInt___init__impl_(tmp1_toUInt_0))
-            tmp = _UInt___init__impl_((_UInt___get_data__impl_(end) + _UInt___get_data__impl_(tmp2_plus_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+            tmp = _UInt___init__impl_((((_UInt___get_data__impl_(end) + _UInt___get_data__impl_(tmp2_plus_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
         
         tmp = tmp
     else:
@@ -4985,16 +4985,16 @@ def getProgressionLastElement_0(start, end, step):
             tmp = end
         elif True:
             tmp0_minus_0 = differenceModulo_0(end, start, _ULong___init__impl_(step))
-            tmp = _ULong___init__impl_((_ULong___get_data__impl_(end) - _ULong___get_data__impl_(tmp0_minus_0)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+            tmp = _ULong___init__impl_((((_ULong___get_data__impl_(end) - _ULong___get_data__impl_(tmp0_minus_0)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
         
         tmp = tmp
     elif step.compareTo_wiekkq_k_(0) < 0:
         if ulongCompare(_ULong___get_data__impl_(start), _ULong___get_data__impl_(end)) <= 0:
             tmp = end
         elif True:
-            tmp1_toULong_0 = (-step).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+            tmp1_toULong_0 = ((-step + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
             tmp2_plus_0 = differenceModulo_0(start, end, _ULong___init__impl_(tmp1_toULong_0))
-            tmp = _ULong___init__impl_((_ULong___get_data__impl_(end) + _ULong___get_data__impl_(tmp2_plus_0)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+            tmp = _ULong___init__impl_((((_ULong___get_data__impl_(end) + _ULong___get_data__impl_(tmp2_plus_0)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
         
         tmp = tmp
     else:
@@ -5006,10 +5006,10 @@ def differenceModulo(a, b, c):
     ac = uintRemainder(a, c)
     bc = uintRemainder(b, c)
     if uintCompare(_UInt___get_data__impl_(ac), _UInt___get_data__impl_(bc)) >= 0:
-        tmp = _UInt___init__impl_((_UInt___get_data__impl_(ac) - _UInt___get_data__impl_(bc)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp = _UInt___init__impl_((((_UInt___get_data__impl_(ac) - _UInt___get_data__impl_(bc)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     elif True:
-        tmp0_plus_0 = _UInt___init__impl_((_UInt___get_data__impl_(ac) - _UInt___get_data__impl_(bc)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
-        tmp = _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(c)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp0_plus_0 = _UInt___init__impl_((((_UInt___get_data__impl_(ac) - _UInt___get_data__impl_(bc)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
+        tmp = _UInt___init__impl_((((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(c)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     
     return tmp
 
@@ -5017,10 +5017,10 @@ def differenceModulo_0(a, b, c):
     ac = ulongRemainder(a, c)
     bc = ulongRemainder(b, c)
     if ulongCompare(_ULong___get_data__impl_(ac), _ULong___get_data__impl_(bc)) >= 0:
-        tmp = _ULong___init__impl_((_ULong___get_data__impl_(ac) - _ULong___get_data__impl_(bc)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+        tmp = _ULong___init__impl_((((_ULong___get_data__impl_(ac) - _ULong___get_data__impl_(bc)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     elif True:
-        tmp0_plus_0 = _ULong___init__impl_((_ULong___get_data__impl_(ac) - _ULong___get_data__impl_(bc)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-        tmp = _ULong___init__impl_((_ULong___get_data__impl_(tmp0_plus_0) + _ULong___get_data__impl_(c)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+        tmp0_plus_0 = _ULong___init__impl_((((_ULong___get_data__impl_(ac) - _ULong___get_data__impl_(bc)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+        tmp = _ULong___init__impl_((((_ULong___get_data__impl_(tmp0_plus_0) + _ULong___get_data__impl_(c)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     
     return tmp
 
@@ -5085,44 +5085,44 @@ def UShort__compareTo_impl_2(this, other):
     return uintCompare(_UInt___get_data__impl_(tmp0_compareTo_0), _UInt___get_data__impl_(other))
 
 def UShort__compareTo_impl_3(this, other):
-    tmp0_compareTo_0 = _ULong___init__impl_((_UShort___get_data__impl_(this) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_compareTo_0 = _ULong___init__impl_((((_UShort___get_data__impl_(this) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(other))
 
 def UShort__plus_impl(this, other):
     tmp0_plus_0 = _UInt___init__impl_(_UShort___get_data__impl_(this) & 65535)
     tmp1_plus_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255)
-    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UShort__plus_impl_0(this, other):
     tmp0_plus_0 = _UInt___init__impl_(_UShort___get_data__impl_(this) & 65535)
     tmp1_plus_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535)
-    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(tmp1_plus_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UShort__plus_impl_1(this, other):
     tmp0_plus_0 = _UInt___init__impl_(_UShort___get_data__impl_(this) & 65535)
-    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(other)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(tmp0_plus_0) + _UInt___get_data__impl_(other)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UShort__plus_impl_2(this, other):
-    tmp0_plus_0 = _ULong___init__impl_((_UShort___get_data__impl_(this) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(tmp0_plus_0) + _ULong___get_data__impl_(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_plus_0 = _ULong___init__impl_((((_UShort___get_data__impl_(this) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(tmp0_plus_0) + _ULong___get_data__impl_(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def UShort__minus_impl(this, other):
     tmp0_minus_0 = _UInt___init__impl_(_UShort___get_data__impl_(this) & 65535)
     tmp1_minus_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255)
-    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UShort__minus_impl_0(this, other):
     tmp0_minus_0 = _UInt___init__impl_(_UShort___get_data__impl_(this) & 65535)
     tmp1_minus_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535)
-    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(tmp1_minus_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UShort__minus_impl_1(this, other):
     tmp0_minus_0 = _UInt___init__impl_(_UShort___get_data__impl_(this) & 65535)
-    return _UInt___init__impl_((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(other)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return _UInt___init__impl_((((_UInt___get_data__impl_(tmp0_minus_0) - _UInt___get_data__impl_(other)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def UShort__minus_impl_2(this, other):
-    tmp0_minus_0 = _ULong___init__impl_((_UShort___get_data__impl_(this) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(tmp0_minus_0) - _ULong___get_data__impl_(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_minus_0 = _ULong___init__impl_((((_UShort___get_data__impl_(this) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(tmp0_minus_0) - _ULong___get_data__impl_(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def UShort__times_impl(this, other):
     tmp0_times_0 = _UInt___init__impl_(_UShort___get_data__impl_(this) & 65535)
@@ -5139,8 +5139,8 @@ def UShort__times_impl_1(this, other):
     return _UInt___init__impl_(imul(_UInt___get_data__impl_(tmp0_times_0), _UInt___get_data__impl_(other)))
 
 def UShort__times_impl_2(this, other):
-    tmp0_times_0 = _ULong___init__impl_((_UShort___get_data__impl_(this) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _ULong___init__impl_((_ULong___get_data__impl_(tmp0_times_0) * _ULong___get_data__impl_(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_times_0 = _ULong___init__impl_((((_UShort___get_data__impl_(this) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _ULong___init__impl_((((_ULong___get_data__impl_(tmp0_times_0) * _ULong___get_data__impl_(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def UShort__div_impl(this, other):
     tmp0_div_0 = _UInt___init__impl_(_UShort___get_data__impl_(this) & 65535)
@@ -5157,7 +5157,7 @@ def UShort__div_impl_1(this, other):
     return uintDivide(tmp0_div_0, other)
 
 def UShort__div_impl_2(this, other):
-    tmp0_div_0 = _ULong___init__impl_((_UShort___get_data__impl_(this) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_div_0 = _ULong___init__impl_((((_UShort___get_data__impl_(this) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongDivide(tmp0_div_0, other)
 
 def UShort__rem_impl(this, other):
@@ -5175,7 +5175,7 @@ def UShort__rem_impl_1(this, other):
     return uintRemainder(tmp0_rem_0, other)
 
 def UShort__rem_impl_2(this, other):
-    tmp0_rem_0 = _ULong___init__impl_((_UShort___get_data__impl_(this) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_rem_0 = _ULong___init__impl_((((_UShort___get_data__impl_(this) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongRemainder(tmp0_rem_0, other)
 
 def UShort__floorDiv_impl(this, other):
@@ -5193,7 +5193,7 @@ def UShort__floorDiv_impl_1(this, other):
     return uintDivide(tmp0_floorDiv_0, other)
 
 def UShort__floorDiv_impl_2(this, other):
-    tmp0_floorDiv_0 = _ULong___init__impl_((_UShort___get_data__impl_(this) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_floorDiv_0 = _ULong___init__impl_((((_UShort___get_data__impl_(this) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongDivide(tmp0_floorDiv_0, other)
 
 def UShort__mod_impl(this, other):
@@ -5201,28 +5201,28 @@ def UShort__mod_impl(this, other):
     tmp1_mod_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255)
     tmp2_toUByte_0 = uintRemainder(tmp0_mod_0, tmp1_mod_0)
     tmp0_toUByte_0_1 = _UInt___get_data__impl_(tmp2_toUByte_0)
-    return _UByte___init__impl_(tmp0_toUByte_0_1.__add__(0x80).__and__(0xff).__sub__(0x80))
+    return _UByte___init__impl_(((tmp0_toUByte_0_1 + 0x80) & 0xff) - 0x80)
 
 def UShort__mod_impl_0(this, other):
     tmp0_mod_0 = _UInt___init__impl_(_UShort___get_data__impl_(this) & 65535)
     tmp1_mod_0 = _UInt___init__impl_(_UShort___get_data__impl_(other) & 65535)
     tmp2_toUShort_0 = uintRemainder(tmp0_mod_0, tmp1_mod_0)
     tmp0_toUShort_0_1 = _UInt___get_data__impl_(tmp2_toUShort_0)
-    return _UShort___init__impl_(tmp0_toUShort_0_1.__add__(0x8000).__and__(0xffff).__sub__(0x8000))
+    return _UShort___init__impl_(((tmp0_toUShort_0_1 + 0x8000) & 0xffff) - 0x8000)
 
 def UShort__mod_impl_1(this, other):
     tmp0_mod_0 = _UInt___init__impl_(_UShort___get_data__impl_(this) & 65535)
     return uintRemainder(tmp0_mod_0, other)
 
 def UShort__mod_impl_2(this, other):
-    tmp0_mod_0 = _ULong___init__impl_((_UShort___get_data__impl_(this) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    tmp0_mod_0 = _ULong___init__impl_((((_UShort___get_data__impl_(this) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     return ulongRemainder(tmp0_mod_0, other)
 
 def UShort__inc_impl(this):
-    return _UShort___init__impl_((_UShort___get_data__impl_(this) + 1).__add__(0x8000).__and__(0xffff).__sub__(0x8000))
+    return _UShort___init__impl_((((_UShort___get_data__impl_(this) + 1) + 0x8000) & 0xffff) - 0x8000)
 
 def UShort__dec_impl(this):
-    return _UShort___init__impl_((_UShort___get_data__impl_(this) - 1).__add__(0x8000).__and__(0xffff).__sub__(0x8000))
+    return _UShort___init__impl_((((_UShort___get_data__impl_(this) - 1) + 0x8000) & 0xffff) - 0x8000)
 
 def UShort__rangeTo_impl(this, other):
     tmp = _UInt___init__impl_(_UShort___get_data__impl_(this) & 65535)
@@ -5231,24 +5231,24 @@ def UShort__rangeTo_impl(this, other):
 def UShort__and_impl(this, other):
     tmp0_and_0 = _UShort___get_data__impl_(this)
     tmp1_and_0 = _UShort___get_data__impl_(other)
-    return _UShort___init__impl_((tmp0_and_0 & tmp1_and_0).__add__(0x8000).__and__(0xffff).__sub__(0x8000))
+    return _UShort___init__impl_((((tmp0_and_0 & tmp1_and_0) + 0x8000) & 0xffff) - 0x8000)
 
 def UShort__or_impl(this, other):
     tmp0_or_0 = _UShort___get_data__impl_(this)
     tmp1_or_0 = _UShort___get_data__impl_(other)
-    return _UShort___init__impl_((tmp0_or_0 | tmp1_or_0).__add__(0x8000).__and__(0xffff).__sub__(0x8000))
+    return _UShort___init__impl_((((tmp0_or_0 | tmp1_or_0) + 0x8000) & 0xffff) - 0x8000)
 
 def UShort__xor_impl(this, other):
     tmp0_xor_0 = _UShort___get_data__impl_(this)
     tmp1_xor_0 = _UShort___get_data__impl_(other)
-    return _UShort___init__impl_((tmp0_xor_0 ^ tmp1_xor_0).__add__(0x8000).__and__(0xffff).__sub__(0x8000))
+    return _UShort___init__impl_((((tmp0_xor_0 ^ tmp1_xor_0) + 0x8000) & 0xffff) - 0x8000)
 
 def UShort__inv_impl(this):
     tmp0_inv_0 = _UShort___get_data__impl_(this)
-    return _UShort___init__impl_((~tmp0_inv_0).__add__(0x8000).__and__(0xffff).__sub__(0x8000))
+    return _UShort___init__impl_(((~tmp0_inv_0 + 0x8000) & 0xffff) - 0x8000)
 
 def UShort__toByte_impl(this):
-    return _UShort___get_data__impl_(this).__add__(0x80).__and__(0xff).__sub__(0x80)
+    return ((_UShort___get_data__impl_(this) + 0x80) & 0xff) - 0x80
 
 def UShort__toShort_impl(this):
     return _UShort___get_data__impl_(this)
@@ -5257,11 +5257,11 @@ def UShort__toInt_impl(this):
     return _UShort___get_data__impl_(this) & 65535
 
 def UShort__toLong_impl(this):
-    return (_UShort___get_data__impl_(this) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+    return (((_UShort___get_data__impl_(this) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
 
 def UShort__toUByte_impl(this):
     tmp0_toUByte_0 = _UShort___get_data__impl_(this)
-    return _UByte___init__impl_(tmp0_toUByte_0.__add__(0x80).__and__(0xff).__sub__(0x80))
+    return _UByte___init__impl_(((tmp0_toUByte_0 + 0x80) & 0xff) - 0x80)
 
 def UShort__toUShort_impl(this):
     return this
@@ -5270,7 +5270,7 @@ def UShort__toUInt_impl(this):
     return _UInt___init__impl_(_UShort___get_data__impl_(this) & 65535)
 
 def UShort__toULong_impl(this):
-    return _ULong___init__impl_((_UShort___get_data__impl_(this) & 65535).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return _ULong___init__impl_((((_UShort___get_data__impl_(this) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def UShort__toFloat_impl(this):
     return kotlin_Float(_UShort___get_data__impl_(this) & 65535)
@@ -5316,10 +5316,10 @@ class UShort(Comparable):
     
 
 def toUShort(self):
-    return _UShort___init__impl_(self.__add__(0x8000).__and__(0xffff).__sub__(0x8000))
+    return _UShort___init__impl_(((self + 0x8000) & 0xffff) - 0x8000)
 
 def toUShort_0(self):
-    return _UShort___init__impl_(self.__add__(0x8000).__and__(0xffff).__sub__(0x8000))
+    return _UShort___init__impl_(((self + 0x8000) & 0xffff) - 0x8000)
 
 def toUShort_1(self):
     return _UShort___init__impl_(self)
@@ -5370,7 +5370,7 @@ class Iterator_2(UShortIterator):
         if self.index < len(self.array):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp0_this.index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp0_toUShort_0 = self.array[tmp1]
             tmp = _UShort___init__impl_(tmp0_toUShort_0)
         else:
@@ -5501,23 +5501,23 @@ def uintCompare(v1, v2):
     return compareTo_0(v1 ^ IntCompanionObject_getInstance().MIN_VALUE, v2 ^ IntCompanionObject_getInstance().MIN_VALUE)
 
 def uintDivide(v1, v2):
-    tmp = (_UInt___get_data__impl_(v1) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
-    tmp0_toUInt_0 = (tmp // (_UInt___get_data__impl_(v2) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
-    return _UInt___init__impl_(tmp0_toUInt_0.__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    tmp = (((_UInt___get_data__impl_(v1) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
+    tmp0_toUInt_0 = (((tmp // ((((_UInt___get_data__impl_(v2) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
+    return _UInt___init__impl_(((tmp0_toUInt_0 + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def uintRemainder(v1, v2):
-    tmp = (_UInt___get_data__impl_(v1) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
-    tmp0_toUInt_0 = tmp.rem_wiekkq_k_((_UInt___get_data__impl_(v2) & 4294967295).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
-    return _UInt___init__impl_(tmp0_toUInt_0.__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    tmp = (((_UInt___get_data__impl_(v1) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
+    tmp0_toUInt_0 = tmp.rem_wiekkq_k_((((_UInt___get_data__impl_(v2) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
+    return _UInt___init__impl_(((tmp0_toUInt_0 + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def uintToDouble(v):
-    return kotlin_Double(v & IntCompanionObject_getInstance().MAX_VALUE) + (kotlin_Double((((v & 0xffff_ffff) >> 31) << 30).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)) * 2)
+    return kotlin_Double(v & IntCompanionObject_getInstance().MAX_VALUE) + (kotlin_Double((((((v & 0xffff_ffff) >> 31) << 30) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) * 2)
 
 def ulongCompare(v1, v2):
     Companion_getInstance_19()
-    tmp = (v1 ^ -9223372036854775808).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+    tmp = (((v1 ^ -9223372036854775808) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     Companion_getInstance_19()
-    return tmp.compareTo_wiekkq_k_((v2 ^ -9223372036854775808).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return tmp.compareTo_wiekkq_k_((((v2 ^ -9223372036854775808) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ulongDivide(v1, v2):
     dividend = _ULong___get_data__impl_(v1)
@@ -5531,10 +5531,10 @@ def ulongDivide(v1, v2):
         return tmp
     
     if dividend.compareTo_wiekkq_k_(0) >= 0:
-        return _ULong___init__impl_((dividend // divisor).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+        return _ULong___init__impl_((((dividend // divisor) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     
-    quotient = ((((dividend & 0xffff_ffff_ffff_ffff) >> 1).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000) // divisor).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000) << 1).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
-    rem = (dividend - (quotient * divisor).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+    quotient = ((((((((((((dividend & 0xffff_ffff_ffff_ffff) >> 1) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000) // divisor) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000) << 1) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
+    rem = (((dividend - ((((quotient * divisor) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     tmp0_compareTo_0 = _ULong___init__impl_(rem)
     tmp1_compareTo_0 = _ULong___init__impl_(divisor)
     if ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(tmp1_compareTo_0)) >= 0:
@@ -5543,7 +5543,7 @@ def ulongDivide(v1, v2):
         tmp = 0
     
     tmp2_plus_0 = tmp
-    return _ULong___init__impl_((quotient + tmp2_plus_0).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return _ULong___init__impl_((((quotient + tmp2_plus_0) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ulongRemainder(v1, v2):
     dividend = _ULong___get_data__impl_(v1)
@@ -5552,15 +5552,15 @@ def ulongRemainder(v1, v2):
         if ulongCompare(_ULong___get_data__impl_(v1), _ULong___get_data__impl_(v2)) < 0:
             tmp = v1
         elif True:
-            tmp = _ULong___init__impl_((_ULong___get_data__impl_(v1) - _ULong___get_data__impl_(v2)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+            tmp = _ULong___init__impl_((((_ULong___get_data__impl_(v1) - _ULong___get_data__impl_(v2)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
         
         return tmp
     
     if dividend.compareTo_wiekkq_k_(0) >= 0:
         return _ULong___init__impl_(dividend.rem_wiekkq_k_(divisor))
     
-    quotient = ((((dividend & 0xffff_ffff_ffff_ffff) >> 1).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000) // divisor).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000) << 1).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
-    rem = (dividend - (quotient * divisor).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+    quotient = ((((((((((((dividend & 0xffff_ffff_ffff_ffff) >> 1) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000) // divisor) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000) << 1) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
+    rem = (((dividend - ((((quotient * divisor) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     tmp0_compareTo_0 = _ULong___init__impl_(rem)
     tmp1_compareTo_0 = _ULong___init__impl_(divisor)
     if ulongCompare(_ULong___get_data__impl_(tmp0_compareTo_0), _ULong___get_data__impl_(tmp1_compareTo_0)) >= 0:
@@ -5568,10 +5568,10 @@ def ulongRemainder(v1, v2):
     elif True:
         tmp = 0
     
-    return _ULong___init__impl_((rem - tmp).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return _ULong___init__impl_((((rem - tmp) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def ulongToDouble(v):
-    return (((v & 0xffff_ffff_ffff_ffff) >> 11).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000).toDouble_0_k_() * 2048) + (v & 2047).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000).toDouble_0_k_()
+    return ((((((v & 0xffff_ffff_ffff_ffff) >> 11) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000).toDouble_0_k_() * 2048) + ((((v & 2047) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000).toDouble_0_k_()
 
 def ulongToString(v):
     return ulongToString_0(v, 10)
@@ -5580,15 +5580,15 @@ def ulongToString_0(v, base):
     if v.compareTo_wiekkq_k_(0) >= 0:
         return toString_1(v, base)
     
-    tmp0_div_0 = ((v & 0xffff_ffff_ffff_ffff) >> 1).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
-    quotient = ((tmp0_div_0 // base).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000) << 1).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+    tmp0_div_0 = ((((v & 0xffff_ffff_ffff_ffff) >> 1) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
+    quotient = (((((((tmp0_div_0 // base) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000) << 1) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     tmp1_times_0 = quotient
-    rem = (v - (tmp1_times_0 * base).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+    rem = (((v - ((((tmp1_times_0 * base) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     if rem.compareTo_wiekkq_k_(base) >= 0:
         tmp2_minus_0 = rem
-        rem = (tmp2_minus_0 - base).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        rem = (((tmp2_minus_0 - base) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
         tmp3_plus_0 = quotient
-        quotient = (tmp3_plus_0 + 1).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        quotient = (((tmp3_plus_0 + 1) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     
     return toString_1(quotient, base) + toString_1(rem, base)
 
@@ -5608,14 +5608,14 @@ def doubleToUInt(v):
                 Companion_getInstance_4()
                 tmp = _UInt___init__impl_(-1)
             elif v <= kotlin_Double(IntCompanionObject_getInstance().MAX_VALUE):
-                tmp2_toUInt_0 = v.__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                tmp2_toUInt_0 = ((v + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 tmp = _UInt___init__impl_(tmp2_toUInt_0)
             elif True:
-                tmp3_toUInt_0 = (v - IntCompanionObject_getInstance().MAX_VALUE).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                tmp3_toUInt_0 = (((v - IntCompanionObject_getInstance().MAX_VALUE) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 tmp5_plus_0 = _UInt___init__impl_(tmp3_toUInt_0)
                 tmp4_toUInt_0 = IntCompanionObject_getInstance().MAX_VALUE
                 tmp6_plus_0 = _UInt___init__impl_(tmp4_toUInt_0)
-                tmp = _UInt___init__impl_((_UInt___get_data__impl_(tmp5_plus_0) + _UInt___get_data__impl_(tmp6_plus_0)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+                tmp = _UInt___init__impl_((((_UInt___get_data__impl_(tmp5_plus_0) + _UInt___get_data__impl_(tmp6_plus_0)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
             
         
     
@@ -5639,12 +5639,12 @@ def doubleToULong(v):
             else:
                 Companion_getInstance_19()
                 if v < (9223372036854775807).toDouble_0_k_():
-                    tmp2_toULong_0 = v.__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+                    tmp2_toULong_0 = ((v + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
                     tmp = _ULong___init__impl_(tmp2_toULong_0)
                 elif True:
-                    tmp3_toULong_0 = (v - 9.223372036854776E18).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+                    tmp3_toULong_0 = (((v - 9.223372036854776E18) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
                     tmp4_plus_0 = _ULong___init__impl_(tmp3_toULong_0)
-                    tmp = _ULong___init__impl_((_ULong___get_data__impl_(tmp4_plus_0) + _ULong___get_data__impl_(_ULong___init__impl_(Long(0, -2147483648)))).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+                    tmp = _ULong___init__impl_((((_ULong___get_data__impl_(tmp4_plus_0) + _ULong___get_data__impl_(_ULong___init__impl_(Long(0, -2147483648)))) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
                 
             
         
@@ -6349,7 +6349,7 @@ class IntProgressionIterator(IntIterator):
             self.hasNext = False
         else:
             tmp0_this = self
-            tmp0_this.next = (tmp0_this.next + self.step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp0_this.next = (((tmp0_this.next + self.step) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         
         return value
     
@@ -6411,7 +6411,7 @@ class CharProgressionIterator(CharIterator):
             self.hasNext = False
         else:
             tmp0_this = self
-            tmp0_this.next = (tmp0_this.next + self.step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp0_this.next = (((tmp0_this.next + self.step) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         
         return numberToChar(value)
     
@@ -6466,7 +6466,7 @@ class LongProgressionIterator(LongIterator):
             self.hasNext = False
         else:
             tmp0_this = self
-            tmp0_this.next = (tmp0_this.next + self.step).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+            tmp0_this.next = (((tmp0_this.next + self.step) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
         
         return value
     
@@ -6545,10 +6545,10 @@ class IntProgression(Iterable):
         return tmp
     
     def hashCode(self):
-        return (-1) if (self.isEmpty_0_k_()) else ((imul(31, (imul(31, self.first) + self.last).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)) + self.step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        return (-1) if (self.isEmpty_0_k_()) else ((((imul(31, (((imul(31, self.first) + self.last) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) + self.step) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     
     def toString(self):
-        return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str((-self.step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)))
+        return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str(((-self.step + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000))
     
 
 class Companion_13(Any):
@@ -6621,12 +6621,12 @@ class CharProgression(Iterable):
             tmp0__get_code__0 = self.first
             tmp = imul(31, tmp0__get_code__0.toInt_0_k_())
             tmp1__get_code__0 = self.last
-            tmp = (imul(31, (tmp + tmp1__get_code__0.toInt_0_k_()).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)) + self.step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp = (((imul(31, (((tmp + tmp1__get_code__0.toInt_0_k_()) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) + self.step) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         
         return tmp
     
     def toString(self):
-        return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str((-self.step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)))
+        return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str(((-self.step + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000))
     
 
 class Companion_14(Any):
@@ -6692,10 +6692,10 @@ class LongProgression(Iterable):
         return tmp
     
     def hashCode(self):
-        return (-1) if (self.isEmpty_0_k_()) else (((31 * ((31 * (self.first ^ ((self.first & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)) + (self.last ^ ((self.last & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)) + (self.step ^ ((self.step & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        return (-1) if (self.isEmpty_0_k_()) else ((((((((31 * (((((31 * ((((self.first ^ (((((self.first & 0xffff_ffff_ffff_ffff) >> 32) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + ((((self.last ^ (((((self.last & 0xffff_ffff_ffff_ffff) >> 32) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + ((((self.step ^ (((((self.step & 0xffff_ffff_ffff_ffff) >> 32) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     
     def toString(self):
-        return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step.compareTo_wiekkq_k_(0) > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str((-self.step).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)))
+        return ((((str(self.first) + str('..')) + str(self.last)) + str(' step ')) + str(self.step)) if (self.step.compareTo_wiekkq_k_(0) > 0) else ((((str(self.first) + str(' downTo ')) + str(self.last)) + str(' step ')) + str(((-self.step + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000))
     
 
 class ClosedRange(Any):
@@ -6779,7 +6779,7 @@ class IntRange(IntProgression, ClosedRange):
         return tmp
     
     def hashCode(self):
-        return (-1) if (self.isEmpty_0_k_()) else ((imul(31, self._get_first__0_k_()) + self._get_last__0_k_()).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        return (-1) if (self.isEmpty_0_k_()) else ((((imul(31, self._get_first__0_k_()) + self._get_last__0_k_()) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     
     def toString(self):
         return (str(self._get_first__0_k_()) + str('..')) + str(self._get_last__0_k_())
@@ -6858,7 +6858,7 @@ class CharRange(CharProgression, ClosedRange):
             tmp0__get_code__0 = self._get_first__0_k_()
             tmp = imul(31, tmp0__get_code__0.toInt_0_k_())
             tmp1__get_code__0 = self._get_last__0_k_()
-            tmp = (tmp + tmp1__get_code__0.toInt_0_k_()).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp = (((tmp + tmp1__get_code__0.toInt_0_k_()) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         
         return tmp
     
@@ -6933,7 +6933,7 @@ class LongRange(LongProgression, ClosedRange):
         return tmp
     
     def hashCode(self):
-        return (-1) if (self.isEmpty_0_k_()) else (((31 * (self._get_first__0_k_() ^ ((self._get_first__0_k_() & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)) + (self._get_last__0_k_() ^ ((self._get_last__0_k_() & 0xffff_ffff_ffff_ffff) >> 32).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        return (-1) if (self.isEmpty_0_k_()) else ((((((((31 * ((((self._get_first__0_k_() ^ (((((self._get_first__0_k_() & 0xffff_ffff_ffff_ffff) >> 32) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + ((((self._get_last__0_k_() ^ (((((self._get_last__0_k_() & 0xffff_ffff_ffff_ffff) >> 32) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     
     def toString(self):
         return (str(self._get_first__0_k_()) + str('..')) + str(self._get_last__0_k_())
@@ -7271,9 +7271,9 @@ def AnnotationRetention_RUNTIME_getInstance():
 
 def getProgressionLastElement_1(start, end, step):
     if step > 0:
-        tmp = (end) if (start >= end) else ((end - differenceModulo_1(end, start, step)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp = (end) if (start >= end) else ((((end - differenceModulo_1(end, start, step)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     elif step < 0:
-        tmp = (end) if (start <= end) else ((end + differenceModulo_1(start, end, (-step).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp = (end) if (start <= end) else ((((end + differenceModulo_1(start, end, ((-step + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     else:
         raise IllegalArgumentException_init__Create__0('Step is zero.')
     
@@ -7281,27 +7281,27 @@ def getProgressionLastElement_1(start, end, step):
 
 def getProgressionLastElement_2(start, end, step):
     if step.compareTo_wiekkq_k_(0) > 0:
-        tmp = (end) if (start.compareTo_wiekkq_k_(end) >= 0) else ((end - differenceModulo_2(end, start, step)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+        tmp = (end) if (start.compareTo_wiekkq_k_(end) >= 0) else ((((end - differenceModulo_2(end, start, step)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     elif step.compareTo_wiekkq_k_(0) < 0:
-        tmp = (end) if (start.compareTo_wiekkq_k_(end) <= 0) else ((end + differenceModulo_2(start, end, (-step).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+        tmp = (end) if (start.compareTo_wiekkq_k_(end) <= 0) else ((((end + differenceModulo_2(start, end, ((-step + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     else:
         raise IllegalArgumentException_init__Create__0('Step is zero.')
     
     return tmp
 
 def differenceModulo_1(a, b, c):
-    return mod((mod(a, c) - mod(b, c)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000), c)
+    return mod((((mod(a, c) - mod(b, c)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000, c)
 
 def differenceModulo_2(a, b, c):
-    return mod_0((mod_0(a, c) - mod_0(b, c)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000), c)
+    return mod_0((((mod_0(a, c) - mod_0(b, c)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000, c)
 
 def mod(a, b):
     mod = a % b
-    return (mod) if (mod >= 0) else ((mod + b).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return (mod) if (mod >= 0) else ((((mod + b) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def mod_0(a, b):
     mod = a.rem_wiekkq_k_(b)
-    return (mod) if (mod.compareTo_wiekkq_k_(0) >= 0) else ((mod + b).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return (mod) if (mod.compareTo_wiekkq_k_(0) >= 0) else ((((mod + b) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 class ByteCompanionObject_0(Any):
     def __init__(self):
@@ -7618,8 +7618,8 @@ def copyToArrayImpl_0(collection):
 
 def arrayCopy_0(source, destination, destinationOffset, startIndex, endIndex):
     Companion_getInstance().checkRangeIndexes_zd700_k_(startIndex, endIndex, len(source))
-    rangeSize = (endIndex - startIndex).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-    Companion_getInstance().checkRangeIndexes_zd700_k_(destinationOffset, (destinationOffset + rangeSize).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000), len(destination))
+    rangeSize = (((endIndex - startIndex) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+    Companion_getInstance().checkRangeIndexes_zd700_k_(destinationOffset, (((destinationOffset + rangeSize) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000, len(destination))
     if js('ArrayBuffer').isView(destination) and js('ArrayBuffer').isView(source):
         subrange = source.subarray(startIndex, endIndex)
         destination.set(subrange, destinationOffset)
@@ -7628,20 +7628,20 @@ def arrayCopy_0(source, destination, destinationOffset, startIndex, endIndex):
         if inductionVariable < rangeSize:
             while True:
                 index = inductionVariable
-                inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-                destination.__setitem__((destinationOffset + index).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000), source[(startIndex + index).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)])
+                inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+                destination.__setitem__((((destinationOffset + index) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000, source[(((startIndex + index) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000])
                 if inductionVariable < rangeSize:
                     break
                 
             
         
     else:
-        inductionVariable = (rangeSize - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        inductionVariable = (((rangeSize - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         if 0 <= inductionVariable:
             while True:
                 index = inductionVariable
-                inductionVariable = (inductionVariable + -1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-                destination.__setitem__((destinationOffset + index).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000), source[(startIndex + index).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)])
+                inductionVariable = (((inductionVariable + -1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+                destination.__setitem__((((destinationOffset + index) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000, source[(((startIndex + index) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000])
                 if 0 <= inductionVariable:
                     break
                 
@@ -7658,7 +7658,7 @@ def copyToArrayImpl_1(collection, array):
     index = 0
     while iterator.hasNext_0_k_():
         tmp0 = index
-        index = (tmp0 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        index = (((tmp0 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         tmp1_unsafeCast_0 = iterator.next_0_k_()
         array.__setitem__(tmp0, kotlin_Any_(tmp1_unsafeCast_0))
     
@@ -7795,7 +7795,7 @@ class IteratorImpl_0(MutableIterator):
         tmp = self
         tmp0_this = self
         tmp1 = tmp0_this.index
-        tmp0_this.index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        tmp0_this.index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         tmp.last = tmp1
         return self._this.get_ha5a7z_k_(self.last)
     
@@ -7838,18 +7838,18 @@ class ListIteratorImpl_0(IteratorImpl_0, MutableListIterator):
             raise NoSuchElementException_init__Create_()
         
         tmp0_this = self
-        tmp0_this._set_index__majfzk_k_((tmp0_this._get_index__0_k_() - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp0_this._set_index__majfzk_k_((((tmp0_this._get_index__0_k_() - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
         self._set_last__majfzk_k_(tmp0_this._get_index__0_k_())
         return self._this.get_ha5a7z_k_(self._get_last__0_k_())
     
     def previousIndex_0_k_(self):
-        return (self._get_index__0_k_() - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        return (((self._get_index__0_k_() - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     
     def add_jxzaet_k_(self, element):
         self._this.add_vz2mgm_k_(self._get_index__0_k_(), element)
         tmp0_this = self
         tmp1 = tmp0_this._get_index__0_k_()
-        tmp0_this._set_index__majfzk_k_((tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp0_this._set_index__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
         Unit_getInstance()
         self._set_last__majfzk_k_(-1)
     
@@ -7909,32 +7909,32 @@ class SubList_0(AbstractMutableList, RandomAccess):
         self.fromIndex = fromIndex
         self._size = 0
         Companion_getInstance().checkRangeIndexes_zd700_k_(self.fromIndex, toIndex, self.list._get_size__0_k_())
-        self._size = (toIndex - self.fromIndex).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        self._size = (((toIndex - self.fromIndex) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     
     def add_vz2mgm_k_(self, index, element):
         Companion_getInstance().checkPositionIndex_rvwcgf_k_(index, self._size)
-        self.list.add_vz2mgm_k_((self.fromIndex + index).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000), element)
+        self.list.add_vz2mgm_k_((((self.fromIndex + index) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000, element)
         tmp0_this = self
         tmp1 = tmp0_this._size
-        tmp0_this._size = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        tmp0_this._size = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         Unit_getInstance()
     
     def get_ha5a7z_k_(self, index):
         Companion_getInstance().checkElementIndex_rvwcgf_k_(index, self._size)
-        return self.list.get_ha5a7z_k_((self.fromIndex + index).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        return self.list.get_ha5a7z_k_((((self.fromIndex + index) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     
     def removeAt_ha5a7z_k_(self, index):
         Companion_getInstance().checkElementIndex_rvwcgf_k_(index, self._size)
-        result = self.list.removeAt_ha5a7z_k_((self.fromIndex + index).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        result = self.list.removeAt_ha5a7z_k_((((self.fromIndex + index) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
         tmp0_this = self
         tmp1 = tmp0_this._size
-        tmp0_this._size = (tmp1 - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        tmp0_this._size = (((tmp1 - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         Unit_getInstance()
         return result
     
     def set_ddb1qf_k_(self, index, element):
         Companion_getInstance().checkElementIndex_rvwcgf_k_(index, self._size)
-        return self.list.set_ddb1qf_k_((self.fromIndex + index).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000), element)
+        return self.list.set_ddb1qf_k_((((self.fromIndex + index) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000, element)
     
     def _get_size__0_k_(self):
         return self._size
@@ -8055,7 +8055,7 @@ class AbstractMutableList(AbstractMutableCollection, MutableList):
         while tmp0_iterator.hasNext_0_k_():
             e = tmp0_iterator.next_0_k_()
             tmp1 = _index
-            _index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            _index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             self.add_vz2mgm_k_(tmp1, e)
             changed = True
         
@@ -8085,7 +8085,7 @@ class AbstractMutableList(AbstractMutableCollection, MutableList):
         if inductionVariable <= last:
             while True:
                 index = inductionVariable
-                inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 if self.get_ha5a7z_k_(index) == element:
                     return index
                 
@@ -8101,7 +8101,7 @@ class AbstractMutableList(AbstractMutableCollection, MutableList):
         if 0 <= inductionVariable:
             while True:
                 index = inductionVariable
-                inductionVariable = (inductionVariable + -1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                inductionVariable = (((inductionVariable + -1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 if self.get_ha5a7z_k_(index) == element:
                     return index
                 
@@ -8123,12 +8123,12 @@ class AbstractMutableList(AbstractMutableCollection, MutableList):
     
     def removeRange_rvwcgf_k_(self, fromIndex, toIndex):
         iterator = self.listIterator_ha5a7z_k_(fromIndex)
-        tmp0_repeat_0 = (toIndex - fromIndex).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        tmp0_repeat_0 = (((toIndex - fromIndex) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         inductionVariable = 0
         if inductionVariable < tmp0_repeat_0:
             while True:
                 index_2 = inductionVariable
-                inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 iterator.next_0_k_()
                 Unit_getInstance()
                 iterator.remove_sv8swh_k_()
@@ -8264,7 +8264,7 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
         tmp0_asDynamic_0.push(element)
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount__0_k_()
-        tmp0_this._set_modCount__majfzk_k_((tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp0_this._set_modCount__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
         Unit_getInstance()
         return True
     
@@ -8274,7 +8274,7 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
         tmp0_asDynamic_0.splice(insertionRangeCheck(self, index), 0, element)
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount__0_k_()
-        tmp0_this._set_modCount__majfzk_k_((tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp0_this._set_modCount__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
         Unit_getInstance()
     
     def addAll_dxd4eo_k_(self, elements):
@@ -8289,7 +8289,7 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
         tmp.array = kotlin_Array_kotlin_Any__(tmp0_plus_0.concat(tmp1_plus_0))
         tmp1_this = self
         tmp2 = tmp1_this._get_modCount__0_k_()
-        tmp1_this._set_modCount__majfzk_k_((tmp2 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp1_this._set_modCount__majfzk_k_((((tmp2 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
         Unit_getInstance()
         return True
     
@@ -8318,7 +8318,7 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
         
         tmp1_this = self
         tmp2 = tmp1_this._get_modCount__0_k_()
-        tmp1_this._set_modCount__majfzk_k_((tmp2 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp1_this._set_modCount__majfzk_k_((((tmp2 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
         Unit_getInstance()
         return True
     
@@ -8328,7 +8328,7 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
         Unit_getInstance()
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount__0_k_()
-        tmp0_this._set_modCount__majfzk_k_((tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp0_this._set_modCount__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
         Unit_getInstance()
         if index == _get_lastIndex__4(self):
             tmp0_asDynamic_0 = self.array
@@ -8342,17 +8342,17 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
     def remove_2bq_k_(self, element):
         self.checkIsMutable_sv8swh_k_()
         inductionVariable = 0
-        last = (len(self.array) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        last = (((len(self.array) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         if inductionVariable <= last:
             while True:
                 index = inductionVariable
-                inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 if self.array[index] == element:
                     tmp0_asDynamic_0 = self.array
                     tmp0_asDynamic_0.splice(index, 1)
                     tmp1_this = self
                     tmp2 = tmp1_this._get_modCount__0_k_()
-                    tmp1_this._set_modCount__majfzk_k_((tmp2 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+                    tmp1_this._set_modCount__majfzk_k_((((tmp2 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
                     Unit_getInstance()
                     return True
                 
@@ -8367,10 +8367,10 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
         self.checkIsMutable_sv8swh_k_()
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount__0_k_()
-        tmp0_this._set_modCount__majfzk_k_((tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp0_this._set_modCount__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
         Unit_getInstance()
         tmp0_asDynamic_0 = self.array
-        tmp0_asDynamic_0.splice(fromIndex, (toIndex - fromIndex).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp0_asDynamic_0.splice(fromIndex, (((toIndex - fromIndex) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     
     def clear_sv8swh_k_(self):
         self.checkIsMutable_sv8swh_k_()
@@ -8378,7 +8378,7 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
         tmp.array = kotlin_Array_kotlin_Any__(js('[]'))
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount__0_k_()
-        tmp0_this._set_modCount__majfzk_k_((tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp0_this._set_modCount__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
         Unit_getInstance()
     
     def indexOf_2bq_k_(self, element):
@@ -8566,7 +8566,7 @@ class BufferedOutputToConsoleLog_0(BufferedOutput_0):
             tmp0_this._set_buffer__a4enbm_k_(tmp + kotlin_String(tmp1_substring_0.substring(0, i)))
             self.flush_sv8swh_k_()
             tmp2_substring_0 = s
-            tmp3_substring_0 = (i + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp3_substring_0 = (((i + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             s = kotlin_String(tmp2_substring_0.substring(tmp3_substring_0))
         
         tmp1_this = self
@@ -9220,7 +9220,7 @@ class KTypeImpl(KType):
         return tmp
     
     def hashCode(self):
-        return (imul((imul(hashCode(self.classifier), 31) + hashCode(self.arguments)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000), 31) + self.isMarkedNullable.__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        return (((imul((((imul(hashCode(self.classifier), 31) + hashCode(self.arguments)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000, 31) + (((self.isMarkedNullable + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     
     def toString(self):
         tmp = self.classifier
@@ -9337,9 +9337,9 @@ class KTypeParameterImpl(KTypeParameter):
     
     def hashCode(self):
         result = getStringHashCode(self.name)
-        result = (imul(result, 31) + hashCode(self.upperBounds)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-        result = (imul(result, 31) + self.variance.hashCode()).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-        result = (imul(result, 31) + self.isReified.__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        result = (((imul(result, 31) + hashCode(self.upperBounds)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+        result = (((imul(result, 31) + self.variance.hashCode()) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+        result = (((imul(result, 31) + (((self.isReified + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         return result
     
     def equals(self, other):
@@ -9724,16 +9724,16 @@ class StringBuilder(Appendable, CharSequence):
     
     def reverse_0_k_(self):
         reversed = ''
-        index = (len(self.string) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        index = (((len(self.string) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         while index >= 0:
             tmp = self.string
             tmp0 = index
-            index = (tmp0 - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            index = (((tmp0 - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             low = charSequenceGet(tmp, tmp0)
             if (index >= 0) if (isLowSurrogate(low)) else (False):
                 tmp = self.string
                 tmp1 = index
-                index = (tmp1 - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                index = (((tmp1 - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 high = charSequenceGet(tmp, tmp1)
                 if isHighSurrogate(high):
                     reversed = (reversed + high) + low
@@ -9875,7 +9875,7 @@ class StringBuilder(Appendable, CharSequence):
             if inductionVariable < newLength:
                 while True:
                     i = inductionVariable
-                    inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                    inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                     tmp1_this = self
                     tmp1_this.string = tmp1_this.string + Char_0(0)
                     if inductionVariable < newLength:
@@ -9911,7 +9911,7 @@ class StringBuilder(Appendable, CharSequence):
         tmp0_substring_0 = self.string
         tmp = kotlin_String(tmp0_substring_0.substring(0, index)) + value
         tmp1_substring_0 = self.string
-        tmp2_substring_0 = (index + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        tmp2_substring_0 = (((index + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         tmp.string = tmp + kotlin_String(tmp1_substring_0.substring(tmp2_substring_0))
     
     def setRange_sfallt_k_(self, startIndex, endIndex, value):
@@ -9929,7 +9929,7 @@ class StringBuilder(Appendable, CharSequence):
         tmp0_substring_0 = self.string
         tmp = kotlin_String(tmp0_substring_0.substring(0, index))
         tmp1_substring_0 = self.string
-        tmp2_substring_0 = (index + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        tmp2_substring_0 = (((index + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         tmp.string = tmp + kotlin_String(tmp1_substring_0.substring(tmp2_substring_0))
         return self
     
@@ -9944,15 +9944,15 @@ class StringBuilder(Appendable, CharSequence):
     
     def toCharArray_tnuj0b_k_(self, destination, destinationOffset, startIndex, endIndex):
         Companion_getInstance().checkBoundsIndexes_zd700_k_(startIndex, endIndex, self._get_length__0_k_())
-        Companion_getInstance().checkBoundsIndexes_zd700_k_(destinationOffset, ((destinationOffset + endIndex).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000) - startIndex).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000), len(destination))
+        Companion_getInstance().checkBoundsIndexes_zd700_k_(destinationOffset, (((((((destinationOffset + endIndex) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) - startIndex) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000, len(destination))
         dstIndex = destinationOffset
         inductionVariable = startIndex
         if inductionVariable < endIndex:
             while True:
                 index = inductionVariable
-                inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 tmp1 = dstIndex
-                dstIndex = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                dstIndex = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 destination.__setitem__(tmp1, charSequenceGet(self.string, index))
                 if inductionVariable < endIndex:
                     break
@@ -10082,13 +10082,13 @@ def compareTo(self, other, ignoreCase):
         n2 = len(other)
         min = JsMath.min(*(n1, n2))
         if min == 0:
-            return (n1 - n2).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            return (((n1 - n2) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         
         inductionVariable = 0
         if inductionVariable < min:
             while True:
                 index = inductionVariable
-                inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 thisChar = charSequenceGet(self, index)
                 otherChar = charSequenceGet(other, index)
                 if not (thisChar == otherChar):
@@ -10113,7 +10113,7 @@ def compareTo(self, other, ignoreCase):
                 
             
         
-        return (n1 - n2).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        return (((n1 - n2) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     else:
         return compareTo_0(self, other)
     
@@ -10131,7 +10131,7 @@ def concatToString(self):
     last = len(indexedObject)
     while inductionVariable < last:
         char = indexedObject[inductionVariable]
-        inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         result = result + char
     
     return result
@@ -10143,7 +10143,7 @@ def concatToString_0(self, startIndex, endIndex):
     if inductionVariable < endIndex:
         while True:
             index = inductionVariable
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             result = result + self[index]
             if inductionVariable < endIndex:
                 break
@@ -10268,37 +10268,37 @@ class Char_0(Comparable):
         tmp.value = _UShort___get_data__impl_(code) & 65535
     
     def compareTo_wi8o78_k_(self, other):
-        return (self.value - other.value).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        return (((self.value - other.value) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     
     def compareTo_2c5_k_(self, other):
         return self.compareTo_wi8o78_k_((kotlin_Char(other)) if (isinstance(other, Char_0)) else (THROW_CCE()))
     
     def plus_ha5a7z_k_(self, other):
-        return numberToChar((self.value + other).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        return numberToChar((((self.value + other) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     
     def minus_wi8o78_k_(self, other):
-        return (self.value - other.value).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        return (((self.value - other.value) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     
     def minus_ha5a7z_k_(self, other):
-        return numberToChar((self.value - other).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        return numberToChar((((self.value - other) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     
     def inc_0_k_(self):
-        return numberToChar((self.value + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        return numberToChar((((self.value + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     
     def dec_0_k_(self):
-        return numberToChar((self.value - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        return numberToChar((((self.value - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     
     def rangeTo_wi8o78_k_(self, other):
         return CharRange(self, other)
     
     def toByte_0_k_(self):
-        return self.value.__add__(0x80).__and__(0xff).__sub__(0x80)
+        return ((self.value + 0x80) & 0xff) - 0x80
     
     def toChar_0_k_(self):
         return self
     
     def toShort_0_k_(self):
-        return self.value.__add__(0x8000).__and__(0xffff).__sub__(0x8000)
+        return ((self.value + 0x8000) & 0xffff) - 0x8000
     
     def toInt_0_k_(self):
         return self.value
@@ -10866,11 +10866,11 @@ def DefaultConstructorMarker_getInstance():
 
 def fillArrayVal(array, initValue):
     inductionVariable = 0
-    last = (len(array) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    last = (((len(array) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
         while True:
             i = inductionVariable
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             array.__setitem__(i, initValue)
             if not (i == last):
                 break
@@ -10885,7 +10885,7 @@ def arrayWithFun(size, init):
     i_2 = 0
     while not (i_2 == len(result_1)):
         result_1.__setitem__(i_2, init(i_2))
-        i_2 = (i_2 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        i_2 = (((i_2 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         Unit_getInstance()
     
     return result_1
@@ -10895,7 +10895,7 @@ def fillArrayFun(array, init):
     i = 0
     while not (i == len(result)):
         result.__setitem__(i, init(i))
-        i = (i + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        i = (((i + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         Unit_getInstance()
     
     return result
@@ -10994,7 +10994,7 @@ class _no_name_provided__0(Iterator_3):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp0_this.index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self.index))
@@ -11030,7 +11030,7 @@ class _no_name_provided__2(BooleanIterator):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp0_this.index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self.index))
@@ -11069,7 +11069,7 @@ class _no_name_provided__3(CharIterator):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp0_this.index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self.index))
@@ -11108,7 +11108,7 @@ class _no_name_provided__4(ByteIterator):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp0_this.index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self.index))
@@ -11147,7 +11147,7 @@ class _no_name_provided__5(ShortIterator):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp0_this.index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self.index))
@@ -11186,7 +11186,7 @@ class _no_name_provided__6(IntIterator):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp0_this.index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self.index))
@@ -11225,7 +11225,7 @@ class _no_name_provided__7(FloatIterator):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp0_this.index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self.index))
@@ -11264,7 +11264,7 @@ class _no_name_provided__8(LongIterator):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp0_this.index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self.index))
@@ -11303,7 +11303,7 @@ class _no_name_provided__9(DoubleIterator):
         if not (self.index == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this.index
-            tmp0_this.index = (tmp1 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            tmp0_this.index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self.index))
@@ -11350,10 +11350,10 @@ highIndex = None
 def getNumberHashCode(obj):
     tmp0_unsafeCast_0 = jsBitwiseOr(obj, 0)
     if kotlin_Any_(tmp0_unsafeCast_0) is obj:
-        return obj.__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        return ((obj + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     
     bufFloat64.__setitem__(0, obj)
-    return (imul(bufInt32[highIndex], 31) + bufInt32[lowIndex]).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    return (((imul(bufInt32[highIndex], 31) + bufInt32[lowIndex]) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
 
 def bufFloat64_init_():
     tmp0_unsafeCast_0 = Float64Array(buf)
@@ -11556,13 +11556,13 @@ def getStringHashCode(str):
     hash = 0
     length = len(str)
     inductionVariable = 0
-    last = (length - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    last = (((length - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
         while True:
             i = inductionVariable
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             code = kotlin_Int(str.charCodeAt(i))
-            hash = (imul(hash, 31) + code).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            hash = (((imul(hash, 31) + code) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             if not (i == last):
                 break
             
@@ -12032,13 +12032,13 @@ class Long(Number_0, Comparable):
         return compareTo_0(self.toDouble_0_k_(), other)
     
     def plus_wi8e9i_k_(self, other):
-        return (self + other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        return (((self + other) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     
     def plus_dip2j2_k_(self, other):
-        return (self + other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        return (((self + other) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     
     def plus_ha5a7z_k_(self, other):
-        return (self + other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        return (((self + other) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     
     def plus_wiekkq_k_(self, other):
         return add(self, other)
@@ -12050,13 +12050,13 @@ class Long(Number_0, Comparable):
         return self.toDouble_0_k_() + other
     
     def minus_wi8e9i_k_(self, other):
-        return (self - other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        return (((self - other) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     
     def minus_dip2j2_k_(self, other):
-        return (self - other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        return (((self - other) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     
     def minus_ha5a7z_k_(self, other):
-        return (self - other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        return (((self - other) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     
     def minus_wiekkq_k_(self, other):
         return subtract(self, other)
@@ -12068,13 +12068,13 @@ class Long(Number_0, Comparable):
         return self.toDouble_0_k_() - other
     
     def times_wi8e9i_k_(self, other):
-        return (self * other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        return (((self * other) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     
     def times_dip2j2_k_(self, other):
-        return (self * other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        return (((self * other) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     
     def times_ha5a7z_k_(self, other):
-        return (self * other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        return (((self * other) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     
     def times_wiekkq_k_(self, other):
         return multiply(self, other)
@@ -12086,13 +12086,13 @@ class Long(Number_0, Comparable):
         return self.toDouble_0_k_() * other
     
     def div_wi8e9i_k_(self, other):
-        return (self // other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        return (((self // other) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     
     def div_dip2j2_k_(self, other):
-        return (self // other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        return (((self // other) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     
     def div_ha5a7z_k_(self, other):
-        return (self // other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        return (((self // other) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     
     def div_wiekkq_k_(self, other):
         return divide(self, other)
@@ -12122,16 +12122,16 @@ class Long(Number_0, Comparable):
         return self.toDouble_0_k_() % other
     
     def inc_0_k_(self):
-        return (self + 1).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        return (((self + 1) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     
     def dec_0_k_(self):
-        return (self - 1).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        return (((self - 1) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     
     def unaryPlus_0_k_(self):
         return self
     
     def unaryMinus_0_k_(self):
-        return (~self + 1).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+        return (((~self + 1) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
     
     def rangeTo_wi8e9i_k_(self, other):
         return numberRangeToLong(self, other)
@@ -12167,13 +12167,13 @@ class Long(Number_0, Comparable):
         return Long(~self.low, ~self.high)
     
     def toByte_0_k_(self):
-        return self.low.__add__(0x80).__and__(0xff).__sub__(0x80)
+        return ((self.low + 0x80) & 0xff) - 0x80
     
     def toChar_0_k_(self):
         return numberToChar(self.low)
     
     def toShort_0_k_(self):
-        return self.low.__add__(0x8000).__and__(0xffff).__sub__(0x8000)
+        return ((self.low + 0x8000) & 0xffff) - 0x8000
     
     def toInt_0_k_(self):
         return self.low
@@ -12250,21 +12250,21 @@ def add(self, other):
     c32 = 0
     c16 = 0
     c00 = 0
-    c00 = (c00 + (a00 + b00).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-    c16 = (c16 + ((c00 & 0xffff_ffff) >> 16)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    c00 = (((c00 + ((((a00 + b00) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+    c16 = (((c16 + ((c00 & 0xffff_ffff) >> 16)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     c00 = c00 & 65535
-    c16 = (c16 + (a16 + b16).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-    c32 = (c32 + ((c16 & 0xffff_ffff) >> 16)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    c16 = (((c16 + ((((a16 + b16) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+    c32 = (((c32 + ((c16 & 0xffff_ffff) >> 16)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     c16 = c16 & 65535
-    c32 = (c32 + (a32 + b32).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-    c48 = (c48 + ((c32 & 0xffff_ffff) >> 16)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    c32 = (((c32 + ((((a32 + b32) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+    c48 = (((c48 + ((c32 & 0xffff_ffff) >> 16)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     c32 = c32 & 65535
-    c48 = (c48 + (a48 + b48).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    c48 = (((c48 + ((((a48 + b48) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     c48 = c48 & 65535
-    return Long((c16 << 16).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000) | c00, (c48 << 16).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000) | c32)
+    return Long(((((c16 << 16) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) | c00, ((((c48 << 16) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) | c32)
 
 def subtract(self, other):
-    return add(self, (-other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+    return add(self, ((-other + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def multiply(self, other):
     if isZero(self):
@@ -12302,27 +12302,27 @@ def multiply(self, other):
     c32 = 0
     c16 = 0
     c00 = 0
-    c00 = (c00 + imul(a00, b00)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-    c16 = (c16 + ((c00 & 0xffff_ffff) >> 16)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    c00 = (((c00 + imul(a00, b00)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+    c16 = (((c16 + ((c00 & 0xffff_ffff) >> 16)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     c00 = c00 & 65535
-    c16 = (c16 + imul(a16, b00)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-    c32 = (c32 + ((c16 & 0xffff_ffff) >> 16)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    c16 = (((c16 + imul(a16, b00)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+    c32 = (((c32 + ((c16 & 0xffff_ffff) >> 16)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     c16 = c16 & 65535
-    c16 = (c16 + imul(a00, b16)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-    c32 = (c32 + ((c16 & 0xffff_ffff) >> 16)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    c16 = (((c16 + imul(a00, b16)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+    c32 = (((c32 + ((c16 & 0xffff_ffff) >> 16)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     c16 = c16 & 65535
-    c32 = (c32 + imul(a32, b00)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-    c48 = (c48 + ((c32 & 0xffff_ffff) >> 16)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    c32 = (((c32 + imul(a32, b00)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+    c48 = (((c48 + ((c32 & 0xffff_ffff) >> 16)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     c32 = c32 & 65535
-    c32 = (c32 + imul(a16, b16)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-    c48 = (c48 + ((c32 & 0xffff_ffff) >> 16)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    c32 = (((c32 + imul(a16, b16)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+    c48 = (((c48 + ((c32 & 0xffff_ffff) >> 16)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     c32 = c32 & 65535
-    c32 = (c32 + imul(a00, b32)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-    c48 = (c48 + ((c32 & 0xffff_ffff) >> 16)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    c32 = (((c32 + imul(a00, b32)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+    c48 = (((c48 + ((c32 & 0xffff_ffff) >> 16)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     c32 = c32 & 65535
-    c48 = (c48 + (((imul(a48, b00) + imul(a32, b16)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000) + imul(a16, b32)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000) + imul(a00, b48)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    c48 = (((c48 + ((((((((((((imul(a48, b00) + imul(a32, b16)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) + imul(a16, b32)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) + imul(a00, b48)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     c48 = c48 & 65535
-    return Long((c16 << 16).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000) | c00, (c48 << 16).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000) | c32)
+    return Long(((((c16 << 16) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) | c00, ((((c48 << 16) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) | c32)
 
 def divide(self, other):
     if isZero(other):
@@ -12337,12 +12337,12 @@ def divide(self, other):
             return ONE
         else:
             halfThis = shiftRight(self, 1)
-            approx = shiftLeft((halfThis // other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000), 1)
+            approx = shiftLeft((((halfThis // other) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000, 1)
             if equalsLong(approx, ZERO):
                 return (ONE) if (isNegative(other)) else (NEG_ONE)
             else:
                 rem = subtract(self, multiply(other, approx))
-                return add(approx, (rem // other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+                return add(approx, (((rem // other) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
             
         
     elif equalsLong(other, MIN_VALUE):
@@ -12350,13 +12350,13 @@ def divide(self, other):
     
     if isNegative(self):
         if isNegative(other):
-            tmp = (negate(self) // negate(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+            tmp = (((negate(self) // negate(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
         else:
-            tmp = negate((negate(self) // other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+            tmp = negate((((negate(self) // other) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
         
         return tmp
     elif isNegative(other):
-        return negate((self // negate(other)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000))
+        return negate((((self // negate(other)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
     
     res = ZERO
     rem = self
@@ -12381,16 +12381,16 @@ def divide(self, other):
     return res
 
 def modulo(self, other):
-    return subtract(self, multiply((self // other).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000), other))
+    return subtract(self, multiply((((self // other) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000, other))
 
 def shiftLeft(self, numBits):
     numBits = numBits & 63
     if numBits == 0:
         return self
     elif numBits < 32:
-        return Long((self.low << numBits).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000), (self.high << numBits).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000) | ((self.low & 0xffff_ffff) >> (32 - numBits).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)))
+        return Long((((self.low << numBits) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000, ((((self.high << numBits) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) | ((self.low & 0xffff_ffff) >> ((((32 - numBits) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)))
     else:
-        return Long(0, (self.low << (numBits - 32).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        return Long(0, (((self.low << ((((numBits - 32) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     
 
 def shiftRight(self, numBits):
@@ -12398,9 +12398,9 @@ def shiftRight(self, numBits):
     if numBits == 0:
         return self
     elif numBits < 32:
-        return Long(((self.low & 0xffff_ffff) >> numBits) | (self.high << (32 - numBits).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000), self.high >> numBits)
+        return Long(((self.low & 0xffff_ffff) >> numBits) | ((((self.high << ((((32 - numBits) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000), self.high >> numBits)
     else:
-        return Long(self.high >> (numBits - 32).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000), (0) if (self.high >= 0) else (-1))
+        return Long(self.high >> ((((numBits - 32) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000), (0) if (self.high >= 0) else (-1))
     
 
 def shiftRightUnsigned(self, numBits):
@@ -12408,12 +12408,12 @@ def shiftRightUnsigned(self, numBits):
     if numBits == 0:
         return self
     elif numBits < 32:
-        return Long(((self.low & 0xffff_ffff) >> numBits) | (self.high << (32 - numBits).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000), (self.high & 0xffff_ffff) >> numBits)
+        return Long(((self.low & 0xffff_ffff) >> numBits) | ((((self.high << ((((32 - numBits) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000), (self.high & 0xffff_ffff) >> numBits)
     else:
         if numBits == 32:
             tmp = Long(self.high, 0)
         else:
-            tmp = Long((self.high & 0xffff_ffff) >> (numBits - 32).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000), 0)
+            tmp = Long((self.high & 0xffff_ffff) >> ((((numBits - 32) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000), 0)
         
         return tmp
     
@@ -12437,8 +12437,8 @@ def toStringImpl(self, radix):
     if isNegative(self):
         if equalsLong(self, MIN_VALUE):
             radixLong = fromInt(radix)
-            div = (self // radixLong).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
-            rem = subtract(multiply(div, radixLong), self).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            div = (((self // radixLong) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
+            rem = ((subtract(multiply(div, radixLong), self) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp = toStringImpl(div, radix)
             tmp0_unsafeCast_0 = rem.toString(radix)
             return tmp + kotlin_Any_(tmp0_unsafeCast_0)
@@ -12450,8 +12450,8 @@ def toStringImpl(self, radix):
     rem = self
     result = ''
     while True:
-        remDiv = (rem // radixToPower).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
-        intval = subtract(rem, multiply(remDiv, radixToPower)).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        remDiv = (((rem // radixToPower) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
+        intval = ((subtract(rem, multiply(remDiv, radixToPower)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         tmp1_unsafeCast_0 = intval.toString(radix)
         digits = kotlin_Any_(tmp1_unsafeCast_0)
         rem = remDiv
@@ -12478,7 +12478,7 @@ def isOdd(self):
     return self.low & 1 == 1
 
 def negate(self):
-    return (-self).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+    return ((-self + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
 
 def lessThan(self, other):
     return compare(self, other) < 0
@@ -12528,11 +12528,11 @@ def arrayConcat(*args):
     tmp0_unsafeCast_0 = js('Array(len)')
     typed = kotlin_Any_(tmp0_unsafeCast_0)
     inductionVariable = 0
-    last = (len - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    last = (((len - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
         while True:
             i = inductionVariable
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             arr = args[i]
             if not ((isArray(arr)) if (not (arr == None)) else (False)):
                 typed.__setitem__(i, T(js('[]').slice.call(arr)))
@@ -12549,14 +12549,14 @@ def arrayConcat(*args):
 def primitiveArrayConcat(*args):
     size_local = 0
     inductionVariable = 0
-    last = (len(args) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    last = (((len(args) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
         while True:
             i = inductionVariable
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp = size_local
             tmp0_unsafeCast_0 = args[i]
-            size_local = (tmp + len(kotlin_Any_(tmp0_unsafeCast_0))).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            size_local = (((tmp + len(kotlin_Any_(tmp0_unsafeCast_0))) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             if not (i == last):
                 break
             
@@ -12571,21 +12571,21 @@ def primitiveArrayConcat(*args):
     
     size_local = 0
     inductionVariable = 0
-    last = (len(args) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    last = (((len(args) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
         while True:
             i = inductionVariable
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp3_unsafeCast_0 = args[i]
             arr = kotlin_Any_(tmp3_unsafeCast_0)
             inductionVariable = 0
-            last = (len(arr) - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            last = (((len(arr) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             if inductionVariable <= last:
                 while True:
                     j = inductionVariable
-                    inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                    inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                     tmp3 = size_local
-                    size_local = (tmp3 + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+                    size_local = (((tmp3 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                     result.__setitem__(tmp3, arr[j])
                     if not (j == last):
                         break
@@ -12605,7 +12605,7 @@ def taggedArrayCopy(array):
     return kotlin_Any_(res)
 
 def numberToByte(a):
-    return toByte(a.__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return toByte(((a + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def toByte(a):
     tmp0_unsafeCast_0 = js('a << 24 >> 24')
@@ -12613,7 +12613,7 @@ def toByte(a):
 
 def numberToInt(a):
     if isinstance(a, Long):
-        tmp = kotlin_Long(a).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+        tmp = ((kotlin_Long(a) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     elif True:
         tmp = doubleToInt(kotlin_Double(a))
     
@@ -12627,7 +12627,7 @@ def numberToDouble(a):
     return kotlin_Any_(tmp0_unsafeCast_0)
 
 def numberToShort(a):
-    return toShort(a.__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return toShort(((a + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def toShort(a):
     tmp0_unsafeCast_0 = js('a << 16 >> 16')
@@ -12642,8 +12642,8 @@ def numberToLong(a):
     return tmp
 
 def numberToChar(a):
-    tmp0_toUShort_0 = a.__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
-    return Char_0(_UShort___init__impl_(tmp0_toUShort_0.__add__(0x8000).__and__(0xffff).__sub__(0x8000)))
+    tmp0_toUShort_0 = ((a + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+    return Char_0(_UShort___init__impl_(((tmp0_toUShort_0 + 0x8000) & 0xffff) - 0x8000))
 
 def toLong(a):
     return fromInt(kotlin_Int(a))
@@ -12652,7 +12652,7 @@ def numberRangeToNumber(start, endInclusive):
     return IntRange(kotlin_Int(start), kotlin_Int(endInclusive))
 
 def numberRangeToLong(start, endInclusive):
-    return LongRange(start.__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000), kotlin_Long(endInclusive))
+    return LongRange(((start + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000, kotlin_Long(endInclusive))
 
 def _get_propertyRefClassMetadataCache_():
     return propertyRefClassMetadataCache
@@ -12728,7 +12728,7 @@ def isInterfaceImpl(ctor, iface):
         last = len(indexedObject)
         while inductionVariable < last:
             i = indexedObject[inductionVariable]
-            inductionVariable = (inductionVariable + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+            inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             if isInterfaceImpl(i, iface):
                 return True
             
@@ -13721,35 +13721,35 @@ def exampleFromAstTest():
     
 
 def isPowerOfTwo(n):
-    return n & (n - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000) == 0
+    return n & ((((n - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) == 0
 
 def factorial(n):
     tmp0_subject = n <= 1
     if tmp0_subject == True:
         tmp = 1
     elif tmp0_subject == False:
-        tmp = n * factorial((n - 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        tmp = n * factorial((((n - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     else:
         noWhenBranchMatchedException()
     
     return tmp
 
 def numberOfCombinations(n, k):
-    return (factorial(n) // (factorial(k) * factorial((n - k).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)).__add__(0x8000_0000_0000_0000).__and__(0xffff_ffff_ffff_ffff).__sub__(0x8000_0000_0000_0000)
+    return (((factorial(n) // ((((factorial(k) * factorial((((n - k) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
 
 def sumOverflowDemo(a, b):
-    return (a + b).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000)
+    return (((a + b) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
 
 def execute20(f):
     return f(20)
 
 def execute20Doubled():
-    return execute20(lambda it: (it + it).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+    return execute20(lambda it: (((it + it) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def lambdaAndCapturing():
     capt = {'_v': 0}
     def complexFunction_x2__Expr__Return__0():
-        capt.__setitem__('_v', (capt['_v'] + 1).__add__(0x8000_0000).__and__(0xffff_ffff).__sub__(0x8000_0000))
+        capt.__setitem__('_v', (((capt['_v'] + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
         return capt['_v']
     
     l = complexFunction_x2__Expr__Return__0
