@@ -179,9 +179,6 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
             return ExitCode.COMPILATION_ERROR
         }
 
-        // TODO: Handle non-empty main call arguments
-        val mainCallArguments = if (K2JsArgumentConstants.NO_CALL == arguments.main) null else emptyList<String>()
-
         val icCaches = configureLibraries(arguments.cacheDirectories)
 
         // Run analysis if main module is sources
@@ -253,7 +250,6 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
                 module,
                 phaseConfig,
                 if (arguments.irDceDriven) PersistentIrFactory() else IrFactoryImpl,
-                mainArguments = mainCallArguments,
                 generateFullJs = !arguments.irDce,
                 generateDceJs = arguments.irDce,
                 dceRuntimeDiagnostic = RuntimeDiagnostic.resolve(
