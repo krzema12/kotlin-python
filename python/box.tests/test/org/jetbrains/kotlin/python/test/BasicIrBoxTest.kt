@@ -62,15 +62,11 @@ abstract class BasicIrBoxTest(
 
     private val testGroupOutputDirForCompilation = File(pathToRootOutputDir + "out/" + testGroupOutputDirPrefix)
 
-    fun doTest(filePath: String) {
-        doTest(filePath, "OK")
-    }
-
     private val compilationCache = mutableMapOf<String, String>()
 
     private val cachedDependencies = mutableMapOf<String, Collection<String>>()
 
-    private fun doTest(filePath: String, expectedResult: String) {
+    protected fun doTest(filePath: String) {
         compilationCache.clear()
         cachedDependencies.clear()
         val file = File(filePath)
@@ -163,7 +159,7 @@ abstract class BasicIrBoxTest(
             val skipRunningGeneratedCode = InTextDirectivesUtils.dontRunGeneratedCode(pythonBackend, file)
 
             if (!skipRunningGeneratedCode) {
-                runGeneratedCode(allPyFiles, expectedResult)
+                runGeneratedCode(allPyFiles)
             } else {
                 val ignored = InTextDirectivesUtils.isIgnoredTarget(
                     pythonBackend, file,
@@ -481,15 +477,12 @@ abstract class BasicIrBoxTest(
         writeText(text)
     }
 
-    private fun runGeneratedCode(
-        jsFiles: List<String>,
-        expectedResult: String,
-    ) {
+    private fun runGeneratedCode(jsFiles: List<String>) {
         // TODO: should we do anything special for module systems?
         // TODO: return list of js from translateFiles and provide then to this function with other js files
 
         val allFiles = jsFiles.flatMap { file -> cachedDependencies[File(file).absolutePath]?.let { deps -> deps + file } ?: listOf(file) }
-        PythonTestChecker.check(allFiles, expectedResult)
+        PythonTestChecker.check(allFiles)
     }
 
     companion object {
