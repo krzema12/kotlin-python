@@ -17,9 +17,11 @@ class PythonExecutionException(override val message: String) : RuntimeException(
 
 object PythonTestChecker {
 
-    fun check(files: List<String>, expectedResult: String) {
+    const val EXPECTED_RESULT = "OK"
+
+    fun check(files: List<String>) {
         val actualResult = run(files)
-        assertEquals(expectedResult, actualResult)
+        assertEquals(EXPECTED_RESULT, actualResult)
     }
 
     private fun run(files: List<String>): Any {
