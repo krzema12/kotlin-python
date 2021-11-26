@@ -73,7 +73,7 @@ Setting `maxParallelForks` isn't required anymore since now Gradle parallelism i
 #### Generating reports
 
 ```shell script
-python/experiments/generate-box-tests-reports.main.kts
+JAVA_OPTS="-Xmx1G" python/experiments/generate-box-tests-reports.main.kts
 ```
 
 It will generate various reports and summaries:
