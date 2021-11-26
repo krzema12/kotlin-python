@@ -213,9 +213,9 @@ text {
         <line x1="0.0" y1="0.0" x2="0.0" y2="451.0" stroke-width="1.0" stroke="rgb(0,0,0)" stroke-opacity="1.0">
         </line>
       </g>
-      <g transform="translate(42.5 0.0 ) " clip-path="url(#J5jbI0)" clip-bounds-jfx="[rect (0.0, 0.0), (840.95, 451.0)]">
+      <g transform="translate(42.5 0.0 ) " clip-path="url(#5YTWkG)" clip-bounds-jfx="[rect (0.0, 0.0), (840.95, 451.0)]">
         <defs>
-          <clipPath id="J5jbI0">
+          <clipPath id="5YTWkG">
             <rect x="0.0" y="0.0" width="840.95" height="451.0">
             </rect>
           </clipPath>
@@ -229,9 +229,9 @@ text {
           </path>
         </g>
       </g>
-      <g transform="translate(42.5 0.0 ) " clip-path="url(#C4vYpi)" clip-bounds-jfx="[rect (0.0, 0.0), (840.95, 451.0)]">
+      <g transform="translate(42.5 0.0 ) " clip-path="url(#kMVpby)" clip-bounds-jfx="[rect (0.0, 0.0), (840.95, 451.0)]">
         <defs>
-          <clipPath id="C4vYpi">
+          <clipPath id="kMVpby">
             <rect x="0.0" y="0.0" width="840.95" height="451.0">
             </rect>
           </clipPath>

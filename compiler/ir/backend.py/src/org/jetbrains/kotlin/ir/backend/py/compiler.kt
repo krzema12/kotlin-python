@@ -39,9 +39,7 @@ fun compile(
     dceDriven: Boolean = false,
     dceRuntimeDiagnostic: RuntimeDiagnostic? = null,
     es6mode: Boolean = false,
-    multiModule: Boolean = false,
     relativeRequirePath: Boolean = false,
-    propertyLazyInitialization: Boolean,
     verifySignatures: Boolean = true,
 ): CompilerResult {
     val (moduleFragment: IrModuleFragment, dependencyModules, irBuiltIns, symbolTable, deserializer) =
@@ -65,7 +63,6 @@ fun compile(
         configuration,
         es6mode = es6mode,
         dceRuntimeDiagnostic = dceRuntimeDiagnostic,
-        propertyLazyInitialization = propertyLazyInitialization,
     )
 
     // Load declarations referenced during `context` initialization
@@ -98,7 +95,6 @@ fun compile(
             context,
             fullJs = true,
             dceJs = false,
-            multiModule = multiModule,
             relativeRequirePath = relativeRequirePath
         )
         return transformer.generateModule(allModules)
@@ -108,7 +104,6 @@ fun compile(
             context,
             fullJs = generateFullJs,
             dceJs = generateDceJs,
-            multiModule = multiModule,
             relativeRequirePath = relativeRequirePath
         )
         return transformer.generateModule(allModules)

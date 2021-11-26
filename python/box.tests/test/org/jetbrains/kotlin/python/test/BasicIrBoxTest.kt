@@ -24,7 +24,6 @@ import org.jetbrains.kotlin.ir.backend.py.PyCode
 import org.jetbrains.kotlin.ir.backend.py.compile
 import org.jetbrains.kotlin.ir.backend.py.jsPhases
 import org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFactory
-import org.jetbrains.kotlin.js.config.ErrorTolerancePolicy
 import org.jetbrains.kotlin.js.config.JSConfigurationKeys
 import org.jetbrains.kotlin.js.config.JsConfig
 import org.jetbrains.kotlin.js.config.SourceMapSourceEmbedding
@@ -75,16 +74,6 @@ abstract class BasicIrBoxTest(
 
         val needsFullIrRuntime = KJS_WITH_FULL_RUNTIME.matcher(fileContent).find()
 
-        val runPlainBoxFunction = RUN_PLAIN_BOX_FUNCTION.matcher(fileContent).find()
-        val inferMainModule = INFER_MAIN_MODULE.matcher(fileContent).find()
-        val expectActualLinker = EXPECT_ACTUAL_LINKER.matcher(fileContent).find()
-        val errorPolicyMatcher = ERROR_POLICY_PATTERN.matcher(fileContent)
-        val errorPolicy = if (errorPolicyMatcher.find()) ErrorTolerancePolicy.resolvePolicy(errorPolicyMatcher.group(1)) else ErrorTolerancePolicy.DEFAULT
-
-        val splitPerModule = SPLIT_PER_MODULE.matcher(fileContent).find()
-
-        val propertyLazyInitialization = PROPERTY_LAZY_INITIALIZATION.matcher(fileContent).find()
-
         TestFileFactoryImpl().use { testFactory ->
             val inputFiles = TestFiles.createTestFiles(
                 file.name,
@@ -100,12 +89,11 @@ abstract class BasicIrBoxTest(
 
             val orderedModules = DFS.topologicalOrder(modules.values) { module -> module.dependenciesSymbols.mapNotNull { modules[it] } }
 
-            val testPackage = if (runPlainBoxFunction) null else testFactory.testPackage
+            val testPackage = testFactory.testPackage
 
             val testFunction = TEST_FUNCTION
 
             val mainModuleName = when {
-                inferMainModule -> orderedModules.last().name
                 TEST_MODULE in modules -> TEST_MODULE
                 else -> DEFAULT_MODULE
             }
@@ -130,10 +118,6 @@ abstract class BasicIrBoxTest(
                     testFunction,
                     needsFullIrRuntime,
                     isMainModule,
-                    expectActualLinker,
-                    splitPerModule,
-                    errorPolicy,
-                    propertyLazyInitialization
                 )
 
                 when {
@@ -201,10 +185,6 @@ abstract class BasicIrBoxTest(
         testFunction: String,
         needsFullIrRuntime: Boolean,
         isMainModule: Boolean,
-        expectActualLinker: Boolean,
-        splitPerModule: Boolean,
-        errorIgnorancePolicy: ErrorTolerancePolicy,
-        propertyLazyInitialization: Boolean,
     ) {
         val kotlinFiles = module.files.filter { it.fileName.endsWith(".kt") }
         val testFiles = kotlinFiles.map { it.fileName }
@@ -222,14 +202,12 @@ abstract class BasicIrBoxTest(
             friends,
             multiModule,
             tmpDir,
-            expectActualLinker = expectActualLinker,
-            errorIgnorancePolicy
         )
         val outputFile = File(outputFileName)
 
         translateFiles(
             psiFiles.map(TranslationUnit::SourceFile), outputFile, config,
-            testPackage, testFunction, needsFullIrRuntime, isMainModule, splitPerModule, propertyLazyInitialization,
+            testPackage, testFunction, needsFullIrRuntime, isMainModule,
         )
     }
 
@@ -246,7 +224,7 @@ abstract class BasicIrBoxTest(
 
     private fun createConfig(
         module: TestModule, dependencies: List<String>, allDependencies: List<String>, friends: List<String>, multiModule: Boolean,
-        tmpDir: File, expectActualLinker: Boolean, errorIgnorancePolicy: ErrorTolerancePolicy
+        tmpDir: File,
     ): JsConfig {
         val configuration = environment.configuration.copy()
 
@@ -262,11 +240,6 @@ abstract class BasicIrBoxTest(
         configuration.put(JSConfigurationKeys.FRIEND_PATHS, friends)
 
         configuration.put(CommonConfigurationKeys.MODULE_NAME, module.name.removeSuffix(OLD_MODULE_SUFFIX))
-        configuration.put(JSConfigurationKeys.ERROR_TOLERANCE_POLICY, errorIgnorancePolicy)
-
-        if (errorIgnorancePolicy.allowErrors) {
-            configuration.put(JSConfigurationKeys.DEVELOPER_MODE, true)
-        }
 
         val hasFilesToRecompile = module.hasFilesToRecompile
         configuration.put(JSConfigurationKeys.META_INFO, multiModule)
@@ -283,8 +256,6 @@ abstract class BasicIrBoxTest(
                 File(".").absolutePath.removeSuffix(".") to ""
             )
         )
-
-        configuration.put(CommonConfigurationKeys.EXPECT_ACTUAL_LINKER, expectActualLinker)
 
         return JsConfig(project, configuration, CompilerEnvironment, METADATA_CACHE, (JsConfig.JS_STDLIB + JsConfig.JS_KOTLIN_TEST).toSet())
     }
@@ -388,8 +359,6 @@ abstract class BasicIrBoxTest(
         testFunction: String,
         needsFullIrRuntime: Boolean,
         isMainModule: Boolean,
-        splitPerModule: Boolean,
-        propertyLazyInitialization: Boolean,
     ) {
         val filesToCompile = units.map { (it as TranslationUnit.SourceFile).file }
 
@@ -436,8 +405,6 @@ abstract class BasicIrBoxTest(
                         phaseConfig = phaseConfig,
                         irFactory = PersistentIrFactory(),
                         exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, testFunction))),
-                        multiModule = splitPerModule,
-                        propertyLazyInitialization = propertyLazyInitialization,
                         verifySignatures = true,
                     )
                 } catch (e: Throwable) {
@@ -499,22 +466,10 @@ abstract class BasicIrBoxTest(
         private const val COMMON_FILES_DIR = "_commonFiles/"
         const val COMMON_FILES_DIR_PATH = TEST_DATA_DIR_PATH + COMMON_FILES_DIR
 
-        // Infer main module using dependency graph
-        private val INFER_MAIN_MODULE = Pattern.compile("^// *INFER_MAIN_MODULE", Pattern.MULTILINE)
-
-        // Run top level box function
-        private val RUN_PLAIN_BOX_FUNCTION = Pattern.compile("^// *RUN_PLAIN_BOX_FUNCTION", Pattern.MULTILINE)
-
         private val NO_INLINE_PATTERN = Pattern.compile("^// *NO_INLINE *$", Pattern.MULTILINE)
         private val RECOMPILE_PATTERN = Pattern.compile("^// *RECOMPILE *$", Pattern.MULTILINE)
         private val SOURCE_MAP_SOURCE_EMBEDDING = Regex("^// *SOURCE_MAP_EMBED_SOURCES: ([A-Z]+)*\$", RegexOption.MULTILINE)
         private val KJS_WITH_FULL_RUNTIME = Pattern.compile("^// *KJS_WITH_FULL_RUNTIME *\$", Pattern.MULTILINE)
-        private val EXPECT_ACTUAL_LINKER = Pattern.compile("^// EXPECT_ACTUAL_LINKER *$", Pattern.MULTILINE)
-        private val SPLIT_PER_MODULE = Pattern.compile("^// *SPLIT_PER_MODULE *$", Pattern.MULTILINE)
-
-        private val ERROR_POLICY_PATTERN = Pattern.compile("^// *ERROR_POLICY: *(.+)$", Pattern.MULTILINE)
-
-        private val PROPERTY_LAZY_INITIALIZATION = Pattern.compile("^// *PROPERTY_LAZY_INITIALIZATION *$", Pattern.MULTILINE)
 
         private const val TEST_MODULE = "JS_TESTS"
         private const val DEFAULT_MODULE = "main"
