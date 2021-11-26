@@ -1,16 +1,6 @@
-import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinUsages
-
 plugins {
     kotlin("jvm")
     id("jps-compatible")
-}
-
-val testJsRuntime by configurations.creating {  // todo: remove js stuff
-    attributes {
-        attribute(Usage.USAGE_ATTRIBUTE, objects.named(KotlinUsages.KOTLIN_RUNTIME))
-        attribute(KotlinPlatformType.attribute, KotlinPlatformType.js)
-    }
 }
 
 dependencies {
@@ -21,16 +11,11 @@ dependencies {
     testCompile(projectTests(":compiler:tests-common"))
     testCompileOnly(project(":compiler:frontend"))
     testCompileOnly(project(":compiler:cli"))
-    testCompileOnly(project(":compiler:cli-js"))
     testCompileOnly(project(":compiler:util"))
     testCompileOnly(intellijCoreDep()) { includeJars("intellij-core") }
     testCompileOnly(intellijDep()) { includeJars("idea", "idea_rt", "util") }
     testCompile(project(":compiler:backend.py"))
-    testCompile(project(":compiler:backend.wasm"))
     testCompile(project(":python:py.translator"))
-    testCompile(project(":js:js.serializer"))
-    testCompile(project(":js:js.dce"))
-    testCompile(project(":js:js.engines"))
     testCompile(project(":compiler:incremental-compilation-impl"))
     testCompile(commonDep("junit:junit"))
     testCompile(projectTests(":kotlin-build-common"))
@@ -46,10 +31,6 @@ dependencies {
     testRuntime(intellijDep()) { includeJars("trove4j", "guava", "jdom", rootProject = rootProject) }
 
     testRuntime(kotlinStdlib())
-    testJsRuntime(kotlinStdlib("js"))
-    if (!kotlinBuildProperties.isInJpsBuildIdeaSync) {
-        testJsRuntime(project(":kotlin-test:kotlin-test-js")) // to be sure that kotlin-test-js built before tests runned
-    }
     testRuntime(project(":kotlin-reflect"))
     testRuntime(project(":kotlin-preloader")) // it's required for ant tests
     testRuntime(project(":compiler:backend-common"))
@@ -93,12 +74,7 @@ fun Test.definePythonTestTask(interpreterBinary: String) {
     dependsOn(":kotlin-test:kotlin-test-js-ir:compileKotlinJs")  // todo: remove js stuff
     systemProperty("kotlin.js.kotlin.test.path", "libraries/kotlin.test/js-ir/build/classes/kotlin/js/main")  // todo: remove js stuff
 
-    exclude("org/jetbrains/kotlin/python/test/wasm/semantics/*")  // todo: remove js stuff
-    exclude("org/jetbrains/kotlin/python/test/es6/semantics/*")  // todo: remove js stuff
-
     include("org/jetbrains/kotlin/python/test/ir/semantics/*")
-
-    jvmArgs("-da:jdk.nashorn.internal.runtime.RecompilableScriptFunctionData") // Disable assertion which fails due to a bug in nashorn (KT-23637)
 }
 
 testsJar()
