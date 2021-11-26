@@ -257,9 +257,7 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
                     messageCollector
                 ),
                 dceDriven = arguments.irDceDriven,
-                multiModule = arguments.irPerModule,
                 relativeRequirePath = true,
-                propertyLazyInitialization = arguments.irPropertyLazyInitialization,
             )
 
 

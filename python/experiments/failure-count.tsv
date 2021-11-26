@@ -5,7 +5,7 @@
 170	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
 166	NameError: name 'Unexpected_operator_EQ' is not defined
 105	kotlin.NotImplementedError: An operation is not implemented.
-95	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
+96	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 80	NameError: name 'kotlin_Boolean' is not defined
 72	NameError: name 'undefined' is not defined
 71	NameError: name 'Array' is not defined
@@ -63,6 +63,7 @@
 6	NameError: name 'kotlin_Long' is not defined
 6	TypeError: unsupported operand type(s) for +: 'M' and 'int'
 6	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: 1:2;]>
+6	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: None]>
 5	AttributeError: 'NoneType' object has no attribute 'getValue_1kobyo_k_'
 5	NameError: name 'kotlin_ULong' is not defined
 5	NameError: name 'test_A' is not defined
@@ -70,7 +71,6 @@
 5	TypeError: can only concatenate str (not "NoneType") to str
 5	TypeError: unsupported operand type(s) for &: 'float' and 'int'
 5	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail: None]>
-5	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: None]>
 4	AttributeError: 'Companion_20' object has no attribute 'getO_0_k_'
 4	AttributeError: 'SequenceBuilderIterator' object has no attribute 'constructor'
 4	MemoryError
@@ -101,7 +101,6 @@
 3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetValueImpl' is not defined
 3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrTypeOperatorCallImpl' is not defined
 3	SyntaxError: EOL while scanning string literal
-3	SyntaxError: name 'properties_initialized_DeepRecursive_kt' is used prior to global declaration
 3	UnboundLocalError: local variable 'step' referenced before assignment
 3	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: setOf (62,29) in <path-truncated>
 3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail #1]>
@@ -357,6 +356,7 @@
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Failed: dd.callsSuperDeeperBaseFun()==DeepDerived.deeperBaseFun()]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Failure]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[FakeInt(42) != 42]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[a = None; b = None]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1: 16 != None]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1; r = BBB.baz]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1; r = None]>

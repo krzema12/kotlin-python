@@ -3557,10 +3557,10 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt613	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'Test' and 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt8928	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt9603	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitialization	Failed	PythonExecution	SyntaxError: name 'properties_initialized_DeepRecursive_kt' is used prior to global declaration
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitializationCyclicImports	Failed	PythonExecution	SyntaxError: name 'properties_initialized_DeepRecursive_kt' is used prior to global declaration
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitialization	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitializationCyclicImports	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitializationMultiModule	Failed	Unknown	kotlin.NotImplementedError: An operation is not implemented.
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitializationOrder	Failed	PythonExecution	SyntaxError: name 'properties_initialized_DeepRecursive_kt' is used prior to global declaration
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitializationOrder	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[a = None; b = None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitializationSplitPerModule	Failed	Unknown	kotlin.NotImplementedError: An operation is not implemented.
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testPrimitiveOverrideDefaultAccessor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testPrimitiveOverrideDelegateAccessor	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' is not defined

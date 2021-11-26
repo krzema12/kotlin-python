@@ -23,7 +23,6 @@ class IrModuleToPyTransformer(
     var namer: NameTables = NameTables(emptyList()),
     private val fullJs: Boolean = true,
     private val dceJs: Boolean = false,
-    private val multiModule: Boolean = false,
     private val relativeRequirePath: Boolean = false
 ) {
     fun generateModule(modules: Iterable<IrModuleFragment>): CompilerResult {
@@ -35,10 +34,6 @@ class IrModuleToPyTransformer(
 
         modules.forEach { module ->
             module.files.forEach { StaticMembersLowering(backendContext).lower(it) }
-        }
-
-        if (multiModule) {
-            breakCrossModuleFieldAccess(backendContext, modules)
         }
 
         modules.forEach { module ->
@@ -60,41 +55,13 @@ class IrModuleToPyTransformer(
     }
 
     private fun generateWrappedModuleBody(modules: Iterable<IrModuleFragment>, namer: NameTables): PyCode {
-        if (multiModule) {
-
-            val refInfo = buildCrossModuleReferenceInfo(modules)
-
-            val rM = modules.reversed()
-
-            val main = rM.first()
-            val others = rM.drop(1)
-
-            val mainModule = generateWrappedModuleBody2(
-                listOf(main),
+        return PyCode(
+            generateWrappedModuleBody2(
+                modules,
                 namer,
-                refInfo
+                EmptyCrossModuleReferenceInfo
             )
-
-            val dependencies = others.map { module ->
-                val moduleName = sanitizeName(module.safeName)
-
-                moduleName to generateWrappedModuleBody2(
-                    listOf(module),
-                    namer,
-                    refInfo
-                )
-            }.reversed()
-
-            return PyCode(mainModule, dependencies)
-        } else {
-            return PyCode(
-                generateWrappedModuleBody2(
-                    modules,
-                    namer,
-                    EmptyCrossModuleReferenceInfo
-                )
-            )
-        }
+        )
     }
 
     private fun generateWrappedModuleBody2(
