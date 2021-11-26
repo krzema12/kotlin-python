@@ -60,7 +60,7 @@ To speed up tests:
 ```shell script
 # create ramdisk where temporary test py files are generated extensively:
 # don't forget to activate sudo before copy-pasting: sudo echo
-sudo mount -t tmpfs -o size=10G myramdisk python/py.translator/testData  # don't forget to clean this dir sometimes
+sudo mount -t tmpfs -o size=10G myramdisk python/py.translator/testData
 sudo mount -t tmpfs -o size=10G myramdisk1 /tmp
 
 mount | tail -n 2  # check it's mounted successfully
