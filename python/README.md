@@ -172,5 +172,5 @@ less python/experiments/out_ir.py | grep -Po "visit[a-zA-Z0-9_]+" | sort | uniq 
 dist/kotlinc/bin/kotlinc-js -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -Xir-property-lazy-initialization -output python/experiments/out-ir.js python/experiments/python.kt
 
 ./gradlew :python:box.tests:pythonTest
-python/experiments/generate-box-tests-reports.main.kts
+JAVA_OPTS="-Xmx1G" python/experiments/generate-box-tests-reports.main.kts
 ```
