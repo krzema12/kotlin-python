@@ -86,7 +86,7 @@ It will generate various reports and summaries:
 
 #### Test stats
 
-![git-history-plot](experiments/git-history-plot.svg)
+![git-history-plot](box.tests/reports/git-history-plot.svg)
 
 Current status: **2199**/5970 passed
 
