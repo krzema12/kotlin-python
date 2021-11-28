@@ -30,13 +30,13 @@ fun pathFromNamedArgument(argumentName: String): Path? =
         ?.let { Paths.get(it.split("=")[1]) }
 
 val targetFailedTestsReportPath: Path = pathFromNamedArgument("failed-tests-report-path")
-    ?: Paths.get("python/experiments/failed-tests.txt")
+    ?: Paths.get("python/box.tests/reports/pythonTest/failed-tests.txt")
 val targetBoxTestsReportPath: Path = pathFromNamedArgument("box-tests-report-path")
-    ?: Paths.get("python/experiments/box-tests-report.tsv")
+    ?: Paths.get("python/box.tests/reports/pythonTest/box-tests-report.tsv")
 val failureCountReportPath: Path = pathFromNamedArgument("failure-count-report-path")
-    ?: Paths.get("python/experiments/failure-count.tsv")
+    ?: Paths.get("python/box.tests/reports/pythonTest/failure-count.tsv")
 val gitHistoryPlotPath: Path = pathFromNamedArgument("git-history-plot-path")
-    ?: Paths.get("python/experiments/git-history-plot.svg")
+    ?: Paths.get("python/box.tests/reports/git-history-plot.svg")
 
 val testResults = getTestResults(Paths.get("python/box.tests/build/test-results/pythonTest"))
 
@@ -285,8 +285,12 @@ fun generateGitHistoryPlot(gitHistoryPlotPath: Path) {
     ggsave(p, gitHistoryPlotPath.fileName.toString(), path = gitHistoryPlotPath.parent?.toString() ?: ".")
 }
 
-fun Repository.getNumberOfFailedTests(tree: RevTree) =
-    readFileAsText(tree, Paths.get("python/experiments/failed-tests.txt"))?.lines()?.size
+fun Repository.getNumberOfFailedTests(tree: RevTree): Int? {
+    // Trying two paths, to be able to fetch number of failed tests for various file layouts that the repository had.
+    val failedTestsFile = readFileAsText(tree, Paths.get("python/experiments/failed-tests.txt"))
+        ?: readFileAsText(tree, Paths.get("python/box.tests/reports/pythonTest/failed-tests.txt"))
+    return failedTestsFile?.lines()?.size
+}
 
 fun Repository.getNumberOfAllTests(tree: RevTree): Int? {
     val readme = readFileAsText(tree, Paths.get("python/README.md")) ?: return null
@@ -295,6 +299,9 @@ fun Repository.getNumberOfAllTests(tree: RevTree): Int? {
     return allTests.toInt()
 }
 
+/**
+ * @return [null] if the file does not exist.
+ */
 fun Repository.readFileAsText(tree: RevTree, path: Path): String? {
     val treeWalk = TreeWalk.forPath(this, path.toString(), tree) ?: return null
     val objectId = treeWalk.getObjectId(0)

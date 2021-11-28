@@ -58,15 +58,11 @@ jobs:
         run: python/experiments/generate-box-tests-reports.main.kts --failed-tests-report-path=failed-tests.txt --box-tests-report-path=box-tests-report.tsv --failure-count-report-path=failure-count.tsv --git-history-plot-path=git-history-plot.svg
         if: always()
       - name: Compare failed-tests.txt
-        run: diff -u failed-tests.txt python/experiments/failed-tests.txt
+        run: diff -u failed-tests.txt python/box.tests/reports/pythonTest/failed-tests.txt
         if: always()
       - name: Compare box-tests-report.tsv
-        run: diff -u box-tests-report.tsv python/experiments/box-tests-report.tsv
+        run: diff -u box-tests-report.tsv python/box.tests/reports/pythonTest/box-tests-report.tsv
         if: always()
       - name: Compare failure-count.tsv
-        run: diff -u failure-count.tsv python/experiments/failure-count.tsv
+        run: diff -u failure-count.tsv python/box.tests/reports/pythonTest/failure-count.tsv
         if: always()
-#      - name: Compare git-history-plot.svg
-#        # Processing with 'sed' is needed to remove random parts in the SVGs.
-#        run: diff -u <(cat git-history-plot.svg | sed "s/url(#[A-Za-z0-9]*)//" | sed "s/clipPath id=\"[A-Za-z0-9]*\"//") <(cat python/experiments/git-history-plot.svg  | sed "s/url(#[A-Za-z0-9]*)//" | sed "s/clipPath id=\"[A-Za-z0-9]*\"//")
-#        if: always()
