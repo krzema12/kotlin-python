@@ -26,19 +26,24 @@ import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.text.Charsets.UTF_8
 
 fun pathFromNamedArgument(argumentName: String): Path? =
-    args.firstOrNull { it.startsWith("--$argumentName=") }
-        ?.let { Paths.get(it.split("=")[1]) }
+    stringFromNamedArgument(argumentName)?.let { Paths.get(it) }
 
+fun stringFromNamedArgument(argumentName: String): String? =
+    args.firstOrNull { it.startsWith("--$argumentName=") }
+        ?.let { it.split("=")[1] }
+
+val testTask: String = stringFromNamedArgument("test-task")
+    ?: throw IllegalArgumentException("'test-task' parameter is required!")
 val targetFailedTestsReportPath: Path = pathFromNamedArgument("failed-tests-report-path")
-    ?: Paths.get("python/box.tests/reports/pythonTest/failed-tests.txt")
+    ?: Paths.get("python/box.tests/reports/$testTask/failed-tests.txt")
 val targetBoxTestsReportPath: Path = pathFromNamedArgument("box-tests-report-path")
-    ?: Paths.get("python/box.tests/reports/pythonTest/box-tests-report.tsv")
+    ?: Paths.get("python/box.tests/reports/$testTask/box-tests-report.tsv")
 val failureCountReportPath: Path = pathFromNamedArgument("failure-count-report-path")
-    ?: Paths.get("python/box.tests/reports/pythonTest/failure-count.tsv")
+    ?: Paths.get("python/box.tests/reports/$testTask/failure-count.tsv")
 val gitHistoryPlotPath: Path = pathFromNamedArgument("git-history-plot-path")
     ?: Paths.get("python/box.tests/reports/git-history-plot.svg")
 
-val testResults = getTestResults(Paths.get("python/box.tests/build/test-results/pythonTest"))
+val testResults = getTestResults(Paths.get("python/box.tests/build/test-results/$testTask"))
 
 testResults.writeFailedTestsSummary(targetFailedTestsReportPath)
 testResults.writeSummaryTsvToFile(targetBoxTestsReportPath)
@@ -116,6 +121,8 @@ fun String.removeVaryingParts() =
         .replace(Regex("\\S+\\.py"), "<path-truncated>")
         .replace(Regex("@[a-f0-9]{1,8}"), "@...")
         .replace(Regex("0x[a-f0-9]{12}"), "[address]")
+        .replace(Regex("allocating \\d+ .*"), "allocating XXX bytes")
+        .replace(Regex("object at [a-f0-9]{1,12}"), "object at [address]")
 
 fun TestStatus.extractFailureGeneralReason(): FailureGeneralReason? {
     return if (this is TestStatus.Failed) {
