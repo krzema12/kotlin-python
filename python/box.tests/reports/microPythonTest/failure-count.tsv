@@ -1,0 +1,365 @@
+1051	MemoryError: memory allocation failed, allocating XXX bytes
+271	AttributeError: 'Companion_19' object has no attribute 'constructor'
+185	NameError: name 'js' isn't defined
+185	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
+168	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' isn't defined
+159	NameError: name 'Unexpected_operator_EQ' isn't defined
+137	AttributeError: type object 'IllegalStateException' has no attribute '__new__'
+105	kotlin.NotImplementedError: An operation is not implemented.
+94	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
+62	NameError: name 'Array' isn't defined
+57	AttributeError: 'int' object has no attribute 'data'
+44	TypeError: can't convert 'NoneType' object to str implicitly
+41	NameError: name 'kotlin_Any' isn't defined
+41	NameError: name 'kotlin_String' isn't defined
+41	TypeError: 'NoneType' object isn't callable
+40	NameError: local variable referenced before assignment
+40	SyntaxError: invalid syntax
+39	AttributeError: '_no_name_provided__11' object has no attribute 'constructor'
+36	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
+33	NameError: name 'kotlin_Double' isn't defined
+32	AttributeError: type object 'A' has no attribute '__new__'
+30	NameError: name 'kotlin_Any_' isn't defined
+30	NameError: name 'kotlin_Int' isn't defined
+27	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
+24	AttributeError: '_no_name_provided__10' object has no attribute 'constructor'
+23	AttributeError: 'CheckStateMachineContinuation' object has no attribute 'constructor'
+23	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
+22	AttributeError: type object 'AssertionError' has no attribute '__new__'
+21	RuntimeError: maximum recursion depth exceeded
+21	TypeError: unsupported types for __add__: 'NoneType', 'int'
+18	TypeError: unsupported types for __add__: 'NoneType', 'NoneType'
+17	AttributeError: '_no_name_provided__1_2' object has no attribute 'constructor'
+16	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
+15	TypeError: can't convert 'int' object to str implicitly
+15	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
+14	AttributeError: '_no_name_provided__12' object has no attribute 'constructor'
+14	NameError: name 'kotlin_Result_T_' isn't defined
+13	AttributeError: type object 'Exception' has no attribute '__new__'
+13	SyntaxError: non-keyword arg after */**
+12	NameError: name 'kotlin_UInt' isn't defined
+12	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' isn't defined
+11	NameError: name 'kotlin_Boolean' isn't defined
+11	TypeError: __init__() takes 1 positional arguments but 2 were given
+11	TypeError: object of type 'NoneType' has no len()
+10	ImportError: can't import name box
+9	AttributeError: 'NoneType' object has no attribute 'invoke_0_k_'
+9	java.lang.IllegalStateException: UNRESOLVED_REFERENCE_WRONG_RECEIVER: Unresolved reference. None of the following candidates is applicable because of receiver type mismatch: 
+9	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail]>
+9	org.junit.ComparisonFailure: expected:<[O]K> but was:<[K]K>
+8	AttributeError: 'NoneType' object has no attribute 'foo_0_k_'
+8	AttributeError: type object 'Test' has no attribute '__new__'
+8	java.lang.IllegalArgumentException: List has more than one element.
+7	AttributeError: 'int' object has no attribute 'toString'
+7	AttributeError: type object 'NullPointerException' has no attribute '__new__'
+7	NameError: name 'Object' isn't defined
+6	AttributeError: 'M' object has no attribute 'i'
+6	AttributeError: 'NoneType' object has no attribute '__setitem__'
+6	NameError: name 'kotlin_Long' isn't defined
+6	TypeError: unsupported types for __add__: 'M', 'int'
+6	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: 1:2;]>
+6	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: None]>
+5	AttributeError: 'NoneType' object has no attribute 'getValue_1kobyo_k_'
+5	AttributeError: type object 'C' has no attribute '__new__'
+5	AttributeError: type object 'Foo' has no attribute '__new__'
+5	NameError: name 'Result_T_' isn't defined
+5	NameError: name 'test_A' isn't defined
+5	NameError: name 'test_C' isn't defined
+5	TypeError: unsupported types for __and__: 'float', 'int'
+5	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1]>
+4	AttributeError: 'Companion_20' object has no attribute 'getO_0_k_'
+4	AttributeError: type object 'B' has no attribute '__new__'
+4	AttributeError: type object 'Outer' has no attribute '__new__'
+4	NameError: name 'Infinity' isn't defined
+4	NameError: name 'T' isn't defined
+4	NameError: name 'test_S' isn't defined
+4	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl' isn't defined
+4	TypeError: unsupported types for __lt__: 'NoneType', 'NoneType'
+4	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun assertTrue(x: Boolean): Unit defined in kotlin.test (10,34) in <path-truncated>
+4	java.lang.NullPointerException
+4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 1]>
+4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail: None]>
+4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1 A.foo]>
+3	AttributeError: 'C' object has no attribute 'constructor'
+3	AttributeError: 'Foo' object has no attribute 'bar'
+3	AttributeError: 'NoneType' object has no attribute 'getValue_d8h4ck_k_'
+3	AttributeError: 'int' object has no attribute 'toDouble_0_k_'
+3	AttributeError: type object 'ClassCastException' has no attribute '__new__'
+3	AttributeError: type object 'Derived' has no attribute '__new__'
+3	AttributeError: type object 'Inner' has no attribute '__new__'
+3	NameError: name 'kotlin_Double_' isn't defined
+3	NameError: name 'kotlin_Float' isn't defined
+3	NameError: name 'translateCallArguments_2' isn't defined
+3	NameError: name 'translateCallArguments_3' isn't defined
+3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetFieldImpl' isn't defined
+3	RuntimeError: name too long
+3	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: setOf (62,29) in <path-truncated>
+3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<A object at [address]>]>
+3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail #1]>
+3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail #2]>
+2	AttributeError: 'A' object has no attribute 'constructor'
+2	AttributeError: 'BImpl' object has no attribute 'constructor'
+2	AttributeError: 'D' object has no attribute 'constructor'
+2	AttributeError: 'EmptyContinuation_0' object has no attribute 'constructor'
+2	AttributeError: 'Impl' object has no attribute 'constructor'
+2	AttributeError: 'NoneType' object has no attribute 'string'
+2	AttributeError: 'NotEmptyMap' object has no attribute 'constructor'
+2	AttributeError: '_no_name_provided__2_8_0' object has no attribute 'constructor'
+2	AttributeError: 'tuple' object has no attribute '__setitem__'
+2	AttributeError: type object 'A1' has no attribute '__new__'
+2	NameError: name 'Foo_T_' isn't defined
+2	NameError: name 'Value_' isn't defined
+2	NameError: name 'kotlin_CharSequence' isn't defined
+2	NameError: name 'kotlin_ULong' isn't defined
+2	NameError: name 'kotlin_UShort' isn't defined
+2	NameError: name 'test_Inner_kotlin_String_kotlin_String_' isn't defined
+2	NameError: name 'translateCallArguments_0' isn't defined
+2	NameError: name 'translateCallArguments_1' isn't defined
+2	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetValueImpl' isn't defined
+2	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetFieldImpl' isn't defined
+2	TypeError: __init__() takes 2 positional arguments but 4 were given
+2	TypeError: __init__() takes 3 positional arguments but 2 were given
+2	TypeError: unsupported types for __add__: 'Test', 'int'
+2	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: Pair (6,36) in <path-truncated>
+2	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: fail (132,9) in <path-truncated>
+2	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: linkedMapOf (6,18) in <path-truncated>
+2	kotlin.UninitializedPropertyAccessException: Parent not initialized: org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrConstructor@...
+2	kotlin.UninitializedPropertyAccessException: Parent not initialized: org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFunction@...
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[8]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 2]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1: fail methodfail property]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail1: None]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail1: [2] object:C.foo(2);]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: b.x = 1]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[failed 2]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[failfail]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1: None]>
+2	org.junit.ComparisonFailure: expected:<[]OK> but was:<[fail: ]OK>
+1	AttributeError: 'A' object has no attribute 'b'
+1	AttributeError: 'A' object has no attribute 's'
+1	AttributeError: 'B' object has no attribute 'constructor'
+1	AttributeError: 'B' object has no attribute 'f_default_nmiqce_k_'
+1	AttributeError: 'B' object has no attribute 'y'
+1	AttributeError: 'Base' object has no attribute 'constructor'
+1	AttributeError: 'C' object has no attribute '_get_a__0_k_'
+1	AttributeError: 'ClassB' object has no attribute 'invoke_1r174_k_'
+1	AttributeError: 'Companion_17' object has no attribute 'K'
+1	AttributeError: 'Companion_19' object has no attribute 'getK_0_k_'
+1	AttributeError: 'Companion_19' object has no attribute 'getO_0_k_'
+1	AttributeError: 'Companion_19' object has no attribute 'public'
+1	AttributeError: 'Companion_20' object has no attribute 'foo_2bn_k_'
+1	AttributeError: 'Companion_20' object has no attribute 'getOK_0_k_'
+1	AttributeError: 'Companion_20' object has no attribute 'vo'
+1	AttributeError: 'Companion_23' object has no attribute 'vo'
+1	AttributeError: 'CompositePhase' object has no attribute 'constructor'
+1	AttributeError: 'D' object has no attribute 'value'
+1	AttributeError: 'Derived' object has no attribute 'p'
+1	AttributeError: 'EmptyList' object has no attribute 'constructor'
+1	AttributeError: 'EmptyMap' object has no attribute 'constructor'
+1	AttributeError: 'EmptyStringMap' object has no attribute 'constructor'
+1	AttributeError: 'Foo' object has no attribute 'foo'
+1	AttributeError: 'Foo' object has no attribute 'p'
+1	AttributeError: 'FunDependencyEdgeImpl' object has no attribute 'constructor'
+1	AttributeError: 'Handler' object has no attribute 'path'
+1	AttributeError: 'Impl' object has no attribute 'getContributedDescriptors_default_nmiqce_k_'
+1	AttributeError: 'InlineTrait' object has no attribute 'constructor'
+1	AttributeError: 'Inner' object has no attribute 'value'
+1	AttributeError: 'N' object has no attribute 'b'
+1	AttributeError: 'NoneType' object has no attribute '_get_first__0_k_'
+1	AttributeError: 'NoneType' object has no attribute 'call_0_k_'
+1	AttributeError: 'NoneType' object has no attribute 'check_hwwcoo_k_'
+1	AttributeError: 'NoneType' object has no attribute 'contains_2c5_k_'
+1	AttributeError: 'NoneType' object has no attribute 'f_2bq_k_'
+1	AttributeError: 'NoneType' object has no attribute 'foo_uk8unn_k_'
+1	AttributeError: 'NoneType' object has no attribute 'getValue_8jdd4h_k_'
+1	AttributeError: 'NoneType' object has no attribute 'getValue_9ou11a_k_'
+1	AttributeError: 'NoneType' object has no attribute 'getValue_jxhupm_k_'
+1	AttributeError: 'NoneType' object has no attribute 'getValue_xl96hr_k_'
+1	AttributeError: 'NoneType' object has no attribute 'iterator_0_k_'
+1	AttributeError: 'NoneType' object has no attribute 'plusAssign_a4enbm_k_'
+1	AttributeError: 'NoneType' object has no attribute 'result'
+1	AttributeError: 'NoneType' object has no attribute 'setValue_2dxdrn_k_'
+1	AttributeError: 'NoneType' object has no attribute 'test_0_k_'
+1	AttributeError: 'NoneType' object has no attribute 'value'
+1	AttributeError: 'NoneType' object has no attribute 'x'
+1	AttributeError: 'NotEmptyList' object has no attribute 'constructor'
+1	AttributeError: 'Scope' object has no attribute 'test_sv8swh_k_'
+1	AttributeError: 'Test' object has no attribute 'constructor'
+1	AttributeError: 'Y' object has no attribute 'constructor'
+1	AttributeError: 'Z' object has no attribute 'constructor'
+1	AttributeError: 'Z2' object has no attribute 'p'
+1	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
+1	AttributeError: '_no_name_provided__19' object has no attribute 'constructor'
+1	AttributeError: '_no_name_provided__9' object has no attribute 'constructor'
+1	AttributeError: '_no_name_provided__9' object has no attribute 'foo_default_nmiqce_k_'
+1	AttributeError: 'bool' object has no attribute 'toString'
+1	AttributeError: 'int' object has no attribute 'hashCode'
+1	AttributeError: 'int' object has no attribute 's'
+1	AttributeError: type object 'Actor' has no attribute '__new__'
+1	AttributeError: type object 'Address' has no attribute '__new__'
+1	AttributeError: type object 'B1' has no attribute '__new__'
+1	AttributeError: type object 'Base' has no attribute '__new__'
+1	AttributeError: type object 'CalculatorConstants' has no attribute '__new__'
+1	AttributeError: type object 'Child2' has no attribute '__new__'
+1	AttributeError: type object 'ClassTemplate' has no attribute '__new__'
+1	AttributeError: type object 'DC' has no attribute '__new__'
+1	AttributeError: type object 'E' has no attribute '__new__'
+1	AttributeError: type object 'EmptyContinuation_0' has no attribute '__new__'
+1	AttributeError: type object 'Example' has no attribute '__new__'
+1	AttributeError: type object 'Holder' has no attribute '__new__'
+1	AttributeError: type object 'InnerParam' has no attribute '__new__'
+1	AttributeError: type object 'My' has no attribute '__new__'
+1	AttributeError: type object 'MyEvent' has no attribute '__new__'
+1	AttributeError: type object 'MyObject' has no attribute '__new__'
+1	AttributeError: type object 'Other' has no attribute '__new__'
+1	AttributeError: type object 'TestEnumClass' has no attribute '__new__'
+1	AttributeError: type object 'Z' has no attribute '__new__'
+1	NameError: name 'A_' isn't defined
+1	NameError: name 'AsAny_T_' isn't defined
+1	NameError: name 'Base_kotlin_String_' isn't defined
+1	NameError: name 'C' isn't defined
+1	NameError: name 'GCmp_T_' isn't defined
+1	NameError: name 'MPair___' isn't defined
+1	NameError: name 'a_Base' isn't defined
+1	NameError: name 'kotlin_Char' isn't defined
+1	NameError: name 'kotlin_Enum___' isn't defined
+1	NameError: name 'kotlin_Function0_kotlin_Boolean_' isn't defined
+1	NameError: name 'kotlin_Function1_Common_kotlin_Unit_' isn't defined
+1	NameError: name 'kotlin_Function1_Top_kotlin_Unit_' isn't defined
+1	NameError: name 'kotlin_Function1_X_kotlin_String_' isn't defined
+1	NameError: name 'kotlin_Function1_X_kotlin_Unit_' isn't defined
+1	NameError: name 'kotlin_Function1_kotlin_Any_kotlin_Unit_' isn't defined
+1	NameError: name 'kotlin_Nothing' isn't defined
+1	NameError: name 'kotlin_Number' isn't defined
+1	NameError: name 'kotlin_String_' isn't defined
+1	NameError: name 'kotlin_UByte' isn't defined
+1	NameError: name 'test_B' isn't defined
+1	NameError: name 'test_Base' isn't defined
+1	NameError: name 'test_Child' isn't defined
+1	NameError: name 'test_IC' isn't defined
+1	NameError: name 'test_IC1' isn't defined
+1	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' isn't defined
+1	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrTypeOperatorCallImpl' isn't defined
+1	SyntaxError: *x must be assignment target
+1	SyntaxError: argument name reused
+1	SyntaxError: identifier redefined as global
+1	TypeError: 'NoneType' object isn't subscriptable
+1	TypeError: '_no_name_provided__9' object isn't callable
+1	TypeError: <lambda>() takes 1 positional arguments but 2 were given
+1	TypeError: _Props___init__impl_() takes 1 positional arguments but 3 were given
+1	TypeError: _UIntArray___init__impl_() takes 1 positional arguments but 3 were given
+1	TypeError: _set_xs_() takes 1 positional arguments but 0 were given
+1	TypeError: can't convert 'A' object to str implicitly
+1	TypeError: can't convert 'Outer' object to str implicitly
+1	TypeError: can't convert 'X' object to str implicitly
+1	TypeError: function takes 1 positional arguments but 0 were given
+1	TypeError: isArray() takes 1 positional arguments but 0 were given
+1	TypeError: object of type 'Test' has no len()
+1	TypeError: unsupported types for __add__: 'ExtProvider', 'int'
+1	TypeError: unsupported types for __add__: 'Z', 'int'
+1	TypeError: unsupported types for __le__: 'int', 'NoneType'
+1	ZeroDivisionError: divide by zero
+1	java.lang.IllegalStateException: IMPLEMENTING_FUNCTION_INTERFACE: Implementing function interface is prohibited in JavaScript (8,14) in <path-truncated>
+1	java.lang.IllegalStateException: NO_THIS: 'this' is not defined in this context (10,20) in <path-truncated>
+1	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun <T> assertEquals(a: T, b: T): Unit defined in kotlin.test (20,49) in <path-truncated>
+1	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun <T> assertEquals(a: T, b: T): Unit defined in kotlin.test (22,46) in <path-truncated>
+1	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun <T> assertEquals(a: T, b: T): Unit defined in kotlin.test (23,34) in <path-truncated>
+1	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun <T> assertEquals(a: T, b: T): Unit defined in kotlin.test (25,46) in <path-truncated>
+1	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun <T> assertEquals(a: T, b: T): Unit defined in kotlin.test (78,56) in <path-truncated>
+1	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun assertFalse(x: Boolean): Unit defined in kotlin.test (29,25) in <path-truncated>
+1	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun assertFalse(x: Boolean): Unit defined in kotlin.test (30,25) in <path-truncated>
+1	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun assertTrue(x: Boolean): Unit defined in kotlin.test (26,38) in <path-truncated>
+1	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public open fun toString(): String defined in kotlin.Int (4,35) in <path-truncated>
+1	java.lang.IllegalStateException: TYPE_MISMATCH: Type mismatch: inferred type is UByte but UInt was expected (15,85) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: AbstractMutableList (4,20) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: AbstractMutableList (5,23) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: AbstractSet (14,56) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: ArrayList (18,42) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: ArrayList (5,9) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: ArrayList (8,15) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: HashMap (6,13) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: Pair (20,62) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: Pair (22,11) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: Pair (4,24) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: Pair (8,36) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: Sequence (8,14) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: Sequence (9,11) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: Sequence (9,30) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: SequenceScope (6,18) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: StringBuilder (8,14) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: UShortArray (26,40) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: emptyList (57,43) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: getter (32,59) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: indexOfAny (15,18) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: it (6,28) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: it (8,26) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: lastIndex (9,23) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: listOf (11,13) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: listOf (17,9) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: listOf (19,16) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: listOf (5,13) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: listOf (8,9) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: listOfNotNull (158,20) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: listOfNotNull (42,20) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: mapOf (6,78) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: mapOf (8,96) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: mutableListOf (10,85) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: mutableMapOf (30,119) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: println (29,5) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: println (9,17) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: sequenceOf (8,22) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: setOf (150,25) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: setOf (6,15) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: setOf (8,16) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: setOf (98,25) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: substring (22,32) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: toInt (3,64) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: toList (66,65) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: trim (6,18) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: ubyteArrayOf (7,13) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: uintArrayOf (5,15) in <path-truncated>
+1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: withIndex (8,36) in <path-truncated>
+1	java.lang.IllegalStateException: Validation failed in file <path-truncated>
+1	java.lang.IllegalStateException: org.jetbrains.kotlin.ir.declarations.impl.IrVariableImpl@... for VAR SYNTHESIZED_DECLARATION name:tmp type:kotlin.Unit [var] has unexpected parent org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFunction@...
+1	org.junit.ComparisonFailure: expected:<OK[]> but was:<OK[OK]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<['One' should map to '1' but was -1]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<Nested object at [address]><Nested object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<SendBuffered object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<State object at [address]><State object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[A(string=OK)]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[FAIL 0: None]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 1 1]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 1 2]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 1, expected 1, but 102]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 4: A.bNonConst === B.bNonConst]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail equals]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail get]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail testInt 3]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail toString]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail1]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Failed: d.callsBaseFun()==Derived.baseFun()]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Failed: dd.callsSuperDeeperBaseFun()==DeepDerived.deeperBaseFun()]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Failure]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[FakeInt(42) != 42]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[a = None; b = None]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1: 16 != None]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1; r = BBB.baz]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1; r = None]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 3.3]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail <Num object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail None]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail cmp 1]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail template]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail1]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail2]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail5]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: 1]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: ??]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[inner getter or setter failed]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test0 failed]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1 fail]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test6 fail]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[wrong lambda]>
+1	org.junit.ComparisonFailure: expected:<[O]K> but was:<[fail2: K]K>
+1	org.junit.ComparisonFailure: expected:<[]OK> but was:<[fail 3: fromC_]OK>
