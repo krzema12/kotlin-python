@@ -9,6 +9,11 @@ on:
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        testTask:
+          - pythonTest
+          - microPythonTest
     steps:
       - name: Check out
         uses: actions/checkout@v2
@@ -16,6 +21,8 @@ jobs:
           fetch-depth: 0 # Fetch the whole git history, to be able to calculate some stats based on it.
       - name: Install Kotlin for scripting
         run: sudo snap install --classic kotlin
+      - name: Install MicroPython
+        run: sudo snap install micropython
       - name: Disable old Java for Kotlin
         run: echo "kotlin.build.isObsoleteJdkOverrideEnabled=true" > local.properties
 
@@ -52,17 +59,17 @@ jobs:
         if: always()
 
       - name: Run box tests (succeed even if they fail)
-        run: JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:pythonTest || true
+        run: JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:${{ matrix.testTask }} || true
         if: always()
       - name: Generate box tests reports
-        run: python/experiments/generate-box-tests-reports.main.kts --failed-tests-report-path=failed-tests.txt --box-tests-report-path=box-tests-report.tsv --failure-count-report-path=failure-count.tsv --git-history-plot-path=git-history-plot.svg
+        run: python/experiments/generate-box-tests-reports.main.kts --test-task=${{ matrix.testTask }} --failed-tests-report-path=failed-tests.txt --box-tests-report-path=box-tests-report.tsv --failure-count-report-path=failure-count.tsv --git-history-plot-path=git-history-plot.svg
         if: always()
       - name: Compare failed-tests.txt
-        run: diff -u failed-tests.txt python/box.tests/reports/pythonTest/failed-tests.txt
+        run: diff -u failed-tests.txt python/box.tests/reports/${{ matrix.testTask }}/failed-tests.txt
         if: always()
       - name: Compare box-tests-report.tsv
-        run: diff -u box-tests-report.tsv python/box.tests/reports/pythonTest/box-tests-report.tsv
+        run: diff -u box-tests-report.tsv python/box.tests/reports/${{ matrix.testTask }}/box-tests-report.tsv
         if: always()
       - name: Compare failure-count.tsv
-        run: diff -u failure-count.tsv python/box.tests/reports/pythonTest/failure-count.tsv
+        run: diff -u failure-count.tsv python/box.tests/reports/${{ matrix.testTask }}/failure-count.tsv
         if: always()
