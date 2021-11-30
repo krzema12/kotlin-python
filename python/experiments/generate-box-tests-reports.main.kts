@@ -33,7 +33,7 @@ fun stringFromNamedArgument(argumentName: String): String? =
         ?.let { it.split("=")[1] }
 
 val testTask: String = stringFromNamedArgument("test-task")
-    ?: throw IllegalArgumentException("'test-task' parameter is required!")
+    ?: "pythonTest".also { println("'test-task' parameter is missing, using default 'pythonTest'") }
 val targetFailedTestsReportPath: Path = pathFromNamedArgument("failed-tests-report-path")
     ?: Paths.get("python/box.tests/reports/$testTask/failed-tests.txt")
 val targetBoxTestsReportPath: Path = pathFromNamedArgument("box-tests-report-path")
