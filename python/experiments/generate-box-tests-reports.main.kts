@@ -242,7 +242,8 @@ fun generateGitHistoryPlot(gitHistoryPlotPath: Path) {
     data class DataPoint(
         val date: Date,
         val testsAll: Int,
-        val testsPassed: Int,
+        val testsPassedPython: Int,
+        val testsPassedMicroPython: Int?,
     )
 
     val git = Git.open(File("."))
@@ -254,23 +255,33 @@ fun generateGitHistoryPlot(gitHistoryPlotPath: Path) {
         .filter {
             val numberOfAllTests = git.repository.getNumberOfAllTests(it.tree)
             val numberOfAllTestsPrev = git.repository.getNumberOfAllTests(it.parents[0].tree)
-            val numberOfFailedTests = git.repository.getNumberOfFailedTests(it.tree)
-            val numberOfFailedTestsPrev = git.repository.getNumberOfFailedTests(it.parents[0].tree)
+            val numberOfFailedPythonTests = git.repository.getNumberOfFailedTests(it.tree, "pythonTest")
+            val numberOfFailedPythonTestsPrev = git.repository.getNumberOfFailedTests(it.parents[0].tree, "pythonTest")
+            val numberOfFailedMicroPythonTests = git.repository.getNumberOfFailedTests(it.tree, "microPythonTest")
+            val numberOfFailedMicroPythonTestsPrev = git.repository.getNumberOfFailedTests(it.parents[0].tree, "microPythonTest")
 
-            numberOfAllTests != numberOfAllTestsPrev || numberOfFailedTests != numberOfFailedTestsPrev
+            numberOfAllTests != numberOfAllTestsPrev || numberOfFailedPythonTests != numberOfFailedPythonTestsPrev ||
+                    numberOfFailedMicroPythonTests != numberOfFailedMicroPythonTestsPrev
         }
         .groupBy { Instant.ofEpochSecond(it.commitTime.toLong()).truncatedTo(ChronoUnit.DAYS) }
         .mapNotNull { it.value.lastOrNull() }
         .mapNotNull {
             val instant = Instant.ofEpochSecond(it.commitTime.toLong())
-            val numberOfFailedTests = git.repository.getNumberOfFailedTests(it.tree)
+            val numberOfFailedTestsPython = git.repository.getNumberOfFailedTests(it.tree, "pythonTest")
+            val numberOfFailedTestsMicroPython = git.repository.getNumberOfFailedTests(it.tree, "microPythonTest")
             val numberOfAllTests = git.repository.getNumberOfAllTests(it.tree)
-            if (numberOfAllTests != null && numberOfFailedTests != null) {
-                val numberOfPassedTests = numberOfAllTests - numberOfFailedTests
+            if (numberOfAllTests != null && numberOfFailedTestsPython != null) {
+                val numberOfPassedTestsPython = numberOfAllTests - numberOfFailedTestsPython
+                val numberOfPassedTestsMicroPython = if (numberOfFailedTestsMicroPython != null) {
+                    numberOfAllTests - numberOfFailedTestsMicroPython
+                } else {
+                    null
+                }
                 DataPoint(
                     date = Date.from(instant),
                     testsAll = numberOfAllTests,
-                    testsPassed = numberOfPassedTests,
+                    testsPassedPython = numberOfPassedTestsPython,
+                    testsPassedMicroPython = numberOfPassedTestsMicroPython,
                 )
             } else {
                 null
@@ -278,9 +289,9 @@ fun generateGitHistoryPlot(gitHistoryPlotPath: Path) {
         }
 
     val dataForPlot = mapOf(
-        "date" to data.map { it.date } + data.map { it.date },
-        "tests" to data.map { it.testsAll } + data.map { it.testsPassed },
-        "type" to List(data.size) { "all" } + List(data.size) { "passed" },
+        "date" to data.map { it.date } + data.map { it.date } + data.map { it.date },
+        "tests" to data.map { it.testsAll } + data.map { it.testsPassedPython } + data.map { it.testsPassedMicroPython },
+        "type" to List(data.size) { "all" } + List(data.size) { "passed (Python)" } + List(data.size) { "passed (MicroPython)" },
     )
     val p = letsPlot(dataForPlot) { x = "date"; y = "tests"; color = "type" } +
             geomStep() +
@@ -292,10 +303,14 @@ fun generateGitHistoryPlot(gitHistoryPlotPath: Path) {
     ggsave(p, gitHistoryPlotPath.fileName.toString(), path = gitHistoryPlotPath.parent?.toString() ?: ".")
 }
 
-fun Repository.getNumberOfFailedTests(tree: RevTree): Int? {
+fun Repository.getNumberOfFailedTests(tree: RevTree, testTask: String): Int? {
     // Trying two paths, to be able to fetch number of failed tests for various file layouts that the repository had.
-    val failedTestsFile = readFileAsText(tree, Paths.get("python/experiments/failed-tests.txt"))
-        ?: readFileAsText(tree, Paths.get("python/box.tests/reports/pythonTest/failed-tests.txt"))
+    val failedTestsFile = if (testTask == "pythonTest") {
+        readFileAsText(tree, Paths.get("python/experiments/failed-tests.txt"))
+            ?: readFileAsText(tree, Paths.get("python/box.tests/reports/pythonTest/failed-tests.txt"))
+    } else {
+        readFileAsText(tree, Paths.get("python/box.tests/reports/$testTask/failed-tests.txt"))
+    }
     return failedTestsFile?.lines()?.size
 }
 
