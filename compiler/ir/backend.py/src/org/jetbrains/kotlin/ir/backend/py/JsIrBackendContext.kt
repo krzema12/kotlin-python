@@ -152,8 +152,8 @@ class JsIrBackendContext(
 
         private val CONTINUATION_CONTEXT_PROPERTY_NAME = Name.identifier("context")
         private val REFLECT_PACKAGE_FQNAME = KOTLIN_PACKAGE_FQN.child(Name.identifier("reflect"))
-        private val JS_PACKAGE_FQNAME = KOTLIN_PACKAGE_FQN.child(Name.identifier("js"))
-        private val JS_INTERNAL_PACKAGE_FQNAME = JS_PACKAGE_FQNAME.child(Name.identifier("internal"))
+        private val PYTHON_PACKAGE_FQNAME = KOTLIN_PACKAGE_FQN.child(Name.identifier("python"))
+        private val JS_INTERNAL_PACKAGE_FQNAME = PYTHON_PACKAGE_FQNAME.child(Name.identifier("internal"))
         private val COROUTINE_PACKAGE_FQNAME_12 = FqName.fromSegments(listOf("kotlin", "coroutines", "experimental"))
         private val COROUTINE_PACKAGE_FQNAME_13 = FqName.fromSegments(listOf("kotlin", "coroutines"))
         private val COROUTINE_PACKAGE_FQNAME = COROUTINE_PACKAGE_FQNAME_13
@@ -166,7 +166,7 @@ class JsIrBackendContext(
         val callableClosureOrigin = object : IrDeclarationOriginImpl("CALLABLE_CLOSURE_DECLARATION") {}
     }
 
-    private val internalPackage = module.getPackage(JS_PACKAGE_FQNAME)
+    private val internalPackage = module.getPackage(PYTHON_PACKAGE_FQNAME)
 
     private val coroutinePackage = module.getPackage(COROUTINE_PACKAGE_FQNAME)
     private val coroutineIntrinsicsPackage = module.getPackage(COROUTINE_INTRINSICS_PACKAGE_FQNAME)
@@ -176,7 +176,7 @@ class JsIrBackendContext(
 
     override val sharedVariablesManager = JsSharedVariablesManager(this)
 
-    override val internalPackageFqn = JS_PACKAGE_FQNAME
+    override val internalPackageFqn = PYTHON_PACKAGE_FQNAME
 
     private val operatorMap = referenceOperators()
 
