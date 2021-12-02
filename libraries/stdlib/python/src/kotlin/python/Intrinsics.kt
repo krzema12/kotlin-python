@@ -195,13 +195,137 @@ internal fun <A> slice(a: A): A
 @JsIntrinsic
 internal fun unreachable(): Nothing
 
-//@JsIntrinsic
-//@Suppress("REIFIED_TYPE_PARAMETER_NO_INLINE") // TODO: mark `inline` and skip in inliner
-//internal fun <reified T : Any> jsClassIntrinsic(): JsClass<T>
-
-// Returns true if the specified property is in the specified object or its prototype chain.
 @JsIntrinsic
 internal fun jsInIntrinsic(lhs: Any?, rhs: Any): Boolean
 
 @JsIntrinsic
 internal fun jsDelete(e: Any?)
+
+@JsIntrinsic
+internal fun jsTypeOf(value_hack: Any?): String
+
+@JsIntrinsic
+internal fun jsDeleteProperty(obj_hack: Any, property_hack: Any)
+
+@JsIntrinsic
+internal fun jsBitwiseOr(lhs_hack: Any?, rhs_hack: Any?): Int
+
+@JsIntrinsic
+internal fun jsBitwiseAnd(lhs_hack: Any?, rhs_hack: Any?): Int
+
+@JsIntrinsic
+internal fun jsInstanceOf(obj_hack: Any?, jsClass_hack: Any?): Boolean
+
+@JsIntrinsic
+internal fun jsIn(lhs_hack: Any?, rhs_hack: Any): Boolean
+
+@JsIntrinsic
+internal fun numberToByte(a: dynamic): Byte
+
+@JsIntrinsic
+internal fun numberToDouble(@Suppress("UNUSED_PARAMETER") a: dynamic): Double
+
+@JsIntrinsic
+internal fun numberToInt(a: dynamic): Int
+
+@JsIntrinsic
+internal fun numberToShort(a: dynamic): Short
+
+@JsIntrinsic
+internal fun toByte(@Suppress("UNUSED_PARAMETER") a: dynamic): Byte
+
+@JsIntrinsic
+internal fun toShort(@Suppress("UNUSED_PARAMETER") a: dynamic): Short
+
+@JsIntrinsic
+internal fun numberToLong(a: dynamic): Long
+
+@JsIntrinsic
+internal fun toLong(a: dynamic): Long
+
+@JsIntrinsic
+internal fun doubleToInt(a: Double): Int
+
+@JsIntrinsic
+internal fun numberToChar(a: dynamic)
+
+@JsIntrinsic
+internal fun isInterface(obj: dynamic, iface: dynamic): Boolean
+
+@JsIntrinsic
+internal fun isArray(): Boolean
+
+@JsIntrinsic
+internal fun isObject(): Boolean
+
+@JsIntrinsic
+internal fun isSuspendFunction(): Boolean
+
+@JsIntrinsic
+internal fun isNumber(): Boolean
+
+@JsIntrinsic
+internal fun isComparable(): Boolean
+
+@JsIntrinsic
+internal fun isCharSequence(): Boolean
+
+@JsIntrinsic
+internal fun isBooleanArray(): Boolean
+
+@JsIntrinsic
+internal fun isByteArray(): Boolean
+
+@JsIntrinsic
+internal fun isShortArray(): Boolean
+
+@JsIntrinsic
+internal fun isCharArray(): Boolean
+
+@JsIntrinsic
+internal fun isIntArray(): Boolean
+
+@JsIntrinsic
+internal fun isFloatArray(): Boolean
+
+@JsIntrinsic
+internal fun isLongArray(): Boolean
+
+@JsIntrinsic
+internal fun isDoubleArray(): Boolean
+
+@JsIntrinsic
+internal fun enumValueOfIntrinsic(): Boolean
+
+@JsIntrinsic
+internal fun enumValuesIntrinsic(): Boolean
+
+@JsIntrinsic
+internal fun js(): Boolean
+
+@JsIntrinsic
+internal fun hashCode(): Boolean
+
+@JsIntrinsic
+internal fun getNumberHashCode(): Boolean
+
+@JsIntrinsic
+internal fun getObjectHashCode(): Boolean
+
+@JsIntrinsic
+internal fun getStringHashCode(): Boolean
+
+@JsIntrinsic
+internal fun toString(): Boolean
+
+@JsIntrinsic
+internal fun anyToString(): Boolean
+
+@JsIntrinsic
+internal fun compareTo(): Boolean
+
+@JsIntrinsic
+internal fun equals(): Boolean
+
+@JsIntrinsic
+internal fun construct(): Boolean
