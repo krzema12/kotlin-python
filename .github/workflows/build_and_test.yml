@@ -72,3 +72,34 @@ jobs:
         with:
           name: ${{ matrix.testTask }}-artifact
           path: python/box.tests/reports/${{ matrix.testTask }}
+
+  update_reports:
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+
+      - name: Download common artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: common-artifact
+          path: python
+      - name: Download pythonTest artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: pythonTest-artifact
+          path: python/box.tests/reports/pythonTest
+      - name: Download microPythonTest artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: microPythonTest-artifact
+          path: python/box.tests/reports/microPythonTest
+
+      - name: Commit and push
+        run: |
+          git config --global user.email "<>"
+          git config --global user.name "GitHub Actions Bot"
+          git add python/box.tests/reports python/experiments
+          git commit --allow-empty -m "Update reports for $GITHUB_SHA"
+          git push
