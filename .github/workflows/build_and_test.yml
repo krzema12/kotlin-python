@@ -23,6 +23,7 @@ jobs:
         run: sudo snap install --classic kotlin
       - name: Install MicroPython
         run: sudo snap install micropython
+        if: ${{ matrix.testTask == 'microPythonTest' }}
       - name: Disable old Java for Kotlin
         run: echo "kotlin.build.isObsoleteJdkOverrideEnabled=true" > local.properties
 
