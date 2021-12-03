@@ -2,9 +2,11 @@ name: Build and test
 
 on:
   push:
-    branches: [ python-backend ]
-  pull_request:
-    branches: [ python-backend ]
+    paths-ignore:
+      - 'python/box.tests/reports/**'
+      - 'python/experiments/missing.txt'
+      - 'python/experiments/out-ir.js'
+      - 'python/experiments/out_ir.py'
 
 jobs:
   build_and_test:
@@ -31,46 +33,42 @@ jobs:
         run: JDK_9="$JAVA_HOME" ./gradlew clean
       - name: Run ast tests
         run: JDK_9="$JAVA_HOME" ./gradlew :python:ast:test
+        if: ${{ matrix.testTask == 'pythonTest' }}
       - name: Build
         run: JDK_9="$JAVA_HOME" ./gradlew dist
 
       - name: Compile python.kt to Python
-        run: dist/kotlinc/bin/kotlinc-py -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -output out_ir.py python/experiments/python.kt
-        if: always()
-      - name: Compare out_ir.py
-        run: diff -u out_ir.py python/experiments/out_ir.py
-        if: always()
-
+        run: dist/kotlinc/bin/kotlinc-py -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -output python/experiments/out_ir.py python/experiments/python.kt
+        if: ${{ matrix.testTask == 'pythonTest' }}
       - name: Compile python.kt to JavaScript
-        run: dist/kotlinc/bin/kotlinc-js -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -Xir-property-lazy-initialization -output out-ir.js python/experiments/python.kt
-        if: always()
-      - name: Compare out-ir.js
-        run: diff -u out-ir.js python/experiments/out-ir.js
-        if: always()
+        run: dist/kotlinc/bin/kotlinc-js -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -Xir-property-lazy-initialization -output python/experiments/out-ir.js python/experiments/python.kt
+        if: ${{ matrix.testTask == 'pythonTest' }}
 
       - name: Generate stats about missing IR mapping
-        run: less python/experiments/out_ir.py | grep -Po "visit[a-zA-Z0-9_]+" | sort | uniq -c | sort -nr > missing.txt
-        if: always()
-      - name: Compare missing.txt
-        run: diff -u missing.txt python/experiments/missing.txt
-        if: always()
+        run: less python/experiments/out_ir.py | grep -Po "visit[a-zA-Z0-9_]+" | sort | uniq -c | sort -nr > python/experiments/missing.txt
+        if: ${{ matrix.testTask == 'pythonTest' }}
 
       - name: Run end-to-end tests
         run: JDK_9="$JAVA_HOME" python/e2e-tests/run.sh
-        if: always()
+        if: ${{ matrix.testTask == 'pythonTest' }}  # TODO: run e2e tests for MicroPython too (#85)
 
       - name: Run box tests (succeed even if they fail)
         run: JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:${{ matrix.testTask }} || true
-        if: always()
       - name: Generate box tests reports
-        run: python/experiments/generate-box-tests-reports.main.kts --test-task=${{ matrix.testTask }} --failed-tests-report-path=failed-tests.txt --box-tests-report-path=box-tests-report.tsv --failure-count-report-path=failure-count.tsv --git-history-plot-path=git-history-plot.svg
-        if: always()
-      - name: Compare failed-tests.txt
-        run: diff -u failed-tests.txt python/box.tests/reports/${{ matrix.testTask }}/failed-tests.txt
-        if: always()
-      - name: Compare box-tests-report.tsv
-        run: diff -u box-tests-report.tsv python/box.tests/reports/${{ matrix.testTask }}/box-tests-report.tsv
-        if: always()
-      - name: Compare failure-count.tsv
-        run: diff -u failure-count.tsv python/box.tests/reports/${{ matrix.testTask }}/failure-count.tsv
-        if: always()
+        run: python/experiments/generate-box-tests-reports.main.kts --test-task=${{ matrix.testTask }}
+
+      - name: Upload common artifact
+        if: ${{ matrix.testTask == 'pythonTest' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: common-artifact
+          path: |
+            python/box.tests/reports/git-history-plot.svg
+            python/experiments/missing.txt
+            python/experiments/out-ir.js
+            python/experiments/out_ir.py
+      - name: Upload ${{ matrix.testTask }} artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.testTask }}-artifact
+          path: python/box.tests/reports/${{ matrix.testTask }}
