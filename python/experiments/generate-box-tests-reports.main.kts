@@ -23,6 +23,8 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
 import javax.xml.parsers.DocumentBuilderFactory
+import kotlin.io.path.readText
+import kotlin.io.path.writeText
 import kotlin.text.Charsets.UTF_8
 
 fun pathFromNamedArgument(argumentName: String): Path? =
@@ -49,6 +51,7 @@ testResults.writeFailedTestsSummary(targetFailedTestsReportPath)
 testResults.writeSummaryTsvToFile(targetBoxTestsReportPath)
 testResults.writeFailureCount(failureCountReportPath)
 generateGitHistoryPlot(gitHistoryPlotPath)
+makeDeterministicSvg(gitHistoryPlotPath)
 
 fun List<TestResult>.writeFailedTestsSummary(targetFile: Path) = targetFile.toFile().printWriter().use { out ->
     this
@@ -331,4 +334,25 @@ fun Repository.readFileAsText(tree: RevTree, path: Path): String? {
     val result = objectReader.open(objectId)
     objectReader.close()
     return String(result.bytes, UTF_8)
+}
+
+fun makeDeterministicSvg(svgPath: Path) {
+    var nextId = 0
+    val randomToNumber = mutableMapOf<String, Int>()
+
+    fun String.replaceAll(regex: String, format: String) = regex
+        .toRegex()
+        .replace(this) { res ->
+            val (randomPart) = res.destructured
+            val number = randomToNumber.getOrPut(randomPart) { nextId++ }
+            val numberPart = "id$number"
+            format.format(numberPart)
+        }
+
+    val deterministicText = svgPath
+        .readText()
+        .replaceAll(regex = """url\(#(\w{6})\)""", format = "url(#%s)")
+        .replaceAll(regex = """id="(\w{6})"""", format = """id="%s"""")
+
+    svgPath.writeText(deterministicText)
 }
