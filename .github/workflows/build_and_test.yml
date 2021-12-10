@@ -101,5 +101,5 @@ jobs:
           git config --global user.email "<>"
           git config --global user.name "GitHub Actions Bot"
           git add python/box.tests/reports python/experiments
-          git commit --allow-empty -m "Update reports for $GITHUB_SHA"
+          git commit --allow-empty -m "Update reports for $GITHUB_SHA"  # an empty commit explicitly shows that reports are up-to-date
           git push
