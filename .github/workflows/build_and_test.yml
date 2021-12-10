@@ -4,9 +4,7 @@ on:
   push:
     paths-ignore:
       - 'python/box.tests/reports/**'
-      - 'python/experiments/missing.txt'
-      - 'python/experiments/out-ir.js'
-      - 'python/experiments/out_ir.py'
+      - 'python/experiments/generated/**'
 
 jobs:
   build_and_test:
@@ -38,14 +36,14 @@ jobs:
         run: JDK_9="$JAVA_HOME" ./gradlew dist
 
       - name: Compile python.kt to Python
-        run: dist/kotlinc/bin/kotlinc-py -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -output python/experiments/out_ir.py python/experiments/python.kt
+        run: dist/kotlinc/bin/kotlinc-py -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -output python/experiments/generated/out_ir.py python/experiments/python.kt
         if: ${{ matrix.testTask == 'pythonTest' }}
       - name: Compile python.kt to JavaScript
-        run: dist/kotlinc/bin/kotlinc-js -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -Xir-property-lazy-initialization -output python/experiments/out-ir.js python/experiments/python.kt
+        run: dist/kotlinc/bin/kotlinc-js -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -Xir-property-lazy-initialization -output python/experiments/generated/out-ir.js python/experiments/python.kt
         if: ${{ matrix.testTask == 'pythonTest' }}
 
       - name: Generate stats about missing IR mapping
-        run: less python/experiments/out_ir.py | grep -Po "visit[a-zA-Z0-9_]+" | sort | uniq -c | sort -nr > python/experiments/missing.txt
+        run: less python/experiments/out_ir.py | grep -Po "visit[a-zA-Z0-9_]+" | sort | uniq -c | sort -nr > python/experiments/generated/missing.txt
         if: ${{ matrix.testTask == 'pythonTest' }}
 
       - name: Run end-to-end tests
@@ -64,9 +62,7 @@ jobs:
           name: common-artifact
           path: |
             python/box.tests/reports/git-history-plot.svg
-            python/experiments/missing.txt
-            python/experiments/out-ir.js
-            python/experiments/out_ir.py
+            python/experiments/generated
       - name: Upload ${{ matrix.testTask }} artifact
         uses: actions/upload-artifact@v2
         with:
