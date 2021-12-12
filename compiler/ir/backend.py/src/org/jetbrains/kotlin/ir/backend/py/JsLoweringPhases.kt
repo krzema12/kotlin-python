@@ -321,19 +321,6 @@ private val enumUsageLoweringPhase = makeBodyLoweringPhase(
     prerequisite = setOf(enumEntryCreateGetInstancesFunsLoweringPhase)
 )
 
-private val externalEnumUsageLoweringPhase = makeBodyLoweringPhase(
-    ::ExternalEnumUsagesLowering,
-    name = "ExternalEnumUsagesLowering",
-    description = "Replace external enum entry accesses with field accesses"
-)
-
-private val enumEntryRemovalLoweringPhase = makeDeclarationTransformerPhase(
-    ::EnumClassRemoveEntriesLowering,
-    name = "EnumEntryRemovalLowering",
-    description = "Replace enum entry with corresponding class",
-    prerequisite = setOf(enumUsageLoweringPhase)
-)
-
 private val callableReferenceLowering = makeBodyLoweringPhase(
     ::CallableReferenceLowering,
     name = "CallableReferenceLowering",
@@ -434,12 +421,6 @@ private val privateMemberUsagesLoweringPhase = makeBodyLoweringPhase(
     ::PrivateMemberBodiesLowering,
     name = "PrivateMemberUsagesLowering",
     description = "Rewrite the private member usages"
-)
-
-private val propertyReferenceLoweringPhase = makeBodyLoweringPhase(
-    ::PropertyReferenceLowering,
-    name = "PropertyReferenceLowering",
-    description = "Transform property references"
 )
 
 private val interopCallableReferenceLoweringPhase = makeBodyLoweringPhase(
@@ -574,28 +555,10 @@ private val singleAbstractMethodPhase = makeBodyLoweringPhase(
     description = "Replace SAM conversions with instances of interface-implementing classes"
 )
 
-private val typeOperatorLoweringPhase = makeBodyLoweringPhase(
-    ::TypeOperatorLowering,
-    name = "TypeOperatorLowering",
-    description = "Lower IrTypeOperator with corresponding logic",
-    prerequisite = setOf(
-        bridgesConstructionPhase,
-        removeInlineDeclarationsWithReifiedTypeParametersLoweringPhase,
-        singleAbstractMethodPhase, errorExpressionLoweringPhase
-    )
-)
-
 private val es6AddInternalParametersToConstructorPhase = makeBodyLoweringPhase(
     ::ES6AddInternalParametersToConstructorPhase,
     name = "ES6CreateInitFunctionPhase",
     description = "Add `box` and `resultType` params, create init functions for constructors"
-)
-
-private val es6ConstructorLowering = makeBodyLoweringPhase(
-    ::ES6ConstructorLowering,
-    name = "ES6ConstructorLoweringPhase",
-    description = "Lower constructors",
-    prerequisite = setOf(es6AddInternalParametersToConstructorPhase)
 )
 
 private val secondaryConstructorLoweringPhase = makeDeclarationTransformerPhase(
@@ -645,13 +608,7 @@ private val blockDecomposerLoweringPhase = makeBodyLoweringPhase(
     ::JsBlockDecomposerLowering,
     name = "BlockDecomposerLowering",
     description = "Transform statement-like-expression nodes into pure-statement to make it easily transform into JS",
-    prerequisite = setOf(typeOperatorLoweringPhase, suspendFunctionsLoweringPhase)
-)
-
-private val classReferenceLoweringPhase = makeBodyLoweringPhase(
-    ::ClassReferenceLowering,
-    name = "ClassReferenceLowering",
-    description = "Handle class references"
+    prerequisite = setOf(suspendFunctionsLoweringPhase)
 )
 
 private val primitiveCompanionLoweringPhase = makeBodyLoweringPhase(
@@ -746,10 +703,9 @@ private val loweringList = listOf<Lowering>(
     enumEntryCreateGetInstancesFunsLoweringPhase,
     enumSyntheticFunsLoweringPhase,
     enumUsageLoweringPhase,
-    externalEnumUsageLoweringPhase,
-    enumEntryRemovalLoweringPhase,
+//    externalEnumUsageLoweringPhase,
+//    enumEntryRemovalLoweringPhase,
     suspendFunctionsLoweringPhase,
-    propertyReferenceLoweringPhase,
     interopCallableReferenceLoweringPhase,
     returnableBlockLoweringPhase,
     rangeContainsLoweringPhase,
@@ -768,16 +724,14 @@ private val loweringList = listOf<Lowering>(
     jsDefaultCallbackGeneratorPhase,
     throwableSuccessorsLoweringPhase,
     es6AddInternalParametersToConstructorPhase,
-    es6ConstructorLowering,
+//    es6ConstructorLowering,
 //    varargLoweringPhase,
     multipleCatchesLoweringPhase,
     errorExpressionLoweringPhase,
     errorDeclarationLoweringPhase,
     bridgesConstructionPhase,
-    typeOperatorLoweringPhase,
     secondaryConstructorLoweringPhase,
     secondaryFactoryInjectorLoweringPhase,
-    classReferenceLoweringPhase,
     constLoweringPhase,
     inlineClassDeclarationLoweringPhase,
     inlineClassUsageLoweringPhase,

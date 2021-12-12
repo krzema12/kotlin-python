@@ -329,3 +329,18 @@ internal fun equals(): Boolean
 
 @JsIntrinsic
 internal fun construct(): Boolean
+
+@JsIntrinsic
+internal fun imul(): Boolean
+
+@JsIntrinsic
+internal fun unreachableDeclarationLog(): Boolean
+
+@JsIntrinsic
+internal fun unreachableDeclarationException(): Boolean
+
+@JsIntrinsic
+internal fun numberRangeToNumber(): Boolean
+
+@JsIntrinsic
+internal fun numberRangeToLong(): Boolean

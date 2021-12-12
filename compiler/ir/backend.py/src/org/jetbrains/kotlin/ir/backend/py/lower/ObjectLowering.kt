@@ -87,10 +87,7 @@ class ObjectUsageLowering(
                     //find `superCall` and put after
                     (irBody as IrBlockBody).statements.transformFlat {
                         if (it is IrDelegatingConstructorCall) listOf(it, initInstanceField)
-                        else if (it is IrVariable && it.origin === ES6_THIS_VARIABLE_ORIGIN) {
-                            initInstanceField.value = JsIrBuilder.buildGetValue(it.symbol)
-                            listOf(it, initInstanceField)
-                        } else null
+                        else null
                     }
                 } else {
                     (irBody as IrBlockBody).statements.add(0, initInstanceField)

@@ -15,7 +15,6 @@ import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.types.isLong
 import org.jetbrains.kotlin.ir.util.constructors
 import org.jetbrains.kotlin.ir.util.findDeclaration
-import org.jetbrains.kotlin.ir.util.kotlinPackageFqn
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi2ir.findSingleFunction
@@ -46,13 +45,6 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     val jsUnaryPlus = getInternalFunction("jsUnaryPlus")
     val jsUnaryMinus = getInternalFunction("jsUnaryMinus")
 
-    val jsPrefixInc = getInternalFunction("jsPrefixInc")
-    val jsPostfixInc = getInternalFunction("jsPostfixInc")
-    val jsPrefixDec = getInternalFunction("jsPrefixDec")
-    val jsPostfixDec = getInternalFunction("jsPostfixDec")
-
-    val jsDelete = getInternalFunction("jsDelete")
-
     // Binary operations:
 
     val jsPlus = getInternalFunction("jsPlus")
@@ -61,16 +53,7 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     val jsDiv = getInternalFunction("jsDiv")
     val jsMod = getInternalFunction("jsMod")
 
-    val jsPlusAssign = getInternalFunction("jsPlusAssign")
-    val jsMinusAssign = getInternalFunction("jsMinusAssign")
-    val jsMultAssign = getInternalFunction("jsMultAssign")
-    val jsDivAssign = getInternalFunction("jsDivAssign")
-    val jsModAssign = getInternalFunction("jsModAssign")
-
-    val jsAnd = getInternalFunction("jsAnd")
     val jsOr = getInternalFunction("jsOr")
-
-    val jsIn = getInternalFunction("jsInIntrinsic")
 
     // Bit operations:
 
@@ -96,8 +79,6 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     val jsNumberToShort = getInternalFunction("numberToShort")
     val jsNumberToLong = getInternalFunction("numberToLong")
     val jsNumberToChar = getInternalFunction("numberToChar")
-    val jsToByte = getInternalFunction("toByte")
-    val jsToShort = getInternalFunction("toShort")
     val jsToLong = getInternalFunction("toLong")
 
 
@@ -105,7 +86,6 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
 
     val isInterfaceSymbol = getInternalFunction("isInterface")
     val isArraySymbol = getInternalFunction("isArray")
-    //    val isCharSymbol = getInternalFunction("isChar")
     val isObjectSymbol = getInternalFunction("isObject")
     val isSuspendFunctionSymbol = getInternalFunction("isSuspendFunction")
 
@@ -150,30 +130,6 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     val es6DefaultType = getInternalFunction("DefaultType")
 
     val jsImul = getInternalFunction("imul")
-
-    val jsUnreachableDeclarationLog = getInternalFunction("unreachableDeclarationLog")
-    val jsUnreachableDeclarationException = getInternalFunction("unreachableDeclarationException")
-
-    val jsNativeBoolean = getInternalFunction("nativeBoolean")
-    val jsBooleanInExternalLog = getInternalFunction("booleanInExternalLog")
-    val jsBooleanInExternalException = getInternalFunction("booleanInExternalException")
-
-    // Coroutines
-
-    val jsCoroutineContext
-        get() = context.ir.symbols.coroutineContextGetter
-
-    val jsGetContinuation = getInternalFunction("getContinuation")
-    val jsInvokeSuspendSuperType =
-        getInternalWithoutPackage("kotlin.coroutines.intrinsics.invokeSuspendSuperType")
-    val jsInvokeSuspendSuperTypeWithReceiver =
-        getInternalWithoutPackage("kotlin.coroutines.intrinsics.invokeSuspendSuperTypeWithReceiver")
-    val jsInvokeSuspendSuperTypeWithReceiverAndParam =
-        getInternalWithoutPackage("kotlin.coroutines.intrinsics.invokeSuspendSuperTypeWithReceiverAndParam")
-    val jsGetKClass = getInternalWithoutPackage("getKClass")
-    val jsGetKClassFromExpression = getInternalWithoutPackage("getKClassFromExpression")
-
-    val jsClass = getInternalFunction("jsClassIntrinsic")
 
     val jsNumberRangeToNumber = getInternalFunction("numberRangeToNumber")
     val jsNumberRangeToLong = getInternalFunction("numberRangeToLong")
@@ -258,17 +214,11 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     val unreachable = getInternalFunction("unreachable")
 
     val returnIfSuspended = getInternalFunction("returnIfSuspended")
-    val getContinuation = getInternalFunction("getContinuation")
-
-    val jsEnsureNonNull = getFunctionInKotlinPackage("ensureNotNull")
 
     // Arrays:
     val array get() = irBuiltIns.arrayClass
 
     val primitiveArrays get() = irBuiltIns.primitiveArraysToPrimitiveTypes
-
-    val jsArray = getInternalFunction("arrayWithFun")
-    val jsFillArray = getInternalFunction("fillArrayFun")
 
     val jsArrayLength = getInternalFunction("jsArrayLength")
     val jsArrayGet = getInternalFunction("jsArrayGet")
@@ -324,7 +274,6 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
 
     // TODO move to IntrinsifyCallsLowering
     val doNotIntrinsifyAnnotationSymbol = context.symbolTable.referenceClass(context.getJsInternalClass("DoNotIntrinsify"))
-    val jsFunAnnotationSymbol = context.symbolTable.referenceClass(context.getJsInternalClass("JsFun"))
 
     // TODO move CharSequence-related stiff to IntrinsifyCallsLowering
     val charSequenceClassSymbol = context.symbolTable.referenceClass(context.getClass(FqName("kotlin.CharSequence")))
@@ -355,10 +304,6 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     val readSharedBox = getInternalFunction("sharedBoxRead")
     val writeSharedBox = getInternalFunction("sharedBoxWrite")
 
-
-    val safePropertyGet = getInternalFunction("safePropertyGet")
-    val safePropertySet = getInternalFunction("safePropertySet")
-
     val jsUndefined = getInternalFunction("jsUndefined")
 
     // Helpers:
@@ -373,9 +318,6 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
         val descriptor = context.getFunctions(FqName(name)).singleOrNull() ?: return null
         return context.symbolTable.referenceSimpleFunction(descriptor)
     }
-
-    private fun getFunctionInKotlinPackage(name: String) =
-        context.symbolTable.referenceSimpleFunction(context.getFunctions(kotlinPackageFqn.child(Name.identifier(name))).single())
 
     private fun getInternalClassWithoutPackage(fqName: String) =
         context.symbolTable.referenceClass(context.getClass(FqName(fqName)))

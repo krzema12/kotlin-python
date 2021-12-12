@@ -231,19 +231,6 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
                 )
             }
 
-            add(intrinsics.jsClass) { call, context ->
-                val classifier: IrClassifierSymbol = call.getTypeArgument(0)!!.classifierOrFail
-                val owner = classifier.owner
-
-                when {
-                    owner is IrClass && owner.isEffectivelyExternal() ->
-                        Name(identifier(context.getRefForExternalClass(owner).ident), Load)
-
-                    else ->
-                        Name(identifier(context.getNameForStaticDeclaration(owner as IrDeclarationWithName).makeRef().ident), Load)
-                }
-            }
-
 //            add(intrinsics.jsNewTarget) { _, _ ->
 //                JsNameRef(JsName("target"), JsNameRef(JsName("new")))
 //            }

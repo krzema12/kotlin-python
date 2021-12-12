@@ -15,8 +15,6 @@ import org.jetbrains.kotlin.ir.backend.py.lower.moveBodilessDeclarationsToSepara
 import org.jetbrains.kotlin.ir.backend.py.transformers.irToPy.IrModuleToPyTransformer
 import org.jetbrains.kotlin.ir.declarations.IrFactory
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
-import org.jetbrains.kotlin.ir.declarations.StageController
-import org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFactory
 import org.jetbrains.kotlin.ir.util.ExternalDependenciesGenerator
 import org.jetbrains.kotlin.ir.util.noUnboundLeft
 import org.jetbrains.kotlin.js.config.RuntimeDiagnostic
@@ -36,7 +34,6 @@ fun compile(
     exportedDeclarations: Set<FqName> = emptySet(),
     generateFullJs: Boolean = true,
     generateDceJs: Boolean = false,
-    dceDriven: Boolean = false,
     dceRuntimeDiagnostic: RuntimeDiagnostic? = null,
     es6mode: Boolean = false,
     relativeRequirePath: Boolean = false,
@@ -79,33 +76,12 @@ fun compile(
     // TODO should be done incrementally
     generateTests(context, allModules.last())
 
-    if (dceDriven) {
-        val controller = MutableController(context, pirLowerings)
-
-        check(irFactory is PersistentIrFactory)
-        irFactory.stageController = controller
-
-        controller.currentStage = controller.lowerings.size + 1
-
-        eliminateDeadDeclarations(allModules, context)
-
-        irFactory.stageController = StageController(controller.currentStage)
-
-        val transformer = IrModuleToPyTransformer(
-            context,
-            fullJs = true,
-            dceJs = false,
-            relativeRequirePath = relativeRequirePath
-        )
-        return transformer.generateModule(allModules)
-    } else {
-        jsPhases.invokeToplevel(phaseConfig, context, allModules)
-        val transformer = IrModuleToPyTransformer(
-            context,
-            fullJs = generateFullJs,
-            dceJs = generateDceJs,
-            relativeRequirePath = relativeRequirePath
-        )
-        return transformer.generateModule(allModules)
-    }
+    jsPhases.invokeToplevel(phaseConfig, context, allModules)
+    val transformer = IrModuleToPyTransformer(
+        context,
+        fullJs = generateFullJs,
+        dceJs = generateDceJs,
+        relativeRequirePath = relativeRequirePath
+    )
+    return transformer.generateModule(allModules)
 }

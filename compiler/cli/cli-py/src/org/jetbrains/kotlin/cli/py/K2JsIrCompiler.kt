@@ -256,7 +256,6 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
                     arguments.irDceRuntimeDiagnostic,
                     messageCollector
                 ),
-                dceDriven = arguments.irDceDriven,
                 relativeRequirePath = true,
             )
 

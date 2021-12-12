@@ -10,7 +10,6 @@ import generated.Python.stmt
 import org.jetbrains.kotlin.ir.backend.py.CompilerResult
 import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.PyCode
-import org.jetbrains.kotlin.ir.backend.py.eliminateDeadDeclarations
 import org.jetbrains.kotlin.ir.backend.py.lower.StaticMembersLowering
 import org.jetbrains.kotlin.ir.backend.py.utils.*
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
@@ -42,15 +41,7 @@ class IrModuleToPyTransformer(
 
         val jsCode = if (fullJs) generateWrappedModuleBody(modules, namer) else null
 
-        val dceJsCode = if (dceJs) {
-            eliminateDeadDeclarations(modules, backendContext)
-            // Use a fresh namer for DCE so that we could compare the result with DCE-driven
-            // TODO: is this mode relevant for scripting? If yes, refactor so that the external name tables are used here when needed.
-            val namer = NameTables(emptyList())
-            namer.merge(modules.flatMap { it.files }, additionalPackages)
-            generateWrappedModuleBody(modules, namer)
-        } else null
-
+        val dceJsCode = null
         return CompilerResult(jsCode, dceJsCode)
     }
 
