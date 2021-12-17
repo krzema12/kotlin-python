@@ -12,10 +12,10 @@ jobs:
           - pythonTest
           - microPythonTest
     steps:
-      - name: Check out
+      - name: Fetch the whole git history (to be able to calculate some stats based on it)
         uses: actions/checkout@v2
         with:
-          fetch-depth: ${{ matrix.testTask != 'pythonTest' }}  # For 'pythonTest' fetch the whole git history ('false' -> '0'), to be able to calculate some stats based on it. For others, only a single commit will be fetched ('true' -> '1')
+          fetch-depth: 0
       - name: Install Kotlin for scripting
         run: sudo snap install --classic kotlin
       - name: Install MicroPython
