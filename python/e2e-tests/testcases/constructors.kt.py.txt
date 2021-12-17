@@ -5,11 +5,11 @@ var s = "abc"
 class MultiConstructors1(a: Int) {
 
     init {
-        s = "body 11"
+        s += "|body 11"
     }
 
     constructor(b: String) : this(2) {
-        s = "body 12"
+        s += "|body 12"
     }
 }
 
@@ -24,11 +24,11 @@ fun multi12() {
 class MultiConstructors2 {
 
     constructor(a: Int) {
-        s = "body 21"
+        s += "|body 21"
     }
 
     constructor(b: String) {
-        s = "body 22"
+        s += "|body 22"
     }
 }
 
@@ -43,15 +43,15 @@ fun multi22() {
 class MultiConstructors3 {
 
     constructor(a: Int) {
-        s = "body 31"
+        s += "|body 31"
     }
 
     constructor(b: String) : this(3) {
-        s = "body 32"
+        s += "|body 32"
     }
 
     constructor(b: Boolean) : this("c") {
-        s = "body 33"
+        s += "|body 33"
     }
 }
 
@@ -70,14 +70,14 @@ fun multi33() {
 abstract class BaseClass {
 
     constructor(i: Int) {
-        s = "body base"
+        s += "|body base"
     }
 }
 
 class ChildClass : BaseClass {
 
     constructor(a: Int) : super(4) {
-        s = "body child"
+        s += "|body child"
     }
 }
 
@@ -88,31 +88,39 @@ fun child() {
 from compiled import multi11, multi12, multi21, multi22, multi31, multi32, multi33, child
 import compiled
 
+compiled.s = "test11"
 multi11()
 print(compiled.s)
+compiled.s = "test12"
 multi12()
 print(compiled.s)
 
+compiled.s = "test21"
 multi21()
 print(compiled.s)
+compiled.s = "test22"
 multi22()
 print(compiled.s)
 
+compiled.s = "test31"
 multi31()
 print(compiled.s)
+compiled.s = "test32"
 multi32()
 print(compiled.s)
+compiled.s = "test33"
 multi33()
 print(compiled.s)
 
+compiled.s = "testChild"
 child()
 print(compiled.s)
 --- Expected output ---
-body 11
-body 12
-body 21
-body 22
-body 31
-body 32
-body 33
-body child
+test11|body 11
+test12|body 11|body 12
+test21|body 21
+test22|body 22
+test31|body 31
+test32|body 31|body 32
+test33|body 31|body 32|body 33
+testChild|body base|body child
