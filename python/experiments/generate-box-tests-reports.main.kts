@@ -4,6 +4,7 @@
 @file:DependsOn("org.jetbrains.lets-plot:lets-plot-kotlin-jvm:3.0.2")
 @file:DependsOn("io.github.microutils:kotlin-logging:1.12.5") // To fix missing runtime dependency.
 
+import jetbrains.datalore.plot.base.render.svg.SvgUID
 import jetbrains.letsPlot.export.ggsave
 import jetbrains.letsPlot.geom.geomPoint
 import jetbrains.letsPlot.geom.geomStep
@@ -23,8 +24,6 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
 import javax.xml.parsers.DocumentBuilderFactory
-import kotlin.io.path.readText
-import kotlin.io.path.writeText
 import kotlin.text.Charsets.UTF_8
 
 fun pathFromNamedArgument(argumentName: String): Path? =
@@ -51,7 +50,6 @@ testResults.writeFailedTestsSummary(targetFailedTestsReportPath)
 testResults.writeSummaryTsvToFile(targetBoxTestsReportPath)
 testResults.writeFailureCount(failureCountReportPath)
 generateGitHistoryPlot(gitHistoryPlotPath)
-makeDeterministicSvg(gitHistoryPlotPath)
 
 fun List<TestResult>.writeFailedTestsSummary(targetFile: Path) = targetFile.toFile().printWriter().use { out ->
     this
@@ -291,6 +289,8 @@ fun generateGitHistoryPlot(gitHistoryPlotPath: Path) {
             }
         }
 
+    SvgUID.setUpForTest()  // make the svg deterministic as discussed here: https://github.com/JetBrains/lets-plot/issues/492
+
     val dataForPlot = mapOf(
         "date" to data.map { it.date } + data.map { it.date } + data.map { it.date },
         "tests" to data.map { it.testsAll } + data.map { it.testsPassedPython } + data.map { it.testsPassedMicroPython },
@@ -334,25 +334,4 @@ fun Repository.readFileAsText(tree: RevTree, path: Path): String? {
     val result = objectReader.open(objectId)
     objectReader.close()
     return String(result.bytes, UTF_8)
-}
-
-fun makeDeterministicSvg(svgPath: Path) {
-    var nextId = 0
-    val randomToNumber = mutableMapOf<String, Int>()
-
-    fun String.replaceAll(regex: String, format: String) = regex
-        .toRegex()
-        .replace(this) { res ->
-            val (randomPart) = res.destructured
-            val number = randomToNumber.getOrPut(randomPart) { nextId++ }
-            val numberPart = "id$number"
-            format.format(numberPart)
-        }
-
-    val deterministicText = svgPath
-        .readText()
-        .replaceAll(regex = """url\(#(\w{6})\)""", format = "url(#%s)")
-        .replaceAll(regex = """id="(\w{6})"""", format = """id="%s"""")
-
-    svgPath.writeText(deterministicText)
 }
