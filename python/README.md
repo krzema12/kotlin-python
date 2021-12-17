@@ -180,3 +180,5 @@ dist/kotlinc/bin/kotlinc-js -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xi
 JAVA_OPTS="-Xmx1G" python/experiments/generate-box-tests-reports.main.kts --test-task=pythonTest
 JAVA_OPTS="-Xmx1G" python/experiments/generate-box-tests-reports.main.kts --test-task=microPythonTest
 ```
+
+Also, you can skip any of the steps but invoke the [`Generate reports` GitHub action](../.github/workflows/generate_reports.yml) manually (see the ["Manually running a workflow" GitHub Documentation](https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow)). It will generate all the files for the specified branch and commit and push them.
