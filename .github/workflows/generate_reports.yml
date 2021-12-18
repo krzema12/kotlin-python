@@ -64,7 +64,7 @@ jobs:
           path: python/box.tests/reports/${{ matrix.testTask }}
 
   update_reports:
-    needs: build_and_test
+    needs: generate_reports
     runs-on: ubuntu-latest
     steps:
       - name: Check out
