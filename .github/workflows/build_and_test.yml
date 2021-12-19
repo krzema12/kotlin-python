@@ -34,7 +34,7 @@ jobs:
         run: JDK_9="$JAVA_HOME" ./gradlew dist
 
       - name: Compile python.kt to Python
-        run: dist/kotlinc/bin/kotlinc-py -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -output out_ir.py python/experiments/python.kt
+        run: dist/kotlinc/bin/kotlinc-py -libraries libraries/stdlib/python/build/libs/kotlin-stdlib-python-js-1.6.255-SNAPSHOT.klib -Xir-produce-js -output out_ir.py python/experiments/python.kt
         if: always()
       - name: Compare out_ir.py
         run: diff -u out_ir.py python/experiments/generated/out_ir.py
