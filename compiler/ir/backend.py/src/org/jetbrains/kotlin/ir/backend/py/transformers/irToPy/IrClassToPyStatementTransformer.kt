@@ -8,10 +8,7 @@ package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 import generated.Python.*
 import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
 import org.jetbrains.kotlin.ir.backend.py.utils.asString
-import org.jetbrains.kotlin.ir.declarations.IrClass
-import org.jetbrains.kotlin.ir.declarations.IrConstructor
-import org.jetbrains.kotlin.ir.declarations.IrField
-import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
+import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.getClass
 import org.jetbrains.kotlin.ir.util.isInterface
@@ -98,6 +95,7 @@ fun IrClass.toPythonStatement(context: JsGenerationContext): List<stmt> {
                 is IrSimpleFunction -> IrDeclarationToPyTransformer().visitSimpleFunction(declaration, context)
                 is IrClass -> Expr(value = Name(id = identifier("visitClassDeclaration_IrClass ${declaration.render()}".toValidPythonSymbol()), ctx = Load)).let(::listOf)
                 is IrField -> null
+                is IrEnumEntry -> null
                 else -> throw IllegalArgumentException("Unknown declaration type: ${declaration.render()}")
             }
         }.flatten(),

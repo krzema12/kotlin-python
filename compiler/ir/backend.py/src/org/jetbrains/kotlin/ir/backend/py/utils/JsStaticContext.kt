@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.ir.backend.py.utils
 
 import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.transformers.irToPy.PyIntrinsicTransformers
+import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.js.backend.ast.JsGlobalBlock
 
 
@@ -17,7 +18,8 @@ class JsStaticContext(
 ) : IrNamer by irNamer {
     val intrinsics = PyIntrinsicTransformers(backendContext)
 //    val classModels = mutableMapOf<IrClassSymbol, JsIrClassModel>()
-    val coroutineImplDeclaration = backendContext.ir.symbols.coroutineImpl.owner
+    val coroutineImplDeclaration: IrClass
+        get() = TODO("not implemented")
 
     val initializerBlock = JsGlobalBlock()
 }
