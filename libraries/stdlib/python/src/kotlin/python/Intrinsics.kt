@@ -12,6 +12,8 @@ package kotlin.python
 @Target(AnnotationTarget.FUNCTION)
 internal annotation class JsIntrinsic
 
+internal annotation class DoNotIntrinsify
+
 @JsIntrinsic
 internal fun jsEqeq(a: Any?, b: Any?): Boolean
 
@@ -344,3 +346,21 @@ internal fun numberRangeToNumber(): Boolean
 
 @JsIntrinsic
 internal fun numberRangeToLong(): Boolean
+
+@JsIntrinsic
+internal fun arrayConcat(): Boolean
+
+@JsIntrinsic
+internal fun primitiveArrayConcat(): Boolean
+
+@JsIntrinsic
+internal fun taggedArrayCopy(): Boolean
+
+@JsIntrinsic
+internal fun boxIntrinsic(): Boolean
+
+@JsIntrinsic
+internal fun unboxIntrinsic(): Boolean
+
+@JsIntrinsic
+internal fun captureStack(): Boolean

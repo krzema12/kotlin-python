@@ -203,8 +203,8 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     val anyClassSymbol = getInternalClassWithoutPackage("kotlin.Any")
     val anyConstructorSymbol = anyClassSymbol.constructors.single()
 
-    val jsObjectClassSymbol = getInternalClassWithoutPackage("kotlin.js.JsObject")
-    val jsObjectConstructorSymbol by context.lazy2 { jsObjectClassSymbol.constructors.single() }
+//    val jsObjectClassSymbol = getInternalClassWithoutPackage("kotlin.js.JsObject")
+//    val jsObjectConstructorSymbol by context.lazy2 { jsObjectClassSymbol.constructors.single() }
 
     val uByteClassSymbol by context.lazy2 { getInternalClassWithoutPackage("kotlin.UByte") }
     val uShortClassSymbol by context.lazy2 { getInternalClassWithoutPackage("kotlin.UShort") }
@@ -213,7 +213,7 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
 
     val unreachable = getInternalFunction("unreachable")
 
-    val returnIfSuspended = getInternalFunction("returnIfSuspended")
+//    val returnIfSuspended = getInternalFunction("returnIfSuspended")
 
     // Arrays:
     val array get() = irBuiltIns.arrayClass
@@ -224,10 +224,10 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     val jsArrayGet = getInternalFunction("jsArrayGet")
     val jsArraySet = getInternalFunction("jsArraySet")
 
-    val jsArrayIteratorFunction = getInternalFunction("arrayIterator")
+//    val jsArrayIteratorFunction = getInternalFunction("arrayIterator")
 
-    val jsPrimitiveArrayIteratorFunctions =
-        PrimitiveType.values().associate { it to getInternalFunction("${it.typeName.asString().toLowerCaseAsciiOnly()}ArrayIterator") }
+//    val jsPrimitiveArrayIteratorFunctions =
+//        PrimitiveType.values().associate { it to getInternalFunction("${it.typeName.asString().toLowerCaseAsciiOnly()}ArrayIterator") }
 
     val arrayLiteral = getInternalFunction("arrayLiteral")
 
@@ -253,20 +253,20 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
         PrimitiveType.values().associate { type ->
             type to (primitiveToTypedArrayMap[type]?.let {
                 getInternalFunction("${it.toLowerCaseAsciiOnly()}Array")
-            } ?: getInternalFunction("${type.typeName.asString().toLowerCaseAsciiOnly()}Array"))
+            } ?: getInternalFunction("arrayLiteral")) // TODO Some other function - fix it
         }
 
     val primitiveToLiteralConstructor =
         PrimitiveType.values().associate { type ->
             type to (primitiveToTypedArrayMap[type]?.let {
                 getInternalFunction("${it.toLowerCaseAsciiOnly()}ArrayOf")
-            } ?: getInternalFunction("${type.typeName.asString().toLowerCaseAsciiOnly()}ArrayOf"))
+            } ?: getInternalFunction("arrayLiteral")) // TODO Some other function - fix it
         }
 
-    val arrayConcat = getInternalWithoutPackage("arrayConcat")
+    val arrayConcat = getInternalFunction("arrayConcat")
 
-    val primitiveArrayConcat = getInternalWithoutPackage("primitiveArrayConcat")
-    val taggedArrayCopy = getInternalWithoutPackage("taggedArrayCopy")
+    val primitiveArrayConcat = getInternalFunction("primitiveArrayConcat")
+    val taggedArrayCopy = getInternalFunction("taggedArrayCopy")
 
     val jsArraySlice = getInternalFunction("slice")
 
@@ -291,9 +291,9 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     }
 
 
-    val jsCharSequenceGet = getInternalFunction("charSequenceGet")
-    val jsCharSequenceLength = getInternalFunction("charSequenceLength")
-    val jsCharSequenceSubSequence = getInternalFunction("charSequenceSubSequence")
+//    val jsCharSequenceGet = getInternalFunction("charSequenceGet")
+//    val jsCharSequenceLength = getInternalFunction("charSequenceLength")
+//    val jsCharSequenceSubSequence = getInternalFunction("charSequenceSubSequence")
 
     val jsBoxIntrinsic = getInternalFunction("boxIntrinsic")
     val jsUnboxIntrinsic = getInternalFunction("unboxIntrinsic")

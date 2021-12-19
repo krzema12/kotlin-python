@@ -21,7 +21,7 @@ class BuiltInConstructorCalls(val context: JsIrBackendContext) : CallsTransforme
             // Do not transform Delegation calls
             when (call.symbol) {
                 intrinsics.stringConstructorSymbol -> JsIrBuilder.buildString(context.irBuiltIns.stringType, "")
-                intrinsics.anyConstructorSymbol -> irConstructorCall(call, intrinsics.jsObjectConstructorSymbol)
+//                intrinsics.anyConstructorSymbol -> irConstructorCall(call, intrinsics.jsObjectConstructorSymbol)
                 else -> call
             }
         } else call
