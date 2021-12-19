@@ -248,18 +248,18 @@ private val removeInlineDeclarationsWithReifiedTypeParametersLoweringPhase = mak
     prerequisite = setOf(functionInliningPhase)
 )
 
-private val throwableSuccessorsLoweringPhase = makeBodyLoweringPhase(
-    { context ->
-        context.run {
-            val extendThrowableSymbol =
-                if (es6mode) setPropertiesToThrowableInstanceSymbol else extendThrowableSymbol
-
-            ThrowableLowering(this, extendThrowableSymbol)
-        }
-    },
-    name = "ThrowableLowering",
-    description = "Link kotlin.Throwable and JavaScript Error together to provide proper interop between language and platform exceptions"
-)
+//private val throwableSuccessorsLoweringPhase = makeBodyLoweringPhase(
+//    { context ->
+//        context.run {
+//            val extendThrowableSymbol =
+//                if (es6mode) setPropertiesToThrowableInstanceSymbol else extendThrowableSymbol
+//
+//            ThrowableLowering(this, extendThrowableSymbol)
+//        }
+//    },
+//    name = "ThrowableLowering",
+//    description = "Link kotlin.Throwable and JavaScript Error together to provide proper interop between language and platform exceptions"
+//)
 
 private val tailrecLoweringPhase = makeBodyLoweringPhase(
     ::TailrecLowering,
@@ -405,11 +405,11 @@ private val innerClassConstructorCallsLoweringPhase = makeBodyLoweringPhase(
     description = "Replace inner class constructor invocation"
 )
 
-private val suspendFunctionsLoweringPhase = makeBodyLoweringPhase(
-    ::JsSuspendFunctionsLowering,
-    name = "SuspendFunctionsLowering",
-    description = "Transform suspend functions into CoroutineImpl instance and build state machine"
-)
+//private val suspendFunctionsLoweringPhase = makeBodyLoweringPhase(
+//    ::JsSuspendFunctionsLowering,
+//    name = "SuspendFunctionsLowering",
+//    description = "Transform suspend functions into CoroutineImpl instance and build state machine"
+//)
 
 private val privateMembersLoweringPhase = makeDeclarationTransformerPhase(
     ::PrivateMembersLowering,
@@ -428,7 +428,7 @@ private val interopCallableReferenceLoweringPhase = makeBodyLoweringPhase(
     name = "InteropCallableReferenceLowering",
     description = "Interop layer for function references and lambdas",
     prerequisite = setOf(
-        suspendFunctionsLoweringPhase,
+//        suspendFunctionsLoweringPhase,
         localDeclarationsLoweringPhase,
         localDelegatedPropertiesLoweringPhase,
 //        callableReferenceLowering
@@ -546,7 +546,7 @@ private val bridgesConstructionPhase = makeDeclarationTransformerPhase(
     ::JsBridgesConstruction,
     name = "BridgesConstruction",
     description = "Generate bridges",
-    prerequisite = setOf(suspendFunctionsLoweringPhase)
+//    prerequisite = setOf(suspendFunctionsLoweringPhase)
 )
 
 private val singleAbstractMethodPhase = makeBodyLoweringPhase(
@@ -561,12 +561,12 @@ private val es6AddInternalParametersToConstructorPhase = makeBodyLoweringPhase(
     description = "Add `box` and `resultType` params, create init functions for constructors"
 )
 
-private val secondaryConstructorLoweringPhase = makeDeclarationTransformerPhase(
-    ::SecondaryConstructorLowering,
-    name = "SecondaryConstructorLoweringPhase",
-    description = "Generate static functions for each secondary constructor",
-    prerequisite = setOf(innerClassesLoweringPhase)
-)
+//private val secondaryConstructorLoweringPhase = makeDeclarationTransformerPhase(
+//    ::SecondaryConstructorLowering,
+//    name = "SecondaryConstructorLoweringPhase",
+//    description = "Generate static functions for each secondary constructor",
+//    prerequisite = setOf(innerClassesLoweringPhase)
+//)
 
 private val secondaryFactoryInjectorLoweringPhase = makeBodyLoweringPhase(
     ::SecondaryFactoryInjectorLowering,
@@ -575,11 +575,11 @@ private val secondaryFactoryInjectorLoweringPhase = makeBodyLoweringPhase(
     prerequisite = setOf(innerClassesLoweringPhase)
 )
 
-private val constLoweringPhase = makeBodyLoweringPhase(
-    ::ConstLowering,
-    name = "ConstLowering",
-    description = "Wrap Long and Char constants into constructor invocation"
-)
+//private val constLoweringPhase = makeBodyLoweringPhase(
+//    ::ConstLowering,
+//    name = "ConstLowering",
+//    description = "Wrap Long and Char constants into constructor invocation"
+//)
 
 private val inlineClassDeclarationLoweringPhase = makeDeclarationTransformerPhase(
     { InlineClassLowering(it).inlineClassDeclarationLowering },
@@ -594,28 +594,28 @@ private val inlineClassUsageLoweringPhase = makeBodyLoweringPhase(
     prerequisite = setOf(
         // Const lowering generates inline class constructors for unsigned integers
         // which should be lowered by this lowering
-        constLoweringPhase
+//        constLoweringPhase
     )
 )
 
-private val autoboxingTransformerPhase = makeBodyLoweringPhase(
-    ::AutoboxingTransformer,
-    name = "AutoboxingTransformer",
-    description = "Insert box/unbox intrinsics"
-)
+//private val autoboxingTransformerPhase = makeBodyLoweringPhase(
+//    ::AutoboxingTransformer,
+//    name = "AutoboxingTransformer",
+//    description = "Insert box/unbox intrinsics"
+//)
 
 private val blockDecomposerLoweringPhase = makeBodyLoweringPhase(
     ::JsBlockDecomposerLowering,
     name = "BlockDecomposerLowering",
     description = "Transform statement-like-expression nodes into pure-statement to make it easily transform into JS",
-    prerequisite = setOf(suspendFunctionsLoweringPhase)
+//    prerequisite = setOf(suspendFunctionsLoweringPhase)
 )
 
-private val primitiveCompanionLoweringPhase = makeBodyLoweringPhase(
-    ::PrimitiveCompanionLowering,
-    name = "PrimitiveCompanionLowering",
-    description = "Replace common companion object access with platform one"
-)
+//private val primitiveCompanionLoweringPhase = makeBodyLoweringPhase(
+//    ::PrimitiveCompanionLowering,
+//    name = "PrimitiveCompanionLowering",
+//    description = "Replace common companion object access with platform one"
+//)
 
 private val callsLoweringPhase = makeBodyLoweringPhase(
     ::CallsLowering,
@@ -705,12 +705,12 @@ private val loweringList = listOf<Lowering>(
     enumUsageLoweringPhase,
 //    externalEnumUsageLoweringPhase,
 //    enumEntryRemovalLoweringPhase,
-    suspendFunctionsLoweringPhase,
+//    suspendFunctionsLoweringPhase,
     interopCallableReferenceLoweringPhase,
     returnableBlockLoweringPhase,
     rangeContainsLoweringPhase,
     forLoopsLoweringPhase,
-    primitiveCompanionLoweringPhase,
+//    primitiveCompanionLoweringPhase,
     propertyAccessorInlinerLoweringPhase,
     copyPropertyAccessorBodiesLoweringPass,
     foldConstantLoweringPhase,
@@ -722,7 +722,7 @@ private val loweringList = listOf<Lowering>(
     defaultParameterInjectorPhase,
     defaultParameterCleanerPhase,
     jsDefaultCallbackGeneratorPhase,
-    throwableSuccessorsLoweringPhase,
+//    throwableSuccessorsLoweringPhase,
     es6AddInternalParametersToConstructorPhase,
 //    es6ConstructorLowering,
 //    varargLoweringPhase,
@@ -730,18 +730,18 @@ private val loweringList = listOf<Lowering>(
     errorExpressionLoweringPhase,
     errorDeclarationLoweringPhase,
     bridgesConstructionPhase,
-    secondaryConstructorLoweringPhase,
+//    secondaryConstructorLoweringPhase,
     secondaryFactoryInjectorLoweringPhase,
-    constLoweringPhase,
+//    constLoweringPhase,
     inlineClassDeclarationLoweringPhase,
     inlineClassUsageLoweringPhase,
-    autoboxingTransformerPhase,
+//    autoboxingTransformerPhase,
     blockDecomposerLoweringPhase,
     objectDeclarationLoweringPhase,
     invokeStaticInitializersPhase,
     objectUsageLoweringPhase,
-    captureStackTraceInThrowablesPhase,
-    callsLoweringPhase,
+//    captureStackTraceInThrowablesPhase,
+//    callsLoweringPhase,
     cleanupLoweringPhase,
     validateIrAfterLowering
 )
