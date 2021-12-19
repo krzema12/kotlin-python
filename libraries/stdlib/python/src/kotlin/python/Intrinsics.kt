@@ -364,3 +364,5 @@ internal fun unboxIntrinsic(): Boolean
 
 @JsIntrinsic
 internal fun captureStack(): Boolean
+
+internal object DefaultConstructorMarker

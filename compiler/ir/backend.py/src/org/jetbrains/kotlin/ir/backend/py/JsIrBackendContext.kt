@@ -26,10 +26,7 @@ import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.declarations.impl.IrExternalPackageFragmentImpl
 import org.jetbrains.kotlin.ir.declarations.impl.IrFileImpl
 import org.jetbrains.kotlin.ir.expressions.IrCall
-import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
-import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
-import org.jetbrains.kotlin.ir.symbols.IrFileSymbol
-import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
+import org.jetbrains.kotlin.ir.symbols.*
 import org.jetbrains.kotlin.ir.symbols.impl.DescriptorlessExternalPackageFragmentSymbol
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.types.impl.IrDynamicTypeImpl
@@ -216,8 +213,8 @@ class JsIrBackendContext(
 
             override val stringBuilder
                 get() = TODO("not implemented")
-            override val coroutineImpl =
-                symbolTable.referenceClass(findClass(coroutinePackage.memberScope, COROUTINE_IMPL_NAME))
+            override val coroutineImpl
+                get() = TODO("not implemented")
             override val coroutineSuspendedGetter =
                 symbolTable.referenceSimpleFunction(
                     coroutineIntrinsicsPackage.memberScope.getContributedVariables(
@@ -226,16 +223,19 @@ class JsIrBackendContext(
                     ).filterNot { it.isExpect }.single().getter!!
                 )
 
-            override val getContinuation = symbolTable.referenceSimpleFunction(getJsInternalFunction("getContinuation"))
+            override val getContinuation
+                get() = TODO("not implemented")
 
             override val coroutineContextGetter = symbolTable.referenceSimpleFunction(context.coroutineContextProperty.getter!!)
 
-            override val suspendCoroutineUninterceptedOrReturn =
-                symbolTable.referenceSimpleFunction(getJsInternalFunction(COROUTINE_SUSPEND_OR_RETURN_JS_NAME))
+            override val suspendCoroutineUninterceptedOrReturn
+                get() = TODO("not implemented")
 
-            override val coroutineGetContext = symbolTable.referenceSimpleFunction(getJsInternalFunction(GET_COROUTINE_CONTEXT_NAME))
+            override val coroutineGetContext
+                get() = TODO("not implemented")
 
-            override val returnIfSuspended = symbolTable.referenceSimpleFunction(getJsInternalFunction("returnIfSuspended"))
+            override val returnIfSuspended
+                get() = TODO("not implemented")
 
             override val functionAdapter: IrClassSymbol
                 get() = TODO("Not implemented")
@@ -253,15 +253,16 @@ class JsIrBackendContext(
     val errorCodeSymbol: IrSimpleFunctionSymbol? =
         if (errorPolicy.allowErrors) symbolTable.referenceSimpleFunction(getJsInternalFunction("errorCode")) else null
 
-    val primitiveClassesObject = getIrClass(FqName("kotlin.reflect.js.internal.PrimitiveClasses"))
+    val primitiveClassesObject: IrClassSymbol
+        get() = TODO("Not implemented")
 
     val throwableClass = getIrClass(JsIrBackendContext.KOTLIN_PACKAGE_FQN.child(Name.identifier("Throwable")))
 
-    val primitiveCompanionObjects = primitivesWithImplicitCompanionObject().associateWith {
-        getIrClass(JS_INTERNAL_PACKAGE_FQNAME.child(Name.identifier("${it.identifier}CompanionObject")))
-    }
+    val primitiveCompanionObjects: Map<Name, IrClassSymbol>
+        get() = TODO("Not implemented")
 
-    val coroutineImpl = ir.symbols.coroutineImpl
+    val coroutineImpl: IrClassSymbol
+        get() = TODO("Not implemented")
     val continuationClass = symbolTable.referenceClass(
         coroutinePackage.memberScope.getContributedClassifier(
             CONTINUATION_NAME,
@@ -272,8 +273,10 @@ class JsIrBackendContext(
 
     // Top-level functions forced to be loaded
 
-    val coroutineSuspendOrReturn = ir.symbols.suspendCoroutineUninterceptedOrReturn
-    val coroutineSuspendGetter = ir.symbols.coroutineSuspendedGetter
+    val coroutineSuspendOrReturn: IrSimpleFunctionSymbol
+        get() = TODO("Not implemented")
+    val coroutineSuspendGetter: IrSimpleFunctionSymbol
+        get() = TODO("Not implemented")
     val coroutineGetContext: IrSimpleFunctionSymbol
         get() {
             val contextGetter =
@@ -287,19 +290,8 @@ class JsIrBackendContext(
     val coroutineGetContextJs
         get() = ir.symbols.coroutineGetContext
 
-    val coroutineEmptyContinuation = symbolTable.referenceProperty(
-        getProperty(
-            FqName.fromSegments(
-                listOf(
-                    "kotlin",
-                    "coroutines",
-                    "js",
-                    "internal",
-                    "EmptyContinuation"
-                )
-            )
-        )
-    )
+    val coroutineEmptyContinuation: IrPropertySymbol
+        get() = TODO("Not implemented")
 
     val coroutineContextProperty: PropertyDescriptor
         get() {
@@ -310,16 +302,20 @@ class JsIrBackendContext(
             return vars.single()
         }
 
-    val newThrowableSymbol = symbolTable.referenceSimpleFunction(getJsInternalFunction("newThrowable"))
-    val extendThrowableSymbol = symbolTable.referenceSimpleFunction(getJsInternalFunction("extendThrowable"))
-    val setPropertiesToThrowableInstanceSymbol =
-        symbolTable.referenceSimpleFunction(getJsInternalFunction("setPropertiesToThrowableInstance"))
+    val newThrowableSymbol: IrSimpleFunctionSymbol
+        get() = TODO("Not implemented")
+    val extendThrowableSymbol: IrSimpleFunctionSymbol
+        get() = TODO("Not implemented")
+    val setPropertiesToThrowableInstanceSymbol: IrSimpleFunctionSymbol
+        get() = TODO("Not implemented")
 
-    val throwISEsymbol = symbolTable.referenceSimpleFunction(getFunctions(kotlinPackageFqn.child(Name.identifier("THROW_ISE"))).single())
-    val throwIAEsymbol = symbolTable.referenceSimpleFunction(getFunctions(kotlinPackageFqn.child(Name.identifier("THROW_IAE"))).single())
+    val throwISEsymbol: IrSimpleFunctionSymbol
+        get() = TODO("Not implemented")
 
-    val suiteFun = getFunctions(FqName("kotlin.test.suite")).singleOrNull()?.let { symbolTable.referenceSimpleFunction(it) }
-    val testFun = getFunctions(FqName("kotlin.test.test")).singleOrNull()?.let { symbolTable.referenceSimpleFunction(it) }
+    val suiteFun: IrSimpleFunctionSymbol?
+        get() = TODO("Not implemented")
+    val testFun: IrSimpleFunctionSymbol?
+        get() = TODO("Not implemented")
 
     val coroutineImplLabelPropertyGetter by lazy2 { ir.symbols.coroutineImpl.getPropertyGetter("state")!!.owner }
     val coroutineImplLabelPropertySetter by lazy2 { ir.symbols.coroutineImpl.getPropertySetter("state")!!.owner }
@@ -342,10 +338,6 @@ class JsIrBackendContext(
 
     val throwableConstructors by lazy2 { throwableClass.owner.declarations.filterIsInstance<IrConstructor>().map { it.symbol } }
     val defaultThrowableCtor by lazy2 { throwableConstructors.single { !it.owner.isPrimary && it.owner.valueParameters.size == 0 } }
-
-    val kpropertyBuilder = getFunctions(FqName("kotlin.js.getPropertyCallableRef")).single().let { symbolTable.referenceSimpleFunction(it) }
-    val klocalDelegateBuilder =
-        getFunctions(FqName("kotlin.js.getLocalDelegateReference")).single().let { symbolTable.referenceSimpleFunction(it) }
 
     private fun referenceOperators(): Map<Name, MutableMap<IrClassifierSymbol, IrSimpleFunctionSymbol>> {
         val primitiveIrSymbols = irBuiltIns.primitiveIrTypes.map { it.classifierOrFail as IrClassSymbol }
