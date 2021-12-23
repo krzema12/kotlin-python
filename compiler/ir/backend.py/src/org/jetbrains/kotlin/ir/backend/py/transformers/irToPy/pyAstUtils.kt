@@ -82,10 +82,6 @@ fun translateCallArguments(expression: IrMemberAccessExpression<*>, context: JsG
         val result = argument?.accept(transformer, context)
         if (result == null) {
             Name(id = identifier("translateCallArguments $index".toValidPythonSymbol()), ctx = Load)  // todo
-//            if (context.staticContext.backendContext.es6mode) return@mapTo JsPrefixOperation(JsUnaryOperator.VOID, JsIntLiteral(2))
-//
-//            assert(expression is IrFunctionAccessExpression && expression.symbol.owner.isExternalOrInheritedFromExternal())
-//            JsPrefixOperation(JsUnaryOperator.VOID, JsIntLiteral(1))
         } else if (argument is IrVararg) {
             Starred(value = result, ctx = Load)  // todo: it's not pretty to have *(1, 2, 3) -- we can flatten vararg here
         } else {
@@ -93,8 +89,5 @@ fun translateCallArguments(expression: IrMemberAccessExpression<*>, context: JsG
         }
     }
 
-//    return if (expression.symbol.isSuspend) {
-//        arguments + context.continuation
-//    } else arguments
     return arguments  // todo
 }

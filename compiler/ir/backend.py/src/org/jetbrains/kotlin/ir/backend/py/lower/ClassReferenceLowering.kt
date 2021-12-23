@@ -153,9 +153,6 @@ class ClassReferenceLowering(val context: JsIrBackendContext) : BodyLoweringPass
         val classifier: IrClassifierSymbol = type.classifier
 
         // TODO: Check why do we have un-substituted reified parameters
-        // if (classifier is IrTypeParameterSymbol && classifier.owner.isReified) {
-        //     error("Fail")
-        // }
 
         val kClassifier = createKClassifier(classifier, visitedTypeParams)
         // TODO: Use static array types
@@ -215,9 +212,6 @@ class ClassReferenceLowering(val context: JsIrBackendContext) : BodyLoweringPass
         }
 
         // TODO: Check why do we have non-inlined reified parameters
-        // if (typeParameter.isReified) {
-        //     error("Reified parameter")
-        // }
 
         return buildCall(
             context.intrinsics.createKTypeParameter!!,

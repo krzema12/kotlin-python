@@ -148,7 +148,6 @@ open class MutableController(val context: JsIrBackendContext, val lowerings: Lis
     override fun canModify(element: IrElement): Boolean {
         return true
         // TODO fix and enable
-//        return !restricted || restrictedToDeclaration === element || element is IrPersistingElementBase<*> && element.createdOn == currentStage
     }
 
     override fun canAccessDeclarationsOf(irClass: IrClass): Boolean {

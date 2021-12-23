@@ -60,19 +60,13 @@ private fun IrDeclaration.addRootsTo(to: MutableCollection<IrDeclaration>, conte
         isEffectivelyExternal() -> {
             to += this
         }
-//        isExported(context) -> {
-//            to += this
-//        }
         this is IrField -> {
             // TODO: simplify
-            if ((initializer != null && !isKotlinPackage()/* || correspondingPropertySymbol?.owner?.isExported(context) == true*/) && !isConstant()) {
+            if ((initializer != null && !isKotlinPackage()) && !isConstant()) {
                 to += this
             }
         }
         this is IrSimpleFunction -> {
-//            if (correspondingPropertySymbol?.owner?.isExported(context) == true) {
-//                to += this
-//            }
         }
     }
 }
@@ -322,7 +316,7 @@ fun usefulDeclarations(
                     (it.classifierOrNull as? IrClassSymbol)?.owner?.enqueue("superTypes")
                 }
 
-                if (declaration.isObject/* && declaration.isExported(context)*/) {
+                if (declaration.isObject) {
                     context.mapping.objectToGetInstanceFunction[declaration]!!
                         .enqueue(declaration, "Exported object getInstance function")
                 }

@@ -238,7 +238,6 @@ class TypeOperatorLowering(val context: JsIrBackendContext) : BodyLoweringPass {
                     toType.isNothing() -> JsIrBuilder.buildComposite(context.irBuiltIns.booleanType, listOf(argument, litFalse))
                     toType.isSuspendFunctionTypeOrSubtype() -> generateSuspendFunctionCheck(argument, toType)
                     isTypeOfCheckingType(toType) -> generateTypeOfCheck(argument, toType)
-//                    toType.isChar() -> generateCheckForChar(argument)
                     toType.isNumber() -> generateNumberCheck(argument)
                     toType.isComparable() -> generateComparableCheck(argument)
                     toType.isCharSequence() -> generateCharSequenceCheck(argument)
@@ -267,7 +266,6 @@ class TypeOperatorLowering(val context: JsIrBackendContext) : BodyLoweringPass {
                 val typeParameter = typeParameterSymbol.owner
 
                 // TODO either remove functions with reified type parameters or support this case
-                // assert(!typeParameter.isReified) { "reified parameters have to be lowered before" }
 
                 return typeParameter.superTypes.fold<IrType, IrExpression?>(null) { r, t ->
                     val copy = argument.shallowCopyOrNull()
@@ -281,9 +279,6 @@ class TypeOperatorLowering(val context: JsIrBackendContext) : BodyLoweringPass {
                     }
                 } ?: litTrue
             }
-
-//            private fun generateCheckForChar(argument: IrExpression) =
-//                JsIrBuilder.buildCall(isCharSymbol).apply { dispatchReceiver = argument }
 
             private fun generateSuspendFunctionCheck(argument: IrExpression, toType: IrType): IrExpression {
                 val arity = (toType.classifierOrFail.owner as IrClass).typeParameters.size - 1 // drop return type
