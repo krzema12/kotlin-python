@@ -251,6 +251,7 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
                 val array = args[0]
                 val index = args[1]
                 val value = args[2]
+                // todo: this is a statement but an expression is required, so using __setitem__ call below for now
                 Call(
                     func = Attribute(
                         value = array,
@@ -285,6 +286,7 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
                 val box = args[0]
                 val value = args[1]
 
+                // todo: this is a statement but an expression is required, so using __setitem__ call below for now
                 Call(
                     func = Attribute(
                         value = box,
