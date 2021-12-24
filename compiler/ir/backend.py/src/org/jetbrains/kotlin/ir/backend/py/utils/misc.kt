@@ -52,7 +52,7 @@ fun IrFunction.hasStableJsName(context: JsIrBackendContext?): Boolean {
         else -> true
     }
 
-    return (isEffectivelyExternal() || getJsName() != null/* || isExported(context)*/) && namedOrMissingGetter
+    return (isEffectivelyExternal() || getJsName() != null) && namedOrMissingGetter
 }
 
 fun IrFunction.isEqualsInheritedFromAny() =

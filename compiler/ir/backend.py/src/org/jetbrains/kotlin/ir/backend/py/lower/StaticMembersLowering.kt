@@ -25,9 +25,6 @@ class StaticMembersLowering(val context: JsCommonBackendContext) : DeclarationTr
             if (isStatic) {
                 // JsExport might be inherited from parent declaration which would be broken if we move it out of its parent.
                 // Marking declaration as exported explicitly.
-//                if (context is JsIrBackendContext && declaration.isExported(context)) {
-//                    context.additionalExportedDeclarations.add(declaration)
-//                }
                 var extractedUnder = declaration
                 var newContainer = declaration.parent
                 while (newContainer is IrDeclaration && newContainer != irClass.file) {

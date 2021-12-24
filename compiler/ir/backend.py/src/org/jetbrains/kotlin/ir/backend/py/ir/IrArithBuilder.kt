@@ -41,8 +41,8 @@ class JsIrArithBuilder(val context: JsIrBackendContext) {
     fun not(v: IrExpression): IrExpression = buildUnaryOperator(OperatorNames.NOT, v)
     fun inv(v: IrExpression): IrExpression = buildUnaryOperator(OperatorNames.INV, v)
 
-    fun andand(l: IrExpression, r: IrExpression) = // if (l) r else false
+    fun andand(l: IrExpression, r: IrExpression) =
         JsIrBuilder.buildIfElse(context.irBuiltIns.booleanType, l, r, JsIrBuilder.buildBoolean(context.irBuiltIns.booleanType, false))
-    fun oror(l: IrExpression, r: IrExpression) = // if (l) true else r
+    fun oror(l: IrExpression, r: IrExpression) =
         JsIrBuilder.buildIfElse(context.irBuiltIns.booleanType, l, JsIrBuilder.buildBoolean(context.irBuiltIns.booleanType, true), r)
 }

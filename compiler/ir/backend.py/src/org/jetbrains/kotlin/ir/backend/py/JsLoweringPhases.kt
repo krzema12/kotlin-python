@@ -450,7 +450,6 @@ private val interopCallableReferenceLoweringPhase = makeBodyLoweringPhase(
         suspendFunctionsLoweringPhase,
         localDeclarationsLoweringPhase,
         localDelegatedPropertiesLoweringPhase,
-//        callableReferenceLowering
     )
 )
 
@@ -708,7 +707,6 @@ private val loweringList = listOf<Lowering>(
     validateIrBeforeLowering,
     expectDeclarationsRemovingPhase,
     stripTypeAliasDeclarationsPhase,
-//    jsCodeOutliningPhase,
     arrayConstructorPhase,
     lateinitNullableFieldsPhase,
     lateinitDeclarationLoweringPhase,
@@ -721,7 +719,6 @@ private val loweringList = listOf<Lowering>(
     copyInlineFunctionBodyLoweringPhase,
     removeInlineDeclarationsWithReifiedTypeParametersLoweringPhase,
     createScriptFunctionsPhase,
-//    callableReferenceLowering,
     singleAbstractMethodPhase,
     tailrecLoweringPhase,
     enumClassConstructorLoweringPhase,
@@ -769,7 +766,6 @@ private val loweringList = listOf<Lowering>(
     throwableSuccessorsLoweringPhase,
     es6AddInternalParametersToConstructorPhase,
     es6ConstructorLowering,
-//    varargLoweringPhase,
     multipleCatchesLoweringPhase,
     errorExpressionLoweringPhase,
     errorDeclarationLoweringPhase,

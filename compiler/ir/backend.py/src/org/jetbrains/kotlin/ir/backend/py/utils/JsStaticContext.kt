@@ -16,7 +16,6 @@ class JsStaticContext(
     val globalNameScope: NameScope
 ) : IrNamer by irNamer {
     val intrinsics = PyIntrinsicTransformers(backendContext)
-//    val classModels = mutableMapOf<IrClassSymbol, JsIrClassModel>()
     val coroutineImplDeclaration = backendContext.ir.symbols.coroutineImpl.owner
 
     val initializerBlock = JsGlobalBlock()

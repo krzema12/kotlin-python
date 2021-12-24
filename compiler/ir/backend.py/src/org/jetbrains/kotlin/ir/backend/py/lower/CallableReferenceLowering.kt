@@ -123,9 +123,6 @@ class CallableReferenceLowering(private val context: CommonBackendContext) : Bod
                 name = SpecialNames.NO_NAME_PROVIDED
             }.apply {
                 superTypes = listOf(superClass, reference.type)
-//                if (samSuperType == null)
-//                    superTypes += functionSuperClass.typeWith(parameterTypes)
-//                if (irFunctionReference.isSuspend) superTypes += context.ir.symbols.suspendFunctionInterface.defaultType
                 createImplicitParameterDeclarationWithWrappedDescriptor()
                 createReceiverField()
             }
