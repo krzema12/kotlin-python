@@ -23,12 +23,7 @@ import org.jetbrains.kotlin.ir.backend.py.lower.coroutines.JsSuspendFunctionsLow
 import org.jetbrains.kotlin.ir.backend.py.lower.inline.CopyInlineFunctionBodyLowering
 import org.jetbrains.kotlin.ir.backend.py.lower.inline.RemoveInlineDeclarationsWithReifiedTypeParametersLowering
 import org.jetbrains.kotlin.ir.backend.py.lower.inline.jsRecordExtractedLocalClasses
-import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
-
-private fun DeclarationContainerLoweringPass.runOnFilesPostfix(files: Iterable<IrFile>) = files.forEach { runOnFilePostfix(it) }
-
-private fun ClassLoweringPass.runOnFilesPostfix(moduleFragment: IrModuleFragment) = moduleFragment.files.forEach { runOnFilePostfix(it) }
 
 private fun makeJsModulePhase(
     lowering: (JsIrBackendContext) -> FileLoweringPass,
@@ -186,12 +181,6 @@ private val stripTypeAliasDeclarationsPhase = makeDeclarationTransformerPhase(
     description = "Strip typealias declarations"
 )
 
-private val jsCodeOutliningPhase = makeBodyLoweringPhase(
-    ::JsCodeOutliningLowering,
-    name = "JsCodeOutliningLowering",
-    description = "Outline js() calls where JS code references Kotlin locals"
-)
-
 private val arrayConstructorPhase = makeBodyLoweringPhase(
     ::ArrayConstructorLowering,
     name = "ArrayConstructor",
@@ -332,12 +321,6 @@ private val enumEntryRemovalLoweringPhase = makeDeclarationTransformerPhase(
     name = "EnumEntryRemovalLowering",
     description = "Replace enum entry with corresponding class",
     prerequisite = setOf(enumUsageLoweringPhase)
-)
-
-private val callableReferenceLowering = makeBodyLoweringPhase(
-    ::CallableReferenceLowering,
-    name = "CallableReferenceLowering",
-    description = "Build a lambda/callable reference class"
 )
 
 private val returnableBlockLoweringPhase = makeBodyLoweringPhase(
@@ -490,13 +473,6 @@ private val jsDefaultCallbackGeneratorPhase = makeBodyLoweringPhase(
     ::JsDefaultCallbackGenerator,
     name = "JsDefaultCallbackGenerator",
     description = "Build binding for super calls with default parameters"
-)
-
-private val varargLoweringPhase = makeBodyLoweringPhase(
-    ::VarargLowering,
-    name = "VarargLowering",
-    description = "Lower vararg arguments",
-    prerequisite = setOf(interopCallableReferenceLoweringPhase)
 )
 
 private val propertiesLoweringPhase = makeDeclarationTransformerPhase(

@@ -10,7 +10,6 @@ import org.jetbrains.kotlin.backend.common.DelegateFactory
 import org.jetbrains.kotlin.backend.common.Mapping
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
-import org.jetbrains.kotlin.ir.util.IdSignature
 import org.jetbrains.kotlin.library.impl.*
 
 fun JsMapping(irFactory: IrFactory) = JsMapping(JsMappingState(irFactory))
@@ -52,46 +51,6 @@ class JsMappingState(val irFactory: IrFactory) : DelegateFactory {
     }
 
     private val allMappings = mutableListOf<SerializableMapping>()
-
-    fun serializeMappings(declarations: Iterable<IrDeclaration>, symbolSerializer: (IrSymbol) -> Long): SerializedMappings {
-        return SerializedMappings(allMappings.map { mapping ->
-            val keys = mutableListOf<Long>()
-            val values = mutableListOf<ByteArray>()
-            declarations.forEach { d ->
-                mapping.serializeMapping(d, symbolSerializer)?.let { bytes ->
-                    keys += symbolSerializer((d as IrSymbolOwner).symbol)
-                    values += bytes
-                }
-            }
-
-            SerializedMapping(
-                IrMemoryLongArrayWriter(keys).writeIntoMemory(),
-                IrMemoryArrayWriter(values).writeIntoMemory(),
-            )
-        })
-    }
-
-    fun mappingsDeserializer(mapping: SerializedMappings, signatureDeserializer: (Long) -> IdSignature, symbolDeserializer: (Long) -> IrSymbol): (IdSignature, IrDeclaration) -> Unit {
-        if (allMappings.size != mapping.mappings.size) error("Mapping size mismatch")
-
-        val index = Array<Map<IdSignature, ByteArray>>(allMappings.size) { i ->
-            val bytes = mapping.mappings[i]
-            val s = IrLongArrayMemoryReader(bytes.keys).array.map(signatureDeserializer)
-            val v = IrArrayMemoryReader(bytes.values).toArray()
-
-            if (s.size != v.size) error("Keys size != values size")
-
-            s.withIndex().associate { it.value to v[it.index] }
-        }
-
-        return { signature, declaration ->
-            for (i in allMappings.indices) {
-                index[i][signature]?.let { bytes ->
-                    allMappings[i].loadMapping(declaration, bytes, symbolDeserializer)
-                }
-            }
-        }
-    }
 }
 
 class SerializedMappings(
@@ -99,7 +58,6 @@ class SerializedMappings(
 )
 
 class SerializedMapping(
-    val keys: ByteArray,
     val values: ByteArray,
 )
 

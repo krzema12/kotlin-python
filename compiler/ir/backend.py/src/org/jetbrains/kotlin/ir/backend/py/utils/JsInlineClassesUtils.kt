@@ -9,10 +9,7 @@ import org.jetbrains.kotlin.ir.backend.py.InlineClassesUtils
 import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
-import org.jetbrains.kotlin.ir.types.IrSimpleType
 import org.jetbrains.kotlin.ir.types.IrType
-import org.jetbrains.kotlin.ir.types.isMarkedNullable
-import org.jetbrains.kotlin.ir.util.getInlineClassUnderlyingType
 
 class JsInlineClassesUtils(val context: JsIrBackendContext) : InlineClassesUtils {
     override fun isTypeInlined(type: IrType): Boolean {

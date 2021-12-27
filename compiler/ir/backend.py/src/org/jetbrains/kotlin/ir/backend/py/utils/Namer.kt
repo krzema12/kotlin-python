@@ -8,11 +8,6 @@ package org.jetbrains.kotlin.ir.backend.py.utils
 import org.jetbrains.kotlin.js.backend.ast.JsNameRef
 
 object Namer {
-    val CALL_FUNCTION = "call"
-    val BIND_FUNCTION = "bind"
-
-    val SLICE_FUNCTION = "slice"
-
     val OUTER_NAME = "\$outer"
     val UNREACHABLE_NAME = "\$unreachable"
 
@@ -21,14 +16,10 @@ object Namer {
     val IMPLICIT_RECEIVER_NAME = "this"
 
     val PROTOTYPE_NAME = "prototype"
-    val CONSTRUCTOR_NAME = "constructor"
 
     val CONTINUATION = "\$cont"
 
-    val JS_ERROR = JsNameRef("Error")
-
     val JS_OBJECT = JsNameRef("Object")
-    val JS_OBJECT_CREATE_FUNCTION = JsNameRef("create", JS_OBJECT)
 
     val METADATA = "\$metadata\$"
     val METADATA_INTERFACES = "interfaces"
