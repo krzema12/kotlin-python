@@ -1,0 +1,17 @@
+name: Code quality check
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  run_qodana:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Disable old Java for Kotlin
+        run: echo "kotlin.build.isObsoleteJdkOverrideEnabled=true" > local.properties
+      - name: 'Qodana Scan'
+        uses: JetBrains/qodana-action@v4.1.1
+        with:
+          linter: jetbrains/qodana-jvm
