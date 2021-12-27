@@ -148,16 +148,6 @@ class EqualityAndComparisonCallsTransformer(context: JsIrBackendContext) : Calls
         }
     }
 
-    private fun IrType.findEqualsMethod(): IrSimpleFunction? {
-        val klass = getClass() ?: return null
-        if (klass.isEnumClass && klass.isExternal) return null
-        return klass.declarations
-            .filterIsInstance<IrSimpleFunction>()
-            .filter { it.isEqualsInheritedFromAny() && !it.isFakeOverriddenFromAny() }
-            .also { assert(it.size <= 1) }
-            .singleOrNull()
-    }
-
     private fun IrFunction.isMethodOfPrimitiveJSType() =
         dispatchReceiverParameter?.let {
             it.type.getPrimitiveType() != PrimitiveType.OTHER

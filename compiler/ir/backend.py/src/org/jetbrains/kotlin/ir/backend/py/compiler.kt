@@ -33,6 +33,7 @@ fun compile(
     depsDescriptors: ModulesStructure,
     phaseConfig: PhaseConfig,
     irFactory: IrFactory,
+    @Suppress("UNUSED_PARAMETER") // If this argument is removed, box tests fail at runtime.
     exportedDeclarations: Set<FqName> = emptySet(),
     generateFullJs: Boolean = true,
     generateDceJs: Boolean = false,
@@ -59,7 +60,6 @@ fun compile(
         irBuiltIns,
         symbolTable,
         allModules.first(),
-        exportedDeclarations,
         configuration,
         es6mode = es6mode,
         dceRuntimeDiagnostic = dceRuntimeDiagnostic,

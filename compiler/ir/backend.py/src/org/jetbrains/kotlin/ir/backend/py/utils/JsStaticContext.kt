@@ -13,7 +13,6 @@ import org.jetbrains.kotlin.js.backend.ast.JsGlobalBlock
 class JsStaticContext(
     val backendContext: JsIrBackendContext,
     private val irNamer: IrNamer,
-    val globalNameScope: NameScope
 ) : IrNamer by irNamer {
     val intrinsics = PyIntrinsicTransformers(backendContext)
     val coroutineImplDeclaration = backendContext.ir.symbols.coroutineImpl.owner

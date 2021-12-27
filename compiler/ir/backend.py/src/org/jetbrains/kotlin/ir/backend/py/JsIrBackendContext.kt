@@ -50,14 +50,12 @@ class JsIrBackendContext(
     override val irBuiltIns: IrBuiltIns,
     val symbolTable: SymbolTable,
     irModuleFragment: IrModuleFragment,
-    val additionalExportedDeclarationNames: Set<FqName>,
     override val configuration: CompilerConfiguration, // TODO: remove configuration from backend context
     override val scriptMode: Boolean = false,
     override val es6mode: Boolean = false,
     val dceRuntimeDiagnostic: RuntimeDiagnostic? = null,
 ) : JsCommonBackendContext {
     val fileToInitializationFuns: MutableMap<IrFile, IrSimpleFunction?> = mutableMapOf()
-    val fileToInitializerPureness: MutableMap<IrFile, Boolean> = mutableMapOf()
 
     val extractedLocalClasses: MutableSet<IrClass> = hashSetOf()
 
@@ -151,10 +149,8 @@ class JsIrBackendContext(
         private val CONTINUATION_CONTEXT_GETTER_NAME = Name.special("<get-context>")
 
         private val CONTINUATION_CONTEXT_PROPERTY_NAME = Name.identifier("context")
-        private val REFLECT_PACKAGE_FQNAME = KOTLIN_PACKAGE_FQN.child(Name.identifier("reflect"))
         private val JS_PACKAGE_FQNAME = KOTLIN_PACKAGE_FQN.child(Name.identifier("js"))
         private val JS_INTERNAL_PACKAGE_FQNAME = JS_PACKAGE_FQNAME.child(Name.identifier("internal"))
-        private val COROUTINE_PACKAGE_FQNAME_12 = FqName.fromSegments(listOf("kotlin", "coroutines", "experimental"))
         private val COROUTINE_PACKAGE_FQNAME_13 = FqName.fromSegments(listOf("kotlin", "coroutines"))
         private val COROUTINE_PACKAGE_FQNAME = COROUTINE_PACKAGE_FQNAME_13
         private val COROUTINE_INTRINSICS_PACKAGE_FQNAME = COROUTINE_PACKAGE_FQNAME.child(INTRINSICS_PACKAGE_NAME)
@@ -261,7 +257,6 @@ class JsIrBackendContext(
         getIrClass(JS_INTERNAL_PACKAGE_FQNAME.child(Name.identifier("${it.identifier}CompanionObject")))
     }
 
-    val coroutineImpl = ir.symbols.coroutineImpl
     val continuationClass = symbolTable.referenceClass(
         coroutinePackage.memberScope.getContributedClassifier(
             CONTINUATION_NAME,
@@ -316,6 +311,7 @@ class JsIrBackendContext(
         symbolTable.referenceSimpleFunction(getJsInternalFunction("setPropertiesToThrowableInstance"))
 
     val throwISEsymbol = symbolTable.referenceSimpleFunction(getFunctions(kotlinPackageFqn.child(Name.identifier("THROW_ISE"))).single())
+    @Suppress("unused") // Removing it results in incorrect runtime behavior.
     val throwIAEsymbol = symbolTable.referenceSimpleFunction(getFunctions(kotlinPackageFqn.child(Name.identifier("THROW_IAE"))).single())
 
     val suiteFun = getFunctions(FqName("kotlin.test.suite")).singleOrNull()?.let { symbolTable.referenceSimpleFunction(it) }

@@ -46,13 +46,6 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     val jsUnaryPlus = getInternalFunction("jsUnaryPlus")
     val jsUnaryMinus = getInternalFunction("jsUnaryMinus")
 
-    val jsPrefixInc = getInternalFunction("jsPrefixInc")
-    val jsPostfixInc = getInternalFunction("jsPostfixInc")
-    val jsPrefixDec = getInternalFunction("jsPrefixDec")
-    val jsPostfixDec = getInternalFunction("jsPostfixDec")
-
-    val jsDelete = getInternalFunction("jsDelete")
-
     // Binary operations:
 
     val jsPlus = getInternalFunction("jsPlus")
@@ -61,16 +54,7 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     val jsDiv = getInternalFunction("jsDiv")
     val jsMod = getInternalFunction("jsMod")
 
-    val jsPlusAssign = getInternalFunction("jsPlusAssign")
-    val jsMinusAssign = getInternalFunction("jsMinusAssign")
-    val jsMultAssign = getInternalFunction("jsMultAssign")
-    val jsDivAssign = getInternalFunction("jsDivAssign")
-    val jsModAssign = getInternalFunction("jsModAssign")
-
-    val jsAnd = getInternalFunction("jsAnd")
     val jsOr = getInternalFunction("jsOr")
-
-    val jsIn = getInternalFunction("jsInIntrinsic")
 
     // Bit operations:
 
@@ -96,8 +80,6 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     val jsNumberToShort = getInternalFunction("numberToShort")
     val jsNumberToLong = getInternalFunction("numberToLong")
     val jsNumberToChar = getInternalFunction("numberToChar")
-    val jsToByte = getInternalFunction("toByte")
-    val jsToShort = getInternalFunction("toShort")
     val jsToLong = getInternalFunction("toLong")
 
 
@@ -133,7 +115,6 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     // Other:
 
     val jsObjectCreate = getInternalFunction("objectCreate") // Object.create
-    val jsCode = getInternalFunction("js") // js("<code>")
     val jsHashCode = getInternalFunction("hashCode")
     val jsGetNumberHashCode = getInternalFunction("getNumberHashCode")
     val jsGetObjectHashCode = getInternalFunction("getObjectHashCode")
@@ -153,22 +134,8 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     val jsUnreachableDeclarationLog = getInternalFunction("unreachableDeclarationLog")
     val jsUnreachableDeclarationException = getInternalFunction("unreachableDeclarationException")
 
-    val jsNativeBoolean = getInternalFunction("nativeBoolean")
-    val jsBooleanInExternalLog = getInternalFunction("booleanInExternalLog")
-    val jsBooleanInExternalException = getInternalFunction("booleanInExternalException")
-
     // Coroutines
 
-    val jsCoroutineContext
-        get() = context.ir.symbols.coroutineContextGetter
-
-    val jsGetContinuation = getInternalFunction("getContinuation")
-    val jsInvokeSuspendSuperType =
-        getInternalWithoutPackage("kotlin.coroutines.intrinsics.invokeSuspendSuperType")
-    val jsInvokeSuspendSuperTypeWithReceiver =
-        getInternalWithoutPackage("kotlin.coroutines.intrinsics.invokeSuspendSuperTypeWithReceiver")
-    val jsInvokeSuspendSuperTypeWithReceiverAndParam =
-        getInternalWithoutPackage("kotlin.coroutines.intrinsics.invokeSuspendSuperTypeWithReceiverAndParam")
     val jsGetKClass = getInternalWithoutPackage("getKClass")
     val jsGetKClassFromExpression = getInternalWithoutPackage("getKClassFromExpression")
 
@@ -257,17 +224,14 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     val unreachable = getInternalFunction("unreachable")
 
     val returnIfSuspended = getInternalFunction("returnIfSuspended")
-    val getContinuation = getInternalFunction("getContinuation")
 
+    @Suppress("unused") // Somehow, this is needed here. Otherwise, compiler fails in runtime.
     val jsEnsureNonNull = getFunctionInKotlinPackage("ensureNotNull")
 
     // Arrays:
     val array get() = irBuiltIns.arrayClass
 
     val primitiveArrays get() = irBuiltIns.primitiveArraysToPrimitiveTypes
-
-    val jsArray = getInternalFunction("arrayWithFun")
-    val jsFillArray = getInternalFunction("fillArrayFun")
 
     val jsArrayLength = getInternalFunction("jsArrayLength")
     val jsArrayGet = getInternalFunction("jsArrayGet")
@@ -317,13 +281,10 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     val primitiveArrayConcat = getInternalWithoutPackage("primitiveArrayConcat")
     val taggedArrayCopy = getInternalWithoutPackage("taggedArrayCopy")
 
-    val jsArraySlice = getInternalFunction("slice")
-
     val jsBind = getInternalFunction("jsBind")
 
     // TODO move to IntrinsifyCallsLowering
     val doNotIntrinsifyAnnotationSymbol = context.symbolTable.referenceClass(context.getJsInternalClass("DoNotIntrinsify"))
-    val jsFunAnnotationSymbol = context.symbolTable.referenceClass(context.getJsInternalClass("JsFun"))
 
     // TODO move CharSequence-related stiff to IntrinsifyCallsLowering
     val charSequenceClassSymbol = context.symbolTable.referenceClass(context.getClass(FqName("kotlin.CharSequence")))
@@ -353,10 +314,6 @@ class JsIntrinsics(private val irBuiltIns: IrBuiltIns, val context: JsIrBackendC
     val createSharedBox = getInternalFunction("sharedBoxCreate")
     val readSharedBox = getInternalFunction("sharedBoxRead")
     val writeSharedBox = getInternalFunction("sharedBoxWrite")
-
-
-    val safePropertyGet = getInternalFunction("safePropertyGet")
-    val safePropertySet = getInternalFunction("safePropertySet")
 
     val jsUndefined = getInternalFunction("jsUndefined")
 

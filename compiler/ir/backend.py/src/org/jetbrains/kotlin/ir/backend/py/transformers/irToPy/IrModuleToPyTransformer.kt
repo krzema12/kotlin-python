@@ -77,7 +77,6 @@ class IrModuleToPyTransformer(
         val staticContext = JsStaticContext(
             backendContext = backendContext,
             irNamer = nameGenerator,
-            globalNameScope = namer.globalNames
         )
         val rootContext = JsGenerationContext(
             currentFunction = null,
