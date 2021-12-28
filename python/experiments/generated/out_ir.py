@@ -10879,27 +10879,6 @@ def fillArrayVal(array, initValue):
     
     return array
 
-def arrayWithFun(size, init):
-    tmp0_fillArrayFun_0 = Array(size)
-    result_1 = kotlin_Any_(tmp0_fillArrayFun_0)
-    i_2 = 0
-    while not (i_2 == len(result_1)):
-        result_1.__setitem__(i_2, init(i_2))
-        i_2 = (((i_2 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-        Unit_getInstance()
-    
-    return result_1
-
-def fillArrayFun(array, init):
-    result = kotlin_Any_(array)
-    i = 0
-    while not (i == len(result)):
-        result.__setitem__(i, init(i))
-        i = (((i + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-        Unit_getInstance()
-    
-    return result
-
 def arrayIterator(array):
     return _no_name_provided__0(array)
 
@@ -11371,17 +11350,6 @@ def lowIndex_init_():
     bufFloat64.__setitem__(0, -1.0)
     return (1) if (not (bufInt32[0] == 0)) else (0)
 
-def booleanInExternalLog(name, obj):
-    if not (jsTypeOf(obj) == 'boolean'):
-        tmp0_asDynamic_0 = console
-        tmp0_asDynamic_0.error((str('Boolean expected for \'') + str(name)) + str('\', but actual:'), obj)
-    
-
-def booleanInExternalException(name, obj):
-    if not (jsTypeOf(obj) == 'boolean'):
-        raise Error(((str('Boolean expected for \'') + str(name)) + str('\', but actual: ')) + str(obj))
-    
-
 class DoNotIntrinsify(Annotation):
     def __init__(self):
         pass
@@ -11667,10 +11635,10 @@ def hasOwnPrototypeProperty(o, name):
     tmp0_unsafeCast_0 = Companion.getPrototypeOf(o).hasOwnProperty(name)
     return kotlin_Any_(tmp0_unsafeCast_0)
 
-def getContinuation():
+def returnIfSuspended(argument):
     raise Exception_init__Create__0('Implemented as intrinsic')
 
-def returnIfSuspended(argument):
+def getContinuation():
     raise Exception_init__Create__0('Implemented as intrinsic')
 
 def suspendCoroutineUninterceptedOrReturnJS(block):
@@ -11762,21 +11730,6 @@ def jsUnaryPlus(a):
 def jsUnaryMinus(a):
     pass
 
-def jsPrefixInc(a):
-    pass
-
-def jsPostfixInc(a):
-    pass
-
-def jsPrefixDec(a):
-    pass
-
-def jsPostfixDec(a):
-    pass
-
-def jsDelete(e):
-    pass
-
 def jsPlus(a, b):
     pass
 
@@ -11792,28 +11745,7 @@ def jsDiv(a, b):
 def jsMod(a, b):
     pass
 
-def jsPlusAssign(a, b):
-    pass
-
-def jsMinusAssign(a, b):
-    pass
-
-def jsMultAssign(a, b):
-    pass
-
-def jsDivAssign(a, b):
-    pass
-
-def jsModAssign(a, b):
-    pass
-
-def jsAnd(a, b):
-    pass
-
 def jsOr(a, b):
-    pass
-
-def jsInIntrinsic(lhs, rhs):
     pass
 
 def jsBitAnd(a, b):
@@ -11903,9 +11835,6 @@ def float32ArrayOf(a):
 def float64ArrayOf(a):
     pass
 
-def slice(a):
-    pass
-
 def jsBind(receiver, target):
     pass
 
@@ -11924,40 +11853,11 @@ def jsUndefined():
 def emptyArray():
     return kotlin_Array_T_(js('[]'))
 
-class JsFun(Annotation):
-    def __init__(self, code):
-        self.code = code
-    
-    def _get_code__0_k_(self):
-        return self.code
-    
-    def equals(self, other):
-        pass
-    
-    def hashCode(self):
-        pass
-    
-    def toString(self):
-        pass
-    
-
 def enumValueOfIntrinsic(name):
     raise IllegalStateException_init__Create__0('Should be replaced by compiler')
 
 def enumValuesIntrinsic():
     raise IllegalStateException_init__Create__0('Should be replaced by compiler')
-
-def safePropertyGet(self, getterName, propName):
-    getter = self[getterName]
-    return (getter.call(self)) if (getter != None) else (self[propName])
-
-def safePropertySet(self, setterName, propName, value):
-    setter = self[setterName]
-    if setter != None:
-        setter.call(self, value)
-    else:
-        Unexpected_operator_EQ(self[propName], value)
-    
 
 class Companion_20(Any):
     def __init__(self):
@@ -13033,15 +12933,6 @@ def CompletedContinuation_getInstance():
         CompletedContinuation()
     
     return CompletedContinuation_instance
-
-def invokeSuspendSuperType(self, completion):
-    raise NotImplementedError('It is intrinsic method')
-
-def invokeSuspendSuperTypeWithReceiver(self, receiver, completion):
-    raise NotImplementedError('It is intrinsic method')
-
-def invokeSuspendSuperTypeWithReceiverAndParam(self, receiver, param, completion):
-    raise NotImplementedError('It is intrinsic method')
 
 def Exception_init__Init_(_this):
     extendThrowable(_this, None, None)
