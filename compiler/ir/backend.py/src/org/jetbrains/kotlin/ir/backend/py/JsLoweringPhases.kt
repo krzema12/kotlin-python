@@ -681,34 +681,34 @@ private val cleanupLoweringPhase = makeBodyLoweringPhase(
 private val loweringList = listOf<Lowering>(
 //    scriptRemoveReceiverLowering,
     validateIrBeforeLowering, // Must stay
-//    expectDeclarationsRemovingPhase,
+    expectDeclarationsRemovingPhase,
 //    stripTypeAliasDeclarationsPhase,
 //    arrayConstructorPhase,
 //    lateinitNullableFieldsPhase,
-//    lateinitDeclarationLoweringPhase,
-//    lateinitUsageLoweringPhase,
-//    sharedVariablesLoweringPhase,
-//    localClassesInInlineLambdasPhase,
-//    localClassesInInlineFunctionsPhase,
-//    localClassesExtractionFromInlineFunctionsPhase,
-//    functionInliningPhase,
+    lateinitDeclarationLoweringPhase,
+    lateinitUsageLoweringPhase,
+    sharedVariablesLoweringPhase,
+    localClassesInInlineLambdasPhase,
+    localClassesInInlineFunctionsPhase,
+    localClassesExtractionFromInlineFunctionsPhase,
+    functionInliningPhase,
 //    copyInlineFunctionBodyLoweringPhase,
-//    removeInlineDeclarationsWithReifiedTypeParametersLoweringPhase,
+    removeInlineDeclarationsWithReifiedTypeParametersLoweringPhase,
 //    createScriptFunctionsPhase,
     singleAbstractMethodPhase, // Must stay
 //    tailrecLoweringPhase,
-//    enumClassConstructorLoweringPhase,
+    enumClassConstructorLoweringPhase,
 //    enumClassConstructorBodyLoweringPhase,
-//    localDelegatedPropertiesLoweringPhase,
+    localDelegatedPropertiesLoweringPhase,
     localDeclarationsLoweringPhase,
     localClassExtractionPhase, // Must stay
-//    innerClassesLoweringPhase,
+    innerClassesLoweringPhase,
 //    innerClassesMemberBodyLoweringPhase,
 //    innerClassConstructorCallsLoweringPhase,
     propertiesLoweringPhase, // Must stay
 //    primaryConstructorLoweringPhase,
 //    delegateToPrimaryConstructorLoweringPhase,
-//    annotationConstructorLowering,
+    annotationConstructorLowering,
     initializersLoweringPhase, // Must stay
     initializersCleanupLoweringPhase, // Must stay
 //    kotlinNothingValueExceptionPhase,
@@ -718,10 +718,10 @@ private val loweringList = listOf<Lowering>(
     enumClassCreateInitializerLoweringPhase, // Must stay
     enumEntryCreateGetInstancesFunsLoweringPhase, // Must stay
     enumSyntheticFunsLoweringPhase, // Must stay
-//    enumUsageLoweringPhase,
+    enumUsageLoweringPhase,
 //    externalEnumUsageLoweringPhase,
     enumEntryRemovalLoweringPhase, // Must stay
-//    suspendFunctionsLoweringPhase,
+    suspendFunctionsLoweringPhase,
 //    propertyReferenceLoweringPhase,
 //    interopCallableReferenceLoweringPhase,
 //    returnableBlockLoweringPhase,
@@ -745,7 +745,7 @@ private val loweringList = listOf<Lowering>(
 //    multipleCatchesLoweringPhase,
 //    errorExpressionLoweringPhase,
 //    errorDeclarationLoweringPhase,
-//    bridgesConstructionPhase,
+    bridgesConstructionPhase,
     typeOperatorLoweringPhase, // Must stay
     secondaryConstructorLoweringPhase, // Must stay
     secondaryFactoryInjectorLoweringPhase, // Must stay
