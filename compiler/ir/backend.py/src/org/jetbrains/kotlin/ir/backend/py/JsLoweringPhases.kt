@@ -706,7 +706,7 @@ private val loweringList = listOf<Lowering>(
 //    innerClassesMemberBodyLoweringPhase,
 //    innerClassConstructorCallsLoweringPhase,
     propertiesLoweringPhase, // Must stay
-//    primaryConstructorLoweringPhase,
+    primaryConstructorLoweringPhase,
 //    delegateToPrimaryConstructorLoweringPhase,
     annotationConstructorLowering,
     initializersLoweringPhase, // Must stay
