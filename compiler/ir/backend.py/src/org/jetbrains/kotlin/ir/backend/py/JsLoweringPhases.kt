@@ -743,7 +743,7 @@ private val loweringList = listOf<Lowering>(
 //    es6AddInternalParametersToConstructorPhase,
 //    es6ConstructorLowering,
 //    multipleCatchesLoweringPhase,
-//    errorExpressionLoweringPhase,
+    errorExpressionLoweringPhase,
 //    errorDeclarationLoweringPhase,
     bridgesConstructionPhase,
     typeOperatorLoweringPhase, // Must stay
