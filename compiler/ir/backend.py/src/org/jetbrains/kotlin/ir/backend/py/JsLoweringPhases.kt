@@ -700,7 +700,7 @@ private val loweringList = listOf<Lowering>(
 //    enumClassConstructorLoweringPhase,
 //    enumClassConstructorBodyLoweringPhase,
 //    localDelegatedPropertiesLoweringPhase,
-//    localDeclarationsLoweringPhase,
+    localDeclarationsLoweringPhase,
     localClassExtractionPhase, // Must stay
 //    innerClassesLoweringPhase,
 //    innerClassesMemberBodyLoweringPhase,
