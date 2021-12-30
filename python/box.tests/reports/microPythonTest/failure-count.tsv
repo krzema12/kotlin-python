@@ -1,12 +1,271 @@
-4878	java.lang.AssertionError: Lowering LocalDeclarationsLowering: phases [SharedVariablesLowering, LocalDelegatedPropertiesLowering] are required, but not satisfied
-105	kotlin.NotImplementedError: An operation is not implemented.
+1026	MemoryError: memory allocation failed, allocating XXX bytes
+353	NameError: name 'translateCallArguments_0' isn't defined
+326	kotlin.NotImplementedError: An operation is not implemented.
+176	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
+163	NameError: name 'js' isn't defined
+160	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' isn't defined
+153	NameError: name 'kotlin_Any' isn't defined
+100	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
+80	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrEnumConstructorCallImpl' isn't defined
+72	NameError: name 'kotlin_Int' isn't defined
+71	TypeError: __init__() takes 2 positional arguments but 1 were given
+54	RuntimeError: name too long
+52	NameError: name 'translateCallArguments_1' isn't defined
+44	NameError: local variable referenced before assignment
+43	AttributeError: 'int' object has no attribute 'data'
+38	AttributeError: '_no_name_provided__11' object has no attribute 'constructor'
+38	SyntaxError: invalid syntax
+36	TypeError: can't convert 'NoneType' object to str implicitly
+36	kotlin.NotImplementedError: An operation is not implemented: PersistentIrTypeAlias is not supported yet here
+30	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrEnumConstructorCallImpl' isn't defined
+27	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OBJECT_GET_INSTANCE_FUNCTION_name_Companion_getInstance_visibility_public_modality_FINAL_______returnType_kotlin_Int_Companion' isn't defined
+26	RuntimeError: maximum recursion depth exceeded
+25	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
+23	AttributeError: '_no_name_provided__10' object has no attribute 'constructor'
+23	TypeError: 'NoneType' object isn't callable
+22	TypeError: __init__() takes 3 positional arguments but 2 were given
+20	NameError: name 'kotlin_Double' isn't defined
+20	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
+18	TypeError: unsupported types for __add__: 'NoneType', 'int'
+18	org.junit.ComparisonFailure: expected:<O[K]> but was:<O[]>
+17	AttributeError: 'CheckStateMachineContinuation' object has no attribute 'constructor'
+17	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrClassReferenceImpl' isn't defined
+16	AttributeError: type object 'A' has no attribute '__new__'
+15	AttributeError: type object 'AssertionError' has no attribute '__new__'
+15	NameError: name 'Array' isn't defined
+15	NameError: name 'kotlin_Long' isn't defined
+15	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
+14	AttributeError: '_no_name_provided__12' object has no attribute 'constructor'
+14	NameError: name 'kotlin_Result_T_' isn't defined
+14	NameError: name 'kotlin_UInt' isn't defined
+14	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' isn't defined
+12	TypeError: can't convert 'int' object to str implicitly
+12	TypeError: object of type 'NoneType' has no len()
+12	TypeError: unsupported types for __add__: 'NoneType', 'NoneType'
+11	AttributeError: 'int' object has no attribute 'toString'
+11	org.junit.ComparisonFailure: expected:<[OK]> but was:<[1]>
+11	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<Unit object at [address]>]>
+11	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<function <lambda> at [address]>]>
+10	ImportError: can't import name box
+10	TypeError: __init__() takes 1 positional arguments but 2 were given
+10	org.junit.ComparisonFailure: expected:<[O]K> but was:<[]K>
 9	java.lang.IllegalStateException: UNRESOLVED_REFERENCE_WRONG_RECEIVER: Unresolved reference. None of the following candidates is applicable because of receiver type mismatch: 
+9	org.junit.ComparisonFailure: expected:<[OK]> but was:<[3]>
+8	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 8	java.lang.IllegalArgumentException: List has more than one element.
+8	org.junit.ComparisonFailure: expected:<[OK]> but was:<[True]>
+7	AttributeError: 'NoneType' object has no attribute 'foo_0_k_'
+7	NameError: name 'Object' isn't defined
+7	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
+7	TypeError: __init__() should return None, not 'tuple'
+7	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<_no_name_provided__1_2 object at [address]>]>
+6	AttributeError: 'M' object has no attribute '_get_i__0_k_'
+6	AttributeError: 'NoneType' object has no attribute 'invoke_0_k_'
+6	AttributeError: type object 'Exception' has no attribute '__new__'
+6	TypeError: unsupported types for __and__: 'float', 'int'
+6	org.junit.ComparisonFailure: expected:<[OK]> but was:<[()]>
+6	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail]>
+6	org.junit.ComparisonFailure: expected:<[OK]> but was:<[L]>
+5	AttributeError: type object 'NullPointerException' has no attribute '__new__'
+5	NameError: name 'test_C' isn't defined
+5	SyntaxError: non-keyword arg after */**
+5	TypeError: __init__() should return None, not 'str'
+5	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<A object at [address]>]>
+5	org.junit.ComparisonFailure: expected:<[O]K> but was:<[K]K>
+4	AttributeError: 'Companion_20' object has no attribute 'getO_0_k_'
+4	NameError: name 'Result_T_' isn't defined
+4	NameError: name 'kotlin_Any_' isn't defined
+4	NameError: name 'kotlin_UShort' isn't defined
+4	NameError: name 'test_A' isn't defined
+4	NameError: name 'test_S' isn't defined
+4	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OBJECT_GET_INSTANCE_FUNCTION_name_Companion_getInstance_visibility_public_modality_FINAL_______returnType_kotlin_Byte_Companion' isn't defined
+4	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_name_typeOf_visibility_public_modality_FINAL__T_____returnType_kotlin_reflect_KType__inline_' isn't defined
 4	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun assertTrue(x: Boolean): Unit defined in kotlin.test (10,34) in <path-truncated>
+4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[('1', '2', '3')]>
+4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[(1, 2, 3)]>
+4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[(1,)]>
+4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[11]>
+4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<Companion_19 object at [address]>]>
+4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<_no_name_provided__9 object at [address]>]>
+4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[FAIL]>
+4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 1]>
+4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail: None]>
+4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[abccde]>
+3	AttributeError: 'C' object has no attribute 'constructor'
+3	AttributeError: 'Companion_11' object has no attribute '_get_MIN_VALUE__0_k_'
+3	AttributeError: 'NoneType' object has no attribute '__setitem__'
+3	AttributeError: 'int' object has no attribute 'toDouble_0_k_'
+3	AttributeError: type object 'ClassCastException' has no attribute '__new__'
+3	AttributeError: type object 'Outer' has no attribute '__new__'
+3	AttributeError: type object 'Test' has no attribute '__new__'
+3	NameError: name 'T' isn't defined
+3	NameError: name 'kotlin_Double_' isn't defined
+3	NameError: name 'kotlin_Float' isn't defined
+3	NameError: name 'message' isn't defined
+3	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OBJECT_GET_INSTANCE_FUNCTION_name_Companion_getInstance_visibility_public_modality_FINAL_______returnType_kotlin_Double_Companion' isn't defined
+3	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_name_IntArray_init__Create__visibility_public_modality_FINAL_____size_kotlin_Int__init_kotlin_Function1_kotlin_Int__kotlin_Int___returnType_kotlin_IntArray' isn't defined
+3	TypeError: __init__() should return None, not '_no_name_provided__1_1'
+3	TypeError: __init__() should return None, not 'function'
+3	TypeError: unsupported types for __add__: 'Test', 'int'
 3	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: setOf (62,29) in <path-truncated>
+3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[2]>
+3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[6]>
+3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<Foo object at [address]>]>
+3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<_no_name_provided__1_1 object at [address]>]>
+3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<function complexFunction_x1__Expr__0 at [address]>]>
+3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<function complexFunction_x2__Assign__Return__0 at [address]>]>
+3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<function complexFunction_x3__FunctionDef__Assign__Return__0 at [address]>]>
+3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail #1]>
+3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail #2]>
+3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1]>
+3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: None]>
+3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1: None]>
+3	org.junit.ComparisonFailure: expected:<[]OK> but was:<[fail: ]OK>
+2	AttributeError: 'BImpl' object has no attribute 'constructor'
+2	AttributeError: 'D' object has no attribute 'constructor'
+2	AttributeError: 'Foo' object has no attribute 'bar'
+2	AttributeError: 'Impl' object has no attribute 'constructor'
+2	AttributeError: 'NoneType' object has no attribute 'rangeTo_wi8o78_k_'
+2	AttributeError: 'NoneType' object has no attribute 'string'
+2	AttributeError: 'NotEmptyMap' object has no attribute 'constructor'
+2	AttributeError: '_no_name_provided__2_8_0' object has no attribute 'constructor'
+2	AttributeError: type object 'C' has no attribute '__new__'
+2	AttributeError: type object 'Derived' has no attribute '__new__'
+2	NameError: name 'Foo_T_' isn't defined
+2	NameError: name 'kotlin_ULong' isn't defined
+2	NameError: name 'test_Inner_kotlin_String_kotlin_String_' isn't defined
+2	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OBJECT_GET_INSTANCE_FUNCTION_name_Companion_getInstance_visibility_public_modality_FINAL_______returnType_kotlin_Short_Companion' isn't defined
+2	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl' isn't defined
+2	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetValueImpl' isn't defined
+2	NameError: name 'visitExpression_other_org_jetbrains_kotlin_ir_expressions_impl_IrGetClassImpl' isn't defined
+2	TypeError: __init__() should return None, not '_no_name_provided__1_2'
+2	TypeError: __init__() should return None, not 'int'
 2	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: Pair (6,36) in <path-truncated>
 2	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: fail (132,9) in <path-truncated>
 2	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: linkedMapOf (6,18) in <path-truncated>
+2	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (a: kotlin.Int, b: kotlin.String) [primary] declared in <root>.Foo'
+2	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (aname: kotlin.String) [primary] declared in <root>.Z'
+2	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (rgb: kotlin.Int) [primary] declared in <root>.Color'
+2	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (value: kotlin.String) [primary] declared in test.Base'
+2	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (x: kotlin.String, closure1: kotlin.Function0<kotlin.String>) [primary] declared in <root>.Test'
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[(0, 1, 2)]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[0]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[42]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[4]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[8]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[9]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<B object at [address]>]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<Test object at [address]>]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<Z object at [address]>]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<function complexFunction_x2__Expr__Expr__0 at [address]>]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[FAIL 0: None]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[FAIL 1 FAIL 1]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[FAIL 1]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[False]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1: TEST]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1: fail methodfail property]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail1 <_no_name_provided__2_0 object at [address]>]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail1: 11]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail1: None]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: b.x = 1]>
+2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[failed 2]>
+1	AttributeError: 'A' object has no attribute 'b'
+1	AttributeError: 'A' object has no attribute 'constructor'
+1	AttributeError: 'A' object has no attribute 's'
+1	AttributeError: 'B' object has no attribute '_get_y__0_k_'
+1	AttributeError: 'B' object has no attribute 'constructor'
+1	AttributeError: 'Base' object has no attribute 'constructor'
+1	AttributeError: 'C' object has no attribute '_get_a__0_k_'
+1	AttributeError: 'C' object has no attribute '_get_result__0_k_'
+1	AttributeError: 'ClassB' object has no attribute 'invoke_1r174_k_'
+1	AttributeError: 'Companion_19' object has no attribute 'getK_0_k_'
+1	AttributeError: 'Companion_19' object has no attribute 'getO_0_k_'
+1	AttributeError: 'Companion_19' object has no attribute 'public'
+1	AttributeError: 'Companion_20' object has no attribute '_get_vo__0_k_'
+1	AttributeError: 'Companion_20' object has no attribute 'getOK_0_k_'
+1	AttributeError: 'Companion_23' object has no attribute '_get_vo__0_k_'
+1	AttributeError: 'CompositePhase' object has no attribute 'constructor'
+1	AttributeError: 'Derived' object has no attribute 'p'
+1	AttributeError: 'EmptyList' object has no attribute 'constructor'
+1	AttributeError: 'EmptyMap' object has no attribute 'constructor'
+1	AttributeError: 'EmptyStringMap' object has no attribute 'constructor'
+1	AttributeError: 'Foo' object has no attribute 'foo'
+1	AttributeError: 'Foo' object has no attribute 'p'
+1	AttributeError: 'FunDependencyEdgeImpl' object has no attribute 'constructor'
+1	AttributeError: 'Handler' object has no attribute '_get_path__0_k_'
+1	AttributeError: 'InlineTrait' object has no attribute 'constructor'
+1	AttributeError: 'N' object has no attribute 'b'
+1	AttributeError: 'NoneType' object has no attribute '_get_result__0_k_'
+1	AttributeError: 'NoneType' object has no attribute 'call_0_k_'
+1	AttributeError: 'NoneType' object has no attribute 'check_hwwcoo_k_'
+1	AttributeError: 'NoneType' object has no attribute 'contains_2c5_k_'
+1	AttributeError: 'NoneType' object has no attribute 'contains_ha5a7z_k_'
+1	AttributeError: 'NoneType' object has no attribute 'f_2bq_k_'
+1	AttributeError: 'NoneType' object has no attribute 'foo_uk8unn_k_'
+1	AttributeError: 'NoneType' object has no attribute 'plusAssign_a4enbm_k_'
+1	AttributeError: 'NoneType' object has no attribute 'value'
+1	AttributeError: 'NotEmptyList' object has no attribute 'constructor'
+1	AttributeError: 'Outer' object has no attribute '_set_value__prcxve_k_'
+1	AttributeError: 'Scope' object has no attribute 'test_sv8swh_k_'
+1	AttributeError: 'Test' object has no attribute 'constructor'
+1	AttributeError: 'Y' object has no attribute 'constructor'
+1	AttributeError: 'Z2' object has no attribute '_get_p__0_k_'
+1	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
+1	AttributeError: '_no_name_provided__9' object has no attribute '_get_i__0_k_'
+1	AttributeError: '_no_name_provided__9' object has no attribute 'constructor'
+1	AttributeError: 'int' object has no attribute 'hashCode'
+1	AttributeError: 'int' object has no attribute 'value'
+1	AttributeError: type object 'A1' has no attribute '__new__'
+1	AttributeError: type object 'B' has no attribute '__new__'
+1	AttributeError: type object 'CustomException' has no attribute '__new__'
+1	AttributeError: type object 'E' has no attribute '__new__'
+1	AttributeError: type object 'Error' has no attribute '__init__'
+1	AttributeError: type object 'Example' has no attribute '__new__'
+1	AttributeError: type object 'MyObject' has no attribute '__new__'
+1	NameError: name 'A_' isn't defined
+1	NameError: name 'AsAny_T_' isn't defined
+1	NameError: name 'Base_kotlin_String_' isn't defined
+1	NameError: name 'GCmp_T_' isn't defined
+1	NameError: name 'MPair___' isn't defined
+1	NameError: name 'a_Base' isn't defined
+1	NameError: name 'kotlin_Function1_Common_kotlin_Unit_' isn't defined
+1	NameError: name 'kotlin_Function1_Top_kotlin_Unit_' isn't defined
+1	NameError: name 'kotlin_Function1_X_kotlin_Unit_' isn't defined
+1	NameError: name 'kotlin_Function1_kotlin_Any_kotlin_Unit_' isn't defined
+1	NameError: name 'kotlin_Nothing' isn't defined
+1	NameError: name 'kotlin_Number' isn't defined
+1	NameError: name 'kotlin_String_' isn't defined
+1	NameError: name 'test_B' isn't defined
+1	NameError: name 'test_Base' isn't defined
+1	NameError: name 'test_Child' isn't defined
+1	NameError: name 'test_IC' isn't defined
+1	NameError: name 'test_IC1' isn't defined
+1	NameError: name 'translateCallArguments_3' isn't defined
+1	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_OBJECT_GET_INSTANCE_FUNCTION_name_Companion_getInstance_visibility_public_modality_FINAL_______returnType_kotlin_Float_Companion' isn't defined
+1	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_name_B1_init__Create__visibility_public_modality_FINAL_____p_kotlin_String__returnType__root__B1' isn't defined
+1	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_name_ByteArray_init__Create__visibility_public_modality_FINAL_____size_kotlin_Int__init_kotlin_Function1_kotlin_Int__kotlin_Byte___returnType_kotlin_ByteArray' isn't defined
+1	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_name_CharArray_init__Create__visibility_public_modality_FINAL_____size_kotlin_Int__init_kotlin_Function1_kotlin_Int__kotlin_Char___returnType_kotlin_CharArray' isn't defined
+1	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_name_Child2_init__Create__visibility_public_modality_FINAL_______returnType__root__Child2' isn't defined
+1	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_name_Inner_init__Create__visibility_public_modality_FINAL_______returnType__root__Inner' isn't defined
+1	NameError: name 'visitCall_getNameForStaticFunction_Can_t_find_name_for_declaration_FUN_name_Inner_init__Create__visibility_public_modality_FINAL_____unused_kotlin_Int__fn_kotlin_Function0_kotlin_String___returnType__root__Inner' isn't defined
+1	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' isn't defined
+1	SyntaxError: *x must be assignment target
+1	TypeError: '_no_name_provided__9' object isn't callable
+1	TypeError: <lambda>() takes 1 positional arguments but 2 were given
+1	TypeError: __init__() should return None, not 'Unit'
+1	TypeError: __init__() should return None, not '_no_name_provided__2_0'
+1	TypeError: __init__() should return None, not '_no_name_provided__9'
+1	TypeError: __init__() takes 4 positional arguments but 3 were given
+1	TypeError: can't convert 'Foo' object to str implicitly
+1	TypeError: can't convert 'Outer' object to str implicitly
+1	TypeError: function takes 1 positional arguments but 0 were given
+1	TypeError: intArrayIterator() takes 1 positional arguments but 2 were given
+1	TypeError: isArray() takes 1 positional arguments but 0 were given
+1	TypeError: object of type 'Test' has no len()
+1	TypeError: unsupported types for __add__: 'ExtProvider', 'int'
+1	TypeError: unsupported types for __add__: 'Z', 'int'
+1	ZeroDivisionError: divide by zero
 1	java.lang.IllegalStateException: IMPLEMENTING_FUNCTION_INTERFACE: Implementing function interface is prohibited in JavaScript (8,14) in <path-truncated>
 1	java.lang.IllegalStateException: NO_THIS: 'this' is not defined in this context (10,20) in <path-truncated>
 1	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun <T> assertEquals(a: T, b: T): Unit defined in kotlin.test (20,49) in <path-truncated>
@@ -68,3 +327,104 @@
 1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: uintArrayOf (5,15) in <path-truncated>
 1	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: withIndex (8,36) in <path-truncated>
 1	java.lang.IllegalStateException: Validation failed in file <path-truncated>
+1	java.lang.IllegalStateException: org.jetbrains.kotlin.ir.declarations.impl.IrVariableImpl@... for VAR SYNTHESIZED_DECLARATION name:tmp type:T of kotlin.Result? [var] has unexpected parent org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFunction@...
+1	java.lang.IllegalStateException: org.jetbrains.kotlin.ir.declarations.impl.IrVariableImpl@... for VAR SYNTHESIZED_DECLARATION name:tmp type:kotlin.Unit [var] has unexpected parent org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFunction@...
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (a: kotlin.Double, b: kotlin.Double) [primary] declared in <root>.Foo'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (a: kotlin.Int) [primary] declared in <root>.A'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (a: kotlin.String) [primary] declared in <root>.E'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (b: kotlin.Boolean) [primary] declared in <root>.E'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (b: kotlin.String) [primary] declared in <root>.A'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (code: kotlin.Int, nameTemplate: kotlin.Int, parent: kotlin.Int, previous: kotlin.Int, progressionEquivalent: kotlin.Int, idDiscipline: kotlin.Int, strictRunningOrder: kotlin.Int, pointsMethod: kotlin.Int, noTimeFaults: kotlin.Int, combineHeights: kotlin.Int, column: kotlin.Int, runningOrderSort: kotlin.Int, programme: kotlin.Int, eliminationTime: kotlin.Int, courseTimeCode: kotlin.Int, teamSize: kotlin.Int, sponsor: kotlin.Int, lateEntryCredits: kotlin.Int, lateEntryFee: kotlin.Int, courseLengthNeeded: kotlin.Int, discretionaryCourseTime: kotlin.Int, isRelay: kotlin.Int, isQualifier: kotlin.Int, generateChildren: kotlin.Int, feedFromParent: kotlin.Int, isNfcAllowed: kotlin.Int, isAddOnAllowed: kotlin.Int, isSpecialEntry: kotlin.Int, isUkaProgression: kotlin.Int, canEnterDirectly: kotlin.Int, isPointRanked: kotlin.Int, isPointRankedDesc: kotlin.Int) [primary] declared in <root>.ClassTemplate'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (f: kotlin.Function0<kotlin.String>) [primary] declared in <root>.E'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (name: kotlin.String, ordinal: kotlin.Int) [primary] declared in <root>.A'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (ok: kotlin.String) [primary] declared in <root>.Test'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (prop1: kotlin.String) [primary] declared in <root>.A1'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (reason: kotlin.String) [primary] declared in <root>.ResultType'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (s: <root>.S) [primary] declared in <root>.Test'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (str: kotlin.String, func: kotlin.Function2<@[ParameterName(name = 'x')] kotlin.Int, @[ParameterName(name = 'y')] kotlin.Int, kotlin.Int>) [primary] declared in <root>.Sign'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (text: kotlin.String) [primary] declared in <root>.Foo'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (value: kotlin.String) [primary] declared in <root>.MyEnum'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (vararg expected: kotlin.String) [primary] declared in <root>.Foo'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (x: kotlin.String, callback: <root>.Callback) [primary] declared in <root>.Foo'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (x: kotlin.String, callback: kotlin.Function0<kotlin.String>) [primary] declared in <root>.Foo'
+1	kotlin.NotImplementedError: An operation is not implemented: ENUM_CONSTRUCTOR_CALL 'private constructor <init> (x: kotlin.String, y: kotlin.String) [primary] declared in <root>.E'
+1	org.junit.ComparisonFailure: expected:<OK[]> but was:<OK[GOOD]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[('',)]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[('OK', '')]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[('a', 'b')]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[('fail 1',)]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[(-1.0,)]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[(0, 1)]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[(1, 'foo', 1.234)]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[(11, 12, 13)]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[(42,)]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[(<function <lambda> at [address]>,)]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[(None, None, 'aaa', 'bbb')]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[-9223372036854775808]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[-]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[10101]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[50.0]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<C object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<InlineLong object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<Inv object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<Name object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<Outer object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<Requester object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<_no_name_provided__1_1_1_0 object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<_no_name_provided__1_3 object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<_no_name_provided__2_0 object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<_no_name_provided__2_8 object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<closure <function <lambda> at [address]> at 7ffa92813440, n_closed=1 <cell 7ffa928131c0 <function <lambda> at [address]>> >]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<closure <function complexFunction_x1__Expr__0 at [address]> at 7f72d7fbc8e0, n_closed=1 <cell 7f72d7fbc800 {'_v': 'OK'}> >]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<closure <function complexFunction_x1__Expr__0 at [address]> at 7f810f5fcd20, n_closed=1 <cell 7f810f5fccc0 {'_v': ''}> >]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<closure <function complexFunction_x2__Assign__Expr__0 at [address]> at 7f25f05e13e0, n_closed=1 <cell 7f25f05e1180 {'_v': 'fail'}> >]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<closure <function complexFunction_x2__Assign__Expr__0 at [address]> at 7f6ffa80fd00, n_closed=1 <cell 7f6ffa80fca0 {'_v': 'fail'}> >]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<closure <function complexFunction_x2__Assign__Expr__0 at [address]> at 7f8d87d5a400, n_closed=1 <cell 201a 'receiver'> >]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<closure <function complexFunction_x2__Assign__Expr__0 at [address]> at 7fc747246d80, n_closed=1 <cell 7fc747246d20 {'_v': 'fail'}> >]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<closure <function complexFunction_x2__Assign__Expr__0 at [address]> at 7fc96efe5ce0, n_closed=1 <cell 7fc96efe5b40 {'_v': 'Fail'}> >]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<closure <function complexFunction_x2__Expr__Expr__0 at [address]> at 7fcd01b02d60, n_closed=1 <cell 7fcd01b02d00 {'_v': ''}> >]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<closure <function complexFunction_x2__While__Expr__0 at [address]> at 7f40e77c4820, n_closed=1 <cell 7f40e77c4740 {'_v': 'Fail'}> >]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<function complexFunction_x2__FunctionDef__Return__0 at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<function complexFunction_x3__Expr__Expr__Expr__0 at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<function complexFunction_x3__If__Expr__Return__0 at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<function complexFunction_x8__Expr__Expr__Expr__Expr__Expr__Expr__Expr__Expr__0 at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[A(string=OK)]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[FAIL 121: FAIL 12]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 1 1]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 1 2]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 1, expected 1, but 102]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 2]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 4: A.bNonConst === B.bNonConst]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail equals]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail get]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail testInt 3]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail toString]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Failed: d.callsBaseFun()==Derived.baseFun()]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Failed: dd.callsSuperDeeperBaseFun()==DeepDerived.deeperBaseFun()]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Failed: s1=<_no_name_provided__1_2 object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[FakeInt(42) != 42]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[K1]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[a = None; b = None]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[def]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail <Num object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail None]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail cmp 1]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail template]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail1: OO]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail2: O]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail2]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail5]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: ??]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[failed]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[failfail]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[inner getter or setter failed]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test0 failed]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1 : 1]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1: -1]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1: 100]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1: 25]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1: <Unit object at [address]>]>
+1	org.junit.ComparisonFailure: expected:<[]OK> but was:<[1]OK>
+1	org.junit.ComparisonFailure: expected:<[]OK> but was:<[s1]OK>
