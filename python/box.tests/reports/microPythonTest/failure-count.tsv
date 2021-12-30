@@ -1,4 +1,4 @@
-4878	java.lang.AssertionError: Lowering LocalClassExtractionPhase: phases [LocalDeclarationsLowering] are required, but not satisfied
+4878	java.lang.AssertionError: Lowering LocalDeclarationsLowering: phases [SharedVariablesLowering, LocalDelegatedPropertiesLowering] are required, but not satisfied
 105	kotlin.NotImplementedError: An operation is not implemented.
 9	java.lang.IllegalStateException: UNRESOLVED_REFERENCE_WRONG_RECEIVER: Unresolved reference. None of the following candidates is applicable because of receiver type mismatch: 
 8	java.lang.IllegalArgumentException: List has more than one element.

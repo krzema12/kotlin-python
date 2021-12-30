@@ -1437,7 +1437,7 @@ class Continuation(Any):
     
 
 def Continuation_0(context, resumeWith):
-    return _no_name_provided_()
+    return _no_name_provided_(context, resumeWith)
 
 def resumeWithException(self, exception):
     return self.resumeWith_bnunh2_k_(Companion_getInstance_2().failure_ml8yr4_k_(exception))
@@ -1449,14 +1449,15 @@ def _get_coroutineContext_():
     raise NotImplementedError('Implemented as intrinsic')
 
 class _no_name_provided_(Continuation):
-    def __init__(self):
-        pass
+    def __init__(self, _context, _resumeWith):
+        self._context = _context
+        self._resumeWith = _resumeWith
     
     def _get_context__0_k_(self):
-        return context
+        return self._context
     
     def resumeWith_bnunh2_k_(self, result):
-        return resumeWith(boxIntrinsic(result))
+        return self._resumeWith(boxIntrinsic(result))
     
     def equals(self, other):
         pass
@@ -9363,31 +9364,31 @@ def fillArrayVal(array, initValue):
     return array
 
 def arrayIterator(array):
-    return _no_name_provided__0()
+    return _no_name_provided__0(array)
 
 def booleanArrayIterator(array):
-    return _no_name_provided__1()
+    return _no_name_provided__1(array)
 
 def charArrayIterator(array):
-    return _no_name_provided__2()
+    return _no_name_provided__2(array)
 
 def byteArrayIterator(array):
-    return _no_name_provided__3()
+    return _no_name_provided__3(array)
 
 def shortArrayIterator(array):
-    return _no_name_provided__4()
+    return _no_name_provided__4(array)
 
 def intArrayIterator(array):
-    return _no_name_provided__5()
+    return _no_name_provided__5(array)
 
 def floatArrayIterator(array):
-    return _no_name_provided__6()
+    return _no_name_provided__6(array)
 
 def longArrayIterator(array):
-    return _no_name_provided__7()
+    return _no_name_provided__7(array)
 
 def doubleArrayIterator(array):
-    return _no_name_provided__8()
+    return _no_name_provided__8(array)
 
 def booleanArray(size):
     return unsafeCast(withType('BooleanArray', fillArrayVal(Array(size), False)))
@@ -9408,7 +9409,8 @@ def longArrayOf(arr):
     return unsafeCast(withType('LongArray', asDynamic(arr).slice()))
 
 class _no_name_provided__0(Iterator_3):
-    def __init__(self):
+    def __init__(self, _array):
+        self._array = _array
         self.index = 0
     
     def _set_index__majfzk_k_(self, _set___):
@@ -9418,14 +9420,14 @@ class _no_name_provided__0(Iterator_3):
         return self.index
     
     def hasNext_0_k_(self):
-        return not (self._get_index__0_k_() == len(array))
+        return not (self._get_index__0_k_() == len(self._array))
     
     def next_0_k_(self):
-        if not (self._get_index__0_k_() == len(array)):
+        if not (self._get_index__0_k_() == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this._get_index__0_k_()
             tmp0_this._set_index__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-            tmp = array[tmp1]
+            tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self._get_index__0_k_()))
         
@@ -9442,7 +9444,8 @@ class _no_name_provided__0(Iterator_3):
     
 
 class _no_name_provided__1(BooleanIterator):
-    def __init__(self):
+    def __init__(self, _array):
+        self._array = _array
         BooleanIterator.__init__(self)
         self.index = 0
     
@@ -9453,14 +9456,14 @@ class _no_name_provided__1(BooleanIterator):
         return self.index
     
     def hasNext_0_k_(self):
-        return not (self._get_index__0_k_() == len(array))
+        return not (self._get_index__0_k_() == len(self._array))
     
     def nextBoolean_0_k_(self):
-        if not (self._get_index__0_k_() == len(array)):
+        if not (self._get_index__0_k_() == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this._get_index__0_k_()
             tmp0_this._set_index__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-            tmp = array[tmp1]
+            tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self._get_index__0_k_()))
         
@@ -9480,7 +9483,8 @@ class _no_name_provided__1(BooleanIterator):
     
 
 class _no_name_provided__2(CharIterator):
-    def __init__(self):
+    def __init__(self, _array):
+        self._array = _array
         CharIterator.__init__(self)
         self.index = 0
     
@@ -9491,14 +9495,14 @@ class _no_name_provided__2(CharIterator):
         return self.index
     
     def hasNext_0_k_(self):
-        return not (self._get_index__0_k_() == len(array))
+        return not (self._get_index__0_k_() == len(self._array))
     
     def nextChar_0_k_(self):
-        if not (self._get_index__0_k_() == len(array)):
+        if not (self._get_index__0_k_() == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this._get_index__0_k_()
             tmp0_this._set_index__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-            tmp = array[tmp1]
+            tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self._get_index__0_k_()))
         
@@ -9518,7 +9522,8 @@ class _no_name_provided__2(CharIterator):
     
 
 class _no_name_provided__3(ByteIterator):
-    def __init__(self):
+    def __init__(self, _array):
+        self._array = _array
         ByteIterator.__init__(self)
         self.index = 0
     
@@ -9529,14 +9534,14 @@ class _no_name_provided__3(ByteIterator):
         return self.index
     
     def hasNext_0_k_(self):
-        return not (self._get_index__0_k_() == len(array))
+        return not (self._get_index__0_k_() == len(self._array))
     
     def nextByte_0_k_(self):
-        if not (self._get_index__0_k_() == len(array)):
+        if not (self._get_index__0_k_() == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this._get_index__0_k_()
             tmp0_this._set_index__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-            tmp = array[tmp1]
+            tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self._get_index__0_k_()))
         
@@ -9556,7 +9561,8 @@ class _no_name_provided__3(ByteIterator):
     
 
 class _no_name_provided__4(ShortIterator):
-    def __init__(self):
+    def __init__(self, _array):
+        self._array = _array
         ShortIterator.__init__(self)
         self.index = 0
     
@@ -9567,14 +9573,14 @@ class _no_name_provided__4(ShortIterator):
         return self.index
     
     def hasNext_0_k_(self):
-        return not (self._get_index__0_k_() == len(array))
+        return not (self._get_index__0_k_() == len(self._array))
     
     def nextShort_0_k_(self):
-        if not (self._get_index__0_k_() == len(array)):
+        if not (self._get_index__0_k_() == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this._get_index__0_k_()
             tmp0_this._set_index__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-            tmp = array[tmp1]
+            tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self._get_index__0_k_()))
         
@@ -9594,7 +9600,8 @@ class _no_name_provided__4(ShortIterator):
     
 
 class _no_name_provided__5(IntIterator):
-    def __init__(self):
+    def __init__(self, _array):
+        self._array = _array
         IntIterator.__init__(self)
         self.index = 0
     
@@ -9605,14 +9612,14 @@ class _no_name_provided__5(IntIterator):
         return self.index
     
     def hasNext_0_k_(self):
-        return not (self._get_index__0_k_() == len(array))
+        return not (self._get_index__0_k_() == len(self._array))
     
     def nextInt_0_k_(self):
-        if not (self._get_index__0_k_() == len(array)):
+        if not (self._get_index__0_k_() == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this._get_index__0_k_()
             tmp0_this._set_index__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-            tmp = array[tmp1]
+            tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self._get_index__0_k_()))
         
@@ -9632,7 +9639,8 @@ class _no_name_provided__5(IntIterator):
     
 
 class _no_name_provided__6(FloatIterator):
-    def __init__(self):
+    def __init__(self, _array):
+        self._array = _array
         FloatIterator.__init__(self)
         self.index = 0
     
@@ -9643,14 +9651,14 @@ class _no_name_provided__6(FloatIterator):
         return self.index
     
     def hasNext_0_k_(self):
-        return not (self._get_index__0_k_() == len(array))
+        return not (self._get_index__0_k_() == len(self._array))
     
     def nextFloat_0_k_(self):
-        if not (self._get_index__0_k_() == len(array)):
+        if not (self._get_index__0_k_() == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this._get_index__0_k_()
             tmp0_this._set_index__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-            tmp = array[tmp1]
+            tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self._get_index__0_k_()))
         
@@ -9670,7 +9678,8 @@ class _no_name_provided__6(FloatIterator):
     
 
 class _no_name_provided__7(LongIterator):
-    def __init__(self):
+    def __init__(self, _array):
+        self._array = _array
         LongIterator.__init__(self)
         self.index = 0
     
@@ -9681,14 +9690,14 @@ class _no_name_provided__7(LongIterator):
         return self.index
     
     def hasNext_0_k_(self):
-        return not (self._get_index__0_k_() == len(array))
+        return not (self._get_index__0_k_() == len(self._array))
     
     def nextLong_0_k_(self):
-        if not (self._get_index__0_k_() == len(array)):
+        if not (self._get_index__0_k_() == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this._get_index__0_k_()
             tmp0_this._set_index__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-            tmp = array[tmp1]
+            tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self._get_index__0_k_()))
         
@@ -9708,7 +9717,8 @@ class _no_name_provided__7(LongIterator):
     
 
 class _no_name_provided__8(DoubleIterator):
-    def __init__(self):
+    def __init__(self, _array):
+        self._array = _array
         DoubleIterator.__init__(self)
         self.index = 0
     
@@ -9719,14 +9729,14 @@ class _no_name_provided__8(DoubleIterator):
         return self.index
     
     def hasNext_0_k_(self):
-        return not (self._get_index__0_k_() == len(array))
+        return not (self._get_index__0_k_() == len(self._array))
     
     def nextDouble_0_k_(self):
-        if not (self._get_index__0_k_() == len(array)):
+        if not (self._get_index__0_k_() == len(self._array)):
             tmp0_this = self
             tmp1 = tmp0_this._get_index__0_k_()
             tmp0_this._set_index__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-            tmp = array[tmp1]
+            tmp = self._array[tmp1]
         else:
             raise NoSuchElementException_init__Create__0(str(self._get_index__0_k_()))
         
