@@ -12,10 +12,10 @@ import org.jetbrains.kotlin.backend.common.serialization.metadata.KlibMetadataVe
 import org.jetbrains.kotlin.cli.common.*
 import org.jetbrains.kotlin.cli.common.ExitCode.COMPILATION_ERROR
 import org.jetbrains.kotlin.cli.common.ExitCode.OK
-import org.jetbrains.kotlin.cli.common.arguments.K2JSCompilerArguments
 import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants
 import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants.RUNTIME_DIAGNOSTIC_EXCEPTION
 import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants.RUNTIME_DIAGNOSTIC_LOG
+import org.jetbrains.kotlin.cli.common.arguments.K2PyCompilerArguments
 import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoot
 import org.jetbrains.kotlin.cli.common.extensions.ScriptEvaluationExtension
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
@@ -64,17 +64,17 @@ enum class ProduceKind {
     KLIB
 }
 
-class K2PyCompiler : CLICompiler<K2JSCompilerArguments>() {
+class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
 
     override val defaultPerformanceManager: CommonCompilerPerformanceManager =
         object : CommonCompilerPerformanceManager("Kotlin to Python (IR) Compiler") {}
 
-    override fun createArguments(): K2JSCompilerArguments {
-        return K2JSCompilerArguments()
+    override fun createArguments(): K2PyCompilerArguments {
+        return K2PyCompilerArguments()
     }
 
     override fun doExecute(
-        arguments: K2JSCompilerArguments,
+        arguments: K2PyCompilerArguments,
         configuration: CompilerConfiguration,
         rootDisposable: Disposable,
         paths: KotlinPaths?
@@ -270,7 +270,7 @@ class K2PyCompiler : CLICompiler<K2JSCompilerArguments>() {
 
     override fun setupPlatformSpecificArgumentsAndServices(
         configuration: CompilerConfiguration,
-        arguments: K2JSCompilerArguments,
+        arguments: K2PyCompilerArguments,
         services: Services
     ) {
         val messageCollector = configuration.getNotNull(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY)
@@ -362,7 +362,7 @@ class K2PyCompiler : CLICompiler<K2JSCompilerArguments>() {
         return KlibMetadataVersion(*versionArray)
     }
 
-    override fun MutableList<String>.addPlatformOptions(arguments: K2JSCompilerArguments) {}
+    override fun MutableList<String>.addPlatformOptions(arguments: K2PyCompilerArguments) {}
 
     companion object {
         private val moduleKindMap = mapOf(
