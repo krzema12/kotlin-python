@@ -30,7 +30,7 @@ jobs:
         run: JDK_9="$JAVA_HOME" ./gradlew dist
 
       - name: Compile python.kt to Python
-        run: dist/kotlinc/bin/kotlinc-py -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -output python/experiments/generated/out_ir.py python/experiments/python.kt
+        run: dist/kotlinc/bin/kotlinc-py -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-py -output python/experiments/generated/out_ir.py python/experiments/python.kt
         if: ${{ matrix.testTask == 'pythonTest' }}
       - name: Compile python.kt to JavaScript
         run: dist/kotlinc/bin/kotlinc-js -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -Xir-property-lazy-initialization -output python/experiments/generated/out-ir.js python/experiments/python.kt

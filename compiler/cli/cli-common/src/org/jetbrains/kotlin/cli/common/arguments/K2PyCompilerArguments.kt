@@ -16,7 +16,7 @@ class K2PyCompilerArguments : CommonCompilerArguments() {
     }
 
     @GradleOption(DefaultValues.StringNullDefault::class)
-    @Argument(value = "-output", valueDescription = "<filepath>", description = "Destination *.js file for the compilation result")
+    @Argument(value = "-output", valueDescription = "<filepath>", description = "Destination *.py file for the compilation result")
     var outputFile: String? by NullableStringFreezableVar(null)
 
     @Argument(
@@ -69,8 +69,8 @@ class K2PyCompilerArguments : CommonCompilerArguments() {
     )
     var irProduceKlibFile: Boolean by FreezableVar(false)
 
-    @Argument(value = "-Xir-produce-js", description = "Generates JS file using IR backend. Also disables pre-IR backend")
-    var irProduceJs: Boolean by FreezableVar(false)
+    @Argument(value = "-Xir-produce-py", description = "Generates Python file using IR backend")
+    var irProducePy: Boolean by FreezableVar(false)
 
     @Argument(value = "-Xir-dce", description = "Perform experimental dead code elimination")
     var irDce: Boolean by FreezableVar(false)
@@ -101,7 +101,7 @@ class K2PyCompilerArguments : CommonCompilerArguments() {
     @Argument(value = "-Xir-legacy-property-access", description = "Force property access via JS properties (requires -Xir-export-all)")
     var irLegacyPropertyAccess: Boolean by FreezableVar(false)
 
-    @Argument(value = "-Xir-per-module-output-name", description = "Adds a custom output name to the splitted js files")
+    @Argument(value = "-Xir-per-module-output-name", description = "Adds a custom output name to the splitted py files")
     var irPerModuleOutputName: String? by NullableStringFreezableVar(null)
 
     @Argument(
