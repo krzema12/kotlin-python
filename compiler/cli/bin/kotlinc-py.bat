@@ -15,6 +15,6 @@ rem See the License for the specific language governing permissions and
 rem limitations under the License.
 
 setlocal
-set _KOTLIN_COMPILER=org.jetbrains.kotlin.cli.py.K2JSCompiler
+set _KOTLIN_COMPILER=org.jetbrains.kotlin.cli.py.K2PyCompiler
 
 call %~dps0kotlinc.bat %*
