@@ -7,17 +7,14 @@ package org.jetbrains.kotlin.cli.py
 
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.util.io.FileUtil
-import com.intellij.openapi.util.text.StringUtil
 import org.jetbrains.kotlin.backend.common.serialization.metadata.KlibMetadataVersion
 import org.jetbrains.kotlin.cli.common.*
 import org.jetbrains.kotlin.cli.common.ExitCode.COMPILATION_ERROR
 import org.jetbrains.kotlin.cli.common.ExitCode.OK
-import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants
 import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants.RUNTIME_DIAGNOSTIC_EXCEPTION
 import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants.RUNTIME_DIAGNOSTIC_LOG
 import org.jetbrains.kotlin.cli.common.arguments.K2PyCompilerArguments
 import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoot
-import org.jetbrains.kotlin.cli.common.extensions.ScriptEvaluationExtension
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity.*
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
@@ -49,7 +46,6 @@ import org.jetbrains.kotlin.library.KLIB_FILE_EXTENSION
 import org.jetbrains.kotlin.metadata.deserialization.BinaryVersion
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.CompilerEnvironment
-import org.jetbrains.kotlin.serialization.js.ModuleKind
 import org.jetbrains.kotlin.utils.KotlinPaths
 import org.jetbrains.kotlin.utils.PathUtil
 import org.jetbrains.kotlin.utils.join
@@ -75,30 +71,6 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
 
         val pluginLoadResult = loadPlugins(paths, arguments, configuration)
         if (pluginLoadResult != OK) return pluginLoadResult
-
-        //TODO: add to configuration everything that may come in handy at script compiler and use it there
-        if (arguments.script) {
-
-            if (!arguments.enableJsScripting) {
-                messageCollector.report(ERROR, "Script for K/JS should be enabled explicitly, see -Xenable-js-scripting")
-                return COMPILATION_ERROR
-            }
-
-            configuration.put(CommonConfigurationKeys.MODULE_NAME, "repl.kts")
-
-            val environment = KotlinCoreEnvironment.getOrCreateApplicationEnvironmentForProduction(rootDisposable, configuration)
-            val projectEnv = KotlinCoreEnvironment.ProjectEnvironment(rootDisposable, environment, configuration)
-            projectEnv.registerExtensionsFromPlugins(configuration)
-
-            val scriptingEvaluators = ScriptEvaluationExtension.getInstances(projectEnv.project)
-            val scriptingEvaluator = scriptingEvaluators.find { it.isAccepted(arguments) }
-            if (scriptingEvaluator == null) {
-                messageCollector.report(ERROR, "Unable to evaluate script, no scripting plugin loaded")
-                return COMPILATION_ERROR
-            }
-
-            return scriptingEvaluator.eval(arguments, configuration, projectEnv)
-        }
 
         if (arguments.freeArgs.isEmpty() && !IncrementalCompilation.isEnabledForJs()) {
             if (arguments.version) {
@@ -265,31 +237,6 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
         arguments: K2PyCompilerArguments,
         services: Services
     ) {
-        val messageCollector = configuration.getNotNull(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY)
-
-        if (arguments.target != null) {
-            assert("v5" == arguments.target) { "Unsupported ECMA version: " + arguments.target!! }
-        }
-        configuration.put(JSConfigurationKeys.TARGET, EcmaVersion.defaultVersion())
-
-        // TODO: Support source maps
-        if (arguments.sourceMap) {
-            messageCollector.report(WARNING, "source-map argument is not supported yet", null)
-        } else {
-            if (arguments.sourceMapPrefix != null) {
-                messageCollector.report(WARNING, "source-map-prefix argument has no effect without source map", null)
-            }
-            if (arguments.sourceMapBaseDirs != null) {
-                messageCollector.report(WARNING, "source-map-source-root argument has no effect without source map", null)
-            }
-        }
-
-        if (arguments.metaInfo) {
-            configuration.put(JSConfigurationKeys.META_INFO, true)
-        }
-
-        configuration.put(JSConfigurationKeys.TYPED_ARRAYS_ENABLED, arguments.typedArrays)
-
         configuration.put(JSConfigurationKeys.FRIEND_PATHS_DISABLED, arguments.friendModulesDisabled)
 
         val friendModules = arguments.friendModules
@@ -302,16 +249,6 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
             configuration.put(JSConfigurationKeys.FRIEND_PATHS, friendPaths)
         }
 
-        val moduleKindName = arguments.moduleKind
-        var moduleKind: ModuleKind? = if (moduleKindName != null) moduleKindMap[moduleKindName] else ModuleKind.PLAIN
-        if (moduleKind == null) {
-            messageCollector.report(
-                ERROR, "Unknown module kind: $moduleKindName. Valid values are: plain, amd, commonjs, umd", null
-            )
-            moduleKind = ModuleKind.PLAIN
-        }
-        configuration.put(JSConfigurationKeys.MODULE_KIND, moduleKind)
-
         configuration.putIfNotNull(JSConfigurationKeys.INCREMENTAL_DATA_PROVIDER, services[IncrementalDataProvider::class.java])
         configuration.putIfNotNull(JSConfigurationKeys.INCREMENTAL_RESULTS_CONSUMER, services[IncrementalResultsConsumer::class.java])
         configuration.putIfNotNull(JSConfigurationKeys.INCREMENTAL_NEXT_ROUND_CHECKER, services[IncrementalNextRoundChecker::class.java])
@@ -323,23 +260,6 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
 
         if (errorTolerancePolicy?.allowErrors == true) {
             configuration.put(JSConfigurationKeys.DEVELOPER_MODE, true)
-        }
-
-        val sourceMapEmbedContentString = arguments.sourceMapEmbedSources
-        var sourceMapContentEmbedding: SourceMapSourceEmbedding? = if (sourceMapEmbedContentString != null)
-            sourceMapContentEmbeddingMap[sourceMapEmbedContentString]
-        else
-            SourceMapSourceEmbedding.INLINING
-        if (sourceMapContentEmbedding == null) {
-            val message = "Unknown source map source embedding mode: " + sourceMapEmbedContentString + ". Valid values are: " +
-                    StringUtil.join(sourceMapContentEmbeddingMap.keys, ", ")
-            messageCollector.report(ERROR, message, null)
-            sourceMapContentEmbedding = SourceMapSourceEmbedding.INLINING
-        }
-        configuration.put(JSConfigurationKeys.SOURCE_MAP_EMBED_SOURCES, sourceMapContentEmbedding)
-
-        if (!arguments.sourceMap && sourceMapEmbedContentString != null) {
-            messageCollector.report(WARNING, "source-map-embed-sources argument has no effect without source map", null)
         }
 
         configuration.put(JSConfigurationKeys.PRINT_REACHABILITY_INFO, arguments.irDcePrintReachabilityInfo)
@@ -357,18 +277,6 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
     override fun MutableList<String>.addPlatformOptions(arguments: K2PyCompilerArguments) {}
 
     companion object {
-        private val moduleKindMap = mapOf(
-            K2JsArgumentConstants.MODULE_PLAIN to ModuleKind.PLAIN,
-            K2JsArgumentConstants.MODULE_COMMONJS to ModuleKind.COMMON_JS,
-            K2JsArgumentConstants.MODULE_AMD to ModuleKind.AMD,
-            K2JsArgumentConstants.MODULE_UMD to ModuleKind.UMD
-        )
-        private val sourceMapContentEmbeddingMap = mapOf(
-            K2JsArgumentConstants.SOURCE_MAP_SOURCE_CONTENT_ALWAYS to SourceMapSourceEmbedding.ALWAYS,
-            K2JsArgumentConstants.SOURCE_MAP_SOURCE_CONTENT_NEVER to SourceMapSourceEmbedding.NEVER,
-            K2JsArgumentConstants.SOURCE_MAP_SOURCE_CONTENT_INLINING to SourceMapSourceEmbedding.INLINING
-        )
-
         @JvmStatic
         fun main(args: Array<String>) {
             doMain(K2PyCompiler(), args)
