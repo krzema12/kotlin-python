@@ -64,7 +64,7 @@ enum class ProduceKind {
     KLIB
 }
 
-class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
+class K2PyCompiler : CLICompiler<K2JSCompilerArguments>() {
 
     override val defaultPerformanceManager: CommonCompilerPerformanceManager =
         object : CommonCompilerPerformanceManager("Kotlin to Python (IR) Compiler") {}
@@ -384,7 +384,7 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            CLITool.doMain(K2JsIrCompiler(), args)
+            CLITool.doMain(K2PyCompiler(), args)
         }
 
         private fun reportCompiledSourcesList(messageCollector: MessageCollector, sourceFiles: List<KtFile>) {
