@@ -183,7 +183,7 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
             )
         }
 
-        if (arguments.irProduceJs) {
+        if (arguments.irProducePy) {
             val phaseConfig = createPhaseConfig(jsPhases, arguments, messageCollector)
 
             val includes = arguments.includes

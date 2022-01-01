@@ -17,7 +17,7 @@ for testcaseFile in python/e2e-tests/testcases/*.kt.py.txt; do
     echo "  Compiling to Python..."
     dist/kotlinc/bin/kotlinc-py \
       -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar \
-      -Xir-produce-js \
+      -Xir-produce-py \
       -output python/e2e-tests/out/compiled.py \
       python/e2e-tests/out/kotlin-code.kt
 

@@ -68,7 +68,7 @@ val buildAndTest = workflow(
             command = """
                 dist/kotlinc/bin/kotlinc-py \
                 -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar \
-                -Xir-produce-js \
+                -Xir-produce-py \
                 -output out_ir.py \
                 python/experiments/python.kt
             """.trimIndent(),
