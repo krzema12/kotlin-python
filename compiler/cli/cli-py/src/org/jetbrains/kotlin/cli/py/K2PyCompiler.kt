@@ -20,7 +20,6 @@ import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoot
 import org.jetbrains.kotlin.cli.common.extensions.ScriptEvaluationExtension
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity.*
-import org.jetbrains.kotlin.cli.common.messages.GroupingMessageCollector
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.cli.common.messages.MessageUtil
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
@@ -51,18 +50,11 @@ import org.jetbrains.kotlin.metadata.deserialization.BinaryVersion
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.CompilerEnvironment
 import org.jetbrains.kotlin.serialization.js.ModuleKind
-import org.jetbrains.kotlin.util.Logger
 import org.jetbrains.kotlin.utils.KotlinPaths
 import org.jetbrains.kotlin.utils.PathUtil
 import org.jetbrains.kotlin.utils.join
 import java.io.File
 import java.io.IOException
-
-enum class ProduceKind {
-    DEFAULT,  // Determine what to produce based on js-v1 options
-    JS,
-    KLIB
-}
 
 class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
 
@@ -82,7 +74,7 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
         val messageCollector = configuration.getNotNull(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY)
 
         val pluginLoadResult = loadPlugins(paths, arguments, configuration)
-        if (pluginLoadResult != ExitCode.OK) return pluginLoadResult
+        if (pluginLoadResult != OK) return pluginLoadResult
 
         //TODO: add to configuration everything that may come in handy at script compiler and use it there
         if (arguments.script) {
@@ -140,16 +132,16 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
 
         configurationJs.put(CLIConfigurationKeys.ALLOW_KOTLIN_PACKAGE, arguments.allowKotlinPackage)
 
-        if (!checkKotlinPackageUsage(environmentForJS.configuration, sourcesFiles)) return ExitCode.COMPILATION_ERROR
+        if (!checkKotlinPackageUsage(environmentForJS.configuration, sourcesFiles)) return COMPILATION_ERROR
 
         val outputFilePath = arguments.outputFile
         if (outputFilePath == null) {
             messageCollector.report(ERROR, "IR: Specify output file via -output", null)
-            return ExitCode.COMPILATION_ERROR
+            return COMPILATION_ERROR
         }
 
         if (messageCollector.hasErrors()) {
-            return ExitCode.COMPILATION_ERROR
+            return COMPILATION_ERROR
         }
 
         if (sourcesFiles.isEmpty() && !IncrementalCompilation.isEnabledForJs() && arguments.includes.isNullOrEmpty()) {
@@ -176,7 +168,7 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
             config.configuration.put(JSConfigurationKeys.OUTPUT_DIR, outputDir.canonicalFile)
         } catch (e: IOException) {
             messageCollector.report(ERROR, "Could not resolve output directory", null)
-            return ExitCode.COMPILATION_ERROR
+            return COMPILATION_ERROR
         }
 
         val icCaches = configureLibraries(arguments.cacheDirectories)
@@ -376,15 +368,10 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
             K2JsArgumentConstants.SOURCE_MAP_SOURCE_CONTENT_NEVER to SourceMapSourceEmbedding.NEVER,
             K2JsArgumentConstants.SOURCE_MAP_SOURCE_CONTENT_INLINING to SourceMapSourceEmbedding.INLINING
         )
-        private val produceMap = mapOf(
-            null to ProduceKind.DEFAULT,
-            "js" to ProduceKind.JS,
-            "klib" to ProduceKind.KLIB
-        )
 
         @JvmStatic
         fun main(args: Array<String>) {
-            CLITool.doMain(K2PyCompiler(), args)
+            doMain(K2PyCompiler(), args)
         }
 
         private fun reportCompiledSourcesList(messageCollector: MessageCollector, sourceFiles: List<KtFile>) {
@@ -421,17 +408,6 @@ fun RuntimeDiagnostic.Companion.resolve(
     else -> {
         messageCollector.report(STRONG_WARNING, "Unknown DCE runtime diagnostic '$value'")
         null
-    }
-}
-
-fun messageCollectorLogger(collector: MessageCollector) = object : Logger {
-    override fun warning(message: String) = collector.report(STRONG_WARNING, message)
-    override fun error(message: String) = collector.report(ERROR, message)
-    override fun log(message: String) = collector.report(LOGGING, message)
-    override fun fatal(message: String): Nothing {
-        collector.report(ERROR, message)
-        (collector as? GroupingMessageCollector)?.flush()
-        kotlin.error(message)
     }
 }
 
