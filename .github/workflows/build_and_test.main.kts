@@ -107,24 +107,32 @@ val buildAndTest = workflow(
             command = "${gradle(":python:box.tests:\${{ matrix.testTask }}")} || true",
             condition = "always()",
         )
+
+        val failedTestsFile = "failed-tests.txt"
+        val boxTestsReportFile = "box-tests-report.tsv"
+        val failureCountFile = "failure-count.tsv"
+
+        fun reportsFile(fileName: String) =
+            "python/box.tests/reports/\${{ matrix.testTask }}/$fileName"
+
         run(
             name = "Generate box tests reports",
-            command = "python/experiments/generate-box-tests-reports.main.kts --test-task=\${{ matrix.testTask }} --failed-tests-report-path=failed-tests.txt --box-tests-report-path=box-tests-report.tsv --failure-count-report-path=failure-count.tsv",
+            command = "python/experiments/generate-box-tests-reports.main.kts --test-task=\${{ matrix.testTask }} --failed-tests-report-path=$failedTestsFile --box-tests-report-path=$boxTestsReportFile --failure-count-report-path=$failureCountFile",
             condition = "always()",
         )
         run(
-            name = "Compare failed-tests.txt",
-            command = "diff -u failed-tests.txt python/box.tests/reports/\${{ matrix.testTask }}/failed-tests.txt",
+            name = "Compare $failedTestsFile",
+            command = "diff -u $failedTestsFile ${reportsFile(failedTestsFile)}",
             condition = "always()",
         )
         run(
-            name = "Compare box-tests-report.tsv",
-            command = "diff -u box-tests-report.tsv python/box.tests/reports/\${{ matrix.testTask }}/box-tests-report.tsv",
+            name = "Compare $boxTestsReportFile",
+            command = "diff -u $boxTestsReportFile ${reportsFile(boxTestsReportFile)}",
             condition = "always()",
         )
         run(
-            name = "Compare failure-count.tsv",
-            command = "diff -u failure-count.tsv python/box.tests/reports/\${{ matrix.testTask }}/failure-count.tsv",
+            name = "Compare $failureCountFile",
+            command = "diff -u $failureCountFile ${reportsFile(failureCountFile)}",
             condition = "always()",
         )
     }
