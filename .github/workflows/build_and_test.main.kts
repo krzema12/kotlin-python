@@ -65,7 +65,13 @@ val buildAndTest = workflow(
 
         run(
             name = "Compile python.kt to Python",
-            command = "dist/kotlinc/bin/kotlinc-py -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -output out_ir.py python/experiments/python.kt",
+            command = """
+                dist/kotlinc/bin/kotlinc-py \
+                -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar \
+                -Xir-produce-js \
+                -output out_ir.py \
+                python/experiments/python.kt
+            """.trimIndent(),
             condition = "always()",
         )
         run(
@@ -76,7 +82,14 @@ val buildAndTest = workflow(
 
         run(
             name = "Compile python.kt to JavaScript",
-            command = "dist/kotlinc/bin/kotlinc-js -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -Xir-property-lazy-initialization -output out-ir.js python/experiments/python.kt",
+            command = """
+                dist/kotlinc/bin/kotlinc-js \
+                -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar \
+                -Xir-produce-js \
+                -Xir-property-lazy-initialization \
+                -output out-ir.js \
+                python/experiments/python.kt
+            """.trimIndent(),
             condition = "always()",
         )
         run(
@@ -87,7 +100,14 @@ val buildAndTest = workflow(
 
         run(
             name = "Generate stats about missing IR mapping",
-            command = "less python/experiments/generated/out_ir.py | grep -Po \"visit[a-zA-Z0-9_]+\" | sort | uniq -c | sort -nr > missing.txt",
+            command = """
+                less python/experiments/generated/out_ir.py | \
+                grep -Po "visit[a-zA-Z0-9_]+" | \
+                sort | \
+                uniq -c | \
+                sort -nr \
+                > missing.txt
+            """.trimIndent(),
             condition = "always()",
         )
         run(
@@ -117,7 +137,13 @@ val buildAndTest = workflow(
 
         run(
             name = "Generate box tests reports",
-            command = "python/experiments/generate-box-tests-reports.main.kts --test-task=\${{ matrix.testTask }} --failed-tests-report-path=$failedTestsFile --box-tests-report-path=$boxTestsReportFile --failure-count-report-path=$failureCountFile",
+            command = """
+                python/experiments/generate-box-tests-reports.main.kts \
+                --test-task=${"$"}{{ matrix.testTask }} \
+                --failed-tests-report-path=$failedTestsFile \
+                --box-tests-report-path=$boxTestsReportFile \
+                --failure-count-report-path=$failureCountFile
+            """.trimIndent(),
             condition = "always()",
         )
         run(
