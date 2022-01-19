@@ -11,6 +11,10 @@ import it.krzeminski.githubactions.dsl.workflow
 import it.krzeminski.githubactions.yaml.toYaml
 import java.nio.file.Paths
 
+fun withJavaConfigured(command: String) = "JDK_9=\"\$JAVA_HOME\" $command"
+
+fun gradle(command: String) = withJavaConfigured("./gradlew $command")
+
 val buildAndTest = workflow(
     name = "Build and test",
     on = listOf(Push, WorkflowDispatch),
@@ -47,16 +51,16 @@ val buildAndTest = workflow(
 
         run(
             name = "Clean",
-            command = "JDK_9=\"\$JAVA_HOME\" ./gradlew clean",
+            command = gradle("clean"),
         )
         run(
             name = "Run ast tests",
-            command = "JDK_9=\"\$JAVA_HOME\" ./gradlew :python:ast:test",
+            command = gradle(":python:ast:test"),
             condition = "always()",
         )
         run(
             name = "Build",
-            command = "JDK_9=\"\$JAVA_HOME\" ./gradlew dist",
+            command = gradle("dist"),
         )
 
         run(
@@ -94,13 +98,13 @@ val buildAndTest = workflow(
 
         run(
             name = "Run end-to-end tests",
-            command = "JDK_9=\"\$JAVA_HOME\" python/e2e-tests/run.sh",
+            command = withJavaConfigured("python/e2e-tests/run.sh"),
             condition = "\${{ matrix.testTask == 'pythonTest' }}", // TODO: run e2e tests for MicroPython too (#85)
         )
 
         run(
             name = "Run box tests (succeed even if they fail)",
-            command = "JDK_9=\"\$JAVA_HOME\" ./gradlew :python:box.tests:\${{ matrix.testTask }} || true",
+            command = "${gradle(":python:box.tests:\${{ matrix.testTask }}")} || true",
             condition = "always()",
         )
         run(
