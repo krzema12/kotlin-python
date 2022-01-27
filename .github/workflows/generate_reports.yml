@@ -1,11 +1,26 @@
+# This file was generated using Kotlin DSL (.github/workflows/generate_reports.main.kts).
+# If you want to modify the workflow, please change the Kotlin file and regenerate this YAML file.
+# Generated with https://github.com/krzema12/github-actions-kotlin-dsl
+
 name: Generate reports
 
 on:
   workflow_dispatch:
 
 jobs:
-  generate_reports:
-    runs-on: ubuntu-latest
+  "check_yaml_consistency":
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+      - name: Install Kotlin
+        run: sudo snap install --classic kotlin
+      - name: Consistency check
+        run: diff -u '.github/workflows/generate_reports.yml' <('.github/workflows/generate_reports.main.kts')
+  "generate_reports":
+    runs-on: "ubuntu-latest"
+    needs:
+      - "check_yaml_consistency"
     strategy:
       matrix:
         testTask:
@@ -23,53 +38,47 @@ jobs:
         if: ${{ matrix.testTask == 'microPythonTest' }}
       - name: Disable old Java for Kotlin
         run: echo "kotlin.build.isObsoleteJdkOverrideEnabled=true" > local.properties
-
       - name: Clean
         run: JDK_9="$JAVA_HOME" ./gradlew clean
       - name: Build
         run: JDK_9="$JAVA_HOME" ./gradlew dist
-
       - name: Compile python.kt to Python
         run: dist/kotlinc/bin/kotlinc-py -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-py -output python/experiments/generated/out_ir.py python/experiments/python.kt
         if: ${{ matrix.testTask == 'pythonTest' }}
       - name: Compile python.kt to JavaScript
         run: dist/kotlinc/bin/kotlinc-js -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -Xir-property-lazy-initialization -output python/experiments/generated/out-ir.js python/experiments/python.kt
         if: ${{ matrix.testTask == 'pythonTest' }}
-
       - name: Generate stats about missing IR mapping
         run: less python/experiments/generated/out_ir.py | grep -Po "visit[a-zA-Z0-9_]+" | sort | uniq -c | sort -nr > python/experiments/generated/missing.txt
         if: ${{ matrix.testTask == 'pythonTest' }}
-
       - name: Run end-to-end tests
         run: JDK_9="$JAVA_HOME" python/e2e-tests/run.sh
-        if: ${{ matrix.testTask == 'pythonTest' }}  # TODO: run e2e tests for MicroPython too (#85)
-
+        if: ${{ matrix.testTask == 'pythonTest' }}
       - name: Run box tests (succeed even if they fail)
         run: JDK_9="$JAVA_HOME" ./gradlew :python:box.tests:${{ matrix.testTask }} || true
       - name: Generate box tests reports
         run: python/experiments/generate-box-tests-reports.main.kts --test-task=${{ matrix.testTask }}
-
       - name: Upload common artifact
-        if: ${{ matrix.testTask == 'pythonTest' }}
         uses: actions/upload-artifact@v2
         with:
           name: common-artifact
           path: |
             python/box.tests/reports/git-history-plot.svg
             python/experiments/generated
+        if: ${{ matrix.testTask == 'pythonTest' }}
       - name: Upload ${{ matrix.testTask }} artifact
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.testTask }}-artifact
           path: python/box.tests/reports/${{ matrix.testTask }}
-
-  update_reports:
-    needs: generate_reports
-    runs-on: ubuntu-latest
+  "update_reports":
+    runs-on: "ubuntu-latest"
+    needs:
+      - "generate_reports"
+      - "check_yaml_consistency"
     steps:
       - name: Check out
         uses: actions/checkout@v2
-
       - name: Download common artifact
         uses: actions/download-artifact@v2
         with:
@@ -85,7 +94,6 @@ jobs:
         with:
           name: microPythonTest-artifact
           path: python/box.tests/reports/microPythonTest
-
       - name: Commit and push
         run: |
           git config --global user.email "<>"
