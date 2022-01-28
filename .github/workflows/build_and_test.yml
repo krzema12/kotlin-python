@@ -71,11 +71,11 @@ jobs:
         if: always()
       - name: Generate stats about missing IR mapping
         run: |
-          less python/experiments/generated/out_ir.py | \
-          grep -Po "visit[a-zA-Z0-9_]+" | \
-          sort | \
-          uniq -c | \
-          sort -nr \
+          less python/experiments/generated/out_ir.py \
+          | grep -Po "visit[a-zA-Z0-9_]+" \
+          | sort \
+          | uniq -c \
+          | sort -nr \
           > missing.txt
         if: always()
       - name: Compare missing.txt

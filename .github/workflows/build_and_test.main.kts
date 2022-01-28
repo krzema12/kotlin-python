@@ -101,11 +101,11 @@ val buildAndTest = workflow(
         run(
             name = "Generate stats about missing IR mapping",
             command = """
-                less python/experiments/generated/out_ir.py | \
-                grep -Po "visit[a-zA-Z0-9_]+" | \
-                sort | \
-                uniq -c | \
-                sort -nr \
+                less python/experiments/generated/out_ir.py \
+                | grep -Po "visit[a-zA-Z0-9_]+" \
+                | sort \
+                | uniq -c \
+                | sort -nr \
                 > missing.txt
             """.trimIndent(),
             condition = "always()",
