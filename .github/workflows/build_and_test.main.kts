@@ -1,12 +1,12 @@
 #!/usr/bin/env kotlin
 
-@file:DependsOn("it.krzeminski:github-actions-kotlin-dsl:0.5.0")
+@file:DependsOn("it.krzeminski:github-actions-kotlin-dsl:0.6.0")
 
 import it.krzeminski.githubactions.actions.actions.CheckoutV2
 import it.krzeminski.githubactions.actions.actions.CheckoutV2.FetchDepth.Infinite
 import it.krzeminski.githubactions.domain.RunnerType.UbuntuLatest
-import it.krzeminski.githubactions.domain.Trigger.Push
-import it.krzeminski.githubactions.domain.Trigger.WorkflowDispatch
+import it.krzeminski.githubactions.domain.triggers.Push
+import it.krzeminski.githubactions.domain.triggers.WorkflowDispatch
 import it.krzeminski.githubactions.dsl.workflow
 import it.krzeminski.githubactions.yaml.toYaml
 import java.nio.file.Paths
@@ -17,7 +17,7 @@ fun gradle(command: String) = withJavaConfigured("./gradlew $command")
 
 val buildAndTest = workflow(
     name = "Build and test",
-    on = listOf(Push, WorkflowDispatch),
+    on = listOf(Push(), WorkflowDispatch()),
     sourceFile = Paths.get(".github/workflows/build_and_test.main.kts"),
     targetFile = Paths.get(".github/workflows/build_and_test.yml"),
 ) {
