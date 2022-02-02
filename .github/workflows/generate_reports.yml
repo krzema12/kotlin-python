@@ -43,13 +43,30 @@ jobs:
       - name: Build
         run: JDK_9="$JAVA_HOME" ./gradlew dist
       - name: Compile python.kt to Python
-        run: dist/kotlinc/bin/kotlinc-py -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-py -output python/experiments/generated/out_ir.py python/experiments/python.kt
+        run: |
+          dist/kotlinc/bin/kotlinc-py \
+          -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar \
+          -Xir-produce-py \
+          -output python/experiments/generated/out_ir.py \
+          python/experiments/python.kt
         if: ${{ matrix.testTask == 'pythonTest' }}
       - name: Compile python.kt to JavaScript
-        run: dist/kotlinc/bin/kotlinc-js -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -Xir-property-lazy-initialization -output python/experiments/generated/out-ir.js python/experiments/python.kt
+        run: |
+          dist/kotlinc/bin/kotlinc-js \
+          -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar \
+          -Xir-produce-js \
+          -Xir-property-lazy-initialization \
+          -output python/experiments/generated/out-ir.js \
+          python/experiments/python.kt
         if: ${{ matrix.testTask == 'pythonTest' }}
       - name: Generate stats about missing IR mapping
-        run: less python/experiments/generated/out_ir.py | grep -Po "visit[a-zA-Z0-9_]+" | sort | uniq -c | sort -nr > python/experiments/generated/missing.txt
+        run: |
+          less python/experiments/generated/out_ir.py \
+          | grep -Po "visit[a-zA-Z0-9_]+" \
+          | sort \
+          | uniq -c \
+          | sort -nr \
+          > python/experiments/generated/missing.txt
         if: ${{ matrix.testTask == 'pythonTest' }}
       - name: Run end-to-end tests
         run: JDK_9="$JAVA_HOME" python/e2e-tests/run.sh
