@@ -61,18 +61,38 @@ val generateReportsWorkflow = workflow(
 
         run(
             name = "Compile python.kt to Python",
-            command = "dist/kotlinc/bin/kotlinc-py -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-py -output python/experiments/generated/out_ir.py python/experiments/python.kt",
+            command = """
+                dist/kotlinc/bin/kotlinc-py \
+                -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar \
+                -Xir-produce-py \
+                -output python/experiments/generated/out_ir.py \
+                python/experiments/python.kt
+            """.trimIndent(),
             condition = "\${{ matrix.testTask == 'pythonTest' }}",
         )
         run(
             name = "Compile python.kt to JavaScript",
-            command = "dist/kotlinc/bin/kotlinc-js -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar -Xir-produce-js -Xir-property-lazy-initialization -output python/experiments/generated/out-ir.js python/experiments/python.kt".trimIndent(),
+            command = """
+                dist/kotlinc/bin/kotlinc-js \
+                -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar \
+                -Xir-produce-js \
+                -Xir-property-lazy-initialization \
+                -output python/experiments/generated/out-ir.js \
+                python/experiments/python.kt
+            """.trimIndent(),
             condition = "\${{ matrix.testTask == 'pythonTest' }}",
         )
 
         run(
             name = "Generate stats about missing IR mapping",
-            command = "less python/experiments/generated/out_ir.py | grep -Po \"visit[a-zA-Z0-9_]+\" | sort | uniq -c | sort -nr > python/experiments/generated/missing.txt",
+            command = """
+                less python/experiments/generated/out_ir.py \
+                | grep -Po "visit[a-zA-Z0-9_]+" \
+                | sort \
+                | uniq -c \
+                | sort -nr \
+                > python/experiments/generated/missing.txt
+            """.trimIndent(),
             condition = "\${{ matrix.testTask == 'pythonTest' }}",
         )
 
