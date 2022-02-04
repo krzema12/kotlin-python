@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
 import org.jetbrains.kotlin.ir.declarations.*
@@ -33,11 +33,9 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 import org.jetbrains.kotlin.name.Name
 
-class SecondaryConstructorLowering(val context: JsIrBackendContext) : DeclarationTransformer {
+class SecondaryConstructorLowering(val context: PyIrBackendContext) : DeclarationTransformer {
 
     override fun transformFlat(declaration: IrDeclaration): List<IrDeclaration>? {
-        if (context.es6mode) return null
-
         if (declaration is IrConstructor && !declaration.isPrimary) {
             val irClass = declaration.parentAsClass
 
@@ -168,7 +166,7 @@ class SecondaryConstructorLowering(val context: JsIrBackendContext) : Declaratio
 
 private fun IrTypeParameter.toIrType() = IrSimpleTypeImpl(symbol, true, emptyList(), emptyList())
 
-private fun JsIrBackendContext.buildInitDeclaration(constructor: IrConstructor, irClass: IrClass): IrSimpleFunction {
+private fun PyIrBackendContext.buildInitDeclaration(constructor: IrConstructor, irClass: IrClass): IrSimpleFunction {
     val type = irClass.defaultType
     val constructorName = "${irClass.name}_init"
     val functionName = "${constructorName}_\$Init\$"
@@ -190,7 +188,7 @@ private fun JsIrBackendContext.buildInitDeclaration(constructor: IrConstructor, 
     }
 }
 
-private fun JsIrBackendContext.buildFactoryDeclaration(constructor: IrConstructor, irClass: IrClass): IrSimpleFunction {
+private fun PyIrBackendContext.buildFactoryDeclaration(constructor: IrConstructor, irClass: IrClass): IrSimpleFunction {
     val type = irClass.defaultType
     val constructorName = "${irClass.name}_init"
     val functionName = "${constructorName}_\$Create\$"
@@ -210,19 +208,19 @@ private fun JsIrBackendContext.buildFactoryDeclaration(constructor: IrConstructo
     }
 }
 
-private fun JsIrBackendContext.buildConstructorDelegate(constructor: IrConstructor, klass: IrClass): IrSimpleFunction {
+private fun PyIrBackendContext.buildConstructorDelegate(constructor: IrConstructor, klass: IrClass): IrSimpleFunction {
     return mapping.secondaryConstructorToDelegate.getOrPut(constructor) {
         buildInitDeclaration(constructor, klass)
     }
 }
 
-private fun JsIrBackendContext.buildConstructorFactory(constructor: IrConstructor, klass: IrClass): IrSimpleFunction {
+private fun PyIrBackendContext.buildConstructorFactory(constructor: IrConstructor, klass: IrClass): IrSimpleFunction {
     return mapping.secondaryConstructorToFactory.getOrPut(constructor) {
         buildFactoryDeclaration(constructor, klass)
     }
 }
 
-class SecondaryFactoryInjectorLowering(val context: JsIrBackendContext) : BodyLoweringPass {
+class SecondaryFactoryInjectorLowering(val context: PyIrBackendContext) : BodyLoweringPass {
 
     override fun lower(irBody: IrBody, container: IrDeclaration) {
         // TODO Simplify? Is this needed at all?
@@ -242,7 +240,7 @@ class SecondaryFactoryInjectorLowering(val context: JsIrBackendContext) : BodyLo
     }
 }
 
-private class CallsiteRedirectionTransformer(private val context: JsIrBackendContext) : IrElementTransformer<IrFunction?> {
+private class CallsiteRedirectionTransformer(private val context: PyIrBackendContext) : IrElementTransformer<IrFunction?> {
 
     private val defaultThrowableConstructor = context.defaultThrowableCtor
 
@@ -257,10 +255,7 @@ private class CallsiteRedirectionTransformer(private val context: JsIrBackendCon
 
         val target = expression.symbol.owner
         return if (target.isSecondaryConstructorCall) {
-            val factory = with(context) {
-                if (es6mode) mapping.secondaryConstructorToDelegate[target] ?: error("Not found IrFunction for secondary ctor")
-                else buildConstructorFactory(target, target.parentAsClass)
-            }
+            val factory = context.buildConstructorFactory(target, target.parentAsClass)
             replaceSecondaryConstructorWithFactoryFunction(expression, factory.symbol)
         } else expression
     }
@@ -272,14 +267,8 @@ private class CallsiteRedirectionTransformer(private val context: JsIrBackendCon
 
         return if (target.isSecondaryConstructorCall) {
             val klass = target.parentAsClass
-            val delegate = with(context) {
-                if (es6mode) mapping.secondaryConstructorToDelegate[target] ?: error("Not found IrFunction for secondary ctor")
-                else buildConstructorDelegate(target, klass)
-            }
+            val delegate = context.buildConstructorDelegate(target, klass)
             val newCall = replaceSecondaryConstructorWithFactoryFunction(expression, delegate.symbol)
-            if (context.es6mode) {
-                return newCall
-            }
 
             val readThis = expression.run {
                 if (data!! is IrConstructor) {

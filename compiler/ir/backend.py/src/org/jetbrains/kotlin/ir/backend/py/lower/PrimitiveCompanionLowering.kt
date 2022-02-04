@@ -6,7 +6,7 @@
 package org.jetbrains.kotlin.ir.backend.py.lower
 
 import org.jetbrains.kotlin.backend.common.BodyLoweringPass
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
@@ -23,7 +23,7 @@ import org.jetbrains.kotlin.ir.util.properties
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 
-class PrimitiveCompanionLowering(val context: JsIrBackendContext) : BodyLoweringPass {
+class PrimitiveCompanionLowering(val context: PyIrBackendContext) : BodyLoweringPass {
 
     private fun getActualPrimitiveCompanion(irClass: IrClass): IrClass? {
         if (!irClass.isCompanion)

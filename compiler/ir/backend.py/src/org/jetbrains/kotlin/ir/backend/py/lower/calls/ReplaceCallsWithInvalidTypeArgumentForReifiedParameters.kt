@@ -6,7 +6,7 @@
 package org.jetbrains.kotlin.ir.backend.py.lower.calls
 
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrFunctionAccessExpression
@@ -17,7 +17,7 @@ import org.jetbrains.kotlin.ir.util.getArgumentsWithIr
 import org.jetbrains.kotlin.ir.util.render
 
 
-class ReplaceCallsWithInvalidTypeArgumentForReifiedParameters(val context: JsIrBackendContext) : CallsTransformer {
+class ReplaceCallsWithInvalidTypeArgumentForReifiedParameters(val context: PyIrBackendContext) : CallsTransformer {
     override fun transformFunctionAccess(call: IrFunctionAccessExpression, doNotIntrinsify: Boolean): IrExpression {
         if (!context.errorPolicy.allowErrors) return call
 

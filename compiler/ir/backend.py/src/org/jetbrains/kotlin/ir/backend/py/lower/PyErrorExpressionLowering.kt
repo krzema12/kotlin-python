@@ -7,7 +7,7 @@ package org.jetbrains.kotlin.ir.backend.py.lower
 
 import org.jetbrains.kotlin.backend.common.lower.ErrorDeclarationLowering
 import org.jetbrains.kotlin.backend.common.lower.ErrorExpressionLowering
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
 import org.jetbrains.kotlin.ir.declarations.IrErrorDeclaration
@@ -17,7 +17,7 @@ import org.jetbrains.kotlin.ir.expressions.impl.IrCallImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl
 import org.jetbrains.kotlin.name.Name
 
-class JsErrorDeclarationLowering(context: JsIrBackendContext) : ErrorDeclarationLowering() {
+class PyErrorDeclarationLowering(context: PyIrBackendContext) : ErrorDeclarationLowering() {
     private val nothingType = context.irBuiltIns.nothingType
     private val stringType = context.irBuiltIns.stringType
     private val errorSymbol = context.errorCodeSymbol
@@ -40,7 +40,7 @@ class JsErrorDeclarationLowering(context: JsIrBackendContext) : ErrorDeclaration
     }
 }
 
-class JsErrorExpressionLowering(context: JsIrBackendContext) : ErrorExpressionLowering(context) {
+class PyErrorExpressionLowering(context: PyIrBackendContext) : ErrorExpressionLowering(context) {
 
     private val stringType = context.irBuiltIns.nothingType
     private val errorSymbol = context.errorCodeSymbol

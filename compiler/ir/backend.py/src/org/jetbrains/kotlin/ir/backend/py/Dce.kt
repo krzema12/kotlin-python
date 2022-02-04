@@ -28,7 +28,7 @@ import java.util.*
 
 fun eliminateDeadDeclarations(
     modules: Iterable<IrModuleFragment>,
-    context: JsIrBackendContext,
+    context: PyIrBackendContext,
     removeUnusedAssociatedObjects: Boolean = true,
 ) {
 
@@ -50,7 +50,7 @@ private fun IrField.isConstant(): Boolean {
     return correspondingPropertySymbol?.owner?.isConst ?: false
 }
 
-private fun IrDeclaration.addRootsTo(to: MutableCollection<IrDeclaration>, context: JsIrBackendContext) {
+private fun IrDeclaration.addRootsTo(to: MutableCollection<IrDeclaration>, context: PyIrBackendContext) {
     when {
         this is IrProperty -> {
             backingField?.addRootsTo(to, context)
@@ -71,7 +71,7 @@ private fun IrDeclaration.addRootsTo(to: MutableCollection<IrDeclaration>, conte
     }
 }
 
-private fun buildRoots(modules: Iterable<IrModuleFragment>, context: JsIrBackendContext): Iterable<IrDeclaration> {
+private fun buildRoots(modules: Iterable<IrModuleFragment>, context: PyIrBackendContext): Iterable<IrDeclaration> {
     val rootDeclarations = mutableListOf<IrDeclaration>()
     val allFiles = (modules.flatMap { it.files } + context.packageLevelJsModules + context.externalPackageFragment.values)
     allFiles.forEach {
@@ -101,7 +101,7 @@ private fun buildRoots(modules: Iterable<IrModuleFragment>, context: JsIrBackend
 private fun processUselessDeclarations(
     modules: Iterable<IrModuleFragment>,
     usefulDeclarations: Set<IrDeclaration>,
-    context: JsIrBackendContext,
+    context: PyIrBackendContext,
     removeUnusedAssociatedObjects: Boolean,
 ) {
     modules.forEach { module ->
@@ -149,7 +149,7 @@ private fun processUselessDeclarations(
     }
 }
 
-private fun IrDeclaration.processUselessDeclaration(context: JsIrBackendContext): List<IrDeclaration>? {
+private fun IrDeclaration.processUselessDeclaration(context: PyIrBackendContext): List<IrDeclaration>? {
     return when {
         context.dceRuntimeDiagnostic != null -> {
             processWithDiagnostic(context)
@@ -159,7 +159,7 @@ private fun IrDeclaration.processUselessDeclaration(context: JsIrBackendContext)
     }
 }
 
-private fun RuntimeDiagnostic.unreachableDeclarationMethod(context: JsIrBackendContext) =
+private fun RuntimeDiagnostic.unreachableDeclarationMethod(context: PyIrBackendContext) =
     when (this) {
         RuntimeDiagnostic.LOG -> context.intrinsics.jsUnreachableDeclarationLog
         RuntimeDiagnostic.EXCEPTION -> context.intrinsics.jsUnreachableDeclarationException
@@ -169,7 +169,7 @@ private fun RuntimeDiagnostic.removingBody(): Boolean {
     return this != RuntimeDiagnostic.LOG
 }
 
-private fun IrDeclaration.processWithDiagnostic(context: JsIrBackendContext) {
+private fun IrDeclaration.processWithDiagnostic(context: PyIrBackendContext) {
     when (this) {
         is IrFunction -> processFunctionWithDiagnostic(context)
         is IrField -> processFieldWithDiagnostic()
@@ -177,7 +177,7 @@ private fun IrDeclaration.processWithDiagnostic(context: JsIrBackendContext) {
     }
 }
 
-private fun IrFunction.processFunctionWithDiagnostic(context: JsIrBackendContext) {
+private fun IrFunction.processFunctionWithDiagnostic(context: PyIrBackendContext) {
     val dceRuntimeDiagnostic = context.dceRuntimeDiagnostic!!
 
     val isRemovingBody = dceRuntimeDiagnostic.removingBody()
@@ -209,7 +209,7 @@ private fun IrField.isKotlinPackage() =
 // TODO refactor it, the function became too big. Please contact me (Zalim) before doing it.
 fun usefulDeclarations(
     roots: Iterable<IrDeclaration>,
-    context: JsIrBackendContext,
+    context: PyIrBackendContext,
     removeUnusedAssociatedObjects: Boolean,
 ): Set<IrDeclaration> {
     val printReachabilityInfo =

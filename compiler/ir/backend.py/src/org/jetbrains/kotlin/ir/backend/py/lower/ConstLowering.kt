@@ -7,7 +7,7 @@ package org.jetbrains.kotlin.ir.backend.py.lower
 
 import org.jetbrains.kotlin.backend.common.BodyLoweringPass
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
 import org.jetbrains.kotlin.ir.expressions.IrBody
 import org.jetbrains.kotlin.ir.expressions.IrConst
@@ -25,7 +25,7 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 
 
-class ConstTransformer(private val context: JsIrBackendContext) : IrElementTransformerVoid() {
+class ConstTransformer(private val context: PyIrBackendContext) : IrElementTransformerVoid() {
     private fun <C> lowerConst(
         irClass: IrClassSymbol,
         carrierFactory: (Int, Int, IrType, C) -> IrExpression,
@@ -68,7 +68,7 @@ class ConstTransformer(private val context: JsIrBackendContext) : IrElementTrans
     }
 }
 
-class ConstLowering(private val context: JsIrBackendContext) : BodyLoweringPass {
+class ConstLowering(private val context: PyIrBackendContext) : BodyLoweringPass {
     override fun lower(irBody: IrBody, container: IrDeclaration) {
         irBody.transformChildrenVoid(ConstTransformer(context))
     }

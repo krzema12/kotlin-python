@@ -5,7 +5,7 @@
 
 package org.jetbrains.kotlin.ir.backend.py.lower.calls
 
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.utils.isJsNativeGetter
 import org.jetbrains.kotlin.ir.backend.py.utils.isJsNativeSetter
 import org.jetbrains.kotlin.ir.expressions.IrDynamicOperator
@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.ir.expressions.IrFunctionAccessExpression
 import org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl
 
 
-open class NativeGetterSetterTransformer(val context: JsIrBackendContext) : CallsTransformer {
+open class NativeGetterSetterTransformer(val context: PyIrBackendContext) : CallsTransformer {
     override fun transformFunctionAccess(call: IrFunctionAccessExpression, doNotIntrinsify: Boolean): IrExpression {
         val callee = call.symbol.owner
 

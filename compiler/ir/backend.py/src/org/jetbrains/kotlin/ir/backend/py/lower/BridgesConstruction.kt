@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.backend.common.ir.*
 import org.jetbrains.kotlin.backend.common.lower.*
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
-import org.jetbrains.kotlin.ir.backend.py.JsCommonBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyCommonBackendContext
 import org.jetbrains.kotlin.ir.backend.py.utils.realOverrideTarget
 import org.jetbrains.kotlin.ir.builders.*
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
@@ -41,7 +41,7 @@ import org.jetbrains.kotlin.ir.util.*
 //            fun foo(t: Any?) = foo(t as Int)  // Constructed bridge
 //          }
 //
-abstract class BridgesConstruction<T : JsCommonBackendContext>(val context: T) : DeclarationTransformer {
+abstract class BridgesConstruction<T : PyCommonBackendContext>(val context: T) : DeclarationTransformer {
 
     private val specialBridgeMethods = SpecialBridgeMethods(context)
 

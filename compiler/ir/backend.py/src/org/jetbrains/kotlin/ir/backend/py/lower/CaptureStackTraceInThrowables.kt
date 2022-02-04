@@ -7,7 +7,7 @@ package org.jetbrains.kotlin.ir.backend.py.lower
 
 import org.jetbrains.kotlin.backend.common.BodyLoweringPass
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
@@ -20,7 +20,7 @@ import org.jetbrains.kotlin.ir.util.parentAsClass
 /**
  * Capture stack trace in primary constructors of Throwable
  */
-class CaptureStackTraceInThrowables(val context: JsIrBackendContext) : BodyLoweringPass {
+class CaptureStackTraceInThrowables(val context: PyIrBackendContext) : BodyLoweringPass {
     override fun lower(irBody: IrBody, container: IrDeclaration) {
         if (container !is IrConstructor || !container.isPrimary)
             return

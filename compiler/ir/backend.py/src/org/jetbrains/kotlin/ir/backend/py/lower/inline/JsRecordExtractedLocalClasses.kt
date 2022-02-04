@@ -7,15 +7,15 @@ package org.jetbrains.kotlin.ir.backend.py.lower.inline
 
 import org.jetbrains.kotlin.backend.common.BackendContext
 import org.jetbrains.kotlin.ir.IrElement
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.expressions.IrBody
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitorVoid
 import org.jetbrains.kotlin.ir.visitors.acceptChildrenVoid
 import org.jetbrains.kotlin.ir.visitors.acceptVoid
 
-fun BackendContext.jsRecordExtractedLocalClasses(irClass: IrClass) {
-    val context = this as JsIrBackendContext
+fun BackendContext.pyRecordExtractedLocalClasses(irClass: IrClass) {
+    val context = this as PyIrBackendContext
     irClass.acceptVoid(object : IrElementVisitorVoid {
         override fun visitElement(element: IrElement) {
             element.acceptChildrenVoid(this)

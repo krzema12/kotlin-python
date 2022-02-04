@@ -7,14 +7,14 @@ package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 
 import generated.Python.*
 import org.jetbrains.kotlin.ir.IrStatement
-import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
+import org.jetbrains.kotlin.ir.backend.py.utils.PyGenerationContext
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.types.isAny
 import org.jetbrains.kotlin.ir.util.constructedClassType
 
-private fun List<IrStatement>.translate(context: JsGenerationContext): List<stmt> {
+private fun List<IrStatement>.translate(context: PyGenerationContext): List<stmt> {
     val globals = this
         .filterIsInstance<IrSetField>()
         .filter { it.symbol.owner.isStatic }
@@ -31,29 +31,29 @@ private fun List<IrStatement>.translate(context: JsGenerationContext): List<stmt
 }
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
-class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<stmt>, JsGenerationContext> {
+class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<stmt>, PyGenerationContext> {
 
-    override fun visitFunction(declaration: IrFunction, data: JsGenerationContext): List<stmt> {
+    override fun visitFunction(declaration: IrFunction, data: PyGenerationContext): List<stmt> {
         // TODO
         return listOf(Expr(value = Name(id = identifier("visitFunction $declaration".toValidPythonSymbol()), ctx = Load)))
     }
 
-    override fun visitBlockBody(body: IrBlockBody, context: JsGenerationContext): List<stmt> {
+    override fun visitBlockBody(body: IrBlockBody, context: PyGenerationContext): List<stmt> {
         val scopeContext = context.newScope()
         return body.statements.translate(scopeContext).let { scopeContext.extractStatements() + it }
     }
 
-    override fun visitBlock(expression: IrBlock, context: JsGenerationContext): List<stmt> {
+    override fun visitBlock(expression: IrBlock, context: PyGenerationContext): List<stmt> {
         val scopeContext = context.newScope()
         return expression.statements.translate(scopeContext).let { scopeContext.extractStatements() + it }
     }
 
-    override fun visitComposite(expression: IrComposite, context: JsGenerationContext): List<stmt> {
+    override fun visitComposite(expression: IrComposite, context: PyGenerationContext): List<stmt> {
         val scopeContext = context.newScope()
         return expression.statements.translate(scopeContext).let { scopeContext.extractStatements() + it }
     }
 
-    override fun visitExpression(expression: IrExpression, context: JsGenerationContext): List<stmt> {
+    override fun visitExpression(expression: IrExpression, context: PyGenerationContext): List<stmt> {
         return when (expression) {
             is IrBlock -> visitBlock(expression, context)
             is IrReturn -> visitReturn(expression, context)
@@ -70,17 +70,17 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         }
     }
 
-    override fun visitBreak(jump: IrBreak, context: JsGenerationContext): List<stmt> {
+    override fun visitBreak(jump: IrBreak, context: PyGenerationContext): List<stmt> {
         // todo (support label)
         return listOf(Break)
     }
 
-    override fun visitContinue(jump: IrContinue, context: JsGenerationContext): List<stmt> {
+    override fun visitContinue(jump: IrContinue, context: PyGenerationContext): List<stmt> {
         // todo (support label)
         return listOf(Continue)
     }
 
-    override fun visitSetField(expression: IrSetField, context: JsGenerationContext): List<stmt> {
+    override fun visitSetField(expression: IrSetField, context: PyGenerationContext): List<stmt> {
         // TODO
         val scopeContext = context.newScope()
         val receiverAsExpressions = expression.receiver?.accept(IrElementToPyExpressionTransformer(), scopeContext)
@@ -95,7 +95,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         ).let { scopeContext.extractStatements() + it }
     }
 
-    override fun visitSetValue(expression: IrSetValue, context: JsGenerationContext): List<stmt> {
+    override fun visitSetValue(expression: IrSetValue, context: PyGenerationContext): List<stmt> {
         val scopeContext = context.newScope()
         return Assign(
             targets = listOf(Name(id = identifier(expression.symbol.owner.name.identifier.toValidPythonSymbol()), ctx = Store)),
@@ -104,14 +104,14 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         ).let { scopeContext.extractStatements() + it }
     }
 
-    override fun visitReturn(expression: IrReturn, context: JsGenerationContext): List<stmt> {
+    override fun visitReturn(expression: IrReturn, context: PyGenerationContext): List<stmt> {
         val scopeContext = context.newScope()
         return Return(
             value = IrElementToPyExpressionTransformer().visitExpression(expression.value, scopeContext),
         ).let { scopeContext.extractStatements() + it }
     }
 
-    override fun visitThrow(expression: IrThrow, context: JsGenerationContext): List<stmt> {
+    override fun visitThrow(expression: IrThrow, context: PyGenerationContext): List<stmt> {
         val scopeContext = context.newScope()
         return Raise(
             exc = IrElementToPyExpressionTransformer().visitExpression(expression.value, scopeContext),
@@ -119,7 +119,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         ).let { scopeContext.extractStatements() + it }
     }
 
-    override fun visitVariable(declaration: IrVariable, context: JsGenerationContext): List<stmt> {
+    override fun visitVariable(declaration: IrVariable, context: PyGenerationContext): List<stmt> {
         // TODO
         val scopeContext = context.newScope()
         return declaration.initializer?.let { initializer ->
@@ -133,7 +133,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
             ?: emptyList()
     }
 
-    override fun visitDelegatingConstructorCall(expression: IrDelegatingConstructorCall, context: JsGenerationContext): List<stmt> {
+    override fun visitDelegatingConstructorCall(expression: IrDelegatingConstructorCall, context: PyGenerationContext): List<stmt> {
         // TODO
         val scopeContext = context.newScope()
         if (expression.symbol.owner.constructedClassType.isAny()) {
@@ -142,28 +142,28 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         return expression.accept(IrElementToPyExpressionTransformer(), scopeContext).makeStmt().let { scopeContext.extractStatements() + it }
     }
 
-    override fun visitCall(expression: IrCall, context: JsGenerationContext): List<stmt> {
+    override fun visitCall(expression: IrCall, context: PyGenerationContext): List<stmt> {
         // TODO
         val scopeContext = context.newScope()
         return IrElementToPyExpressionTransformer().visitCall(expression, scopeContext).makeStmt().let { scopeContext.extractStatements() + it }
     }
 
-    override fun visitConstructorCall(expression: IrConstructorCall, context: JsGenerationContext): List<stmt> {
+    override fun visitConstructorCall(expression: IrConstructorCall, context: PyGenerationContext): List<stmt> {
         val scopeContext = context.newScope()
         return IrElementToPyExpressionTransformer().visitConstructorCall(expression, scopeContext).makeStmt().let { scopeContext.extractStatements() + it }
     }
 
-    override fun visitInstanceInitializerCall(expression: IrInstanceInitializerCall, context: JsGenerationContext): List<stmt> {
+    override fun visitInstanceInitializerCall(expression: IrInstanceInitializerCall, context: PyGenerationContext): List<stmt> {
         // TODO
         return listOf(Expr(value = Name(id = identifier("visitInstanceInitializerCall $expression".toValidPythonSymbol()), ctx = Load)))
     }
 
-    override fun visitTry(aTry: IrTry, context: JsGenerationContext): List<stmt> {
+    override fun visitTry(aTry: IrTry, context: PyGenerationContext): List<stmt> {
         // TODO
         return listOf(Expr(value = Name(id = identifier("visitTry $aTry".toValidPythonSymbol()), ctx = Load)))
     }
 
-    override fun visitWhen(expression: IrWhen, context: JsGenerationContext): List<stmt> {
+    override fun visitWhen(expression: IrWhen, context: PyGenerationContext): List<stmt> {
         val scopeContext = context.newScope()
         return expression
             .branches
@@ -195,7 +195,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
             .let { scopeContext.extractStatements() + it }
     }
 
-    override fun visitWhileLoop(loop: IrWhileLoop, context: JsGenerationContext): List<stmt> {
+    override fun visitWhileLoop(loop: IrWhileLoop, context: PyGenerationContext): List<stmt> {
         // TODO
         val scopeContext = context.newScope()
         return While(
@@ -205,7 +205,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         ).let { scopeContext.extractStatements() + it }
     }
 
-    override fun visitDoWhileLoop(loop: IrDoWhileLoop, context: JsGenerationContext): List<stmt> {
+    override fun visitDoWhileLoop(loop: IrDoWhileLoop, context: PyGenerationContext): List<stmt> {
         // transform like:
         //
         // while True:
@@ -228,12 +228,12 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
             .let { scopeContext.extractStatements() + it }
     }
 
-    override fun visitDynamicOperatorExpression(expression: IrDynamicOperatorExpression, context: JsGenerationContext): List<stmt> {
+    override fun visitDynamicOperatorExpression(expression: IrDynamicOperatorExpression, context: PyGenerationContext): List<stmt> {
         val scopeContext = context.newScope()
         return IrElementToPyExpressionTransformer().visitDynamicOperatorExpression(expression, scopeContext).makeStmt().let { scopeContext.extractStatements() + it }
     }
 
-    override fun <T> visitConst(expression: IrConst<T>, data: JsGenerationContext): List<stmt> {
+    override fun <T> visitConst(expression: IrConst<T>, data: PyGenerationContext): List<stmt> {
         val scopeContext = data.newScope()
         return IrElementToPyExpressionTransformer().visitConst(expression, scopeContext).makeStmt().let { scopeContext.extractStatements() + it }
     }

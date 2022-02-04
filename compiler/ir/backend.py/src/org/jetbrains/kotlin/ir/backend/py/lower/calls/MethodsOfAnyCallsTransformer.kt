@@ -5,8 +5,7 @@
 
 package org.jetbrains.kotlin.ir.backend.py.lower.calls
 
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
-import org.jetbrains.kotlin.ir.util.irCall
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrFunctionAccessExpression
@@ -14,12 +13,13 @@ import org.jetbrains.kotlin.ir.types.IrDynamicType
 import org.jetbrains.kotlin.ir.types.isAny
 import org.jetbrains.kotlin.ir.types.isArray
 import org.jetbrains.kotlin.ir.types.isString
+import org.jetbrains.kotlin.ir.util.irCall
 import org.jetbrains.kotlin.ir.util.isFakeOverriddenFromAny
 import org.jetbrains.kotlin.ir.util.isSuperToAny
 import org.jetbrains.kotlin.name.Name
 
 
-class MethodsOfAnyCallsTransformer(context: JsIrBackendContext) : CallsTransformer {
+class MethodsOfAnyCallsTransformer(context: PyIrBackendContext) : CallsTransformer {
     private val intrinsics = context.intrinsics
     private val nameToTransformer: Map<Name, (IrFunctionAccessExpression) -> IrExpression>
 

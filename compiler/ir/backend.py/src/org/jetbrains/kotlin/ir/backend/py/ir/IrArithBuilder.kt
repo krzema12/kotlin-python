@@ -5,13 +5,13 @@
 
 package org.jetbrains.kotlin.ir.backend.py.ir
 
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.utils.OperatorNames
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.types.IrSimpleType
 import org.jetbrains.kotlin.name.Name
 
-class JsIrArithBuilder(val context: JsIrBackendContext) {
+class JsIrArithBuilder(val context: PyIrBackendContext) {
 
     val symbols = context.ir.symbols
 

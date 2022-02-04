@@ -37,11 +37,14 @@ import org.jetbrains.kotlin.ir.backend.js.generateKLib
 import org.jetbrains.kotlin.ir.backend.js.ic.checkCaches
 import org.jetbrains.kotlin.ir.backend.js.prepareAnalyzedSourceModule
 import org.jetbrains.kotlin.ir.backend.py.compile
-import org.jetbrains.kotlin.ir.backend.py.jsPhases
+import org.jetbrains.kotlin.ir.backend.py.pyPhases
 import org.jetbrains.kotlin.ir.declarations.impl.IrFactoryImpl
 import org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFactory
 import org.jetbrains.kotlin.js.analyzer.JsAnalysisResult
-import org.jetbrains.kotlin.js.config.*
+import org.jetbrains.kotlin.js.config.ErrorTolerancePolicy
+import org.jetbrains.kotlin.js.config.JSConfigurationKeys
+import org.jetbrains.kotlin.js.config.JsConfig
+import org.jetbrains.kotlin.js.config.RuntimeDiagnostic
 import org.jetbrains.kotlin.library.KLIB_FILE_EXTENSION
 import org.jetbrains.kotlin.metadata.deserialization.BinaryVersion
 import org.jetbrains.kotlin.psi.KtFile
@@ -184,7 +187,7 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
         }
 
         if (arguments.irProducePy) {
-            val phaseConfig = createPhaseConfig(jsPhases, arguments, messageCollector)
+            val phaseConfig = createPhaseConfig(pyPhases, arguments, messageCollector)
 
             val includes = arguments.includes
 
@@ -214,8 +217,8 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
                 module,
                 phaseConfig,
                 if (arguments.irDceDriven) PersistentIrFactory() else IrFactoryImpl,
-                generateFullJs = !arguments.irDce,
-                generateDceJs = arguments.irDce,
+                generateFullPy = !arguments.irDce,
+                generateDcePy = arguments.irDce,
                 dceRuntimeDiagnostic = RuntimeDiagnostic.resolve(
                     arguments.irDceRuntimeDiagnostic,
                     messageCollector

@@ -5,7 +5,7 @@
 
 package org.jetbrains.kotlin.ir.backend.py.lower.calls
 
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrFunctionAccessExpression
@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.util.getPropertyGetter
 import org.jetbrains.kotlin.ir.util.getSimpleFunction
 
-class PrimitiveContainerMemberCallTransformer(private val context: JsIrBackendContext) : CallsTransformer {
+class PrimitiveContainerMemberCallTransformer(private val context: PyIrBackendContext) : CallsTransformer {
     private val intrinsics = context.intrinsics
 
     private val symbolToTransformer: SymbolToTransformer = mutableMapOf()

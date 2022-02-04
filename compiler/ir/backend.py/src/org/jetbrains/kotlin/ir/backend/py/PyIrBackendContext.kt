@@ -19,8 +19,8 @@ import org.jetbrains.kotlin.incremental.components.NoLookupLocation
 import org.jetbrains.kotlin.ir.*
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.backend.py.lower.JsInnerClassesSupport
-import org.jetbrains.kotlin.ir.backend.py.utils.JsInlineClassesUtils
 import org.jetbrains.kotlin.ir.backend.py.utils.OperatorNames
+import org.jetbrains.kotlin.ir.backend.py.utils.PyInlineClassesUtils
 import org.jetbrains.kotlin.ir.builders.declarations.addFunction
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.declarations.impl.IrExternalPackageFragmentImpl
@@ -45,16 +45,15 @@ import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.resolve.scopes.MemberScope
 import org.jetbrains.kotlin.types.Variance
 
-class JsIrBackendContext(
+class PyIrBackendContext(
     val module: ModuleDescriptor,
     override val irBuiltIns: IrBuiltIns,
     val symbolTable: SymbolTable,
     irModuleFragment: IrModuleFragment,
     override val configuration: CompilerConfiguration, // TODO: remove configuration from backend context
     override val scriptMode: Boolean = false,
-    override val es6mode: Boolean = false,
     val dceRuntimeDiagnostic: RuntimeDiagnostic? = null,
-) : JsCommonBackendContext {
+) : PyCommonBackendContext {
     val fileToInitializationFuns: MutableMap<IrFile, IrSimpleFunction?> = mutableMapOf()
 
     val extractedLocalClasses: MutableSet<IrClass> = hashSetOf()
@@ -130,9 +129,9 @@ class JsIrBackendContext(
     val testRoots: Map<IrModuleFragment, IrSimpleFunction>
         get() = testContainerFuns
 
-    override val mapping = JsMapping(irFactory)
+    override val mapping = PyMapping(irFactory)
 
-    override val inlineClassesUtils = JsInlineClassesUtils(this)
+    override val inlineClassesUtils = PyInlineClassesUtils(this)
 
     val innerClassesSupport = JsInnerClassesSupport(mapping, irFactory)
 
@@ -168,9 +167,9 @@ class JsIrBackendContext(
     private val coroutineIntrinsicsPackage = module.getPackage(COROUTINE_INTRINSICS_PACKAGE_FQNAME)
 
     val dynamicType: IrDynamicType = IrDynamicTypeImpl(null, emptyList(), Variance.INVARIANT)
-    val intrinsics = JsIntrinsics(irBuiltIns, this)
+    val intrinsics = PyIntrinsics(irBuiltIns, this)
 
-    override val sharedVariablesManager = JsSharedVariablesManager(this)
+    override val sharedVariablesManager = PySharedVariablesManager(this)
 
     override val internalPackageFqn = JS_PACKAGE_FQNAME
 
@@ -186,8 +185,8 @@ class JsIrBackendContext(
 
     fun getOperatorByName(name: Name, type: IrSimpleType) = operatorMap[name]?.get(type.classifier)
 
-    override val ir = object : Ir<JsIrBackendContext>(this, irModuleFragment) {
-        override val symbols = object : Symbols<JsIrBackendContext>(this@JsIrBackendContext, irBuiltIns, symbolTable) {
+    override val ir = object : Ir<PyIrBackendContext>(this, irModuleFragment) {
+        override val symbols = object : Symbols<PyIrBackendContext>(this@PyIrBackendContext, irBuiltIns, symbolTable) {
             override val throwNullPointerException =
                 symbolTable.referenceSimpleFunction(getFunctions(kotlinPackageFqn.child(Name.identifier("THROW_NPE"))).single())
 
@@ -251,7 +250,7 @@ class JsIrBackendContext(
 
     val primitiveClassesObject = getIrClass(FqName("kotlin.reflect.js.internal.PrimitiveClasses"))
 
-    val throwableClass = getIrClass(JsIrBackendContext.KOTLIN_PACKAGE_FQN.child(Name.identifier("Throwable")))
+    val throwableClass = getIrClass(KOTLIN_PACKAGE_FQN.child(Name.identifier("Throwable")))
 
     val primitiveCompanionObjects = primitivesWithImplicitCompanionObject().associateWith {
         getIrClass(JS_INTERNAL_PACKAGE_FQNAME.child(Name.identifier("${it.identifier}CompanionObject")))
@@ -279,9 +278,6 @@ class JsIrBackendContext(
             return contextGetter.symbol
         }
 
-    val coroutineGetContextJs
-        get() = ir.symbols.coroutineGetContext
-
     val coroutineEmptyContinuation = symbolTable.referenceProperty(
         getProperty(
             FqName.fromSegments(
@@ -307,8 +303,6 @@ class JsIrBackendContext(
 
     val newThrowableSymbol = symbolTable.referenceSimpleFunction(getJsInternalFunction("newThrowable"))
     val extendThrowableSymbol = symbolTable.referenceSimpleFunction(getJsInternalFunction("extendThrowable"))
-    val setPropertiesToThrowableInstanceSymbol =
-        symbolTable.referenceSimpleFunction(getJsInternalFunction("setPropertiesToThrowableInstance"))
 
     val throwISEsymbol = symbolTable.referenceSimpleFunction(getFunctions(kotlinPackageFqn.child(Name.identifier("THROW_ISE"))).single())
     @Suppress("unused") // Removing it results in incorrect runtime behavior.

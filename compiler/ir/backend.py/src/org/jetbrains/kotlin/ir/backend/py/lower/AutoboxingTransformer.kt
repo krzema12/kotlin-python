@@ -7,7 +7,7 @@ package org.jetbrains.kotlin.ir.backend.py.lower
 
 import org.jetbrains.kotlin.backend.common.BodyLoweringPass
 import org.jetbrains.kotlin.backend.common.lower.AbstractValueUsageTransformer
-import org.jetbrains.kotlin.ir.backend.py.JsCommonBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyCommonBackendContext
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.backend.py.utils.realOverrideTarget
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
@@ -23,7 +23,7 @@ import org.jetbrains.kotlin.ir.util.render
 
 // Copied and adapted from Kotlin/Native
 
-abstract class AbstractValueUsageLowering(val context: JsCommonBackendContext) : AbstractValueUsageTransformer(context.irBuiltIns),
+abstract class AbstractValueUsageLowering(val context: PyCommonBackendContext) : AbstractValueUsageTransformer(context.irBuiltIns),
     BodyLoweringPass {
 
     val icUtils = context.inlineClassesUtils
@@ -117,7 +117,7 @@ abstract class AbstractValueUsageLowering(val context: JsCommonBackendContext) :
     }
 }
 
-class AutoboxingTransformer(context: JsCommonBackendContext) : AbstractValueUsageLowering(context) {
+class AutoboxingTransformer(context: PyCommonBackendContext) : AbstractValueUsageLowering(context) {
     override fun IrExpression.useExpressionAsType(actualType: IrType, expectedType: IrType): IrExpression {
         // // TODO: Default parameters are passed as nulls and they need not to be unboxed. Fix this
 

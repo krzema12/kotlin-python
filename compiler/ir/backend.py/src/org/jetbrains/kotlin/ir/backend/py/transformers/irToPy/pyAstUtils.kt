@@ -6,7 +6,7 @@
 package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 
 import generated.Python.*
-import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
+import org.jetbrains.kotlin.ir.backend.py.utils.PyGenerationContext
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.expressions.IrMemberAccessExpression
@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.js.backend.ast.JsName
 
 fun expr.makeStmt(): stmt = Expr(value = this)
 
-fun translateFunction(declaration: IrFunction, funcName: JsName, context: JsGenerationContext): FunctionDef {
+fun translateFunction(declaration: IrFunction, funcName: JsName, context: PyGenerationContext): FunctionDef {
     val functionContext = context.newDeclaration(declaration)  // todo: pass local name generator parameter
 
     val isClassMethod = declaration.dispatchReceiverParameter != null
@@ -74,7 +74,7 @@ fun translateFunction(declaration: IrFunction, funcName: JsName, context: JsGene
     )
 }
 
-fun translateCallArguments(expression: IrMemberAccessExpression<*>, context: JsGenerationContext, transformer: IrElementToPyExpressionTransformer): List<expr> {
+fun translateCallArguments(expression: IrMemberAccessExpression<*>, context: PyGenerationContext, transformer: IrElementToPyExpressionTransformer): List<expr> {
     val size = expression.valueArgumentsCount
 
     val arguments = (0 until size).mapTo(ArrayList(size)) { index ->

@@ -8,17 +8,16 @@ package org.jetbrains.kotlin.ir.backend.py
 import org.jetbrains.kotlin.backend.common.CommonBackendContext
 import org.jetbrains.kotlin.backend.common.ir.isOverridableOrOverrides
 import org.jetbrains.kotlin.ir.backend.py.utils.isDispatchReceiver
-import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.declarations.IrClass
+import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
+import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.types.IrType
 
-interface JsCommonBackendContext : CommonBackendContext {
-    override val mapping: JsMapping
+interface PyCommonBackendContext : CommonBackendContext {
+    override val mapping: PyMapping
 
     val inlineClassesUtils: InlineClassesUtils
-
-    val es6mode: Boolean
-        get() = false
 }
 
 interface InlineClassesUtils {

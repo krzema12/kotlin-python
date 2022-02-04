@@ -6,7 +6,7 @@
 package org.jetbrains.kotlin.ir.backend.py.lower.inline
 
 import org.jetbrains.kotlin.backend.common.DeclarationTransformer
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrProperty
@@ -29,7 +29,7 @@ class RemoveInlineDeclarationsWithReifiedTypeParametersLowering: DeclarationTran
     }
 }
 
-class CopyInlineFunctionBodyLowering(val context: JsIrBackendContext) : DeclarationTransformer {
+class CopyInlineFunctionBodyLowering(val context: PyIrBackendContext) : DeclarationTransformer {
     override fun transformFlat(declaration: IrDeclaration): List<IrDeclaration>? {
         if (declaration is IrFunction && declaration.isInline) {
             declaration.body?.let { originalBody ->

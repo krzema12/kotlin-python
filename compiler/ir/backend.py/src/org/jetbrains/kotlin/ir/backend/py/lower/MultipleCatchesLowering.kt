@@ -7,7 +7,7 @@ package org.jetbrains.kotlin.ir.backend.py.lower
 
 import org.jetbrains.kotlin.backend.common.BodyLoweringPass
 import org.jetbrains.kotlin.ir.IrStatement
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationBase
@@ -46,7 +46,7 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformer
  * finally {}
  */
 
-class MultipleCatchesLowering(private val context: JsIrBackendContext) : BodyLoweringPass {
+class MultipleCatchesLowering(private val context: PyIrBackendContext) : BodyLoweringPass {
     private val litTrue get() = JsIrBuilder.buildBoolean(context.irBuiltIns.booleanType, true)
     private val nothingType = context.irBuiltIns.nothingType
 

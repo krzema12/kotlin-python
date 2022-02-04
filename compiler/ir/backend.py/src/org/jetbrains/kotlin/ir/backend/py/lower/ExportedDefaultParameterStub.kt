@@ -13,8 +13,8 @@ import org.jetbrains.kotlin.backend.common.lower.VariableRemapper
 import org.jetbrains.kotlin.backend.common.lower.createIrBuilder
 import org.jetbrains.kotlin.backend.common.lower.irBlockBody
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
-import org.jetbrains.kotlin.ir.backend.py.JsLoweredDeclarationOrigin
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyLoweredDeclarationOrigin
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.backend.py.utils.JsAnnotations
 import org.jetbrains.kotlin.ir.backend.py.utils.hasStableJsName
@@ -33,7 +33,7 @@ private fun IrConstructorCall.isAnnotation(name: FqName): Boolean {
     return symbol.owner.parentAsClass.fqNameWhenAvailable == name
 }
 
-class ExportedDefaultParameterStub(val context: JsIrBackendContext) : DeclarationTransformer {
+class ExportedDefaultParameterStub(val context: PyIrBackendContext) : DeclarationTransformer {
 
     private fun IrBuilderWithScope.createDefaultResolutionExpression(
         fromParameter: IrValueParameter,
@@ -114,7 +114,7 @@ class ExportedDefaultParameterStub(val context: JsIrBackendContext) : Declaratio
         exportedDefaultStubFun.returnType = declaration.returnType.remapTypeParameters(declaration, exportedDefaultStubFun)
         exportedDefaultStubFun.valueParameters.forEach { it.defaultValue = null }
 
-        declaration.origin = JsLoweredDeclarationOrigin.JS_SHADOWED_EXPORT
+        declaration.origin = PyLoweredDeclarationOrigin.JS_SHADOWED_EXPORT
 
         val irBuilder = context.createIrBuilder(exportedDefaultStubFun.symbol, exportedDefaultStubFun.startOffset, exportedDefaultStubFun.endOffset)
         exportedDefaultStubFun.body = irBuilder.irBlockBody(exportedDefaultStubFun) {

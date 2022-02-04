@@ -82,7 +82,7 @@ tailrec fun erase(type: IrType): IrClass? {
     }
 }
 
-fun IrType.getClassRef(context: JsGenerationContext): JsNameRef =
+fun IrType.getClassRef(context: PyGenerationContext): JsNameRef =
     when (val klass = classifierOrFail.owner) {
         is IrClass ->
             if (klass.isEffectivelyExternal())

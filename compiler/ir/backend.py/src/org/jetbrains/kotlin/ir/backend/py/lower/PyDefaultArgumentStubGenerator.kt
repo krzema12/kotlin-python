@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.backend.common.ir.copyAnnotationsWhen
 import org.jetbrains.kotlin.backend.common.ir.isOverridableOrOverrides
 import org.jetbrains.kotlin.backend.common.lower.DefaultArgumentStubGenerator
 import org.jetbrains.kotlin.backend.common.lower.LoweredStatementOrigins
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.utils.JsAnnotations
 import org.jetbrains.kotlin.ir.builders.IrBlockBodyBuilder
 import org.jetbrains.kotlin.ir.builders.irCall
@@ -28,7 +28,7 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 import org.jetbrains.kotlin.name.Name
 
-class JsDefaultArgumentStubGenerator(override val context: JsIrBackendContext) : DefaultArgumentStubGenerator(context, true, true, false) {
+class PyDefaultArgumentStubGenerator(override val context: PyIrBackendContext) : DefaultArgumentStubGenerator(context, true, true, false) {
 
     override fun needSpecialDispatch(irFunction: IrSimpleFunction) = irFunction.isOverridableOrOverrides
 
@@ -69,7 +69,7 @@ class JsDefaultArgumentStubGenerator(override val context: JsIrBackendContext) :
 
 val BIND_CALL = object : IrStatementOriginImpl("BIND_CALL") {}
 
-class JsDefaultCallbackGenerator(val context: JsIrBackendContext): BodyLoweringPass {
+class PyDefaultCallbackGenerator(val context: PyIrBackendContext): BodyLoweringPass {
     override fun lower(irBody: IrBody, container: IrDeclaration) {
         irBody.transformChildrenVoid(object : IrElementTransformerVoid() {
             override fun visitCall(expression: IrCall): IrExpression {

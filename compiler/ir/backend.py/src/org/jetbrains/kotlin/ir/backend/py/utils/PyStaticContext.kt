@@ -5,17 +5,14 @@
 
 package org.jetbrains.kotlin.ir.backend.py.utils
 
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.transformers.irToPy.PyIntrinsicTransformers
-import org.jetbrains.kotlin.js.backend.ast.JsGlobalBlock
 
 
-class JsStaticContext(
-    val backendContext: JsIrBackendContext,
+class PyStaticContext(
+    val backendContext: PyIrBackendContext,
     private val irNamer: IrNamer,
 ) : IrNamer by irNamer {
     val intrinsics = PyIntrinsicTransformers(backendContext)
     val coroutineImplDeclaration = backendContext.ir.symbols.coroutineImpl.owner
-
-    val initializerBlock = JsGlobalBlock()
 }

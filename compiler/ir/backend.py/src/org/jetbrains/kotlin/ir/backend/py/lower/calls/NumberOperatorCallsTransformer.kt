@@ -5,7 +5,7 @@
 
 package org.jetbrains.kotlin.ir.backend.py.lower.calls
 
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.backend.py.utils.OperatorNames
 import org.jetbrains.kotlin.ir.expressions.IrExpression
@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.name.Name
 
 private val HASH_CODE_NAME = Name.identifier("hashCode")
 
-class NumberOperatorCallsTransformer(context: JsIrBackendContext) : CallsTransformer {
+class NumberOperatorCallsTransformer(context: PyIrBackendContext) : CallsTransformer {
     private val intrinsics = context.intrinsics
     private val irBuiltIns = context.irBuiltIns
 

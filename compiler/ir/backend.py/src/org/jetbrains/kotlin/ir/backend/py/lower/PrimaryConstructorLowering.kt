@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.backend.common.BodyLoweringPass
 import org.jetbrains.kotlin.backend.common.DeclarationTransformer
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.ir.IrStatement
-import org.jetbrains.kotlin.ir.backend.py.JsCommonBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyCommonBackendContext
 import org.jetbrains.kotlin.ir.builders.declarations.addConstructor
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.IrBody
@@ -22,7 +22,7 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 
 // Create primary constructor if it doesn't exist
-class PrimaryConstructorLowering(val context: JsCommonBackendContext) : DeclarationTransformer {
+class PrimaryConstructorLowering(val context: PyCommonBackendContext) : DeclarationTransformer {
 
     private var IrClass.syntheticPrimaryConstructor by context.mapping.classToSyntheticPrimaryConstructor
 
@@ -60,7 +60,7 @@ class PrimaryConstructorLowering(val context: JsCommonBackendContext) : Declarat
     }
 }
 
-class DelegateToSyntheticPrimaryConstructor(context: JsCommonBackendContext) : BodyLoweringPass {
+class DelegateToSyntheticPrimaryConstructor(context: PyCommonBackendContext) : BodyLoweringPass {
 
     private var IrClass.syntheticPrimaryConstructor by context.mapping.classToSyntheticPrimaryConstructor
 
