@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.backend.common.push
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
-import org.jetbrains.kotlin.ir.backend.py.JsCommonBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyCommonBackendContext
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.declarations.IrVariable
@@ -71,7 +71,7 @@ class DispatchPointTransformer(val action: (SuspendState) -> IrExpression) : IrE
 
 class StateMachineBuilder(
     private val suspendableNodes: MutableSet<IrElement>,
-    val context: JsCommonBackendContext,
+    val context: PyCommonBackendContext,
     val function: IrFunctionSymbol,
     private val rootLoop: IrLoop,
     private val exceptionSymbolGetter: IrSimpleFunction,

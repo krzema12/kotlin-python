@@ -6,7 +6,7 @@
 package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 
 import generated.Python.*
-import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
+import org.jetbrains.kotlin.ir.backend.py.utils.PyGenerationContext
 import org.jetbrains.kotlin.ir.backend.py.utils.asString
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
@@ -63,13 +63,13 @@ private fun List<IrType>.sortTopologically(): List<IrType> {
     return superClass + sortedInterfaces
 }
 
-private fun IrType.calculateName(context: JsGenerationContext): String = try {
+private fun IrType.calculateName(context: PyGenerationContext): String = try {
     this.getClass()?.let { clazz -> context.getNameForClass(clazz).ident }
 } catch (e: IllegalStateException) {
     null
 } ?: this.asString().toValidPythonSymbol()
 
-fun IrClass.toPythonStatement(context: JsGenerationContext): List<stmt> {
+fun IrClass.toPythonStatement(context: PyGenerationContext): List<stmt> {
     val superTypes = superTypes
         .sortTopologically()  // prevent the "Cannot create a consistent method resolution order (MRO)" runtime error
         .map { it.calculateName(context) }

@@ -6,9 +6,9 @@
 package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 
 import generated.Python.*
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
-import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.utils.Namer
+import org.jetbrains.kotlin.ir.backend.py.utils.PyGenerationContext
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationWithName
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
@@ -19,9 +19,9 @@ import org.jetbrains.kotlin.ir.symbols.IrSymbol
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.isEffectivelyExternal
 
-typealias IrCallTransformer = (IrCall, context: JsGenerationContext) -> expr
+typealias IrCallTransformer = (IrCall, context: PyGenerationContext) -> expr
 
-class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
+class PyIntrinsicTransformers(backendContext: PyIrBackendContext) {
     private val transformers: Map<IrSymbol, IrCallTransformer>
     val icUtils = backendContext.inlineClassesUtils
 
@@ -263,7 +263,7 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
                 )
             }
 
-            add(intrinsics.createSharedBox) { call, context: JsGenerationContext ->
+            add(intrinsics.createSharedBox) { call, context: PyGenerationContext ->
                 val arg = translateCallArguments(call, context).single()
                 Dict(
                     keys = listOf(Constant(constant(Namer.SHARED_BOX_V), null)),
@@ -271,7 +271,7 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
                 )
             }
 
-            add(intrinsics.readSharedBox) { call, context: JsGenerationContext ->
+            add(intrinsics.readSharedBox) { call, context: PyGenerationContext ->
                 val box = translateCallArguments(call, context).single()
 
                 Subscript(
@@ -281,7 +281,7 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
                 )
             }
 
-            add(intrinsics.writeSharedBox) { call, context: JsGenerationContext ->
+            add(intrinsics.writeSharedBox) { call, context: PyGenerationContext ->
                 val args = translateCallArguments(call, context)
                 val box = args[0]
                 val value = args[1]
@@ -306,7 +306,7 @@ class PyIntrinsicTransformers(backendContext: JsIrBackendContext) {
     operator fun get(symbol: IrSymbol): IrCallTransformer? = transformers[symbol]
 }
 
-private fun translateCallArguments(expression: IrCall, context: JsGenerationContext): List<expr> {
+private fun translateCallArguments(expression: IrCall, context: PyGenerationContext): List<expr> {
     return translateCallArguments(expression, context, IrElementToPyExpressionTransformer())
 }
 

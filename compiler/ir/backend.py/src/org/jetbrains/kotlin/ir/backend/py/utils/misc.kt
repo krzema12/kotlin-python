@@ -8,8 +8,8 @@ package org.jetbrains.kotlin.ir.backend.py.utils
 import org.jetbrains.kotlin.backend.common.ir.isMethodOfAny
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
-import org.jetbrains.kotlin.ir.backend.py.JsLoweredDeclarationOrigin
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyLoweredDeclarationOrigin
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
@@ -24,18 +24,18 @@ import org.jetbrains.kotlin.name.Name
 fun TODO(element: IrElement): Nothing = TODO(element::class.java.simpleName + " is not supported yet here")
 
 @Suppress("UNUSED_PARAMETER")  // todo: ensure the parameter is not needed and remove
-fun IrFunction.hasStableJsName(context: JsIrBackendContext?): Boolean {
+fun IrFunction.hasStableJsName(context: PyIrBackendContext?): Boolean {
     if (
-        origin == JsLoweredDeclarationOrigin.BRIDGE_WITH_STABLE_NAME ||
+        origin == PyLoweredDeclarationOrigin.BRIDGE_WITH_STABLE_NAME ||
         (this as? IrSimpleFunction)?.isMethodOfAny() == true // Handle names for special functions
     ) {
         return true
     }
 
     if (
-        origin == JsLoweredDeclarationOrigin.JS_SHADOWED_EXPORT ||
+        origin == PyLoweredDeclarationOrigin.JS_SHADOWED_EXPORT ||
         origin == IrDeclarationOrigin.FUNCTION_FOR_DEFAULT_PARAMETER ||
-        origin == JsLoweredDeclarationOrigin.BRIDGE_WITHOUT_STABLE_NAME
+        origin == PyLoweredDeclarationOrigin.BRIDGE_WITHOUT_STABLE_NAME
     ) {
         return false
     }
@@ -68,7 +68,7 @@ fun IrDeclaration.hasStaticDispatch() = when (this) {
     else -> true
 }
 
-fun List<IrExpression>.toJsArrayLiteral(context: JsIrBackendContext, arrayType: IrType, elementType: IrType): IrExpression {
+fun List<IrExpression>.toJsArrayLiteral(context: PyIrBackendContext, arrayType: IrType, elementType: IrType): IrExpression {
     val irVararg = IrVarargImpl(UNDEFINED_OFFSET, UNDEFINED_OFFSET, arrayType, elementType, this)
 
     return IrCallImpl(

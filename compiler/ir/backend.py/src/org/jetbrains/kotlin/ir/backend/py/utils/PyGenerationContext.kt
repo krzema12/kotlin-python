@@ -8,15 +8,11 @@ package org.jetbrains.kotlin.ir.backend.py.utils
 import generated.Python.stmt
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationWithName
 import org.jetbrains.kotlin.ir.declarations.IrFunction
-import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
-import org.jetbrains.kotlin.ir.util.isSuspend
 import org.jetbrains.kotlin.js.backend.ast.JsName
-import org.jetbrains.kotlin.js.backend.ast.JsNameRef
-import org.jetbrains.kotlin.js.backend.ast.JsThisRef
 
-class JsGenerationContext(
+class PyGenerationContext(
     val currentFunction: IrFunction?,
-    val staticContext: JsStaticContext,
+    val staticContext: PyStaticContext,
     val localNames: LocalNameGenerator? = null,
     val definedTypes: MutableSet<String> = mutableSetOf(),
 ): IrNamer by staticContext {
@@ -33,8 +29,8 @@ class JsGenerationContext(
         return extraStatements.toList().also { extraStatements.clear() }
     }
 
-    fun newScope(): JsGenerationContext {
-        return JsGenerationContext(
+    fun newScope(): PyGenerationContext {
+        return PyGenerationContext(
             currentFunction = currentFunction,
             staticContext = staticContext,
             localNames = localNames,
@@ -42,8 +38,8 @@ class JsGenerationContext(
         )
     }
 
-    fun newDeclaration(func: IrFunction? = null, localNames: LocalNameGenerator? = null): JsGenerationContext {
-        return JsGenerationContext(
+    fun newDeclaration(func: IrFunction? = null, localNames: LocalNameGenerator? = null): PyGenerationContext {
+        return PyGenerationContext(
             currentFunction = func,
             staticContext = staticContext,
             localNames = localNames,
@@ -51,27 +47,9 @@ class JsGenerationContext(
         )
     }
 
-    val continuation
-        get() = if (isCoroutineDoResume()) {
-            JsThisRef()
-        } else {
-            if (currentFunction!!.isSuspend) {
-                JsNameRef(Namer.CONTINUATION)
-            } else {
-                JsNameRef(this.getNameForValueDeclaration(currentFunction.valueParameters.last()))
-            }
-        }
-
     fun getNameForValueDeclaration(declaration: IrDeclarationWithName): JsName {
         val name = localNames!!.variableNames.names[declaration]
             ?: error("Variable name is not found ${declaration.name}")
         return JsName(name)
-    }
-
-    private fun isCoroutineDoResume(): Boolean {
-        val overriddenSymbols = (currentFunction as? IrSimpleFunction)?.overriddenSymbols ?: return false
-        return overriddenSymbols.any {
-            it.owner.name.asString() == "doResume" && it.owner.parent == staticContext.coroutineImplDeclaration
-        }
     }
 }

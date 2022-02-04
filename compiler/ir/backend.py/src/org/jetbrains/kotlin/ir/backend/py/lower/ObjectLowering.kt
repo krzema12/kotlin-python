@@ -13,22 +13,31 @@ import org.jetbrains.kotlin.backend.common.lower.irBlockBody
 import org.jetbrains.kotlin.backend.common.lower.irIfThen
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
-import org.jetbrains.kotlin.ir.backend.py.JsCommonBackendContext
-import org.jetbrains.kotlin.ir.backend.py.JsLoweredDeclarationOrigin
+import org.jetbrains.kotlin.ir.backend.py.PyCommonBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyLoweredDeclarationOrigin
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.builders.*
 import org.jetbrains.kotlin.ir.builders.declarations.buildField
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
-import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.expressions.*
+import org.jetbrains.kotlin.ir.declarations.IrClass
+import org.jetbrains.kotlin.ir.declarations.IrConstructor
+import org.jetbrains.kotlin.ir.declarations.IrDeclaration
+import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
+import org.jetbrains.kotlin.ir.expressions.IrBlockBody
+import org.jetbrains.kotlin.ir.expressions.IrBody
+import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.expressions.IrGetObjectValue
 import org.jetbrains.kotlin.ir.types.makeNullable
-import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.ir.util.defaultType
+import org.jetbrains.kotlin.ir.util.isEffectivelyExternal
+import org.jetbrains.kotlin.ir.util.parentAsClass
+import org.jetbrains.kotlin.ir.util.primaryConstructor
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 import org.jetbrains.kotlin.name.Name
 
 class ObjectDeclarationLowering(
-    val context: JsCommonBackendContext
+    val context: PyCommonBackendContext
 ) : DeclarationTransformer {
 
     private var IrClass.instanceField by context.mapping.objectToInstanceField
@@ -70,7 +79,7 @@ class ObjectDeclarationLowering(
 }
 
 class ObjectUsageLowering(
-    val context: JsCommonBackendContext
+    val context: PyCommonBackendContext
 ) : BodyLoweringPass {
 
     private var IrClass.instanceField by context.mapping.objectToInstanceField
@@ -83,18 +92,7 @@ class ObjectUsageLowering(
                 val initInstanceField = context.createIrBuilder(container.symbol).buildStatement(UNDEFINED_OFFSET, UNDEFINED_OFFSET) {
                     irSetField(null, instanceField, irGet(irClass.thisReceiver!!))
                 }
-                if (context.es6mode) {
-                    //find `superCall` and put after
-                    (irBody as IrBlockBody).statements.transformFlat {
-                        if (it is IrDelegatingConstructorCall) listOf(it, initInstanceField)
-                        else if (it is IrVariable && it.origin === ES6_THIS_VARIABLE_ORIGIN) {
-                            initInstanceField.value = JsIrBuilder.buildGetValue(it.symbol)
-                            listOf(it, initInstanceField)
-                        } else null
-                    }
-                } else {
-                    (irBody as IrBlockBody).statements.add(0, initInstanceField)
-                }
+                (irBody as IrBlockBody).statements.add(0, initInstanceField)
             }
         }
 
@@ -108,12 +106,12 @@ class ObjectUsageLowering(
     }
 }
 
-private fun JsCommonBackendContext.getOrCreateGetInstanceFunction(obj: IrClass) =
+private fun PyCommonBackendContext.getOrCreateGetInstanceFunction(obj: IrClass) =
     mapping.objectToGetInstanceFunction.getOrPut(obj) {
         irFactory.buildFun {
             name = Name.identifier(obj.name.asString() + "_getInstance")
             returnType = obj.defaultType
-            origin = JsLoweredDeclarationOrigin.OBJECT_GET_INSTANCE_FUNCTION
+            origin = PyLoweredDeclarationOrigin.OBJECT_GET_INSTANCE_FUNCTION
             visibility = obj.visibility
         }.apply {
             parent = obj.parent

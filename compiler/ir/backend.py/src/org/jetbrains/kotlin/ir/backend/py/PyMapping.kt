@@ -10,11 +10,12 @@ import org.jetbrains.kotlin.backend.common.DelegateFactory
 import org.jetbrains.kotlin.backend.common.Mapping
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
-import org.jetbrains.kotlin.library.impl.*
+import org.jetbrains.kotlin.library.impl.IrLongArrayMemoryReader
+import org.jetbrains.kotlin.library.impl.IrMemoryLongArrayWriter
 
-fun JsMapping(irFactory: IrFactory) = JsMapping(JsMappingState(irFactory))
+fun PyMapping(irFactory: IrFactory) = PyMapping(JsMappingState(irFactory))
 
-class JsMapping(val state: JsMappingState) : DefaultMapping(state) {
+class PyMapping(val state: JsMappingState) : DefaultMapping(state) {
     val outerThisFieldSymbols = state.newDeclarationToDeclarationMapping<IrClass, IrField>()
     val innerClassConstructors = state.newDeclarationToDeclarationMapping<IrConstructor, IrConstructor>()
     val originalInnerClassPrimaryConstructorByClass = state.newDeclarationToDeclarationMapping<IrClass, IrConstructor>()
@@ -45,7 +46,7 @@ class JsMappingState(val irFactory: IrFactory) : DelegateFactory {
     }
 
     override fun <K : IrDeclaration, V : Collection<IrDeclaration>> newDeclarationToDeclarationCollectionMapping(): Mapping.Delegate<K, V> {
-        return JsMappingCollectionDelegate<K, V>(irFactory).also {
+        return PyMappingCollectionDelegate<K, V>(irFactory).also {
             allMappings += it
         }
     }
@@ -103,7 +104,7 @@ private class JsMappingDelegate<K : IrDeclaration, V : IrDeclaration>(val irFact
         get() = TODO("Not yet implemented")
 }
 
-private class JsMappingCollectionDelegate<K : IrDeclaration, V : Collection<IrDeclaration>>(val irFactory: IrFactory) : Mapping.Delegate<K, V>(), SerializableMapping {
+private class PyMappingCollectionDelegate<K : IrDeclaration, V : Collection<IrDeclaration>>(val irFactory: IrFactory) : Mapping.Delegate<K, V>(), SerializableMapping {
     private val map: MutableMap<IrSymbol, Collection<IrSymbol>> = mutableMapOf()
 
     @Suppress("UNCHECKED_CAST")

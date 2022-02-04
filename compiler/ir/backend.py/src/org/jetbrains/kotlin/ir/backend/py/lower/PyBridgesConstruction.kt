@@ -5,20 +5,20 @@
 
 package org.jetbrains.kotlin.ir.backend.py.lower
 
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
-import org.jetbrains.kotlin.ir.backend.py.JsLoweredDeclarationOrigin
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyLoweredDeclarationOrigin
 import org.jetbrains.kotlin.ir.backend.py.utils.hasStableJsName
 import org.jetbrains.kotlin.ir.backend.py.utils.jsFunctionSignature
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 
-class JsBridgesConstruction(context: JsIrBackendContext) : BridgesConstruction<JsIrBackendContext>(context) {
+class PyBridgesConstruction(context: PyIrBackendContext) : BridgesConstruction<PyIrBackendContext>(context) {
     override fun getFunctionSignature(function: IrSimpleFunction): String =
         jsFunctionSignature(function, context)
 
     override fun getBridgeOrigin(bridge: IrSimpleFunction): IrDeclarationOrigin =
         if (bridge.hasStableJsName(context))
-            JsLoweredDeclarationOrigin.BRIDGE_WITH_STABLE_NAME
+            PyLoweredDeclarationOrigin.BRIDGE_WITH_STABLE_NAME
         else
-            JsLoweredDeclarationOrigin.BRIDGE_WITHOUT_STABLE_NAME
+            PyLoweredDeclarationOrigin.BRIDGE_WITHOUT_STABLE_NAME
 }

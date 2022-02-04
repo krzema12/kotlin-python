@@ -5,7 +5,7 @@
 
 package org.jetbrains.kotlin.ir.backend.py.lower.calls
 
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.backend.py.utils.isEqualsInheritedFromAny
 import org.jetbrains.kotlin.ir.declarations.IrClass
@@ -17,12 +17,14 @@ import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrFunctionAccessExpression
 import org.jetbrains.kotlin.ir.expressions.impl.IrCallImpl
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
-import org.jetbrains.kotlin.ir.types.*
+import org.jetbrains.kotlin.ir.types.IrDynamicType
+import org.jetbrains.kotlin.ir.types.isComparable
+import org.jetbrains.kotlin.ir.types.isNullable
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.name.Name
 
 
-class EqualityAndComparisonCallsTransformer(context: JsIrBackendContext) : CallsTransformer {
+class EqualityAndComparisonCallsTransformer(context: PyIrBackendContext) : CallsTransformer {
     private val intrinsics = context.intrinsics
     private val irBuiltIns = context.irBuiltIns
 

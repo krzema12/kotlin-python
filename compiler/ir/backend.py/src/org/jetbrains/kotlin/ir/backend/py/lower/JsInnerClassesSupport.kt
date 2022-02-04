@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.backend.common.ir.copyTo
 import org.jetbrains.kotlin.backend.common.ir.copyTypeParametersFrom
 import org.jetbrains.kotlin.backend.common.lower.InnerClassesSupport
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
-import org.jetbrains.kotlin.ir.backend.py.JsMapping
+import org.jetbrains.kotlin.ir.backend.py.PyMapping
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder.SYNTHESIZED_DECLARATION
 import org.jetbrains.kotlin.ir.backend.py.utils.Namer
 import org.jetbrains.kotlin.ir.builders.declarations.buildConstructor
@@ -21,7 +21,7 @@ import org.jetbrains.kotlin.ir.util.defaultType
 import org.jetbrains.kotlin.ir.util.dump
 import org.jetbrains.kotlin.name.Name
 
-class JsInnerClassesSupport(mapping: JsMapping, private val irFactory: IrFactory) : InnerClassesSupport {
+class JsInnerClassesSupport(mapping: PyMapping, private val irFactory: IrFactory) : InnerClassesSupport {
     private val outerThisFieldSymbols = mapping.outerThisFieldSymbols
     private val innerClassConstructors = mapping.innerClassConstructors
     private val originalInnerClassPrimaryConstructorByClass = mapping.originalInnerClassPrimaryConstructorByClass

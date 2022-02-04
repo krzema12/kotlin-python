@@ -35,11 +35,10 @@ fun compile(
     irFactory: IrFactory,
     @Suppress("UNUSED_PARAMETER") // If this argument is removed, box tests fail at runtime.
     exportedDeclarations: Set<FqName> = emptySet(),
-    generateFullJs: Boolean = true,
-    generateDceJs: Boolean = false,
+    generateFullPy: Boolean = true,
+    generateDcePy: Boolean = false,
     dceDriven: Boolean = false,
     dceRuntimeDiagnostic: RuntimeDiagnostic? = null,
-    es6mode: Boolean = false,
     relativeRequirePath: Boolean = false,
     verifySignatures: Boolean = true,
 ): CompilerResult {
@@ -55,13 +54,12 @@ fun compile(
         is MainModule.Klib -> dependencyModules
     }
 
-    val context = JsIrBackendContext(
+    val context = PyIrBackendContext(
         moduleDescriptor,
         irBuiltIns,
         symbolTable,
         allModules.first(),
         configuration,
-        es6mode = es6mode,
         dceRuntimeDiagnostic = dceRuntimeDiagnostic,
     )
 
@@ -99,11 +97,11 @@ fun compile(
         )
         return transformer.generateModule(allModules)
     } else {
-        jsPhases.invokeToplevel(phaseConfig, context, allModules)
+        pyPhases.invokeToplevel(phaseConfig, context, allModules)
         val transformer = IrModuleToPyTransformer(
             context,
-            fullJs = generateFullJs,
-            dceJs = generateDceJs,
+            fullJs = generateFullPy,
+            dceJs = generateDcePy,
             relativeRequirePath = relativeRequirePath
         )
         return transformer.generateModule(allModules)

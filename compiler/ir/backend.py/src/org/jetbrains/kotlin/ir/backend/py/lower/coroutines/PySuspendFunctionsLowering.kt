@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.backend.common.descriptors.synthesizedName
 import org.jetbrains.kotlin.backend.common.ir.isSuspend
 import org.jetbrains.kotlin.backend.common.lower.FinallyBlocksLowering
 import org.jetbrains.kotlin.backend.common.lower.ReturnableBlockTransformer
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.builders.*
 import org.jetbrains.kotlin.ir.declarations.*
@@ -23,12 +23,15 @@ import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.isUnit
 import org.jetbrains.kotlin.ir.util.explicitParameters
 import org.jetbrains.kotlin.ir.util.patchDeclarationParents
-import org.jetbrains.kotlin.ir.visitors.*
+import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
+import org.jetbrains.kotlin.ir.visitors.acceptChildrenVoid
+import org.jetbrains.kotlin.ir.visitors.acceptVoid
+import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.utils.DFS
 import org.jetbrains.kotlin.utils.addToStdlib.assertedCast
 
-class JsSuspendFunctionsLowering(ctx: JsIrBackendContext) : AbstractSuspendFunctionsLowering<JsIrBackendContext>(ctx) {
+class PySuspendFunctionsLowering(ctx: PyIrBackendContext) : AbstractSuspendFunctionsLowering<PyIrBackendContext>(ctx) {
 
     private val coroutineImplExceptionPropertyGetter = ctx.coroutineImplExceptionPropertyGetter
     private val coroutineImplExceptionPropertySetter = ctx.coroutineImplExceptionPropertySetter
@@ -237,7 +240,7 @@ class JsSuspendFunctionsLowering(ctx: JsIrBackendContext) : AbstractSuspendFunct
         val fromType = (delegatingCall as? IrCall)?.symbol?.owner?.returnType ?: delegatingCall.type
         if (!needUnboxingOrUnit(fromType, expectedType)) return delegatingCall
 
-        val ctx = this@JsSuspendFunctionsLowering.context
+        val ctx = this@PySuspendFunctionsLowering.context
         return irComposite(resultType = fromType) {
             val tmp = createTmpVariable(delegatingCall, irType = fromType)
             val coroutineSuspended = irCall(ctx.coroutineSuspendGetter)

@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
 import org.jetbrains.kotlin.ir.builders.irCall
@@ -26,7 +26,7 @@ import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
-fun generateTests(context: JsIrBackendContext, moduleFragment: IrModuleFragment) {
+fun generateTests(context: PyIrBackendContext, moduleFragment: IrModuleFragment) {
     val generator = TestGenerator(context) { context.createTestContainerFun(moduleFragment) }
 
     moduleFragment.files.toList().forEach {
@@ -34,7 +34,7 @@ fun generateTests(context: JsIrBackendContext, moduleFragment: IrModuleFragment)
     }
 }
 
-class TestGenerator(val context: JsIrBackendContext, val testContainerFactory: () -> IrSimpleFunction) : FileLoweringPass {
+class TestGenerator(val context: PyIrBackendContext, val testContainerFactory: () -> IrSimpleFunction) : FileLoweringPass {
 
     override fun lower(irFile: IrFile) {
         irFile.declarations.forEach {

@@ -6,12 +6,12 @@
 package org.jetbrains.kotlin.ir.backend.py.utils
 
 import org.jetbrains.kotlin.ir.backend.py.InlineClassesUtils
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.types.IrType
 
-class JsInlineClassesUtils(val context: JsIrBackendContext) : InlineClassesUtils {
+class PyInlineClassesUtils(val context: PyIrBackendContext) : InlineClassesUtils {
     override fun isTypeInlined(type: IrType): Boolean {
         return getInlinedClass(type) != null
     }

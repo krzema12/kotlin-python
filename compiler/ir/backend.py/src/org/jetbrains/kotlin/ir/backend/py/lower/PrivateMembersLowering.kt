@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.backend.common.BodyLoweringPass
 import org.jetbrains.kotlin.backend.common.DeclarationTransformer
 import org.jetbrains.kotlin.backend.common.ir.copyTo
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
 import org.jetbrains.kotlin.ir.builders.declarations.buildValueParameter
 import org.jetbrains.kotlin.ir.declarations.*
@@ -24,7 +24,7 @@ import org.jetbrains.kotlin.name.Name
 
 private val STATIC_THIS_PARAMETER = object : IrDeclarationOriginImpl("STATIC_THIS_PARAMETER") {}
 
-class PrivateMembersLowering(val context: JsIrBackendContext) : DeclarationTransformer {
+class PrivateMembersLowering(val context: PyIrBackendContext) : DeclarationTransformer {
 
     private var IrFunction.correspondingStatic by context.mapping.privateMemberToCorrespondingStatic
 
@@ -123,7 +123,7 @@ class PrivateMembersLowering(val context: JsIrBackendContext) : DeclarationTrans
     }
 }
 
-class PrivateMemberBodiesLowering(val context: JsIrBackendContext) : BodyLoweringPass {
+class PrivateMemberBodiesLowering(val context: PyIrBackendContext) : BodyLoweringPass {
 
     private var IrFunction.correspondingStatic by context.mapping.privateMemberToCorrespondingStatic
 

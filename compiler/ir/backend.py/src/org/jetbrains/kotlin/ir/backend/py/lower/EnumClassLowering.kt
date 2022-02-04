@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.backend.common.lower.irIfThen
 import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
-import org.jetbrains.kotlin.ir.backend.py.JsCommonBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyCommonBackendContext
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.builders.*
 import org.jetbrains.kotlin.ir.builders.declarations.buildConstructor
@@ -32,7 +32,7 @@ import org.jetbrains.kotlin.ir.visitors.acceptVoid
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 import org.jetbrains.kotlin.name.Name
 
-class EnumUsageLowering(val context: JsCommonBackendContext) : BodyLoweringPass {
+class EnumUsageLowering(val context: PyCommonBackendContext) : BodyLoweringPass {
     private var IrEnumEntry.getInstanceFun by context.mapping.enumEntryToGetInstanceFun
 
     override fun lower(irBody: IrBody, container: IrDeclaration) {
@@ -57,7 +57,7 @@ private fun createEntryAccessorName(enumName: String, enumEntry: IrEnumEntry) =
 private fun IrEnumEntry.getType(irClass: IrClass) = (correspondingClass ?: irClass).defaultType
 
 // Should be applied recursively
-class EnumClassConstructorLowering(val context: JsCommonBackendContext) : DeclarationTransformer {
+class EnumClassConstructorLowering(val context: PyCommonBackendContext) : DeclarationTransformer {
 
     private var IrConstructor.newConstructor by context.mapping.enumConstructorToNewConstructor
     private var IrClass.correspondingEntry by context.mapping.enumClassToCorrespondingEnumEntry
@@ -133,7 +133,7 @@ class EnumClassConstructorLowering(val context: JsCommonBackendContext) : Declar
 }
 
 // The first step creates a new `IrConstructor` with new `IrValueParameter`s so references to old `IrValueParameter`s must be replaced with new ones.
-private fun JsCommonBackendContext.fixReferencesToConstructorParameters(irClass: IrClass, body: IrBody) {
+private fun PyCommonBackendContext.fixReferencesToConstructorParameters(irClass: IrClass, body: IrBody) {
     body.transformChildrenVoid(object : IrElementTransformerVoid() {
         private val builder = createIrBuilder(irClass.symbol)
 
@@ -154,7 +154,7 @@ private fun JsCommonBackendContext.fixReferencesToConstructorParameters(irClass:
     })
 }
 
-class EnumClassConstructorBodyTransformer(val context: JsCommonBackendContext) : BodyLoweringPass {
+class EnumClassConstructorBodyTransformer(val context: PyCommonBackendContext) : BodyLoweringPass {
 
     private var IrConstructor.newConstructor by context.mapping.enumConstructorToNewConstructor
     private var IrClass.correspondingEntry by context.mapping.enumClassToCorrespondingEnumEntry
@@ -278,7 +278,7 @@ class EnumClassConstructorBodyTransformer(val context: JsCommonBackendContext) :
 
 //-------------------------------------------------------
 
-class EnumEntryInstancesLowering(val context: JsCommonBackendContext) : DeclarationTransformer {
+class EnumEntryInstancesLowering(val context: PyCommonBackendContext) : DeclarationTransformer {
 
     private var IrEnumEntry.correspondingField by context.mapping.enumEntryToCorrespondingField
 
@@ -311,7 +311,7 @@ class EnumEntryInstancesLowering(val context: JsCommonBackendContext) : Declarat
     }
 }
 
-class EnumEntryInstancesBodyLowering(val context: JsCommonBackendContext) : BodyLoweringPass {
+class EnumEntryInstancesBodyLowering(val context: PyCommonBackendContext) : BodyLoweringPass {
 
     private var IrEnumEntry.correspondingField by context.mapping.enumEntryToCorrespondingField
 
@@ -335,7 +335,7 @@ class EnumEntryInstancesBodyLowering(val context: JsCommonBackendContext) : Body
     }
 }
 
-class EnumClassCreateInitializerLowering(val context: JsCommonBackendContext) : DeclarationTransformer {
+class EnumClassCreateInitializerLowering(val context: PyCommonBackendContext) : DeclarationTransformer {
 
     private var IrEnumEntry.correspondingField by context.mapping.enumEntryToCorrespondingField
     private var IrClass.initEntryInstancesFun: IrSimpleFunction? by context.mapping.enumClassToInitEntryInstancesFun
@@ -400,7 +400,7 @@ class EnumClassCreateInitializerLowering(val context: JsCommonBackendContext) : 
         }
 }
 
-class EnumEntryCreateGetInstancesFunsLowering(val context: JsCommonBackendContext) : DeclarationTransformer {
+class EnumEntryCreateGetInstancesFunsLowering(val context: PyCommonBackendContext) : DeclarationTransformer {
 
     private var IrEnumEntry.correspondingField by context.mapping.enumEntryToCorrespondingField
     private val IrClass.initEntryInstancesFun: IrSimpleFunction? by context.mapping.enumClassToInitEntryInstancesFun
@@ -452,7 +452,7 @@ private val IrClass.isInstantiableEnum: Boolean
 private val IrDeclaration.parentEnumClassOrNull: IrClass?
     get() = parents.filterIsInstance<IrClass>().firstOrNull { it.isInstantiableEnum }
 
-class EnumSyntheticFunctionsLowering(val context: JsCommonBackendContext) : DeclarationTransformer {
+class EnumSyntheticFunctionsLowering(val context: PyCommonBackendContext) : DeclarationTransformer {
 
     private val IrEnumEntry.getInstanceFun by context.mapping.enumEntryToGetInstanceFun
     private val IrClass.initEntryInstancesFun: IrSimpleFunction? by context.mapping.enumClassToInitEntryInstancesFun
@@ -528,7 +528,7 @@ private val IrClass.enumEntries: List<IrEnumEntry>
     get() = declarations.filterIsInstance<IrEnumEntry>()
 
 // Should be applied recursively
-class EnumClassRemoveEntriesLowering(val context: JsCommonBackendContext) : DeclarationTransformer {
+class EnumClassRemoveEntriesLowering(val context: PyCommonBackendContext) : DeclarationTransformer {
     override fun transformFlat(declaration: IrDeclaration): List<IrDeclaration>? {
         // Remove IrEnumEntry nodes from class declarations. Replace them with corresponding class declarations (if they have them).
         if (declaration is IrEnumEntry && !declaration.isExpect && !declaration.isEffectivelyExternal()) {

@@ -20,7 +20,7 @@ import org.jetbrains.kotlin.idea.KotlinFileType
 import org.jetbrains.kotlin.ir.backend.js.prepareAnalyzedSourceModule
 import org.jetbrains.kotlin.ir.backend.py.PyCode
 import org.jetbrains.kotlin.ir.backend.py.compile
-import org.jetbrains.kotlin.ir.backend.py.jsPhases
+import org.jetbrains.kotlin.ir.backend.py.pyPhases
 import org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFactory
 import org.jetbrains.kotlin.js.config.JSConfigurationKeys
 import org.jetbrains.kotlin.js.config.JsConfig
@@ -304,7 +304,7 @@ abstract class BasicIrBoxTest(
         val allKlibPaths = if (needsFullIrRuntime) listOf(fullRuntimeKlib, kotlinTestKLib) else listOf(defaultRuntimeKlib)
 
         if (isMainModule) {
-            val phaseConfig = PhaseConfig(jsPhases)
+            val phaseConfig = PhaseConfig(pyPhases)
 
             val module = prepareAnalyzedSourceModule(
                 config.project,

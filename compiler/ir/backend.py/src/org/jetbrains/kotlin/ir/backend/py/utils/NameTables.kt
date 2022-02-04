@@ -8,7 +8,7 @@ package org.jetbrains.kotlin.ir.backend.py.utils
 import org.jetbrains.kotlin.backend.common.ir.isTopLevel
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.backend.js.lower.serialization.ir.JsManglerIr
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.IrBreak
 import org.jetbrains.kotlin.ir.expressions.IrExpression
@@ -104,7 +104,7 @@ fun NameTable<IrDeclaration>.dump(): String =
 
 private const val RESERVED_MEMBER_NAME_SUFFIX = "_k$"
 
-fun jsFunctionSignature(declaration: IrFunction, context: JsIrBackendContext?): String {
+fun jsFunctionSignature(declaration: IrFunction, context: PyIrBackendContext?): String {
     require(!declaration.isStaticMethodOfClass)
     require(declaration.dispatchReceiverParameter != null)
 
@@ -150,7 +150,7 @@ class NameTables(
     reservedForGlobal: MutableSet<String> = mutableSetOf(),
     reservedForMember: MutableSet<String> = mutableSetOf(),
     val mappedNames: MutableMap<String, String>? = null,
-    private val context: JsIrBackendContext? = null
+    private val context: PyIrBackendContext? = null
 ) {
     val globalNames: NameTable<IrDeclaration>
     private val memberNames: NameTable<IrField>

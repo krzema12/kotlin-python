@@ -5,17 +5,19 @@
 
 package org.jetbrains.kotlin.ir.backend.py.lower.calls
 
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.lower.CallableReferenceLowering
 import org.jetbrains.kotlin.ir.backend.py.utils.Namer
-import org.jetbrains.kotlin.ir.expressions.*
+import org.jetbrains.kotlin.ir.expressions.IrDynamicOperator
+import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.expressions.IrFunctionAccessExpression
 import org.jetbrains.kotlin.ir.expressions.impl.IrDynamicMemberExpressionImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrDynamicOperatorExpressionImpl
 import org.jetbrains.kotlin.ir.types.isSubtypeOfClass
 import org.jetbrains.kotlin.name.Name
 
 
-class ReflectionCallsTransformer(private val context: JsIrBackendContext) : CallsTransformer {
+class ReflectionCallsTransformer(private val context: PyIrBackendContext) : CallsTransformer {
     private val nameToTransformer: Map<Name, (IrFunctionAccessExpression) -> IrExpression>
 
     private fun buildDynamicCall(name: String, call: IrFunctionAccessExpression): IrExpression {

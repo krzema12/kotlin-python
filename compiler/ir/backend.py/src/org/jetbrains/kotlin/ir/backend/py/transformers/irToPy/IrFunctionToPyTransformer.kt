@@ -6,14 +6,14 @@
 package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 
 import generated.Python.FunctionDef
-import org.jetbrains.kotlin.ir.backend.py.utils.JsGenerationContext
+import org.jetbrains.kotlin.ir.backend.py.utils.PyGenerationContext
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
-class IrFunctionToPyTransformer : BaseIrElementToPyNodeTransformer<FunctionDef, JsGenerationContext> {
-    override fun visitSimpleFunction(declaration: IrSimpleFunction, context: JsGenerationContext): FunctionDef {
+class IrFunctionToPyTransformer : BaseIrElementToPyNodeTransformer<FunctionDef, PyGenerationContext> {
+    override fun visitSimpleFunction(declaration: IrSimpleFunction, context: PyGenerationContext): FunctionDef {
         val funcName = if (declaration.dispatchReceiverParameter == null) {
             if (declaration.parent is IrFunction) {
                 context.getNameForValueDeclaration(declaration)
@@ -26,7 +26,7 @@ class IrFunctionToPyTransformer : BaseIrElementToPyNodeTransformer<FunctionDef, 
         return translateFunction(declaration, funcName, context)
     }
 
-    override fun visitConstructor(declaration: IrConstructor, context: JsGenerationContext): FunctionDef {
+    override fun visitConstructor(declaration: IrConstructor, context: PyGenerationContext): FunctionDef {
         val funcName = context.getNameForConstructor(declaration)
         return translateFunction(declaration, funcName, context)
     }

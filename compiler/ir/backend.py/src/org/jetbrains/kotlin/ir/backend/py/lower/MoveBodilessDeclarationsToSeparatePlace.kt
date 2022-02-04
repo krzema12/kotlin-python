@@ -8,7 +8,7 @@ package org.jetbrains.kotlin.ir.backend.py.lower
 import org.jetbrains.kotlin.backend.common.DeclarationTransformer
 import org.jetbrains.kotlin.backend.common.ir.addChild
 import org.jetbrains.kotlin.ir.IrElement
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.utils.getJsModule
 import org.jetbrains.kotlin.ir.backend.py.utils.getJsQualifier
 import org.jetbrains.kotlin.ir.declarations.*
@@ -46,7 +46,7 @@ private val BODILESS_BUILTIN_CLASSES = listOf(
 private fun isBuiltInClass(declaration: IrDeclaration): Boolean =
     declaration is IrClass && declaration.fqNameWhenAvailable in BODILESS_BUILTIN_CLASSES
 
-fun moveBodilessDeclarationsToSeparatePlace(context: JsIrBackendContext, moduleFragment: IrModuleFragment) {
+fun moveBodilessDeclarationsToSeparatePlace(context: PyIrBackendContext, moduleFragment: IrModuleFragment) {
     MoveBodilessDeclarationsToSeparatePlaceLowering(context).let { moveBodiless ->
         moduleFragment.files.forEach {
             validateIsExternal(it)
@@ -55,7 +55,7 @@ fun moveBodilessDeclarationsToSeparatePlace(context: JsIrBackendContext, moduleF
     }
 }
 
-class MoveBodilessDeclarationsToSeparatePlaceLowering(private val context: JsIrBackendContext) : DeclarationTransformer {
+class MoveBodilessDeclarationsToSeparatePlaceLowering(private val context: PyIrBackendContext) : DeclarationTransformer {
 
     override fun transformFlat(declaration: IrDeclaration): List<IrDeclaration>? {
         val irFile = declaration.parent as? IrFile ?: return null

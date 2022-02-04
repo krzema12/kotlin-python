@@ -5,14 +5,14 @@
 
 package org.jetbrains.kotlin.ir.backend.py.lower.calls
 
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
-import org.jetbrains.kotlin.ir.util.irCall
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.expressions.IrFunctionAccessExpression
+import org.jetbrains.kotlin.ir.util.irCall
 import org.jetbrains.kotlin.ir.util.kotlinPackageFqn
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
-class ExceptionHelperCallsTransformer(private val context: JsIrBackendContext) : CallsTransformer {
+class ExceptionHelperCallsTransformer(private val context: PyIrBackendContext) : CallsTransformer {
 
     private fun referenceFunction(fqn: FqName) =
         context.getFunctions(fqn).singleOrNull()?.let {

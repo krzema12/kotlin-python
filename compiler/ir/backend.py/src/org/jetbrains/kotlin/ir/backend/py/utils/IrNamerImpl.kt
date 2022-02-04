@@ -5,7 +5,7 @@
 
 package org.jetbrains.kotlin.ir.backend.py.utils
 
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationWithName
 import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
@@ -13,7 +13,7 @@ import org.jetbrains.kotlin.js.backend.ast.JsName
 
 class IrNamerImpl(
     private val newNameTables: NameTables,
-    private val context: JsIrBackendContext,
+    private val context: PyIrBackendContext,
 ) : IrNamerBase() {
     override fun getNameForStaticDeclaration(declaration: IrDeclarationWithName): JsName =
         newNameTables.getNameForStaticDeclaration(declaration).toJsName()

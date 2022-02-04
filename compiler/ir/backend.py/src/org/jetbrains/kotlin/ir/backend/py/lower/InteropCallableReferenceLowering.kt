@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.backend.common.ir.copyToWithoutSuperTypes
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.ir.JsIrBuilder
 import org.jetbrains.kotlin.ir.backend.py.utils.Namer
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
@@ -25,7 +25,7 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 import org.jetbrains.kotlin.name.Name
 
-class InteropCallableReferenceLowering(val context: JsIrBackendContext) : BodyLoweringPass {
+class InteropCallableReferenceLowering(val context: PyIrBackendContext) : BodyLoweringPass {
     private val newDeclarations = mutableListOf<IrDeclaration>()
     private lateinit var implicitDeclarationFile: IrFile //= context.implicitDeclarationFile
 

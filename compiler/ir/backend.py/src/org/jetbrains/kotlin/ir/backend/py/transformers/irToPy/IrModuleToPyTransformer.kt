@@ -8,8 +8,8 @@ package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 import generated.Python.Module
 import generated.Python.stmt
 import org.jetbrains.kotlin.ir.backend.py.CompilerResult
-import org.jetbrains.kotlin.ir.backend.py.JsIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.PyCode
+import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.eliminateDeadDeclarations
 import org.jetbrains.kotlin.ir.backend.py.lower.StaticMembersLowering
 import org.jetbrains.kotlin.ir.backend.py.utils.*
@@ -18,7 +18,7 @@ import topython.toPython
 
 // TODO
 class IrModuleToPyTransformer(
-    private val backendContext: JsIrBackendContext,
+    private val backendContext: PyIrBackendContext,
     private val generateScriptModule: Boolean = false,
     var namer: NameTables = NameTables(emptyList()),
     private val fullJs: Boolean = true,
@@ -74,11 +74,11 @@ class IrModuleToPyTransformer(
             IrNamerImpl(newNameTables = namer, backendContext),
             modules
         )
-        val staticContext = JsStaticContext(
+        val staticContext = PyStaticContext(
             backendContext = backendContext,
             irNamer = nameGenerator,
         )
-        val rootContext = JsGenerationContext(
+        val rootContext = PyGenerationContext(
             currentFunction = null,
             staticContext = staticContext,
             localNames = LocalNameGenerator(NameScope.EmptyScope)
@@ -93,7 +93,7 @@ class IrModuleToPyTransformer(
         return program.toPython()
     }
 
-    private fun generateModuleBody(modules: Iterable<IrModuleFragment>, context: JsGenerationContext): List<stmt> {
+    private fun generateModuleBody(modules: Iterable<IrModuleFragment>, context: PyGenerationContext): List<stmt> {
         return modules.flatMap { module: IrModuleFragment ->
             module.files.flatMap {
                 it.accept(IrFileToPyTransformer(), context)

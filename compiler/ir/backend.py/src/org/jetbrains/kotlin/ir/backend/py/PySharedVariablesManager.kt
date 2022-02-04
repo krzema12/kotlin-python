@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.ir.expressions.impl.IrGetValueImpl
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.IrVariableSymbol
 
-class JsSharedVariablesManager(context: JsIrBackendContext) : SharedVariablesManager {
+class PySharedVariablesManager(context: PyIrBackendContext) : SharedVariablesManager {
 
     private val builtIns: IrBuiltIns = context.irBuiltIns
     private val createBox: IrSimpleFunctionSymbol = context.intrinsics.createSharedBox
