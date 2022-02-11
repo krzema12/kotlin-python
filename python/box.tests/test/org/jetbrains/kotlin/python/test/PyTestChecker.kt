@@ -11,6 +11,8 @@ import java.io.InputStreamReader
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
+import kotlin.io.path.copyTo
+import kotlin.io.path.writeText
 import kotlin.system.measureTimeMillis
 
 class PythonExecutionException(override val message: String) : RuntimeException(message)
@@ -25,13 +27,13 @@ object PythonTestChecker {
     }
 
     private fun run(generatedPyFilePath: String): Any {
-        val pathToFileToRun = Paths.get(generatedPyFilePath)
+        val generatedPyFile = Paths.get(generatedPyFilePath)
 
-        val temporaryDirectory = Files.createTempDirectory(pathToFileToRun.parent, pathToFileToRun.fileName.toString())
+        val temporaryDirectory = Files.createTempDirectory(generatedPyFile.parent, generatedPyFile.fileName.toString())
         try {
-            Files.copy(pathToFileToRun, temporaryDirectory.resolve("compiled_module.py"))
+            generatedPyFile.copyTo(temporaryDirectory.resolve("compiled_module.py"))
             val consumerScriptPath = temporaryDirectory.resolve("consumer.py")
-            consumerScriptPath.toFile().writeText(
+            consumerScriptPath.writeText(
                 """
                     from compiled_module import box
         
