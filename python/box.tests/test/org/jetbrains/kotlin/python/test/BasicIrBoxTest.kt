@@ -28,8 +28,6 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtPsiFactory
-import org.jetbrains.kotlin.py.facade.TranslationUnit
-import org.jetbrains.kotlin.python.test.utils.PyTestUtils
 import org.jetbrains.kotlin.resolve.CompilerEnvironment
 import org.jetbrains.kotlin.serialization.js.JsModuleDescriptor
 import org.jetbrains.kotlin.serialization.js.KotlinJavascriptSerializationUtil
@@ -42,68 +40,56 @@ import java.io.Closeable
 import java.io.File
 import java.util.regex.Pattern
 
-private val fullRuntimeKlib: String = System.getProperty("kotlin.js.full.stdlib.path")
-private val defaultRuntimeKlib = System.getProperty("kotlin.js.reduced.stdlib.path")
-private val kotlinTestKLib = System.getProperty("kotlin.js.kotlin.test.path")
+private val fullRuntimeKlib: String get() = System.getProperty("kotlin.js.full.stdlib.path")
+private val defaultRuntimeKlib: String get() = System.getProperty("kotlin.js.reduced.stdlib.path")
+private val kotlinTestKLib: String get() = System.getProperty("kotlin.js.kotlin.test.path")
 
 class KotlinCompilationException(override val message: String, override val cause: Throwable) : RuntimeException(message, cause)
 
 abstract class BasicIrBoxTest(
-    private val pathToTestDir: String,
+    pathToTestDir: String,
     testGroupOutputDirPrefix: String,
 ) : KotlinTestWithEnvironment() {
-    private val testGroupOutputDirForCompilation = File(TEST_DATA_DIR_PATH + "out/" + testGroupOutputDirPrefix)
 
-    protected fun doTest(filePath: String) {
-        val file = File(filePath)
-        val outputDir = getOutputDir(file)
-        val fileContent = KtTestUtil.doLoadFile(file)
+    private val testDir = File(pathToTestDir)
+    private val compilationGroupDir = File(TEST_DATA_DIR_PATH + "out/" + testGroupOutputDirPrefix)
+
+    protected fun doTest(testFilePath: String) {
+        val testFile = File(testFilePath)
+        val outputDir = getOutputDir(testFile = testFile, stopDir = testDir, compilationGroupDir = compilationGroupDir)
+        val fileContent = KtTestUtil.doLoadFile(testFile)
 
         val needsFullIrRuntime = KJS_WITH_FULL_RUNTIME.matcher(fileContent).find()
 
         TestFileFactoryImpl().use { testFactory ->
-            val inputFiles = TestFiles.createTestFiles(
-                file.name,
+            val splitTestFiles = TestFiles.createTestFiles(
+                testFile.name,
                 fileContent,
                 testFactory,
-                true
+                true,
             )
-            val modules = inputFiles.map { it.module }.distinct().associateBy { it.name }
-
-            fun TestModule.allTransitiveDependencies(): Set<String> {
-                return dependenciesSymbols.toSet() + dependenciesSymbols.flatMap { modules[it]!!.allTransitiveDependencies() }
-            }
-
+            val modules = splitTestFiles.map { it.module }.distinct().associateBy { it.name }
             val orderedModules = DFS.topologicalOrder(modules.values) { module -> module.dependenciesSymbols.mapNotNull { modules[it] } }
 
-            val testPackage = testFactory.testPackage
-            val mainModuleName = DEFAULT_MODULE
-
             val generatedPyFiles = orderedModules.asReversed().mapNotNull { module ->
-                val dependencies = module.dependenciesSymbols.map { outputFileName(outputDir) + ".meta.py" }
-                val allDependencies = module.allTransitiveDependencies().map { outputFileName(outputDir) + ".meta.py" }
-                val friends = module.friendsSymbols.map { outputFileName(outputDir) + ".meta.py" }
+                val outputFilePath = "${outputDir.absolutePath}/${getTestName(true)}.py"
+                val isMainModule = DEFAULT_MODULE == module.name
 
-                val outputFileName = outputFileName(outputDir) + ".py"
-                val isMainModule = mainModuleName == module.name
-                generateJavaScriptFile(
-                    testFactory.tmpDir,
-                    file.parent,
-                    module,
-                    outputFileName,
-                    dependencies,
-                    allDependencies,
-                    friends,
-                    modules.size > 1,
-                    testPackage,
-                    needsFullIrRuntime,
-                    isMainModule,
+                generatePythonFile(
+                    tmpDir = testFactory.tmpDir,
+                    testDir = testFile.parent,
+                    module = module,
+                    outputFilePath = outputFilePath,
+                    multiModule = modules.size > 1,
+                    testPackage = testFactory.testPackage,
+                    needsFullIrRuntime = needsFullIrRuntime,
+                    isMainModule = isMainModule,
                 )
 
                 when {
                     // PY_IR generates single js file for all modules (apart from runtime)
                     !isMainModule -> null
-                    else -> outputFileName
+                    else -> outputFilePath
                 }
             }
 
@@ -111,60 +97,42 @@ abstract class BasicIrBoxTest(
                 "More than one generated python file is unsupported yet"
             }
 
-            runGeneratedCode(generatedPyFilePath)
+            PythonTestChecker.check(generatedPyFilePath)
         }
     }
 
-    private fun getOutputDir(file: File): File {
-        val stopFile = File(pathToTestDir)
-        return generateSequence(file.parentFile) { it.parentFile }
-            .takeWhile { it != stopFile }
-            .map { it.name }
-            .toList().asReversed()
-            .fold(testGroupOutputDirForCompilation, ::File)
-    }
-
-    private fun outputFileSimpleName(): String {
-        return getTestName(true)
-    }
-
-    private fun outputFileName(directory: File) = directory.absolutePath + "/" + outputFileSimpleName()
-
-    private fun generateJavaScriptFile(
+    private fun generatePythonFile(
         tmpDir: File,
-        directory: String,
+        testDir: String,
         module: TestModule,
-        outputFileName: String,
-        dependencies: List<String>,
-        allDependencies: List<String>,
-        friends: List<String>,
+        outputFilePath: String,
         multiModule: Boolean,
         testPackage: String?,
         needsFullIrRuntime: Boolean,
         isMainModule: Boolean,
     ) {
-        val kotlinFiles = module.files.filter { it.fileName.endsWith(".kt") }
-        val testFiles = kotlinFiles.map { it.fileName }
-        val globalCommonFiles = PyTestUtils.getFilesInDirectoryByExtension(COMMON_FILES_DIR_PATH, KotlinFileType.EXTENSION)
-        val localCommonFile = "$directory/$COMMON_FILES_NAME.${KotlinFileType.EXTENSION}"
-        val localCommonFiles = if (File(localCommonFile).exists()) listOf(localCommonFile) else emptyList()
-        val additionalFiles = globalCommonFiles + localCommonFiles
-        val allSourceFiles = (testFiles + additionalFiles).map(::File)
-        val psiFiles = createPsiFiles(allSourceFiles.sortedBy { it.canonicalPath }.map { it.canonicalPath })
+        val kotlinFiles = module.files.filter { it.filePath.endsWith(".kt") }
+        val kotlinFilePaths = kotlinFiles.map { it.filePath }
+        val localCommonFilePath = "$testDir/$COMMON_FILES_NAME.${KotlinFileType.EXTENSION}"
+        val existingLocalCommonFilePath = localCommonFilePath.takeIf { File(it).exists() }
+        val allSourceFiles = (kotlinFilePaths + listOfNotNull(existingLocalCommonFilePath)).map(::File)
+        val sortedFileNames = allSourceFiles.map(File::getCanonicalPath).sorted()
+        val psiFiles = sortedFileNames.map(::createPsiFile)
 
         val config = createConfig(
-            module,
-            dependencies,
-            allDependencies,
-            friends,
-            multiModule,
-            tmpDir,
+            module = module,
+            multiModule = multiModule,
+            tmpDir = tmpDir,
         )
-        val outputFile = File(outputFileName)
+        val outputFile = File(outputFilePath)
 
         translateFiles(
-            psiFiles.map(TranslationUnit::SourceFile), outputFile, config,
-            testPackage, needsFullIrRuntime, isMainModule,
+            psiFiles = psiFiles,
+            outputFile = outputFile,
+            config = config,
+            testPackage = testPackage,
+            needsFullIrRuntime = needsFullIrRuntime,
+            isMainModule = isMainModule,
         )
     }
 
@@ -177,30 +145,22 @@ abstract class BasicIrBoxTest(
         return psiManager.findFile(file) as KtFile
     }
 
-    private fun createPsiFiles(fileNames: List<String>): List<KtFile> = fileNames.map(this::createPsiFile)
-
     private fun createConfig(
-        module: TestModule, dependencies: List<String>, allDependencies: List<String>, friends: List<String>, multiModule: Boolean,
+        module: TestModule,
+        multiModule: Boolean,
         tmpDir: File,
     ): JsConfig {
         val configuration = environment.configuration.copy()
 
-        configuration.put(CommonConfigurationKeys.DISABLE_INLINE, module.inliningDisabled)
-        module.languageVersionSettings?.let { languageVersionSettings ->
-            configuration.languageVersionSettings = languageVersionSettings
-        }
+        module.languageVersionSettings?.let { configuration.languageVersionSettings = it }
 
-        val libraries = JsConfig.JS_STDLIB + JsConfig.JS_KOTLIN_TEST + dependencies
+        val libraries = JsConfig.JS_STDLIB + JsConfig.JS_KOTLIN_TEST
 
         configuration.put(JSConfigurationKeys.LIBRARIES, libraries)
-        configuration.put(JSConfigurationKeys.TRANSITIVE_LIBRARIES, allDependencies)
-        configuration.put(JSConfigurationKeys.FRIEND_PATHS, friends)
 
         configuration.put(CommonConfigurationKeys.MODULE_NAME, module.name)
 
         configuration.put(JSConfigurationKeys.META_INFO, multiModule)
-
-        configuration.put(JSConfigurationKeys.GENERATE_REGION_COMMENTS, true)
 
         configuration.put(
             JSConfigurationKeys.FILE_PATHS_PREFIX_MAP,
@@ -215,7 +175,7 @@ abstract class BasicIrBoxTest(
 
     private inner class TestFileFactoryImpl : TestFiles.TestFileFactory<TestModule, TestFile>, Closeable {
         var testPackage: String? = null
-        val tmpDir = KtTestUtil.tmpDir("js-tests")
+        val tmpDir = KtTestUtil.tmpDir("py-tests")
         val defaultModule = TestModule(DEFAULT_MODULE, emptyList(), emptyList())
         var languageVersionSettings: LanguageVersionSettings? = null
 
@@ -231,9 +191,8 @@ abstract class BasicIrBoxTest(
                 }
             }
 
-            val temporaryFile = File(tmpDir, "${currentModule.name}/$fileName")
-            KtTestUtil.mkdirs(temporaryFile.parentFile)
-            temporaryFile.writeText(text, Charsets.UTF_8)
+            val temporaryFile = tmpDir.resolve("${currentModule.name}/$fileName")
+            temporaryFile.writeSafe(text)
 
             // TODO Deduplicate logic copied from CodegenTestCase.updateConfigurationByDirectivesInTestFiles
             fun LanguageVersion.toSettings() = CompilerTestLanguageVersionSettings(
@@ -273,7 +232,7 @@ abstract class BasicIrBoxTest(
         }
     }
 
-    private class TestFile(val fileName: String, val module: TestModule) {
+    private class TestFile(val filePath: String, val module: TestModule) {
         init {
             module.files += this
         }
@@ -284,7 +243,6 @@ abstract class BasicIrBoxTest(
         dependencies: List<String>,
         friends: List<String>,
     ) : KotlinBaseTest.TestModule(name, dependencies, friends) {
-        var inliningDisabled = false
         val files = mutableListOf<TestFile>()
         var languageVersionSettings: LanguageVersionSettings? = null
     }
@@ -293,14 +251,13 @@ abstract class BasicIrBoxTest(
         KotlinCoreEnvironment.createForTests(testRootDisposable, CompilerConfiguration(), EnvironmentConfigFiles.JS_CONFIG_FILES)
 
     private fun translateFiles(
-        units: List<TranslationUnit>,
+        psiFiles: List<KtFile>,
         outputFile: File,
         config: JsConfig,
         testPackage: String?,
         needsFullIrRuntime: Boolean,
         isMainModule: Boolean,
     ) {
-        val filesToCompile = units.map { (it as TranslationUnit.SourceFile).file }
         val allKlibPaths = if (needsFullIrRuntime) listOf(fullRuntimeKlib, kotlinTestKLib) else listOf(defaultRuntimeKlib)
 
         if (isMainModule) {
@@ -308,7 +265,7 @@ abstract class BasicIrBoxTest(
 
             val module = prepareAnalyzedSourceModule(
                 config.project,
-                filesToCompile,
+                psiFiles,
                 config.configuration,
                 allKlibPaths,
                 emptyList(),
@@ -338,30 +295,8 @@ abstract class BasicIrBoxTest(
 
             compiledModule!!.pyCode!!.writeTo(outputFile)
         } else {
-            TODO()
+            TODO()  // todo: specify a message here to make the problem distinguishable in reports
         }
-    }
-
-    private fun PyCode.writeTo(outputFile: File) {
-        val wrappedCode = mainModule
-        outputFile.write(wrappedCode)
-
-        val dependencyPaths = mutableListOf<String>()
-
-        dependencies.forEach { (moduleId, code) ->
-            val dependencyPath = outputFile.absolutePath.replace(".py", "-${moduleId}.py")
-            dependencyPaths += dependencyPath
-            File(dependencyPath).write(code)
-        }
-    }
-
-    private fun File.write(text: String) {
-        parentFile.mkdirs()
-        writeText(text)
-    }
-
-    private fun runGeneratedCode(generatedPyFilePath: String) {
-        PythonTestChecker.check(generatedPyFilePath)
     }
 
     companion object {
@@ -375,12 +310,36 @@ abstract class BasicIrBoxTest(
         const val TEST_DATA_DIR_PATH = "python/py.translator/testData/"
 
         private const val COMMON_FILES_NAME = "_common"
-        private const val COMMON_FILES_DIR = "_commonFiles/"
-        const val COMMON_FILES_DIR_PATH = TEST_DATA_DIR_PATH + COMMON_FILES_DIR
 
         private val KJS_WITH_FULL_RUNTIME = Pattern.compile("^// *KJS_WITH_FULL_RUNTIME *\$", Pattern.MULTILINE)
 
         private const val DEFAULT_MODULE = "main"
         private const val TEST_FUNCTION = "box"
+
+        private fun getOutputDir(testFile: File, stopDir: File, compilationGroupDir: File): File {
+            return generateSequence(testFile.parentFile) { it.parentFile }
+                .takeWhile { it != stopDir }
+                .map { it.name }
+                .toList().asReversed()
+                .fold(compilationGroupDir, ::File)
+        }
+
+        private fun File.writeSafe(text: String) {
+            parentFile.mkdirs()
+            writeText(text)
+        }
+
+        private fun PyCode.writeTo(outputFile: File) {
+            val wrappedCode = mainModule
+            outputFile.writeSafe(wrappedCode)
+
+            val dependencyPaths = mutableListOf<String>()
+
+            dependencies.forEach { (moduleId, code) ->
+                val dependencyPath = outputFile.absolutePath.replace(".py", "-${moduleId}.py")
+                dependencyPaths += dependencyPath
+                File(dependencyPath).writeSafe(code)
+            }
+        }
     }
 }

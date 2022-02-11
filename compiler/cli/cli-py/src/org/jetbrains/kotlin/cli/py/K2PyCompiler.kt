@@ -21,7 +21,6 @@ import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.cli.common.messages.MessageUtil
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
-import org.jetbrains.kotlin.cli.jvm.plugins.PluginCliParser
 import org.jetbrains.kotlin.config.CommonConfigurationKeys
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.IncrementalCompilation
@@ -50,7 +49,6 @@ import org.jetbrains.kotlin.metadata.deserialization.BinaryVersion
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.CompilerEnvironment
 import org.jetbrains.kotlin.utils.KotlinPaths
-import org.jetbrains.kotlin.utils.PathUtil
 import org.jetbrains.kotlin.utils.join
 import java.io.File
 import java.io.IOException
@@ -227,9 +225,8 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
                 relativeRequirePath = true,
             )
 
-
-            val jsCode = if (arguments.irDce && !arguments.irDceDriven) compiledModule.dcePyCode!! else compiledModule.pyCode!!
-            outputFile.writeText(jsCode.mainModule)
+            val pyCode = if (arguments.irDce && !arguments.irDceDriven) compiledModule.dcePyCode!! else compiledModule.pyCode!!
+            outputFile.writeText(pyCode.mainModule)
         }
 
         return OK
@@ -320,15 +317,4 @@ fun RuntimeDiagnostic.Companion.resolve(
         messageCollector.report(STRONG_WARNING, "Unknown DCE runtime diagnostic '$value'")
         null
     }
-}
-
-fun loadPluginsForTests(configuration: CompilerConfiguration): ExitCode {
-    var pluginClasspaths: Iterable<String> = emptyList()
-    val kotlinPaths = PathUtil.kotlinPathsForCompiler
-    val libPath = kotlinPaths.libPath.takeIf { it.exists() && it.isDirectory } ?: File(".")
-    val (jars, _) =
-        PathUtil.KOTLIN_SCRIPTING_PLUGIN_CLASSPATH_JARS.mapNotNull { File(libPath, it) }.partition { it.exists() }
-    pluginClasspaths = jars.map { it.canonicalPath } + pluginClasspaths
-
-    return PluginCliParser.loadPluginsSafe(pluginClasspaths, mutableListOf(), configuration)
 }
