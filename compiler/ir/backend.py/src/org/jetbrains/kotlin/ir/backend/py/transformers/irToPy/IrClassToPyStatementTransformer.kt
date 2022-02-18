@@ -26,7 +26,7 @@ private fun IrType.deepSuperTypes(): List<IrType> {
     }
 }
 
-private fun List<IrType>.sortTopologically(): List<IrType> {
+private fun List<IrType>.sortTopologically(): List<IrType> {  // todo: there turns out to be DFS.topologicalOrder, maybe use it?
     // logic: in Python, a topological ordering of superclasses declarations is needed. Consider the following classes and interfaces:
     //
     //  interface I0
