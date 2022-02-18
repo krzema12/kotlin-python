@@ -15,16 +15,12 @@ import org.jetbrains.kotlin.ir.backend.py.lower.moveBodilessDeclarationsToSepara
 import org.jetbrains.kotlin.ir.backend.py.transformers.irToPy.IrModuleToPyTransformer
 import org.jetbrains.kotlin.ir.declarations.IrFactory
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
-import org.jetbrains.kotlin.ir.declarations.StageController
-import org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFactory
 import org.jetbrains.kotlin.ir.util.ExternalDependenciesGenerator
 import org.jetbrains.kotlin.ir.util.noUnboundLeft
-import org.jetbrains.kotlin.js.config.RuntimeDiagnostic
 import org.jetbrains.kotlin.name.FqName
 
 class CompilerResult(
     val pyCode: PyCode?,
-    val dcePyCode: PyCode?,
 )
 
 class PyCode(val mainModule: String, val dependencies: Iterable<Pair<String, String>> = emptyList())
@@ -36,11 +32,6 @@ fun compile(
     mainArguments: List<String>?,
     @Suppress("UNUSED_PARAMETER") // If this argument is removed, box tests fail at runtime.
     exportedDeclarations: Set<FqName> = emptySet(),
-    generateFullPy: Boolean = true,
-    generateDcePy: Boolean = false,
-    dceDriven: Boolean = false,
-    dceRuntimeDiagnostic: RuntimeDiagnostic? = null,
-    relativeRequirePath: Boolean = false,
     verifySignatures: Boolean = true,
 ): CompilerResult {
     val (moduleFragment: IrModuleFragment, dependencyModules, irBuiltIns, symbolTable, deserializer) =
@@ -61,7 +52,6 @@ fun compile(
         symbolTable,
         allModules.first(),
         configuration,
-        dceRuntimeDiagnostic = dceRuntimeDiagnostic,
     )
 
     // Load declarations referenced during `context` initialization
@@ -78,35 +68,10 @@ fun compile(
     // TODO should be done incrementally
     generateTests(context, allModules.last())
 
-    if (dceDriven) {
-        val controller = MutableController(context, pirLowerings)
-
-        check(irFactory is PersistentIrFactory)
-        irFactory.stageController = controller
-
-        controller.currentStage = controller.lowerings.size + 1
-
-        eliminateDeadDeclarations(allModules, context)
-
-        irFactory.stageController = StageController(controller.currentStage)
-
-        val transformer = IrModuleToPyTransformer(
-            context,
-            mainArguments,
-            fullJs = true,
-            dceJs = false,
-            relativeRequirePath = relativeRequirePath
-        )
-        return transformer.generateModule(allModules)
-    } else {
-        pyPhases.invokeToplevel(phaseConfig, context, allModules)
-        val transformer = IrModuleToPyTransformer(
-            context,
-            mainArguments,
-            fullJs = generateFullPy,
-            dceJs = generateDcePy,
-            relativeRequirePath = relativeRequirePath
-        )
-        return transformer.generateModule(allModules)
-    }
+    pyPhases.invokeToplevel(phaseConfig, context, allModules)
+    val transformer = IrModuleToPyTransformer(
+        context,
+        mainArguments,
+    )
+    return transformer.generateModule(allModules)
 }

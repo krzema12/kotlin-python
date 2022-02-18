@@ -5,27 +5,10 @@
 
 package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 
-import generated.Python.Attribute
-import generated.Python.Call
-import generated.Python.Compare
-import generated.Python.Constant
-import generated.Python.Eq
-import generated.Python.If
-import generated.Python.Import
-import generated.Python.Load
-import generated.Python.Module
-import generated.Python.Name
-import generated.Python.Slice
-import generated.Python.Subscript
-import generated.Python.aliasImpl
-import generated.Python.constant
-import generated.Python.expr
-import generated.Python.identifier
-import generated.Python.stmt
+import generated.Python.*
 import org.jetbrains.kotlin.ir.backend.py.CompilerResult
 import org.jetbrains.kotlin.ir.backend.py.PyCode
 import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
-import org.jetbrains.kotlin.ir.backend.py.eliminateDeadDeclarations
 import org.jetbrains.kotlin.ir.backend.py.lower.StaticMembersLowering
 import org.jetbrains.kotlin.ir.backend.py.utils.*
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
@@ -36,11 +19,7 @@ import topython.toPython
 class IrModuleToPyTransformer(
     private val backendContext: PyIrBackendContext,
     private val mainArguments: List<String>?,
-    private val generateScriptModule: Boolean = false,
     var namer: NameTables = NameTables(emptyList()),
-    private val fullJs: Boolean = true,
-    private val dceJs: Boolean = false,
-    private val relativeRequirePath: Boolean = false
 ) {
     fun generateModule(modules: Iterable<IrModuleFragment>): CompilerResult {
         val additionalPackages = with(backendContext) {
@@ -57,18 +36,7 @@ class IrModuleToPyTransformer(
             namer.merge(module.files, additionalPackages)
         }
 
-        val jsCode = if (fullJs) generateWrappedModuleBody(modules, namer) else null
-
-        val dceJsCode = if (dceJs) {
-            eliminateDeadDeclarations(modules, backendContext)
-            // Use a fresh namer for DCE so that we could compare the result with DCE-driven
-            // TODO: is this mode relevant for scripting? If yes, refactor so that the external name tables are used here when needed.
-            val namer = NameTables(emptyList())
-            namer.merge(modules.flatMap { it.files }, additionalPackages)
-            generateWrappedModuleBody(modules, namer)
-        } else null
-
-        return CompilerResult(jsCode, dceJsCode)
+        return CompilerResult(generateWrappedModuleBody(modules, namer))
     }
 
     private fun generateWrappedModuleBody(modules: Iterable<IrModuleFragment>, namer: NameTables): PyCode {

@@ -93,10 +93,6 @@ class BodyLowering(
     prerequisite: Set<NamedCompilerPhase<PyIrBackendContext, *>> = emptySet(),
     private val factory: (PyIrBackendContext) -> BodyLoweringPass
 ) : Lowering(name) {
-    fun bodyLowering(context: PyIrBackendContext): BodyLoweringPass {
-        return factory(context)
-    }
-
     override val modulePhase = makePyModulePhase(factory, name, description, prerequisite)
 }
 
@@ -621,12 +617,6 @@ private val callsLoweringPhase = makeBodyLoweringPhase(
     description = "Handle intrinsics"
 )
 
-private val staticMembersLoweringPhase = makeDeclarationTransformerPhase(
-    ::StaticMembersLowering,
-    name = "StaticMembersLowering",
-    description = "Move static member declarations to top-level"
-)
-
 private val objectDeclarationLoweringPhase = makeDeclarationTransformerPhase(
     ::ObjectDeclarationLowering,
     name = "ObjectDeclarationLowering",
@@ -741,9 +731,6 @@ private val loweringList = listOf(
     cleanupLoweringPhase,
     validateIrAfterLowering
 )
-
-// TODO comment? Eliminate ModuleLowering's? Don't filter them here?
-val pirLowerings = loweringList.filter { it is DeclarationLowering || it is BodyLowering } + staticMembersLoweringPhase
 
 val pyPhases = NamedCompilerPhase(
     name = "IrModuleLowering",

@@ -5,7 +5,8 @@
 
 package org.jetbrains.kotlin.cli.common.arguments
 
-import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants.*
+import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants.CALL
+import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants.NO_CALL
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.config.LanguageFeature
 import org.jetbrains.kotlin.config.LanguageVersionSettings
@@ -40,20 +41,6 @@ class K2PyCompilerArguments : CommonCompilerArguments() {
         description = "Define whether the `main` function should be called upon execution")
     var main: String? by NullableStringFreezableVar(null)
 
-    @Argument(
-            value = "-output-prefix",
-            valueDescription = "<path>",
-            description = "Add the content of the specified file to the beginning of output file"
-    )
-    var outputPrefix: String? by NullableStringFreezableVar(null)
-
-    @Argument(
-            value = "-output-postfix",
-            valueDescription = "<path>",
-            description = "Add the content of the specified file to the end of output file"
-    )
-    var outputPostfix: String? by NullableStringFreezableVar(null)
-
     // Advanced options
 
     @Argument(
@@ -72,38 +59,6 @@ class K2PyCompilerArguments : CommonCompilerArguments() {
     @Argument(value = "-Xir-produce-py", description = "Generates Python file using IR backend")
     var irProducePy: Boolean by FreezableVar(false)
 
-    @Argument(value = "-Xir-dce", description = "Perform experimental dead code elimination")
-    var irDce: Boolean by FreezableVar(false)
-
-    @Argument(
-        value = "-Xir-dce-runtime-diagnostic",
-        valueDescription = "{$RUNTIME_DIAGNOSTIC_LOG|$RUNTIME_DIAGNOSTIC_EXCEPTION}",
-        description = "Enable runtime diagnostics when performing DCE instead of removing declarations"
-    )
-    var irDceRuntimeDiagnostic: String? by NullableStringFreezableVar(null)
-
-    @Argument(value = "-Xir-dce-driven", description = "Perform a more experimental faster dead code elimination")
-    var irDceDriven: Boolean by FreezableVar(false)
-
-    @Argument(value = "-Xir-dce-print-reachability-info", description = "Print declarations' reachability info to stdout during performing DCE")
-    var irDcePrintReachabilityInfo: Boolean by FreezableVar(false)
-
-    @Argument(value = "-Xir-property-lazy-initialization", description = "Perform lazy initialization for properties")
-    var irPropertyLazyInitialization: Boolean by FreezableVar(false)
-
-    @Argument(
-        value = "-Xir-module-name",
-        valueDescription = "<name>",
-        description = "Specify a compilation module name for IR backend"
-    )
-    var irModuleName: String? by NullableStringFreezableVar(null)
-
-    @Argument(value = "-Xir-legacy-property-access", description = "Force property access via JS properties (requires -Xir-export-all)")
-    var irLegacyPropertyAccess: Boolean by FreezableVar(false)
-
-    @Argument(value = "-Xir-per-module-output-name", description = "Adds a custom output name to the splitted py files")
-    var irPerModuleOutputName: String? by NullableStringFreezableVar(null)
-
     @Argument(
         value = "-Xinclude",
         valueDescription = "<path>",
@@ -117,9 +72,6 @@ class K2PyCompilerArguments : CommonCompilerArguments() {
         description = "A path to cache directories"
     )
     var cacheDirectories: String? by NullableStringFreezableVar(null)
-
-    @Argument(value = "-Xir-build-cache", description = "Use compiler to build cache")
-    var irBuildCache: Boolean by FreezableVar(false)
 
     @GradleOption(DefaultValues.BooleanFalseDefault::class)
     @Argument(value = "-Xfriend-modules-disabled", description = "Disable internal declaration export")
