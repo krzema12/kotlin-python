@@ -16905,8 +16905,8 @@ this['out-ir'] = function (_) {
   function returnParameterFromClass() {
     return (new TestClass('paramVal')).functionReturningClassParameter_0_k$();
   }
-  function main() {
-    println('This is argumentless main!');
+  function main(args) {
+    println('This is main with arguments!');
   }
   function _no_name_provided__40() {
   }
@@ -16949,6 +16949,6 @@ this['out-ir'] = function (_) {
   POW_2_32 = 4.294967296E9;
   TWO_PWR_32_DBL_ = 4.294967296E9;
   TWO_PWR_63_DBL_ = 9.223372036854776E18;
-  main();
+  main([]);
   return _;
 }(typeof this['out-ir'] === 'undefined' ? {} : this['out-ir']);
