@@ -53,16 +53,13 @@ abstract class BasicIrBoxTest(
 ) : KotlinTestWithEnvironment() {
 
     private val testDir = File(pathToTestDir)
-    private val compilationGroupDir = File(TEST_DATA_DIR_PATH + "out/" + testGroupOutputDirPrefix)
+    private val compilationGroupDir = File("python/py.translator/testData/out/$testGroupOutputDirPrefix")
 
     protected fun doTest(testFilePath: String) {
         val testFile = File(testFilePath)
-        val outputDir = getOutputDir(testFile = testFile, stopDir = testDir, compilationGroupDir = compilationGroupDir)
         val fileContent = KtTestUtil.doLoadFile(testFile)
 
-        val needsFullIrRuntime = KJS_WITH_FULL_RUNTIME.matcher(fileContent).find()
-
-        TestFileFactoryImpl().use { testFactory ->
+        val generatedPyFiles = TestFileFactoryImpl().use { testFactory ->
             val splitTestFiles = TestFiles.createTestFiles(
                 testFile.name,
                 fileContent,
@@ -72,7 +69,10 @@ abstract class BasicIrBoxTest(
             val modules = splitTestFiles.map { it.module }.distinct().associateBy { it.name }
             val orderedModules = DFS.topologicalOrder(modules.values) { module -> module.dependenciesSymbols.mapNotNull { modules[it] } }
 
-            val generatedPyFiles = orderedModules.asReversed().mapNotNull { module ->
+            val outputDir = getOutputDir(testFile = testFile, stopDir = testDir, compilationGroupDir = compilationGroupDir)
+            val needsFullIrRuntime = KJS_WITH_FULL_RUNTIME.matcher(fileContent).find()
+
+            orderedModules.asReversed().mapNotNull { module ->
                 val outputFilePath = "${outputDir.absolutePath}/${getTestName(true)}.py"
                 val isMainModule = DEFAULT_MODULE == module.name
 
@@ -93,13 +93,13 @@ abstract class BasicIrBoxTest(
                     else -> outputFilePath
                 }
             }
-
-            val generatedPyFilePath = checkNotNull(generatedPyFiles.singleOrNull()) {
-                "More than one generated python file is unsupported yet"
-            }
-
-            PythonTestChecker.check(generatedPyFilePath)
         }
+
+        val generatedPyFilePath = checkNotNull(generatedPyFiles.singleOrNull()) {
+            "More than one generated python file is unsupported yet"
+        }
+
+        PythonTestChecker.check(generatedPyFilePath)
     }
 
     private fun generatePythonFile(
@@ -112,9 +112,9 @@ abstract class BasicIrBoxTest(
         needsFullIrRuntime: Boolean,
         isMainModule: Boolean,
     ) {
-        val kotlinFiles = module.files.filter { it.filePath.endsWith(".kt") }
+        val kotlinFiles = module.files.filter { it.filePath.endsWith(".${KotlinFileType.EXTENSION}") }
         val kotlinFilePaths = kotlinFiles.map { it.filePath }
-        val localCommonFilePath = "$testDir/$COMMON_FILES_NAME.${KotlinFileType.EXTENSION}"
+        val localCommonFilePath = "$testDir/_common.${KotlinFileType.EXTENSION}"
         val existingLocalCommonFilePath = localCommonFilePath.takeIf { File(it).exists() }
         val allSourceFiles = (kotlinFilePaths + listOfNotNull(existingLocalCommonFilePath)).map(::File)
         val sortedFileNames = allSourceFiles.map(File::getCanonicalPath).sorted()
@@ -308,10 +308,6 @@ abstract class BasicIrBoxTest(
                 JsModuleDescriptor(metadata.moduleName, parts.kind, parts.importedModules, parts)
             }
         }
-
-        const val TEST_DATA_DIR_PATH = "python/py.translator/testData/"
-
-        private const val COMMON_FILES_NAME = "_common"
 
         private val KJS_WITH_FULL_RUNTIME = Pattern.compile("^// *KJS_WITH_FULL_RUNTIME *\$", Pattern.MULTILINE)
 
