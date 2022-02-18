@@ -12,12 +12,11 @@ import org.jetbrains.kotlin.cli.common.*
 import org.jetbrains.kotlin.cli.common.ExitCode.COMPILATION_ERROR
 import org.jetbrains.kotlin.cli.common.ExitCode.OK
 import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants
-import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants.RUNTIME_DIAGNOSTIC_EXCEPTION
-import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants.RUNTIME_DIAGNOSTIC_LOG
 import org.jetbrains.kotlin.cli.common.arguments.K2PyCompilerArguments
 import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoot
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
-import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity.*
+import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity.ERROR
+import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity.LOGGING
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.cli.common.messages.MessageUtil
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
@@ -44,7 +43,6 @@ import org.jetbrains.kotlin.js.analyzer.JsAnalysisResult
 import org.jetbrains.kotlin.js.config.ErrorTolerancePolicy
 import org.jetbrains.kotlin.js.config.JSConfigurationKeys
 import org.jetbrains.kotlin.js.config.JsConfig
-import org.jetbrains.kotlin.js.config.RuntimeDiagnostic
 import org.jetbrains.kotlin.library.KLIB_FILE_EXTENSION
 import org.jetbrains.kotlin.metadata.deserialization.BinaryVersion
 import org.jetbrains.kotlin.psi.KtFile
@@ -129,10 +127,7 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
 
         val outputFile = File(outputFilePath)
 
-        configurationJs.put(
-            CommonConfigurationKeys.MODULE_NAME,
-            arguments.irModuleName ?: FileUtil.getNameWithoutExtension(outputFile)
-        )
+        configurationJs.put(CommonConfigurationKeys.MODULE_NAME, FileUtil.getNameWithoutExtension(outputFile))
 
         // TODO: in this method at least 3 different compiler configurations are used (original, env.configuration, jsConfig.configuration)
         // Such situation seems a bit buggy...
@@ -181,7 +176,7 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
                 irFactory = PersistentIrFactory(), // TODO IrFactoryImpl?
                 outputKlibPath = outputFile.path,
                 nopack = arguments.irProduceKlibDir,
-                jsOutputName = arguments.irPerModuleOutputName,
+                jsOutputName = null,
             )
         }
 
@@ -217,20 +212,11 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
             val compiledModule = compile(
                 module,
                 phaseConfig,
-                if (arguments.irDceDriven) PersistentIrFactory() else IrFactoryImpl,
-                mainArguments = mainCallArguments,
-                generateFullPy = !arguments.irDce,
-                generateDcePy = arguments.irDce,
-                dceRuntimeDiagnostic = RuntimeDiagnostic.resolve(
-                    arguments.irDceRuntimeDiagnostic,
-                    messageCollector
-                ),
-                dceDriven = arguments.irDceDriven,
-                relativeRequirePath = true,
+                IrFactoryImpl,
+                mainCallArguments,
             )
 
-            val pyCode = if (arguments.irDce && !arguments.irDceDriven) compiledModule.dcePyCode!! else compiledModule.pyCode!!
-            outputFile.writeText(pyCode.mainModule)
+            outputFile.writeText(compiledModule.pyCode!!.mainModule)
         }
 
         return OK
@@ -266,7 +252,6 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
             configuration.put(JSConfigurationKeys.DEVELOPER_MODE, true)
         }
 
-        configuration.put(JSConfigurationKeys.PRINT_REACHABILITY_INFO, arguments.irDcePrintReachabilityInfo)
         configuration.put(JSConfigurationKeys.FAKE_OVERRIDE_VALIDATOR, arguments.fakeOverrideValidator)
     }
 
@@ -307,18 +292,5 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
                 .toTypedArray()
                 .filterNot { it.isEmpty() }
         }
-    }
-}
-
-fun RuntimeDiagnostic.Companion.resolve(
-    value: String?,
-    messageCollector: MessageCollector
-): RuntimeDiagnostic? = when (value?.lowercase()) {
-    RUNTIME_DIAGNOSTIC_LOG -> RuntimeDiagnostic.LOG
-    RUNTIME_DIAGNOSTIC_EXCEPTION -> RuntimeDiagnostic.EXCEPTION
-    null -> null
-    else -> {
-        messageCollector.report(STRONG_WARNING, "Unknown DCE runtime diagnostic '$value'")
-        null
     }
 }
