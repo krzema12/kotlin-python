@@ -85,7 +85,6 @@ abstract class BasicIrBoxTest(
                     testPackage = testFactory.testPackage,
                     needsFullIrRuntime = needsFullIrRuntime,
                     isMainModule = isMainModule,
-                    mainCallParameters = MainCallParameters.noCall(),
                 )
 
                 when {
@@ -108,7 +107,6 @@ abstract class BasicIrBoxTest(
         testDir: String,
         module: TestModule,
         outputFilePath: String,
-        mainCallParameters: MainCallParameters,
         multiModule: Boolean,
         testPackage: String?,
         needsFullIrRuntime: Boolean,
@@ -136,7 +134,6 @@ abstract class BasicIrBoxTest(
             testPackage = testPackage,
             needsFullIrRuntime = needsFullIrRuntime,
             isMainModule = isMainModule,
-            mainCallParameters = mainCallParameters,
         )
     }
 
@@ -258,7 +255,6 @@ abstract class BasicIrBoxTest(
         psiFiles: List<KtFile>,
         outputFile: File,
         config: JsConfig,
-        mainCallParameters: MainCallParameters,
         testPackage: String?,
         needsFullIrRuntime: Boolean,
         isMainModule: Boolean,
@@ -284,7 +280,7 @@ abstract class BasicIrBoxTest(
                         module,
                         phaseConfig = phaseConfig,
                         irFactory = PersistentIrFactory(),
-                        mainArguments = mainCallParameters.run { if (shouldBeGenerated()) arguments() else null },
+                        mainArguments = null,
                         exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, TEST_FUNCTION))),
                         verifySignatures = true,
                     )
