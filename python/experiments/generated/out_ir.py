@@ -1,3 +1,4 @@
+import sys
 def fold(self, initial, operation):
     accumulator = initial
     indexedObject = self
@@ -13700,3 +13701,9 @@ def returnStringFromClass():
 
 def returnParameterFromClass():
     return TestClass('paramVal').functionReturningClassParameter_0_k_()
+
+def main(args):
+    println('This is main with arguments!')
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

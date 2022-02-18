@@ -5,7 +5,22 @@
 
 package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 
+import generated.Python.Attribute
+import generated.Python.Call
+import generated.Python.Compare
+import generated.Python.Constant
+import generated.Python.Eq
+import generated.Python.If
+import generated.Python.Import
+import generated.Python.Load
 import generated.Python.Module
+import generated.Python.Name
+import generated.Python.Slice
+import generated.Python.Subscript
+import generated.Python.aliasImpl
+import generated.Python.constant
+import generated.Python.expr
+import generated.Python.identifier
 import generated.Python.stmt
 import org.jetbrains.kotlin.ir.backend.py.CompilerResult
 import org.jetbrains.kotlin.ir.backend.py.PyCode
@@ -14,11 +29,13 @@ import org.jetbrains.kotlin.ir.backend.py.eliminateDeadDeclarations
 import org.jetbrains.kotlin.ir.backend.py.lower.StaticMembersLowering
 import org.jetbrains.kotlin.ir.backend.py.utils.*
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
+import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import topython.toPython
 
 // TODO
 class IrModuleToPyTransformer(
     private val backendContext: PyIrBackendContext,
+    private val mainArguments: List<String>?,
     private val generateScriptModule: Boolean = false,
     var namer: NameTables = NameTables(emptyList()),
     private val fullJs: Boolean = true,
@@ -84,14 +101,25 @@ class IrModuleToPyTransformer(
             localNames = LocalNameGenerator(NameScope.EmptyScope)
         )
 
+        val callToMain = generateCallToMain(modules)
+        val imports = generateImports()
+
         val moduleBody = generateModuleBody(modules, rootContext)
         val program = Module(
             body = moduleBody,
             type_ignores = emptyList(),
-        )
+        ).let {
+            it.copy(body = imports + it.body + callToMain)
+        }
 
         return program.toPython()
     }
+
+    private fun generateImports() =
+        listOf(
+            // Needed to support passing arguments for 'main' function.
+            Import(names = listOf(aliasImpl(name = identifier("sys"), asname = null))),
+        )
 
     private fun generateModuleBody(modules: Iterable<IrModuleFragment>, context: PyGenerationContext): List<stmt> {
         return modules.flatMap { module: IrModuleFragment ->
@@ -99,5 +127,49 @@ class IrModuleToPyTransformer(
                 it.accept(IrFileToPyTransformer(), context)
             }
         }
+    }
+
+    private fun generateMainArguments(mainFunction: IrSimpleFunction): List<expr> {
+        val retrieveArgumentsFromSystem = if (mainFunction.valueParameters.isNotEmpty()) {
+            Subscript(
+                value = Attribute(
+                    value = Name(identifier("sys"), ctx = Load),
+                    attr = identifier("argv"),
+                    ctx = Load,
+                ),
+                slice = Slice(
+                    lower = Constant(value = constant("1"), kind = null),
+                    upper = null,
+                    step = null,
+                ),
+                ctx = Load,
+            )
+        } else null
+        return listOfNotNull(retrieveArgumentsFromSystem)
+    }
+
+    private fun generateCallToMain(modules: Iterable<IrModuleFragment>): List<stmt> {
+        if (mainArguments == null) return emptyList() // in case `NO_MAIN` and `main(..)` exists
+        val mainFunction = JsMainFunctionDetector.getMainFunctionOrNull(modules.last())
+        return mainFunction?.let {
+            // TODO handle arguments
+            listOf(
+                If(
+                    test = Compare(
+                        left = Name(id = identifier("__name__"), ctx = Load),
+                        ops = listOf(Eq),
+                        comparators = listOf(Constant(value = constant("\"__main__\""), kind = null)),
+                    ),
+                    body = listOf(
+                        Call(
+                            func = Name(id = identifier("main"), ctx = Load),
+                            args = generateMainArguments(it),
+                            keywords = emptyList(),
+                        ).makeStmt(),
+                    ),
+                    orelse = emptyList(),
+                ),
+            )
+        } ?: emptyList()
     }
 }

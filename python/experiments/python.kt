@@ -65,3 +65,7 @@ fun returnStringFromClass(): String {
 fun returnParameterFromClass(): String {
     return TestClass("paramVal").functionReturningClassParameter()
 }
+
+fun main(args: Array<String>) {
+    println("This is main with arguments!")
+}

@@ -26,7 +26,7 @@ fun stmt.toPython(): String {
         is Raise -> toPython()
         is Try -> TODO()
         is Assert -> TODO()
-        is Import -> TODO()
+        is Import -> toPython()
         is ImportFrom -> TODO()
         is Global -> toPython()
         is Nonlocal -> TODO()
@@ -80,3 +80,6 @@ fun Raise.toPython() =
 
 fun Global.toPython() =
     "global ${names.joinToString(separator = ", ", prefix = "", postfix = "") { it.name }}"
+
+fun Import.toPython() =
+    "import ${names.joinToString(", ") { it.toPython() }}"
