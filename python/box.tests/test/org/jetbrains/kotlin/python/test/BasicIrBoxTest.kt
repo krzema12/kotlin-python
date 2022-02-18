@@ -24,6 +24,7 @@ import org.jetbrains.kotlin.ir.backend.py.pyPhases
 import org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFactory
 import org.jetbrains.kotlin.js.config.JSConfigurationKeys
 import org.jetbrains.kotlin.js.config.JsConfig
+import org.jetbrains.kotlin.js.facade.MainCallParameters
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtNamedFunction
@@ -279,6 +280,7 @@ abstract class BasicIrBoxTest(
                         module,
                         phaseConfig = phaseConfig,
                         irFactory = PersistentIrFactory(),
+                        mainArguments = null,
                         exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, TEST_FUNCTION))),
                         verifySignatures = true,
                     )

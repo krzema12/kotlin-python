@@ -33,6 +33,7 @@ fun compile(
     depsDescriptors: ModulesStructure,
     phaseConfig: PhaseConfig,
     irFactory: IrFactory,
+    mainArguments: List<String>?,
     @Suppress("UNUSED_PARAMETER") // If this argument is removed, box tests fail at runtime.
     exportedDeclarations: Set<FqName> = emptySet(),
     generateFullPy: Boolean = true,
@@ -91,6 +92,7 @@ fun compile(
 
         val transformer = IrModuleToPyTransformer(
             context,
+            mainArguments,
             fullJs = true,
             dceJs = false,
             relativeRequirePath = relativeRequirePath
@@ -100,6 +102,7 @@ fun compile(
         pyPhases.invokeToplevel(phaseConfig, context, allModules)
         val transformer = IrModuleToPyTransformer(
             context,
+            mainArguments,
             fullJs = generateFullPy,
             dceJs = generateDcePy,
             relativeRequirePath = relativeRequirePath

@@ -37,7 +37,7 @@ fun expr.toPython(): String {
         is Starred -> toPython()
         is List -> toPython()
         is Tuple -> toPython()
-        is Slice -> TODO()
+        is Slice -> toPython()
     }
 }
 
@@ -106,3 +106,6 @@ fun Subscript.toPython() =
 
 fun Starred.toPython() =
     "*${value.toPython()}"
+
+fun Slice.toPython() =
+    "${lower?.toPython() ?: ""}:${upper?.toPython() ?: ""}"

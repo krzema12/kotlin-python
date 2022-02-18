@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.backend.common.serialization.metadata.KlibMetadataVe
 import org.jetbrains.kotlin.cli.common.*
 import org.jetbrains.kotlin.cli.common.ExitCode.COMPILATION_ERROR
 import org.jetbrains.kotlin.cli.common.ExitCode.OK
+import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants
 import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants.RUNTIME_DIAGNOSTIC_EXCEPTION
 import org.jetbrains.kotlin.cli.common.arguments.K2JsArgumentConstants.RUNTIME_DIAGNOSTIC_LOG
 import org.jetbrains.kotlin.cli.common.arguments.K2PyCompilerArguments
@@ -211,10 +212,13 @@ class K2PyCompiler : CLICompiler<K2PyCompilerArguments>() {
                 sourceModule
             }
 
+            val mainCallArguments = if (K2JsArgumentConstants.NO_CALL == arguments.main) null else emptyList<String>()
+
             val compiledModule = compile(
                 module,
                 phaseConfig,
                 if (arguments.irDceDriven) PersistentIrFactory() else IrFactoryImpl,
+                mainArguments = mainCallArguments,
                 generateFullPy = !arguments.irDce,
                 generateDcePy = arguments.irDce,
                 dceRuntimeDiagnostic = RuntimeDiagnostic.resolve(
