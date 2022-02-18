@@ -92,9 +92,11 @@ It will generate various reports and summaries:
 
 ![git-history-plot](box.tests/reports/git-history-plot.svg)
 
-Current status: **2199**/5970 passed
+Current status: **2235**/5970 passed
 
 #### History (newest on top)
+
+* after supporting function references: **2235**/5970 (+36)
 
 * after updating to Kotlin 1.6.0: **2199**/5970 (incomparable)
 
