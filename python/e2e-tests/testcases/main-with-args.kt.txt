@@ -1,0 +1,9 @@
+Shows that the main function is called with its arguments.
+--- Kotlin code ---
+external fun print(value: String)
+
+fun main(args: Array<String>) {
+    print("This is test output! $args")
+}
+--- Expected output ---
+This is test output! ['some', 'arguments', '123']
