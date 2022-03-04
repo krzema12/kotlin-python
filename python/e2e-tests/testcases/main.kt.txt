@@ -1,0 +1,9 @@
+Shows that the main function is called.
+--- Kotlin code ---
+external fun print(value: String)
+
+fun main() {
+    print("This is test output!")
+}
+--- Expected output ---
+This is test output!
