@@ -1,6 +1,6 @@
 #!/usr/bin/env kotlin
 
-@file:DependsOn("it.krzeminski:github-actions-kotlin-dsl:0.6.0")
+@file:DependsOn("it.krzeminski:github-actions-kotlin-dsl:0.9.0")
 @file:Import("Common.main.kts")
 
 import it.krzeminski.githubactions.actions.actions.CheckoutV2
