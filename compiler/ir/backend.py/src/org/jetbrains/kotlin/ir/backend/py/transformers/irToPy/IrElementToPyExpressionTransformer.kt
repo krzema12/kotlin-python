@@ -43,6 +43,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
             is IrStringConcatenation -> visitStringConcatenation(expression, data)
             is IrFunctionExpression -> visitFunctionExpression(expression, data)
             is IrRawFunctionReference -> visitRawFunctionReference(expression, data)
+            is IrFunctionReference -> visitFunctionReference(expression, data)
             else -> Name(id = identifier("visitExpression-other $expression".toValidPythonSymbol()), ctx = Load)
         }
     }
@@ -413,5 +414,9 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
 
     override fun visitRawFunctionReference(expression: IrRawFunctionReference, data: PyGenerationContext): expr {
         return Name(id = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Load)
+    }
+
+    override fun visitFunctionReference(expression: IrFunctionReference, data: PyGenerationContext): expr {
+        return Name(id = identifier(expression.referencedName.asString().toValidPythonSymbol()), ctx = Load)
     }
 }
