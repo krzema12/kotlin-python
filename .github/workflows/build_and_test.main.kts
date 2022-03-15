@@ -1,6 +1,6 @@
 #!/usr/bin/env kotlin
 
-@file:DependsOn("it.krzeminski:github-actions-kotlin-dsl:0.9.0")
+@file:DependsOn("it.krzeminski:github-actions-kotlin-dsl:0.10.0")
 @file:Import("Common.main.kts")
 
 import it.krzeminski.githubactions.actions.actions.CheckoutV2
@@ -9,13 +9,12 @@ import it.krzeminski.githubactions.domain.RunnerType.UbuntuLatest
 import it.krzeminski.githubactions.domain.triggers.Push
 import it.krzeminski.githubactions.domain.triggers.WorkflowDispatch
 import it.krzeminski.githubactions.dsl.workflow
-import it.krzeminski.githubactions.yaml.toYaml
 import java.nio.file.Paths
 
 val buildAndTest = workflow(
     name = "Build and test",
     on = listOf(Push(), WorkflowDispatch()),
-    sourceFile = Paths.get(".github/workflows/build_and_test.main.kts"),
+    sourceFile = Paths.get(".github/workflows/_generate_workflows.main.kts"),
     targetFile = Paths.get(".github/workflows/build_and_test.yml"),
 ) {
     job(
@@ -160,6 +159,4 @@ val buildAndTest = workflow(
         )
     }
 }
-
-println(buildAndTest.toYaml())
 
