@@ -1,6 +1,6 @@
 #!/usr/bin/env kotlin
 
-@file:DependsOn("it.krzeminski:github-actions-kotlin-dsl:0.9.0")
+@file:DependsOn("it.krzeminski:github-actions-kotlin-dsl:0.10.0")
 @file:Import("Common.main.kts")
 
 import it.krzeminski.githubactions.actions.actions.CheckoutV2
@@ -16,7 +16,7 @@ import java.nio.file.Paths
 val generateReportsWorkflow = workflow(
     name = "Generate reports",
     on = listOf(WorkflowDispatch()),
-    sourceFile = Paths.get(".github/workflows/generate_reports.main.kts"),
+    sourceFile = Paths.get(".github/workflows/_generate_workflows.main.kts"),
     targetFile = Paths.get(".github/workflows/generate_reports.yml"),
 ) {
     val generateReports = job(
@@ -173,4 +173,3 @@ val generateReportsWorkflow = workflow(
     }
 }
 
-println(generateReportsWorkflow.toYaml())
