@@ -69,8 +69,8 @@ fun Test.definePythonTestTask(interpreterBinary: String) {
 
     dependsOn(":kotlin-stdlib-py:compileKotlinJs")  // todo: change to compileKotlinPy
     systemProperty("kotlin.js.full.stdlib.path", "libraries/stdlib/py/build/classes/kotlin/js/main")
-    dependsOn(":kotlin-stdlib-js-ir-minimal-for-test:compileKotlinJs")  // todo: remove js stuff
-    systemProperty("kotlin.js.reduced.stdlib.path", "libraries/stdlib/js-ir-minimal-for-test/build/classes/kotlin/js/main")  // todo: remove js stuff
+    dependsOn(":kotlin-stdlib-py-minimal-for-test:compileKotlinJs")  // todo: change to compileKotlinPy
+    systemProperty("kotlin.js.reduced.stdlib.path", "libraries/stdlib/py-minimal-for-test/build/classes/kotlin/js/main")
     dependsOn(":kotlin-test:kotlin-test-js-ir:compileKotlinJs")  // todo: remove js stuff
     systemProperty("kotlin.js.kotlin.test.path", "libraries/kotlin.test/js-ir/build/classes/kotlin/js/main")  // todo: remove js stuff
 

@@ -269,11 +269,13 @@ include ":compiler:backend.py",
         ":python:ast:generator",
         ":python:box.tests",
         ":python:py.translator",
-        ":kotlin-stdlib-py"
+        ":kotlin-stdlib-py",
+        ":kotlin-stdlib-py-minimal-for-test"
 
 project(':compiler:cli-py').projectDir = "$rootDir/compiler/cli/cli-py" as File
 project(':compiler:backend.py').projectDir = "$rootDir/compiler/ir/backend.py" as File
 project(':kotlin-stdlib-py').projectDir = "$rootDir/libraries/stdlib/py" as File
+project(':kotlin-stdlib-py-minimal-for-test').projectDir = "$rootDir/libraries/stdlib/py-minimal-for-test" as File
 
 
 include ":compiler:fir",
