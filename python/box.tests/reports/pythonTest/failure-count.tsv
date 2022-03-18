@@ -16,15 +16,14 @@
 45	NameError: name 'kotlin_Any' is not defined
 43	NameError: name 'kotlin_UInt' is not defined
 42	TypeError: 'NoneType' object is not callable
-39	AttributeError: '_no_name_provided__11' object has no attribute 'constructor'
+39	AttributeError: '_no_name_provided__12' object has no attribute 'constructor'
 36	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 36	NameError: name 'kotlin_Double' is not defined
 36	SyntaxError: invalid syntax
 31	AttributeError: 'NoneType' object has no attribute 'append_uch40_k_'
-28	AttributeError: '_no_name_provided__1_2' object has no attribute 'constructor'
 28	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
 26	AttributeError: 'ArrayAsCollection' object has no attribute 'toArray'
-24	AttributeError: '_no_name_provided__10' object has no attribute 'constructor'
+24	AttributeError: '_no_name_provided__11' object has no attribute 'constructor'
 23	AttributeError: 'CheckStateMachineContinuation' object has no attribute 'constructor'
 23	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
 21	AttributeError: 'Companion_23' object has no attribute 'constructor'
@@ -35,16 +34,18 @@
 19	RecursionError: maximum recursion depth exceeded
 19	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
 19	UnboundLocalError: local variable 'test1' referenced before assignment
+18	AttributeError: '_no_name_provided__1_1' object has no attribute 'constructor'
 18	TypeError: unsupported operand type(s) for +: 'NoneType' and 'NoneType'
 17	AttributeError: 'int' object has no attribute 'toString'
 16	TypeError: object of type 'NoneType' has no len()
 15	TypeError: can only concatenate str (not "int") to str
 15	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
-14	AttributeError: '_no_name_provided__12' object has no attribute 'constructor'
+14	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
 12	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' is not defined
 12	TypeError: __init__() takes 1 positional argument but 2 were given
 12	UnboundLocalError: local variable 'test0' referenced before assignment
 10	AttributeError: 'NoneType' object has no attribute '__setitem__'
+10	AttributeError: '_no_name_provided__1_2' object has no attribute 'constructor'
 10	ImportError: cannot import name 'box' from 'compiled_module' <path-truncated>)
 10	NameError: name 'kotlin_Float' is not defined
 9	AttributeError: 'NoneType' object has no attribute 'invoke_0_k_'
@@ -117,6 +118,7 @@
 2	AttributeError: 'NoneType' object has no attribute '_get_first__sv9k7v_k_'
 2	AttributeError: 'NoneType' object has no attribute 'get_ha5a7z_k_'
 2	AttributeError: 'NotEmptyMap' object has no attribute 'constructor'
+2	AttributeError: '_no_name_provided__20' object has no attribute 'constructor'
 2	AttributeError: '_no_name_provided__2_8_0' object has no attribute 'constructor'
 2	AttributeError: 'tuple' object has no attribute '__setitem__'
 2	NameError: name 'Value_' is not defined
@@ -215,12 +217,10 @@
 1	AttributeError: 'Y' object has no attribute 'constructor'
 1	AttributeError: 'Z' object has no attribute 'constructor'
 1	AttributeError: 'Z2' object has no attribute 'p'
-1	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
-1	AttributeError: '_no_name_provided__19' object has no attribute 'constructor'
-1	AttributeError: '_no_name_provided__20' object has no attribute 'constructor'
+1	AttributeError: '_no_name_provided__10' object has no attribute 'constructor'
+1	AttributeError: '_no_name_provided__10' object has no attribute 'foo_default_nmiqce_k_'
+1	AttributeError: '_no_name_provided__14' object has no attribute 'constructor'
 1	AttributeError: '_no_name_provided__21' object has no attribute 'constructor'
-1	AttributeError: '_no_name_provided__9' object has no attribute 'constructor'
-1	AttributeError: '_no_name_provided__9' object has no attribute 'foo_default_nmiqce_k_'
 1	AttributeError: 'bool' object has no attribute 'toString'
 1	AttributeError: 'int' object has no attribute 'hashCode'
 1	AttributeError: 'int' object has no attribute 's'
@@ -269,7 +269,7 @@
 1	SyntaxError: name 'result' is assigned to before global declaration
 1	SyntaxError: name 'result' is used prior to global declaration
 1	TypeError: '<=' not supported between instances of 'int' and 'NoneType'
-1	TypeError: '_no_name_provided__9' object is not callable
+1	TypeError: '_no_name_provided__10' object is not callable
 1	TypeError: <lambda>() takes 1 positional argument but 2 were given
 1	TypeError: _Props___init__impl_() takes 1 positional argument but 3 were given
 1	TypeError: _UIntArray___init__impl_() takes 1 positional argument but 3 were given
