@@ -268,10 +268,12 @@ include ":compiler:backend.py",
         ":python:ast",
         ":python:ast:generator",
         ":python:box.tests",
-        ":python:py.translator"
+        ":python:py.translator",
+        ":kotlin-stdlib-py"
 
 project(':compiler:cli-py').projectDir = "$rootDir/compiler/cli/cli-py" as File
 project(':compiler:backend.py').projectDir = "$rootDir/compiler/ir/backend.py" as File
+project(':kotlin-stdlib-py').projectDir = "$rootDir/libraries/stdlib/py" as File
 
 
 include ":compiler:fir",
