@@ -14,7 +14,7 @@
 41	NameError: local variable referenced before assignment
 41	TypeError: 'NoneType' object isn't callable
 40	SyntaxError: invalid syntax
-39	AttributeError: '_no_name_provided__11' object has no attribute 'constructor'
+39	AttributeError: '_no_name_provided__12' object has no attribute 'constructor'
 36	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 34	NameError: name 'kotlin_Double' isn't defined
 32	AttributeError: type object 'A' has no attribute '__new__'
@@ -22,19 +22,19 @@
 30	NameError: name 'kotlin_Int' isn't defined
 27	AttributeError: type object 'AssertionError' has no attribute '__new__'
 27	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
-24	AttributeError: '_no_name_provided__10' object has no attribute 'constructor'
+24	AttributeError: '_no_name_provided__11' object has no attribute 'constructor'
 23	AttributeError: 'CheckStateMachineContinuation' object has no attribute 'constructor'
 23	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
 22	TypeError: unsupported types for __add__: 'NoneType', 'int'
 21	RuntimeError: maximum recursion depth exceeded
 20	NameError: name '_init_' isn't defined
 20	NameError: name 'foo' isn't defined
-18	AttributeError: '_no_name_provided__1_2' object has no attribute 'constructor'
+18	AttributeError: '_no_name_provided__1_1' object has no attribute 'constructor'
 18	TypeError: unsupported types for __add__: 'NoneType', 'NoneType'
 16	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
 16	TypeError: can't convert 'int' object to str implicitly
 15	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
-14	AttributeError: '_no_name_provided__12' object has no attribute 'constructor'
+14	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
 14	NameError: name 'kotlin_Result_T_' isn't defined
 13	AttributeError: type object 'Exception' has no attribute '__new__'
 13	SyntaxError: non-keyword arg after */**
@@ -198,10 +198,10 @@
 1	AttributeError: 'Y' object has no attribute 'constructor'
 1	AttributeError: 'Z' object has no attribute 'constructor'
 1	AttributeError: 'Z2' object has no attribute 'p'
-1	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
-1	AttributeError: '_no_name_provided__19' object has no attribute 'constructor'
-1	AttributeError: '_no_name_provided__9' object has no attribute 'constructor'
-1	AttributeError: '_no_name_provided__9' object has no attribute 'foo_default_nmiqce_k_'
+1	AttributeError: '_no_name_provided__10' object has no attribute 'constructor'
+1	AttributeError: '_no_name_provided__10' object has no attribute 'foo_default_nmiqce_k_'
+1	AttributeError: '_no_name_provided__14' object has no attribute 'constructor'
+1	AttributeError: '_no_name_provided__20' object has no attribute 'constructor'
 1	AttributeError: 'bool' object has no attribute 'toString'
 1	AttributeError: 'int' object has no attribute 'hashCode'
 1	AttributeError: 'int' object has no attribute 's'
@@ -266,7 +266,7 @@
 1	SyntaxError: argument name reused
 1	SyntaxError: identifier redefined as global
 1	TypeError: 'NoneType' object isn't subscriptable
-1	TypeError: '_no_name_provided__9' object isn't callable
+1	TypeError: '_no_name_provided__10' object isn't callable
 1	TypeError: <lambda>() takes 1 positional arguments but 2 were given
 1	TypeError: _Props___init__impl_() takes 1 positional arguments but 3 were given
 1	TypeError: _UIntArray___init__impl_() takes 1 positional arguments but 3 were given

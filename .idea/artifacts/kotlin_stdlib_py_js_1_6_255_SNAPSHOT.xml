@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="kotlin-stdlib-py-js-1.6.255-SNAPSHOT">
+    <output-path>$PROJECT_DIR$/libraries/stdlib/py/build/libs</output-path>
+    <root id="archive" name="kotlin-stdlib-py-js-1.6.255-SNAPSHOT.jar">
+      <element id="module-output" name="kotlin.kotlin-stdlib-py.jsMain" />
+    </root>
+  </artifact>
+</component>
