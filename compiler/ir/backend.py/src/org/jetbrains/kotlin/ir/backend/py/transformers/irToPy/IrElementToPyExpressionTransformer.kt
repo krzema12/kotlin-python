@@ -169,7 +169,8 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
     override fun visitGetValue(expression: IrGetValue, context: PyGenerationContext): expr {
         // TODO
         return when (val owner = expression.symbol.owner) {
-            is IrValueParameter, is IrVariable -> Name(id = identifier(owner.name.asString().toValidPythonSymbol().toPythonSpecific()), ctx = Load)
+            is IrVariable -> Name(id = identifier(context.getNameForValueDeclaration(owner).ident.toValidPythonSymbol()), ctx = Load)
+            is IrValueParameter -> Name(id = identifier(owner.name.asString().toValidPythonSymbol().toPythonSpecific()), ctx = Load)
             else -> Name(id = identifier("visitGetValue_other $owner".toValidPythonSymbol()), ctx = Load)
         }
     }

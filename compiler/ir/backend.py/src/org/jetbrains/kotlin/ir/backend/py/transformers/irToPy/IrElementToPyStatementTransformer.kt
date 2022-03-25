@@ -98,7 +98,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     override fun visitSetValue(expression: IrSetValue, context: PyGenerationContext): List<stmt> {
         val scopeContext = context.newScope()
         return Assign(
-            targets = listOf(Name(id = identifier(expression.symbol.owner.name.identifier.toValidPythonSymbol()), ctx = Store)),
+            targets = listOf(Name(id = identifier(context.getNameForValueDeclaration(expression.symbol.owner).ident.toValidPythonSymbol()), ctx = Store)),
             value = IrElementToPyExpressionTransformer().visitExpression(expression.value, scopeContext),
             type_comment = null,
         ).let { scopeContext.extractStatements() + it }
@@ -124,7 +124,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         val scopeContext = context.newScope()
         return declaration.initializer?.let { initializer ->
             Assign(
-                targets = listOf(Name(id = identifier(declaration.name.identifier.toValidPythonSymbol()), ctx = Store)),
+                targets = listOf(Name(id = identifier(context.getNameForValueDeclaration(declaration).ident.toValidPythonSymbol()), ctx = Store)),
                 value = IrElementToPyExpressionTransformer().visitExpression(initializer, scopeContext),
                 type_comment = null,
             )
