@@ -206,16 +206,22 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     }
 
     override fun visitDoWhileLoop(loop: IrDoWhileLoop, context: PyGenerationContext): List<stmt> {
-        // transform like:
+        // transform
+        //
+        // do { <body> } while (<condition>)
+        //
+        // like:
         //
         // while True:
         //     <body>
-        //     if <condition>:
+        //     if not <condition>:
         //         break
+        //
+        // TODO: support continue inside <body>
         val scopeContext = context.newScope()
         val body = loop.body?.accept(this, scopeContext).orEmpty()
         val condition = If(
-            test = IrElementToPyExpressionTransformer().visitExpression(loop.condition, scopeContext),
+            test = UnaryOp(Not, IrElementToPyExpressionTransformer().visitExpression(loop.condition, scopeContext)),
             body = listOf(Break),
             orelse = emptyList(),
         )

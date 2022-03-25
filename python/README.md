@@ -92,9 +92,11 @@ It will generate various reports and summaries:
 
 ![git-history-plot](box.tests/reports/git-history-plot.svg)
 
-Current status: **2235**/5970 passed
+Current status: **2254**/5970 passed
 
 #### History (newest on top)
+
+* after partially fixing do-while: **2254**/5970 (+19)
 
 * after supporting function references: **2235**/5970 (+36)
 
