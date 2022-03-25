@@ -3171,10 +3171,10 @@ def UByte__toULong_impl(this):
     return _ULong___init__impl_((((_UByte___get_data__impl_(this) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def UByte__toFloat_impl(this):
-    return kotlin_Float(_UByte___get_data__impl_(this) & 255)
+    return float(_UByte___get_data__impl_(this) & 255)
 
 def UByte__toDouble_impl(this):
-    return kotlin_Double(_UByte___get_data__impl_(this) & 255)
+    return float(_UByte___get_data__impl_(this) & 255)
 
 def UByte__toString_impl(this):
     return (_UByte___get_data__impl_(this) & 255).toString()
@@ -3630,7 +3630,7 @@ def UInt__toULong_impl(this):
     return _ULong___init__impl_((((_UInt___get_data__impl_(this) & 4294967295) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def UInt__toFloat_impl(this):
-    return kotlin_Float(uintToDouble(_UInt___get_data__impl_(this)))
+    return float(uintToDouble(_UInt___get_data__impl_(this)))
 
 def UInt__toDouble_impl(this):
     return uintToDouble(_UInt___get_data__impl_(this))
@@ -3685,7 +3685,7 @@ def toUInt_2(self):
     return doubleToUInt(self)
 
 def toUInt_3(self):
-    return doubleToUInt(kotlin_Double(self))
+    return doubleToUInt(float(self))
 
 def toUInt_4(self):
     return _UInt___init__impl_(self)
@@ -4458,7 +4458,7 @@ def ULong__toULong_impl(this):
     return this
 
 def ULong__toFloat_impl(this):
-    return kotlin_Float(ulongToDouble(_ULong___get_data__impl_(this)))
+    return float(ulongToDouble(_ULong___get_data__impl_(this)))
 
 def ULong__toDouble_impl(this):
     return ulongToDouble(_ULong___get_data__impl_(this))
@@ -4510,7 +4510,7 @@ def toULong_1(self):
     return doubleToULong(self)
 
 def toULong_2(self):
-    return doubleToULong(kotlin_Double(self))
+    return doubleToULong(float(self))
 
 def toULong_3(self):
     return _ULong___init__impl_(self)
@@ -5274,10 +5274,10 @@ def UShort__toULong_impl(this):
     return _ULong___init__impl_((((_UShort___get_data__impl_(this) & 65535) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
 
 def UShort__toFloat_impl(this):
-    return kotlin_Float(_UShort___get_data__impl_(this) & 65535)
+    return float(_UShort___get_data__impl_(this) & 65535)
 
 def UShort__toDouble_impl(this):
-    return kotlin_Double(_UShort___get_data__impl_(this) & 65535)
+    return float(_UShort___get_data__impl_(this) & 65535)
 
 def UShort__toString_impl(this):
     return (_UShort___get_data__impl_(this) & 65535).toString()
@@ -5512,7 +5512,7 @@ def uintRemainder(v1, v2):
     return _UInt___init__impl_(((tmp0_toUInt_0 + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def uintToDouble(v):
-    return kotlin_Double(v & IntCompanionObject_getInstance().MAX_VALUE) + (kotlin_Double((((((v & 0xffff_ffff) >> 31) << 30) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) * 2)
+    return float(v & IntCompanionObject_getInstance().MAX_VALUE) + (float((((((v & 0xffff_ffff) >> 31) << 30) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) * 2)
 
 def ulongCompare(v1, v2):
     Companion_getInstance_19()
@@ -5608,7 +5608,7 @@ def doubleToUInt(v):
             if v >= uintToDouble(_UInt___get_data__impl_(tmp1_toDouble_0)):
                 Companion_getInstance_4()
                 tmp = _UInt___init__impl_(-1)
-            elif v <= kotlin_Double(IntCompanionObject_getInstance().MAX_VALUE):
+            elif v <= float(IntCompanionObject_getInstance().MAX_VALUE):
                 tmp2_toUInt_0 = ((v + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 tmp = _UInt___init__impl_(tmp2_toUInt_0)
             elif True:
@@ -7602,10 +7602,10 @@ def toTypedArray(self):
 def copyToArray_0(collection):
     if collection.toArray is not undefined:
         tmp0_unsafeCast_0 = collection.toArray()
-        tmp = kotlin_Any_(tmp0_unsafeCast_0)
+        tmp = (tmp0_unsafeCast_0)
     elif True:
         tmp1_unsafeCast_0 = copyToArrayImpl_0(collection)
-        tmp = kotlin_Any_(tmp1_unsafeCast_0)
+        tmp = (tmp1_unsafeCast_0)
     
     return tmp
 
@@ -7653,7 +7653,7 @@ def arrayCopy_0(source, destination, destinationOffset, startIndex, endIndex):
 def copyToArrayImpl_1(collection, array):
     if len(array) < collection._get_size__0_k_():
         tmp0_unsafeCast_0 = copyToArrayImpl_0(collection)
-        return kotlin_Any_(tmp0_unsafeCast_0)
+        return (tmp0_unsafeCast_0)
     
     iterator = collection.iterator_0_k_()
     index = 0
@@ -7661,11 +7661,11 @@ def copyToArrayImpl_1(collection, array):
         tmp0 = index
         index = (((tmp0 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         tmp1_unsafeCast_0 = iterator.next_0_k_()
-        array.__setitem__(tmp0, kotlin_Any_(tmp1_unsafeCast_0))
+        array.__setitem__(tmp0, (tmp1_unsafeCast_0))
     
     if index < len(array):
         tmp = index
-        array.__setitem__(tmp, kotlin_Any_(None))
+        array.__setitem__(tmp, (None))
     
     return array
 
@@ -8527,7 +8527,7 @@ class NodeJsOutput_0(BaseOutput):
         return self.outputStream
     
     def print_qi8yb4_k_(self, message):
-        messageString = kotlin_String(js('String')(message))
+        messageString = str(js('String')(message))
         self.outputStream.write(messageString)
     
     def println_sv8swh_k_(self):
@@ -8557,18 +8557,18 @@ class BufferedOutputToConsoleLog_0(BufferedOutput_0):
         BufferedOutput_0.__init__(self)
     
     def print_qi8yb4_k_(self, message):
-        s = kotlin_String(js('String')(message))
+        s = str(js('String')(message))
         tmp0_nativeLastIndexOf_0 = s
         i = kotlin_Int(tmp0_nativeLastIndexOf_0.lastIndexOf('\n', 0))
         if i >= 0:
             tmp0_this = self
             tmp = tmp0_this._get_buffer__0_k_()
             tmp1_substring_0 = s
-            tmp0_this._set_buffer__a4enbm_k_(tmp + kotlin_String(tmp1_substring_0.substring(0, i)))
+            tmp0_this._set_buffer__a4enbm_k_(tmp + str(tmp1_substring_0.substring(0, i)))
             self.flush_sv8swh_k_()
             tmp2_substring_0 = s
             tmp3_substring_0 = (((i + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-            s = kotlin_String(tmp2_substring_0.substring(tmp3_substring_0))
+            s = str(tmp2_substring_0.substring(tmp3_substring_0))
         
         tmp1_this = self
         tmp1_this._set_buffer__a4enbm_k_(tmp1_this._get_buffer__0_k_() + s)
@@ -8600,7 +8600,7 @@ class BufferedOutputToConsoleLog_0(BufferedOutput_0):
     
 
 def String_0(value):
-    return kotlin_String(js('String')(value))
+    return str(js('String')(value))
 
 class BufferedOutput_0(BaseOutput):
     def __init__(self):
@@ -8617,7 +8617,7 @@ class BufferedOutput_0(BaseOutput):
         tmp0_this = self
         tmp = tmp0_this
         tmp_0 = tmp0_this.buffer
-        tmp.buffer = tmp_0 + kotlin_String(js('String')(message))
+        tmp.buffer = tmp_0 + str(js('String')(message))
     
     def flush_sv8swh_k_(self):
         self.buffer = ''
@@ -8710,7 +8710,7 @@ class Serializable(Any):
     
 
 def pow(self, n):
-    return JsMath.pow(self, kotlin_Double(n))
+    return JsMath.pow(self, float(n))
 
 def isNaN_0(self):
     return not (self == self)
@@ -8907,7 +8907,7 @@ class SimpleKClassImpl(KClassImpl):
         tmp = self
         tmp0_safe_receiver = jClass._metadata_
         tmp0_unsafeCast_0 = (None) if (tmp0_safe_receiver == None) else (tmp0_safe_receiver.simpleName)
-        tmp.simpleName = kotlin_Any_(tmp0_unsafeCast_0)
+        tmp.simpleName = (tmp0_unsafeCast_0)
     
     def _get_simpleName__0_k_(self):
         return self.simpleName
@@ -9334,7 +9334,7 @@ class KTypeParameterImpl(KTypeParameter):
         if not (_mask0 & 8 == 0):
             isReified = self.isReified
         
-        return self.copy_367z8c_k_(kotlin_String(name), kotlin_collections_List_kotlin_reflect_KType_(upperBounds), kotlin_reflect_KVariance(variance), isReified)
+        return self.copy_367z8c_k_(str(name), kotlin_collections_List_kotlin_reflect_KType_(upperBounds), kotlin_reflect_KVariance(variance), isReified)
     
     def hashCode(self):
         result = getStringHashCode(self.name)
@@ -9376,62 +9376,62 @@ class PrimitiveClasses_0(Any):
         PrimitiveClasses_instance = self
         tmp = self
         tmp0_unsafeCast_0 = js('Object')
-        tmp.anyClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0), 'Any', lambda it: isObject(it))
+        tmp.anyClass = PrimitiveKClassImpl((tmp0_unsafeCast_0), 'Any', lambda it: isObject(it))
         tmp_0 = self
         tmp0_unsafeCast_0_0 = js('Number')
-        tmp_0.numberClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_0), 'Number', lambda it: isNumber(it))
+        tmp_0.numberClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_0), 'Number', lambda it: isNumber(it))
         self.nothingClass = NothingKClassImpl_getInstance()
         tmp_1 = self
         tmp0_unsafeCast_0_1 = js('Boolean')
-        tmp_1.booleanClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_1), 'Boolean', lambda it: (jsTypeOf(it) == 'boolean') if (not (it == None)) else (False))
+        tmp_1.booleanClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_1), 'Boolean', lambda it: (jsTypeOf(it) == 'boolean') if (not (it == None)) else (False))
         tmp_2 = self
         tmp0_unsafeCast_0_2 = js('Number')
-        tmp_2.byteClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_2), 'Byte', lambda it: (jsTypeOf(it) == 'number') if (not (it == None)) else (False))
+        tmp_2.byteClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_2), 'Byte', lambda it: (jsTypeOf(it) == 'number') if (not (it == None)) else (False))
         tmp_3 = self
         tmp0_unsafeCast_0_3 = js('Number')
-        tmp_3.shortClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_3), 'Short', lambda it: (jsTypeOf(it) == 'number') if (not (it == None)) else (False))
+        tmp_3.shortClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_3), 'Short', lambda it: (jsTypeOf(it) == 'number') if (not (it == None)) else (False))
         tmp_4 = self
         tmp0_unsafeCast_0_4 = js('Number')
-        tmp_4.intClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_4), 'Int', lambda it: (jsTypeOf(it) == 'number') if (not (it == None)) else (False))
+        tmp_4.intClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_4), 'Int', lambda it: (jsTypeOf(it) == 'number') if (not (it == None)) else (False))
         tmp_5 = self
         tmp0_unsafeCast_0_5 = js('Number')
-        tmp_5.floatClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_5), 'Float', lambda it: (jsTypeOf(it) == 'number') if (not (it == None)) else (False))
+        tmp_5.floatClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_5), 'Float', lambda it: (jsTypeOf(it) == 'number') if (not (it == None)) else (False))
         tmp_6 = self
         tmp0_unsafeCast_0_6 = js('Number')
-        tmp_6.doubleClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_6), 'Double', lambda it: (jsTypeOf(it) == 'number') if (not (it == None)) else (False))
+        tmp_6.doubleClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_6), 'Double', lambda it: (jsTypeOf(it) == 'number') if (not (it == None)) else (False))
         tmp_7 = self
         tmp0_unsafeCast_0_7 = js('Array')
-        tmp_7.arrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_7), 'Array', lambda it: (isArray(it)) if (not (it == None)) else (False))
+        tmp_7.arrayClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_7), 'Array', lambda it: (isArray(it)) if (not (it == None)) else (False))
         tmp_8 = self
         tmp0_unsafeCast_0_8 = js('String')
-        tmp_8.stringClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_8), 'String', lambda it: (jsTypeOf(it) == 'string') if (not (it == None)) else (False))
+        tmp_8.stringClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_8), 'String', lambda it: (jsTypeOf(it) == 'string') if (not (it == None)) else (False))
         tmp_9 = self
         tmp0_unsafeCast_0_9 = js('Error')
-        tmp_9.throwableClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_9), 'Throwable', lambda it: isinstance(it, Error))
+        tmp_9.throwableClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_9), 'Throwable', lambda it: isinstance(it, Error))
         tmp_10 = self
         tmp0_unsafeCast_0_10 = js('Array')
-        tmp_10.booleanArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_10), 'BooleanArray', lambda it: (isBooleanArray(it)) if (not (it == None)) else (False))
+        tmp_10.booleanArrayClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_10), 'BooleanArray', lambda it: (isBooleanArray(it)) if (not (it == None)) else (False))
         tmp_11 = self
         tmp0_unsafeCast_0_11 = js('Uint16Array')
-        tmp_11.charArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_11), 'CharArray', lambda it: (isCharArray(it)) if (not (it == None)) else (False))
+        tmp_11.charArrayClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_11), 'CharArray', lambda it: (isCharArray(it)) if (not (it == None)) else (False))
         tmp_12 = self
         tmp0_unsafeCast_0_12 = js('Int8Array')
-        tmp_12.byteArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_12), 'ByteArray', lambda it: (isByteArray(it)) if (not (it == None)) else (False))
+        tmp_12.byteArrayClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_12), 'ByteArray', lambda it: (isByteArray(it)) if (not (it == None)) else (False))
         tmp_13 = self
         tmp0_unsafeCast_0_13 = js('Int16Array')
-        tmp_13.shortArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_13), 'ShortArray', lambda it: (isShortArray(it)) if (not (it == None)) else (False))
+        tmp_13.shortArrayClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_13), 'ShortArray', lambda it: (isShortArray(it)) if (not (it == None)) else (False))
         tmp_14 = self
         tmp0_unsafeCast_0_14 = js('Int32Array')
-        tmp_14.intArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_14), 'IntArray', lambda it: (isIntArray(it)) if (not (it == None)) else (False))
+        tmp_14.intArrayClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_14), 'IntArray', lambda it: (isIntArray(it)) if (not (it == None)) else (False))
         tmp_15 = self
         tmp0_unsafeCast_0_15 = js('Array')
-        tmp_15.longArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_15), 'LongArray', lambda it: (isLongArray(it)) if (not (it == None)) else (False))
+        tmp_15.longArrayClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_15), 'LongArray', lambda it: (isLongArray(it)) if (not (it == None)) else (False))
         tmp_16 = self
         tmp0_unsafeCast_0_16 = js('Float32Array')
-        tmp_16.floatArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_16), 'FloatArray', lambda it: (isFloatArray(it)) if (not (it == None)) else (False))
+        tmp_16.floatArrayClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_16), 'FloatArray', lambda it: (isFloatArray(it)) if (not (it == None)) else (False))
         tmp_17 = self
         tmp0_unsafeCast_0_17 = js('Float64Array')
-        tmp_17.doubleArrayClass = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_17), 'DoubleArray', lambda it: (isDoubleArray(it)) if (not (it == None)) else (False))
+        tmp_17.doubleArrayClass = PrimitiveKClassImpl((tmp0_unsafeCast_0_17), 'DoubleArray', lambda it: (isDoubleArray(it)) if (not (it == None)) else (False))
     
     def _get_anyClass__0_k_(self):
         return self.anyClass
@@ -9505,7 +9505,7 @@ class PrimitiveClasses_0(Any):
                 
                 return tmp_0
             
-            result_2 = PrimitiveKClassImpl(kotlin_Any_(tmp0_unsafeCast_0_3), str('Function') + str(arity), complexFunction_x2__If__Return__0)
+            result_2 = PrimitiveKClassImpl((tmp0_unsafeCast_0_3), str('Function') + str(arity), complexFunction_x2__If__Return__0)
             tmp1_asDynamic_0_5 = functionClasses
             Unexpected_operator_EQ(tmp1_asDynamic_0_5[arity], result_2)
             tmp = result_2
@@ -9536,9 +9536,9 @@ def functionClasses_init_():
 
 def getKClass_0(jClass):
     if kotlin_Boolean(js('Array').isArray(jClass)):
-        tmp = getKClassM_0(kotlin_Any_(jClass))
+        tmp = getKClassM_0((jClass))
     else:
-        tmp = getKClass1_0(kotlin_Any_(jClass))
+        tmp = getKClass1_0((jClass))
     
     return tmp
 
@@ -9548,17 +9548,17 @@ def getKClassM_0(jClasses):
         tmp = getKClass1_0(jClasses[0])
     elif tmp0_subject == 0:
         tmp0_unsafeCast_0 = NothingKClassImpl_getInstance()
-        tmp = kotlin_Any_(tmp0_unsafeCast_0)
+        tmp = (tmp0_unsafeCast_0)
     else:
         tmp1_unsafeCast_0 = ErrorKClass()
-        tmp = kotlin_Any_(tmp1_unsafeCast_0)
+        tmp = (tmp1_unsafeCast_0)
     
     return tmp
 
 def getKClass1_0(jClass):
     if jClass is js('String'):
         tmp0_unsafeCast_0 = PrimitiveClasses_getInstance().stringClass
-        return kotlin_Any_(tmp0_unsafeCast_0)
+        return (tmp0_unsafeCast_0)
     
     metadata = jClass._metadata_
     if metadata != None:
@@ -9628,7 +9628,7 @@ def getKClassFromExpression_0(e):
         tmp = tmp_2
     
     tmp1_unsafeCast_0 = tmp
-    return kotlin_Any_(tmp1_unsafeCast_0)
+    return (tmp1_unsafeCast_0)
 
 class Appendable(Any):
     def append_wi8o78_k_(self, value):
@@ -9707,7 +9707,7 @@ class StringBuilder(Appendable, CharSequence):
     
     def subSequence_27zxwg_k_(self, startIndex, endIndex):
         tmp0_substring_0 = self.string
-        return kotlin_String(tmp0_substring_0.substring(startIndex, endIndex))
+        return str(tmp0_substring_0.substring(startIndex, endIndex))
     
     def append_wi8o78_k_(self, value):
         tmp0_this = self
@@ -9808,45 +9808,45 @@ class StringBuilder(Appendable, CharSequence):
         Companion_getInstance().checkPositionIndex_rvwcgf_k_(index, self._get_length__0_k_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp_0 = kotlin_String(tmp0_substring_0.substring(0, index)) + value
+        tmp_0 = str(tmp0_substring_0.substring(0, index)) + value
         tmp1_substring_0 = self.string
-        tmp.string = tmp_0 + kotlin_String(tmp1_substring_0.substring(index))
+        tmp.string = tmp_0 + str(tmp1_substring_0.substring(index))
         return self
     
     def insert_259trv_k_(self, index, value):
         Companion_getInstance().checkPositionIndex_rvwcgf_k_(index, self._get_length__0_k_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp_0 = kotlin_String(tmp0_substring_0.substring(0, index)) + value
+        tmp_0 = str(tmp0_substring_0.substring(0, index)) + value
         tmp1_substring_0 = self.string
-        tmp.string = tmp_0 + kotlin_String(tmp1_substring_0.substring(index))
+        tmp.string = tmp_0 + str(tmp1_substring_0.substring(index))
         return self
     
     def insert_n2q82c_k_(self, index, value):
         Companion_getInstance().checkPositionIndex_rvwcgf_k_(index, self._get_length__0_k_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp_0 = kotlin_String(tmp0_substring_0.substring(0, index)) + concatToString(value)
+        tmp_0 = str(tmp0_substring_0.substring(0, index)) + concatToString(value)
         tmp1_substring_0 = self.string
-        tmp.string = tmp_0 + kotlin_String(tmp1_substring_0.substring(index))
+        tmp.string = tmp_0 + str(tmp1_substring_0.substring(index))
         return self
     
     def insert_59w5qx_k_(self, index, value):
         Companion_getInstance().checkPositionIndex_rvwcgf_k_(index, self._get_length__0_k_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp_0 = kotlin_String(tmp0_substring_0.substring(0, index)) + toString(value)
+        tmp_0 = str(tmp0_substring_0.substring(0, index)) + toString(value)
         tmp1_substring_0 = self.string
-        tmp.string = tmp_0 + kotlin_String(tmp1_substring_0.substring(index))
+        tmp.string = tmp_0 + str(tmp1_substring_0.substring(index))
         return self
     
     def insert_25ayri_k_(self, index, value):
         Companion_getInstance().checkPositionIndex_rvwcgf_k_(index, self._get_length__0_k_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp_0 = kotlin_String(tmp0_substring_0.substring(0, index)) + toString(value)
+        tmp_0 = str(tmp0_substring_0.substring(0, index)) + toString(value)
         tmp1_substring_0 = self.string
-        tmp.string = tmp_0 + kotlin_String(tmp1_substring_0.substring(index))
+        tmp.string = tmp_0 + str(tmp1_substring_0.substring(index))
         return self
     
     def insert_4wk0sg_k_(self, index, value):
@@ -9858,9 +9858,9 @@ class StringBuilder(Appendable, CharSequence):
         toInsert = ('null') if (tmp0_elvis_lhs == None) else (tmp0_elvis_lhs)
         tmp = self
         tmp0_substring_0 = self.string
-        tmp_0 = kotlin_String(tmp0_substring_0.substring(0, index)) + toInsert
+        tmp_0 = str(tmp0_substring_0.substring(0, index)) + toInsert
         tmp1_substring_0 = self.string
-        tmp.string = tmp_0 + kotlin_String(tmp1_substring_0.substring(index))
+        tmp.string = tmp_0 + str(tmp1_substring_0.substring(index))
         return self
     
     def setLength_majfzk_k_(self, newLength):
@@ -9870,7 +9870,7 @@ class StringBuilder(Appendable, CharSequence):
         if newLength <= self._get_length__0_k_():
             tmp = self
             tmp0_substring_0 = self.string
-            tmp.string = kotlin_String(tmp0_substring_0.substring(0, newLength))
+            tmp.string = str(tmp0_substring_0.substring(0, newLength))
         else:
             inductionVariable = self._get_length__0_k_()
             if inductionVariable < newLength:
@@ -9889,12 +9889,12 @@ class StringBuilder(Appendable, CharSequence):
     def substring_ha5a7z_k_(self, startIndex):
         Companion_getInstance().checkPositionIndex_rvwcgf_k_(startIndex, self._get_length__0_k_())
         tmp0_substring_0 = self.string
-        return kotlin_String(tmp0_substring_0.substring(startIndex))
+        return str(tmp0_substring_0.substring(startIndex))
     
     def substring_27zxwg_k_(self, startIndex, endIndex):
         Companion_getInstance().checkBoundsIndexes_zd700_k_(startIndex, endIndex, self._get_length__0_k_())
         tmp0_substring_0 = self.string
-        return kotlin_String(tmp0_substring_0.substring(startIndex, endIndex))
+        return str(tmp0_substring_0.substring(startIndex, endIndex))
     
     def trimToSize_sv8swh_k_(self):
         pass
@@ -9910,37 +9910,37 @@ class StringBuilder(Appendable, CharSequence):
         Companion_getInstance().checkElementIndex_rvwcgf_k_(index, self._get_length__0_k_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp_0 = kotlin_String(tmp0_substring_0.substring(0, index)) + value
+        tmp_0 = str(tmp0_substring_0.substring(0, index)) + value
         tmp1_substring_0 = self.string
         tmp2_substring_0 = (((index + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-        tmp.string = tmp_0 + kotlin_String(tmp1_substring_0.substring(tmp2_substring_0))
+        tmp.string = tmp_0 + str(tmp1_substring_0.substring(tmp2_substring_0))
     
     def setRange_sfallt_k_(self, startIndex, endIndex, value):
         checkReplaceRange(self, startIndex, endIndex, self._get_length__0_k_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp_0 = kotlin_String(tmp0_substring_0.substring(0, startIndex)) + value
+        tmp_0 = str(tmp0_substring_0.substring(0, startIndex)) + value
         tmp1_substring_0 = self.string
-        tmp.string = tmp_0 + kotlin_String(tmp1_substring_0.substring(endIndex))
+        tmp.string = tmp_0 + str(tmp1_substring_0.substring(endIndex))
         return self
     
     def deleteAt_ha5a7z_k_(self, index):
         Companion_getInstance().checkElementIndex_rvwcgf_k_(index, self._get_length__0_k_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp_0 = kotlin_String(tmp0_substring_0.substring(0, index))
+        tmp_0 = str(tmp0_substring_0.substring(0, index))
         tmp1_substring_0 = self.string
         tmp2_substring_0 = (((index + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-        tmp.string = tmp_0 + kotlin_String(tmp1_substring_0.substring(tmp2_substring_0))
+        tmp.string = tmp_0 + str(tmp1_substring_0.substring(tmp2_substring_0))
         return self
     
     def deleteRange_27zxwg_k_(self, startIndex, endIndex):
         checkReplaceRange(self, startIndex, endIndex, self._get_length__0_k_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp_0 = kotlin_String(tmp0_substring_0.substring(0, startIndex))
+        tmp_0 = str(tmp0_substring_0.substring(0, startIndex))
         tmp1_substring_0 = self.string
-        tmp.string = tmp_0 + kotlin_String(tmp1_substring_0.substring(endIndex))
+        tmp.string = tmp_0 + str(tmp1_substring_0.substring(endIndex))
         return self
     
     def toCharArray_tnuj0b_k_(self, destination, destinationOffset, startIndex, endIndex):
@@ -9984,16 +9984,16 @@ class StringBuilder(Appendable, CharSequence):
         tmp0_this = self
         tmp = tmp0_this
         tmp_0 = tmp0_this.string
-        tmp.string = tmp_0 + kotlin_String(stringCsq.substring(startIndex, endIndex))
+        tmp.string = tmp_0 + str(stringCsq.substring(startIndex, endIndex))
         return self
     
     def insertRange_nw7vlg_k_(self, index, value, startIndex, endIndex):
         Companion_getInstance().checkPositionIndex_rvwcgf_k_(index, self._get_length__0_k_())
         tmp = self
         tmp0_substring_0 = self.string
-        tmp_0 = kotlin_String(tmp0_substring_0.substring(0, index)) + concatToString_0(value, startIndex, endIndex)
+        tmp_0 = str(tmp0_substring_0.substring(0, index)) + concatToString_0(value, startIndex, endIndex)
         tmp1_substring_0 = self.string
-        tmp.string = tmp_0 + kotlin_String(tmp1_substring_0.substring(index))
+        tmp.string = tmp_0 + str(tmp1_substring_0.substring(index))
         return self
     
     def insertRange_nws7cq_k_(self, index, value, startIndex, endIndex):
@@ -10002,10 +10002,10 @@ class StringBuilder(Appendable, CharSequence):
         Companion_getInstance().checkBoundsIndexes_zd700_k_(startIndex, endIndex, len(stringCsq))
         tmp = self
         tmp0_substring_0 = self.string
-        tmp_0 = kotlin_String(tmp0_substring_0.substring(0, index))
-        tmp_1 = tmp_0 + kotlin_String(stringCsq.substring(startIndex, endIndex))
+        tmp_0 = str(tmp0_substring_0.substring(0, index))
+        tmp_1 = tmp_0 + str(stringCsq.substring(startIndex, endIndex))
         tmp1_substring_0 = self.string
-        tmp.string = tmp_1 + kotlin_String(tmp1_substring_0.substring(index))
+        tmp.string = tmp_1 + str(tmp1_substring_0.substring(index))
         return self
     
     def equals(self, other):
@@ -10018,23 +10018,23 @@ class StringBuilder(Appendable, CharSequence):
 def uppercaseChar(self):
     tmp0_asDynamic_0 = self.toString()
     tmp1_unsafeCast_0 = tmp0_asDynamic_0.toUpperCase()
-    uppercase = kotlin_Any_(tmp1_unsafeCast_0)
+    uppercase = (tmp1_unsafeCast_0)
     return (self) if (len(uppercase) > 1) else (charSequenceGet(uppercase, 0))
 
 def lowercaseChar(self):
     tmp0_asDynamic_0 = self.toString()
     tmp1_unsafeCast_0 = tmp0_asDynamic_0.toLowerCase()
-    return charSequenceGet(kotlin_Any_(tmp1_unsafeCast_0), 0)
+    return charSequenceGet((tmp1_unsafeCast_0), 0)
 
 def uppercase(self):
     tmp0_asDynamic_0 = self.toString()
     tmp1_unsafeCast_0 = tmp0_asDynamic_0.toUpperCase()
-    return kotlin_Any_(tmp1_unsafeCast_0)
+    return (tmp1_unsafeCast_0)
 
 def lowercase(self):
     tmp0_asDynamic_0 = self.toString()
     tmp1_unsafeCast_0 = tmp0_asDynamic_0.toLowerCase()
-    return kotlin_Any_(tmp1_unsafeCast_0)
+    return (tmp1_unsafeCast_0)
 
 def isLowSurrogate(self):
     Companion_getInstance_17()
@@ -10072,10 +10072,10 @@ def nativeLastIndexOf(self, str, fromIndex):
     return kotlin_Int(self.lastIndexOf(str, fromIndex))
 
 def substring(self, startIndex, endIndex):
-    return kotlin_String(self.substring(startIndex, endIndex))
+    return str(self.substring(startIndex, endIndex))
 
 def substring_0(self, startIndex):
-    return kotlin_String(self.substring(startIndex))
+    return str(self.substring(startIndex))
 
 def compareTo(self, other, ignoreCase):
     if ignoreCase:
@@ -10099,11 +10099,11 @@ def compareTo(self, other, ignoreCase):
                         tmp0_lowercaseChar_0 = thisChar
                         tmp0_asDynamic_0_2 = tmp0_lowercaseChar_0.toString()
                         tmp1_unsafeCast_0_1 = tmp0_asDynamic_0_2.toLowerCase()
-                        thisChar = charSequenceGet(kotlin_Any_(tmp1_unsafeCast_0_1), 0)
+                        thisChar = charSequenceGet((tmp1_unsafeCast_0_1), 0)
                         tmp1_lowercaseChar_0 = otherChar
                         tmp0_asDynamic_0_2_0 = tmp1_lowercaseChar_0.toString()
                         tmp1_unsafeCast_0_1_0 = tmp0_asDynamic_0_2_0.toLowerCase()
-                        otherChar = charSequenceGet(kotlin_Any_(tmp1_unsafeCast_0_1_0), 0)
+                        otherChar = charSequenceGet((tmp1_unsafeCast_0_1_0), 0)
                         if not (thisChar == otherChar):
                             return thisChar.compareTo_wi8o78_k_(otherChar)
                         
@@ -10163,7 +10163,7 @@ def concatToString_default(self, startIndex, endIndex, _mask0, _handler):
     return concatToString_0(self, startIndex, endIndex)
 
 def toUpperCase(self):
-    return kotlin_String(self.toUpperCase())
+    return str(self.toUpperCase())
 
 class sam_kotlin_Comparator_0(Comparator):
     def __init__(self, function):
@@ -10308,10 +10308,10 @@ class Char_0(Comparable):
         return self.value
     
     def toFloat_0_k_(self):
-        return kotlin_Float(self.value)
+        return float(self.value)
     
     def toDouble_0_k_(self):
-        return kotlin_Double(self.value)
+        return float(self.value)
     
     def equals(self, other):
         if other is self:
@@ -10327,7 +10327,7 @@ class Char_0(Comparable):
     
     def toString(self):
         tmp0_unsafeCast_0 = js('String').fromCharCode(self.value)
-        return kotlin_Any_(tmp0_unsafeCast_0)
+        return (tmp0_unsafeCast_0)
     
 
 class Iterable(Any):
@@ -10828,7 +10828,7 @@ def byteArrayOf(*elements):
     return elements
 
 def arrayOf(*elements):
-    return kotlin_Any_(elements)
+    return (elements)
 
 def toString(self):
     tmp0_safe_receiver = self
@@ -10911,7 +10911,7 @@ def booleanArray(size):
     tmp0_withType_0 = fillArrayVal(Array(size), False)
     Unexpected_operator_EQ(tmp0_withType_0._type_, 'BooleanArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
-    return kotlin_Any_(tmp1_unsafeCast_0)
+    return (tmp1_unsafeCast_0)
 
 def charArray(size):
     tmp = Array(size)
@@ -10930,31 +10930,31 @@ def charArray(size):
     tmp0_withType_0 = fillArrayVal(tmp, Char_0(0))
     Unexpected_operator_EQ(tmp0_withType_0._type_, 'CharArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
-    return kotlin_Any_(tmp1_unsafeCast_0)
+    return (tmp1_unsafeCast_0)
 
 def longArray(size):
     tmp0_withType_0 = fillArrayVal(Array(size), 0)
     Unexpected_operator_EQ(tmp0_withType_0._type_, 'LongArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
-    return kotlin_Any_(tmp1_unsafeCast_0)
+    return (tmp1_unsafeCast_0)
 
 def booleanArrayOf(arr):
     tmp0_withType_0 = arr.slice()
     Unexpected_operator_EQ(tmp0_withType_0._type_, 'BooleanArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
-    return kotlin_Any_(tmp1_unsafeCast_0)
+    return (tmp1_unsafeCast_0)
 
 def charArrayOf(arr):
     tmp0_withType_0 = arr.slice()
     Unexpected_operator_EQ(tmp0_withType_0._type_, 'CharArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
-    return kotlin_Any_(tmp1_unsafeCast_0)
+    return (tmp1_unsafeCast_0)
 
 def longArrayOf(arr):
     tmp0_withType_0 = arr.slice()
     Unexpected_operator_EQ(tmp0_withType_0._type_, 'LongArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
-    return kotlin_Any_(tmp1_unsafeCast_0)
+    return (tmp1_unsafeCast_0)
 
 class _no_name_provided__0(Iterator_3):
     def __init__(self, _array):
@@ -11329,7 +11329,7 @@ def _get_highIndex_():
 highIndex = None
 def getNumberHashCode(obj):
     tmp0_unsafeCast_0 = jsBitwiseOr(obj, 0)
-    if kotlin_Any_(tmp0_unsafeCast_0) is obj:
+    if (tmp0_unsafeCast_0) is obj:
         return ((obj + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     
     bufFloat64.__setitem__(0, obj)
@@ -11337,15 +11337,15 @@ def getNumberHashCode(obj):
 
 def bufFloat64_init_():
     tmp0_unsafeCast_0 = Float64Array(buf)
-    return kotlin_Any_(tmp0_unsafeCast_0)
+    return (tmp0_unsafeCast_0)
 
 def bufFloat32_init_():
     tmp0_unsafeCast_0 = Float32Array(buf)
-    return kotlin_Any_(tmp0_unsafeCast_0)
+    return (tmp0_unsafeCast_0)
 
 def bufInt32_init_():
     tmp0_unsafeCast_0 = Int32Array(buf)
-    return kotlin_Any_(tmp0_unsafeCast_0)
+    return (tmp0_unsafeCast_0)
 
 def lowIndex_init_():
     bufFloat64.__setitem__(0, -1.0)
@@ -11368,7 +11368,7 @@ class DoNotIntrinsify(Annotation):
 def charSequenceGet(a, index):
     if isString(a):
         tmp0_unsafeCast_0 = a.charCodeAt(index)
-        tmp1_Char_0 = kotlin_Any_(tmp0_unsafeCast_0)
+        tmp1_Char_0 = (tmp0_unsafeCast_0)
         Companion_getInstance_17()
         tmp0__get_code__0_1 = Char_0(0)
         if tmp1_Char_0 < tmp0__get_code__0_1.toInt_0_k_():
@@ -11393,7 +11393,7 @@ def isString(a):
 def charSequenceLength(a):
     if isString(a):
         tmp0_unsafeCast_0 = a.length
-        tmp = kotlin_Any_(tmp0_unsafeCast_0)
+        tmp = (tmp0_unsafeCast_0)
     else:
         tmp = a._get_length__0_k_()
     
@@ -11402,7 +11402,7 @@ def charSequenceLength(a):
 def charSequenceSubSequence(a, startIndex, endIndex):
     if isString(a):
         tmp0_unsafeCast_0 = a.substring(startIndex, endIndex)
-        tmp = kotlin_Any_(tmp0_unsafeCast_0)
+        tmp = (tmp0_unsafeCast_0)
     else:
         tmp = a.subSequence_27zxwg_k_(startIndex, endIndex)
     
@@ -11463,13 +11463,13 @@ def compareToDoNotIntrinsicify(a, b):
     return a.compareTo_2c5_k_(b)
 
 def construct(constructorType, resultType, *args):
-    return kotlin_Any(js('Reflect').construct(constructorType, args, resultType))
+    return (js('Reflect').construct(constructorType, args, resultType))
 
 def identityHashCode(obj):
     return getObjectHashCode(obj)
 
 def getObjectHashCode(obj):
-    if not jsIn('kotlinHashCodeValue$', kotlin_Any(obj)):
+    if not jsIn('kotlinHashCodeValue$', (obj)):
         hash = jsBitwiseOr(js('Math').random() * 4.294967296E9, 0)
         descriptor = js('new Object()')
         Unexpected_operator_EQ(descriptor.value, hash)
@@ -11477,7 +11477,7 @@ def getObjectHashCode(obj):
         js('Object').defineProperty(obj, 'kotlinHashCodeValue$', descriptor)
     
     tmp0_unsafeCast_0 = obj['kotlinHashCodeValue$']
-    return kotlin_Any_(tmp0_unsafeCast_0)
+    return (tmp0_unsafeCast_0)
 
 def _get_OBJECT_HASH_CODE_PROPERTY_NAME_():
     return OBJECT_HASH_CODE_PROPERTY_NAME
@@ -11494,7 +11494,7 @@ def toString_0(o):
         tmp = '[...]'
     else:
         tmp0_unsafeCast_0 = o.toString()
-        tmp = kotlin_Any_(tmp0_unsafeCast_0)
+        tmp = (tmp0_unsafeCast_0)
     
     return tmp
 
@@ -11508,16 +11508,16 @@ def hashCode(obj):
     elif tmp0_subject == 'function':
         tmp = getObjectHashCode(obj)
     elif tmp0_subject == 'number':
-        tmp = getNumberHashCode(kotlin_Double(obj))
+        tmp = getNumberHashCode(float(obj))
     elif tmp0_subject == 'boolean':
-        if kotlin_Any_(obj):
+        if (obj):
             tmp_0 = 1
         elif True:
             tmp_0 = 0
         
         tmp = tmp_0
     else:
-        tmp = getStringHashCode(kotlin_String(js('String')(obj)))
+        tmp = getStringHashCode(str(js('String')(obj)))
     
     return tmp
 
@@ -11540,7 +11540,7 @@ def getStringHashCode(str):
     return hash
 
 def anyToString(o):
-    return kotlin_String(js('Object').prototype.toString.call(o))
+    return str(js('Object').prototype.toString.call(o))
 
 def equals(obj1, obj2):
     if obj1 == None:
@@ -11602,7 +11602,7 @@ def newThrowable(message, cause):
     Unexpected_operator_EQ(throwable.message, tmp)
     Unexpected_operator_EQ(throwable.cause, cause)
     Unexpected_operator_EQ(throwable.name, 'Throwable')
-    return kotlin_Any_(throwable)
+    return (throwable)
 
 def isUndefined(value):
     return value is undefined
@@ -11612,7 +11612,7 @@ def extendThrowable(this_, message, cause):
     setPropertiesToThrowableInstance(this_, message, cause)
 
 def setPropertiesToThrowableInstance(this_, message, cause):
-    if not hasOwnPrototypeProperty(kotlin_Any(this_), 'message'):
+    if not hasOwnPrototypeProperty((this_), 'message'):
         if message == None:
             if not (message is None):
                 tmp0_safe_receiver = cause
@@ -11627,14 +11627,14 @@ def setPropertiesToThrowableInstance(this_, message, cause):
         
         Unexpected_operator_EQ(this_.message, tmp)
     
-    if not hasOwnPrototypeProperty(kotlin_Any(this_), 'cause'):
+    if not hasOwnPrototypeProperty((this_), 'cause'):
         Unexpected_operator_EQ(this_.cause, cause)
     
     Unexpected_operator_EQ(this_.name, Companion.getPrototypeOf(this_).constructor.name)
 
 def hasOwnPrototypeProperty(o, name):
     tmp0_unsafeCast_0 = Companion.getPrototypeOf(o).hasOwnProperty(name)
-    return kotlin_Any_(tmp0_unsafeCast_0)
+    return (tmp0_unsafeCast_0)
 
 def returnIfSuspended(argument):
     raise Exception_init__Create__0('Implemented as intrinsic')
@@ -12083,7 +12083,7 @@ class Long(Number_0, Comparable):
         return self
     
     def toFloat_0_k_(self):
-        return kotlin_Float(self.toDouble_0_k_())
+        return float(self.toDouble_0_k_())
     
     def toDouble_0_k_(self):
         return toNumber(self)
@@ -12342,19 +12342,19 @@ def toStringImpl(self, radix):
             rem = ((subtract(multiply(div, radixLong), self) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp = toStringImpl(div, radix)
             tmp0_unsafeCast_0 = rem.toString(radix)
-            return tmp + kotlin_Any_(tmp0_unsafeCast_0)
+            return tmp + (tmp0_unsafeCast_0)
         else:
             return str('-') + str(toStringImpl(negate(self), radix))
         
     
-    radixToPower = fromNumber(JsMath.pow(kotlin_Double(radix), 6.0))
+    radixToPower = fromNumber(JsMath.pow(float(radix), 6.0))
     rem_0 = self
     result = ''
     while True:
         remDiv = (((rem_0 // radixToPower) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000
         intval = ((subtract(rem_0, multiply(remDiv, radixToPower)) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         tmp1_unsafeCast_0 = intval.toString(radix)
-        digits = kotlin_Any_(tmp1_unsafeCast_0)
+        digits = (tmp1_unsafeCast_0)
         rem_0 = remDiv
         if isZero(rem_0):
             return digits + result
@@ -12405,7 +12405,7 @@ def greaterThanOrEqual(self, other):
     return compare(self, other) >= 0
 
 def getLowBitsUnsigned(self):
-    return (kotlin_Double(self.low)) if (self.low >= 0) else (4.294967296E9 + self.low)
+    return (float(self.low)) if (self.low >= 0) else (4.294967296E9 + self.low)
 
 def _get_TWO_PWR_32_DBL__():
     return TWO_PWR_32_DBL_
@@ -12416,8 +12416,8 @@ def _get_TWO_PWR_63_DBL__():
 
 TWO_PWR_63_DBL_ = None
 def imul(a_local, b_local):
-    lhs = kotlin_Double(jsBitwiseAnd(a_local, js('0xffff0000'))) * kotlin_Double(jsBitwiseAnd(b_local, 65535))
-    rhs = kotlin_Double(jsBitwiseAnd(a_local, 65535)) * kotlin_Double(b_local)
+    lhs = float(jsBitwiseAnd(a_local, js('0xffff0000'))) * float(jsBitwiseAnd(b_local, 65535))
+    rhs = float(jsBitwiseAnd(a_local, 65535)) * float(b_local)
     return jsBitwiseOr(lhs + rhs, 0)
 
 def withType(type, array):
@@ -12427,7 +12427,7 @@ def withType(type, array):
 def arrayConcat(*args):
     len = len(args)
     tmp0_unsafeCast_0 = js('Array(len)')
-    typed = kotlin_Any_(tmp0_unsafeCast_0)
+    typed = (tmp0_unsafeCast_0)
     inductionVariable = 0
     last = (((len - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
@@ -12457,7 +12457,7 @@ def primitiveArrayConcat(*args):
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp = size_local
             tmp0_unsafeCast_0 = args[i]
-            size_local = (((tmp + len(kotlin_Any_(tmp0_unsafeCast_0))) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+            size_local = (((tmp + len((tmp0_unsafeCast_0))) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             if not not (i == last):
                 break
             
@@ -12465,9 +12465,9 @@ def primitiveArrayConcat(*args):
     
     a = args[0]
     tmp1_unsafeCast_0 = js('new a.constructor(size_local)')
-    result = kotlin_Any_(tmp1_unsafeCast_0)
+    result = (tmp1_unsafeCast_0)
     if a._type_ != None:
-        tmp2_withType_0 = kotlin_String(a._type_)
+        tmp2_withType_0 = str(a._type_)
         Unexpected_operator_EQ(result._type_, tmp2_withType_0)
     
     size_local = 0
@@ -12478,7 +12478,7 @@ def primitiveArrayConcat(*args):
             i_0 = inductionVariable_0
             inductionVariable_0 = (((inductionVariable_0 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp3_unsafeCast_0 = args[i_0]
-            arr = kotlin_Any_(tmp3_unsafeCast_0)
+            arr = (tmp3_unsafeCast_0)
             inductionVariable_1 = 0
             last_1 = (((len(arr) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             if inductionVariable_1 <= last_1:
@@ -12498,25 +12498,25 @@ def primitiveArrayConcat(*args):
             
         
     
-    return kotlin_Any_(result)
+    return (result)
 
 def taggedArrayCopy(array):
     res = array.slice()
     Unexpected_operator_EQ(res._type_, array._type_)
-    return kotlin_Any_(res)
+    return (res)
 
 def numberToByte(a):
     return toByte(((a + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def toByte(a):
     tmp0_unsafeCast_0 = js('a << 24 >> 24')
-    return kotlin_Any_(tmp0_unsafeCast_0)
+    return (tmp0_unsafeCast_0)
 
 def numberToInt(a):
     if isinstance(a, Long):
         tmp = ((kotlin_Long(a) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     elif True:
-        tmp = doubleToInt(kotlin_Double(a))
+        tmp = doubleToInt(float(a))
     
     return tmp
 
@@ -12525,20 +12525,20 @@ def doubleToInt(a):
 
 def numberToDouble(a):
     tmp0_unsafeCast_0 = js('+a')
-    return kotlin_Any_(tmp0_unsafeCast_0)
+    return (tmp0_unsafeCast_0)
 
 def numberToShort(a):
     return toShort(((a + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
 
 def toShort(a):
     tmp0_unsafeCast_0 = js('a << 16 >> 16')
-    return kotlin_Any_(tmp0_unsafeCast_0)
+    return (tmp0_unsafeCast_0)
 
 def numberToLong(a):
     if isinstance(a, Long):
         tmp = kotlin_Long(a)
     elif True:
-        tmp = fromNumber(kotlin_Double(a))
+        tmp = fromNumber(float(a))
     
     return tmp
 
@@ -12567,7 +12567,7 @@ def getPropertyCallableRef(name, paramCount, type, getter, setter):
     Unexpected_operator_EQ(getter.set, setter)
     Unexpected_operator_EQ(getter.callableName, name)
     tmp0_unsafeCast_0 = getPropertyRefClass(getter, getKPropMetadata(paramCount, setter, type))
-    return kotlin_Any_(tmp0_unsafeCast_0)
+    return (tmp0_unsafeCast_0)
 
 def getPropertyRefClass(obj, metadata):
     Unexpected_operator_EQ(obj._metadata_, metadata)
@@ -12591,21 +12591,21 @@ def propertyRefClassMetadataCache_init_():
     tmp1_arrayOf_0 = (tmp_0, js('{ kind: \'class\', interfaces: [] }'))
     tmp_1 = js('{ kind: \'class\', interfaces: [] }')
     tmp2_arrayOf_0 = (tmp_1, js('{ kind: \'class\', interfaces: [] }'))
-    tmp3_arrayOf_0 = (kotlin_Any_(tmp0_arrayOf_0), kotlin_Any_(tmp1_arrayOf_0), kotlin_Any_(tmp2_arrayOf_0))
-    return kotlin_Any_(tmp3_arrayOf_0)
+    tmp3_arrayOf_0 = ((tmp0_arrayOf_0), (tmp1_arrayOf_0), (tmp2_arrayOf_0))
+    return (tmp3_arrayOf_0)
 
 def isArrayish(o):
-    if isJsArray(kotlin_Any(o)):
+    if isJsArray((o)):
         tmp = True
     else:
         tmp0_unsafeCast_0 = js('ArrayBuffer').isView(o)
-        tmp = kotlin_Any_(tmp0_unsafeCast_0)
+        tmp = (tmp0_unsafeCast_0)
     
     return tmp
 
 def isJsArray(obj):
     tmp0_unsafeCast_0 = js('Array').isArray(obj)
-    return kotlin_Any_(tmp0_unsafeCast_0)
+    return (tmp0_unsafeCast_0)
 
 def isInterface(obj, iface):
     tmp0_elvis_lhs = obj.constructor
@@ -12655,9 +12655,9 @@ def isObject(obj):
 def isSuspendFunction(obj, arity):
     if jsTypeOf(obj) == 'function':
         tmp0_unsafeCast_0 = obj._arity
-        return kotlin_Any_(tmp0_unsafeCast_0) is arity
+        return (tmp0_unsafeCast_0) is arity
     
-    if (jsIn('$metadata$', kotlin_Any(obj.constructor))) if (jsTypeOf(obj) == 'object') else (False):
+    if (jsIn('$metadata$', (obj.constructor))) if (jsTypeOf(obj) == 'object') else (False):
         tmp1_unsafeCast_0 = obj.constructor
         tmp0_safe_receiver = _metadata_
         tmp1_safe_receiver = (None) if (tmp0_safe_receiver == None) else (suspendArity)
@@ -12696,7 +12696,7 @@ def isCharSequence(value):
     return (True) if (jsTypeOf(value) == 'string') else (isInterface(value, _get_js_(getKClass_0(CharSequence))))
 
 def isBooleanArray(a):
-    return (a._type_ is 'BooleanArray') if (isJsArray(kotlin_Any(a))) else (False)
+    return (a._type_ is 'BooleanArray') if (isJsArray((a))) else (False)
 
 def isByteArray(a):
     return jsInstanceOf(a, js('Int8Array'))
@@ -12705,7 +12705,7 @@ def isShortArray(a):
     return jsInstanceOf(a, js('Int16Array'))
 
 def isCharArray(a):
-    return (a._type_ is 'CharArray') if (isJsArray(kotlin_Any(a))) else (False)
+    return (a._type_ is 'CharArray') if (isJsArray((a))) else (False)
 
 def isIntArray(a):
     return jsInstanceOf(a, js('Int32Array'))
@@ -12714,7 +12714,7 @@ def isFloatArray(a):
     return jsInstanceOf(a, js('Float32Array'))
 
 def isLongArray(a):
-    return (a._type_ is 'LongArray') if (isJsArray(kotlin_Any(a))) else (False)
+    return (a._type_ is 'LongArray') if (isJsArray((a))) else (False)
 
 def isDoubleArray(a):
     return jsInstanceOf(a, js('Float64Array'))
@@ -12732,7 +12732,7 @@ def jsIsType(obj, jsClass):
     proto = jsGetPrototypeOf(jsClass)
     tmp0_safe_receiver = proto
     constructor = (None) if (tmp0_safe_receiver == None) else (tmp0_safe_receiver.constructor)
-    if (jsIn('$metadata$', kotlin_Any(constructor))) if (constructor != None) else (False):
+    if (jsIn('$metadata$', (constructor))) if (constructor != None) else (False):
         metadata = constructor._metadata_
         if metadata.kind is 'object':
             return obj is jsClass
@@ -12751,7 +12751,7 @@ def jsGetPrototypeOf(jsClass):
     return js('Object').getPrototypeOf(jsClass)
 
 def asList(self):
-    return ArrayList(kotlin_Any_(self))
+    return ArrayList((self))
 
 def plus_0(self, elements):
     return kotlin_Array_T_(self.concat(elements))
@@ -13580,23 +13580,23 @@ class UninitializedPropertyAccessException(RuntimeException):
 
 def jsIn(lhs_hack, rhs_hack):
     tmp0_unsafeCast_0 = js('lhs_hack in rhs_hack')
-    return kotlin_Any_(tmp0_unsafeCast_0)
+    return (tmp0_unsafeCast_0)
 
 def jsBitwiseOr(lhs_hack, rhs_hack):
     tmp0_unsafeCast_0 = js('lhs_hack | rhs_hack')
-    return kotlin_Any_(tmp0_unsafeCast_0)
+    return (tmp0_unsafeCast_0)
 
 def jsTypeOf(value_hack):
     tmp0_unsafeCast_0 = js('typeof value_hack')
-    return kotlin_Any_(tmp0_unsafeCast_0)
+    return (tmp0_unsafeCast_0)
 
 def jsInstanceOf(obj_hack, jsClass_hack):
     tmp0_unsafeCast_0 = js('obj_hack instanceof jsClass_hack')
-    return kotlin_Any_(tmp0_unsafeCast_0)
+    return (tmp0_unsafeCast_0)
 
 def jsBitwiseAnd(lhs_hack, rhs_hack):
     tmp0_unsafeCast_0 = js('lhs_hack & rhs_hack')
-    return kotlin_Any_(tmp0_unsafeCast_0)
+    return (tmp0_unsafeCast_0)
 
 def toString_1(self, radix):
     return toStringImpl(self, checkRadix(radix))
@@ -13659,7 +13659,7 @@ def newCode():
     tmp0_iterator_1_2 = tmp0_map_0.iterator_0_k_()
     while tmp0_iterator_1_2.hasNext_0_k_():
         item_2_3 = tmp0_iterator_1_2.next_0_k_()
-        tmp0_mapTo_0_1.add_2bq_k_(kotlin_String(item_2_3.toUpperCase()))
+        tmp0_mapTo_0_1.add_2bq_k_(str(item_2_3.toUpperCase()))
         Unit_getInstance()
     
     tmp1_forEach_0 = tmp0_mapTo_0_1
