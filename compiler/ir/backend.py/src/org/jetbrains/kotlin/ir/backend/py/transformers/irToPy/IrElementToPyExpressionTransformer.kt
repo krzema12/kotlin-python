@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.expressions.*
+import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.isEffectivelyExternal
 import org.jetbrains.kotlin.ir.util.isFunctionTypeOrSubtype
 import org.jetbrains.kotlin.ir.util.parentAsClass
@@ -330,14 +331,22 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
     }
 
     override fun visitTypeOperator(expression: IrTypeOperatorCall, data: PyGenerationContext): expr {
-        // TODO
+        // TODO: take a look how JS performs here: much easier, looks like in most cases call is just omitted and just the argument is used
+        val type = expression.typeOperand
+        val funcName = when {
+            type.isDouble() || type.isFloat() -> "float"
+            type.isString() -> "str"
+            type.isAny() || type.isNullableAny() -> ""  // todo: get rid of this hack
+            else -> type.asString().toValidPythonSymbol()
+        }
+
         return when (expression.operator) {
             IrTypeOperator.REINTERPRET_CAST -> Call(
-                func = Name(id = identifier(expression.typeOperand.asString().toValidPythonSymbol()), ctx = Load),
+                func = Name(id = identifier(funcName), ctx = Load),
                 args = listOf(visitExpression(expression.argument, data)),
                 keywords = emptyList(),
             )
-            else -> Name(id = identifier("visitTypeOperator ${expression.operator}".toValidPythonSymbol()), ctx = Load)
+            else -> Name(id = identifier("visitTypeOperator $funcName".toValidPythonSymbol()), ctx = Load)
         }
     }
 

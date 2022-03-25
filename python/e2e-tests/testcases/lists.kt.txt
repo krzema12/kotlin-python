@@ -1,0 +1,10 @@
+Examples of which list-related methods are supported.
+--- Kotlin code ---
+external fun print(value: String)
+
+fun main() {
+    val l = listOf(1, 20, 300)
+    print("List size: ${l.size}")
+}
+--- Expected output ---
+List size: 3

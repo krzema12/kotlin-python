@@ -1,24 +1,20 @@
-521	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
-440	NameError: name 'js' is not defined
+534	NameError: name 'js' is not defined
+525	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
 276	AttributeError: 'Companion_19' object has no attribute 'constructor'
-190	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-167	NameError: name 'Unexpected_operator_EQ' is not defined
+193	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
+168	NameError: name 'Unexpected_operator_EQ' is not defined
 105	kotlin.NotImplementedError: An operation is not implemented.
 96	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
-80	NameError: name 'kotlin_Boolean' is not defined
+81	NameError: name 'kotlin_Boolean' is not defined
+81	NameError: name 'undefined' is not defined
 73	AttributeError: 'int' object has no attribute 'data'
 72	NameError: name 'Array' is not defined
-72	NameError: name 'undefined' is not defined
-68	NameError: name 'kotlin_Any_' is not defined
-47	NameError: name 'kotlin_String' is not defined
-47	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
-46	NameError: name 'kotlin_Int' is not defined
-45	NameError: name 'kotlin_Any' is not defined
+49	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
+47	NameError: name 'kotlin_Int' is not defined
 43	NameError: name 'kotlin_UInt' is not defined
 42	TypeError: 'NoneType' object is not callable
 39	AttributeError: '_no_name_provided__12' object has no attribute 'constructor'
 36	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
-36	NameError: name 'kotlin_Double' is not defined
 36	SyntaxError: invalid syntax
 31	AttributeError: 'NoneType' object has no attribute 'append_uch40_k_'
 28	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
@@ -36,22 +32,23 @@
 18	AttributeError: '_no_name_provided__1_1' object has no attribute 'constructor'
 18	TypeError: unsupported operand type(s) for +: 'NoneType' and 'NoneType'
 17	AttributeError: 'int' object has no attribute 'toString'
+17	TypeError: object of type 'NoneType' has no len()
 16	TypeError: can only concatenate str (not "int") to str
-16	TypeError: object of type 'NoneType' has no len()
 15	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
 14	AttributeError: 'NoneType' object has no attribute '__setitem__'
 14	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
-13	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' is not defined
+14	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' is not defined
 13	TypeError: __init__() takes 1 positional argument but 2 were given
 12	UnboundLocalError: local variable 'test0' referenced before assignment
 10	AttributeError: '_no_name_provided__1_2' object has no attribute 'constructor'
 10	ImportError: cannot import name 'box' from 'compiled_module' <path-truncated>)
-10	NameError: name 'kotlin_Float' is not defined
 10	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
 9	AttributeError: 'NoneType' object has no attribute 'invoke_0_k_'
 9	NameError: name 'kotlin_CharSequence' is not defined
 9	java.lang.IllegalStateException: UNRESOLVED_REFERENCE_WRONG_RECEIVER: Unresolved reference. None of the following candidates is applicable because of receiver type mismatch: 
 8	AttributeError: 'NoneType' object has no attribute 'foo_0_k_'
+8	AttributeError: 'NoneType' object has no attribute 'hasNext_0_k_'
+8	AttributeError: 'tuple' object has no attribute '__setitem__'
 8	java.lang.IllegalArgumentException: List has more than one element.
 8	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail]>
 7	AttributeError: 'C' object has no attribute 'constructor'
@@ -59,21 +56,21 @@
 7	NameError: name 'Object' is not defined
 7	NameError: name 'Result_T_' is not defined
 7	NameError: name 'kotlin_UByte' is not defined
+7	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1]>
 6	AttributeError: 'M' object has no attribute 'i'
 6	NameError: name 'kotlin_Long' is not defined
 6	NameError: name 'translateCallArguments_1' is not defined
+6	TypeError: can only concatenate str (not "NoneType") to str
 6	TypeError: unsupported operand type(s) for +: 'M' and 'int'
 6	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: None]>
 5	AttributeError: 'NoneType' object has no attribute 'getValue_1kobyo_k_'
+5	AttributeError: 'SequenceBuilderIterator' object has no attribute 'constructor'
 5	NameError: name 'kotlin_ULong' is not defined
 5	NameError: name 'test_A' is not defined
 5	NameError: name 'test_C' is not defined
-5	TypeError: can only concatenate str (not "NoneType") to str
 5	TypeError: unsupported operand type(s) for &: 'float' and 'int'
 5	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail: None]>
-5	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1]>
 4	AttributeError: 'Companion_20' object has no attribute 'getO_0_k_'
-4	AttributeError: 'SequenceBuilderIterator' object has no attribute 'constructor'
 4	MemoryError
 4	NameError: name 'Infinity' is not defined
 4	NameError: name 'T' is not defined
@@ -87,9 +84,11 @@
 4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<compiled_module.A object at [address]>]>
 4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 1]>
 4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1 A.foo]>
+3	AttributeError: 'ArrayList' object has no attribute 'constructor'
 3	AttributeError: 'EmptyContinuation_0' object has no attribute 'constructor'
 3	AttributeError: 'Foo' object has no attribute 'bar'
 3	AttributeError: 'Impl' object has no attribute 'constructor'
+3	AttributeError: 'NoneType' object has no attribute '_get_size__0_k_'
 3	AttributeError: 'NoneType' object has no attribute 'constructor'
 3	AttributeError: 'NoneType' object has no attribute 'getValue_d8h4ck_k_'
 3	AttributeError: 'NoneType' object has no attribute 'iterator_0_k_'
@@ -103,6 +102,7 @@
 3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetValueImpl' is not defined
 3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrTypeOperatorCallImpl' is not defined
 3	SyntaxError: EOL while scanning string literal
+3	TypeError: 'NoneType' object is not subscriptable
 3	UnboundLocalError: local variable 'step' referenced before assignment
 3	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: setOf (62,29) in <path-truncated>
 3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail #1]>
@@ -114,10 +114,10 @@
 2	AttributeError: 'EmptyMap' object has no attribute 'constructor'
 2	AttributeError: 'NoneType' object has no attribute '_get_first__sv9k7v_k_'
 2	AttributeError: 'NoneType' object has no attribute 'get_ha5a7z_k_'
+2	AttributeError: 'NoneType' object has no attribute 'x'
 2	AttributeError: 'NotEmptyMap' object has no attribute 'constructor'
 2	AttributeError: '_no_name_provided__20' object has no attribute 'constructor'
 2	AttributeError: '_no_name_provided__2_8_0' object has no attribute 'constructor'
-2	AttributeError: 'tuple' object has no attribute '__setitem__'
 2	NameError: name 'Value_' is not defined
 2	NameError: name 'f' is not defined
 2	NameError: name 'get' is not defined
@@ -127,12 +127,13 @@
 2	NameError: name 'test' is not defined
 2	NameError: name 'test_Inner_kotlin_String_kotlin_String_' is not defined
 2	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetFieldImpl' is not defined
+2	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl' is not defined
 2	SyntaxError: name 'xs' is used prior to global declaration
 2	TypeError: '<=' not supported between instances of 'NoneType' and 'NoneType'
-2	TypeError: 'NoneType' object is not subscriptable
 2	TypeError: __init__() missing 1 required positional argument: 'ordinal'
 2	TypeError: __init__() takes 2 positional arguments but 4 were given
 2	TypeError: bad operand type for unary +: 'str'
+2	TypeError: can only concatenate str (not "A") to str
 2	TypeError: toString() missing 1 required positional argument: 'self'
 2	TypeError: unsupported operand type(s) for +: 'Test' and 'int'
 2	UnboundLocalError: local variable 'invokeOnA' referenced before assignment
@@ -178,6 +179,7 @@
 1	AttributeError: 'Foo' object has no attribute 'foo'
 1	AttributeError: 'Foo' object has no attribute 'p'
 1	AttributeError: 'FooImpl' object has no attribute 'x'
+1	AttributeError: 'FooImpl' object has no attribute 'xs'
 1	AttributeError: 'FunDependencyEdgeImpl' object has no attribute 'constructor'
 1	AttributeError: 'Handler' object has no attribute 'path'
 1	AttributeError: 'Impl' object has no attribute 'getContributedDescriptors_default_nmiqce_k_'
@@ -185,7 +187,6 @@
 1	AttributeError: 'Inner' object has no attribute 'value'
 1	AttributeError: 'N' object has no attribute 'b'
 1	AttributeError: 'NoneType' object has no attribute '_get_first__0_k_'
-1	AttributeError: 'NoneType' object has no attribute '_get_size__0_k_'
 1	AttributeError: 'NoneType' object has no attribute 'add_2bq_k_'
 1	AttributeError: 'NoneType' object has no attribute 'call_0_k_'
 1	AttributeError: 'NoneType' object has no attribute 'check_hwwcoo_k_'
@@ -205,8 +206,8 @@
 1	AttributeError: 'NoneType' object has no attribute 'setValue_efudr6_k_'
 1	AttributeError: 'NoneType' object has no attribute 'setValue_gbl9e2_k_'
 1	AttributeError: 'NoneType' object has no attribute 'test_0_k_'
+1	AttributeError: 'NoneType' object has no attribute 'toUpperCase'
 1	AttributeError: 'NoneType' object has no attribute 'value'
-1	AttributeError: 'NoneType' object has no attribute 'x'
 1	AttributeError: 'NotEmptyList' object has no attribute 'constructor'
 1	AttributeError: 'Scope' object has no attribute 'test_sv8swh_k_'
 1	AttributeError: 'Test' object has no attribute 'constructor'
@@ -220,13 +221,17 @@
 1	AttributeError: '_no_name_provided__21' object has no attribute 'constructor'
 1	AttributeError: 'bool' object has no attribute 'toString'
 1	AttributeError: 'int' object has no attribute 'hashCode'
+1	AttributeError: 'str' object has no attribute 'substring'
 1	IndentationError: expected an indented block
 1	NameError: name 'A_' is not defined
 1	NameError: name 'AsAny_T_' is not defined
+1	NameError: name 'B_kotlin_String_' is not defined
 1	NameError: name 'Base_kotlin_String_' is not defined
 1	NameError: name 'C' is not defined
+1	NameError: name 'FT' is not defined
 1	NameError: name 'GCmp_T_' is not defined
 1	NameError: name 'Inv_kotlin_Any__' is not defined
+1	NameError: name 'JsMath' is not defined
 1	NameError: name 'K' is not defined
 1	NameError: name 'MPair___' is not defined
 1	NameError: name 'OK' is not defined
@@ -278,7 +283,9 @@
 1	TypeError: box_foo() missing 1 required positional argument: 'result'
 1	TypeError: box_foo_0() missing 1 required positional argument: 'p1'
 1	TypeError: box_lambda_0() missing 1 required positional argument: 'p0'
-1	TypeError: can only concatenate str (not "A") to str
+1	TypeError: can only concatenate str (not "C") to str
+1	TypeError: can only concatenate str (not "MyLogic") to str
+1	TypeError: component2() missing 1 required positional argument: 'self'
 1	TypeError: extId() missing 1 required positional argument: 'x'
 1	TypeError: foo() missing 1 required positional argument: 'self'
 1	TypeError: foo_bar() missing 1 required positional argument: 'x'
@@ -370,6 +377,7 @@
 1	java.lang.IllegalStateException: org.jetbrains.kotlin.ir.declarations.impl.IrVariableImpl@... for VAR SYNTHESIZED_DECLARATION name:tmp type:kotlin.Unit [var] has unexpected parent org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFunction@...
 1	org.junit.ComparisonFailure: expected:<O[K]> but was:<O[]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<['One' should map to '1' but was -1]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[('OK',)]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<compiled_module.Nested object at [address]><compiled_module.Nested object at [address]>]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<compiled_module.SendBuffered object at [address]>]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<compiled_module.State object at [address]><compiled_module.State object at [address]>]>
@@ -393,6 +401,7 @@
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1: 16 != None]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1; r = BBB.baz]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1; r = None]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 2]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail <compiled_module.Num object at [address]>]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail None]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail cmp 1]>
@@ -401,8 +410,11 @@
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail2]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail3: None]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail5]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: (<compiled_module.C object at [address]>;<compiled_module.C object at [address]>)(<compiled_module.C object at [address]>;<compiled_module.C object at [address]>)(<compiled_module.C object at [address]>;<compiled_module.C object at [address]>)]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: <compiled_module.A object at [address]>]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: ??]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: A.foo()]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[failTypeCast 1]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[inner getter or setter failed]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test0 failed]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1 fail]>
