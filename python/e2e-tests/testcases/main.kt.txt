@@ -1,6 +1,6 @@
 Shows that the main function is called.
 --- Kotlin code ---
-external fun print(value: String)
+external fun print(value: String)  // todo: this is a temporary workaround until we support Kotlin's println
 
 fun main() {
     print("This is test output!")

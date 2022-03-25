@@ -1,6 +1,6 @@
 Examples of which list-related methods are supported.
 --- Kotlin code ---
-external fun print(value: String)
+external fun print(value: String)  // todo: this is a temporary workaround until we support Kotlin's println
 
 fun main() {
     val l = listOf(1, 20, 300)
