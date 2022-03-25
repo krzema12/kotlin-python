@@ -6,6 +6,8 @@
 package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 
 import generated.Python.*
+import org.jetbrains.kotlin.ir.backend.py.utils.LocalNameGenerator
+import org.jetbrains.kotlin.ir.backend.py.utils.NameScope
 import org.jetbrains.kotlin.ir.backend.py.utils.PyGenerationContext
 import org.jetbrains.kotlin.ir.declarations.*
 
@@ -23,7 +25,7 @@ class IrDeclarationToPyTransformer : BaseIrElementToPyNodeTransformer<List<stmt>
     }
 
     override fun visitClass(declaration: IrClass, context: PyGenerationContext): List<stmt> {
-        return declaration.toPythonStatement(context.newDeclaration())
+        return declaration.toPythonStatement(context.newDeclaration(localNames = LocalNameGenerator(NameScope.EmptyScope)))  // todo: use proper (parent/global) name scope
     }
 
     override fun visitErrorDeclaration(declaration: IrErrorDeclaration, data: PyGenerationContext): List<stmt> {

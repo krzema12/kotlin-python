@@ -39,16 +39,15 @@
 16	TypeError: can only concatenate str (not "int") to str
 16	TypeError: object of type 'NoneType' has no len()
 15	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
+14	AttributeError: 'NoneType' object has no attribute '__setitem__'
 14	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
 13	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' is not defined
 13	TypeError: __init__() takes 1 positional argument but 2 were given
 12	UnboundLocalError: local variable 'test0' referenced before assignment
-10	AttributeError: 'NoneType' object has no attribute '__setitem__'
 10	AttributeError: '_no_name_provided__1_2' object has no attribute 'constructor'
 10	ImportError: cannot import name 'box' from 'compiled_module' <path-truncated>)
 10	NameError: name 'kotlin_Float' is not defined
 10	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
-10	org.junit.ComparisonFailure: expected:<[O]K> but was:<[K]K>
 9	AttributeError: 'NoneType' object has no attribute 'invoke_0_k_'
 9	NameError: name 'kotlin_CharSequence' is not defined
 9	java.lang.IllegalStateException: UNRESOLVED_REFERENCE_WRONG_RECEIVER: Unresolved reference. None of the following candidates is applicable because of receiver type mismatch: 
@@ -83,7 +82,6 @@
 4	NameError: name 'translateCallArguments_2' is not defined
 4	NameError: name 'translateCallArguments_3' is not defined
 4	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl' is not defined
-4	TypeError: '<' not supported between instances of 'NoneType' and 'NoneType'
 4	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun assertTrue(x: Boolean): Unit defined in kotlin.test (10,34) in <path-truncated>
 4	java.lang.NullPointerException
 4	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<compiled_module.A object at [address]>]>
@@ -143,7 +141,6 @@
 2	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: linkedMapOf (6,18) in <path-truncated>
 2	kotlin.UninitializedPropertyAccessException: Parent not initialized: org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrConstructor@...
 2	kotlin.UninitializedPropertyAccessException: Parent not initialized: org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFunction@...
-2	org.junit.ComparisonFailure: expected:<OK[]> but was:<OK[OK]>
 2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[8]>
 2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<compiled_module.Inner object at [address]>]>
 2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 2]>
@@ -153,6 +150,7 @@
 2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[failed 2]>
 2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[failfail]>
 2	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1: None]>
+2	org.junit.ComparisonFailure: expected:<[O]K> but was:<[K]K>
 2	org.junit.ComparisonFailure: expected:<[]OK> but was:<[fail: ]OK>
 1	AttributeError: 'A' object has no attribute 'b'
 1	AttributeError: 'A' object has no attribute 'foo_0_k_'
@@ -222,7 +220,6 @@
 1	AttributeError: '_no_name_provided__21' object has no attribute 'constructor'
 1	AttributeError: 'bool' object has no attribute 'toString'
 1	AttributeError: 'int' object has no attribute 'hashCode'
-1	AttributeError: 'int' object has no attribute 's'
 1	IndentationError: expected an indented block
 1	NameError: name 'A_' is not defined
 1	NameError: name 'AsAny_T_' is not defined
@@ -410,6 +407,5 @@
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test0 failed]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1 fail]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test6 fail]>
-1	org.junit.ComparisonFailure: expected:<[O]K> but was:<[fail2: K]K>
 1	org.junit.ComparisonFailure: expected:<[]OK> but was:<[fail 3: C_]OK>
 1	org.junit.ComparisonFailure: expected:<[]OK> but was:<[fail 3: fromC_]OK>

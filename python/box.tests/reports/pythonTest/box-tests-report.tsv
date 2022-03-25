@@ -941,13 +941,13 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testAllFilesPresentInControlStructures	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testBottles	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testBreakInFinally	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testBreakInWhen	Failed	PythonExecution	TypeError: '<' not supported between instances of 'NoneType' and 'NoneType'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testBreakInWhen	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testCompareBoxedIntegerToZero	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testConditionOfEmptyIf	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testContinueInExpr	Failed	PythonExecution	NameError: name 'kotlin_Any_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testContinueInFor	Failed	PythonExecution	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testContinueInForCondition	Failed	PythonExecution	AttributeError: 'ArrayAsCollection' object has no attribute 'toArray'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testContinueInWhen	Failed	PythonExecution	TypeError: '<' not supported between instances of 'NoneType' and 'NoneType'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testContinueInWhen	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testContinueInWhile	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testContinueToLabelInFor	Failed	PythonExecution	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testDoWhile	Failed	PythonExecution	TypeError: can only concatenate str (not "int") to str
@@ -1022,8 +1022,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testTryFinally	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions.testAllFilesPresentInBreakContinueInExpressions	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions.testBreakFromOuter	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions.testBreakInDoWhile	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<OK[]> but was:<OK[OK]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions.testBreakInExpr	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<OK[]> but was:<OK[OK]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions.testBreakInDoWhile	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions.testBreakInExpr	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions.testBreakInLoopConditions	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[FAIL3]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions.testContinueInDoWhile	Failed	PythonExecution	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions.testContinueInExpr	Failed	PythonExecution	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
@@ -2183,7 +2183,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions.testKt3724	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions.testKt395	Failed	PythonExecution	NameError: name 'kotlin_Any' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions.testKt47449	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions.testKt47527	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[O]K> but was:<[K]K>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions.testKt47527	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions.testKt48058	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions.testKt785	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions.testKt873	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl' is not defined
@@ -2517,7 +2517,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testKt27113	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testKt27113a	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testKt27132	Failed	PythonExecution	NameError: name 'kotlin_UInt' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testKt27140	Failed	PythonExecution	TypeError: '<' not supported between instances of 'NoneType' and 'NoneType'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testKt27140	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testKt27705	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testKt27706	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testKt28405	Failed	PythonExecution	NameError: name 'kotlin_UIntArray' is not defined
@@ -5009,7 +5009,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ty
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping.testKt3863	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping.testKt3976	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'setValue_2dxdrn_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping.testNothing	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping.testNullNothing	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[O]K> but was:<[K]K>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping.testNullNothing	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping.testNullableNothing	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testAllFilesPresentInTypealias	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testEnumEntryQualifier	Failed	PythonExecution	AttributeError: 'Companion_17' object has no attribute 'K'
@@ -5251,7 +5251,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt42815	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt42815_delegated	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt6007	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt6552	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[O]K> but was:<[K]K>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt6552	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt8133	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt9064	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt9064v2	Succeeded		
@@ -5266,10 +5266,10 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testTypeInfo	Failed	PythonExecution	NameError: name 'kotlin_Boolean' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testWithInlineMethod	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$EnumWhen.testAllFilesPresentInEnumWhen	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$EnumWhen.testCallSite	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[O]K> but was:<[K]K>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$EnumWhen.testDeclSite	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[O]K> but was:<[K]K>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$EnumWhen.testDeclSiteSeveralMappings	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[O]K> but was:<[K]K>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$EnumWhen.testDeclSiteSeveralMappingsDifOrder	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[O]K> but was:<[K]K>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$EnumWhen.testCallSite	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$EnumWhen.testDeclSite	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$EnumWhen.testDeclSiteSeveralMappings	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$EnumWhen.testDeclSiteSeveralMappingsDifOrder	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturing.testAllFilesPresentInProperRecapturing	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturing.testInlineChain	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject$ProperRecapturing.testLambdaChain	Succeeded		
@@ -5433,7 +5433,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testKt18689_3	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'foo_0_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testKt18689_4	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'foo_0_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testKt5685	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testSimpleDefaultMethod	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[O]K> but was:<[fail2: K]K>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testSimpleDefaultMethod	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testVarArgNoInline	Failed	PythonExecution	NameError: name 'kotlin_Any_' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testAllFilesPresentInLambdaInlining	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testCheckLambdaClassIsPresent	Failed	PythonExecution	TypeError: 'NoneType' object is not callable
@@ -5726,7 +5726,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified.testDontSubstituteNonReified	Failed	PythonExecution	NameError: name 'Object' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified.testKt15956	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified.testKt18977	Failed	PythonExecution	NameError: name 'kotlin_Any_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified.testKt28234	Failed	PythonExecution	TypeError: '<' not supported between instances of 'NoneType' and 'NoneType'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified.testKt28234	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified.testKt35511	Failed	PythonExecution	NameError: name 'test_A' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified.testKt35511_try	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified.testKt35511_try_valueOf	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
@@ -5841,7 +5841,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special.testInlineChain	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special.testLoopInStoreLoadChains	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special.testLoopInStoreLoadChains2	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special.testPlusAssign	Failed	PythonExecution	AttributeError: 'int' object has no attribute 's'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special.testPlusAssign	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special.testStackHeightBug	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special.testUnusedInlineLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn.testAllFilesPresentInStackOnReturn	Succeeded		
@@ -5857,7 +5857,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn.testNonLocalReturn1	Failed	PythonExecution	NameError: name 'Object' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn.testNonLocalReturn2	Failed	PythonExecution	NameError: name 'Object' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn.testNonLocalReturn3	Failed	PythonExecution	NameError: name 'Object' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn.testPoppedLocalReturn	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[O]K> but was:<[K]K>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn.testPoppedLocalReturn	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn.testPoppedLocalReturn2	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn.testReturnLong	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$StackOnReturn.testTryFinally	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined

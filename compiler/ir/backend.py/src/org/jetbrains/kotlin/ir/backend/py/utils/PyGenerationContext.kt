@@ -13,7 +13,7 @@ import org.jetbrains.kotlin.js.backend.ast.JsName
 class PyGenerationContext(
     val currentFunction: IrFunction?,
     val staticContext: PyStaticContext,
-    val localNames: LocalNameGenerator? = null,
+    val localNames: LocalNameGenerator,
     val definedTypes: MutableSet<String> = mutableSetOf(),
 ): IrNamer by staticContext {
 
@@ -38,7 +38,7 @@ class PyGenerationContext(
         )
     }
 
-    fun newDeclaration(func: IrFunction? = null, localNames: LocalNameGenerator? = null): PyGenerationContext {
+    fun newDeclaration(func: IrFunction? = null, localNames: LocalNameGenerator): PyGenerationContext {
         return PyGenerationContext(
             currentFunction = func,
             staticContext = staticContext,
@@ -48,8 +48,7 @@ class PyGenerationContext(
     }
 
     fun getNameForValueDeclaration(declaration: IrDeclarationWithName): JsName {
-        val name = localNames!!.variableNames.names[declaration]
-            ?: error("Variable name is not found ${declaration.name}")
+        val name = localNames.variableNames.names[declaration] ?: error("Variable name is not found ${declaration.name}")
         return JsName(name)
     }
 }
