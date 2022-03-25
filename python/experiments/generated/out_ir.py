@@ -24,7 +24,7 @@ def indexOf(self, element):
             if element == self[index]:
                 return index
             
-            if inductionVariable <= last:
+            if not (inductionVariable <= last):
                 break
             
         
@@ -50,7 +50,7 @@ def indexOf_0(self, element):
             if element == self[index]:
                 return index
             
-            if inductionVariable <= last:
+            if not (inductionVariable <= last):
                 break
             
         
@@ -76,7 +76,7 @@ def indexOf_1(self, element):
             if element == self[index]:
                 return index
             
-            if inductionVariable <= last:
+            if not (inductionVariable <= last):
                 break
             
         
@@ -102,7 +102,7 @@ def indexOf_2(self, element):
             if element == self[index]:
                 return index
             
-            if inductionVariable <= last:
+            if not (inductionVariable <= last):
                 break
             
         
@@ -129,7 +129,7 @@ def indexOf_3(self, element):
                 if self[index] == None:
                     return index
                 
-                if inductionVariable <= last:
+                if not (inductionVariable <= last):
                     break
                 
             
@@ -144,7 +144,7 @@ def indexOf_3(self, element):
                 if element == self[index]:
                     return index
                 
-                if inductionVariable <= last:
+                if not (inductionVariable <= last):
                     break
                 
             
@@ -162,7 +162,7 @@ def lastIndexOf(self, element):
                 if self[index] == None:
                     return index
                 
-                if 0 <= inductionVariable:
+                if not (0 <= inductionVariable):
                     break
                 
             
@@ -176,7 +176,7 @@ def lastIndexOf(self, element):
                 if element == self[index]:
                     return index
                 
-                if 0 <= inductionVariable:
+                if not (0 <= inductionVariable):
                     break
                 
             
@@ -801,7 +801,7 @@ class AbstractCollection(Collection):
                 
             
             tmp_ret_0 = False
-            if False:
+            if not False:
                 break
             
         
@@ -827,7 +827,7 @@ class AbstractCollection(Collection):
                 
             
             tmp_ret_0 = True
-            if False:
+            if not False:
                 break
             
         
@@ -1124,7 +1124,7 @@ class AbstractList(AbstractCollection, List):
                 Unit_getInstance()
             
             tmp_ret_0 = -1
-            if False:
+            if not False:
                 break
             
         
@@ -1141,7 +1141,7 @@ class AbstractList(AbstractCollection, List):
                 
             
             tmp_ret_0 = -1
-            if False:
+            if not False:
                 break
             
         
@@ -1384,7 +1384,7 @@ def filterInPlace(self, predicate, predicateResultToRemove):
             tmp1 = writeIndex
             writeIndex = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             Unit_getInstance()
-            if not (readIndex == last):
+            if not not (readIndex == last):
                 break
             
         
@@ -1397,7 +1397,7 @@ def filterInPlace(self, predicate, predicateResultToRemove):
                 inductionVariable = (((inductionVariable + -1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 self.removeAt_ha5a7z_k_(removeIndex)
                 Unit_getInstance()
-                if not (removeIndex == writeIndex):
+                if not not (removeIndex == writeIndex):
                     break
                 
             
@@ -2905,7 +2905,7 @@ def repeat(times, action):
             index = inductionVariable
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             action(index)
-            if inductionVariable < times:
+            if not (inductionVariable < times):
                 break
             
         
@@ -3341,7 +3341,7 @@ def UByteArray__containsAll_impl(this, elements):
             
         
         tmp_ret_0 = True
-        if False:
+        if not False:
             break
         
     
@@ -3803,7 +3803,7 @@ def UIntArray__containsAll_impl(this, elements):
             
         
         tmp_ret_0 = True
-        if False:
+        if not False:
             break
         
     
@@ -4628,7 +4628,7 @@ def ULongArray__containsAll_impl(this, elements):
             
         
         tmp_ret_0 = True
-        if False:
+        if not False:
             break
         
     
@@ -5435,7 +5435,7 @@ def UShortArray__containsAll_impl(this, elements):
             
         
         tmp_ret_0 = True
-        if False:
+        if not False:
             break
         
     
@@ -7631,7 +7631,7 @@ def arrayCopy_0(source, destination, destinationOffset, startIndex, endIndex):
                 index = inductionVariable
                 inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 destination.__setitem__((((destinationOffset + index) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000, source[(((startIndex + index) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000])
-                if inductionVariable < rangeSize:
+                if not (inductionVariable < rangeSize):
                     break
                 
             
@@ -7643,7 +7643,7 @@ def arrayCopy_0(source, destination, destinationOffset, startIndex, endIndex):
                 index = inductionVariable
                 inductionVariable = (((inductionVariable + -1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 destination.__setitem__((((destinationOffset + index) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000, source[(((startIndex + index) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000])
-                if 0 <= inductionVariable:
+                if not (0 <= inductionVariable):
                     break
                 
             
@@ -8090,7 +8090,7 @@ class AbstractMutableList(AbstractMutableCollection, MutableList):
                 if self.get_ha5a7z_k_(index) == element:
                     return index
                 
-                if not (index == last):
+                if not not (index == last):
                     break
                 
             
@@ -8106,7 +8106,7 @@ class AbstractMutableList(AbstractMutableCollection, MutableList):
                 if self.get_ha5a7z_k_(index) == element:
                     return index
                 
-                if 0 <= inductionVariable:
+                if not (0 <= inductionVariable):
                     break
                 
             
@@ -8133,7 +8133,7 @@ class AbstractMutableList(AbstractMutableCollection, MutableList):
                 iterator.next_0_k_()
                 Unit_getInstance()
                 iterator.remove_sv8swh_k_()
-                if inductionVariable < tmp0_repeat_0:
+                if not (inductionVariable < tmp0_repeat_0):
                     break
                 
             
@@ -8357,7 +8357,7 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
                     Unit_getInstance()
                     return True
                 
-                if inductionVariable <= last:
+                if not (inductionVariable <= last):
                     break
                 
             
@@ -9879,7 +9879,7 @@ class StringBuilder(Appendable, CharSequence):
                     inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                     tmp1_this = self
                     tmp1_this.string = tmp1_this.string + Char_0(0)
-                    if inductionVariable < newLength:
+                    if not (inductionVariable < newLength):
                         break
                     
                 
@@ -9955,7 +9955,7 @@ class StringBuilder(Appendable, CharSequence):
                 tmp1 = dstIndex
                 dstIndex = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 destination.__setitem__(tmp1, charSequenceGet(self.string, index))
-                if inductionVariable < endIndex:
+                if not (inductionVariable < endIndex):
                     break
                 
             
@@ -10109,7 +10109,7 @@ def compareTo(self, other, ignoreCase):
                         
                     
                 
-                if inductionVariable < min:
+                if not (inductionVariable < min):
                     break
                 
             
@@ -10146,7 +10146,7 @@ def concatToString_0(self, startIndex, endIndex):
             index = inductionVariable
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             result = result + self[index]
-            if inductionVariable < endIndex:
+            if not (inductionVariable < endIndex):
                 break
             
         
@@ -10873,7 +10873,7 @@ def fillArrayVal(array, initValue):
             i = inductionVariable
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             array.__setitem__(i, initValue)
-            if not (i == last):
+            if not not (i == last):
                 break
             
         
@@ -11532,7 +11532,7 @@ def getStringHashCode(str):
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             code = kotlin_Int(str.charCodeAt(i))
             hash = (((imul(hash, 31) + code) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-            if not (i == last):
+            if not not (i == last):
                 break
             
         
@@ -12440,7 +12440,7 @@ def arrayConcat(*args):
             elif True:
                 typed.__setitem__(i, arr)
             
-            if not (i == last):
+            if not not (i == last):
                 break
             
         
@@ -12458,7 +12458,7 @@ def primitiveArrayConcat(*args):
             tmp = size_local
             tmp0_unsafeCast_0 = args[i]
             size_local = (((tmp + len(kotlin_Any_(tmp0_unsafeCast_0))) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-            if not (i == last):
+            if not not (i == last):
                 break
             
         
@@ -12488,12 +12488,12 @@ def primitiveArrayConcat(*args):
                     tmp3 = size_local
                     size_local = (((tmp3 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                     result.__setitem__(tmp3, arr[j])
-                    if not (j == last):
+                    if not not (j == last):
                         break
                     
                 
             
-            if not (i == last):
+            if not not (i == last):
                 break
             
         
