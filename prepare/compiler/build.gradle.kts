@@ -98,6 +98,7 @@ val distLibraryProjects = listOfNotNull(
     ":kotlin-scripting-compiler-impl",
     ":kotlin-scripting-jvm",
     ":kotlin-scripting-js",
+    ":kotlin-stdlib-py",
     ":js:js.engines",
     ":kotlin-test:kotlin-test-junit",
     ":kotlin-test:kotlin-test-junit5",
@@ -340,6 +341,8 @@ sourcesJar {
 
 javadocJar()
 
+val defaultSnapshotVersion: String by project
+
 val distKotlinc = distTask<Sync>("distKotlinc") {
     destinationDir = File("$distDir/kotlinc")
 
@@ -364,6 +367,7 @@ val distKotlinc = distTask<Sync>("distKotlinc") {
     into("lib") {
         from(jarFiles) { rename { "$compilerBaseName.jar" } }
         from(librariesFiles)
+        from("$rootDir/libraries/stdlib/py/build/libs/kotlin-stdlib-py-js-$defaultSnapshotVersion.klib")
         from(librariesStripVersionFiles) {
             rename {
                 it.replace(Regex("-\\d.*\\.jar\$"), ".jar")
