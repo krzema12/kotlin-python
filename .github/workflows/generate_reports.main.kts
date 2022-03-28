@@ -60,7 +60,7 @@ val generateReportsWorkflow = workflow(
             name = "Compile python.kt to Python",
             command = """
                 dist/kotlinc/bin/kotlinc-py \
-                -libraries dist/kotlinc/lib/kotlin-stdlib-js.jar \
+                -libraries dist/kotlinc/lib/kotlin-stdlib-py-js.klib \
                 -Xir-produce-py \
                 -output python/experiments/generated/out_ir.py \
                 python/experiments/python.kt
