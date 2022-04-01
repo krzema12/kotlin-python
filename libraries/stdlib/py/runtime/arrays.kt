@@ -7,8 +7,16 @@ package kotlin.js
 
 import withType
 
+private external fun <T> list(): Array<T>
+
 @PublishedApi
-internal external fun <T> Array(size: Int): Array<T>
+internal fun <T> Array(size: Int): Array<T> {
+    val result = list<T>()
+    repeat(size) {
+        result.asDynamic().append(null)
+    }
+    return result
+}
 
 @PublishedApi
 internal fun <T> fillArrayVal(array: Array<T>, initValue: T): Array<T> {

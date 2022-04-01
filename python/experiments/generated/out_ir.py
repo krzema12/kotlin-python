@@ -2007,7 +2007,7 @@ def containsAll(_this, context):
 
 def writeReplace(_this):
     n = size(_this)
-    elements = fillArrayVal(Array(n), None)
+    elements = fillArrayVal(Array_0(n), None)
     index = {'_v': 0}
     def complexFunction_x3__Assign__Expr__Expr__0(_anonymous_parameter_0_, element):
         tmp0 = index['_v']
@@ -2852,6 +2852,19 @@ def throwOnFailure(self):
 def run(block):
     return block()
 
+def repeat(times, action):
+    inductionVariable = 0
+    if inductionVariable < times:
+        while True:
+            index = inductionVariable
+            inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+            action(index)
+            if not (inductionVariable < times):
+                break
+            
+        
+    
+
 def TODO():
     raise NotImplementedError_init__Create_(None, 1, None)
 
@@ -2897,19 +2910,6 @@ def let_0(self, block):
 def apply(self, block):
     block(self)
     return self
-
-def repeat(times, action):
-    inductionVariable = 0
-    if inductionVariable < times:
-        while True:
-            index = inductionVariable
-            inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-            action(index)
-            if not (inductionVariable < times):
-                break
-            
-        
-    
 
 def with_0(receiver, block):
     return block(receiver)
@@ -9532,7 +9532,7 @@ def PrimitiveClasses_getInstance():
     return PrimitiveClasses_instance
 
 def functionClasses_init_():
-    return fillArrayVal(Array(0), None)
+    return fillArrayVal(Array_0(0), None)
 
 def getKClass_0(jClass):
     if kotlin_Boolean(js('Array').isArray(jClass)):
@@ -10880,6 +10880,21 @@ def fillArrayVal(array, initValue):
     
     return array
 
+def Array_0(size):
+    result = list()
+    inductionVariable = 0
+    if inductionVariable < size:
+        while True:
+            index_2 = inductionVariable
+            inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+            result.append(None)
+            if not (inductionVariable < size):
+                break
+            
+        
+    
+    return result
+
 def arrayIterator(array):
     return _no_name_provided__0(array)
 
@@ -10908,13 +10923,13 @@ def doubleArrayIterator(array):
     return _no_name_provided__9(array)
 
 def booleanArray(size):
-    tmp0_withType_0 = fillArrayVal(Array(size), False)
+    tmp0_withType_0 = fillArrayVal(Array_0(size), False)
     Unexpected_operator_EQ(tmp0_withType_0._type_, 'BooleanArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
     return (tmp1_unsafeCast_0)
 
 def charArray(size):
-    tmp = Array(size)
+    tmp = Array_0(size)
     Companion_getInstance_17()
     tmp0__get_code__0_1 = Char_0(0)
     if 0 < tmp0__get_code__0_1.toInt_0_k_():
@@ -10933,7 +10948,7 @@ def charArray(size):
     return (tmp1_unsafeCast_0)
 
 def longArray(size):
-    tmp0_withType_0 = fillArrayVal(Array(size), 0)
+    tmp0_withType_0 = fillArrayVal(Array_0(size), 0)
     Unexpected_operator_EQ(tmp0_withType_0._type_, 'LongArray')
     tmp1_unsafeCast_0 = tmp0_withType_0
     return (tmp1_unsafeCast_0)
