@@ -92,9 +92,11 @@ It will generate various reports and summaries:
 
 ![git-history-plot](box.tests/reports/git-history-plot.svg)
 
-Current status: **2342**/5970 passed
+Current status: **2365**/5970 passed
 
 #### History (newest on top)
+
+* after supporting integer multiplication: **2365**/5970 (+23)
 
 * after supporting internal array creation: **2342**/5970 (+29)
 

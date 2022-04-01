@@ -129,8 +129,6 @@ class PyIntrinsics(private val irBuiltIns: IrBuiltIns, val context: PyIrBackendC
     val jsOpenInitializerBox = getInternalFunction("openInitializerBox")
     val es6DefaultType = getInternalFunction("DefaultType")
 
-    val jsImul = getInternalFunction("imul")
-
     val jsUnreachableDeclarationLog = getInternalFunction("unreachableDeclarationLog")
     val jsUnreachableDeclarationException = getInternalFunction("unreachableDeclarationException")
 
