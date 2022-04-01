@@ -10866,14 +10866,14 @@ def DefaultConstructorMarker_getInstance():
     return DefaultConstructorMarker_instance
 
 def fillArrayVal(array, initValue):
+    tmp0_repeat_0 = len(array)
     inductionVariable = 0
-    last = (((len(array) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-    if inductionVariable <= last:
+    if inductionVariable < tmp0_repeat_0:
         while True:
-            i = inductionVariable
+            index_2 = inductionVariable
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-            array.__setitem__(i, initValue)
-            if not not (i == last):
+            array.__setitem__(index_2, initValue)
+            if not (inductionVariable < tmp0_repeat_0):
                 break
             
         
