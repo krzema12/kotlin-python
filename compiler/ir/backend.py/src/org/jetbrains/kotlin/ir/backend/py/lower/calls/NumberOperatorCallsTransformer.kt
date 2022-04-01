@@ -142,20 +142,8 @@ class NumberOperatorCallsTransformer(context: PyIrBackendContext) : CallsTransfo
     private fun transformSub(call: IrFunctionAccessExpression) =
         irBinaryOp(call, intrinsics.jsMinus, toInt32 = BinaryOp(call).canAddOrSubOverflow())
 
-    private fun transformMul(call: IrFunctionAccessExpression) = BinaryOp(call).run {
-        when {
-            result.isInt() -> when {
-
-                lhs.isInt() && rhs.isInt() ->
-                    irBinaryOp(call, intrinsics.jsImul)
-
-                else ->
-                    irBinaryOp(call, intrinsics.jsMult, toInt32 = true)
-            }
-
-            else -> irBinaryOp(call, intrinsics.jsMult, toInt32 = false)
-        }
-    }
+    private fun transformMul(call: IrFunctionAccessExpression) =
+        irBinaryOp(call, intrinsics.jsMult, toInt32 = BinaryOp(call).result.isInt())
 
     private fun transformDiv(call: IrFunctionAccessExpression) =
         irBinaryOp(call, intrinsics.jsDiv, toInt32 = BinaryOp(call).result.isInt())

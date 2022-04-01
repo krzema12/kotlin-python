@@ -91,7 +91,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ar
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testIteratorLongArray	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testIteratorLongArrayNextLong	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testIteratorShortArray	Failed	PythonExecution	TypeError: object of type 'NoneType' has no len()
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testKt1291	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testKt1291	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testKt238	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testKt2997	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testKt33	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
@@ -454,7 +454,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ca
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function$Local.testEqualsHashCode	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function$Local.testExtension	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function$Local.testExtensionToLocalClass	Failed	PythonExecution	NameError: name '_init_' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function$Local.testExtensionToPrimitive	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function$Local.testExtensionToPrimitive	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function$Local.testExtensionWithClosure	Failed	PythonExecution	TypeError: box_ext() missing 1 required positional argument: 'result'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function$Local.testGenericMember	Failed	PythonExecution	NameError: name 'invoke' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function$Local.testLocalClassMember	Failed	PythonExecution	NameError: name 'foo' is not defined
@@ -611,13 +611,13 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt1578	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt1611	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt1721	Failed	PythonExecution	NameError: name 'js' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt1726	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt1726	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt1759	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt1891	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt1918	Failed	PythonExecution	TypeError: __init__() takes 1 positional argument but 2 were given
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt1976	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt1980	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt2224	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt2224	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt2384	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt2390	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt2391	Failed	PythonExecution	NameError: name 'undefined' is not defined
@@ -650,7 +650,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt504	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt508	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt5347	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt6136	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt6136	Failed	PythonExecution	NameError: name 'kotlin_Int' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt633	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt6816	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt707	Succeeded		
@@ -700,7 +700,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures.testDoubleEnclosedLocalVariable	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures.testEnclosingLocalVariable	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures.testEnclosingThis	Failed	PythonExecution	TypeError: 'NoneType' object is not callable
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures.testExtensionClosure	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures.testExtensionClosure	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures.testKt10044	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures.testKt11634	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures.testKt11634_2	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[]OK> but was:<[fail: ]OK>
@@ -956,7 +956,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testEmptyDoWhile	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testEmptyFor	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'iterator_0_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testEmptyWhile	Failed	PythonExecution	IndentationError: expected an indented block
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testFactorialTest	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testFactorialTest	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testFinallyOnEmptyReturn	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testForArrayList	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'iterator_0_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testForArrayListMultiDecl	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'iterator_0_k_'
@@ -1043,7 +1043,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ForInArray.testAllFilesPresentInForInArray	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ForInArray.testForInArraySpecializedToUntil	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ForInArray.testForInArrayWithArrayPropertyUpdatedInLoopBody	Failed	PythonExecution	SyntaxError: name 'xs' is used prior to global declaration
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ForInArray.testForInArrayWithArrayVarUpdatedInLoopBody13	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ForInArray.testForInArrayWithArrayVarUpdatedInLoopBody13	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ForInArray.testForInDelegatedPropertyUpdatedInLoopBody	Failed	PythonExecution	TypeError: __init__() takes 2 positional arguments but 4 were given
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ForInArray.testForInDoubleArrayWithUpcast	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ForInArray.testForInFieldUpdatedInLoopBody	Failed	PythonExecution	SyntaxError: name 'xs' is used prior to global declaration
@@ -1611,7 +1611,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Da
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DataClasses.testNonTrivialMemberInSuperClass	Failed	PythonExecution	NameError: name 'kotlin_Int' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DataClasses.testPrivateValParams	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DataClasses.testTwoValParams	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DataClasses.testTwoVarParams	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DataClasses.testTwoVarParams	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DataClasses.testUnitComponent	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DataClasses$Copy.testAllFilesPresentInCopy	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DataClasses$Copy.testConstructorWithDefaultParam	Succeeded		
@@ -1884,7 +1884,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Di
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion.testDefaultArgs2	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion.testDefaultArgsOverridden	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion.testDefaultArgsWithSideEffects	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion.testDefaultArgsWithSideEffects2	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion.testDefaultArgsWithSideEffects2	Failed	PythonExecution	TypeError: unsupported operand type(s) for &: 'float' and 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion.testExtensionTailCall	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion.testFunctionWithNoTails	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion.testFunctionWithNonTailRecursions	Succeeded		
@@ -2137,7 +2137,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testPartialSam	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testPrimitiveConversions	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testReceiverEvaluatedOnce	Failed	PythonExecution	NameError: name 'f' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testSamConstructorExplicitInvocation	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testSamConstructorExplicitInvocation	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testSamConversionToGenericInterfaceInGenericFun	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testSubtypeOfFunctionalTypeToFunInterfaceConversion	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testSuspendFunInterfaceConversionCodegen	Failed	PythonExecution	NameError: name 'invoke' is not defined
@@ -2157,7 +2157,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions.testDefaultargs4	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions.testDefaultargs5	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions.testDefaultargs6	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions.testDefaultargs7	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions.testDefaultargs7	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions.testEa33909	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions.testFakeDescriptorWithSeveralOverridenOne	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions.testFunctionNtoString	Failed	PythonExecution	NameError: name 'js' is not defined
@@ -2244,7 +2244,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions.testKt4119_2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions.testKt4514	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions.testKt4777	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions.testKt4783	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions.testKt4783	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions.testKt4784	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions.testKt4989	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions.testLocalExtensionOnNullableParameter	Succeeded		
@@ -3162,7 +3162,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Mu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments.testInlineFunctionWithDefaultLambda	Failed	PythonExecution	TypeError: can only concatenate str (not "NoneType") to str
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments.testKt23239	Failed	PythonExecution	TypeError: can only concatenate str (not "int") to str
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments.testKt23739	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments.testParametersInArgumentValues	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments.testParametersInArgumentValues	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments.testSuperCall	Failed	PythonExecution	NameError: name 'foo' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments.testSuspend	Failed	PythonExecution	AttributeError: 'Companion_19' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Multiplatform$DefaultArguments.testTypeAlias	Succeeded		
@@ -3320,7 +3320,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ol
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OldLanguageVersions$Coroutines$SuspendFunctionAsCoroutine.testIfExpressionInsideCoroutine_1_2	Failed	PythonExecution	ImportError: cannot import name 'box' from 'compiled_module' <path-truncated>)
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testAllFilesPresentInOperatorConventions	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testAnnotatedAssignment	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testAssignmentOperations	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testAssignmentOperations	Failed	PythonExecution	TypeError: unsupported operand type(s) for &: 'float' and 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testAugmentedAssignmentInInitializer	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'plusAssign_a4enbm_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testAugmentedAssignmentWithArrayLHS	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testGenericArrayAccessCall	Succeeded		
@@ -3551,7 +3551,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt4140	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt4252	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt4252_2	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt4340	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt4340	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt4373	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt4383	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetFieldImpl' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt613	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'Test' and 'int'
@@ -3627,10 +3627,10 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ra
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges.testForInDoubleRangeWithCustomIterator	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges.testForInFloatRangeWithCustomIterator	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges.testForInRangeLiteralWithMixedTypeBounds	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges.testForInRangeWithImplicitReceiver	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges.testForInRangeWithImplicitReceiver	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges.testForInStringVarUpdatedInLoopBody	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges.testForIntRange	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges.testForNullableIntInRangeWithImplicitReceiver	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges.testForNullableIntInRangeWithImplicitReceiver	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges.testKt37370	Failed	PythonExecution	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges.testKt37370a	Failed	PythonExecution	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges.testKt47492	Failed	Unknown	java.lang.IllegalStateException: UNRESOLVED_REFERENCE_WRONG_RECEIVER: Unresolved reference. None of the following candidates is applicable because of receiver type mismatch: 
@@ -3774,11 +3774,11 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ra
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Expression.testSimpleSteppedDownTo	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Expression.testSimpleSteppedRange	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInDownTo.testAllFilesPresentInForInDownTo	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInDownTo.testForIntInDownTo	Failed	PythonExecution	NameError: name 'js' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInDownTo.testForIntInDownToWithNonConstBounds	Failed	PythonExecution	NameError: name 'js' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInDownTo.testForIntInNonOptimizedDownTo	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInDownTo.testForIntInDownTo	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInDownTo.testForIntInDownToWithNonConstBounds	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInDownTo.testForIntInNonOptimizedDownTo	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInDownTo.testForLongInDownTo	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInDownTo.testForNullableIntInDownTo	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInDownTo.testForNullableIntInDownTo	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInIndices.testAllFilesPresentInForInIndices	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInIndices.testForInArrayListIndices	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInIndices.testForInCharSequenceIndices	Failed	PythonExecution	NameError: name 'js' is not defined
@@ -3800,7 +3800,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ra
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInIndices.testKt13241_CharSequence	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInIndices.testKt13241_Collection	Failed	PythonExecution	AttributeError: 'ArrayList' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInIndices.testKt43159_ArrayUpperBound	Failed	PythonExecution	TypeError: test_1() takes 1 positional argument but 4 were given
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInIndices.testKt43159_GenericArray	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInIndices.testKt43159_GenericArray	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInProgressionWithIndex.testAllFilesPresentInForInProgressionWithIndex	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInProgressionWithIndex.testForInDownToWithIndex	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInProgressionWithIndex.testForInIndicesWithIndex	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
@@ -3818,18 +3818,18 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ra
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInProgressionWithIndex.testForInWithIndexWithIndex	Failed	PythonExecution	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInProgressionWithIndex.testKt42909	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'toString'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testAllFilesPresentInForInReversed	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedArrayIndices	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedArrayIndices	Failed	PythonExecution	NameError: name 'undefined' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedCharSequenceIndices	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedCollectionIndices	Failed	PythonExecution	NameError: name 'js' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedDownTo	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedDownTo	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedEmptyRange	Failed	PythonExecution	NameError: name 'kotlin_Int' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedEmptyRangeLiteral	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedEmptyRangeLiteralWithNonConstBounds	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedRange	Failed	PythonExecution	NameError: name 'kotlin_Int' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedRangeLiteral	Failed	PythonExecution	NameError: name 'js' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedRangeLiteralWithNonConstBounds	Failed	PythonExecution	NameError: name 'js' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedReversedArrayIndices	Failed	PythonExecution	NameError: name 'js' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedReversedDownTo	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedRangeLiteral	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedRangeLiteralWithNonConstBounds	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedReversedArrayIndices	Failed	PythonExecution	NameError: name 'undefined' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedReversedDownTo	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedReversedRange	Failed	PythonExecution	NameError: name 'kotlin_Int' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedReversedReversedRange	Failed	PythonExecution	NameError: name 'kotlin_Int' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInReversed.testForInReversedReversedUntil	Failed	PythonExecution	NameError: name 'kotlin_Int' is not defined
@@ -3841,7 +3841,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ra
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInUntil.testForInUntilCharMaxValue	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInUntil.testForInUntilCharMinValue	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInUntil.testForInUntilCharMinValueNonConst	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInUntil.testForInUntilInt	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInUntil.testForInUntilInt	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInUntil.testForInUntilIntMaxValue	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInUntil.testForInUntilIntMinValue	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$ForInUntil.testForInUntilIntMinValueNonConst	Succeeded		
@@ -5227,7 +5227,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testConstructorVisibilityInConstLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testConstructorVisibilityInLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testDefineClass	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testFunctionExpression	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testFunctionExpression	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testInlineCallInsideInlineLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt13182	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt13374	Succeeded		
@@ -5338,7 +5338,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference.testPropertyIntrinsic	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference.testPropertyReference	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference.testTopLevel	Failed	PythonExecution	TypeError: unsupported operand type(s) for &: 'float' and 'int'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference.testTopLevelExtension	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference.testTopLevelExtension	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference.testTopLevelProperty	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$AdaptedReferences.testAllFilesPresentInAdaptedReferences	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$AdaptedReferences.testInlineBound	Succeeded		
@@ -5593,7 +5593,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NoInline.testExtensionReceiver	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NoInline.testLambdaAsGeneric	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NoInline.testLambdaAsNonFunction	Failed	PythonExecution	NameError: name 'js' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NoInline.testNoInline	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NoInline.testNoInline	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NoInline.testNoInlineLambdaChain	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NoInline.testNoInlineLambdaChainWithCapturedInline	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$NoInline.testWithoutInline	Succeeded		
@@ -5713,7 +5713,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testAugAssignmentAndIncViaConvention	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testFromObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testKt22649	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testProperty	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testProperty	Failed	PythonExecution	AttributeError: 'int' object has no attribute '_set_p8__majfzk_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testReifiedVal	Failed	PythonExecution	NameError: name 'kotlin_Boolean' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testReifiedVar	Failed	PythonExecution	NameError: name 'kotlin_Boolean' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testSimple	Failed	PythonExecution	TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
@@ -5777,7 +5777,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testSimpleDouble	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testSimpleEnum	Failed	PythonExecution	NameError: name 'js' is not defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testSimpleGenerics	Failed	PythonExecution	NameError: name 'js' is not defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testSimpleInt	Failed	PythonExecution	NameError: name 'js' is not defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testSimpleInt	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testSimpleLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testSimpleObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testVararg	Failed	PythonExecution	SyntaxError: can't use starred expression here
