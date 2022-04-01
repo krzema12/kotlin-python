@@ -167,3 +167,5 @@ val packFullRuntimeKLib by tasks.registering(Jar::class) {
     destinationDirectory.set(rootProject.buildDir.resolve("js-ir-runtime"))
     archiveFileName.set("full-runtime.klib")
 }
+
+project(":kotlin-compiler").tasks["distKotlinc"].dependsOn(project.tasks.assemble)
