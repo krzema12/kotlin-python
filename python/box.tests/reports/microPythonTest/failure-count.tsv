@@ -1,21 +1,21 @@
 1051	MemoryError: memory allocation failed, allocating XXX bytes
-282	NameError: name 'js' isn't defined
 276	AttributeError: 'Companion_19' object has no attribute 'constructor'
+252	NameError: name 'js' isn't defined
 187	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
 160	NameError: name 'Unexpected_operator_EQ' isn't defined
 143	AttributeError: type object 'IllegalStateException' has no attribute '__new__'
 105	kotlin.NotImplementedError: An operation is not implemented.
 94	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
-63	NameError: name 'Array' isn't defined
-60	AttributeError: 'int' object has no attribute 'data'
+65	AttributeError: 'int' object has no attribute 'data'
+55	AttributeError: 'list' object has no attribute '__setitem__'
 47	TypeError: can't convert 'NoneType' object to str implicitly
 41	NameError: local variable referenced before assignment
 41	TypeError: 'NoneType' object isn't callable
+40	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 40	SyntaxError: invalid syntax
 39	AttributeError: '_no_name_provided__12' object has no attribute 'constructor'
-36	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 32	AttributeError: type object 'A' has no attribute '__new__'
-30	NameError: name 'kotlin_Int' isn't defined
+31	NameError: name 'kotlin_Int' isn't defined
 27	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
 24	AttributeError: '_no_name_provided__11' object has no attribute 'constructor'
 23	AttributeError: 'CheckStateMachineContinuation' object has no attribute 'constructor'
@@ -43,13 +43,14 @@
 9	AttributeError: 'NoneType' object has no attribute 'invoke_0_k_'
 9	java.lang.IllegalStateException: UNRESOLVED_REFERENCE_WRONG_RECEIVER: Unresolved reference. None of the following candidates is applicable because of receiver type mismatch: 
 8	AttributeError: 'NoneType' object has no attribute 'foo_0_k_'
+8	AttributeError: 'int' object has no attribute 'toString'
 8	AttributeError: 'tuple' object has no attribute '__setitem__'
 8	AttributeError: type object 'Test' has no attribute '__new__'
 8	java.lang.IllegalArgumentException: List has more than one element.
 8	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail]>
-7	AttributeError: 'int' object has no attribute 'toString'
 7	AttributeError: type object 'NullPointerException' has no attribute '__new__'
 7	NameError: name 'Object' isn't defined
+7	TypeError: unsupported types for __and__: 'float', 'int'
 7	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1]>
 6	AttributeError: 'M' object has no attribute 'i'
 6	NameError: name 'kotlin_Long' isn't defined
@@ -63,7 +64,6 @@
 5	NameError: name 'test_A' isn't defined
 5	NameError: name 'test_C' isn't defined
 5	NameError: name 'translateCallArguments_1' isn't defined
-5	TypeError: unsupported types for __and__: 'float', 'int'
 4	AttributeError: 'Companion_20' object has no attribute 'getO_0_k_'
 4	AttributeError: type object 'B' has no attribute '__new__'
 4	AttributeError: type object 'Outer' has no attribute '__new__'
@@ -199,6 +199,7 @@
 1	AttributeError: '_no_name_provided__14' object has no attribute 'constructor'
 1	AttributeError: '_no_name_provided__20' object has no attribute 'constructor'
 1	AttributeError: 'bool' object has no attribute 'toString'
+1	AttributeError: 'int' object has no attribute '_set_p8__majfzk_k_'
 1	AttributeError: 'int' object has no attribute 'hashCode'
 1	AttributeError: type object 'Actor' has no attribute '__new__'
 1	AttributeError: type object 'Address' has no attribute '__new__'
@@ -291,6 +292,7 @@
 1	TypeError: unsupported types for __add__: 'ExtProvider', 'int'
 1	TypeError: unsupported types for __add__: 'Z', 'int'
 1	TypeError: unsupported types for __le__: 'int', 'NoneType'
+1	TypeError: unsupported types for __lt__: 'int', 'NoneType'
 1	ZeroDivisionError: divide by zero
 1	java.lang.IllegalStateException: IMPLEMENTING_FUNCTION_INTERFACE: Implementing function interface is prohibited in JavaScript (8,14) in <path-truncated>
 1	java.lang.IllegalStateException: NO_THIS: 'this' is not defined in this context (10,20) in <path-truncated>
