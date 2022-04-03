@@ -53,7 +53,7 @@ val jsMainSources by task<Sync> {
     val sources = listOf(
         "core/builtins/src/kotlin/",
         "libraries/stdlib/py/inherited-from-js-v1/src/",
-        "libraries/stdlib/js/runtime/"
+        "libraries/stdlib/py/inherited-from-js-v1/runtime/"
     ) + unimplementedNativeBuiltIns
 
     val excluded = listOf(
@@ -103,7 +103,7 @@ val commonTestSources by task<Sync> {
 }
 
 val jsTestSources by task<Sync> {
-    from("$rootDir/libraries/stdlib/js/test/")
+    from("$rootDir/libraries/stdlib/py/inherited-from-js-v1/test/")
     into("$buildDir/jsTestSources")
 }
 
