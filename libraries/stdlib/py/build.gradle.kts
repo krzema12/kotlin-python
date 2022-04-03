@@ -52,7 +52,7 @@ val commonMainSources by task<Sync> {
 val jsMainSources by task<Sync> {
     val sources = listOf(
         "core/builtins/src/kotlin/",
-        "libraries/stdlib/js/src/",
+        "libraries/stdlib/py/inherited-from-js-v1/src/",
         "libraries/stdlib/js/runtime/"
     ) + unimplementedNativeBuiltIns
 
