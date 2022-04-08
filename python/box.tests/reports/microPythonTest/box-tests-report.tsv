@@ -41,7 +41,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ar
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testArguments	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testCaptured	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testCapturedInExtension	Failed	PythonExecution	TypeError: unsupported types for __and__: 'float', 'int'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testDefaults	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testDefaults	Failed	PythonExecution	TypeError: unsupported types for __and__: 'float', 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testExtension	Failed	PythonExecution	TypeError: unsupported types for __and__: 'float', 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testExtensionInClass	Failed	PythonExecution	TypeError: unsupported types for __add__: 'Z', 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testKt17691WithEnabledFeature	Failed	KotlinCompilation	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
@@ -52,7 +52,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ar
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testSimpleInClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ArgumentOrder.testSingleSideEffect	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testAllFilesPresentInArrays	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testArrayConstructorWithNonInlineLambda	Failed	PythonExecution	TypeError: unsupported types for __lt__: 'int', 'NoneType'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testArrayConstructorWithNonInlineLambda	Failed	PythonExecution	AttributeError: 'list' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testArrayConstructorsSimple	Failed	PythonExecution	AttributeError: 'list' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testArrayGetAssignMultiIndex	Failed	PythonExecution	AttributeError: 'list' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testArrayGetMultiIndex	Failed	PythonExecution	AttributeError: 'list' object has no attribute '__setitem__'
@@ -115,7 +115,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ar
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testNonNullArray	Failed	PythonExecution	AttributeError: 'list' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testPrimitiveArrays	Failed	KotlinCompilation	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays.testStdlib	Failed	PythonExecution	AttributeError: 'list' object has no attribute '__setitem__'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays$ArraysOfInlineClass.testAccessArrayOfInlineClass	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute '__setitem__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays$ArraysOfInlineClass.testAccessArrayOfInlineClass	Failed	PythonExecution	AttributeError: 'list' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays$ArraysOfInlineClass.testAccessArrayOfUnsigned	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays$ArraysOfInlineClass.testAllFilesPresentInArraysOfInlineClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Arrays$ArraysOfInlineClass.testArrayOfInlineClassOfArrayOfInlineClass	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
@@ -161,7 +161,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bi
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp.testEqNullableDoublesToIntWithTP	Failed	PythonExecution	AttributeError: type object 'AssertionError' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp.testEqNullableDoublesWithTP	Failed	PythonExecution	AttributeError: type object 'AssertionError' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp.testEqNullableShortToShort	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp.testEqNullableToPrimitiveWithSideEffects	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail cmp 1]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp.testEqNullableToPrimitiveWithSideEffects	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp.testIntrinsic	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp.testIntrinsicAny	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp.testIntrinsicNullable	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
@@ -176,7 +176,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bi
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BinaryOp.testPrimitiveEqualsSafeCall	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization.testAllFilesPresentInBoxingOptimization	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization.testBoxedIntegersCmp	Failed	PythonExecution	NameError: name 'js' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization.testBoxedPrimitivesAreEqual	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 2]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization.testBoxedPrimitivesAreEqual	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization.testBoxedRealsCmp	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization.testCasts	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$BoxingOptimization.testCheckcastAndInstanceOf	Succeeded		
@@ -221,7 +221,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Br
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges.testFakeGenericCovariantOverrideWithDelegation	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail #1]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges.testFakeOverrideFromInterfaceThroughIntermediateClass	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 1]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges.testFakeOverrideMultiFile	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges.testFakeOverrideOfTraitImpl	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail: None]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges.testFakeOverrideOfTraitImpl	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail: ]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges.testFakeOverrideThroughGenericSuperclass	Failed	PythonExecution	AttributeError: 'C' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges.testFakeOverrideWithSeveralSuperDeclarations	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'NoneType'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges.testFakeOverrideWithSynthesizedImplementation	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 1]>
@@ -234,7 +234,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Br
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges.testKt2702	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges.testKt2833	Failed	PythonExecution	AttributeError: 'FunDependencyEdgeImpl' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges.testKt2920	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges.testKt318	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges.testKt318	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges.testKt42137	Failed	PythonExecution	AttributeError: 'Y' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges.testLongChainOneBridge	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Bridges.testManyTypeArgumentsSubstitutedSuccessively	Failed	PythonExecution	NameError: name 'js' isn't defined
@@ -371,7 +371,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ca
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Bound.testSimpleProperty	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Bound.testSmartCastForExtensionReceiver	Failed	PythonExecution	TypeError: __init__() takes 1 positional arguments but 2 were given
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Bound$Equals.testAllFilesPresentInEquals	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Bound$Equals.testNullableReceiverInEquals	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Bound extension refs with same receiver SHOULD be equal]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Bound$Equals.testNullableReceiverInEquals	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Bound$Equals.testPropertyAccessors	Failed	PythonExecution	ImportError: can't import name box
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Bound$Equals.testReceiverInEquals	Failed	PythonExecution	NameError: name 'foo' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Bound$Equals.testReflectionReference	Succeeded		
@@ -429,7 +429,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ca
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function.testNestedConstructorFromTopLevelNoArgs	Failed	PythonExecution	NameError: name '_init_' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function.testNestedConstructorFromTopLevelOneStringArg	Failed	PythonExecution	NameError: name '_init_' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function.testNewArray	Failed	PythonExecution	NameError: name '_init_' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function.testOverloadedFun	Failed	PythonExecution	TypeError: 'NoneType' object isn't callable
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function.testOverloadedFun	Failed	PythonExecution	TypeError: foo() takes 0 positional arguments but 1 were given
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function.testOverloadedFunVsVal	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function.testPrivateClassMember	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function.testReferenceToCompanionMember	Failed	PythonExecution	NameError: name 'js' isn't defined
@@ -464,7 +464,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ca
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function$Local.testSimple	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function$Local.testSimpleClosure	Failed	PythonExecution	TypeError: box_foo() takes 1 positional arguments but 0 were given
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function$Local.testSimpleWithArg	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function$Local.testUnitWithSideEffect	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function$Local.testUnitWithSideEffect	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testAccessViaSubclass	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testAccessorForPropertyWithPrivateSetter	Failed	Unknown	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: sequenceOf (8,22) in <path-truncated>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testAllFilesPresentInProperty	Succeeded		
@@ -472,7 +472,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ca
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testDelegatedMutable	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testEnumNameOrdinal	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testExtensionToArray	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testGenericProperty	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'getValue_d8h4ck_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testGenericProperty	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testInEnum	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testInReceiverOfAnother	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testInvokePropertyReference	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
@@ -490,7 +490,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ca
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testPrivateSetOuterClass	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testPrivateSetterInsideClass	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testPrivateSetterOutsideClass	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testReceiverEvaluatedOnce	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testReceiverEvaluatedOnce	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testSimpleExtension	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testSimpleMember	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Property.testSimpleMutableExtension	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
@@ -517,7 +517,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ca
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts.testIsNullablePrimitive	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts.testKt22714	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts.testKt48927_privateMethodOnDerivedCastToBase	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts.testLambdaToUnitCast	Failed	PythonExecution	TypeError: 'NoneType' object isn't callable
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts.testLambdaToUnitCast	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrTypeOperatorCallImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts.testNotIs	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts.testNullableSafeCastToTypeParameterWithInterfaceUpperBound	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts.testObjectToPrimitiveWithAssertion	Failed	PythonExecution	NameError: name 'js' isn't defined
@@ -533,7 +533,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ca
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts$Functions.testReifiedAsFunKSmall	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts$Functions.testReifiedIsFunKBig	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts$Functions.testReifiedIsFunKSmall	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts$Functions.testReifiedSafeAsFunKBig	Failed	PythonExecution	TypeError: 'NoneType' object isn't subscriptable
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts$Functions.testReifiedSafeAsFunKBig	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts$Functions.testReifiedSafeAsFunKSmall	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts$Functions.testSafeAsFunKBig	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Casts$Functions.testSafeAsFunKSmall	Succeeded		
@@ -645,7 +645,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt471	Failed	PythonExecution	AttributeError: 'list' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt48	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt496	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt500	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test0 failed]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt500	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt501	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt504	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testKt508	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
@@ -676,7 +676,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testRightHandOverride	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testSelfcreate	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testSimpleBox	Failed	PythonExecution	NameError: name 'kotlin_Int' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testSuperConstructorCallWithComplexArg	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testSuperConstructorCallWithComplexArg	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes.testTypedDelegation	Failed	PythonExecution	AttributeError: 'Base' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes$Inner.testAllFilesPresentInInner	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Classes$Inner.testExtensionWithOuter	Failed	PythonExecution	AttributeError: 'Inner' object has no attribute 'value'
@@ -699,7 +699,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Cl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures.testCrossinlineLocalDeclaration	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures.testDoubleEnclosedLocalVariable	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures.testEnclosingLocalVariable	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures.testEnclosingThis	Failed	PythonExecution	TypeError: 'NoneType' object isn't callable
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures.testEnclosingThis	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures.testExtensionClosure	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures.testKt10044	Failed	PythonExecution	AttributeError: type object 'Example' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Closures.testKt11634	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
@@ -912,8 +912,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Constants.testConstantsInWhen	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Constants.testDivisionByZero	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Constants.testFloat	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Constants.testFoldingBinaryOpsUnsigned	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[FAIL 0: None]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Constants.testFoldingBinaryOpsUnsignedConst	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Constants.testFoldingBinaryOpsUnsigned	Failed	PythonExecution	NameError: name 'kotlin_UInt' isn't defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Constants.testFoldingBinaryOpsUnsignedConst	Failed	PythonExecution	NameError: name 'kotlin_UInt' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Constants.testKt9532	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Constants.testKt9532_lv10	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 4: A.bNonConst === B.bNonConst]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Constants.testLong	Succeeded		
@@ -954,7 +954,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testDoWhileFib	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testDoWhileWithContinue	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 1, expected 1, but 102]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testEmptyDoWhile	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testEmptyFor	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'iterator_0_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testEmptyFor	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'hasNext_0_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testEmptyWhile	Failed	PythonExecution	SyntaxError: invalid syntax
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testFactorialTest	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testFinallyOnEmptyReturn	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
@@ -972,8 +972,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testIfConst2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testIfIncompatibleBranches	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testInRangeConditionsInWhen	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testKt12908	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testKt12908_2	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testKt12908	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testKt12908_2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testKt1441	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail5]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testKt14839	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testKt15726	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
@@ -1016,8 +1016,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testParameterWithNameForFunctionType	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testQuicksort	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testTcbInEliminatedCondition	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testTryCatchExpression	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testTryCatchFinally	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testTryCatchExpression	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testTryCatchFinally	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testTryCatchFinallyChain	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures.testTryFinally	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$BreakContinueInExpressions.testAllFilesPresentInBreakContinueInExpressions	Succeeded		
@@ -1110,11 +1110,11 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ForInSequenceWithIndex.testForInSequenceWithIndexNoIndexVarCheckSideEffects	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ForInSequenceWithIndex.testForInSequenceWithIndexWithExplicitlyTypedIndexVariable	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing.testAllFilesPresentInReturnsNothing	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing.testIfElse	Failed	PythonExecution	AttributeError: type object 'NullPointerException' has no attribute '__new__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing.testIfElse	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing.testInlineMethod	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing.testPropertyGetter	Failed	PythonExecution	AttributeError: type object 'NullPointerException' has no attribute '__new__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing.testPropertyGetter	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing.testTryCatch	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing.testWhen	Failed	PythonExecution	AttributeError: type object 'NullPointerException' has no attribute '__new__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$ReturnsNothing.testWhen	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$TryCatchInExpressions.testAllFilesPresentInTryCatchInExpressions	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$TryCatchInExpressions.testCatch	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ControlStructures$TryCatchInExpressions.testComplexChain	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
@@ -1291,7 +1291,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$ControlFlow.testThrowFromCatch	Failed	PythonExecution	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$ControlFlow.testThrowFromFinally	Failed	PythonExecution	AttributeError: '_no_name_provided__11' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$ControlFlow.testThrowInTryWithHandleResult	Failed	PythonExecution	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$ControlFlow.testWhenWithSuspensions	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$ControlFlow.testWhenWithSuspensions	Failed	PythonExecution	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$ControlFlow.testWhileStatement	Failed	PythonExecution	AttributeError: 'Companion_19' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$Debug.testAllFilesPresentInDebug	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$FeatureIntersection.testAllFilesPresentInFeatureIntersection	Succeeded		
@@ -1493,7 +1493,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$IntLikeVarSpilling.testNoVariableInTable	Failed	PythonExecution	AttributeError: 'Companion_19' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$IntLikeVarSpilling.testSameIconst1ManyVars	Failed	PythonExecution	AttributeError: 'Companion_19' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$IntLikeVarSpilling.testUnusedCatchVar	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$IntLikeVarSpilling.testUsedInMethodCall	Failed	PythonExecution	AttributeError: 'Companion_19' object has no attribute 'constructor'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$IntLikeVarSpilling.testUsedInMethodCall	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$IntLikeVarSpilling.testUsedInVarStore	Failed	PythonExecution	AttributeError: 'Companion_19' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$IntrinsicSemantics.testAllFilesPresentInIntrinsicSemantics	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Coroutines$IntrinsicSemantics.testCoroutineContext	Failed	PythonExecution	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
@@ -1692,7 +1692,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$De
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Constructor.testKt3060	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetFieldImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Constructor.testObjectExpressionDelegatingToSecondaryConstructor	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Convention.testAllFilesPresentInConvention	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Convention.testIncWithDefaultInGetter	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Convention.testIncWithDefaultInGetter	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Convention.testIncWithDefaults	Failed	PythonExecution	TypeError: can't convert 'int' object to str implicitly
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Convention.testKt16520	Failed	PythonExecution	TypeError: can't convert 'int' object to str implicitly
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Convention.testKt9140	Succeeded		
@@ -1736,7 +1736,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$De
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Signature.testKt2789	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1: 16 != None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Signature.testKt9428	Failed	PythonExecution	AttributeError: type object 'NullPointerException' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DefaultArguments$Signature.testKt9924	Failed	PythonExecution	NameError: name 'js' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testAccessTopLevelDelegatedPropertyInClinit	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testAccessTopLevelDelegatedPropertyInClinit	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testAllFilesPresentInDelegatedProperty	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testBeforeDeclarationContainerOptimization	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testCapturePropertyInClosure	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
@@ -1745,8 +1745,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$De
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testDelegateAsInnerClass	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testDelegateByOtherProperty	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testDelegateByTopLevelFun	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testDelegateByTopLevelProperty	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'getValue_1kobyo_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testDelegateForExtProperty	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'getValue_8jdd4h_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testDelegateByTopLevelProperty	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testDelegateForExtProperty	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testDelegateForExtPropertyInClass	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testDelegateToAnother	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testDelegateToAnotherCustom	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
@@ -1756,7 +1756,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$De
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testDelegateToOpenProperty	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testDelegateWithPrivateSet	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testDelegatedPropertyInEnum	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testExtensionDelegatesWithSameNames	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'getValue_jxhupm_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testExtensionDelegatesWithSameNames	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testExtensionPropertyAndExtensionGetValue	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testFunctionRefDelefate	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testGenericDelegate	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
@@ -1783,9 +1783,9 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$De
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testReferenceEnclosingClassFieldInReceiver2	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testSetAsExtensionFun	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testSetAsExtensionFunInClass	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testTopLevelVal	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'getValue_1kobyo_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testTopLevelVar	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'getValue_1kobyo_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testTwoPropByOneDelegete	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'getValue_d8h4ck_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testTopLevelVal	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testTopLevelVar	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testTwoPropByOneDelegete	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testUseKPropertyLater	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testUseReflectionOnKProperty	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty.testValByMapDelegatedProperty	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
@@ -1821,26 +1821,26 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$De
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$OptimizedDelegatedProperties.testLazy	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$OptimizedDelegatedProperties.testMixedArgumentSizes	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testAllFilesPresentInProvideDelegate	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testDelegatedPropertyWithIdProvideDelegate	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testDifferentReceivers	Failed	PythonExecution	AttributeError: type object 'Exception' has no attribute '__new__'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testEvaluationOrder	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testDelegatedPropertyWithIdProvideDelegate	Failed	KotlinCompilation	java.lang.IllegalStateException: Variable name is not found tmp0_mapValues_0
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testDifferentReceivers	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testEvaluationOrder	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testEvaluationOrderVar	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testExtensionDelegated	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'getValue_9ou11a_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testGeneric	Failed	PythonExecution	AttributeError: type object 'Exception' has no attribute '__new__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testExtensionDelegated	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testGeneric	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testGenericDelegateWithNoAdditionalInfo	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testGenericProvideDelegateOnNumberLiteral	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'getValue_d8h4ck_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testGenericProvideDelegateOnNumberLiteral	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testHostCheck	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testInClass	Failed	PythonExecution	AttributeError: type object 'Exception' has no attribute '__new__'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testInlineProvideDelegate	Failed	PythonExecution	AttributeError: type object 'Exception' has no attribute '__new__'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testKt15437	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'getValue_1kobyo_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testInClass	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testInlineProvideDelegate	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testKt15437	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testKt16441	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testKt18902	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testKt39588	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testLocal	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testLocalCaptured	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testLocalDifferentReceivers	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testLocal	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testLocalCaptured	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testLocalDifferentReceivers	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testMemberExtension	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testPropertyMetadata	Failed	PythonExecution	AttributeError: type object 'Exception' has no attribute '__new__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testPropertyMetadata	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DelegatedProperty$ProvideDelegate.testProvideDelegateByExtensionFunction	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Delegation.testAllFilesPresentInDelegation	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Delegation.testDelegationDifferentModule	Failed	Unknown	kotlin.NotImplementedError: An operation is not implemented.
@@ -1883,7 +1883,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Di
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion.testDefaultArgs	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion.testDefaultArgs2	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion.testDefaultArgsOverridden	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion.testDefaultArgsWithSideEffects	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion.testDefaultArgsWithSideEffects	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion.testDefaultArgsWithSideEffects2	Failed	PythonExecution	TypeError: unsupported types for __and__: 'float', 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion.testExtensionTailCall	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Diagnostics$Functions$TailRecursion.testFunctionWithNoTails	Succeeded		
@@ -1948,14 +1948,14 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$En
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testAbstractNestedClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testAllFilesPresentInEnum	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testAsReturnExpression	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testCompanionAccessingEnumValue	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testCompanionAccessingEnumValue	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testCompanionObjectInEnum	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testConstructorWithReordering	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testDeepInnerClassInEnumEntryClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testDeepInnerClassInEnumEntryClass2	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testEmptyConstructor	Failed	PythonExecution	AttributeError: type object 'My' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testEmptyEnumValuesValueOf	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testEnumCompanionInit	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testEnumCompanionInit	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: E.init(x);E.init(y);E.companion.init;None;None;F.companion.init;F.foo();<F object at [address]>;]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testEnumConstructorParameterClashWithDefaults	Failed	PythonExecution	SyntaxError: argument name reused
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testEnumEntryMembers	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testEnumEntryReferenceFromInnerClassConstructor1	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'foo_0_k_'
@@ -1971,7 +1971,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$En
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testInitEntriesInCompanionObject	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testInitEntriesInCompanionObject2	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testInitEntriesInValueOf	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testInitEnumAfterObjectAccess	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testInitEnumAfterObjectAccess	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testInner	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testInnerClassInEnumEntryClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testInnerClassMethodInEnumEntryClass	Succeeded		
@@ -2002,7 +2002,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$En
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testKt9711	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testKt9711_2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testManyDefaultParameters	Failed	PythonExecution	AttributeError: type object 'ClassTemplate' has no attribute '__new__'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testObjectInEnum	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 2]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testObjectInEnum	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testOrdinal	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testOverloadedEnumValues	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testRefToThis	Succeeded		
@@ -2011,7 +2011,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$En
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testSuperCallInEnumLiteral	Failed	PythonExecution	RuntimeError: maximum recursion depth exceeded
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testToString	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<State object at [address]><State object at [address]>]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testValueof	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testWhenInObject	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'f_2bq_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum.testWhenInObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum$DefaultCtor.testAllFilesPresentInDefaultCtor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum$DefaultCtor.testConstructorWithDefaultArguments	Failed	PythonExecution	AttributeError: type object 'Test' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Enum$DefaultCtor.testConstructorWithVararg	Failed	PythonExecution	NameError: name 'translateCallArguments_2' isn't defined
@@ -2029,7 +2029,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ex
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testAllFilesPresentInExtensionFunctions	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testClassMethodCallExtensionSuper	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testDefaultMethodInterfaceCallExtensionSuper	Failed	PythonExecution	NameError: name 'js' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testExecutionOrder	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testExecutionOrder	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testKt1061	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testKt1249	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testKt1290	Succeeded		
@@ -2038,11 +2038,11 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ex
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testKt1953	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testKt1953_class	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testKt23675	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testKt3285	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testKt3285	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: Time to play! ]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testKt3298	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testKt3646	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testKt3969	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testKt4228	Failed	PythonExecution	TypeError: 'NoneType' object isn't callable
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testKt4228	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testKt475	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testKt5467	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ExtensionFunctions.testKt606	Succeeded		
@@ -2082,7 +2082,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fa
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FakeOverride.testVarianceOverload	Failed	Unknown	kotlin.NotImplementedError: An operation is not implemented.
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FieldRename.testAllFilesPresentInFieldRename	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FieldRename.testConstructorAndClassObject	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FieldRename.testDelegates	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'getValue_1kobyo_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FieldRename.testDelegates	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FieldRename.testGenericPropertyWithItself	Failed	PythonExecution	NameError: name 'MPair___' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Finally.testAllFilesPresentInFinally	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Finally.testBreakAndOuterFinally	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
@@ -2123,11 +2123,11 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testFunConversionInVararg	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testFunInterfaceCallInLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testFunInterfaceInheritance	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail2]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testFunInterfaceWithReceiver	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'foo_uk8unn_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testFunInterfaceWithReceiver	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[failed 1]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testInlinedSamWrapper	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testIntersectionTypeToFunInterfaceConversion	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testIrrelevantPrivateDeclarations	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testKt45444_privateFunInterface	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'result'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testKt45444_privateFunInterface	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testKt46512_indyFunInterfaceOverCallableReference	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testKt46908_functionSupertype	Failed	Unknown	java.lang.IllegalStateException: IMPLEMENTING_FUNCTION_INTERFACE: Implementing function interface is prohibited in JavaScript (8,14) in <path-truncated>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$FunInterface.testMultimodule	Succeeded		
@@ -2206,7 +2206,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$BigArity.testNestedBigArityFunCalls	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$BigArity.testSubclass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$FunctionExpression.testAllFilesPresentInFunctionExpression	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$FunctionExpression.testFunctionExpression	Failed	PythonExecution	TypeError: 'NoneType' object isn't callable
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$FunctionExpression.testFunctionExpression	Failed	PythonExecution	NameError: name 'self' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$FunctionExpression.testFunctionExpressionWithThisReference	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$FunctionExpression.testFunctionExpressionWithThisReferenceNI	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$FunctionExpression.testFunctionLiteralExpression	Failed	PythonExecution	TypeError: can't convert 'int' object to str implicitly
@@ -2251,7 +2251,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Fu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions.testLocalFunctionInConstructor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions.testLocalFunctionVsLocalVariable	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions.testNameClash	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions.testNameClashAcrossDifferentContainers	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions.testNameClashAcrossDifferentContainers	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions.testOverloadedLocalFunWithoutClosure	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions.testOverloadedLocalFunction	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Functions$LocalFunctions.testOverloadedLocalFunction1	Succeeded		
@@ -2314,7 +2314,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testArgumentWithSideEffects	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testArrayElement	Failed	PythonExecution	AttributeError: 'tuple' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testAssignPlusOnSmartCast	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testAugmentedAssignmentWithComplexRhs	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testAugmentedAssignmentWithComplexRhs	Failed	PythonExecution	TypeError: unsupported types for __and__: 'float', 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testClassNaryGetSet	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testClassVarargGetSet	Failed	PythonExecution	SyntaxError: non-keyword arg after */**
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testClassVarargGetSetEvaluationOrder	Failed	PythonExecution	SyntaxError: non-keyword arg after */**
@@ -2347,14 +2347,14 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testEarlyReturnInsideCrossinlineLambda	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetValueImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testInferenceWithTypeVariableInsideCapturedType	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testIntegerLiteralTypeInLamdaReturnType	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testKt10822	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail: None]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testKt10822	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail: ]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testKt35684	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testKt36446	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testKt38664	Failed	PythonExecution	AttributeError: 'Companion_20' object has no attribute 'foo_2bn_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testKt39824	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testKt38664	Failed	PythonExecution	AttributeError: type object 'ClassCastException' has no attribute '__new__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testKt39824	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testKt42042	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testKt42130	Failed	PythonExecution	AttributeError: 'C' object has no attribute 'constructor'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testKt45118	Failed	PythonExecution	AttributeError: type object 'ClassCastException' has no attribute '__new__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testKt45118	Failed	PythonExecution	TypeError: __init__() takes 1 positional arguments but 2 were given
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testLambdaWithStarReturn	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testLambdasWithExtensionFunctionType	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Inference.testLastExpressionOfLambdaWithNothingConstraint	Failed	PythonExecution	NameError: name 'Inv_kotlin_Any__' isn't defined
@@ -2416,8 +2416,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testAnnotatedMemberExtensionProperty	Failed	PythonExecution	AttributeError: 'A' object has no attribute 's'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testAnySuperCall	Failed	PythonExecution	AttributeError: type object 'IllegalStateException' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testBoundCallableReferencePassedToInlineFunction	Failed	PythonExecution	AttributeError: type object 'IllegalStateException' has no attribute '__new__'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testBoxImplDoesNotExecuteInSecondaryConstructor	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testBoxImplDoesNotExecuteInitBlock	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testBoxImplDoesNotExecuteInSecondaryConstructor	Failed	PythonExecution	AttributeError: type object 'IllegalStateException' has no attribute '__new__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testBoxImplDoesNotExecuteInitBlock	Failed	PythonExecution	AttributeError: type object 'IllegalStateException' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testBoxNullableValueOfInlineClassWithNonNullUnderlyingType	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testBoxNullableValueOfInlineClassWithPrimitiveUnderlyingType	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testBoxResultInlineClassOfConstructorCall	Failed	PythonExecution	NameError: name 'Result_T_' isn't defined
@@ -2535,7 +2535,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testKt44867	Failed	PythonExecution	NameError: name 'kotlin_Result_T_' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testKt44978	Failed	Unknown	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: withIndex (8,36) in <path-truncated>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testKt45084	Failed	PythonExecution	AttributeError: type object 'IllegalStateException' has no attribute '__new__'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testKt45991	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testKt45991	Failed	KotlinCompilation	java.lang.IllegalStateException: Variable name is not found exception_1
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testKt46554	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testKt47762	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$InlineClasses.testMangledDefaultParameterFunction	Failed	PythonExecution	NameError: name 'kotlin_Function1_X_kotlin_String_' isn't defined
@@ -2873,16 +2873,16 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testKt12125_2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testKt12125_inc	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testKt12125_inc_2	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testKt8666	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail template]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testKt8666	Failed	PythonExecution	TypeError: can't convert 'int' object to str implicitly
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testLongRangeWithExplicitDot	Failed	PythonExecution	NameError: name 'kotlin_Long' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testNonShortCircuitAnd	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testNonShortCircuitAnd	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testNullPlusString	Failed	PythonExecution	NameError: name 'js' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testPrefixIncDec	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testPrefixIncDec	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testRangeFromCollection	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testStringFromCollection	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testThrowable	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testThrowableCallableReference	Failed	PythonExecution	NameError: name 'js' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testThrowableParamOrder	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testThrowableParamOrder	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testTostring	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Intrinsics.testTrimMarginWithBlankString	Failed	PythonExecution	SyntaxError: invalid syntax
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Invokedynamic.testAllFilesPresentInInvokedynamic	Succeeded		
@@ -2904,7 +2904,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir.testEnumClass	Failed	PythonExecution	AttributeError: type object 'Exception' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir.testEnumClass2	Failed	PythonExecution	AttributeError: type object 'TestEnumClass' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir.testEnumClass3	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir.testFileClassInitializers	Failed	PythonExecution	AttributeError: type object 'Exception' has no attribute '__new__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir.testFileClassInitializers	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir.testGenericCompanion	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir.testHashCodeOnGenericSubstitutedWithPrimitive	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ir.testKt25405	Succeeded		
@@ -2993,9 +2993,9 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$La
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen.testAllFilesPresentInLazyCodegen	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen.testExceptionInFieldInitializer	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen.testIfElse	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen.testIncrement	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen.testIncrement	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen.testSafeAssign	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetFieldImpl' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen.testSafeAssignComplex	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen.testSafeAssignComplex	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrSetFieldImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen.testSafeCallAndArray	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen.testToString	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen.testTryCatchExpression	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
@@ -3005,8 +3005,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$La
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations.testNegateFalse	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations.testNegateFalseVar	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations.testNegateFalseVarChain	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations.testNegateObjectComp	Failed	PythonExecution	AttributeError: type object 'NullPointerException' has no attribute '__new__'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations.testNegateObjectComp2	Failed	PythonExecution	AttributeError: type object 'NullPointerException' has no attribute '__new__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations.testNegateObjectComp	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations.testNegateObjectComp2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations.testNegateTrue	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations.testNegateTrueVar	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LazyCodegen$Optimizations.testNoOptimization	Failed	PythonExecution	SyntaxError: invalid syntax
@@ -3027,7 +3027,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Lo
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses.testInnerOfLocalCaptureExtensionReceiver	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses.testKt10835	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses.testKt10835a	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses.testKt2700	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'invoke_0_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses.testKt2700	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses.testKt2873	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses.testKt3210	Failed	PythonExecution	AttributeError: 'InlineTrait' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$LocalClasses.testKt3389	Succeeded		
@@ -3191,20 +3191,20 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Nu
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ObjectIntrinsics.testAllFilesPresentInObjectIntrinsics	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ObjectIntrinsics.testObjects	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testAllFilesPresentInObjects	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testAnonymousObjectPropertyInitialization	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'foo_0_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testAnonymousObjectPropertyInitialization	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testAnonymousObjectReturnsFromTopLevelFun	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testClassCallsProtectedInheritedByCompanion	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testClassCompanion	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testClassCompanion	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testCompoundAssignmentToArrayAccessToExtensionPropertyImportedFromObject	Failed	PythonExecution	AttributeError: 'tuple' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testCompoundAssignmentToArrayAccessToPropertyImportedFromObject	Failed	PythonExecution	AttributeError: 'tuple' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testCompoundAssignmentToExtensionPropertyImportedFromObject	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testCompoundAssignmentToObjectFromCall	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testCompoundAssignmentToObjectFromCall	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testCompoundAssignmentToPropertyImportedFromObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testCompoundAssignmentToPropertyWithQualifier	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testFlist	Failed	PythonExecution	AttributeError: type object 'ClassCastException' has no attribute '__new__'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testInitializationOrder	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testInitializationOrder	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testInitializerBlockResetToDefault	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testInterfaceCompanion	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testInterfaceCompanion	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testInterfaceCompanionObjectReference	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testKt1047	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testKt11117	Succeeded		
@@ -3231,7 +3231,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ob
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testMethodOnObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testNestedDerivedClassCallsProtectedFromCompanion	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testNestedObjectWithSuperclass	Failed	PythonExecution	RuntimeError: maximum recursion depth exceeded
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testObject	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testObjectExtendsInnerAndReferencesOuterMember	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testObjectInLocalAnonymousObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects.testObjectInitialization_kt5523	Succeeded		
@@ -3282,19 +3282,19 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ob
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess.testPrivateCompanionObjectAccessedFromNestedClassSeveralTimes	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess.testPrivateCompanionObjectUsedInNestedClass	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess.testProtectedCompanionObjectAccessedFromNestedClass	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testAccessFromInlineLambda	Failed	PythonExecution	AttributeError: 'Companion_20' object has no attribute 'getO_0_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testAccessFromInlineLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testAllFilesPresentInMultipleCompanionsWithAccessors	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testAnonymousObjectInPropertyInitializer	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testFromAnonymousObjectInNestedClass	Failed	PythonExecution	NameError: name 'js' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testFromInitBlock	Failed	PythonExecution	AttributeError: 'Companion_19' object has no attribute 'getO_0_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testFromInitBlockOfNestedClass	Failed	PythonExecution	AttributeError: 'Companion_19' object has no attribute 'getK_0_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testFromInlineLambdaInNestedClass	Failed	PythonExecution	AttributeError: 'Companion_20' object has no attribute 'vo'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testInheritedProtectedCompanionAndOwnPrivateCompanion	Failed	PythonExecution	AttributeError: 'Companion_20' object has no attribute 'getO_0_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testFromInitBlock	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testFromInitBlockOfNestedClass	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testFromInlineLambdaInNestedClass	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testInheritedProtectedCompanionAndOwnPrivateCompanion	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testInheritedProtectedCompanionsReferencedByName	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testLambdaInPropertyInitializer	Failed	PythonExecution	AttributeError: 'Companion_20' object has no attribute 'getO_0_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testTwoInheritedProtectedCompanions	Failed	PythonExecution	AttributeError: 'Companion_20' object has no attribute 'getO_0_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testWithCompanionObjectBase	Failed	PythonExecution	AttributeError: 'Companion_20' object has no attribute 'getOK_0_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testWithMultipleNestedCompanionObjectBases	Failed	PythonExecution	AttributeError: 'Companion_23' object has no attribute 'vo'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testLambdaInPropertyInitializer	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testTwoInheritedProtectedCompanions	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testWithCompanionObjectBase	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$MultipleCompanionsWithAccessors.testWithMultipleNestedCompanionObjectBases	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$PrimitiveCompanion.testAllFilesPresentInPrimitiveCompanion	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$PrimitiveCompanion.testByteCompanionObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Objects$CompanionObjectAccess$PrimitiveCompanion.testCharCompanionObject	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
@@ -3322,7 +3322,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Op
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testAnnotatedAssignment	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testAssignmentOperations	Failed	PythonExecution	TypeError: unsupported types for __and__: 'float', 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testAugmentedAssignmentInInitializer	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'plusAssign_a4enbm_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testAugmentedAssignmentWithArrayLHS	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testAugmentedAssignmentWithArrayLHS	Failed	PythonExecution	AttributeError: 'tuple' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testGenericArrayAccessCall	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testIncDecOnObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testInfixFunctionOverBuiltinMember	Succeeded		
@@ -3331,7 +3331,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Op
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testKt14227	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testKt20387	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testKt39880	Failed	Unknown	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: setOf (8,16) in <path-truncated>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testKt4152	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testKt4152	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testKt42722	Failed	Unknown	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: setOf (6,15) in <path-truncated>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testKt44647	Failed	Unknown	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: StringBuilder (8,14) in <path-truncated>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions.testKt45022	Succeeded		
@@ -3346,7 +3346,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Op
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions$CompareTo.testAllFilesPresentInCompareTo	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions$CompareTo.testBoolean	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions$CompareTo.testComparable	Failed	PythonExecution	NameError: name 'js' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions$CompareTo.testCustomCompareTo	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions$CompareTo.testCustomCompareTo	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions$CompareTo.testDoubleInt	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions$CompareTo.testDoubleLong	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'toDouble_0_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$OperatorConventions$CompareTo.testExtensionArray	Failed	PythonExecution	NameError: name 'js' isn't defined
@@ -3363,11 +3363,11 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pa
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package.testIncrementProperty	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package.testInitializationOrder	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package.testInvokespecial	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package.testNullablePrimitiveNoFieldInitializer	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package.testNullablePrimitiveNoFieldInitializer	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package.testPackageLocalClassNotImportedWithDefaultImport	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package.testPackageQualifiedMethod	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package.testPrivateMembersInImportList	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package.testPrivateTopLevelPropAndVarInInner	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package.testPrivateTopLevelPropAndVarInInner	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Package.testReferenceWithTheSameNameAsPackage	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ParametersMetadata.testAllFilesPresentInParametersMetadata	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PlatformTypes.testAllFilesPresentInPlatformTypes	Succeeded		
@@ -3394,7 +3394,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pl
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PlatformTypes$Primitives.testUnaryPlus	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PolymorphicSignature.testAllFilesPresentInPolymorphicSignature	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes.testAllFilesPresentInPrimitiveTypes	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes.testComparisonWithNullCallsFun	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes.testComparisonWithNullCallsFun	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes.testConversions	Failed	PythonExecution	NameError: name 'Infinity' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes.testEa35963	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes.testEqualsHashCodeToString	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
@@ -3402,7 +3402,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes.testIntLiteralIsNotNull	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes.testKt1054	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes.testKt1055	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes.testKt1093	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes.testKt1093	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes.testKt13023	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes.testKt14868	Failed	PythonExecution	NameError: name 'kotlin_UShort' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes.testKt1508	Succeeded		
@@ -3454,33 +3454,33 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes.testUnboxComparable	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject.testAllFilesPresentInEqualityWithObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject.testBoxedEqPrimitiveEvaluationOrder	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject.testBoxedLongEqualsLong	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject.testBoxedLongEqualsLong	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject.testIntEqualsNull	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject.testIntEqualsNullableInt	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject.testIntEqualsNullableIntWithSmartCasts	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject.testKt42281	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject.testObjectWithAsymmetricEqualsEqPrimitive	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[FakeInt(42) != 42]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject.testWhenIntAsNullableAny	Failed	PythonExecution	NameError: name 'js' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject.testWhenNullableBoxed	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail testInt 3]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject.testWhenNullableBoxed	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail testInt 1]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testAllFilesPresentInGenerated	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testBoxedEqPrimitiveBoolean	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testBoxedEqPrimitiveByte	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testBoxedEqPrimitiveBoolean	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testBoxedEqPrimitiveByte	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testBoxedEqPrimitiveChar	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testBoxedEqPrimitiveInt	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testBoxedEqPrimitiveLong	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testBoxedEqPrimitiveShort	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqBoxedBoolean	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testBoxedEqPrimitiveInt	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testBoxedEqPrimitiveLong	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testBoxedEqPrimitiveShort	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqBoxedBoolean	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqBoxedByte	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqBoxedChar	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqBoxedInt	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqBoxedLong	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqBoxedInt	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqBoxedLong	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqBoxedShort	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqObjectBoolean	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqObjectByte	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqObjectBoolean	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqObjectByte	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqObjectChar	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'data'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqObjectInt	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqObjectLong	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqObjectShort	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 0]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqObjectInt	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqObjectLong	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$PrimitiveTypes$EqualityWithObject$Generated.testPrimitiveEqObjectShort	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Private.testAllFilesPresentInPrivate	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Private.testArrayConvention	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Private.testKt9855	Succeeded		
@@ -3504,7 +3504,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testAccessorForProtectedPropertyWithPrivateSetterViaSuper	Failed	PythonExecution	TypeError: 'NoneType' object isn't callable
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testAccessorForProtectedPropertyWithPrivateSetterWithIntermediateClass	Failed	PythonExecution	TypeError: 'NoneType' object isn't callable
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testAllFilesPresentInProperties	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testAugmentedAssignmentsAndIncrements	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testAugmentedAssignmentsAndIncrements	Failed	PythonExecution	TypeError: unsupported types for __and__: 'float', 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testClassArtificialFieldInsideNested	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testClassFieldInsideLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testClassFieldInsideLocalInSetter	Succeeded		
@@ -3519,11 +3519,11 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testComplexPropertyInitializer	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testField	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testFieldInClass	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testFieldInsideField	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'NoneType'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testFieldInsideLambda	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testFieldInsideField	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testFieldInsideLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testFieldInsideNested	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testFieldSimple	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testGeneralAccess	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testFieldSimple	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testGeneralAccess	Failed	PythonExecution	TypeError: unsupported types for __add__: 'A', 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testGenericPropertyMultiModule	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testGenericWithSameName	Failed	PythonExecution	NameError: name 'T' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testInitOrderMultiModule	Succeeded		
@@ -3544,7 +3544,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt2786	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt2892	Failed	PythonExecution	TypeError: __init__() takes 1 positional arguments but 2 were given
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt3118	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt3524	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt3524	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt3551	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt3556	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt3930	Succeeded		
@@ -3557,10 +3557,10 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Pr
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt613	Failed	PythonExecution	TypeError: unsupported types for __add__: 'Test', 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt8928	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testKt9603	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitialization	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitializationCyclicImports	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: None]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitialization	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitializationCyclicImports	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: a1b1c1a2b2a3b3c3]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitializationMultiModule	Failed	Unknown	kotlin.NotImplementedError: An operation is not implemented.
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitializationOrder	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[a = None; b = None]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitializationOrder	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testLazyInitializationSplitPerModule	Failed	Unknown	kotlin.NotImplementedError: An operation is not implemented.
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testPrimitiveOverrideDefaultAccessor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Properties.testPrimitiveOverrideDelegateAccessor	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
@@ -3655,10 +3655,10 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ra
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInCharSequence	Failed	PythonExecution	SyntaxError: non-keyword arg after */**
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInComparableRange	Failed	Unknown	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun assertTrue(x: Boolean): Unit defined in kotlin.test (26,38) in <path-truncated>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInCustomObjectRange	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInDoubleRangeLiteralVsComparableRangeLiteral	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'contains_2c5_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInDoubleRangeLiteralVsComparableRangeLiteral	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInExtensionRange	Failed	PythonExecution	NameError: name 'kotlin_Int' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInFloatingPointRangeWithNaNBound	Failed	PythonExecution	NameError: name 'Infinity' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInIntRange	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInIntRange	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInIterable	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInNonMatchingRange	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInOptimizableDoubleRange	Failed	Unknown	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun assertTrue(x: Boolean): Unit defined in kotlin.test (10,34) in <path-truncated>
@@ -3666,7 +3666,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ra
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInOptimizableIntRange	Failed	Unknown	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun assertTrue(x: Boolean): Unit defined in kotlin.test (10,34) in <path-truncated>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInOptimizableLongRange	Failed	Unknown	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun assertTrue(x: Boolean): Unit defined in kotlin.test (10,34) in <path-truncated>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInPrimitiveProgression	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInPrimitiveRange	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute '_get_first__0_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInPrimitiveRange	Failed	PythonExecution	NameError: name 'kotlin_Int' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInRangeLiteralComposition	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInRangeWithCustomContains	Failed	PythonExecution	AttributeError: type object 'Exception' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInRangeWithImplicitReceiver	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
@@ -4535,7 +4535,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Re
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$NoReflectAtRuntime.testSimpleClassLiterals	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$NoReflectAtRuntime$MethodsFromAny.testAllFilesPresentInMethodsFromAny	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$NoReflectAtRuntime$MethodsFromAny.testCallableReferences	Failed	PythonExecution	NameError: name 'foo' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$NoReflectAtRuntime$MethodsFromAny.testDelegatedProperty	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'getValue_xl96hr_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$NoReflectAtRuntime$MethodsFromAny.testDelegatedProperty	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$Parameters.testAllFilesPresentInParameters	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$Parameters.testBigArity	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$Parameters.testBoundInnerClassConstructor	Succeeded		
@@ -4617,7 +4617,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Re
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$Types$Subtyping.testSimpleSubtypeSupertype	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$Types$Subtyping.testTypeProjection	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testAllFilesPresentInRegressions	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testArrayLengthNPE	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'toString'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testArrayLengthNPE	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testCommonSupertypeContravariant	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testCommonSupertypeContravariant2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testDontCaptureTypesWithTypeVariables	Succeeded		
@@ -4625,8 +4625,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Re
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testFloatMerge	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testFunctionLiteralAsLastExpressionInBlock	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testGeneric	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testHashCodeNPE	Failed	PythonExecution	NameError: name 'Object' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testInternalTopLevelOtherPackage	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testHashCodeNPE	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testInternalTopLevelOtherPackage	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testIntersectionOfEqualTypes	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testKt10143	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testKt10934	Succeeded		
@@ -4635,7 +4635,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Re
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testKt13381	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testKt14447	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testKt15196	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testKt1528	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testKt1528	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testKt1619Test	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testKt1779	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testKt1800	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
@@ -4671,7 +4671,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Re
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testKt7401	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testKt789	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testKt998	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testLambdaAsLastExpressionInLambda	Failed	PythonExecution	TypeError: 'NoneType' object isn't callable
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testLambdaAsLastExpressionInLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testLambdaPostponeConstruction	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testLambdaWrongReturnType	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Regressions.testNoAssertionsWhenNullableTypeParameterReplacedWithIntersectionType	Succeeded		
@@ -4767,7 +4767,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Se
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SecondaryConstructors.testDelegatedThisWithLambda	Failed	PythonExecution	AttributeError: type object 'A' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SecondaryConstructors.testDelegationWithPrimary	Failed	PythonExecution	SyntaxError: invalid syntax
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SecondaryConstructors.testEnums	Failed	PythonExecution	AttributeError: type object 'A1' has no attribute '__new__'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SecondaryConstructors.testFieldInitializerOptimization	Failed	PythonExecution	AttributeError: type object 'Derived' has no attribute '__new__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SecondaryConstructors.testFieldInitializerOptimization	Failed	PythonExecution	NameError: name 'Object' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SecondaryConstructors.testFieldInitializerOptimization_inlineClass	Failed	PythonExecution	AttributeError: type object 'Derived' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SecondaryConstructors.testGenerics	Failed	PythonExecution	AttributeError: type object 'B' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SecondaryConstructors.testInlineIntoTwoConstructors	Failed	PythonExecution	AttributeError: type object 'C' has no attribute '__new__'
@@ -4920,7 +4920,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Su
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SuspendConversion.testOverloadResolutionBySuspendModifier	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SuspendConversion.testSeveralConversionsInOneCall	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SuspendConversion.testSuspendAndFunConversionInDisabledMode	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SuspendConversion.testSuspendConversionCompatibility	Failed	PythonExecution	AttributeError: 'Scope' object has no attribute 'test_sv8swh_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SuspendConversion.testSuspendConversionCompatibility	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SuspendConversion.testSuspendConversionOnVarargElements	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SuspendConversion.testSuspendConversionWithFunInterfaces	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SuspendConversion.testSuspendConversionWithReferenceAdaptation	Succeeded		
@@ -4938,10 +4938,10 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Sy
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SyntheticAccessors.testKt10047	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SyntheticAccessors.testKt21258_indirect	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SyntheticAccessors.testKt21258_simple	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SyntheticAccessors.testKt9717	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SyntheticAccessors.testKt9717	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SyntheticAccessors.testKt9717DifferentPackages	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SyntheticAccessors.testKt9958	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SyntheticAccessors.testKt9958Interface	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SyntheticAccessors.testKt9958	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SyntheticAccessors.testKt9958Interface	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SyntheticAccessors.testProtectedFromLambda	Failed	PythonExecution	TypeError: 'NoneType' object isn't callable
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SyntheticAccessors.testSuperCallFromMultipleSubclasses	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[failfail]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$SyntheticAccessors$ProtectedJavaFieldAccessor.testAllFilesPresentInProtectedJavaFieldAccessor	Succeeded		
@@ -4957,15 +4957,15 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$To
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ToArray.testReturnToTypedArray	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ToArray.testToTypedArray	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TopLevelPrivate.testAllFilesPresentInTopLevelPrivate	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TopLevelPrivate.testPrivateInInlineNested	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TopLevelPrivate.testSyntheticAccessor	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TopLevelPrivate.testPrivateInInlineNested	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TopLevelPrivate.testSyntheticAccessor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TrailingComma.testAllFilesPresentInTrailingComma	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TrailingComma.testNoDisambiguation	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Traits.testAbstractClassWithFakeOverride	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Traits.testAllFilesPresentInTraits	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Traits.testDiamondPropertyAccessors	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail get]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Traits.testDoubleDiamond	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Traits.testDoubleGenericDiamond	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail: None]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Traits.testDoubleGenericDiamond	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail: ]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Traits.testGenericMethod	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Traits.testIndirectlyInheritPropertyGetter	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Traits.testInheritedFun	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
@@ -5007,12 +5007,12 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ty
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping.testKt2831	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping.testKt3286	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping.testKt3863	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping.testKt3976	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'setValue_2dxdrn_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping.testKt3976	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping.testNothing	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping.testNullNothing	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$TypeMapping.testNullableNothing	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testAllFilesPresentInTypealias	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testEnumEntryQualifier	Failed	PythonExecution	AttributeError: 'Companion_17' object has no attribute 'K'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testEnumEntryQualifier	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testExtensionFunction	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testGenericTypeAliasConstructor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testGenericTypeAliasConstructor2	Succeeded		
@@ -5022,7 +5022,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ty
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testKt45308	Failed	Unknown	kotlin.NotImplementedError: An operation is not implemented.
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testObjectLiteralConstructor	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[<SendBuffered object at [address]>]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testPrivateInKlib	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testSimple	Failed	PythonExecution	TypeError: 'NoneType' object isn't callable
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testSimple	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testTypeAliasAsBareType	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testTypeAliasCompanion	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testTypeAliasConstructor	Succeeded		
@@ -5030,7 +5030,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ty
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testTypeAliasConstructorForArray	Failed	PythonExecution	AttributeError: 'list' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testTypeAliasConstructorInSuperCall	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'NoneType'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testTypeAliasFunction	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testTypeAliasInAnonymousObjectType	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'x'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testTypeAliasInAnonymousObjectType	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testTypeAliasObject	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testTypeAliasObjectCallable	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Typealias.testTypeAliasSecondaryConstructor	Failed	PythonExecution	AttributeError: type object 'C' has no attribute '__new__'
@@ -5157,7 +5157,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Wh
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When.testSwitchOptimizationWithGap	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When.testTypeDisjunction	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When.testWhenArgumentIsEvaluatedOnlyOnce	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When.testWhenSafeCallSubjectEvaluatedOnce	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When.testWhenSafeCallSubjectEvaluatedOnce	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization.testAllFilesPresentInEnumOptimization	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization.testBigEnum	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$EnumOptimization.testDifferentEnumClasses	Succeeded		
@@ -5190,8 +5190,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Wh
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testAllFilesPresentInWhenSubjectVariable	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testCaptureSubjectVariable	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testDenseIntSwitchWithSubjectVariable	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testEqualityWithSubjectVariable	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail: None]>
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testIeee754Equality	Failed	PythonExecution	AttributeError: type object 'AssertionError' has no attribute '__new__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testEqualityWithSubjectVariable	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testIeee754Equality	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testIeee754EqualityWithSmartCast	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testIsCheckOnSubjectVariable	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testKt27161	Succeeded		
@@ -5199,9 +5199,9 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Wh
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testKt27161_nested	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testKt27161_nested2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testKt27161_string	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testRangeCheckOnSubjectVariable	Failed	PythonExecution	TypeError: unsupported types for __le__: 'int', 'NoneType'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testRangeCheckOnSubjectVariable	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testSparseIntSwitchWithSubjectVariable	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testSubjectExpressionIsEvaluatedOnce	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testSubjectExpressionIsEvaluatedOnce	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testWhenByEnum	Failed	PythonExecution	AttributeError: type object 'Exception' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testWhenByNullableEnum	Failed	PythonExecution	AttributeError: type object 'Exception' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When$WhenSubjectVariable.testWhenByString	Succeeded		
@@ -5246,7 +5246,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt19389	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt19399	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt19723	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionExpressionImpl' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt34656	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'call_0_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt34656	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt38197	Failed	PythonExecution	AttributeError: 'Companion_19' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt42815	Failed	PythonExecution	AttributeError: type object 'C' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$AnonymousObject.testKt42815_delegated	Failed	PythonExecution	AttributeError: type object 'C' has no attribute '__new__'
@@ -5364,10 +5364,10 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$Bound.testKt30933	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$Bound.testLambdaOnLhs	Failed	PythonExecution	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$Bound.testMap	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$Bound.testMixed	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'foo_0_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$Bound.testMixed	Failed	PythonExecution	TypeError: can't convert 'int' object to str implicitly
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$Bound.testObjectProperty	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$Bound.testPropertyImportedFromObject	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$Bound.testSideEffect	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$Bound.testSideEffect	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$Bound.testSimple	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$Bound.testSimpleVal	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$CallableReference$Bound.testSimpleVal2	Succeeded		
@@ -5428,25 +5428,25 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testKt14564	Failed	PythonExecution	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testKt14564_2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testKt16496	Failed	PythonExecution	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testKt18689	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'foo_0_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testKt18689_2	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'foo_0_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testKt18689_3	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'foo_0_k_'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testKt18689_4	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'foo_0_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testKt18689	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testKt18689_2	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testKt18689_3	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testKt18689_4	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testKt5685	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testSimpleDefaultMethod	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testVarArgNoInline	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues.testVarArgNoInline	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testAllFilesPresentInLambdaInlining	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testCheckLambdaClassIsPresent	Failed	PythonExecution	TypeError: 'NoneType' object isn't callable
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testCheckLambdaClassesArePresent	Failed	PythonExecution	TypeError: 'NoneType' object isn't callable
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testCheckObjectClassIsPresent	Failed	PythonExecution	AttributeError: '_no_name_provided__2_8_0' object has no attribute 'constructor'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testCheckStaticLambdaClassIsPresent	Failed	PythonExecution	TypeError: 'NoneType' object isn't callable
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testCheckStaticLambdaClassesArePresent	Failed	PythonExecution	TypeError: 'NoneType' object isn't callable
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testCheckStaticObjectClassIsPresent	Failed	PythonExecution	AttributeError: '_no_name_provided__2_8_0' object has no attribute 'constructor'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testCheckLambdaClassIsPresent	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testCheckLambdaClassesArePresent	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testCheckObjectClassIsPresent	Failed	PythonExecution	AttributeError: '_no_name_provided__2_8' object has no attribute 'constructor'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testCheckStaticLambdaClassIsPresent	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testCheckStaticLambdaClassesArePresent	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testCheckStaticObjectClassIsPresent	Failed	PythonExecution	AttributeError: '_no_name_provided__2_8' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testDefaultAfterCapturing	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testDefaultCallInDefaultLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testDefaultLambdaInNoInline	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testDifferentInvokeSignature	Failed	PythonExecution	NameError: name 'test_Child' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testGenericLambda	Failed	PythonExecution	TypeError: 'NoneType' object isn't callable
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testGenericLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testInstanceCapturedInClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testInstanceCapturedInInterface	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DefaultValues$LambdaInlining.testKt21827	Succeeded		
@@ -5514,7 +5514,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$DelegatedProperty.testLocalInLambda	Failed	PythonExecution	NameError: name 'Unexpected_operator_EQ' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$EnclosingInfo.testAllFilesPresentInEnclosingInfo	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Enum.testAllFilesPresentInEnum	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Enum.testKt10569	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'NoneType'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Enum.testKt10569	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Enum.testKt18254	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[None]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Enum.testValueOf	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Enum.testValueOfCapturedType	Succeeded		
@@ -5530,7 +5530,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$FunctionExpression.testAllFilesPresentInFunctionExpression	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$FunctionExpression.testExtension	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineArgsInplace.testAllFilesPresentInInlineArgsInplace	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineArgsInplace.testCallArgumentReordering	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineArgsInplace.testCallArgumentReordering	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses.testAllFilesPresentInInlineClasses	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses.testAnonymousObject	Failed	PythonExecution	NameError: name 'test_IC' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$InlineClasses.testInlineClassWithInlineValReturningInlineClass	Failed	PythonExecution	NameError: name 'test_IC1' isn't defined
@@ -5571,7 +5571,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$JvmPackageName.testAllFilesPresentInJvmPackageName	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$LambdaClassClash.testAllFilesPresentInLambdaClassClash	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$LambdaClassClash.testLambdaClassClash	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$LambdaClassClash.testNoInlineLambdaX2	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$LambdaClassClash.testNoInlineLambdaX2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$LambdaTransformation.testAllFilesPresentInLambdaTransformation	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$LambdaTransformation.testLambdaCloning	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$LambdaTransformation.testLambdaInLambdaNoInline	Failed	PythonExecution	NameError: name 'js' isn't defined
@@ -5703,12 +5703,12 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Private.testNestedInPrivateClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Private.testPrivateClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Private.testPrivateClassExtensionLambda	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Private.testPrivateInline	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Private.testPrivateInline	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testAllFilesPresentInProperty	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testAugAssignmentAndInc	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testAugAssignmentAndInc	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testAugAssignmentAndIncInClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testAugAssignmentAndIncInClassViaConvention	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testAugAssignmentAndIncOnExtension	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testAugAssignmentAndIncOnExtension	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testAugAssignmentAndIncOnExtensionInClass	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testAugAssignmentAndIncViaConvention	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testFromObject	Succeeded		
@@ -5716,12 +5716,12 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testProperty	Failed	PythonExecution	AttributeError: 'int' object has no attribute '_set_p8__majfzk_k_'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testReifiedVal	Failed	PythonExecution	NameError: name 'kotlin_Boolean' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testReifiedVar	Failed	PythonExecution	NameError: name 'kotlin_Boolean' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testSimple	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testSimpleExtension	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'int'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testSimple	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Property.testSimpleExtension	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified.testAllFilesPresentInReified	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified.testArrayConstructor	Failed	PythonExecution	AttributeError: 'list' object has no attribute '__setitem__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified.testArrayOf	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified.testCapturedLambda	Failed	PythonExecution	TypeError: 'NoneType' object isn't callable
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified.testCapturedLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified.testCapturedLambda2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified.testDontSubstituteNonReified	Failed	PythonExecution	NameError: name 'Object' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Reified.testKt15956	Succeeded		
@@ -5770,7 +5770,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testKt28547	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testKt28547_2	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testParams	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testRootConstructor	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[test1: None]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testRootConstructor	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testSafeCall	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testSeveralClosures	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testSeveralUsage	Succeeded		
@@ -5930,7 +5930,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Suspend$StateMachine.testInnerObjectWithoutCapturingCrossinline	Failed	PythonExecution	AttributeError: 'CheckStateMachineContinuation' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Suspend$StateMachine.testInsideObject	Failed	PythonExecution	AttributeError: 'CheckStateMachineContinuation' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Suspend$StateMachine.testKt30708	Failed	PythonExecution	AttributeError: 'CheckStateMachineContinuation' object has no attribute 'constructor'
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Suspend$StateMachine.testLambdaTransformation	Failed	PythonExecution	AttributeError: 'NoneType' object has no attribute 'check_hwwcoo_k_'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Suspend$StateMachine.testLambdaTransformation	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Suspend$StateMachine.testNormalInline	Failed	PythonExecution	AttributeError: 'CheckStateMachineContinuation' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Suspend$StateMachine.testNumberOfSuspentions	Failed	PythonExecution	AttributeError: 'CheckStateMachineContinuation' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Suspend$StateMachine.testObjectInsideLambdas	Failed	PythonExecution	AttributeError: 'CheckStateMachineContinuation' object has no attribute 'constructor'
@@ -5941,7 +5941,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Suspend$StateMachine.testUnreachableSuspendMarker	Failed	PythonExecution	AttributeError: 'CheckStateMachineContinuation' object has no attribute 'constructor'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$SyntheticAccessors.testAllFilesPresentInSyntheticAccessors	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$SyntheticAccessors.testConstField	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$SyntheticAccessors.testPackagePrivateMembers	Failed	PythonExecution	TypeError: can't convert 'NoneType' object to str implicitly
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$SyntheticAccessors.testPackagePrivateMembers	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$SyntheticAccessors.testPropertyModifiers	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$SyntheticAccessors.testProtectedMembers	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$SyntheticAccessors.testProtectedMembersFromSuper	Failed	PythonExecution	TypeError: unsupported types for __add__: 'NoneType', 'NoneType'
