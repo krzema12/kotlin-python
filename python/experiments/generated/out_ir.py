@@ -661,8 +661,8 @@ class ExperimentalMultiplatform(Annotation):
         pass
     
 
-Level_WARNING_instance = None
-Level_ERROR_instance = None
+Level_WARNING_instance_0 = None
+Level_ERROR_instance_0 = None
 def values_0():
     return (Level_WARNING_getInstance_0(), Level_ERROR_getInstance_0())
 
@@ -676,15 +676,15 @@ def valueOf_0(value):
         THROW_ISE()
     
 
-Level_entriesInitialized = None
+Level_entriesInitialized_0 = None
 def Level_initEntries_0():
-    global Level_entriesInitialized, Level_WARNING_instance, Level_ERROR_instance
-    if Level_entriesInitialized:
+    global Level_entriesInitialized_0, Level_WARNING_instance_0, Level_ERROR_instance_0
+    if Level_entriesInitialized_0:
         return Unit_getInstance()
     
-    Level_entriesInitialized = True
-    Level_WARNING_instance = Level_0('WARNING', 0)
-    Level_ERROR_instance = Level_0('ERROR', 1)
+    Level_entriesInitialized_0 = True
+    Level_WARNING_instance_0 = Level_0('WARNING', 0)
+    Level_ERROR_instance_0 = Level_0('ERROR', 1)
 
 def RequiresOptIn_init__Init_(message, level, _mask0, _marker, _this):
     if not (_mask0 & 1 == 0):
@@ -724,11 +724,11 @@ class Level_0(Enum):
 
 def Level_WARNING_getInstance_0():
     Level_initEntries_0()
-    return Level_WARNING_instance
+    return Level_WARNING_instance_0
 
 def Level_ERROR_getInstance_0():
     Level_initEntries_0()
-    return Level_ERROR_instance
+    return Level_ERROR_instance_0
 
 class RequiresOptIn(Annotation):
     def __init__(self, message, level):
@@ -1930,8 +1930,8 @@ def _get_serialVersionUID__1(_this):
 
 class Companion_1(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_0
+        Companion_instance_0 = self
         self.serialVersionUID = 0
     
     def equals(self, other):
@@ -1944,12 +1944,12 @@ class Companion_1(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_0 = None
 def Companion_getInstance_0():
-    if Companion_instance == None:
+    if Companion_instance_0 == None:
         Companion_1()
     
-    return Companion_instance
+    return Companion_instance_0
 
 def readResolve_1(_this):
     tmp0_fold_0 = _this.elements
@@ -2493,8 +2493,8 @@ class KTypeParameter(KClassifier):
 
 class Companion_2(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_1
+        Companion_instance_1 = self
         self.star = KTypeProjection(None, None)
     
     def _get_star__0_k_(self):
@@ -2522,12 +2522,12 @@ class Companion_2(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_1 = None
 def Companion_getInstance_1():
-    if Companion_instance == None:
+    if Companion_instance_1 == None:
         Companion_2()
     
-    return Companion_instance
+    return Companion_instance_1
 
 class KTypeProjection(Any):
     def __init__(self, variance, type):
@@ -2759,8 +2759,8 @@ def Result__toString_impl(this):
 
 class Companion_3(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_2
+        Companion_instance_2 = self
     
     def success_o91zl1_k_(self, value):
         return _Result___init__impl_(value)
@@ -2778,12 +2778,12 @@ class Companion_3(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_2 = None
 def Companion_getInstance_2():
-    if Companion_instance == None:
+    if Companion_instance_2 == None:
         Companion_3()
     
-    return Companion_instance
+    return Companion_instance_2
 
 class Failure(Serializable):
     def __init__(self, exception):
@@ -2929,8 +2929,8 @@ def _UByte___get_data__impl_(this):
 
 class Companion_4(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_3
+        Companion_instance_3 = self
         self.MIN_VALUE = _UByte___init__impl_(0)
         self.MAX_VALUE = _UByte___init__impl_(-1)
         self.SIZE_BYTES = 1
@@ -2958,12 +2958,12 @@ class Companion_4(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_3 = None
 def Companion_getInstance_3():
-    if Companion_instance == None:
+    if Companion_instance_3 == None:
         Companion_4()
     
-    return Companion_instance
+    return Companion_instance_3
 
 def UByte__compareTo_impl(this, other):
     tmp = _UByte___get_data__impl_(this) & 255
@@ -3412,8 +3412,8 @@ def _UInt___get_data__impl_(this):
 
 class Companion_5(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_4
+        Companion_instance_4 = self
         self.MIN_VALUE = _UInt___init__impl_(0)
         self.MAX_VALUE = _UInt___init__impl_(-1)
         self.SIZE_BYTES = 4
@@ -3441,12 +3441,12 @@ class Companion_5(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_4 = None
 def Companion_getInstance_4():
-    if Companion_instance == None:
+    if Companion_instance_4 == None:
         Companion_5()
     
-    return Companion_instance
+    return Companion_instance_4
 
 def UInt__compareTo_impl(this, other):
     tmp0_compareTo_0 = _UInt___init__impl_(_UByte___get_data__impl_(other) & 255)
@@ -3868,8 +3868,8 @@ class UIntArray(Collection):
 
 class Companion_6(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_5
+        Companion_instance_5 = self
         tmp = self
         Companion_getInstance_4()
         tmp_0 = _UInt___init__impl_(-1)
@@ -3889,12 +3889,12 @@ class Companion_6(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_5 = None
 def Companion_getInstance_5():
-    if Companion_instance == None:
+    if Companion_instance_5 == None:
         Companion_6()
     
-    return Companion_instance
+    return Companion_instance_5
 
 class UIntProgression:
     pass
@@ -3974,8 +3974,8 @@ class UIntRange(UIntProgression, ClosedRange):
 
 class Companion_7(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_6
+        Companion_instance_6 = self
     
     def fromClosedRange_rpfvw1_k_(self, rangeStart, rangeEnd, step):
         return UIntProgression(rangeStart, rangeEnd, step)
@@ -3990,12 +3990,12 @@ class Companion_7(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_6 = None
 def Companion_getInstance_6():
-    if Companion_instance == None:
+    if Companion_instance_6 == None:
         Companion_7()
     
-    return Companion_instance
+    return Companion_instance_6
 
 class Iterable:
     pass
@@ -4237,8 +4237,8 @@ def _ULong___get_data__impl_(this):
 
 class Companion_8(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_7
+        Companion_instance_7 = self
         self.MIN_VALUE = _ULong___init__impl_(Long(0, 0))
         self.MAX_VALUE = _ULong___init__impl_(Long(-1, -1))
         self.SIZE_BYTES = 8
@@ -4266,12 +4266,12 @@ class Companion_8(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_7 = None
 def Companion_getInstance_7():
-    if Companion_instance == None:
+    if Companion_instance_7 == None:
         Companion_8()
     
-    return Companion_instance
+    return Companion_instance_7
 
 def ULong__compareTo_impl(this, other):
     tmp0_compareTo_0 = _ULong___init__impl_((((_UByte___get_data__impl_(other) & 255) + 0x8000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) - 0x8000_0000_0000_0000)
@@ -4693,8 +4693,8 @@ class ULongArray(Collection):
 
 class Companion_9(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_8
+        Companion_instance_8 = self
         tmp = self
         Companion_getInstance_7()
         tmp_0 = _ULong___init__impl_(Long(-1, -1))
@@ -4714,12 +4714,12 @@ class Companion_9(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_8 = None
 def Companion_getInstance_8():
-    if Companion_instance == None:
+    if Companion_instance_8 == None:
         Companion_9()
     
-    return Companion_instance
+    return Companion_instance_8
 
 class ULongProgression:
     pass
@@ -4802,8 +4802,8 @@ class ULongRange(ULongProgression, ClosedRange):
 
 class Companion_10(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_9
+        Companion_instance_9 = self
     
     def fromClosedRange_19wfq_k_(self, rangeStart, rangeEnd, step):
         return ULongProgression(rangeStart, rangeEnd, step)
@@ -4818,12 +4818,12 @@ class Companion_10(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_9 = None
 def Companion_getInstance_9():
-    if Companion_instance == None:
+    if Companion_instance_9 == None:
         Companion_10()
     
-    return Companion_instance
+    return Companion_instance_9
 
 class ULongProgression(Iterable):
     def __init__(self, start, endInclusive, step):
@@ -5033,8 +5033,8 @@ def _UShort___get_data__impl_(this):
 
 class Companion_11(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_10
+        Companion_instance_10 = self
         self.MIN_VALUE = _UShort___init__impl_(0)
         self.MAX_VALUE = _UShort___init__impl_(-1)
         self.SIZE_BYTES = 2
@@ -5062,12 +5062,12 @@ class Companion_11(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_10 = None
 def Companion_getInstance_10():
-    if Companion_instance == None:
+    if Companion_instance_10 == None:
         Companion_11()
     
-    return Companion_instance
+    return Companion_instance_10
 
 def UShort__compareTo_impl(this, other):
     tmp = _UShort___get_data__impl_(this) & 65535
@@ -6486,8 +6486,8 @@ class LongProgressionIterator(LongIterator):
 
 class Companion_12(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_11
+        Companion_instance_11 = self
     
     def fromClosedRange_fcwjfj_k_(self, rangeStart, rangeEnd, step):
         return IntProgression(rangeStart, rangeEnd, step)
@@ -6502,12 +6502,12 @@ class Companion_12(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_11 = None
 def Companion_getInstance_11():
-    if Companion_instance == None:
+    if Companion_instance_11 == None:
         Companion_12()
     
-    return Companion_instance
+    return Companion_instance_11
 
 class IntProgression(Iterable):
     def __init__(self, start, endInclusive, step):
@@ -6554,8 +6554,8 @@ class IntProgression(Iterable):
 
 class Companion_13(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_12
+        Companion_instance_12 = self
     
     def fromClosedRange_gtcn47_k_(self, rangeStart, rangeEnd, step):
         return CharProgression(rangeStart, rangeEnd, step)
@@ -6570,12 +6570,12 @@ class Companion_13(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_12 = None
 def Companion_getInstance_12():
-    if Companion_instance == None:
+    if Companion_instance_12 == None:
         Companion_13()
     
-    return Companion_instance
+    return Companion_instance_12
 
 class CharProgression(Iterable):
     def __init__(self, start, endInclusive, step):
@@ -6632,8 +6632,8 @@ class CharProgression(Iterable):
 
 class Companion_14(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_13
+        Companion_instance_13 = self
     
     def fromClosedRange_k3cbgi_k_(self, rangeStart, rangeEnd, step):
         return LongProgression(rangeStart, rangeEnd, step)
@@ -6648,12 +6648,12 @@ class Companion_14(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_13 = None
 def Companion_getInstance_13():
-    if Companion_instance == None:
+    if Companion_instance_13 == None:
         Companion_14()
     
-    return Companion_instance
+    return Companion_instance_13
 
 class LongProgression(Iterable):
     def __init__(self, start, endInclusive, step):
@@ -6727,8 +6727,8 @@ class ClosedRange(Any):
 
 class Companion_15(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_14
+        Companion_instance_14 = self
         self.EMPTY = IntRange(1, 0)
     
     def _get_EMPTY__0_k_(self):
@@ -6744,12 +6744,12 @@ class Companion_15(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_14 = None
 def Companion_getInstance_14():
-    if Companion_instance == None:
+    if Companion_instance_14 == None:
         Companion_15()
     
-    return Companion_instance
+    return Companion_instance_14
 
 class IntRange(IntProgression, ClosedRange):
     def __init__(self, start, endInclusive):
@@ -6800,8 +6800,8 @@ class IntRange(IntProgression, ClosedRange):
 
 class Companion_16(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_15
+        Companion_instance_15 = self
         self.EMPTY = CharRange(Char_0(1), Char_0(0))
     
     def _get_EMPTY__0_k_(self):
@@ -6817,12 +6817,12 @@ class Companion_16(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_15 = None
 def Companion_getInstance_15():
-    if Companion_instance == None:
+    if Companion_instance_15 == None:
         Companion_16()
     
-    return Companion_instance
+    return Companion_instance_15
 
 class CharRange(CharProgression, ClosedRange):
     def __init__(self, start, endInclusive):
@@ -6881,8 +6881,8 @@ class CharRange(CharProgression, ClosedRange):
 
 class Companion_17(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_16
+        Companion_instance_16 = self
         self.EMPTY = LongRange(1, 0)
     
     def _get_EMPTY__0_k_(self):
@@ -6898,12 +6898,12 @@ class Companion_17(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_16 = None
 def Companion_getInstance_16():
-    if Companion_instance == None:
+    if Companion_instance_16 == None:
         Companion_17()
     
-    return Companion_instance
+    return Companion_instance_16
 
 class LongRange(LongProgression, ClosedRange):
     def __init__(self, start, endInclusive):
@@ -10202,8 +10202,8 @@ def _get_value_(_this):
 
 class Companion_18(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_17
+        Companion_instance_17 = self
         self.MIN_VALUE = Char_0(0)
         self.MAX_VALUE = Char_0(65535)
         self.MIN_HIGH_SURROGATE = Char_0(55296)
@@ -10255,12 +10255,12 @@ class Companion_18(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_17 = None
 def Companion_getInstance_17():
-    if Companion_instance == None:
+    if Companion_instance_17 == None:
         Companion_18()
     
-    return Companion_instance
+    return Companion_instance_17
 
 class Char_0(Comparable):
     def __init__(self, code):
@@ -10776,8 +10776,8 @@ class MutableMap(Map_0):
 
 class Companion_19(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_18
+        Companion_instance_18 = self
     
     def equals(self, other):
         pass
@@ -10789,12 +10789,12 @@ class Companion_19(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_18 = None
 def Companion_getInstance_18():
-    if Companion_instance == None:
+    if Companion_instance_18 == None:
         Companion_19()
     
-    return Companion_instance
+    return Companion_instance_18
 
 class Enum(Comparable):
     def __init__(self, name, ordinal):
@@ -11877,8 +11877,8 @@ def enumValuesIntrinsic():
 
 class Companion_20(Any):
     def __init__(self):
-        global Companion_instance
-        Companion_instance = self
+        global Companion_instance_19
+        Companion_instance_19 = self
         self.MIN_VALUE = -9223372036854775808
         self.MAX_VALUE = 9223372036854775807
         self.SIZE_BYTES = 8
@@ -11906,12 +11906,12 @@ class Companion_20(Any):
         pass
     
 
-Companion_instance = None
+Companion_instance_19 = None
 def Companion_getInstance_19():
-    if Companion_instance == None:
+    if Companion_instance_19 == None:
         Companion_20()
     
-    return Companion_instance
+    return Companion_instance_19
 
 class Long(Number_0, Comparable):
     def __init__(self, low, high):
@@ -13711,5 +13711,20 @@ def returnParameterFromClass():
 def main(args):
     println('This is main with arguments!')
 
+_stableSortingIsSupported = None
+EmptyContinuation = EmptyContinuation_init_()
+functionClasses = functionClasses_init_()
+STRING_CASE_INSENSITIVE_ORDER = STRING_CASE_INSENSITIVE_ORDER_init_()
+REPLACEMENT_BYTE_SEQUENCE = REPLACEMENT_BYTE_SEQUENCE_init_()
+OBJECT_HASH_CODE_PROPERTY_NAME = 'kotlinHashCodeValue$'
+POW_2_32 = 4.294967296E9
+ZERO = fromInt(0)
+ONE = fromInt(1)
+NEG_ONE = fromInt(-1)
+MAX_VALUE = Long(-1, 2147483647)
+MIN_VALUE = Long(0, -2147483648)
+TWO_PWR_24_ = fromInt(16777216)
+TWO_PWR_32_DBL_ = 4.294967296E9
+TWO_PWR_63_DBL_ = 9.223372036854776E18
 if __name__ == "__main__":
     main(sys.argv[1:])

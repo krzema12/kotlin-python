@@ -34,9 +34,37 @@ class IrDeclarationToPyTransformer : BaseIrElementToPyNodeTransformer<List<stmt>
     }
 
     override fun visitField(declaration: IrField, context: PyGenerationContext): List<stmt> {
+        val fieldName = context.getNameForField(declaration).ident.toValidPythonSymbol()
+
+        if (
+            declaration.initializer != null &&
+            // todo: the following lines omit initializing of known stdlib fields that are unsupported yet. need to remove them eventually
+            declaration.symbol.owner.name.asString().toValidPythonSymbol() !in setOf(
+                "UNDEFINED_RESULT",
+                "output",
+                "INV_2_26",
+                "INV_2_53",
+                "buf",
+                "bufFloat64",
+                "bufFloat32",
+                "bufInt32",
+                "lowIndex",
+                "highIndex",
+                "propertyRefClassMetadataCache",
+                "NAME_TO_ADAPTER",
+            )
+        ) {
+            val initializer = declaration.initializer!!.accept(IrElementToPyExpressionTransformer(), context)
+            context.staticContext.initializerBlock += Assign(
+                targets = listOf(Name(id = identifier(fieldName), ctx = Store)),
+                value = initializer,
+                type_comment = null,
+            )
+        }
+
         return Assign(
-            targets = listOf(Name(id = identifier(declaration.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Store)),
-            value = Constant(value = constant("None"), kind = null),  // todo: move the field to the bottom of the file and use actual initializer
+            targets = listOf(Name(id = identifier(fieldName), ctx = Store)),
+            value = Constant(value = constant("None"), kind = null),
             type_comment = null,
         ).let(::listOf)
     }

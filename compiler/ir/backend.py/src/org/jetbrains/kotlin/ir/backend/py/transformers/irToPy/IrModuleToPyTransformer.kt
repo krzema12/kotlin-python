@@ -90,11 +90,19 @@ class IrModuleToPyTransformer(
         )
 
     private fun generateModuleBody(modules: Iterable<IrModuleFragment>, context: PyGenerationContext): List<stmt> {
-        return modules.flatMap { module: IrModuleFragment ->
-            module.files.flatMap {
-                it.accept(IrFileToPyTransformer(), context)
+        // todo: supporting inserting splitting comments as in JS would be handy
+
+        val statements = mutableListOf<stmt>()
+
+        modules.forEach { module: IrModuleFragment ->
+            module.files.forEach {
+                statements += it.accept(IrFileToPyTransformer(), context)
             }
         }
+
+        statements += context.staticContext.initializerBlock
+
+        return statements
     }
 
     private fun generateMainArguments(mainFunction: IrSimpleFunction): List<expr> {
