@@ -213,7 +213,6 @@ def joinToString_default(self, separator, prefix, postfix, limit, truncated, tra
 
 def joinTo(self, buffer, separator, prefix, postfix, limit, truncated, transform):
     buffer.append_v1o70a_k_(prefix)
-    Unit_getInstance()
     count = 0
     indexedObject = self
     inductionVariable = 0
@@ -224,7 +223,6 @@ def joinTo(self, buffer, separator, prefix, postfix, limit, truncated, transform
         count = (((count + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         if count > 1:
             buffer.append_v1o70a_k_(separator)
-            Unit_getInstance()
         
         if (True) if (limit < 0) else (count <= limit):
             appendElement(buffer, element, transform)
@@ -234,10 +232,8 @@ def joinTo(self, buffer, separator, prefix, postfix, limit, truncated, transform
     
     if (count > limit) if (limit >= 0) else (False):
         buffer.append_v1o70a_k_(truncated)
-        Unit_getInstance()
     
     buffer.append_v1o70a_k_(postfix)
-    Unit_getInstance()
     return buffer
 
 def joinTo_default(self, buffer, separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
@@ -289,7 +285,6 @@ def indexOfFirst(self, predicate):
         
         tmp1 = index
         index = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-        Unit_getInstance()
     
     return -1
 
@@ -346,7 +341,6 @@ def joinToString_default_0(self, separator, prefix, postfix, limit, truncated, t
 
 def joinTo_0(self, buffer, separator, prefix, postfix, limit, truncated, transform):
     buffer.append_v1o70a_k_(prefix)
-    Unit_getInstance()
     count = 0
     tmp0_iterator = self.iterator_0_k_()
     while tmp0_iterator.hasNext_0_k_():
@@ -354,7 +348,6 @@ def joinTo_0(self, buffer, separator, prefix, postfix, limit, truncated, transfo
         count = (((count + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         if count > 1:
             buffer.append_v1o70a_k_(separator)
-            Unit_getInstance()
         
         if (True) if (limit < 0) else (count <= limit):
             appendElement(buffer, element, transform)
@@ -364,10 +357,8 @@ def joinTo_0(self, buffer, separator, prefix, postfix, limit, truncated, transfo
     
     if (count > limit) if (limit >= 0) else (False):
         buffer.append_v1o70a_k_(truncated)
-        Unit_getInstance()
     
     buffer.append_v1o70a_k_(postfix)
-    Unit_getInstance()
     return buffer
 
 def joinTo_default_0(self, buffer, separator, prefix, postfix, limit, truncated, transform, _mask0, _handler):
@@ -404,7 +395,6 @@ def map(self, transform):
     while tmp0_iterator_1.hasNext_0_k_():
         item_2 = tmp0_iterator_1.next_0_k_()
         tmp0_mapTo_0.add_2bq_k_(transform(item_2))
-        Unit_getInstance()
     
     return tmp0_mapTo_0
 
@@ -413,7 +403,6 @@ def mapTo(self, destination, transform):
     while tmp0_iterator.hasNext_0_k_():
         item = tmp0_iterator.next_0_k_()
         destination.add_2bq_k_(transform(item))
-        Unit_getInstance()
     
     return destination
 
@@ -1121,7 +1110,6 @@ class AbstractList(AbstractCollection, List):
                 
                 tmp1_4 = index_1
                 index_1 = (((tmp1_4 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-                Unit_getInstance()
             
             tmp_ret_0 = -1
             if not False:
@@ -1379,11 +1367,9 @@ def filterInPlace(self, predicate, predicateResultToRemove):
             
             if not (writeIndex == readIndex):
                 self.set_ddb1qf_k_(writeIndex, element)
-                Unit_getInstance()
             
             tmp1 = writeIndex
             writeIndex = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-            Unit_getInstance()
             if not not (readIndex == last):
                 break
             
@@ -1396,7 +1382,6 @@ def filterInPlace(self, predicate, predicateResultToRemove):
                 removeIndex = inductionVariable_0
                 inductionVariable_0 = (((inductionVariable_0 + -1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 self.removeAt_ha5a7z_k_(removeIndex)
-                Unit_getInstance()
                 if not not (removeIndex == writeIndex):
                     break
                 
@@ -1849,9 +1834,8 @@ class CoroutineContext(Any):
         pass
     
     def plus_d7pszg_k_(self, context):
-        def complexFunction_x4__Assign__Expr__If__Return__0(acc, element):
+        def complexFunction_x3__Assign__If__Return__0(acc, element):
             removed = acc.minusKey_djuxjq_k_(element._get_key__0_k_())
-            Unit_getInstance()
             if removed is EmptyCoroutineContext_getInstance():
                 tmp = element
             else:
@@ -1866,7 +1850,7 @@ class CoroutineContext(Any):
             
             return tmp
         
-        return (self) if (context is EmptyCoroutineContext_getInstance()) else (context.fold_cq605b_k_(self, complexFunction_x4__Assign__Expr__If__Return__0))
+        return (self) if (context is EmptyCoroutineContext_getInstance()) else (context.fold_cq605b_k_(self, complexFunction_x3__Assign__If__Return__0))
     
     def minusKey_djuxjq_k_(self, key):
         pass
@@ -1985,7 +1969,6 @@ def size(_this):
         cur = tmp_0
         tmp1 = size
         size = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-        Unit_getInstance()
     
 
 def contains_3(_this, element):
@@ -2054,7 +2037,6 @@ class CombinedContext(CoroutineContext, Serializable):
             else:
                 return tmp0_safe_receiver
             
-            Unit_getInstance()
             next = cur.left
             if isinstance(next, CombinedContext):
                 cur = kotlin_coroutines_CombinedContext(next)
@@ -2073,7 +2055,6 @@ class CombinedContext(CoroutineContext, Serializable):
         else:
             return self.left
         
-        Unit_getInstance()
         newLeft = self.left.minusKey_djuxjq_k_(key)
         return (self) if (newLeft is self.left) else ((self.element) if (newLeft is EmptyCoroutineContext_getInstance()) else (CombinedContext(newLeft, self.element)))
     
@@ -2668,16 +2649,12 @@ def KVariance_OUT_getInstance():
 def appendElement(self, element, transform):
     if not (transform == None):
         self.append_v1o70a_k_(transform(element))
-        Unit_getInstance()
     elif (True) if (element == None) else (isCharSequence(element)):
         self.append_v1o70a_k_(kotlin_CharSequence_(element))
-        Unit_getInstance()
     elif isinstance(element, Char_0):
         self.append_wi8o78_k_(kotlin_Char(element))
-        Unit_getInstance()
     elif True:
         self.append_v1o70a_k_(toString(element))
-        Unit_getInstance()
     
 
 def isEmpty(self):
@@ -7715,7 +7692,6 @@ class AbstractMutableCollection(AbstractCollection, MutableCollection):
         iterator = self.iterator_0_k_()
         while iterator.hasNext_0_k_():
             iterator.next_0_k_()
-            Unit_getInstance()
             iterator.remove_sv8swh_k_()
         
     
@@ -7807,7 +7783,6 @@ class IteratorImpl_0(MutableIterator):
             raise IllegalStateException_init__Create__0(toString_0(message_1))
         
         self._this.removeAt_ha5a7z_k_(self.last)
-        Unit_getInstance()
         self.index = self.last
         self.last = -1
     
@@ -7851,7 +7826,6 @@ class ListIteratorImpl_0(IteratorImpl_0, MutableListIterator):
         tmp0_this = self
         tmp1 = tmp0_this._get_index__0_k_()
         tmp0_this._set_index__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-        Unit_getInstance()
         self._set_last__majfzk_k_(-1)
     
     def add_iav7o_k_(self, element):
@@ -7864,7 +7838,6 @@ class ListIteratorImpl_0(IteratorImpl_0, MutableListIterator):
             raise IllegalStateException_init__Create__0(toString_0(message_1))
         
         self._this.set_ddb1qf_k_(self._get_last__0_k_(), element)
-        Unit_getInstance()
     
     def set_iav7o_k_(self, element):
         return self.set_jxzaet_k_((E(element)) if ((True) if (element == None) else (isObject(element))) else (THROW_CCE()))
@@ -7918,7 +7891,6 @@ class SubList_0(AbstractMutableList, RandomAccess):
         tmp0_this = self
         tmp1 = tmp0_this._size
         tmp0_this._size = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-        Unit_getInstance()
     
     def get_ha5a7z_k_(self, index):
         Companion_getInstance().checkElementIndex_rvwcgf_k_(index, self._size)
@@ -7930,7 +7902,6 @@ class SubList_0(AbstractMutableList, RandomAccess):
         tmp0_this = self
         tmp1 = tmp0_this._size
         tmp0_this._size = (((tmp1 - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-        Unit_getInstance()
         return result
     
     def set_ddb1qf_k_(self, index, element):
@@ -8131,7 +8102,6 @@ class AbstractMutableList(AbstractMutableCollection, MutableList):
                 index_2 = inductionVariable
                 inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 iterator.next_0_k_()
-                Unit_getInstance()
                 iterator.remove_sv8swh_k_()
                 if not (inductionVariable < tmp0_repeat_0):
                     break
@@ -8253,7 +8223,6 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
     def set_ddb1qf_k_(self, index, element):
         self.checkIsMutable_sv8swh_k_()
         rangeCheck(self, index)
-        Unit_getInstance()
         tmp0_apply_0 = self.array[index]
         self.array.__setitem__(index, element)
         tmp = tmp0_apply_0
@@ -8266,7 +8235,6 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount__0_k_()
         tmp0_this._set_modCount__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-        Unit_getInstance()
         return True
     
     def add_vz2mgm_k_(self, index, element):
@@ -8276,7 +8244,6 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount__0_k_()
         tmp0_this._set_modCount__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-        Unit_getInstance()
     
     def addAll_dxd4eo_k_(self, elements):
         self.checkIsMutable_sv8swh_k_()
@@ -8291,13 +8258,11 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
         tmp1_this = self
         tmp2 = tmp1_this._get_modCount__0_k_()
         tmp1_this._set_modCount__majfzk_k_((((tmp2 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-        Unit_getInstance()
         return True
     
     def addAll_xggsjz_k_(self, index, elements):
         self.checkIsMutable_sv8swh_k_()
         insertionRangeCheck(self, index)
-        Unit_getInstance()
         if index == self._get_size__0_k_():
             return self.addAll_dxd4eo_k_(elements)
         
@@ -8320,17 +8285,14 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
         tmp1_this = self
         tmp2 = tmp1_this._get_modCount__0_k_()
         tmp1_this._set_modCount__majfzk_k_((((tmp2 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-        Unit_getInstance()
         return True
     
     def removeAt_ha5a7z_k_(self, index):
         self.checkIsMutable_sv8swh_k_()
         rangeCheck(self, index)
-        Unit_getInstance()
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount__0_k_()
         tmp0_this._set_modCount__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-        Unit_getInstance()
         if index == _get_lastIndex__4(self):
             tmp0_asDynamic_0 = self.array
             tmp = E(tmp0_asDynamic_0.pop())
@@ -8354,7 +8316,6 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
                     tmp1_this = self
                     tmp2 = tmp1_this._get_modCount__0_k_()
                     tmp1_this._set_modCount__majfzk_k_((((tmp2 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-                    Unit_getInstance()
                     return True
                 
                 if not (inductionVariable <= last):
@@ -8369,7 +8330,6 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount__0_k_()
         tmp0_this._set_modCount__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-        Unit_getInstance()
         tmp0_asDynamic_0 = self.array
         tmp0_asDynamic_0.splice(fromIndex, (((toIndex - fromIndex) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
     
@@ -8380,7 +8340,6 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
         tmp0_this = self
         tmp1 = tmp0_this._get_modCount__0_k_()
         tmp0_this._set_modCount__majfzk_k_((((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
-        Unit_getInstance()
     
     def indexOf_2bq_k_(self, element):
         return indexOf_3(self.array, element)
@@ -8400,7 +8359,6 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
         tmp0_copyInto_0 = (kotlin_Array_T_(tmp_0)) if (isArray(tmp_0)) else (THROW_CCE())
         tmp1_copyInto_0 = len(tmp0_copyInto_0)
         arrayCopy_0(tmp0_copyInto_0, array, 0, 0, tmp1_copyInto_0)
-        Unit_getInstance()
         if len(array) > self._get_size__0_k_():
             tmp_1 = self._get_size__0_k_()
             array.__setitem__(tmp_1, (T(None)) if ((True) if (None == None) else (isObject(None))) else (THROW_CCE()))
@@ -13666,7 +13624,6 @@ def newCode():
     while tmp0_iterator_1_2.hasNext_0_k_():
         item_2_3 = tmp0_iterator_1_2.next_0_k_()
         tmp0_mapTo_0_1.add_2bq_k_(str(item_2_3.toUpperCase()))
-        Unit_getInstance()
     
     tmp1_forEach_0 = tmp0_mapTo_0_1
     tmp0_iterator_1 = tmp1_forEach_0.iterator_0_k_()
