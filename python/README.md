@@ -92,9 +92,11 @@ It will generate various reports and summaries:
 
 ![git-history-plot](box.tests/reports/git-history-plot.svg)
 
-Current status: **2365**/5970 passed
+Current status: **2463**/5970 passed
 
 #### History (newest on top)
+
+* after supporting static fields initialization: **2463**/5970 (+98: +102 passed, +4 failed because no support for unsigned numbers, chars, property delegates, any-to-string conversions)
 
 * after supporting integer multiplication: **2365**/5970 (+23)
 

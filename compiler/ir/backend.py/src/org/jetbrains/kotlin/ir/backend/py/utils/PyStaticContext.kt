@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.ir.backend.py.utils
 
+import generated.Python.Assign
 import org.jetbrains.kotlin.ir.backend.py.PyIrBackendContext
 import org.jetbrains.kotlin.ir.backend.py.transformers.irToPy.PyIntrinsicTransformers
 
@@ -15,4 +16,6 @@ class PyStaticContext(
 ) : IrNamer by irNamer {
     val intrinsics = PyIntrinsicTransformers(backendContext)
     val coroutineImplDeclaration = backendContext.ir.symbols.coroutineImpl.owner
+
+    val initializerBlock = mutableListOf<Assign>()
 }

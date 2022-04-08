@@ -49,10 +49,7 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
         }
     }
 
-    override fun visitExpressionBody(body: IrExpressionBody, context: PyGenerationContext): expr {
-        // TODO
-        return Name(id = identifier("visitExpressionBody $body".toValidPythonSymbol()), ctx = Load)
-    }
+    override fun visitExpressionBody(body: IrExpressionBody, context: PyGenerationContext): expr = body.expression.accept(this, context)
 
     override fun visitFunctionExpression(expression: IrFunctionExpression, context: PyGenerationContext): expr {
         // TODO: create lowering: if there is one statement, use IrExpressionBody, otherwise, create a _no_name_provided_function_ and call it.
@@ -161,9 +158,9 @@ class IrElementToPyExpressionTransformer : BaseIrElementToPyNodeTransformer<expr
         val receiverExpression = expression.receiver?.accept(this, context)
 
         return if (receiverExpression != null) {
-            Attribute(value = receiverExpression, attr = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Store)
+            Attribute(value = receiverExpression, attr = identifier(field.name.asString().toValidPythonSymbol()), ctx = Store)
         } else {
-            Name(id = identifier(field.name.asString().toValidPythonSymbol()), ctx = Load)
+            Name(id = identifier(context.getNameForField(field).ident.toValidPythonSymbol()), ctx = Load)
         }
     }
 

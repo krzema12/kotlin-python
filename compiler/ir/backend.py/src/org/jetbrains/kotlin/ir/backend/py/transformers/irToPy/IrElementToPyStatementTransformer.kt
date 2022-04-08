@@ -18,7 +18,7 @@ private fun List<IrStatement>.translate(context: PyGenerationContext): List<stmt
     val globals = this
         .filterIsInstance<IrSetField>()
         .filter { it.symbol.owner.isStatic }
-        .map { it.symbol.owner.name.asString().toValidPythonSymbol().let(::identifier) }
+        .map { context.getNameForField(it.symbol.owner).ident.toValidPythonSymbol().let(::identifier) }
         .let { globals ->
             when (globals.isEmpty()) {
                 true -> emptyList()
@@ -88,7 +88,7 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
             targets = if (receiverAsExpressions != null) {
                 listOf(Attribute(value = receiverAsExpressions, attr = identifier(expression.symbol.owner.name.asString().toValidPythonSymbol()), ctx = Store))
             } else {
-                listOf(Name(id = identifier(expression.symbol.owner.name.identifier.toValidPythonSymbol()), ctx = Store))
+                listOf(Name(id = identifier(context.getNameForField(expression.symbol.owner).ident.toValidPythonSymbol()), ctx = Store))
             },
             value = IrElementToPyExpressionTransformer().visitExpression(expression.value, scopeContext),
             type_comment = null,
