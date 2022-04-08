@@ -7,10 +7,13 @@ package org.jetbrains.kotlin.ir.backend.py.transformers.irToPy
 
 import generated.Python.*
 import org.jetbrains.kotlin.ir.IrStatement
+import org.jetbrains.kotlin.ir.backend.py.PyLoweredDeclarationOrigin
 import org.jetbrains.kotlin.ir.backend.py.utils.PyGenerationContext
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.expressions.*
+import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
+import org.jetbrains.kotlin.ir.types.classifierOrNull
 import org.jetbrains.kotlin.ir.types.isAny
 import org.jetbrains.kotlin.ir.util.constructedClassType
 
@@ -143,6 +146,13 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
     }
 
     override fun visitCall(expression: IrCall, context: PyGenerationContext): List<stmt> {
+        fun IrFunctionSymbol.isUnitInstanceFunction(): Boolean {
+            return owner.origin === PyLoweredDeclarationOrigin.OBJECT_GET_INSTANCE_FUNCTION &&
+                    owner.returnType.classifierOrNull === context.staticContext.backendContext.irBuiltIns.unitClass
+        }
+        if (expression.symbol.isUnitInstanceFunction()) {
+            return emptyList()  // todo: probably it should better be moved to a lowering
+        }
         // TODO
         val scopeContext = context.newScope()
         return IrElementToPyExpressionTransformer().visitCall(expression, scopeContext).makeStmt().let { scopeContext.extractStatements() + it }
