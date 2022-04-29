@@ -18,14 +18,13 @@ def indexOf(self, element):
     inductionVariable = 0
     last = (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
-        while True:
+        firstIteration = True
+        while (True) if (firstIteration) else (inductionVariable <= last):
+            firstIteration = False
             index = inductionVariable
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             if element == self[index]:
                 return index
-            
-            if not (inductionVariable <= last):
-                break
             
         
     
@@ -44,14 +43,13 @@ def indexOf_0(self, element):
     inductionVariable = 0
     last = (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
-        while True:
+        firstIteration = True
+        while (True) if (firstIteration) else (inductionVariable <= last):
+            firstIteration = False
             index = inductionVariable
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             if element == self[index]:
                 return index
-            
-            if not (inductionVariable <= last):
-                break
             
         
     
@@ -70,14 +68,13 @@ def indexOf_1(self, element):
     inductionVariable = 0
     last = (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
-        while True:
+        firstIteration = True
+        while (True) if (firstIteration) else (inductionVariable <= last):
+            firstIteration = False
             index = inductionVariable
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             if element == self[index]:
                 return index
-            
-            if not (inductionVariable <= last):
-                break
             
         
     
@@ -96,14 +93,13 @@ def indexOf_2(self, element):
     inductionVariable = 0
     last = (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
-        while True:
+        firstIteration = True
+        while (True) if (firstIteration) else (inductionVariable <= last):
+            firstIteration = False
             index = inductionVariable
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             if element == self[index]:
                 return index
-            
-            if not (inductionVariable <= last):
-                break
             
         
     
@@ -123,14 +119,13 @@ def indexOf_3(self, element):
         inductionVariable = 0
         last = (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         if inductionVariable <= last:
-            while True:
+            firstIteration = True
+            while (True) if (firstIteration) else (inductionVariable <= last):
+                firstIteration = False
                 index = inductionVariable
                 inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 if self[index] == None:
                     return index
-                
-                if not (inductionVariable <= last):
-                    break
                 
             
         
@@ -138,14 +133,13 @@ def indexOf_3(self, element):
         inductionVariable_0 = 0
         last_0 = (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         if inductionVariable_0 <= last_0:
-            while True:
+            firstIteration_0 = True
+            while (True) if (firstIteration_0) else (inductionVariable_0 <= last_0):
+                firstIteration_0 = False
                 index_0 = inductionVariable_0
                 inductionVariable_0 = (((inductionVariable_0 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 if element == self[index_0]:
                     return index_0
-                
-                if not (inductionVariable_0 <= last_0):
-                    break
                 
             
         
@@ -156,28 +150,26 @@ def lastIndexOf(self, element):
     if element == None:
         inductionVariable = (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         if 0 <= inductionVariable:
-            while True:
+            firstIteration = True
+            while (True) if (firstIteration) else (0 <= inductionVariable):
+                firstIteration = False
                 index = inductionVariable
                 inductionVariable = (((inductionVariable + -1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 if self[index] == None:
                     return index
-                
-                if not (0 <= inductionVariable):
-                    break
                 
             
         
     else:
         inductionVariable_0 = (((len(self) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         if 0 <= inductionVariable_0:
-            while True:
+            firstIteration_0 = True
+            while (True) if (firstIteration_0) else (0 <= inductionVariable_0):
+                firstIteration_0 = False
                 index_0 = inductionVariable_0
                 inductionVariable_0 = (((inductionVariable_0 + -1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 if element == self[index_0]:
                     return index_0
-                
-                if not (0 <= inductionVariable_0):
-                    break
                 
             
         
@@ -771,7 +763,9 @@ class AbstractCollection(Collection):
         pass
     
     def contains_2bq_k_(self, element):
-        while True:
+        firstIteration = True
+        while (True) if (firstIteration) else (False):
+            firstIteration = False
             if isInterface(self, Collection):
                 tmp = kotlin_collections_Collection_kotlin_Any__(self).isEmpty_0_k_()
             elif True:
@@ -790,14 +784,13 @@ class AbstractCollection(Collection):
                 
             
             tmp_ret_0 = False
-            if not False:
-                break
-            
         
         return tmp_ret_0
     
     def containsAll_dxd4eo_k_(self, elements):
-        while True:
+        firstIteration = True
+        while (True) if (firstIteration) else (False):
+            firstIteration = False
             if isInterface(elements, Collection):
                 tmp = kotlin_collections_Collection_kotlin_Any__(elements).isEmpty_0_k_()
             elif True:
@@ -816,9 +809,6 @@ class AbstractCollection(Collection):
                 
             
             tmp_ret_0 = True
-            if not False:
-                break
-            
         
         return tmp_ret_0
     
@@ -1099,7 +1089,9 @@ class AbstractList(AbstractCollection, List):
         return IteratorImpl(self)
     
     def indexOf_2bq_k_(self, element):
-        while True:
+        firstIteration = True
+        while (True) if (firstIteration) else (False):
+            firstIteration = False
             index_1 = 0
             tmp0_iterator_2 = self.iterator_0_k_()
             while tmp0_iterator_2.hasNext_0_k_():
@@ -1112,14 +1104,13 @@ class AbstractList(AbstractCollection, List):
                 index_1 = (((tmp1_4 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             
             tmp_ret_0 = -1
-            if not False:
-                break
-            
         
         return tmp_ret_0
     
     def lastIndexOf_2bq_k_(self, element):
-        while True:
+        firstIteration = True
+        while (True) if (firstIteration) else (False):
+            firstIteration = False
             iterator_1 = self.listIterator_ha5a7z_k_(self._get_size__0_k_())
             while iterator_1.hasPrevious_0_k_():
                 tmp0__anonymous__2 = iterator_1.previous_0_k_()
@@ -1129,9 +1120,6 @@ class AbstractList(AbstractCollection, List):
                 
             
             tmp_ret_0 = -1
-            if not False:
-                break
-            
         
         return tmp_ret_0
     
@@ -1358,7 +1346,9 @@ def filterInPlace(self, predicate, predicateResultToRemove):
     inductionVariable = 0
     last = _get_lastIndex__4(self)
     if inductionVariable <= last:
-        while True:
+        firstIteration = True
+        while (True) if (firstIteration) else (not (readIndex == last)):
+            firstIteration = False
             readIndex = inductionVariable
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             element = self.get_ha5a7z_k_(readIndex)
@@ -1370,21 +1360,17 @@ def filterInPlace(self, predicate, predicateResultToRemove):
             
             tmp1 = writeIndex
             writeIndex = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-            if not not (readIndex == last):
-                break
-            
         
     
     if writeIndex < self._get_size__0_k_():
         inductionVariable_0 = _get_lastIndex__4(self)
         if writeIndex <= inductionVariable_0:
-            while True:
+            firstIteration_0 = True
+            while (True) if (firstIteration_0) else (not (removeIndex == writeIndex)):
+                firstIteration_0 = False
                 removeIndex = inductionVariable_0
                 inductionVariable_0 = (((inductionVariable_0 + -1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 self.removeAt_ha5a7z_k_(removeIndex)
-                if not not (removeIndex == writeIndex):
-                    break
-                
             
         
         return True
@@ -2832,13 +2818,12 @@ def run(block):
 def repeat(times, action):
     inductionVariable = 0
     if inductionVariable < times:
-        while True:
+        firstIteration = True
+        while (True) if (firstIteration) else (inductionVariable < times):
+            firstIteration = False
             index = inductionVariable
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             action(index)
-            if not (inductionVariable < times):
-                break
-            
         
     
 
@@ -3291,7 +3276,9 @@ def UByteArray__contains_impl_0(this, element):
     return UByteArray__contains_impl(tmp, (unboxIntrinsic(element)) if (isinstance(element, UByte)) else (THROW_CCE()))
 
 def UByteArray__containsAll_impl(this, elements):
-    while True:
+    firstIteration = True
+    while (True) if (firstIteration) else (False):
+        firstIteration = False
         tmp0_all_0 = (kotlin_collections_Collection___(elements)) if (isInterface(elements, Collection)) else (THROW_CCE())
         if isInterface(tmp0_all_0, Collection):
             tmp = kotlin_collections_Collection_kotlin_Any__(tmp0_all_0).isEmpty_0_k_()
@@ -3318,9 +3305,6 @@ def UByteArray__containsAll_impl(this, elements):
             
         
         tmp_ret_0 = True
-        if not False:
-            break
-        
     
     return tmp_ret_0
 
@@ -3753,7 +3737,9 @@ def UIntArray__contains_impl_0(this, element):
     return UIntArray__contains_impl(tmp, (unboxIntrinsic(element)) if (isinstance(element, UInt)) else (THROW_CCE()))
 
 def UIntArray__containsAll_impl(this, elements):
-    while True:
+    firstIteration = True
+    while (True) if (firstIteration) else (False):
+        firstIteration = False
         tmp0_all_0 = (kotlin_collections_Collection___(elements)) if (isInterface(elements, Collection)) else (THROW_CCE())
         if isInterface(tmp0_all_0, Collection):
             tmp = kotlin_collections_Collection_kotlin_Any__(tmp0_all_0).isEmpty_0_k_()
@@ -3780,9 +3766,6 @@ def UIntArray__containsAll_impl(this, elements):
             
         
         tmp_ret_0 = True
-        if not False:
-            break
-        
     
     return tmp_ret_0
 
@@ -4578,7 +4561,9 @@ def ULongArray__contains_impl_0(this, element):
     return ULongArray__contains_impl(tmp, (unboxIntrinsic(element)) if (isinstance(element, ULong)) else (THROW_CCE()))
 
 def ULongArray__containsAll_impl(this, elements):
-    while True:
+    firstIteration = True
+    while (True) if (firstIteration) else (False):
+        firstIteration = False
         tmp0_all_0 = (kotlin_collections_Collection___(elements)) if (isInterface(elements, Collection)) else (THROW_CCE())
         if isInterface(tmp0_all_0, Collection):
             tmp = kotlin_collections_Collection_kotlin_Any__(tmp0_all_0).isEmpty_0_k_()
@@ -4605,9 +4590,6 @@ def ULongArray__containsAll_impl(this, elements):
             
         
         tmp_ret_0 = True
-        if not False:
-            break
-        
     
     return tmp_ret_0
 
@@ -5385,7 +5367,9 @@ def UShortArray__contains_impl_0(this, element):
     return UShortArray__contains_impl(tmp, (unboxIntrinsic(element)) if (isinstance(element, UShort)) else (THROW_CCE()))
 
 def UShortArray__containsAll_impl(this, elements):
-    while True:
+    firstIteration = True
+    while (True) if (firstIteration) else (False):
+        firstIteration = False
         tmp0_all_0 = (kotlin_collections_Collection___(elements)) if (isInterface(elements, Collection)) else (THROW_CCE())
         if isInterface(tmp0_all_0, Collection):
             tmp = kotlin_collections_Collection_kotlin_Any__(tmp0_all_0).isEmpty_0_k_()
@@ -5412,9 +5396,6 @@ def UShortArray__containsAll_impl(this, elements):
             
         
         tmp_ret_0 = True
-        if not False:
-            break
-        
     
     return tmp_ret_0
 
@@ -7604,25 +7585,23 @@ def arrayCopy_0(source, destination, destinationOffset, startIndex, endIndex):
     elif (True) if (not (source is destination)) else (destinationOffset <= startIndex):
         inductionVariable = 0
         if inductionVariable < rangeSize:
-            while True:
+            firstIteration = True
+            while (True) if (firstIteration) else (inductionVariable < rangeSize):
+                firstIteration = False
                 index = inductionVariable
                 inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 destination.__setitem__((((destinationOffset + index) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000, source[(((startIndex + index) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000])
-                if not (inductionVariable < rangeSize):
-                    break
-                
             
         
     else:
         inductionVariable_0 = (((rangeSize - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         if 0 <= inductionVariable_0:
-            while True:
+            firstIteration_0 = True
+            while (True) if (firstIteration_0) else (0 <= inductionVariable_0):
+                firstIteration_0 = False
                 index_0 = inductionVariable_0
                 inductionVariable_0 = (((inductionVariable_0 + -1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 destination.__setitem__((((destinationOffset + index_0) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000, source[(((startIndex + index_0) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000])
-                if not (0 <= inductionVariable_0):
-                    break
-                
             
         
     
@@ -8055,14 +8034,13 @@ class AbstractMutableList(AbstractMutableCollection, MutableList):
         inductionVariable = 0
         last = _get_lastIndex__4(self)
         if inductionVariable <= last:
-            while True:
+            firstIteration = True
+            while (True) if (firstIteration) else (not (index == last)):
+                firstIteration = False
                 index = inductionVariable
                 inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 if self.get_ha5a7z_k_(index) == element:
                     return index
-                
-                if not not (index == last):
-                    break
                 
             
         
@@ -8071,14 +8049,13 @@ class AbstractMutableList(AbstractMutableCollection, MutableList):
     def lastIndexOf_2bq_k_(self, element):
         inductionVariable = _get_lastIndex__4(self)
         if 0 <= inductionVariable:
-            while True:
+            firstIteration = True
+            while (True) if (firstIteration) else (0 <= inductionVariable):
+                firstIteration = False
                 index = inductionVariable
                 inductionVariable = (((inductionVariable + -1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 if self.get_ha5a7z_k_(index) == element:
                     return index
-                
-                if not (0 <= inductionVariable):
-                    break
                 
             
         
@@ -8098,14 +8075,13 @@ class AbstractMutableList(AbstractMutableCollection, MutableList):
         tmp0_repeat_0 = (((toIndex - fromIndex) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         inductionVariable = 0
         if inductionVariable < tmp0_repeat_0:
-            while True:
+            firstIteration = True
+            while (True) if (firstIteration) else (inductionVariable < tmp0_repeat_0):
+                firstIteration = False
                 index_2 = inductionVariable
                 inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 iterator.next_0_k_()
                 iterator.remove_sv8swh_k_()
-                if not (inductionVariable < tmp0_repeat_0):
-                    break
-                
             
         
     
@@ -8307,7 +8283,9 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
         inductionVariable = 0
         last = (((len(self.array) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
         if inductionVariable <= last:
-            while True:
+            firstIteration = True
+            while (True) if (firstIteration) else (inductionVariable <= last):
+                firstIteration = False
                 index = inductionVariable
                 inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 if self.array[index] == element:
@@ -8317,9 +8295,6 @@ class ArrayList(AbstractMutableList, MutableList, RandomAccess):
                     tmp2 = tmp1_this._get_modCount__0_k_()
                     tmp1_this._set_modCount__majfzk_k_((((tmp2 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000)
                     return True
-                
-                if not (inductionVariable <= last):
-                    break
                 
             
         
@@ -9832,14 +9807,13 @@ class StringBuilder(Appendable, CharSequence):
         else:
             inductionVariable = self._get_length__0_k_()
             if inductionVariable < newLength:
-                while True:
+                firstIteration = True
+                while (True) if (firstIteration) else (inductionVariable < newLength):
+                    firstIteration = False
                     i = inductionVariable
                     inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                     tmp1_this = self
                     tmp1_this.string = tmp1_this.string + Char_0(0)
-                    if not (inductionVariable < newLength):
-                        break
-                    
                 
             
         
@@ -9907,15 +9881,14 @@ class StringBuilder(Appendable, CharSequence):
         dstIndex = destinationOffset
         inductionVariable = startIndex
         if inductionVariable < endIndex:
-            while True:
+            firstIteration = True
+            while (True) if (firstIteration) else (inductionVariable < endIndex):
+                firstIteration = False
                 index = inductionVariable
                 inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 tmp1 = dstIndex
                 dstIndex = (((tmp1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 destination.__setitem__(tmp1, charSequenceGet(self.string, index))
-                if not (inductionVariable < endIndex):
-                    break
-                
             
         
     
@@ -10045,7 +10018,9 @@ def compareTo(self, other, ignoreCase):
         
         inductionVariable = 0
         if inductionVariable < min:
-            while True:
+            firstIteration = True
+            while (True) if (firstIteration) else (inductionVariable < min):
+                firstIteration = False
                 index = inductionVariable
                 inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
                 thisChar = charSequenceGet(self, index)
@@ -10066,9 +10041,6 @@ def compareTo(self, other, ignoreCase):
                             return thisChar.compareTo_wi8o78_k_(otherChar)
                         
                     
-                
-                if not (inductionVariable < min):
-                    break
                 
             
         
@@ -10100,13 +10072,12 @@ def concatToString_0(self, startIndex, endIndex):
     result = ''
     inductionVariable = startIndex
     if inductionVariable < endIndex:
-        while True:
+        firstIteration = True
+        while (True) if (firstIteration) else (inductionVariable < endIndex):
+            firstIteration = False
             index = inductionVariable
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             result = result + self[index]
-            if not (inductionVariable < endIndex):
-                break
-            
         
     
     return result
@@ -10827,13 +10798,12 @@ def fillArrayVal(array, initValue):
     tmp0_repeat_0 = len(array)
     inductionVariable = 0
     if inductionVariable < tmp0_repeat_0:
-        while True:
+        firstIteration = True
+        while (True) if (firstIteration) else (inductionVariable < tmp0_repeat_0):
+            firstIteration = False
             index_2 = inductionVariable
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             array.__setitem__(index_2, initValue)
-            if not (inductionVariable < tmp0_repeat_0):
-                break
-            
         
     
     return array
@@ -10842,13 +10812,12 @@ def Array_0(size):
     result = list()
     inductionVariable = 0
     if inductionVariable < size:
-        while True:
+        firstIteration = True
+        while (True) if (firstIteration) else (inductionVariable < size):
+            firstIteration = False
             index_2 = inductionVariable
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             result.append(None)
-            if not (inductionVariable < size):
-                break
-            
         
     
     return result
@@ -11500,14 +11469,13 @@ def getStringHashCode(str):
     inductionVariable = 0
     last = (((length - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
-        while True:
+        firstIteration = True
+        while (True) if (firstIteration) else (not (i == last)):
+            firstIteration = False
             i = inductionVariable
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             code = kotlin_Int(str.charCodeAt(i))
             hash = (((((((hash * 31) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000) + code) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-            if not not (i == last):
-                break
-            
         
     
     return hash
@@ -12399,7 +12367,9 @@ def arrayConcat(*args):
     inductionVariable = 0
     last = (((len - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
-        while True:
+        firstIteration = True
+        while (True) if (firstIteration) else (not (i == last)):
+            firstIteration = False
             i = inductionVariable
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             arr = args[i]
@@ -12407,9 +12377,6 @@ def arrayConcat(*args):
                 typed.__setitem__(i, T(js('[]').slice.call(arr)))
             elif True:
                 typed.__setitem__(i, arr)
-            
-            if not not (i == last):
-                break
             
         
     
@@ -12420,15 +12387,14 @@ def primitiveArrayConcat(*args):
     inductionVariable = 0
     last = (((len(args) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable <= last:
-        while True:
+        firstIteration = True
+        while (True) if (firstIteration) else (not (i == last)):
+            firstIteration = False
             i = inductionVariable
             inductionVariable = (((inductionVariable + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp = size_local
             tmp0_unsafeCast_0 = args[i]
             size_local = (((tmp + len((tmp0_unsafeCast_0))) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-            if not not (i == last):
-                break
-            
         
     
     a = args[0]
@@ -12442,7 +12408,9 @@ def primitiveArrayConcat(*args):
     inductionVariable_0 = 0
     last_0 = (((len(args) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
     if inductionVariable_0 <= last_0:
-        while True:
+        firstIteration_0 = True
+        while (True) if (firstIteration_0) else (not (i_0 == last_0)):
+            firstIteration_0 = False
             i_0 = inductionVariable_0
             inductionVariable_0 = (((inductionVariable_0 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             tmp3_unsafeCast_0 = args[i_0]
@@ -12460,9 +12428,6 @@ def primitiveArrayConcat(*args):
                         break
                     
                 
-            
-            if not not (i_0 == last_0):
-                break
             
         
     

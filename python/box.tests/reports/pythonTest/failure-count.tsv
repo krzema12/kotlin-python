@@ -1,8 +1,8 @@
 507	NameError: name 'js' is not defined
-483	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
-275	AttributeError: 'Companion_19' object has no attribute 'constructor'
+481	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
+267	AttributeError: 'Companion_19' object has no attribute 'constructor'
 203	NameError: name 'Unexpected_operator_EQ' is not defined
-198	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
+199	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 117	NameError: name 'undefined' is not defined
 105	kotlin.NotImplementedError: An operation is not implemented.
 100	AttributeError: 'int' object has no attribute 'data'
@@ -10,24 +10,25 @@
 79	NameError: name 'kotlin_UInt' is not defined
 78	NameError: name 'kotlin_Boolean' is not defined
 50	NameError: name 'kotlin_Int' is not defined
-42	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
+44	AttributeError: 'int' object has no attribute 'compareTo_wiekkq_k_'
 39	AttributeError: '_no_name_provided__12' object has no attribute 'constructor'
 36	SyntaxError: invalid syntax
 30	AttributeError: 'ArrayAsCollection' object has no attribute 'toArray'
 29	TypeError: 'NoneType' object is not callable
 29	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail]>
-24	AttributeError: '_no_name_provided__11' object has no attribute 'constructor'
 24	AttributeError: 'int' object has no attribute 'toString'
 23	AttributeError: 'CheckStateMachineContinuation' object has no attribute 'constructor'
 23	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
-22	AttributeError: 'Companion_23' object has no attribute 'constructor'
+21	AttributeError: '_no_name_provided__11' object has no attribute 'constructor'
 21	NameError: name '_init_' is not defined
+20	AttributeError: 'Companion_23' object has no attribute 'constructor'
 20	NameError: name 'foo' is not defined
 20	NameError: name 'kotlin_Result_T_' is not defined
 19	RecursionError: maximum recursion depth exceeded
 19	UnboundLocalError: local variable 'test1' referenced before assignment
 18	AttributeError: '_no_name_provided__1_1' object has no attribute 'constructor'
 18	TypeError: can only concatenate str (not "int") to str
+17	java.lang.IllegalStateException: org.jetbrains.kotlin.ir.declarations.impl.IrVariableImpl@... for VAR IR_TEMPORARY_VARIABLE name:firstIteration type:kotlin.Boolean [val] has unexpected parent org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFunction@...
 16	TypeError: unsupported operand type(s) for +: 'NoneType' and 'NoneType'
 15	AttributeError: 'NoneType' object has no attribute '__setitem__'
 15	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
@@ -36,18 +37,17 @@
 14	TypeError: object of type 'NoneType' has no len()
 12	UnboundLocalError: local variable 'test0' referenced before assignment
 11	AttributeError: 'NoneType' object has no attribute 'hasNext_0_k_'
-10	AttributeError: '_no_name_provided__1_2' object has no attribute 'constructor'
 10	ImportError: cannot import name 'box' from 'compiled_module' <path-truncated>)
-10	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
 10	TypeError: unsupported operand type(s) for +: 'M' and 'int'
 10	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
+9	AttributeError: '_no_name_provided__1_2' object has no attribute 'constructor'
 9	AttributeError: 'tuple' object has no attribute '__setitem__'
-9	NameError: name 'kotlin_CharSequence' is not defined
 9	TypeError: unsupported operand type(s) for &: 'float' and 'int'
 9	java.lang.IllegalStateException: UNRESOLVED_REFERENCE_WRONG_RECEIVER: Unresolved reference. None of the following candidates is applicable because of receiver type mismatch: 
 8	AttributeError: 'M' object has no attribute 'i'
 8	AttributeError: 'NoneType' object has no attribute 'invoke_0_k_'
 8	NameError: name 'Object' is not defined
+8	NameError: name 'kotlin_CharSequence' is not defined
 8	NameError: name 'kotlin_UByte' is not defined
 8	NameError: name 'kotlin_ULong' is not defined
 8	java.lang.IllegalArgumentException: List has more than one element.
@@ -93,6 +93,7 @@
 3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetFieldImpl' is not defined
 3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetValueImpl' is not defined
 3	SyntaxError: EOL while scanning string literal
+3	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
 3	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: setOf (62,29) in <path-truncated>
 3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail #1]>
 3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail #2]>
@@ -352,7 +353,6 @@
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[A(string=OK)]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[FAIL3]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[FAIL]>
-1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 1, expected 1, but 102]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 3 &&]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail 4: A.bNonConst === B.bNonConst]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail equals]>
