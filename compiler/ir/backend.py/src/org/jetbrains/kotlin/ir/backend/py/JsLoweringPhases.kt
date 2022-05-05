@@ -617,6 +617,13 @@ private val callsLoweringPhase = makeBodyLoweringPhase(
     description = "Handle intrinsics"
 )
 
+private val doWhileRemoverPhase = makeBodyLoweringPhase(
+    ::DoWhileRemover,
+    name = "DoWhileRemover",
+    description = "Remove do-while that Python doesn't have (replace with while)",
+    prerequisite = setOf(blockDecomposerLoweringPhase, suspendFunctionsLoweringPhase),
+)
+
 private val objectDeclarationLoweringPhase = makeDeclarationTransformerPhase(
     ::ObjectDeclarationLowering,
     name = "ObjectDeclarationLowering",
@@ -728,6 +735,7 @@ private val loweringList = listOf(
     objectUsageLoweringPhase,
     captureStackTraceInThrowablesPhase,
     callsLoweringPhase,
+    doWhileRemoverPhase,
     cleanupLoweringPhase,
     validateIrAfterLowering
 )

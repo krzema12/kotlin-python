@@ -92,9 +92,11 @@ It will generate various reports and summaries:
 
 ![git-history-plot](box.tests/reports/git-history-plot.svg)
 
-Current status: **2463**/5970 passed
+Current status: **2468**/5970 passed
 
 #### History (newest on top)
+
+* after fully supporting do-while (with continue/break): **2468**/5970 (+5)
 
 * after supporting static fields initialization: **2463**/5970 (+98: +102 passed, +4 failed because no support for unsigned numbers, chars, property delegates, any-to-string conversions)
 
