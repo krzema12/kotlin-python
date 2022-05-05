@@ -620,7 +620,8 @@ private val callsLoweringPhase = makeBodyLoweringPhase(
 private val doWhileRemoverPhase = makeBodyLoweringPhase(
     ::DoWhileRemover,
     name = "DoWhileRemover",
-    description = "Remove do-while that Python doesn't have (replace with while)"
+    description = "Remove do-while that Python doesn't have (replace with while)",
+    prerequisite = setOf(blockDecomposerLoweringPhase, suspendFunctionsLoweringPhase),
 )
 
 private val objectDeclarationLoweringPhase = makeDeclarationTransformerPhase(

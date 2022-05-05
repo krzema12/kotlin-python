@@ -215,33 +215,9 @@ class IrElementToPyStatementTransformer : BaseIrElementToPyNodeTransformer<List<
         ).let { scopeContext.extractStatements() + it }
     }
 
-    override fun visitDoWhileLoop(loop: IrDoWhileLoop, context: PyGenerationContext): List<stmt> {
-        // transform
-        //
-        // do { <body> } while (<condition>)
-        //
-        // like:
-        //
-        // while True:
-        //     <body>
-        //     if not <condition>:
-        //         break
-        //
-        // TODO: support continue inside <body>
-        val scopeContext = context.newScope()
-        val body = loop.body?.accept(this, scopeContext).orEmpty()
-        val condition = If(
-            test = UnaryOp(Not, IrElementToPyExpressionTransformer().visitExpression(loop.condition, scopeContext)),
-            body = listOf(Break),
-            orelse = emptyList(),
-        )
-
-        return While(
-            test = Constant(value = constant("True"), kind = null),
-            body = body + condition,
-            orelse = emptyList(),
-        )
-            .let { scopeContext.extractStatements() + it }
+    override fun visitDoWhileLoop(loop: IrDoWhileLoop, context: PyGenerationContext): List<stmt> {  // todo
+        return listOf(Expr(value = Name(id = identifier("visitDoWhileLoop $loop".toValidPythonSymbol()), ctx = Load)))
+//        error("DoWhile should have been eliminated in a lowering before executing ToPyTransformer")
     }
 
     override fun visitDynamicOperatorExpression(expression: IrDynamicOperatorExpression, context: PyGenerationContext): List<stmt> {

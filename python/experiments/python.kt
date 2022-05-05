@@ -34,7 +34,8 @@ fun lambdaAndCapturing(): Int {
 }
 
 fun a(a1: Int, vararg a2: Int) {
-
+    var i = 0
+    do continue while (i++ < 3)
 }
 
 fun b() {

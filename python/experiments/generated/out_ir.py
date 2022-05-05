@@ -12418,16 +12418,7 @@ def primitiveArrayConcat(*args):
             inductionVariable_1 = 0
             last_1 = (((len(arr) - 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
             if inductionVariable_1 <= last_1:
-                while True:
-                    j = inductionVariable_1
-                    inductionVariable_1 = (((inductionVariable_1 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-                    tmp3 = size_local
-                    size_local = (((tmp3 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
-                    result.__setitem__(tmp3, arr[j])
-                    if not not (j == last_1):
-                        break
-                    
-                
+                visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
             
         
     
@@ -13577,7 +13568,14 @@ def lambdaAndCapturing():
     return l()
 
 def a(a1, *a2):
-    pass
+    i = 0
+    firstIteration = True
+    while (True) if (firstIteration) else (tmp0 < 3):
+        firstIteration = False
+        visitDoWhileLoop_org_jetbrains_kotlin_ir_expressions_impl_IrDoWhileLoopImpl
+        tmp0 = i
+        i = (((tmp0 + 1) + 0x8000_0000) & 0xffff_ffff) - 0x8000_0000
+    
 
 def b():
     a(1, *(2, 3))
