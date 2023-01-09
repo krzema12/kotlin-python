@@ -43,7 +43,7 @@ sourceSets {
 }
 
 projectTest("pythonTest", parallel = true) {
-    definePythonTestTask("python3.8")
+    definePythonTestTask("python3")
 }
 
 projectTest("microPythonTest", parallel = true) {
