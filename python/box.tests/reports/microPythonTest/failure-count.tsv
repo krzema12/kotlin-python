@@ -1,4 +1,4 @@
-1049	MemoryError: memory allocation failed, allocating XXX bytes
+1057	MemoryError: memory allocation failed, allocating XXX bytes
 275	AttributeError: 'Companion_19' object has no attribute 'constructor'
 257	NameError: name 'js' isn't defined
 191	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' isn't defined
@@ -19,7 +19,7 @@
 24	AttributeError: '_no_name_provided__11' object has no attribute 'constructor'
 23	AttributeError: 'CheckStateMachineContinuation' object has no attribute 'constructor'
 23	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
-21	AttributeError: type object 'AssertionError' has no attribute '__new__'
+22	AttributeError: type object 'AssertionError' has no attribute '__new__'
 21	RuntimeError: maximum recursion depth exceeded
 20	NameError: name '_init_' isn't defined
 20	NameError: name 'foo' isn't defined
@@ -28,12 +28,11 @@
 16	TypeError: can't convert 'NoneType' object to str implicitly
 16	TypeError: unsupported types for __add__: 'NoneType', 'NoneType'
 15	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
+15	NameError: name 'kotlin_UInt' isn't defined
 14	NameError: name 'kotlin_Result_T_' isn't defined
-14	NameError: name 'kotlin_UInt' isn't defined
 13	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' isn't defined
-13	SyntaxError: non-keyword arg after */**
 13	TypeError: __init__() takes 1 positional arguments but 2 were given
-11	NameError: name 'kotlin_Boolean' isn't defined
+12	NameError: name 'kotlin_Boolean' isn't defined
 11	TypeError: object of type 'NoneType' has no len()
 10	ImportError: can't import name box
 10	TypeError: unsupported types for __and__: 'float', 'int'
@@ -50,6 +49,7 @@
 7	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1]>
 6	AttributeError: 'M' object has no attribute 'i'
 6	NameError: name 'kotlin_Long' isn't defined
+6	NameError: name 'translateCallArguments_1' isn't defined
 6	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
 6	TypeError: unsupported types for __add__: 'M', 'int'
 6	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail: None]>
@@ -58,7 +58,6 @@
 5	NameError: name 'Result_T_' isn't defined
 5	NameError: name 'test_A' isn't defined
 5	NameError: name 'test_C' isn't defined
-5	NameError: name 'translateCallArguments_1' isn't defined
 4	AttributeError: type object 'B' has no attribute '__new__'
 4	AttributeError: type object 'Outer' has no attribute '__new__'
 4	NameError: name 'Infinity' isn't defined
@@ -183,7 +182,6 @@
 1	AttributeError: type object 'CalculatorConstants' has no attribute '__new__'
 1	AttributeError: type object 'Child2' has no attribute '__new__'
 1	AttributeError: type object 'ClassTemplate' has no attribute '__new__'
-1	AttributeError: type object 'DC' has no attribute '__new__'
 1	AttributeError: type object 'E' has no attribute '__new__'
 1	AttributeError: type object 'EmptyContinuation_0' has no attribute '__new__'
 1	AttributeError: type object 'Example' has no attribute '__new__'
@@ -235,7 +233,6 @@
 1	NameError: name 'test_IC' isn't defined
 1	NameError: name 'test_IC1' isn't defined
 1	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' isn't defined
-1	SyntaxError: *x must be assignment target
 1	SyntaxError: argument name reused
 1	SyntaxError: identifier redefined as global
 1	TypeError: 'NoneType' object isn't subscriptable
@@ -348,6 +345,7 @@
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail testInt 1]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail toString]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail1]>
+1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Failed A.x: 1;]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Failed: d.callsBaseFun()==Derived.baseFun()]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Failed: dd.callsSuperDeeperBaseFun()==DeepDerived.deeperBaseFun()]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[FakeInt(42) != 42]>
@@ -356,7 +354,6 @@
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1; r = BBB.baz]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 1; r = None]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 2]>
-1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 3.3]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail <Num object at [address]>]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail None]>
 1	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail1: testIf 4 test fail]>
