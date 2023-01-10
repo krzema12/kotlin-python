@@ -1,6 +1,6 @@
 507	NameError: name 'js' is not defined
 483	NameError: name 'kotlin_Array_kotlin_Any__' is not defined
-275	AttributeError: 'Companion_19' object has no attribute 'constructor'
+276	AttributeError: 'Companion_19' object has no attribute 'constructor'
 203	NameError: name 'Unexpected_operator_EQ' is not defined
 198	NameError: name 'visitTry_org_jetbrains_kotlin_ir_expressions_impl_IrTryImpl' is not defined
 117	NameError: name 'undefined' is not defined
@@ -29,10 +29,9 @@
 18	AttributeError: '_no_name_provided__1_1' object has no attribute 'constructor'
 18	TypeError: can only concatenate str (not "int") to str
 16	TypeError: unsupported operand type(s) for +: 'NoneType' and 'NoneType'
-15	AttributeError: 'NoneType' object has no attribute '__setitem__'
+15	AttributeError: 'NoneType' object has no attribute '__setitem__'. Did you mean: '__setattr__'?
 15	AttributeError: '_no_name_provided__13' object has no attribute 'constructor'
 14	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrCallImpl' is not defined
-14	TypeError: __init__() takes 1 positional argument but 2 were given
 14	TypeError: object of type 'NoneType' has no len()
 12	UnboundLocalError: local variable 'test0' referenced before assignment
 11	AttributeError: 'NoneType' object has no attribute 'hasNext_0_k_'
@@ -41,13 +40,13 @@
 10	There was a problem when extracting the contents of STDERR. Details: java.io.IOException: Stream closed
 10	TypeError: unsupported operand type(s) for +: 'M' and 'int'
 10	TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
-9	AttributeError: 'tuple' object has no attribute '__setitem__'
+9	AttributeError: 'tuple' object has no attribute '__setitem__'. Did you mean: '__getitem__'?
 9	NameError: name 'kotlin_CharSequence' is not defined
 9	TypeError: unsupported operand type(s) for &: 'float' and 'int'
 9	java.lang.IllegalStateException: UNRESOLVED_REFERENCE_WRONG_RECEIVER: Unresolved reference. None of the following candidates is applicable because of receiver type mismatch: 
 8	AttributeError: 'M' object has no attribute 'i'
 8	AttributeError: 'NoneType' object has no attribute 'invoke_0_k_'
-8	NameError: name 'Object' is not defined
+8	NameError: name 'Object' is not defined. Did you mean: 'object'?
 8	NameError: name 'kotlin_UByte' is not defined
 8	NameError: name 'kotlin_ULong' is not defined
 8	java.lang.IllegalArgumentException: List has more than one element.
@@ -63,7 +62,6 @@
 5	NameError: name 'test_A' is not defined
 5	NameError: name 'test_C' is not defined
 4	AttributeError: 'ArrayList' object has no attribute 'constructor'
-4	MemoryError
 4	NameError: name 'Infinity' is not defined
 4	NameError: name 'T' is not defined
 4	NameError: name 'test_S' is not defined
@@ -92,7 +90,9 @@
 3	NameError: name 'kotlin_Double_' is not defined
 3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetFieldImpl' is not defined
 3	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrGetValueImpl' is not defined
-3	SyntaxError: EOL while scanning string literal
+3	SyntaxError: too many nested parentheses
+3	TypeError: B.__init__() takes 1 positional argument but 2 were given
+3	TypeError: Derived.__init__() takes 1 positional argument but 2 were given
 3	java.lang.IllegalStateException: UNRESOLVED_REFERENCE: Unresolved reference: setOf (62,29) in <path-truncated>
 3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail #1]>
 3	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail #2]>
@@ -105,7 +105,7 @@
 2	AttributeError: '_no_name_provided__2_8' object has no attribute 'constructor'
 2	NameError: name 'Value_' is not defined
 2	NameError: name 'f' is not defined
-2	NameError: name 'get' is not defined
+2	NameError: name 'get' is not defined. Did you mean: 'set'?
 2	NameError: name 'kotlin_UShort' is not defined
 2	NameError: name 'ok' is not defined
 2	NameError: name 'target' is not defined
@@ -114,8 +114,8 @@
 2	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrWhenImpl' is not defined
 2	SyntaxError: name 'xs' is used prior to global declaration
 2	TypeError: 'NoneType' object is not subscriptable
-2	TypeError: __init__() missing 1 required positional argument: 'ordinal'
-2	TypeError: __init__() takes 2 positional arguments but 4 were given
+2	TypeError: Bar.__init__() takes 1 positional argument but 2 were given
+2	TypeError: En.__init__() missing 1 required positional argument: 'ordinal'
 2	TypeError: bad operand type for unary +: 'str'
 2	TypeError: can only concatenate str (not "A") to str
 2	TypeError: toString() missing 1 required positional argument: 'self'
@@ -141,7 +141,7 @@
 1	AttributeError: 'A' object has no attribute 'foo_0_k_'
 1	AttributeError: 'A' object has no attribute 's'
 1	AttributeError: 'B' object has no attribute 'constructor'
-1	AttributeError: 'B' object has no attribute 'f_default_nmiqce_k_'
+1	AttributeError: 'B' object has no attribute 'f_default_nmiqce_k_'. Did you mean: 'f_default_d5r3z7_k_'?
 1	AttributeError: 'B' object has no attribute 'y'
 1	AttributeError: 'Base' object has no attribute 'constructor'
 1	AttributeError: 'C' object has no attribute '_get_a__0_k_'
@@ -158,7 +158,7 @@
 1	AttributeError: 'FooImpl' object has no attribute 'xs'
 1	AttributeError: 'FunDependencyEdgeImpl' object has no attribute 'constructor'
 1	AttributeError: 'Handler' object has no attribute 'path'
-1	AttributeError: 'Impl' object has no attribute 'getContributedDescriptors_default_nmiqce_k_'
+1	AttributeError: 'Impl' object has no attribute 'getContributedDescriptors_default_nmiqce_k_'. Did you mean: 'getContributedDescriptors_default_d5r3z7_k_'?
 1	AttributeError: 'InlineTrait' object has no attribute 'constructor'
 1	AttributeError: 'Inner' object has no attribute 'value'
 1	AttributeError: 'N' object has no attribute 'b'
@@ -176,7 +176,7 @@
 1	AttributeError: 'Z' object has no attribute 'constructor'
 1	AttributeError: 'Z2' object has no attribute 'p'
 1	AttributeError: '_no_name_provided__10' object has no attribute 'constructor'
-1	AttributeError: '_no_name_provided__10' object has no attribute 'foo_default_nmiqce_k_'
+1	AttributeError: '_no_name_provided__10' object has no attribute 'foo_default_nmiqce_k_'. Did you mean: 'foo_default_d5r3z7_k_'?
 1	AttributeError: '_no_name_provided__14' object has no attribute 'constructor'
 1	AttributeError: '_no_name_provided__20' object has no attribute 'constructor'
 1	AttributeError: '_no_name_provided__21' object has no attribute 'constructor'
@@ -184,7 +184,7 @@
 1	AttributeError: 'int' object has no attribute '_set_p8__majfzk_k_'
 1	AttributeError: 'int' object has no attribute 'hashCode'
 1	AttributeError: 'str' object has no attribute 'substring'
-1	IndentationError: expected an indented block
+1	IndentationError: expected an indented block after 'while' statement on line 9570
 1	NameError: name 'A_' is not defined
 1	NameError: name 'AsAny_T_' is not defined
 1	NameError: name 'B_kotlin_String_' is not defined
@@ -229,17 +229,27 @@
 1	NameError: name 'test_IC' is not defined
 1	NameError: name 'test_IC1' is not defined
 1	NameError: name 'visitExpression_other__inToPyStatementTransformer_org_jetbrains_kotlin_ir_expressions_impl_IrFunctionReferenceImpl' is not defined
-1	SyntaxError: can't use starred expression here
+1	SyntaxError: cannot use starred expression here
 1	SyntaxError: duplicate argument 'name' in function definition
 1	SyntaxError: name 'result' is assigned to before global declaration
 1	SyntaxError: name 'result' is used prior to global declaration
+1	SyntaxError: unterminated string literal (detected at line 16264)
+1	SyntaxError: unterminated string literal (detected at line 16608)
+1	SyntaxError: unterminated string literal (detected at line 3781)
 1	TypeError: '<=' not supported between instances of 'NoneType' and 'NoneType'
 1	TypeError: '_no_name_provided__10' object is not callable
 1	TypeError: 'int' object is not subscriptable
-1	TypeError: <lambda>() takes 1 positional argument but 2 were given
+1	TypeError: A.__init__() takes 2 positional arguments but 4 were given
+1	TypeError: Bob.__init__() takes 1 positional argument but 2 were given
+1	TypeError: Del.__init__() takes 2 positional arguments but 4 were given
+1	TypeError: Derived.__init__() takes 2 positional arguments but 5 were given
+1	TypeError: Host.__init__() takes 1 positional argument but 2 were given
+1	TypeError: I.__init__() takes 1 positional argument but 2 were given
+1	TypeError: Issue.__init__() takes 1 positional argument but 2 were given
+1	TypeError: KtDotQualifiedExpression.__init__() takes 1 positional argument but 2 were given
+1	TypeError: LightVariable.__init__() takes 1 positional argument but 2 were given
 1	TypeError: _Props___init__impl_() takes 1 positional argument but 3 were given
 1	TypeError: _UIntArray___init__impl_() takes 1 positional argument but 3 were given
-1	TypeError: __init__() takes 2 positional arguments but 5 were given
 1	TypeError: _init__base1() missing 1 required positional argument: 'p0'
 1	TypeError: box_changeToOK() missing 1 required positional argument: 'result'
 1	TypeError: box_ext() missing 1 required positional argument: 'result'
@@ -258,6 +268,7 @@
 1	TypeError: isArray() missing 1 required positional argument: 'obj'
 1	TypeError: len() takes exactly one argument (0 given)
 1	TypeError: len() takes exactly one argument (4 given)
+1	TypeError: main.<locals>.<lambda>() takes 1 positional argument but 2 were given
 1	TypeError: next expected at least 1 argument, got 0
 1	TypeError: object of type 'Test' has no len()
 1	TypeError: overload_target() missing 1 required positional argument: 'receiver'

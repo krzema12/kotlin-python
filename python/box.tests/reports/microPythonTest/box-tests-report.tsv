@@ -25,10 +25,10 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$An
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations.testResolveWithLowPriorityAnnotation	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations$AnnotatedLambda.testAllFilesPresentInAnnotatedLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations$Instances.testAllFilesPresentInInstances	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations$Instances.testAnnotationEqHc	Failed	PythonExecution	SyntaxError: non-keyword arg after */**
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations$Instances.testAnnotationEqHc	Failed	PythonExecution	NameError: name 'kotlin_Boolean' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations$Instances.testAnnotationInstances	Failed	Unknown	java.lang.IllegalStateException: UNRESOLVED_REFERENCE_WRONG_RECEIVER: Unresolved reference. None of the following candidates is applicable because of receiver type mismatch: 
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations$Instances.testAnnotationInstancesEmptyDefault	Failed	Unknown	java.lang.IllegalStateException: UNRESOLVED_REFERENCE_WRONG_RECEIVER: Unresolved reference. None of the following candidates is applicable because of receiver type mismatch: 
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations$Instances.testAnnotationToString	Failed	PythonExecution	SyntaxError: non-keyword arg after */**
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations$Instances.testAnnotationToString	Failed	PythonExecution	NameError: name 'kotlin_UInt' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations$Instances.testMultifileEqHc	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Fail equals]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations$Instances.testMultiplatformInstantiation	Failed	Unknown	kotlin.NotImplementedError: An operation is not implemented.
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Annotations$KClassMapping.testAllFilesPresentInKClassMapping	Succeeded		
@@ -386,7 +386,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ca
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Equality.testSimpleEquality	Failed	PythonExecution	NameError: name 'js' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Equality.testSuspendConversion	Failed	PythonExecution	NameError: name 'memberFun' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Equality.testVarargAsArrayMemberOrExtension	Failed	PythonExecution	NameError: name 'member' isn't defined
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Equality.testVarargAsArrayWithDefaults	Failed	PythonExecution	SyntaxError: non-keyword arg after */**
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Equality.testVarargAsArrayWithDefaults	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Equality.testVarargWithDefaults	Failed	PythonExecution	AttributeError: type object 'AssertionError' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function.testAbstractClassMember	Failed	PythonExecution	NameError: name 'foo' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$CallableReference$Function.testAllFilesPresentInFunction	Succeeded		
@@ -1600,7 +1600,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Co
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DataClasses.testAllFilesPresentInDataClasses	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DataClasses.testArrayParams	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DataClasses.testChangingVarParam	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DataClasses.testDataClassWithManyFields	Failed	PythonExecution	AttributeError: type object 'DC' has no attribute '__new__'
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DataClasses.testDataClassWithManyFields	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DataClasses.testDoubleParam	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DataClasses.testFloatParam	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$DataClasses.testGenericParam	Succeeded		
@@ -2316,8 +2316,8 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$In
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testAssignPlusOnSmartCast	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testAugmentedAssignmentWithComplexRhs	Failed	PythonExecution	TypeError: unsupported types for __and__: 'float', 'int'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testClassNaryGetSet	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testClassVarargGetSet	Failed	PythonExecution	SyntaxError: non-keyword arg after */**
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testClassVarargGetSetEvaluationOrder	Failed	PythonExecution	SyntaxError: non-keyword arg after */**
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testClassVarargGetSet	Succeeded		
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testClassVarargGetSetEvaluationOrder	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[Failed A.x: 1;]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testClassWithGetSet	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testExtOnLong	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Increment.testGenericClassWithGetSet	Succeeded		
@@ -3652,7 +3652,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ra
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testEvaluationOrderForUntilReversed	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testGenericCharInRangeLiteral	Failed	PythonExecution	NameError: name 'kotlin_Char' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInArray	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInCharSequence	Failed	PythonExecution	SyntaxError: non-keyword arg after */**
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInCharSequence	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInComparableRange	Failed	Unknown	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun assertTrue(x: Boolean): Unit defined in kotlin.test (26,38) in <path-truncated>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInCustomObjectRange	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Ranges$Contains.testInDoubleRangeLiteralVsComparableRangeLiteral	Failed	PythonExecution	NameError: name 'js' isn't defined
@@ -4585,17 +4585,17 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Re
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NoReflect.testTypeReferenceEqualsHashCode	Failed	KotlinCompilation	java.lang.NullPointerException
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NoReflect$NonReifiedTypeParameters.testAllFilesPresentInNonReifiedTypeParameters	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testAllFilesPresentInNonReifiedTypeParameters	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testDefaultUpperBound	Failed	PythonExecution	SyntaxError: non-keyword arg after */**
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testDefaultUpperBound	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testEqualsOnClassParameters	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testEqualsOnFunctionParameters	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testInnerGeneric	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testSimpleClassParameter	Failed	PythonExecution	SyntaxError: non-keyword arg after */**
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testSimpleFunctionParameter	Failed	PythonExecution	SyntaxError: non-keyword arg after */**
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testSimplePropertyParameter	Failed	PythonExecution	SyntaxError: non-keyword arg after */**
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testSimpleClassParameter	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testSimpleFunctionParameter	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testSimplePropertyParameter	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testStarProjectionInUpperBound	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testTypeParameterFlags	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testUpperBoundUsesOuterClassParameter	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testUpperBounds	Failed	PythonExecution	SyntaxError: non-keyword arg after */**
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeOf$NonReifiedTypeParameters.testUpperBounds	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeParameters.testAllFilesPresentInTypeParameters	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeParameters.testDeclarationSiteVariance	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Reflection$TypeParameters.testTypeParametersAndNames	Succeeded		
@@ -5101,7 +5101,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Va
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$ValueClasses.testJvmInline	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg.testAllFilesPresentInVararg	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg.testDoNotCopyImmediatelyCreatedArrays	Failed	KotlinCompilation	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg.testEvaluationOrder	Failed	PythonExecution	SyntaxError: non-keyword arg after */**
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg.testEvaluationOrder	Failed	PythonExecution	AttributeError: type object 'AssertionError' has no attribute '__new__'
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg.testKt1978	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg.testKt37715	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg.testKt37779	Failed	KotlinCompilation	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
@@ -5112,7 +5112,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Va
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg.testSingleAssignmentToVarargsInFunction	Failed	PythonExecution	TypeError: can't convert 'int' object to str implicitly
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg.testSpreadCopiesArray	Failed	Unknown	java.lang.IllegalStateException: TOO_MANY_ARGUMENTS: Too many arguments for public fun <T> assertEquals(a: T, b: T): Unit defined in kotlin.test (23,34) in <path-truncated>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg.testVarargInFunParam	Failed	KotlinCompilation	kotlin.NotImplementedError: An operation is not implemented: IrSpreadElementImpl is not supported yet here
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg.testVarargsAndFunctionLiterals	Failed	PythonExecution	SyntaxError: non-keyword arg after */**
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$Vararg.testVarargsAndFunctionLiterals	Failed	PythonExecution	NameError: name 'translateCallArguments_1' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When.testAllFilesPresentInWhen	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When.testCallProperty	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenBoxTestGenerated$When.testEdgeCases	Succeeded		
@@ -5780,7 +5780,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testSimpleInt	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testSimpleLambda	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testSimpleObject	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testVararg	Failed	PythonExecution	SyntaxError: *x must be assignment target
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Simple.testVararg	Failed	PythonExecution	MemoryError: memory allocation failed, allocating XXX bytes
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap.testAllFilesPresentInSmap	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap.testAssertion	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap.testClassCycle	Succeeded		
@@ -5835,7 +5835,7 @@ org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$Resolve.testInlineComponent	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Smap$Resolve.testInlineIterator	Failed	PythonExecution	NameError: name 'kotlin_Int' isn't defined
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special.testAllFilesPresentInSpecial	Succeeded		
-org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special.testIdentityCheck	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail 3.3]>
+org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special.testIdentityCheck	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special.testIfBranches	Failed	AssertionFailed	org.junit.ComparisonFailure: expected:<[OK]> but was:<[fail1: testIf 4 test fail]>
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special.testIinc	Succeeded		
 org.jetbrains.kotlin.python.test.ir.semantics.IrPythonCodegenInlineTestGenerated$Special.testInlineChain	Succeeded		
